@@ -1,0 +1,405 @@
+---
+const sections = [
+	{ id: "top", label: "intro" },
+	{ id: "pipeline", label: "pipeline" },
+	{ id: "guidance", label: "guidance" },
+	{ id: "flows", label: "blueprint" },
+	{ id: "review", label: "review" },
+	{ id: "agents", label: "agents" },
+	{ id: "siblings", label: "siblings" },
+	{ id: "install", label: "install" },
+	{ id: "setup", label: "setup" },
+];
+---
+
+<aside class="indicator" aria-label="section indicator" data-indicator>
+	<div class="indicator__inner">
+		<div class="indicator__head mono" aria-hidden="true">
+			<span class="indicator__head-mark">¶</span>
+			<span class="indicator__head-rule"></span>
+		</div>
+
+		<ol class="indicator__list mono" role="list">
+			{
+				sections.map((s, i) => (
+					<li class="indicator__item">
+						<a
+							href={`#${s.id}`}
+							class="indicator__tick"
+							data-target={s.id}
+							aria-label={`Jump to ${s.label}`}
+						>
+							<span class="indicator__label" aria-hidden="true">
+								{s.label}
+							</span>
+							<span class="indicator__num" aria-hidden="true">
+								{String(i).padStart(2, "0")}
+							</span>
+							<span class="indicator__line" aria-hidden="true" />
+							<span class="indicator__seal" aria-hidden="true" />
+						</a>
+					</li>
+				))
+			}
+		</ol>
+
+		<div class="indicator__rail" aria-hidden="true">
+			<span class="indicator__rail-fill" data-progress></span>
+		</div>
+
+		<div class="indicator__foot mono" aria-hidden="true">
+			<span class="indicator__foot-num" data-percent>00</span>
+			<span class="indicator__foot-pct">%</span>
+		</div>
+	</div>
+</aside>
+
+<style>
+	.indicator {
+		position: fixed;
+		top: 50%;
+		right: var(--space-5);
+		transform: translateY(-50%);
+		z-index: 9;
+		pointer-events: none;
+		opacity: 0;
+		animation: indicator-rise var(--dur-enter) var(--ease-ink) 400ms forwards;
+	}
+
+	@keyframes indicator-rise {
+		from {
+			opacity: 0;
+			transform: translate(8px, -50%);
+		}
+		to {
+			opacity: 1;
+			transform: translate(0, -50%);
+		}
+	}
+
+	.indicator__inner {
+		position: relative;
+		display: grid;
+		grid-template-columns: auto 1px;
+		column-gap: var(--space-3);
+		grid-template-areas:
+			"head    head"
+			"list    rail"
+			"foot    foot";
+		row-gap: var(--space-3);
+	}
+
+	/* HEAD — small kanji "序" (prelude) brushed atop the rail */
+	.indicator__head {
+		grid-area: head;
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		gap: var(--space-2);
+		color: var(--text-distant);
+	}
+	.indicator__head-mark {
+		grid-column: 2;
+		font-size: 14px;
+		letter-spacing: 0;
+		color: var(--ochre);
+		opacity: 0.85;
+		text-shadow: 0 0 10px color-mix(in oklab, var(--ochre) 25%, transparent);
+	}
+	.indicator__head-rule {
+		grid-column: 1;
+		display: block;
+		height: 1px;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			var(--rule-strong) 60%,
+			var(--rule-strong)
+		);
+	}
+
+	/* LIST */
+	.indicator__list {
+		grid-area: list;
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		pointer-events: auto;
+	}
+
+	.indicator__item {
+		display: block;
+	}
+
+	.indicator__tick {
+		position: relative;
+		display: grid;
+		grid-template-columns: 1fr auto 16px;
+		grid-template-areas: "label num line";
+		align-items: center;
+		gap: var(--space-3);
+		padding: 7px 0;
+		color: var(--text-distant);
+		text-decoration: none;
+		border: none;
+		font-size: var(--type-tiny);
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		transition: color var(--dur-ink) var(--ease-ink);
+		cursor: pointer;
+	}
+	.indicator__tick:hover {
+		border: none;
+	}
+
+	.indicator__label {
+		grid-area: label;
+		justify-self: end;
+		text-align: right;
+		color: var(--text-quiet);
+		opacity: 0;
+		transform: translateX(6px);
+		transition:
+			opacity var(--dur-tick) var(--ease-ink),
+			transform var(--dur-tick) var(--ease-ink),
+			color var(--dur-ink) var(--ease-ink);
+		white-space: nowrap;
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-size: var(--type-base);
+		letter-spacing: 0.01em;
+		text-transform: lowercase;
+		line-height: 1;
+	}
+
+	.indicator__num {
+		grid-area: num;
+		font-variant-numeric: tabular-nums;
+		font-size: var(--type-tiny);
+		letter-spacing: 0.14em;
+		color: var(--text-distant);
+		opacity: 0.7;
+		transition:
+			opacity var(--dur-ink) var(--ease-ink),
+			color var(--dur-ink) var(--ease-ink);
+	}
+
+	.indicator__line {
+		grid-area: line;
+		justify-self: end;
+		display: block;
+		width: 12px;
+		height: 1px;
+		background: var(--rule-strong);
+		transform-origin: right center;
+		transition:
+			width var(--dur-ink) var(--ease-ink),
+			background var(--dur-ink) var(--ease-ink);
+	}
+
+	/* hanko seal — small ochre square that stamps the rail */
+	.indicator__seal {
+		position: absolute;
+		top: 50%;
+		right: -5px;
+		width: 9px;
+		height: 9px;
+		background: var(--ochre);
+		transform: translateY(-50%) rotate(8deg) scale(0);
+		transform-origin: center;
+		opacity: 0;
+		box-shadow:
+			inset 0 0 0 0.5px color-mix(in oklab, var(--kuro) 60%, transparent),
+			0 0 12px color-mix(in oklab, var(--ochre) 25%, transparent);
+		transition:
+			transform var(--dur-ink) var(--ease-ink),
+			opacity var(--dur-tick) var(--ease-ink);
+	}
+
+	/* hover state — subtle reveal */
+	.indicator__tick:hover .indicator__num {
+		color: var(--washi-soft);
+		opacity: 0.85;
+	}
+	.indicator__tick:hover .indicator__line {
+		width: 22px;
+		background: var(--sage-deep);
+	}
+	.indicator__tick:hover .indicator__label {
+		opacity: 0.6;
+		transform: translateX(0);
+		color: var(--text-quiet);
+	}
+
+	/* active state — full brightness, hanko stamps */
+	.indicator__tick.is-active .indicator__num {
+		color: var(--washi);
+		opacity: 1;
+	}
+	.indicator__tick.is-active .indicator__line {
+		width: 32px;
+		background: var(--ochre);
+	}
+	.indicator__tick.is-active .indicator__label {
+		opacity: 1;
+		transform: translateX(0);
+		color: var(--washi);
+	}
+	.indicator__tick.is-active .indicator__seal {
+		opacity: 1;
+		transform: translateY(-50%) rotate(8deg) scale(1);
+	}
+
+	/* RAIL — the spine */
+	.indicator__rail {
+		grid-area: rail;
+		position: relative;
+		width: 1px;
+		background: var(--rule);
+		justify-self: end;
+	}
+	.indicator__rail-fill {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: var(--scroll-progress, 0%);
+		background: linear-gradient(
+			180deg,
+			color-mix(in oklab, var(--sage) 60%, transparent) 0%,
+			var(--sage-deep) 35%,
+			var(--ochre) 100%
+		);
+		transition: height 140ms linear;
+	}
+
+	/* FOOT — tabular % readout */
+	.indicator__foot {
+		grid-area: foot;
+		display: grid;
+		grid-template-columns: 1fr auto auto;
+		align-items: baseline;
+		gap: 2px;
+		font-size: var(--type-tiny);
+		letter-spacing: 0.14em;
+		color: var(--text-distant);
+	}
+	.indicator__foot::before {
+		content: "";
+		display: block;
+		height: 1px;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			var(--rule-strong) 60%,
+			var(--rule-strong)
+		);
+		align-self: center;
+	}
+	.indicator__foot-num {
+		font-variant-numeric: tabular-nums;
+		color: var(--text-quiet);
+	}
+	.indicator__foot-pct {
+		opacity: 0.6;
+	}
+
+	/* hide on narrow screens — top nav handles those */
+	@media (max-width: 960px) {
+		.indicator {
+			display: none;
+		}
+	}
+
+	/* honor reduced motion */
+	@media (prefers-reduced-motion: reduce) {
+		.indicator {
+			animation: none;
+			opacity: 1;
+		}
+		.indicator__seal,
+		.indicator__line,
+		.indicator__label,
+		.indicator__num,
+		.indicator__rail-fill {
+			transition: none;
+		}
+	}
+</style>
+
+<script>
+	(() => {
+		const root = document.querySelector<HTMLElement>("[data-indicator]");
+		if (!root) return;
+
+		const ticks = Array.from(
+			root.querySelectorAll<HTMLAnchorElement>(".indicator__tick"),
+		);
+		const railFill = root.querySelector<HTMLElement>("[data-progress]");
+		const percentEl = root.querySelector<HTMLElement>("[data-percent]");
+
+		const targets = ticks
+			.map((t) => {
+				const id = t.dataset.target;
+				if (!id) return null;
+				const el = document.getElementById(id);
+				return el ? { tick: t, el } : null;
+			})
+			.filter((x): x is { tick: HTMLAnchorElement; el: HTMLElement } => !!x);
+
+		if (!targets.length) return;
+
+		// Active section detection — pick the section whose top has crossed
+		// roughly a third of the viewport. Falls back to the first section.
+		// Offsets cached at layout time so the per-scroll path does no layout
+		// query (avoids forced reflow during scroll).
+		const offsets = new Array<number>(targets.length);
+		let scrollMax = 1;
+		const measure = () => {
+			const baseY = window.scrollY;
+			for (let i = 0; i < targets.length; i++) {
+				offsets[i] = targets[i].el.getBoundingClientRect().top + baseY;
+			}
+			scrollMax = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+		};
+
+		let rafId = 0;
+		const setActive = () => {
+			rafId = 0;
+			const anchor = window.scrollY + window.innerHeight * 0.34;
+			let activeIndex = 0;
+			for (let i = 0; i < targets.length; i++) {
+				if (offsets[i] <= anchor) activeIndex = i;
+			}
+			targets.forEach((t, i) => {
+				t.tick.classList.toggle("is-active", i === activeIndex);
+				if (i === activeIndex) t.tick.setAttribute("aria-current", "true");
+				else t.tick.removeAttribute("aria-current");
+			});
+
+			// progress + readout
+			const pct = Math.min(100, Math.max(0, (window.scrollY / scrollMax) * 100));
+			if (railFill) railFill.style.setProperty("--scroll-progress", `${pct}%`);
+			if (percentEl) percentEl.textContent = String(Math.round(pct)).padStart(2, "0");
+		};
+
+		const onScroll = () => {
+			if (rafId) return;
+			rafId = requestAnimationFrame(setActive);
+		};
+		const onResize = () => {
+			measure();
+			onScroll();
+		};
+
+		window.addEventListener("scroll", onScroll, { passive: true });
+		window.addEventListener("resize", onResize, { passive: true });
+		// Late layout shifts (font swap, image decode) — recompute when body resizes.
+		new ResizeObserver(onResize).observe(document.body);
+		measure();
+		setActive();
+	})();
+</script>

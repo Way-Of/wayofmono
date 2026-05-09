@@ -1,0 +1,384 @@
+---
+import { VERSION } from "../lib/version";
+---
+
+<header class="nav" data-nav>
+	<div class="container nav__inner">
+		<div class="nav__head">
+			<a href="#top" class="nav__brand mono">rpiv-pi</a>
+			<a
+				class="nav__version mono"
+				href={`https://www.npmjs.com/package/@juicesharp/rpiv-pi/v/${VERSION}`}
+				aria-label={`released version v${VERSION} on npm`}
+				target="_blank"
+				rel="noopener"
+			>v{VERSION}</a>
+			<a
+				class="nav__github mono"
+				href="https://github.com/juicesharp/rpiv-mono"
+				target="_blank"
+				rel="noopener"
+				aria-label="rpiv-mono on GitHub"
+			>github</a>
+			<span class="nav__counter mono" aria-hidden="true">
+				<span class="nav__counter-rule"></span>
+				<span class="nav__counter-num" data-nav-counter>—</span>
+				<span class="nav__counter-sep">/</span>
+				<span class="nav__counter-total">06</span>
+			</span>
+		</div>
+		<nav class="nav__links mono" aria-label="primary">
+			<a href="#pipeline" data-nav-link="pipeline">pipeline</a>
+			<a href="#guidance" data-nav-link="guidance">guidance</a>
+			<a href="#flows"    data-nav-link="flows">blueprint</a>
+			<a href="#review"   data-nav-link="review">review</a>
+			<a href="#agents"   data-nav-link="agents">agents</a>
+			<a href="#siblings" data-nav-link="siblings">siblings</a>
+		</nav>
+		<a href="#install" class="nav__cta mono">install</a>
+	</div>
+</header>
+
+<style>
+	.nav {
+		position: sticky;
+		top: 0;
+		z-index: 10;
+		background: color-mix(in oklab, var(--ink) 88%, transparent);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		border-bottom: 1px solid var(--rule);
+	}
+	.nav__inner {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: var(--space-5);
+		padding-top: var(--space-3);
+		padding-bottom: var(--space-3);
+	}
+	.nav__head {
+		display: contents;
+	}
+	.nav__brand {
+		font-size: var(--type-small);
+		color: var(--washi);
+		letter-spacing: 0.04em;
+		border-bottom: none;
+	}
+	.nav__brand:hover { color: var(--sage); }
+
+	/* Version imprint — masthead-style edition mark sitting between brand and
+	   counter. Tabular numerics so 1.1.5 → 1.1.10 stays aligned across builds.
+	   Hairline divider + half-em ochre tick echo the .nav__cta border and the
+	   ScrollIndicator hanko seal — one chromatic event, no badge geometry. */
+	.nav__version {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2);
+		font-size: var(--type-tiny);
+		letter-spacing: 0.14em;
+		font-variant-numeric: tabular-nums;
+		color: var(--text-distant);
+		border-bottom: none;
+		text-decoration: none;
+		padding: 0 var(--space-2);
+		border-left: 1px solid var(--rule);
+		line-height: 1;
+		transition: color var(--dur-ink) var(--ease-ink);
+	}
+	.nav__version::before {
+		content: "";
+		display: block;
+		width: 1px;
+		height: 0.7em;
+		background: var(--ochre);
+		opacity: 0.7;
+	}
+	.nav__version:hover { color: var(--washi); }
+
+	/* GitHub link — sits in the masthead row alongside the version imprint.
+	   Same tiny mono treatment but without the hairline divider; the text
+	   itself is the affordance. Sage hover echoes the SiblingCard CTA idiom
+	   and signals "external resource" without a full icon. */
+	.nav__github {
+		font-size: var(--type-tiny);
+		letter-spacing: 0.14em;
+		color: var(--text-distant);
+		border-bottom: none;
+		text-decoration: none;
+		padding: 0 var(--space-2);
+		line-height: 1;
+		transition: color var(--dur-ink) var(--ease-ink);
+	}
+	.nav__github:hover { color: var(--sage); }
+
+	/* Section counter — mobile-only flourish that echoes
+	   ScrollIndicator's `.indicator__foot` (tabular numerals + 0.14em
+	   tracking + faint hairline). Restores the orientation cue the side
+	   rail provides on desktop, where the rail is hidden below 960px. */
+	.nav__counter {
+		display: none;
+		align-items: baseline;
+		gap: 2px;
+		font-size: var(--type-tiny);
+		letter-spacing: 0.14em;
+		color: var(--text-distant);
+		font-variant-numeric: tabular-nums;
+	}
+	.nav__counter-rule {
+		display: block;
+		width: var(--space-6);
+		height: 1px;
+		margin-right: var(--space-3);
+		align-self: center;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			var(--rule-strong) 60%,
+			var(--rule-strong)
+		);
+	}
+	.nav__counter-num {
+		color: var(--washi-soft);
+		min-width: 1.3em;
+		text-align: right;
+	}
+	.nav__counter-sep { color: var(--rule-strong); }
+	.nav__counter-total { color: var(--text-distant); }
+
+	.nav__links {
+		display: flex;
+		gap: var(--space-4);
+		font-size: var(--type-tiny);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+	.nav__links a {
+		position: relative;
+		color: var(--text-distant);
+		border-bottom: none;
+		transition: color var(--dur-ink) var(--ease-ink);
+	}
+	.nav__links a:hover { color: var(--washi); }
+
+	/* CTA chip — install is an action, not a wayfinding tab. The chip
+	   gives it visual hierarchy distinct from the lowercase tracked-out
+	   wayfinding links. Echoes the .chip--ochre idiom from flows.css. */
+	.nav__cta {
+		font-size: var(--type-tiny);
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--washi);
+		border: 1px solid var(--ochre);
+		border-radius: var(--radius-sm);
+		padding: 4px 10px;
+		text-decoration: none;
+		transition:
+			color var(--dur-ink) var(--ease-ink),
+			background var(--dur-ink) var(--ease-ink),
+			border-color var(--dur-ink) var(--ease-ink);
+	}
+	.nav__cta:hover {
+		color: var(--ink);
+		background: var(--ochre);
+		border-color: var(--ochre);
+	}
+
+	/* Active-section state — agrees with the side ScrollIndicator's hanko seal.
+	   Active link gets washi text + a 1px ochre underline tick that grows from
+	   left, matching the indicator's `.indicator__line` widening behavior. */
+	.nav__links a.is-active {
+		color: var(--washi);
+	}
+	.nav__links a.is-active::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -4px;
+		height: 1px;
+		background: var(--ochre);
+		transform-origin: left center;
+		animation: nav-tick-in var(--dur-tick) var(--ease-ink) forwards;
+	}
+	@keyframes nav-tick-in {
+		from { transform: scaleX(0); }
+		to   { transform: scaleX(1); }
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.nav__links a.is-active::after { animation: none; }
+	}
+
+	/* Mobile (≤720px) — the side ScrollIndicator is hidden below 960px,
+	   so the top nav has to carry both wayfinding and section-progress.
+	   Stack into two rows: brand + tabular counter on top, a full-width
+	   6-column grid of links below. The grid distributes evenly across
+	   any viewport, eliminating the overflow that the previous
+	   shrink-the-gap approach hit on narrow phones. */
+	@media (max-width: 720px) {
+		/* Grid: top row = brand+counter (left) | CTA (right);
+		   bottom row = full-width 6-col links grid. */
+		.nav__inner {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			grid-template-areas:
+				"head cta"
+				"links links";
+			align-items: center;
+			column-gap: var(--space-3);
+			row-gap: var(--space-3);
+			padding-top: var(--space-3);
+			padding-bottom: 0;
+		}
+		.nav__head {
+			grid-area: head;
+			display: flex;
+			justify-content: flex-start;
+			align-items: baseline;
+			gap: var(--space-3);
+		}
+		.nav__counter { display: inline-flex; }
+
+		/* Mobile masthead row is baseline-flex; the hairline divider reads
+		   cluttered against the brand at this density. Drop it. On mobile,
+		   the GitHub link carries the divider instead — keeps one separator
+		   in the masthead row without cluttering the brand. */
+		.nav__version {
+			border-left: none;
+			padding-left: 0;
+		}
+		.nav__github {
+			padding-left: var(--space-2);
+			border-left: 1px solid var(--rule);
+		}
+
+		.nav__cta {
+			grid-area: cta;
+			align-self: center;
+			padding: 3px 8px;
+			font-size: var(--type-micro);
+			letter-spacing: 0.14em;
+		}
+
+		.nav__links {
+			grid-area: links;
+			display: grid;
+			grid-template-columns: repeat(6, 1fr);
+			gap: 0;
+			font-size: var(--type-micro);
+			letter-spacing: 0.12em;
+			border-top: 1px solid var(--rule);
+			padding-top: var(--space-3);
+		}
+		.nav__links a {
+			text-align: center;
+			padding: 2px 4px var(--space-3);
+		}
+		.nav__links a.is-active::after {
+			left: 18%;
+			right: 18%;
+			bottom: 4px;
+		}
+	}
+
+	/* Sub-480px — six tracked-out words can't share a single row gracefully
+	   below ~440px. Reflow to a 3-column / 2-row plate, still equal-width,
+	   still anchored to the same active-tick rhythm. */
+	@media (max-width: 480px) {
+		/* Sub-480 the masthead row gets tight (brand + counter + version + CTA
+		   on one line). Drop the version off-screen and let the colophon
+		   carry it. CTA is non-negotiable; the version is. GitHub stays —
+		   it's a key traffic driver. */
+		.nav__version { display: none; }
+		.nav__github {
+			border-left: none;
+			padding-left: 0;
+		}
+
+		.nav__links {
+			grid-template-columns: repeat(3, 1fr);
+			row-gap: var(--space-3);
+			padding-bottom: var(--space-3);
+		}
+		.nav__links a { padding-bottom: 2px; }
+		.nav__links a.is-active::after {
+			left: 22%;
+			right: 22%;
+			bottom: -3px;
+		}
+	}
+</style>
+
+<script>
+	(() => {
+		const nav = document.querySelector<HTMLElement>("[data-nav]");
+		if (!nav) return;
+		const links = Array.from(
+			nav.querySelectorAll<HTMLAnchorElement>("[data-nav-link]"),
+		);
+		const counter = nav.querySelector<HTMLElement>("[data-nav-counter]");
+		const targets = links
+			.map((link) => {
+				const id = link.dataset.navLink;
+				if (!id) return null;
+				const el = document.getElementById(id);
+				return el ? { link, el } : null;
+			})
+			.filter((x): x is { link: HTMLAnchorElement; el: HTMLElement } => !!x);
+		if (!targets.length) return;
+
+		// Cache document-relative tops once per layout. The per-scroll path then
+		// only reads window.scrollY (no layout query), which avoids 2.8s of
+		// cumulative forced reflow during long sessions.
+		const offsets = new Array<number>(targets.length);
+		const measure = () => {
+			const baseY = window.scrollY;
+			for (let i = 0; i < targets.length; i++) {
+				offsets[i] = targets[i].el.getBoundingClientRect().top + baseY;
+			}
+		};
+
+		let rafId = 0;
+		const setActive = () => {
+			rafId = 0;
+			const anchor = window.scrollY + window.innerHeight * 0.34;
+			let activeIndex = -1;
+			for (let i = 0; i < targets.length; i++) {
+				if (offsets[i] <= anchor) activeIndex = i;
+			}
+			targets.forEach((t, i) => {
+				t.link.classList.toggle("is-active", i === activeIndex);
+				if (i === activeIndex) t.link.setAttribute("aria-current", "true");
+				else t.link.removeAttribute("aria-current");
+			});
+			if (counter) {
+				counter.textContent =
+					activeIndex < 0 ? "—" : String(activeIndex + 1).padStart(2, "0");
+			}
+		};
+
+		const onScroll = () => {
+			if (rafId) return;
+			rafId = requestAnimationFrame(setActive);
+		};
+		// RO/resize fire synchronously after style invalidation; reading
+		// geometry inline triggers a forced reflow per burst. Defer measure()
+		// into rAF so font-swap / image-decode bursts collapse to one pass.
+		let measureRaf = 0;
+		const scheduleMeasure = () => {
+			if (measureRaf) return;
+			measureRaf = requestAnimationFrame(() => {
+				measureRaf = 0;
+				measure();
+				setActive();
+			});
+		};
+		window.addEventListener("scroll", onScroll, { passive: true });
+		window.addEventListener("resize", scheduleMeasure, { passive: true });
+		// Late layout shifts (font swap, image decode) — recompute when body resizes.
+		new ResizeObserver(scheduleMeasure).observe(document.body);
+		measure();
+		setActive();
+	})();
+</script>

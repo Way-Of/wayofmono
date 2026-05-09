@@ -1,0 +1,96 @@
+:root {
+	/* Surface — sumi ink canvas, washi paper accents */
+	--ink: #1c1a17;
+	--ink-raised: #252220;
+	--ink-muted: #2d2925;
+	--washi: #ede6d3;
+	--washi-soft: #c9c0a8;
+
+	/* Text */
+	--text: #ede6d3;
+	--text-quiet: #a8a29e;
+	--text-distant: #9c968d;
+
+	/* Accents — sage, moss, ochre, kuro */
+	--sage: #8a9580;
+	--sage-deep: #5e6b56;
+	--ochre: #a8896c;
+	--moss: #4a5544;
+	--kuro: #3d2f24;
+
+	/* Alert — desaturated terracotta, the only "stop-and-look" tone in the
+	   system. Reserved for severity:critical and failed verification marks
+	   inside review-report mocks. Never used as a UI accent. */
+	--alert: #b04a3a;
+
+	/* Hairlines */
+	--rule: #2e2b27;
+	--rule-strong: #3a3631;
+	/* Link underline — sage tinted, kept distinct from structural rules so
+	   `--rule-strong` stays reserved for card edges + emphasis dividers. */
+	--underline: color-mix(in oklab, var(--sage) 35%, transparent);
+	--underline-hover: color-mix(in oklab, var(--sage) 60%, transparent);
+
+	/* Spacing — "ma" rhythm based on 8px unit */
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 24px;
+	--space-6: 32px;
+	--space-7: 48px;
+	--space-8: 64px;
+	--space-9: 96px;
+	--space-10: 128px;
+	--space-11: 192px;
+
+	/* Type — mono for structure, serif for prose.
+	   Mono cascade: Berkeley Mono is the design intent (commercial, not shipped);
+	   JetBrains Mono is loaded as webfont in Base.astro so visitors without
+	   Berkeley still get a coherent mono voice; ui-monospace / SF Mono / Cascadia
+	   cover the no-CDN fallback path.
+	   Serif cascade: Iowan Old Style ships with macOS, Charter ships with iOS+
+	   modern macOS, Source Serif Pro covers Linux/Windows fallbacks. */
+	--font-mono: "Berkeley Mono", "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code", monospace;
+	--font-serif: "Iowan Old Style", "Hoefler Text", "Charter", "Source Serif Pro", Georgia, serif;
+
+	--type-micro: 10px;
+	--type-tiny: 11px;
+	--type-kicker: 12px;
+	--type-small: 13px;
+	--type-base: 16px;
+	--type-lead: 17px;
+	--type-h3: 20px;
+	--type-h-hero: 30px;
+	--type-h2: clamp(28px, 4vw, 40px);
+	--type-h1: clamp(48px, 8vw, 96px);
+
+	--leading-tight: 1.1;
+	--leading-snug: 1.35;
+	--leading-relaxed: 1.55;
+	--leading-body: 1.65;
+
+	/* Motion — slow, organic ink. Durations stack from quickest tap-feedback
+	   through entrance ticks to the signature long-form ink reveal. */
+	--ease-ink: cubic-bezier(0.23, 0.71, 0.27, 0.98);
+	--dur-fast: 120ms;
+	--dur-quick: 320ms;
+	--dur-tick: 360ms;
+	--dur-ink: 600ms;
+	--dur-enter: 1200ms;
+
+	/* Radii — slightly imperfect, never crisp */
+	--radius-xs: 1px;
+	--radius-sm: 2px;
+	--radius-md: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	:root {
+		--dur-fast: 0ms;
+		--dur-quick: 0ms;
+		--dur-tick: 0ms;
+		--dur-ink: 0ms;
+		--dur-enter: 0ms;
+	}
+}

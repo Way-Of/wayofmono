@@ -1,0 +1,13 @@
+.cursor-cli-provider-card .auth-provider-cli-actions,
+.cursor-cli-provider-card .onboarding-provider-card__actions {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .cursor-cli-provider-card .auth-provider-cli-actions,
+  .cursor-cli-provider-card .onboarding-provider-card__actions {
+    flex-wrap: wrap;
+  }
+}

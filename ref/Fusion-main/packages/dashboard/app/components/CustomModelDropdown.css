@@ -1,0 +1,1535 @@
+/* === Model Combobox Component === */
+
+.model-combobox {
+  position: relative;
+  width: 100%;
+}
+
+.model-combobox-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.model-combobox-trigger:hover:not(:disabled) {
+  border-color: var(--text-dim);
+}
+
+.model-combobox-trigger:focus {
+  border-color: var(--todo);
+  box-shadow: var(--focus-ring);
+}
+
+.model-combobox-trigger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.model-combobox-trigger-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.model-combobox-trigger-icon {
+  display: inline-flex;
+  margin-right: var(--space-sm);
+  flex-shrink: 0;
+}
+
+.model-combobox-trigger-arrow {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-left: 8px;
+  transition: transform 0.15s;
+}
+
+.model-combobox-trigger[aria-expanded="true"] .model-combobox-trigger-arrow {
+  transform: rotate(180deg);
+}
+
+.model-combobox-dropdown {
+  position: fixed;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  /* Must sit above QuickChatFAB mobile full-screen panel (z-index 1100). */
+  z-index: 1200;
+  max-height: 320px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.model-combobox-search-wrapper {
+  position: relative;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.model-combobox-search {
+  width: 100%;
+  padding: 10px 36px 10px 12px;
+  background: var(--bg);
+  border: none;
+  border-radius: var(--radius) var(--radius) 0 0;
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+}
+
+.model-combobox-search::placeholder {
+  color: var(--text-dim);
+}
+
+.model-combobox-search:focus {
+  background: var(--card);
+}
+
+.model-combobox-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: color var(--transition-fast);
+}
+
+.model-combobox-clear:hover {
+  color: var(--text);
+}
+
+.model-combobox-results-count {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  font-size: calc(var(--space-sm) + var(--space-xs) * 0.75);
+  color: var(--text-muted);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.model-combobox-list {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 0;
+}
+
+.model-combobox-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  cursor: pointer;
+  transition: background 0.1s;
+  overflow: hidden;
+}
+
+.model-combobox-option:hover,
+.model-combobox-option--highlighted {
+  background: var(--card-hover);
+}
+
+.model-combobox-option--selected {
+  background: rgba(88, 166, 255, 0.15);
+}
+
+.model-combobox-option--selected:hover,
+.model-combobox-option--selected.model-combobox-option--highlighted {
+  background: rgba(88, 166, 255, 0.25);
+}
+
+.model-combobox-option-main {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  min-width: 0;
+  flex: 1;
+}
+
+.model-combobox-option-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.model-combobox-option-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.model-combobox-option-text--default {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.model-combobox-option-id {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  margin-left: 8px;
+  flex-shrink: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 40%;
+}
+
+.model-combobox-group {
+  border-bottom: 1px solid var(--border);
+}
+
+.model-combobox-group:last-child {
+  border-bottom: none;
+}
+
+.model-combobox-optgroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  background: var(--bg);
+  cursor: default;
+  overflow: hidden;
+}
+
+.model-combobox-optgroup-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Provider favorite star (in optgroup header) */
+.model-combobox-optgroup-favorite {
+  padding: 2px 4px;
+  font-size: 14px;
+  color: var(--star-idle);
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.model-combobox-optgroup-favorite:hover {
+  color: var(--star-active);
+}
+.model-combobox-optgroup-favorite--active {
+  color: var(--star-active);
+}
+
+/* Model favorite star (inside option row) */
+.model-combobox-option-favorite {
+  padding: 2px 4px;
+  font-size: 12px;
+  color: var(--star-idle);
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.model-combobox-option-favorite:hover {
+  color: var(--star-active);
+}
+.model-combobox-option-favorite--active {
+  color: var(--star-active);
+}
+
+/* Favorited model pinned row */
+.model-combobox-option--favorite {
+  padding-left: 12px;
+  background: var(--bg-secondary);
+}
+
+.model-combobox-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
+.model-combobox-no-results {
+  padding: 16px 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Mobile responsive model dropdown */
+@media (max-width: 768px) {
+  .model-combobox-dropdown {
+    max-height: 50vh;
+    max-height: 50dvh; /* Use dynamic viewport height where supported */
+    width: min(360px, calc(100vw - 32px));
+  }
+
+  .model-combobox-search {
+    font-size: 16px;
+  }
+
+  .model-combobox-option {
+    min-height: 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .model-combobox-dropdown {
+    max-height: 50vh;
+    max-height: 50dvh;
+    width: min(360px, calc(100vw - 32px));
+  }
+}
+
+/* ============================================================
+   THEME SYSTEM
+   ============================================================ */
+
+/* Smooth transitions for theme changes */
+html,
+html *,
+html *::before,
+html *::after {
+  transition:
+    background-color var(--transition-normal),
+    color var(--transition-normal),
+    border-color var(--transition-normal),
+    box-shadow var(--transition-normal);
+}
+
+/* Disable transitions on specific elements that shouldn't animate */
+html .card.dragging,
+html .card.dragging *,
+html .list-row.dragging,
+html .list-row.dragging *,
+html .column.drag-over,
+html .column.drag-over * {
+  transition: none !important;
+}
+
+/* ============================================================
+   LIGHT THEME (data-theme="light")
+   ============================================================ */
+[data-theme="light"] {
+  /* Backgrounds */
+  --bg: #ffffff;
+  --surface: #f6f8fa;
+  --card: #ffffff;
+  --card-hover: #f3f4f6;
+  --bg-secondary: #f6f8fa;
+  --bg-tertiary: #eaeef2;
+  --border: #d0d7de;
+
+  /* Text */
+  --text: #1f2328;
+  --text-muted: #656d76;
+  --text-dim: #8c959f;
+
+  /* Status colors (adjusted for light backgrounds) */
+  --triage: #9a6700;
+  --todo: #0969da;
+  --in-progress: #00bcd4;
+  --in-progress-rgb: 0, 188, 212;
+  --in-review: #1a7f37;
+  --done: #6e7781;
+
+  /* Feedback colors */
+  --color-success: #1a7f37;
+  --color-error: #cf222e;
+  --color-muted: #6e7781;
+  --color-warning: #9a6700;
+
+  /* Executor status bar state accents (lower intensity for light backgrounds) */
+  --executor-status-error-bg: color-mix(in srgb, var(--color-error) 6%, transparent);
+
+  /* Changed-file status colors (adjusted for light backgrounds) */
+  --status-color-added: #1a7f37;
+  --status-color-modified: #0969da;
+  --status-color-deleted: #cf222e;
+  --status-color-unknown: #6e7781;
+
+  /* Shadow for light mode */
+  --shadow-sm: 0 1px 2px rgba(31, 35, 40, 0.08);
+  --shadow-md: 0 4px 6px rgba(31, 35, 40, 0.12);
+  --shadow-lg: 0 4px 24px rgba(31, 35, 40, 0.15);
+  --shadow-glow: 0 0 8px rgba(9, 105, 218, 0.18);
+  --glow-success: 0 0 8px rgba(26, 127, 55, 0.3);
+  --glow-warning: 0 0 8px rgba(154, 103, 0, 0.3);
+  --glow-danger: 0 0 8px rgba(207, 34, 46, 0.3);
+  --focus-ring: 0 0 0 2px rgba(9, 105, 218, 0.12);
+  --focus-ring-strong: 0 0 0 2px rgba(9, 105, 218, 0.24);
+  /* CTA tokens for light mode */
+  --cta-bg: #1a7f37;
+  --cta-border: #1f883d;
+  --cta-text: #fff;
+  --cta-bg-hover: #1f883d;
+  --cta-border-hover: #2ea043;
+  --cta-glow: 0 0 8px rgba(26, 127, 55, 0.3);
+
+  /* Info color for light mode */
+  --color-info: #0969da;
+
+  /* Workflow Step colors for light mode */
+  --ws-pre-merge: #2563eb;
+  --ws-post-merge: #0d9488;
+  --ws-info: #0891b2;
+  --ws-warning: #a16207;
+  --ws-success: #16a34a;
+  --ws-error: #dc2626;
+  --ws-error-dark: #b91c1c;
+  --ws-teal: #0d9488;
+  --ws-quality: #2563eb;
+  --ws-security: #dc2626;
+
+  /* Status error colors for light mode */
+  --color-error-dark: #a40e26;
+  --status-error-bg: color-mix(in srgb, var(--color-error-dark, #a40e26) 15%, transparent);
+  --status-error-bg-deep: color-mix(in srgb, var(--color-error-dark, #a40e26) 20%, transparent);
+
+  /* Logo accent for light mode */
+  --logo-accent: var(--todo);
+
+  /* Accent color for light mode */
+  --accent: #6a4fa0;
+
+  /* Log entry backgrounds (lower intensity for light backgrounds) */
+  --log-tool-bg: color-mix(in srgb, var(--accent) 6%, transparent);
+  --log-success-bg: color-mix(in srgb, var(--color-success) 5%, transparent);
+  --log-error-bg: color-mix(in srgb, var(--color-error) 5%, transparent);
+
+  --shadow: var(--shadow-lg);
+
+  /* Mailbox FAB & badge text — ensure contrast on light backgrounds */
+  --fab-text: #fff;
+
+  /* Mission autopilot — darker for light backgrounds */
+  --autopilot-icon: #ca8a04;
+  --autopilot-shadow: rgba(34, 197, 94, 0.4);
+
+  /* Terminal background */
+  --terminal-bg: #f6f8fa;
+
+  /* Card mission badge — darker purple for light bg */
+  --badge-mission-text: #7c3aed;
+  --badge-mission-text-hover: #8b5cf6;
+  --badge-mission-bg: rgba(124, 58, 237, 0.12);
+  --badge-mission-bg-hover: rgba(124, 58, 237, 0.22);
+
+  /* Mission event type colors — darker/more saturated for light readability */
+  --event-error-text: #dc2626;
+  --event-state-text: #2563eb;
+  --event-task-text: #059669;
+  --event-slice-text: #d97706;
+  --event-autopilot-text: #9333ea;
+  --event-error-bg: rgba(220, 38, 38, 0.12);
+  --event-state-bg: rgba(37, 99, 235, 0.12);
+  --event-task-bg: rgba(5, 150, 105, 0.12);
+  --event-slice-bg: rgba(217, 119, 6, 0.12);
+  --event-autopilot-bg: rgba(147, 51, 234, 0.12);
+
+  /* Mission toggle & badge backgrounds */
+  --toggle-checked-bg: rgba(34, 197, 94, 0.15);
+  --meta-badge-bg: rgba(63, 185, 80, 0.08);
+
+  /* Star favorites */
+  --star-idle: #9ca3af;
+  --star-active: #d97706;
+}
+
+/* Light theme specific overrides */
+[data-theme="light"] .modal-overlay,
+[data-theme="light"] .agent-detail-overlay,
+[data-theme="light"] .agent-dialog-overlay,
+[data-theme="light"] .chat-new-dialog-backdrop {
+  background: rgba(31, 35, 40, 0.5);
+}
+
+[data-theme="light"] .modal-header {
+  background: rgba(246, 248, 250, 0.8);
+}
+
+[data-theme="light"] .modal-actions {
+  background: rgba(246, 248, 250, 0.6);
+}
+
+[data-theme="light"] .settings-sidebar {
+  background: rgba(246, 248, 250, 0.6);
+}
+
+[data-theme="light"] .toast-success {
+  background: var(--cta-bg);
+}
+
+[data-theme="light"] .toast-error {
+  background: var(--color-error-dark);
+}
+
+[data-theme="light"] .toast-info {
+  background: var(--color-info);
+}
+
+[data-theme="light"] .btn-task-create {
+  background: var(--cta-bg);
+  border-color: var(--cta-border);
+}
+
+[data-theme="light"] .btn-task-create:hover {
+  background: var(--cta-bg-hover);
+  border-color: var(--cta-border-hover);
+  box-shadow: var(--cta-glow);
+}
+
+[data-theme="light"] .btn-primary {
+  background: var(--cta-bg);
+  border-color: var(--cta-border);
+}
+
+[data-theme="light"] .btn-primary:hover {
+  background: var(--cta-bg-hover);
+  border-color: var(--cta-border-hover);
+  box-shadow: var(--cta-glow);
+}
+
+[data-theme="light"] .btn-danger {
+  background: #cf222e;
+  border-color: #a40e26;
+}
+
+[data-theme="light"] .btn-danger:hover {
+  background: #a40e26;
+  box-shadow: var(--glow-danger);
+}
+
+[data-theme="light"] .btn-warning {
+  background: var(--triage);
+  border-color: color-mix(in srgb, var(--triage) 70%, black);
+}
+
+[data-theme="light"] .btn-warning:hover {
+  background: color-mix(in srgb, var(--triage) 70%, black);
+  box-shadow: var(--glow-warning);
+}
+
+[data-theme="light"] .btn-secondary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+[data-theme="light"] .btn-secondary:hover {
+  background: var(--card-hover);
+  border-color: var(--text-muted);
+}
+[data-theme="light"] .btn-secondary:active {
+  transform: scale(0.97);
+}
+[data-theme="light"] .btn-secondary:focus-visible {
+  box-shadow: var(--focus-ring-strong);
+  border-color: var(--todo);
+}
+
+/* ============================================================
+   THEME SELECTOR COMPONENT STYLES
+   ============================================================ */
+
+.theme-selector {
+  padding: 0 20px 20px;
+}
+
+.theme-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-xs);
+  margin-bottom: 20px;
+}
+
+.theme-mode-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: var(--space-sm) var(--space-lg);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex: 1;
+}
+
+.theme-mode-btn:hover {
+  color: var(--text);
+  background: var(--card-hover);
+}
+
+.theme-mode-btn.active {
+  background: var(--todo);
+  color: var(--bg);
+}
+
+.theme-mode-btn.active:hover {
+  background: var(--todo);
+  color: var(--bg);
+}
+
+.theme-mode-btn:focus-visible {
+  outline: none;
+  border-color: var(--todo);
+  box-shadow: var(--focus-ring-strong);
+}
+
+.theme-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--space-md);
+}
+
+.theme-font-size-toggle {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.theme-font-size-btn {
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 500;
+  justify-content: center;
+  min-height: calc(var(--space-2xl) + var(--space-sm));
+  padding: var(--space-sm) var(--space-md);
+  transition: all var(--transition-fast);
+}
+
+.theme-font-size-btn:hover {
+  border-color: var(--todo);
+  color: var(--text);
+}
+
+.theme-font-size-btn.active {
+  background: color-mix(in srgb, var(--todo) 14%, transparent);
+  border-color: var(--todo);
+  color: var(--text);
+}
+
+.theme-font-size-btn:focus-visible {
+  outline: none;
+  border-color: var(--todo);
+  box-shadow: var(--focus-ring-strong);
+}
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+}
+
+@media (max-width: 768px) {
+  .theme-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.theme-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.theme-option:hover {
+  border-color: var(--todo);
+  background: var(--card-hover);
+}
+
+.theme-option.active {
+  border-color: var(--todo);
+  background: color-mix(in srgb, var(--todo) 14%, transparent);
+}
+
+.theme-option:focus-visible {
+  outline: none;
+  border-color: var(--todo);
+  box-shadow: var(--focus-ring-strong);
+}
+
+.theme-option-swatch {
+  width: calc(var(--space-2xl) + var(--space-lg));
+  height: calc(var(--space-2xl) + var(--space-lg));
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  overflow: hidden;
+}
+
+.theme-option-swatch-sample {
+  display: block;
+  min-height: 0;
+}
+
+.theme-option-swatch-sample-1 {
+  background: var(--swatch-sample-1);
+}
+
+.theme-option-swatch-sample-2 {
+  background: var(--swatch-sample-2);
+}
+
+.theme-option-swatch-sample-3 {
+  background: var(--swatch-sample-3);
+}
+
+.theme-option-swatch-sample-4 {
+  background: var(--swatch-sample-4);
+}
+
+.theme-option-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  text-align: center;
+}
+
+/* Theme preview swatch colors */
+.theme-swatch-default {
+  --swatch-sample-1: #0d1117;
+  --swatch-sample-2: #161b22;
+  --swatch-sample-3: #58a6ff;
+  --swatch-sample-4: #79c0ff;
+}
+
+.theme-swatch-ocean {
+  --swatch-sample-1: #0a1929;
+  --swatch-sample-2: #132f4c;
+  --swatch-sample-3: #4fc3f7;
+  --swatch-sample-4: #00bcd4;
+}
+
+.theme-swatch-forest {
+  --swatch-sample-1: #0d2818;
+  --swatch-sample-2: #1a472a;
+  --swatch-sample-3: #4caf50;
+  --swatch-sample-4: #2e7d32;
+}
+
+.theme-swatch-sunset {
+  --swatch-sample-1: #2d1f1f;
+  --swatch-sample-2: #4a2c2c;
+  --swatch-sample-3: #ff8a65;
+  --swatch-sample-4: #ff7043;
+}
+
+.theme-swatch-zen {
+  --swatch-sample-1: #0c0c0c;
+  --swatch-sample-2: #111111;
+  --swatch-sample-3: #6b7b8c;
+  --swatch-sample-4: #7a8590;
+}
+
+.theme-swatch-berry {
+  --swatch-sample-1: #1a0b2e;
+  --swatch-sample-2: #2d1b4e;
+  --swatch-sample-3: #c084fc;
+  --swatch-sample-4: #ec4899;
+}
+
+.theme-swatch-monochrome {
+  --swatch-sample-1: #0d0d0d;
+  --swatch-sample-2: #1a1a1a;
+  --swatch-sample-3: #a3a3a3;
+  --swatch-sample-4: #d4d4d4;
+}
+
+.theme-swatch-slate {
+  --swatch-sample-1: #1e293b;
+  --swatch-sample-2: #334155;
+  --swatch-sample-3: #60a5fa;
+  --swatch-sample-4: #22d3ee;
+}
+
+.theme-swatch-ash {
+  --swatch-sample-1: #292524;
+  --swatch-sample-2: #44403c;
+  --swatch-sample-3: #a8a29e;
+  --swatch-sample-4: #d6d3d1;
+}
+
+.theme-swatch-graphite {
+  --swatch-sample-1: #18181b;
+  --swatch-sample-2: #27272a;
+  --swatch-sample-3: #94a3b8;
+  --swatch-sample-4: #cbd5e1;
+}
+
+.theme-swatch-ember {
+  --swatch-sample-1: #18181b;
+  --swatch-sample-2: #27272a;
+  --swatch-sample-3: #f97316;
+  --swatch-sample-4: #ef4444;
+}
+
+.theme-swatch-rust {
+  --swatch-sample-1: #0f0b09;
+  --swatch-sample-2: #1a1410;
+  --swatch-sample-3: #e06830;
+  --swatch-sample-4: #e88040;
+}
+
+.theme-swatch-copper {
+  --swatch-sample-1: #0e0c0a;
+  --swatch-sample-2: #181410;
+  --swatch-sample-3: #e89545;
+  --swatch-sample-4: #f0a858;
+}
+
+.theme-swatch-foundry {
+  --swatch-sample-1: #0c0806;
+  --swatch-sample-2: #15100c;
+  --swatch-sample-3: #ffab20;
+  --swatch-sample-4: #ffc040;
+}
+
+.theme-swatch-carbon {
+  --swatch-sample-1: #0a0b0d;
+  --swatch-sample-2: #111318;
+  --swatch-sample-3: #6a9acf;
+  --swatch-sample-4: #7ab0e0;
+}
+
+.theme-swatch-sandstone {
+  --swatch-sample-1: #1a1712;
+  --swatch-sample-2: #241f18;
+  --swatch-sample-3: #d4a06a;
+  --swatch-sample-4: #e0b080;
+}
+
+.theme-swatch-lagoon {
+  --swatch-sample-1: #0a1214;
+  --swatch-sample-2: #101c1f;
+  --swatch-sample-3: #50d8c0;
+  --swatch-sample-4: #60e8d0;
+}
+
+.theme-swatch-frost {
+  --swatch-sample-1: #0c0e14;
+  --swatch-sample-2: #121520;
+  --swatch-sample-3: #8ac8f8;
+  --swatch-sample-4: #9ad8ff;
+}
+
+.theme-swatch-lavender {
+  --swatch-sample-1: #14101a;
+  --swatch-sample-2: #1c1624;
+  --swatch-sample-3: #c8a0e8;
+  --swatch-sample-4: #d8b0f0;
+}
+
+.theme-swatch-neon-bloom {
+  --swatch-sample-1: #120a18;
+  --swatch-sample-2: #1a1024;
+  --swatch-sample-3: #f080d0;
+  --swatch-sample-4: #ff90e0;
+}
+
+.theme-swatch-sepia {
+  --swatch-sample-1: #161210;
+  --swatch-sample-2: #201a16;
+  --swatch-sample-3: #d8b878;
+  --swatch-sample-4: #e8c888;
+}
+
+.theme-swatch-silver {
+  --swatch-sample-1: #27272a;
+  --swatch-sample-2: #3f3f46;
+  --swatch-sample-3: #94a3b8;
+  --swatch-sample-4: #e2e8f0;
+}
+
+.theme-swatch-high-contrast {
+  --swatch-sample-1: #000000;
+  --swatch-sample-2: #0a0a0a;
+  --swatch-sample-3: #00ffff;
+  --swatch-sample-4: #ffff00;
+}
+
+.theme-swatch-industrial {
+  --swatch-sample-1: #0c0c0c;
+  --swatch-sample-2: #141414;
+  --swatch-sample-3: #ff6b00;
+  --swatch-sample-4: #ff8c00;
+}
+
+.theme-swatch-solarized {
+  --swatch-sample-1: #002b36;
+  --swatch-sample-2: #073642;
+  --swatch-sample-3: #268bd2;
+  --swatch-sample-4: #2aa198;
+}
+
+.theme-swatch-factory {
+  --swatch-sample-1: #0a0a0a;
+  --swatch-sample-2: #111111;
+  --swatch-sample-3: #f59e0b;
+  --swatch-sample-4: #06b6d4;
+}
+
+.theme-swatch-ayu {
+  --swatch-sample-1: #0f1419;
+  --swatch-sample-2: #131d27;
+  --swatch-sample-3: #39bae6;
+  --swatch-sample-4: #ffb454;
+}
+
+.theme-swatch-one-dark {
+  --swatch-sample-1: #282c34;
+  --swatch-sample-2: #21252b;
+  --swatch-sample-3: #61afef;
+  --swatch-sample-4: #00e5ff;
+}
+
+.theme-swatch-nord {
+  --swatch-sample-1: #2e3440;
+  --swatch-sample-2: #3b4252;
+  --swatch-sample-3: #88c0d0;
+  --swatch-sample-4: #81a1c1;
+}
+
+.theme-swatch-dracula {
+  --swatch-sample-1: #282a36;
+  --swatch-sample-2: #21222c;
+  --swatch-sample-3: #8be9fd;
+  --swatch-sample-4: #00e5ff;
+}
+
+.theme-swatch-gruvbox {
+  --swatch-sample-1: #282828;
+  --swatch-sample-2: #1d2021;
+  --swatch-sample-3: #83a598;
+  --swatch-sample-4: #d3869b;
+}
+
+.theme-swatch-tokyo-night {
+  --swatch-sample-1: #1a1b26;
+  --swatch-sample-2: #16161e;
+  --swatch-sample-3: #7aa2f7;
+  --swatch-sample-4: #00e5ff;
+}
+
+.theme-swatch-catppuccin-mocha {
+  --swatch-sample-1: #1e1e2e;
+  --swatch-sample-2: #181825;
+  --swatch-sample-3: #89b4fa;
+  --swatch-sample-4: #89dceb;
+}
+
+.theme-swatch-github-dark {
+  --swatch-sample-1: #0d1117;
+  --swatch-sample-2: #010409;
+  --swatch-sample-3: #58a6ff;
+  --swatch-sample-4: #79c0ff;
+}
+
+.theme-swatch-everforest {
+  --swatch-sample-1: #2d353b;
+  --swatch-sample-2: #272e33;
+  --swatch-sample-3: #7fbbb3;
+  --swatch-sample-4: #e0c8a8;
+}
+
+.theme-swatch-rose-pine {
+  --swatch-sample-1: #191724;
+  --swatch-sample-2: #1f1d2e;
+  --swatch-sample-3: #c4a7e7;
+  --swatch-sample-4: #ebbcba;
+}
+
+.theme-swatch-kanagawa {
+  --swatch-sample-1: #1f1f28;
+  --swatch-sample-2: #16161d;
+  --swatch-sample-3: #7e9cd8;
+  --swatch-sample-4: #7e9cd8;
+}
+
+.theme-swatch-night-owl {
+  --swatch-sample-1: #011627;
+  --swatch-sample-2: #01111d;
+  --swatch-sample-3: #82aaff;
+  --swatch-sample-4: #addb67;
+}
+
+.theme-swatch-palenight {
+  --swatch-sample-1: #292d3e;
+  --swatch-sample-2: #1e2235;
+  --swatch-sample-3: #82aaff;
+  --swatch-sample-4: #ffcb6b;
+}
+
+.theme-swatch-monokai-pro {
+  --swatch-sample-1: #2d2a2e;
+  --swatch-sample-2: #252229;
+  --swatch-sample-3: #78dce8;
+  --swatch-sample-4: #ff6188;
+}
+
+.theme-swatch-slime {
+  --swatch-sample-1: #0a0e09;
+  --swatch-sample-2: #0f150d;
+  --swatch-sample-3: #8aff40;
+  --swatch-sample-4: #40e8a0;
+}
+
+.theme-swatch-brutalist {
+  --swatch-sample-1: #101010;
+  --swatch-sample-2: #171717;
+  --swatch-sample-3: #ff6a00;
+  --swatch-sample-4: #ffd100;
+}
+
+.theme-swatch-neon-city {
+  --swatch-sample-1: #0d0d15;
+  --swatch-sample-2: #121326;
+  --swatch-sample-3: #ff2d95;
+  --swatch-sample-4: #00f0ff;
+}
+
+.theme-swatch-parchment {
+  --swatch-sample-1: #1b1712;
+  --swatch-sample-2: #252019;
+  --swatch-sample-3: #d08a4b;
+  --swatch-sample-4: #be6e3c;
+}
+
+.theme-swatch-terminal {
+  --swatch-sample-1: #0a0a0a;
+  --swatch-sample-2: #0f120d;
+  --swatch-sample-3: #33ff00;
+  --swatch-sample-4: #8fff38;
+}
+
+.theme-swatch-glass {
+  --swatch-sample-1: #13111f;
+  --swatch-sample-2: rgba(34, 27, 52, 0.78);
+  --swatch-sample-3: #c86bff;
+  --swatch-sample-4: #ff7aa8;
+}
+
+.theme-swatch-horizon {
+  --swatch-sample-1: #1c1e26;
+  --swatch-sample-2: #16161c;
+  --swatch-sample-3: #e59371;
+  --swatch-sample-4: #f08c42;
+}
+
+.theme-swatch-vitesse {
+  --swatch-sample-1: #121817;
+  --swatch-sample-2: #0d1210;
+  --swatch-sample-3: #4c9a91;
+  --swatch-sample-4: #dca561;
+}
+
+.theme-swatch-outrun {
+  --swatch-sample-1: #0a0a14;
+  --swatch-sample-2: #0d0d1a;
+  --swatch-sample-3: #ff2d95;
+  --swatch-sample-4: #b537f2;
+}
+
+.theme-swatch-snazzy {
+  --swatch-sample-1: #282a36;
+  --swatch-sample-2: #1e1f29;
+  --swatch-sample-3: #ff5c57;
+  --swatch-sample-4: #5af78e;
+}
+
+.theme-swatch-porple {
+  --swatch-sample-1: #292d3e;
+  --swatch-sample-2: #1e2030;
+  --swatch-sample-3: #c792ea;
+  --swatch-sample-4: #82aaff;
+}
+
+.theme-swatch-espresso {
+  --swatch-sample-1: #2c1f1a;
+  --swatch-sample-2: #231813;
+  --swatch-sample-3: #d4a574;
+  --swatch-sample-4: #c17d56;
+}
+
+.theme-swatch-mars {
+  --swatch-sample-1: #1a1210;
+  --swatch-sample-2: #140e0c;
+  --swatch-sample-3: #c1440e;
+  --swatch-sample-4: #e77d3d;
+}
+
+.theme-swatch-poimandres {
+  --swatch-sample-1: #1a1b26;
+  --swatch-sample-2: #14151f;
+  --swatch-sample-3: #89ddff;
+  --swatch-sample-4: #5de4c7;
+}
+
+/* Light mode swatch overrides */
+[data-theme="light"] .theme-swatch-factory {
+  --swatch-sample-1: #f5f5f5;
+  --swatch-sample-2: #ffffff;
+  --swatch-sample-3: #d97706;
+  --swatch-sample-4: #0891b2;
+}
+
+[data-theme="light"] .theme-swatch-ayu {
+  --swatch-sample-1: #fafafa;
+  --swatch-sample-2: #f3f3f3;
+  --swatch-sample-3: #007acc;
+  --swatch-sample-4: #ff8f40;
+}
+
+[data-theme="light"] .theme-swatch-zen {
+  --swatch-sample-1: #f5f5f5;
+  --swatch-sample-2: #fafafa;
+  --swatch-sample-3: #5a6a7a;
+  --swatch-sample-4: #6a757f;
+}
+
+[data-theme="light"] .theme-swatch-nord {
+  --swatch-sample-1: #eceff4;
+  --swatch-sample-2: #e5e9f0;
+  --swatch-sample-3: #5e81ac;
+  --swatch-sample-4: #5e81ac;
+}
+
+[data-theme="light"] .theme-swatch-dracula {
+  --swatch-sample-1: #f8f8f2;
+  --swatch-sample-2: #efeefa;
+  --swatch-sample-3: #0097a7;
+  --swatch-sample-4: #00bcd4;
+}
+
+[data-theme="light"] .theme-swatch-gruvbox {
+  --swatch-sample-1: #fbf1c7;
+  --swatch-sample-2: #f2e5bc;
+  --swatch-sample-3: #076678;
+  --swatch-sample-4: #8f3f71;
+}
+
+[data-theme="light"] .theme-swatch-tokyo-night {
+  --swatch-sample-1: #e1e2e7;
+  --swatch-sample-2: #d5d6db;
+  --swatch-sample-3: #3b5ea5;
+  --swatch-sample-4: #00bcd4;
+}
+
+[data-theme="light"] .theme-swatch-catppuccin-mocha {
+  --swatch-sample-1: #eff1f5;
+  --swatch-sample-2: #e6e9ef;
+  --swatch-sample-3: #1e66f5;
+  --swatch-sample-4: #04a5e5;
+}
+
+[data-theme="light"] .theme-swatch-github-dark {
+  --swatch-sample-1: #ffffff;
+  --swatch-sample-2: #f6f8fa;
+  --swatch-sample-3: #0969da;
+  --swatch-sample-4: #0969da;
+}
+
+[data-theme="light"] .theme-swatch-everforest {
+  --swatch-sample-1: #fdf6e3;
+  --swatch-sample-2: #f4f0d9;
+  --swatch-sample-3: #3a94a5;
+  --swatch-sample-4: #83a08a;
+}
+
+[data-theme="light"] .theme-swatch-rose-pine {
+  --swatch-sample-1: #faf4ed;
+  --swatch-sample-2: #fffaf3;
+  --swatch-sample-3: #907aa9;
+  --swatch-sample-4: #b4637a;
+}
+
+[data-theme="light"] .theme-swatch-kanagawa {
+  --swatch-sample-1: #edeadd;
+  --swatch-sample-2: #e1ddd4;
+  --swatch-sample-3: #4e76b5;
+  --swatch-sample-4: #4e76b5;
+}
+
+[data-theme="light"] .theme-swatch-one-dark {
+  --swatch-sample-1: #fafafa;
+  --swatch-sample-2: #f0f0f0;
+  --swatch-sample-3: #4078f2;
+  --swatch-sample-4: #0184bc;
+}
+
+[data-theme="light"] .theme-swatch-night-owl {
+  --swatch-sample-1: #f6f7f9;
+  --swatch-sample-2: #eef0f4;
+  --swatch-sample-3: #2563eb;
+  --swatch-sample-4: #5a9e2f;
+}
+
+[data-theme="light"] .theme-swatch-palenight {
+  --swatch-sample-1: #f5f7fa;
+  --swatch-sample-2: #ebeef5;
+  --swatch-sample-3: #3b6fcf;
+  --swatch-sample-4: #c49020;
+}
+
+[data-theme="light"] .theme-swatch-monokai-pro {
+  --swatch-sample-1: #faf8f5;
+  --swatch-sample-2: #f0ece5;
+  --swatch-sample-3: #2d8fa0;
+  --swatch-sample-4: #c4405e;
+}
+
+[data-theme="light"] .theme-swatch-slime {
+  --swatch-sample-1: #f2f7ea;
+  --swatch-sample-2: #e6efda;
+  --swatch-sample-3: #3d8f10;
+  --swatch-sample-4: #1a8a6a;
+}
+
+[data-theme="light"] .theme-swatch-brutalist {
+  --swatch-sample-1: #ece9e4;
+  --swatch-sample-2: #f7f4ef;
+  --swatch-sample-3: #d9480f;
+  --swatch-sample-4: #b8860b;
+}
+
+[data-theme="light"] .theme-swatch-neon-city {
+  --swatch-sample-1: #f7f5ff;
+  --swatch-sample-2: #f1edff;
+  --swatch-sample-3: #cc166e;
+  --swatch-sample-4: #008e9b;
+}
+
+[data-theme="light"] .theme-swatch-parchment {
+  --swatch-sample-1: #f5f0e8;
+  --swatch-sample-2: #efe7dc;
+  --swatch-sample-3: #a8562f;
+  --swatch-sample-4: #8f4e2a;
+}
+
+[data-theme="light"] .theme-swatch-terminal {
+  --swatch-sample-1: #e7f5dd;
+  --swatch-sample-2: #deefd2;
+  --swatch-sample-3: #2d6b14;
+  --swatch-sample-4: #4c8f25;
+}
+
+[data-theme="light"] .theme-swatch-glass {
+  --swatch-sample-1: #eceaf5;
+  --swatch-sample-2: rgba(255, 255, 255, 0.75);
+  --swatch-sample-3: #9d40cf;
+  --swatch-sample-4: #c74b7a;
+}
+
+[data-theme="light"] .theme-swatch-slate {
+  --swatch-sample-1: #f1f5f9;
+  --swatch-sample-2: #e2e8f0;
+  --swatch-sample-3: #3b5ea5;
+  --swatch-sample-4: #4f7090;
+}
+
+[data-theme="light"] .theme-swatch-ash {
+  --swatch-sample-1: #fafaf9;
+  --swatch-sample-2: #f5f5f4;
+  --swatch-sample-3: #5a6a7a;
+  --swatch-sample-4: #768694;
+}
+
+[data-theme="light"] .theme-swatch-graphite {
+  --swatch-sample-1: #fafafa;
+  --swatch-sample-2: #f4f4f5;
+  --swatch-sample-3: #6f7f90;
+  --swatch-sample-4: #8a99aa;
+}
+
+[data-theme="light"] .theme-swatch-ember {
+  --swatch-sample-1: #fafafa;
+  --swatch-sample-2: #f4f4f5;
+  --swatch-sample-3: #d9480f;
+  --swatch-sample-4: #e8646a;
+}
+
+[data-theme="light"] .theme-swatch-rust {
+  --swatch-sample-1: #f5efe8;
+  --swatch-sample-2: #ebe3d8;
+  --swatch-sample-3: #a04020;
+  --swatch-sample-4: #b85828;
+}
+
+[data-theme="light"] .theme-swatch-copper {
+  --swatch-sample-1: #f3ede6;
+  --swatch-sample-2: #e8e0d6;
+  --swatch-sample-3: #905820;
+  --swatch-sample-4: #a87030;
+}
+
+[data-theme="light"] .theme-swatch-foundry {
+  --swatch-sample-1: #f5f0e6;
+  --swatch-sample-2: #ebe4d6;
+  --swatch-sample-3: #c07808;
+  --swatch-sample-4: #d08a10;
+}
+
+[data-theme="light"] .theme-swatch-carbon {
+  --swatch-sample-1: #eef0f4;
+  --swatch-sample-2: #e2e6ec;
+  --swatch-sample-3: #3a6090;
+  --swatch-sample-4: #4878a0;
+}
+
+[data-theme="light"] .theme-swatch-sandstone {
+  --swatch-sample-1: #f5f0e8;
+  --swatch-sample-2: #ebe4d8;
+  --swatch-sample-3: #a07040;
+  --swatch-sample-4: #b08050;
+}
+
+[data-theme="light"] .theme-swatch-lagoon {
+  --swatch-sample-1: #eef5f3;
+  --swatch-sample-2: #e0ebe8;
+  --swatch-sample-3: #208070;
+  --swatch-sample-4: #289080;
+}
+
+[data-theme="light"] .theme-swatch-frost {
+  --swatch-sample-1: #f0f4f8;
+  --swatch-sample-2: #e4eaf0;
+  --swatch-sample-3: #3078a8;
+  --swatch-sample-4: #4088b8;
+}
+
+[data-theme="light"] .theme-swatch-lavender {
+  --swatch-sample-1: #f4f0f8;
+  --swatch-sample-2: #e8e2f0;
+  --swatch-sample-3: #8060a0;
+  --swatch-sample-4: #9070b0;
+}
+
+[data-theme="light"] .theme-swatch-neon-bloom {
+  --swatch-sample-1: #f8f0f8;
+  --swatch-sample-2: #f0e4f0;
+  --swatch-sample-3: #a03090;
+  --swatch-sample-4: #b040a0;
+}
+
+[data-theme="light"] .theme-swatch-sepia {
+  --swatch-sample-1: #f5f0e4;
+  --swatch-sample-2: #ece4d4;
+  --swatch-sample-3: #907040;
+  --swatch-sample-4: #a08050;
+}
+
+[data-theme="light"] .theme-swatch-silver {
+  --swatch-sample-1: #fafafa;
+  --swatch-sample-2: #f4f4f5;
+  --swatch-sample-3: #6b7280;
+  --swatch-sample-4: #9ca3af;
+}
+
+[data-theme="light"] .theme-swatch-horizon {
+  --swatch-sample-1: #fdf0ed;
+  --swatch-sample-2: #f9cec0;
+  --swatch-sample-3: #e8646a;
+  --swatch-sample-4: #f08c42;
+}
+
+[data-theme="light"] .theme-swatch-vitesse {
+  --swatch-sample-1: #f8f5f0;
+  --swatch-sample-2: #efe9e0;
+  --swatch-sample-3: #3a8578;
+  --swatch-sample-4: #c08040;
+}
+
+[data-theme="light"] .theme-swatch-outrun {
+  --swatch-sample-1: #f0f0f5;
+  --swatch-sample-2: #e8e8ef;
+  --swatch-sample-3: #d02080;
+  --swatch-sample-4: #9030c8;
+}
+
+[data-theme="light"] .theme-swatch-snazzy {
+  --swatch-sample-1: #fafafa;
+  --swatch-sample-2: #f0f0f2;
+  --swatch-sample-3: #d04040;
+  --swatch-sample-4: #30a050;
+}
+
+[data-theme="light"] .theme-swatch-porple {
+  --swatch-sample-1: #f5f3f7;
+  --swatch-sample-2: #eae7ef;
+  --swatch-sample-3: #9060d8;
+  --swatch-sample-4: #4080c8;
+}
+
+[data-theme="light"] .theme-swatch-espresso {
+  --swatch-sample-1: #f5ece4;
+  --swatch-sample-2: #ebe1d6;
+  --swatch-sample-3: #a07050;
+  --swatch-sample-4: #906040;
+}
+
+[data-theme="light"] .theme-swatch-mars {
+  --swatch-sample-1: #f5ece6;
+  --swatch-sample-2: #ebe0d4;
+  --swatch-sample-3: #a03010;
+  --swatch-sample-4: #c06030;
+}
+
+[data-theme="light"] .theme-swatch-poimandres {
+  --swatch-sample-1: #f0f0f5;
+  --swatch-sample-2: #e6e6ee;
+  --swatch-sample-3: #4090c0;
+  --swatch-sample-4: #30a090;
+}
+
+/* Reset to defaults button */
+.theme-reset-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-top: 20px;
+  padding: 10px 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  width: 100%;
+}
+
+.theme-reset-btn:hover {
+  background: var(--card-hover);
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+.theme-reset-btn:focus-visible {
+  outline: none;
+  border-color: var(--todo);
+  box-shadow: var(--focus-ring-strong);
+}
+
+/* Theme current preview in settings */
+.theme-current-preview {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+}
+
+.theme-preview-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  color: var(--todo);
+}
+
+.theme-preview-info {
+  flex: 1;
+}
+
+.theme-preview-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.theme-preview-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  text-transform: capitalize;
+}
+
+@media (max-width: 768px) {
+  /* Model combobox dropdown: mobile-friendly sizing */
+  .model-combobox-dropdown {
+    max-height: 50vh;
+    width: min(360px, calc(100vw - 32px));
+  }
+
+  .model-combobox-search {
+    font-size: 16px;
+  }
+
+  .model-combobox-option {
+    min-height: 36px;
+  }
+
+  .theme-selector {
+    padding: 0 14px 14px;
+  }
+
+  .theme-font-size-toggle {
+    grid-template-columns: 1fr;
+  }
+}

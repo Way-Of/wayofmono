@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" role="img" aria-label="rpiv-i18n — i18n for any Pi extension in 3 lines" preserveAspectRatio="xMidYMid meet">
+  <title>rpiv-i18n — i18n for any Pi extension in 3 lines</title>
+  <defs>
+    <style>
+      .mono    { font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', ui-monospace, Menlo, Consolas, monospace; }
+      .display { font-family: ui-sans-serif, system-ui, -apple-system, 'SF Pro Display', 'Helvetica Neue', 'Inter', sans-serif; }
+      .ink     { fill: #F4EFE6; }
+      .paper   { fill: #0E0D0B; }
+      .muted   { fill: #7A7468; }
+      .dim     { fill: #4A463F; }
+      .accent  { fill: #FF7A3D; }
+      .mint    { fill: #6FD0B8; }
+      .rule    { stroke: #2A2620; }
+      .rule-bright { stroke: #FF7A3D; }
+    </style>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="33"/>
+      <feColorMatrix values="0 0 0 0 0.96
+                             0 0 0 0 0.94
+                             0 0 0 0 0.88
+                             0 0 0 0.06 0"/>
+    </filter>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0 H0 V32" fill="none" stroke="#161411" stroke-width="0.5"/>
+    </pattern>
+    <pattern id="dots" width="6" height="6" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="0.6" fill="#231F1A"/>
+    </pattern>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+      <stop offset="60%" stop-color="#0E0D0B" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.55"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Canvas -->
+  <rect width="1280" height="800" class="paper"/>
+  <rect width="1280" height="800" fill="url(#grid)" opacity="0.55"/>
+  <rect width="1280" height="800" fill="url(#dots)" opacity="0.4"/>
+  <rect width="1280" height="800" filter="url(#grain)" opacity="0.5"/>
+  <rect width="1280" height="800" fill="url(#vignette)"/>
+
+  <!-- Crop marks -->
+  <g class="rule-bright" stroke-width="1" fill="none" opacity="0.95">
+    <path d="M40 56 L56 56 M56 40 L56 56"/>
+    <path d="M1240 56 L1224 56 M1224 40 L1224 56"/>
+    <path d="M40 744 L56 744 M56 760 L56 744"/>
+    <path d="M1240 744 L1224 744 M1224 760 L1224 744"/>
+  </g>
+
+  <!-- Top spec strip -->
+  <line x1="64" y1="56" x2="1216" y2="56" class="rule" stroke-width="1"/>
+  <text class="mono muted" x="64"   y="44" font-size="10.5" letter-spacing="2.4">@JUICESHARP &#183; PI AGENT EXTENSION &#183; NO. 009 &#8211; I18N</text>
+  <text class="mono muted" x="1216" y="44" font-size="10.5" letter-spacing="2.4" text-anchor="end">MIT &#183; v0.1 &#183; 1280 &#215; 800</text>
+
+  <!-- Logotype -->
+  <text class="display ink" x="64" y="200" font-size="116" font-weight="700" letter-spacing="-4">r<tspan fill="#6FD0B8">pi</tspan>v<tspan class="accent">-</tspan>i18n</text>
+  <line x1="64" y1="216" x2="178" y2="216" class="rule-bright" stroke-width="2"/>
+  <text class="mono muted" x="64" y="246" font-size="16" letter-spacing="0.5">i18n for any Pi extension &#8212; in 3 lines.</text>
+  <text class="mono dim"   x="64" y="270" font-size="11" letter-spacing="2.2">/LANGUAGES PICKER &#183; --LOCALE FLAG &#183; ENGLISH FALLBACK PER KEY</text>
+
+  <!-- Locale chips top-right -->
+  <g transform="translate(1080 188)">
+    <rect x="0"  y="-22" width="60" height="36" fill="#13110D" stroke="#6FD0B8" stroke-width="1.5"/>
+    <text class="mono mint" x="30" y="2" font-size="18" font-weight="700" letter-spacing="1.5" text-anchor="middle">EN</text>
+    <rect x="68" y="-22" width="60" height="36" fill="#13110D" stroke="#6FD0B8" stroke-width="1.5"/>
+    <text class="mono mint" x="98" y="2" font-size="18" font-weight="700" letter-spacing="1.5" text-anchor="middle">DE</text>
+    <text class="mono muted" x="64" y="34" font-size="10" letter-spacing="2" text-anchor="middle">+ ANY OTHER</text>
+  </g>
+
+  <!-- FIG header -->
+  <text class="mono muted" x="64"   y="328" font-size="10.5" letter-spacing="2.4">FIG. 01 &#8212; THREE-LINE API</text>
+  <text class="mono muted" x="1216" y="328" font-size="10.5" letter-spacing="2.4" text-anchor="end">register &#8594; scope &#8594; translate</text>
+  <line x1="64" y1="340" x2="1216" y2="340" class="rule" stroke-width="0.75"/>
+
+  <!-- ===== HERO: 3 code rows ===== -->
+
+  <!-- Row 1: register -->
+  <g transform="translate(64 360)">
+    <rect x="0" y="0" width="1152" height="80" fill="#15120E" stroke="#3A3530" stroke-width="1"/>
+    <text class="mono dim" x="14" y="22" font-size="11" letter-spacing="1.8">001 &#8212; REGISTER STRINGS</text>
+    <text class="mono ink" x="14" y="58" font-size="26">
+      <tspan class="accent" font-weight="700">registerStrings</tspan>(<tspan class="mint">'@me/tool'</tspan>, { <tspan class="mint">en</tspan>, <tspan class="mint">de</tspan> })
+    </text>
+  </g>
+
+  <!-- arrow -->
+  <path d="M640 460 L640 510" stroke="#FF7A3D" stroke-width="3" fill="none"/>
+  <path d="M624 498 L640 514 L656 498" fill="none" stroke="#FF7A3D" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Row 2: scope -->
+  <g transform="translate(64 524)">
+    <rect x="0" y="0" width="1152" height="80" fill="#15120E" stroke="#3A3530" stroke-width="1"/>
+    <text class="mono dim" x="14" y="22" font-size="11" letter-spacing="1.8">002 &#8212; SCOPE TO YOUR PACKAGE</text>
+    <text class="mono ink" x="14" y="58" font-size="26">
+      <tspan class="dim">const</tspan> <tspan class="ink" font-weight="700">t</tspan> = <tspan class="accent" font-weight="700">scope</tspan>(<tspan class="mint">'@me/tool'</tspan>)
+    </text>
+  </g>
+
+  <!-- arrow -->
+  <path d="M640 624 L640 660" stroke="#FF7A3D" stroke-width="3" fill="none"/>
+  <path d="M624 648 L640 664 L656 648" fill="none" stroke="#FF7A3D" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- Row 3: translate -->
+  <g transform="translate(64 672)">
+    <rect x="0" y="0" width="1152" height="32" fill="#13110D" stroke="#1F3A33" stroke-width="1"/>
+    <text class="mono ink" x="14" y="22" font-size="20">
+      <tspan class="ink" font-weight="700">t</tspan>(<tspan class="mint">'hint.enter'</tspan>, <tspan class="mint">'Enter to select'</tspan>)<tspan class="muted">  &#8594;  </tspan><tspan class="mint" font-weight="700">"Eingabe zum Ausw&#228;hlen"</tspan>
+    </text>
+  </g>
+
+  <!-- Footer -->
+  <line x1="64" y1="720" x2="1216" y2="720" class="rule" stroke-width="1"/>
+  <text class="mono ink" x="64" y="754" font-size="20" letter-spacing="0.5">
+    <tspan class="accent" font-weight="700">&#9654;</tspan>  pi install npm:@juicesharp/rpiv-i18n
+  </text>
+  <text class="mono muted" x="1216" y="754" font-size="14" letter-spacing="2" text-anchor="end" font-weight="700">
+    REGISTER &#183; SCOPE &#183; TRANSLATE
+  </text>
+</svg>

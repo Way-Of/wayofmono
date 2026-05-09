@@ -1,0 +1,28 @@
+{
+  "name": "@fusion-plugin-examples/cursor-runtime",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Cursor CLI runtime plugin for Fusion",
+  "keywords": ["fusion-plugin", "cursor", "runtime"],
+  "exports": {
+    ".": { "types": "./src/index.ts", "import": "./src/index.ts" },
+    "./probe": { "types": "./src/probe.ts", "import": "./src/probe.ts" }
+  },
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run --silent=passed-only --reporter=dot"
+  },
+  "dependencies": {
+    "@fusion/plugin-sdk": "workspace:*"
+  },
+  "peerDependencies": {
+    "@mariozechner/pi-ai": "*",
+    "@mariozechner/pi-coding-agent": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.2",
+    "typescript": "^5.7.0",
+    "vitest": "^3.2.4"
+  }
+}

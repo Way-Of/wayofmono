@@ -1,0 +1,395 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+const { mockCreateFnAgent } = vi.hoisted(() => ({
+  mockCreateFnAgent: vi.fn(),
+}));
+
+vi.mock("@fusion/engine", () => ({
+  createFnAgent: mockCreateFnAgent,
+}));
+
+import {
+  __resetAgentOnboardingState,
+  cancelAgentOnboardingSession,
+  createAgentOnboardingSessionPrompt,
+  getAgentOnboardingSession,
+  getAgentOnboardingSummary,
+  InvalidSessionStateError,
+  parseAgentOnboardingResponse,
+  respondToAgentOnboarding,
+  SessionNotFoundError,
+  startAgentOnboardingSession,
+} from "../agent-onboarding.js";
+
+function createMockAgent(responses: string[]) {
+  const queue = [...responses];
+  const messages: Array<{ role: string; content: string }> = [];
+  return {
+    session: {
+      state: { messages },
+      prompt: vi.fn(async () => {
+        const response = queue.shift() ?? queue[queue.length - 1] ?? "{}";
+        messages.push({ role: "assistant", content: response });
+      }),
+      dispose: vi.fn(),
+    },
+  };
+}
+
+async function waitFor(check: () => boolean, timeoutMs = 2000): Promise<void> {
+  const start = Date.now();
+  while (!check()) {
+    if (Date.now() - start > timeoutMs) {
+      throw new Error("Timed out waiting for condition");
+    }
+    await new Promise((resolve) => setTimeout(resolve, 10));
+  }
+}
+
+describe("agent-onboarding", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    __resetAgentOnboardingState();
+  });
+
+  afterEach(() => {
+    __resetAgentOnboardingState();
+  });
+
+  it("parses question responses", () => {
+    const parsed = parseAgentOnboardingResponse(
+      JSON.stringify({
+        type: "question",
+        data: {
+          id: "q1",
+          type: "text",
+          question: "What should this agent focus on?",
+        },
+      }),
+    );
+
+    expect(parsed.type).toBe("question");
+    if (parsed.type === "question") {
+      expect(parsed.data.id).toBe("q1");
+    }
+  });
+
+  it("parses complete summary responses with rich optional draft fields", () => {
+    const parsed = parseAgentOnboardingResponse(
+      JSON.stringify({
+        type: "complete",
+        data: {
+          name: "Docs Reviewer",
+          role: "reviewer",
+          instructionsText: "Review docs for clarity and accuracy.",
+          thinkingLevel: "medium",
+          maxTurns: 20,
+          soul: "Calm and thorough",
+          memory: "Remember docs conventions",
+          heartbeatProcedurePath: "  .fusion/agents/docs-reviewer/HEARTBEAT.md  ",
+          heartbeatIntervalMs: 30000,
+          heartbeatEnabled: true,
+          modelHint: "anthropic/claude-sonnet-4-5",
+          runtimeHint: "openclaw",
+        },
+      }),
+    );
+
+    expect(parsed.type).toBe("complete");
+    if (parsed.type === "complete") {
+      expect(parsed.data.name).toBe("Docs Reviewer");
+      expect(parsed.data.maxTurns).toBe(20);
+      expect(parsed.data.heartbeatProcedurePath).toBe(".fusion/agents/docs-reviewer/HEARTBEAT.md");
+      expect(parsed.data.heartbeatIntervalMs).toBe(30000);
+      expect(parsed.data.heartbeatEnabled).toBe(true);
+      expect(parsed.data.modelHint).toBe("anthropic/claude-sonnet-4-5");
+      expect(parsed.data.runtimeHint).toBe("openclaw");
+    }
+  });
+
+  it("parses legacy complete summaries without rich draft fields", () => {
+    const parsed = parseAgentOnboardingResponse(
+      JSON.stringify({
+        type: "complete",
+        data: {
+          name: "Legacy Reviewer",
+          role: "reviewer",
+          instructionsText: "Review old style drafts",
+          thinkingLevel: "low",
+          maxTurns: 10,
+        },
+      }),
+    );
+
+    expect(parsed.type).toBe("complete");
+    if (parsed.type === "complete") {
+      expect(parsed.data.name).toBe("Legacy Reviewer");
+      expect(parsed.data.heartbeatProcedurePath).toBeUndefined();
+      expect(parsed.data.modelHint).toBeUndefined();
+      expect(parsed.data.runtimeHint).toBeUndefined();
+    }
+  });
+
+  it("rejects invalid complete summary", () => {
+    expect(() =>
+      parseAgentOnboardingResponse(
+        JSON.stringify({
+          type: "complete",
+          data: {
+            name: "",
+            role: "reviewer",
+            instructionsText: "",
+            thinkingLevel: "medium",
+            maxTurns: 0,
+          },
+        }),
+      ),
+    ).toThrow(/Invalid summary/);
+  });
+
+  it("rejects malformed rich draft fields", () => {
+    expect(() =>
+      parseAgentOnboardingResponse(
+        JSON.stringify({
+          type: "complete",
+          data: {
+            name: "Malformed",
+            role: "reviewer",
+            instructionsText: "Valid instructions",
+            thinkingLevel: "medium",
+            maxTurns: 20,
+            heartbeatProcedurePath: "",
+          },
+        }),
+      ),
+    ).toThrow("Invalid summary.heartbeatProcedurePath");
+
+    expect(() =>
+      parseAgentOnboardingResponse(
+        JSON.stringify({
+          type: "complete",
+          data: {
+            name: "Malformed",
+            role: "reviewer",
+            instructionsText: "Valid instructions",
+            thinkingLevel: "medium",
+            maxTurns: 20,
+            heartbeatIntervalMs: 0,
+          },
+        }),
+      ),
+    ).toThrow("Invalid summary.heartbeatIntervalMs");
+
+    expect(() =>
+      parseAgentOnboardingResponse(
+        JSON.stringify({
+          type: "complete",
+          data: {
+            name: "Malformed",
+            role: "reviewer",
+            instructionsText: "Valid instructions",
+            thinkingLevel: "medium",
+            maxTurns: 20,
+            heartbeatEnabled: "yes",
+            modelHint: 10,
+            runtimeHint: { runtime: "openclaw" },
+          },
+        }),
+      ),
+    ).toThrow(/Invalid summary\.(heartbeatEnabled|modelHint|runtimeHint)/);
+  });
+
+  it("builds compact onboarding context prompt for create mode", () => {
+    const prompt = createAgentOnboardingSessionPrompt({
+      mode: "create",
+      intent: "Need a reviewer for docs",
+      existingAgents: [{ id: "a1", name: "Alpha", role: "reviewer" }],
+      templates: [{ id: "t1", label: "Reviewer Template", description: "General reviewer" }],
+    });
+
+    expect(prompt).toContain("Need a reviewer for docs");
+    expect(prompt).toContain("a1:Alpha(reviewer)");
+    expect(prompt).toContain("t1:Reviewer Template");
+    expect(prompt).not.toContain("Current agent configuration:");
+  });
+
+  it("appends current agent configuration in edit mode prompt", () => {
+    const prompt = createAgentOnboardingSessionPrompt({
+      mode: "edit",
+      intent: "Improve this agent",
+      existingAgents: [{ id: "a1", name: "Alpha", role: "reviewer" }],
+      templates: [{ id: "t1", label: "Reviewer Template", description: "General reviewer" }],
+      existingAgentConfig: {
+        name: "Alpha",
+        role: "reviewer",
+        title: "Senior Reviewer",
+        instructionsText: "Current instructions",
+        soul: "Calm",
+        memory: "Team context",
+        reportsTo: "mgr-1",
+        skills: ["linting"],
+        model: "openai/gpt-5-mini",
+        thinkingLevel: "low",
+        maxTurns: 40,
+        runtimeHint: "gpu",
+        heartbeatIntervalMs: 30000,
+        heartbeatTimeoutMs: 120000,
+        maxConcurrentRuns: 2,
+        messageResponseMode: "immediate",
+      },
+    });
+
+    expect(prompt).toContain("Current agent configuration:");
+    expect(prompt).toContain("name: Alpha");
+    expect(prompt).toContain("instructionsText: Current instructions");
+    expect(prompt).toContain("messageResponseMode: immediate");
+  });
+
+  it("progresses through start -> question -> response -> final summary", async () => {
+    mockCreateFnAgent.mockResolvedValueOnce(
+      createMockAgent([
+        JSON.stringify({
+          type: "question",
+          data: { id: "goal", type: "text", question: "What is the primary goal?" },
+        }),
+        JSON.stringify({
+          type: "complete",
+          data: {
+            name: "Repo Steward",
+            role: "engineer",
+            instructionsText: "Keep the repo healthy and triage drift.",
+            thinkingLevel: "low",
+            maxTurns: 18,
+            templateId: "eng-template",
+            rationale: "Template path selected",
+          },
+        }),
+      ]),
+    );
+
+    const sessionId = await startAgentOnboardingSession(
+      "127.0.0.1",
+      {
+        intent: "I need an engineer for repository hygiene",
+        existingAgents: [{ id: "agent-1", name: "Alpha", role: "engineer" }],
+        templates: [{ id: "eng-template", label: "Engineer template" }],
+      },
+      process.cwd(),
+    );
+
+    await waitFor(() => Boolean(getAgentOnboardingSession(sessionId)?.currentQuestion));
+    const session = getAgentOnboardingSession(sessionId);
+    expect(session?.currentQuestion?.id).toBe("goal");
+
+    await respondToAgentOnboarding(sessionId, { goal: "Keep CI green" });
+    await waitFor(() => Boolean(getAgentOnboardingSummary(sessionId)));
+
+    const summary = getAgentOnboardingSummary(sessionId);
+    expect(summary?.name).toBe("Repo Steward");
+    expect(summary?.templateId).toBe("eng-template");
+  });
+
+  it("defaults onboarding sessions to create mode", async () => {
+    mockCreateFnAgent.mockResolvedValueOnce(
+      createMockAgent([
+        JSON.stringify({
+          type: "question",
+          data: { id: "q1", type: "text", question: "What should this agent do?" },
+        }),
+      ]),
+    );
+
+    const sessionId = await startAgentOnboardingSession(
+      "127.0.0.1",
+      { intent: "create", existingAgents: [], templates: [] },
+      process.cwd(),
+    );
+
+    await waitFor(() => Boolean(getAgentOnboardingSession(sessionId)));
+    expect(getAgentOnboardingSession(sessionId)?.mode).toBe("create");
+  });
+
+  it("stores edit mode sessions and includes current config in agent prompt", async () => {
+    mockCreateFnAgent.mockResolvedValueOnce(
+      createMockAgent([
+        JSON.stringify({
+          type: "question",
+          data: { id: "q1", type: "text", question: "What should change?" },
+        }),
+      ]),
+    );
+
+    const sessionId = await startAgentOnboardingSession(
+      "127.0.0.1",
+      {
+        mode: "edit",
+        intent: "Improve this agent",
+        existingAgents: [],
+        templates: [],
+        existingAgentConfig: {
+          name: "Editor",
+          instructionsText: "Current instructions",
+          messageResponseMode: "on-heartbeat",
+        },
+      },
+      process.cwd(),
+    );
+
+    await waitFor(() => Boolean(getAgentOnboardingSession(sessionId)?.currentQuestion));
+    expect(getAgentOnboardingSession(sessionId)?.mode).toBe("edit");
+    expect(getAgentOnboardingSession(sessionId)?.contextPrompt).toContain("Current agent configuration:");
+    expect(getAgentOnboardingSession(sessionId)?.contextPrompt).toContain("name: Editor");
+  });
+
+  it("throws InvalidSessionStateError when responding without an active question", async () => {
+    mockCreateFnAgent.mockResolvedValueOnce(
+      createMockAgent([
+        JSON.stringify({
+          type: "complete",
+          data: {
+            name: "Direct Summary",
+            role: "reviewer",
+            instructionsText: "Review with no follow-up",
+            thinkingLevel: "minimal",
+            maxTurns: 12,
+          },
+        }),
+      ]),
+    );
+
+    const sessionId = await startAgentOnboardingSession(
+      "127.0.0.1",
+      { intent: "quick", existingAgents: [], templates: [] },
+      process.cwd(),
+    );
+
+    await waitFor(() => Boolean(getAgentOnboardingSummary(sessionId)));
+
+    await expect(respondToAgentOnboarding(sessionId, { followup: "anything" })).rejects.toBeInstanceOf(
+      InvalidSessionStateError,
+    );
+  });
+
+  it("cancels session and subsequent access fails", async () => {
+    mockCreateFnAgent.mockResolvedValueOnce(
+      createMockAgent([
+        JSON.stringify({
+          type: "question",
+          data: { id: "q1", type: "text", question: "Question before cancel" },
+        }),
+      ]),
+    );
+
+    const sessionId = await startAgentOnboardingSession(
+      "127.0.0.1",
+      { intent: "cancel flow", existingAgents: [], templates: [] },
+      process.cwd(),
+    );
+
+    await waitFor(() => Boolean(getAgentOnboardingSession(sessionId)?.currentQuestion));
+    await cancelAgentOnboardingSession(sessionId);
+
+    expect(getAgentOnboardingSession(sessionId)).toBeUndefined();
+    await expect(respondToAgentOnboarding(sessionId, { q1: "x" })).rejects.toBeInstanceOf(SessionNotFoundError);
+  });
+});

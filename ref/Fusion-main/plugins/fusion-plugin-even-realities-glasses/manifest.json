@@ -1,0 +1,8 @@
+{
+  "id": "fusion-plugin-even-realities-glasses",
+  "name": "Even Realities Glasses",
+  "version": "0.1.0",
+  "description": "Task-focused card bridge between Fusion and Even Realities glasses.",
+  "author": "Fusion Team",
+  "fusionVersion": ">=0.1.0"
+}

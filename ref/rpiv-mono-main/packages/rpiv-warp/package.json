@@ -1,0 +1,52 @@
+{
+	"name": "@juicesharp/rpiv-warp",
+	"version": "1.3.0",
+	"private": false,
+	"description": "Pi extension. Native Warp terminal notifications, dispatched via OSC 777 on Pi lifecycle events.",
+	"keywords": [
+		"pi-package",
+		"pi-extension",
+		"rpiv",
+		"warp",
+		"terminal",
+		"notifications",
+		"osc-777"
+	],
+	"type": "module",
+	"license": "MIT",
+	"author": "juicesharp",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/juicesharp/rpiv-mono.git",
+		"directory": "packages/rpiv-warp"
+	},
+	"homepage": "https://github.com/juicesharp/rpiv-mono/tree/main/packages/rpiv-warp#readme",
+	"bugs": {
+		"url": "https://github.com/juicesharp/rpiv-mono/issues"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"test": "vitest run"
+	},
+	"files": [
+		"index.ts",
+		"protocol.ts",
+		"warp-notify.ts",
+		"title-spinner.ts",
+		"payload.ts",
+		"config.ts",
+		"README.md",
+		"CHANGELOG.md",
+		"LICENSE"
+	],
+	"pi": {
+		"extensions": [
+			"./index.ts"
+		]
+	},
+	"peerDependencies": {
+		"@earendil-works/pi-coding-agent": "*"
+	}
+}

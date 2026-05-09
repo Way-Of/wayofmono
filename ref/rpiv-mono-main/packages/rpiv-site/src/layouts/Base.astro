@@ -1,0 +1,108 @@
+---
+import "@fontsource/jetbrains-mono/400.css";
+import "../styles/global.css";
+import Colophon from "../components/Colophon.astro";
+// Preload the latin subset so the browser fetches it in parallel with the
+// bundled CSS instead of discovering it via @font-face after the CSS parses
+// (~500ms into the critical path on the prior trace). Other subsets stay
+// lazy via unicode-range. ?url returns the Vite-hashed asset URL.
+import latinWoff2Url from "@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2?url";
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = "rpiv-pi",
+	description = "A pipeline of skills, subagents, and extensions for the Pi coding agent.",
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+// Square logo for X cards. X has been suppressing `summary_large_image` previews
+// for low-engagement domains while `summary` cards still render. Other surfaces
+// (LinkedIn / Slack / Discord) read the same `og:image` fine at this size.
+const ogImage = new URL("/og-square.png", Astro.site).toString();
+
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@graph": [
+		{
+			"@type": "WebSite",
+			"@id": "https://rpiv-pi.com/#website",
+			url: "https://rpiv-pi.com/",
+			name: "rpiv-pi",
+			description,
+			inLanguage: "en",
+		},
+		{
+			"@type": "SoftwareApplication",
+			name: "rpiv-pi",
+			applicationCategory: "DeveloperApplication",
+			operatingSystem: "macOS, Linux, Windows",
+			description,
+			url: "https://rpiv-pi.com/",
+			offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+			license: "https://opensource.org/licenses/MIT",
+		},
+	],
+};
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="color-scheme" content="dark" />
+		<meta name="google-site-verification" content="Ko8ywIGky_WAEHlP06NUR5WJ4UCqTfT8N40zfZi5OOU" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+		<link rel="preload" href={latinWoff2Url} as="font" type="font/woff2" crossorigin />
+
+		<meta property="og:site_name" content="rpiv-pi" />
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:image:width" content="1024" />
+		<meta property="og:image:height" content="1024" />
+		<meta property="og:image:alt" content="rpiv-pi · research → design → ship" />
+
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:site" content="@juicesharp" />
+		<meta name="twitter:creator" content="@juicesharp" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+		<meta name="twitter:image:alt" content="rpiv-pi · research → design → ship" />
+
+		<link rel="sitemap" href="/sitemap-index.xml" />
+
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+	</head>
+	<body>
+		<slot />
+
+		<Colophon />
+
+		<footer>
+			<div class="container">
+				<p class="mono">
+					<a href="https://www.npmjs.com/package/@juicesharp/rpiv-pi">npm</a>
+					&nbsp;·&nbsp;
+					<a href="https://github.com/juicesharp/rpiv-mono">github</a>
+					&nbsp;·&nbsp;
+					<span>MIT &copy; <a href="https://x.com/juicesharp" target="_blank" rel="noopener">juicesharp</a></span>
+				</p>
+			</div>
+		</footer>
+	</body>
+</html>

@@ -1,0 +1,198 @@
+export { AgentLogger, type AgentLoggerOptions, summarizeToolArgs } from "./agent-logger.js";
+export { reloadExemptTools, addToExemptTools, getExemptToolNames } from "./agent-action-gate.js";
+export {
+  createTaskCreateTool,
+  createTaskDocumentReadTool,
+  createTaskDocumentWriteTool,
+  createTaskLogTool,
+  createSendMessageTool,
+  createReadMessagesTool,
+  taskCreateParams,
+  taskDocumentReadParams,
+  taskDocumentWriteParams,
+  taskLogParams,
+} from "./agent-tools.js";
+export { AgentSemaphore, PRIORITY_MERGE, PRIORITY_EXECUTE, PRIORITY_SPECIFY } from "./concurrency.js";
+export { TriageProcessor, type TriageProcessorOptions } from "./triage.js";
+export { TaskExecutor, type TaskExecutorOptions } from "./executor.js";
+export { collectTaskEvaluationEvidence } from "./evaluator-evidence.js";
+export { Scheduler, type SchedulerOptions } from "./scheduler.js";
+export { MissionAutopilot, type MissionAutopilotOptions } from "./mission-autopilot.js";
+export { MissionExecutionLoop, type MissionExecutionLoopOptions, type ValidationResult, loopLog } from "./mission-execution-loop.js";
+export { aiMergeTask, type MergerOptions } from "./merger.js";
+export { reviewStep, type ReviewType, type ReviewVerdict, type ReviewResult, type ReviewOptions } from "./reviewer.js";
+export { createFnAgent, promptWithFallback, describeModel, setHostExtensionPaths, getHostExtensionPaths, type AgentOptions, type AgentResult } from "./pi.js";
+
+// Register createFnAgent into core's loader so consumers in @fusion/core
+// (e.g. ai-summarize, memory-compaction) can resolve it without a circular
+// static import. Runs once at engine module load.
+import type { AiSessionResult, CreateAiSessionFactory, CreateAiSessionOptions } from "@fusion/core";
+import { createFnAgent as _createFnAgentForCore } from "./pi.js";
+
+const _createAiSessionAdapter: CreateAiSessionFactory = async (options: CreateAiSessionOptions): Promise<AiSessionResult> => {
+  return _createFnAgentForCore({
+    cwd: options.cwd,
+    systemPrompt: options.systemPrompt,
+    tools: options.tools,
+    defaultProvider: options.defaultProvider,
+    defaultModelId: options.defaultModelId,
+  });
+};
+
+void import("@fusion/core")
+  .then((core) => {
+    if ("setCreateFnAgent" in core && typeof core.setCreateFnAgent === "function") {
+      core.setCreateFnAgent(_createFnAgentForCore);
+    }
+    if ("setCreateAiSessionFactory" in core && typeof core.setCreateAiSessionFactory === "function") {
+      core.setCreateAiSessionFactory(_createAiSessionAdapter);
+    }
+  })
+  .catch(() => {
+    // Ignore loader registration failures in constrained test/mocked environments.
+  });
+export {
+  resolveSessionSkills,
+  createSkillsOverrideFromSelection,
+  type SkillSelectionContext,
+  type SkillSelectionResult,
+  type SkillDiagnostic,
+} from "./skill-resolver.js";
+export { AgentReflectionService, type AgentReflectionServiceOptions } from "./agent-reflection.js";
+export { AgentSelfImproveService, type AgentSelfImproveServiceOptions } from "./agent-self-improve.js";
+export {
+  buildAgentChatPrompt,
+  resolveAgentInstructionsWithRatings,
+  resolveAgentInstructions,
+  buildSystemPromptWithInstructions,
+  resolveAgentHeartbeatProcedure,
+  ensureDefaultHeartbeatProcedureFile,
+} from "./agent-instructions.js";
+export { HEARTBEAT_PROCEDURE, HEARTBEAT_SYSTEM_PROMPT, HEARTBEAT_NO_TASK_SYSTEM_PROMPT } from "./agent-heartbeat.js";
+export { WorktreePool, scanIdleWorktrees, cleanupOrphanedWorktrees, reapOrphanWorktrees } from "./worktree-pool.js";
+export { generateReservedWorktreeName, generateWorktreeName, planTaskWorktreePath, slugify } from "./worktree-names.js";
+export { createLogger, type Logger } from "./logger.js";
+export { fetchWebContent, assertSafeUrl, WebFetchError, type WebFetchOptions, type WebFetchResult, type WebFetchErrorCode } from "./web-fetch.js";
+export { isUsageLimitError, UsageLimitPauser } from "./usage-limit-detector.js";
+export { withRateLimitRetry } from "./rate-limit-retry.js";
+export { ResearchOrchestrator, type ResearchOrchestratorOptions, type ResearchOrchestratorStatus, type ResearchOrchestratorStartOptions } from "./research-orchestrator.js";
+export {
+  ResearchStepRunner,
+  ResearchStepTimeoutError,
+  ResearchStepAbortError,
+  ResearchStepProviderError,
+  type ResearchProvider,
+  type ResearchStepRunnerApi,
+  type ResearchStepRunnerOptions,
+  type ResearchStepResult,
+} from "./research-step-runner.js";
+export { ResearchProviderRegistry } from "./research/provider-registry.js";
+export {
+  ResearchProviderError,
+  type ResearchProviderType,
+  type ResearchProviderConfig,
+  type ResearchProviderErrorCode,
+  type ResearchFetchResult,
+} from "./research/types.js";
+export {
+  WebSearchProvider,
+  type WebSearchProviderOptions,
+  PageFetchProvider,
+  type PageFetchProviderOptions,
+  GitHubProvider,
+  LocalDocsProvider,
+  type LocalDocsProviderOptions,
+  LLMSynthesisProvider,
+  type LLMSynthesisProviderOptions,
+} from "./research/providers/index.js";
+export { PrMonitor, type PrComment, type TrackedPr, type OnNewCommentsCallback } from "./pr-monitor.js";
+export { PrCommentHandler } from "./pr-comment-handler.js";
+export {
+  NtfyNotifier,
+  DEFAULT_NTFY_EVENTS,
+  resolveNtfyEvents,
+  isNtfyEventEnabled,
+  buildNtfyClickUrl,
+  sendNtfyNotification,
+  formatTaskIdentifier,
+  type NtfyNotifierOptions,
+  type NtfyNotificationPriority,
+  type NtfyNotificationConfigInput,
+  type SendNtfyNotificationInput,
+} from "./notifier.js";
+// ── Notification Service ──────────────────────────────────────
+export { NtfyNotificationProvider, NotificationService, WebhookNotificationProvider } from "./notification/index.js";
+export type { NtfyProviderConfig, NotificationServiceOptions, WebhookProviderConfig } from "./notification/index.js";
+export { CronRunner, type CronRunnerOptions, type AiPromptExecutor, createAiPromptExecutor } from "./cron-runner.js";
+export { RoutineRunner, type RoutineRunnerOptions } from "./routine-runner.js";
+export { RoutineScheduler, type RoutineSchedulerOptions } from "./routine-scheduler.js";
+export { StuckTaskDetector, type StuckTaskDetectorOptions, type DisposableSession } from "./stuck-task-detector.js";
+export { HeartbeatMonitor, HeartbeatTriggerScheduler, type WakeContext } from "./agent-heartbeat.js";
+export { TokenCapDetector, type TokenCapCheckResult } from "./token-cap-detector.js";
+export { SelfHealingManager, type SelfHealingOptions } from "./self-healing.js";
+export { PluginRunner, type PluginRunnerOptions } from "./plugin-runner.js";
+// Agent runtime abstraction
+export { type AgentRuntime, type AgentRuntimeOptions, type AgentSessionResult } from "./agent-runtime.js";
+export {
+  resolveRuntime,
+  getDefaultPiRuntime,
+  buildRuntimeResolutionContext,
+  type RuntimeResolutionContext,
+  type ResolvedRuntime,
+  type SessionPurpose,
+} from "./runtime-resolution.js";
+// Agent session helpers
+export {
+  createResolvedAgentSession,
+  promptWithAutoRetry,
+  describeAgentModel,
+  extractRuntimeHint,
+  extractRuntimeModel,
+  type ResolvedSessionOptions,
+  type ResolvedSessionResult,
+} from "./agent-session-helpers.js";
+export { ProjectManager } from "./project-manager.js";
+export { ProjectEngine, type ProjectEngineOptions } from "./project-engine.js";
+export { ProjectEngineManager, type EngineManagerOptions } from "./project-engine-manager.js";
+export { NodeHealthMonitor } from "./node-health-monitor.js";
+export { applyUnavailableNodePolicy, type PolicyDecision } from "./node-routing-policy.js";
+export { PeerExchangeService, type PeerExchangeServiceOptions, type SyncResult } from "./peer-exchange-service.js";
+export {
+  TunnelProcessManager,
+  getTunnelProviderAdapter,
+  redactTunnelText,
+  type TunnelProcessManagerOptions,
+  type CloudflareProviderConfig,
+  type ManagedTunnelProcess,
+  type PreparedTunnelCommand,
+  type TailscaleProviderConfig,
+  type TunnelError,
+  type TunnelErrorCode,
+  type TunnelLifecycleState,
+  type TunnelLogEntry,
+  type TunnelLogLevel,
+  type TunnelLogListener,
+  type TunnelManager,
+  type TunnelOutputStream,
+  type TunnelProvider,
+  type TunnelProviderAdapter,
+  type TunnelProviderConfig,
+  type TunnelReadinessEvent,
+  type TunnelRestoreDiagnostics,
+  type TunnelRestoreOutcome,
+  type TunnelRestoreReasonCode,
+  type TunnelStatusListener,
+  type TunnelStatusSnapshot,
+} from "./remote-access/index.js";
+export { RemoteNodeClient } from "./runtimes/remote-node-client.js";
+export { RemoteNodeRuntime, type RemoteNodeRuntimeConfig } from "./runtimes/remote-node-runtime.js";
+export { StepSessionExecutor } from "./step-session-executor.js";
+export type { StepResult, ParallelWave, StepSessionExecutorOptions } from "./step-session-executor.js";
+// Multi-project runtime types
+export {
+  type ProjectRuntime,
+  type ProjectRuntimeConfig,
+  type ProjectRuntimeEvents,
+  type RuntimeStatus,
+  type RuntimeMetrics,
+} from "./project-runtime.js";

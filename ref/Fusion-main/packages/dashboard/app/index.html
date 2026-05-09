@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Viewport configured for Capacitor mobile webview: disables pinch-zoom for app-like feel -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Fusion</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <link
+      rel="preload"
+      href="/fonts/SymbolsNerdFontMono-Regular.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <meta name="theme-color" content="#1a1a2e" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <script>
+      // Theme initialization - runs before React to prevent flash
+      (function() {
+        try {
+          var mode = localStorage.getItem('kb-dashboard-theme-mode') || 'dark';
+          var colorTheme = localStorage.getItem('kb-dashboard-color-theme') || 'default';
+          var validThemes = ['default', 'ocean', 'forest', 'sunset', 'zen', 'berry', 'high-contrast', 'industrial', 'monochrome', 'slate', 'ash', 'graphite', 'silver', 'solarized', 'factory', 'ayu', 'one-dark', 'nord', 'dracula', 'gruvbox', 'tokyo-night', 'catppuccin-mocha', 'github-dark', 'everforest', 'rose-pine', 'kanagawa', 'night-owl', 'palenight', 'monokai-pro', 'slime', 'brutalist', 'neon-city', 'parchment', 'terminal', 'glass', 'horizon', 'vitesse', 'outrun', 'snazzy', 'porple', 'espresso', 'mars', 'poimandres', 'ember', 'rust', 'copper', 'foundry', 'carbon', 'sandstone', 'lagoon', 'frost', 'lavender', 'neon-bloom', 'sepia'];
+          if (!validThemes.includes(colorTheme)) {
+            colorTheme = 'default';
+          }
+          var fontScale = Number(localStorage.getItem('kb-dashboard-font-scale-pct') || '100');
+          if (!Number.isFinite(fontScale)) {
+            fontScale = 100;
+          }
+          fontScale = Math.min(125, Math.max(85, Math.round(fontScale)));
+          var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var effectiveMode = mode === 'system' ? (systemDark ? 'dark' : 'light') : mode;
+          document.documentElement.setAttribute('data-theme', effectiveMode);
+          document.documentElement.setAttribute('data-color-theme', colorTheme);
+          document.documentElement.style.fontSize = fontScale + '%';
+          // Load theme-data.css for non-default themes to prevent flash
+          // Use path-safe resolution that works in both HTTP and file:// contexts
+          if (colorTheme !== 'default') {
+            var base = document.baseURI || (document.location && document.location.href) || '';
+            // Derive path relative to HTML file directory
+            // Handle two cases:
+            // 1. Base ends with "/" (directory path): replace trailing "/" with "/filename"
+            // 2. Base ends with filename: replace filename with "/filename"
+            var themeDataUrl;
+            if (base.indexOf('file://') === 0) {
+              // For file:// URLs
+              if (base.endsWith('/')) {
+                themeDataUrl = base.slice(0, -1) + '/theme-data.css';
+              } else {
+                themeDataUrl = base.replace(/\/[^\/]+$/, '/theme-data.css');
+              }
+            } else {
+              // For HTTP/HTTPS URLs - same logic
+              if (base.endsWith('/')) {
+                themeDataUrl = base.slice(0, -1) + '/theme-data.css';
+              } else {
+                themeDataUrl = base.replace(/\/[^\/]+$/, '/theme-data.css');
+              }
+            }
+
+            // Check for existing link and update href if stale
+            var existingLink = document.getElementById('theme-data');
+            if (existingLink && existingLink.tagName === 'LINK') {
+              // Update href if it differs (handles baseURI changes between loads)
+              if (existingLink.href !== themeDataUrl) {
+                existingLink.href = themeDataUrl;
+              }
+              // Move existing link to end of <head> for CSS cascade correctness.
+              // This ensures color-theme rules take precedence over base token
+              // redefinitions in subsequent stylesheets.
+              if (existingLink.parentNode === document.head && document.head.lastChild !== existingLink) {
+                document.head.appendChild(existingLink);
+              }
+            } else {
+              // No existing link - create one
+              var link = document.createElement('link');
+              link.rel = 'stylesheet';
+              link.href = themeDataUrl;
+              link.id = 'theme-data';
+              document.head.appendChild(link);
+            }
+          }
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.setAttribute('data-color-theme', 'default');
+          document.documentElement.style.fontSize = '100%';
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>

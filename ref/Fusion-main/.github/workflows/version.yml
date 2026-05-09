@@ -1,0 +1,56 @@
+# Release workflow: npm publishing via changesets + OIDC
+#
+# Uses npm OIDC trusted publishing — no NPM_TOKEN secret needed.
+# Requires npm 11.5.1+ for OIDC support.
+
+name: Version & Release
+
+# Auto-trigger disabled; workflow preserved for manual use via workflow_dispatch.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  release:
+    name: Version or Publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          node-version: "24"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          node-version: "24"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+          cache: pnpm
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Ensure modern npm (OIDC support)
+        run: npm install -g npm@11.6.4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Create Release Pull Request or Publish to npm
+        uses: changesets/action@v1
+        with:
+          version: pnpm release:version
+          publish: pnpm -r publish --provenance --access public
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true

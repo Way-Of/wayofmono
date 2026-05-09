@@ -1,0 +1,34 @@
+import { describe, expect, it } from "vitest";
+import { boardSummaryCard, notificationCard, taskToCard } from "../cards.js";
+
+const task = {
+  id: "FN-1",
+  title: "Ship",
+  description: "desc",
+  column: "in-review",
+  updatedAt: "2026-01-01T00:00:00.000Z",
+  dependencies: [],
+  steps: [],
+  currentStep: 1,
+  log: [],
+} as any;
+
+describe("cards", () => {
+  it("maps task to card", () => {
+    const card = taskToCard(task);
+    expect(card.kind).toBe("task");
+    expect(card.badge).toBe("in-review");
+    expect(card.taskId).toBe("FN-1");
+  });
+
+  it("creates board summary", () => {
+    const card = boardSummaryCard({ todo: 2, done: 1 });
+    expect(card.lines).toContain("todo: 2");
+  });
+
+  it("creates notification cards", () => {
+    const card = notificationCard(task, "entered-column");
+    expect(card.id).toBe("notif:FN-1:entered-column");
+    expect(card.title.startsWith("In review")).toBe(true);
+  });
+});

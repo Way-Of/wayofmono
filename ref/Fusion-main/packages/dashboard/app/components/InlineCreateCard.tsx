@@ -1,0 +1,1117 @@
+import "./InlineCreateCard.css";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
+import { Brain, Link, Lightbulb, ListTree, Zap, ChevronDown, ChevronUp, Bot, Maximize2, Minimize2, Server } from "lucide-react";
+import { DEFAULT_TASK_PRIORITY, TASK_PRIORITIES, type Task, type TaskCreateInput, type TaskPriority, type Settings } from "@fusion/core";
+import { getErrorMessage } from "@fusion/core";
+import type { ToastType } from "../hooks/useToast";
+import { fetchModels, uploadAttachment, fetchSettings, updateGlobalSettings, fetchAgents } from "../api";
+import type { ModelInfo, Agent, NodeInfo } from "../api";
+import { useNodes } from "../hooks/useNodes";
+import { ModelSelectionModal } from "./ModelSelectionModal";
+import { NodeHealthDot } from "./NodeHealthDot";
+import { applyPresetToSelection } from "../utils/modelPresets";
+import { getScopedItem, removeScopedItem, setScopedItem } from "../utils/projectStorage";
+
+const ALLOWED_IMAGE_TYPES = ["image/png", "image/jpeg", "image/gif", "image/webp"];
+const STORAGE_KEY = "kb-inline-create-text";
+
+interface PendingImage {
+  file: File;
+  previewUrl: string;
+}
+
+interface InlineCreateCardProps {
+  tasks: Task[];
+  onSubmit: (input: TaskCreateInput) => Promise<Task>;
+  onCancel: () => void;
+  addToast: (msg: string, type?: ToastType) => void;
+  projectId?: string;
+  /**
+   * Optional model list from a parent surface. When omitted, InlineCreateCard
+   * fetches models itself so it can stay reusable in both list and board flows
+   * without forcing model data to be threaded through every caller.
+   */
+  availableModels?: ModelInfo[];
+  /**
+   * Called when the user clicks the "Plan" button to open planning mode.
+   */
+  onPlanningMode?: (initialPlan: string) => void;
+  /**
+   * Called when the user clicks the "Subtask" button to trigger subtask breakdown.
+   */
+  onSubtaskBreakdown?: (description: string) => void;
+}
+
+function getNodeStatusLabel(status: NodeInfo["status"]): string {
+  if (status === "online") return "Online";
+  if (status === "connecting") return "Connecting";
+  if (status === "error") return "Error";
+  return "Offline";
+}
+
+function getModelSelectionValue(provider?: string, modelId?: string): string {
+  return provider && modelId ? `${provider}/${modelId}` : "";
+}
+
+function parseModelSelection(value: string): { provider?: string; modelId?: string } {
+  if (!value) {
+    return { provider: undefined, modelId: undefined };
+  }
+
+  const slashIndex = value.indexOf("/");
+  if (slashIndex === -1) {
+    return { provider: undefined, modelId: undefined };
+  }
+
+  return {
+    provider: value.slice(0, slashIndex),
+    modelId: value.slice(slashIndex + 1),
+  };
+}
+
+export function InlineCreateCard({
+  tasks,
+  onSubmit,
+  onCancel,
+  addToast,
+  projectId,
+  availableModels,
+  onPlanningMode,
+  onSubtaskBreakdown,
+}: InlineCreateCardProps) {
+  const [description, setDescription] = useState(() => {
+    if (typeof window !== "undefined") {
+      return getScopedItem(STORAGE_KEY, projectId) || "";
+    }
+    return "";
+  });
+  const [dependencies, setDependencies] = useState<string[]>([]);
+  const [showDeps, setShowDeps] = useState(false);
+  const [depSearch, setDepSearch] = useState("");
+  const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
+  const [agents, setAgents] = useState<Agent[]>([]);
+  const [showAgentPicker, setShowAgentPicker] = useState(false);
+  const [showNodePicker, setShowNodePicker] = useState(false);
+  const [agentsLoading, setAgentsLoading] = useState(false);
+  const [isModelModalOpen, setIsModelModalOpen] = useState(false);
+  const [showPresets, setShowPresets] = useState(false);
+  const [nodeId, setNodeId] = useState<string | undefined>(undefined);
+  const { nodes } = useNodes();
+  const [settings, setSettings] = useState<Settings | null>(null);
+  const [selectedPresetId, setSelectedPresetId] = useState<string | undefined>(undefined);
+  const [executorProvider, setExecutorProvider] = useState<string | undefined>(undefined);
+  const [executorModelId, setExecutorModelId] = useState<string | undefined>(undefined);
+  const [validatorProvider, setValidatorProvider] = useState<string | undefined>(undefined);
+  const [validatorModelId, setValidatorModelId] = useState<string | undefined>(undefined);
+  const [browserVerification, setBrowserVerification] = useState(false);
+  const [priority, setPriority] = useState<TaskPriority>(DEFAULT_TASK_PRIORITY);
+  const [modelsLoading, setModelsLoading] = useState(false);
+  const [modelsError, setModelsError] = useState<string | null>(null);
+  const [loadedModels, setLoadedModels] = useState<ModelInfo[]>(availableModels ?? []);
+  const [favoriteProviders, setFavoriteProviders] = useState<string[]>([]);
+  const [favoriteModels, setFavoriteModels] = useState<string[]>([]);
+  const [submitting, setSubmitting] = useState(false);
+  const [pendingImages, setPendingImages] = useState<PendingImage[]>([]);
+  const [isExpanded, setIsExpanded] = useState(false);
+  // isDescriptionExpanded controls fullscreen description editing mode
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  // Track textarea focus for expand button visibility
+  const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
+  const justResetRef = useRef(false);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const agentPickerRef = useRef<HTMLDivElement>(null);
+  const nodePickerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setDescription(getScopedItem(STORAGE_KEY, projectId) || "");
+  }, [projectId]);
+
+  // Persist description to localStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setScopedItem(STORAGE_KEY, description, projectId);
+    }
+  }, [description, projectId]);
+
+  // Clear agents cache when projectId changes to prevent stale agents from leaking across projects
+  useEffect(() => {
+    setAgents([]);
+    setSelectedAgentId(null);
+  }, [projectId]);
+
+  const loadModels = useCallback(async () => {
+    if (availableModels) {
+      setLoadedModels(availableModels);
+      setModelsError(null);
+      setModelsLoading(false);
+      return;
+    }
+
+    setModelsLoading(true);
+    setModelsError(null);
+    try {
+      const response = await fetchModels();
+      setLoadedModels(response.models);
+      setFavoriteProviders(response.favoriteProviders);
+      setFavoriteModels(response.favoriteModels);
+    } catch (err) {
+      setModelsError(getErrorMessage(err) || "Failed to load models");
+    } finally {
+      setModelsLoading(false);
+    }
+  }, [availableModels]);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    if (!showDeps) setDepSearch("");
+  }, [showDeps]);
+
+  useEffect(() => {
+    if (!showAgentPicker) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (agentPickerRef.current?.contains(target)) return;
+      setShowAgentPicker(false);
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showAgentPicker]);
+
+  useEffect(() => {
+    if (!showNodePicker) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (nodePickerRef.current?.contains(target)) return;
+      setShowNodePicker(false);
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showNodePicker]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    if (availableModels) {
+      setLoadedModels(availableModels);
+      setModelsLoading(false);
+      setModelsError(null);
+      return;
+    }
+
+    setModelsLoading(true);
+    setModelsError(null);
+    fetchModels()
+      .then((response) => {
+        if (!cancelled) {
+          setLoadedModels(response.models);
+          setFavoriteProviders(response.favoriteProviders);
+          setFavoriteModels(response.favoriteModels);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setModelsError(getErrorMessage(err) || "Failed to load models");
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setModelsLoading(false);
+        }
+      });
+
+    fetchSettings(projectId)
+      .then((nextSettings) => {
+        if (!cancelled) {
+          setSettings(nextSettings);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setSettings(null);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [availableModels, projectId]);
+
+  const executorSelectionValue = getModelSelectionValue(executorProvider, executorModelId);
+  const validatorSelectionValue = getModelSelectionValue(validatorProvider, validatorModelId);
+  const availablePresets = settings?.modelPresets || [];
+  const selectedPreset = availablePresets.find((preset) => preset.id === selectedPresetId);
+
+  const hasExecutorOverride = Boolean(executorProvider && executorModelId);
+  const hasValidatorOverride = Boolean(validatorProvider && validatorModelId);
+  const selectedModelCount = Number(hasExecutorOverride) + Number(hasValidatorOverride);
+
+  // Track focus-out for conditional cancel behavior and justResetRef cleanup.
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    const handleFocusOut = (e: FocusEvent) => {
+      // relatedTarget is the element receiving focus — if it's inside the card, ignore
+      if (e.relatedTarget instanceof Node && card.contains(e.relatedTarget)) return;
+
+      if (justResetRef.current) {
+        justResetRef.current = false;
+        return;
+      }
+
+      const hasOpenOverlay = showDeps || showAgentPicker || isModelModalOpen || showPresets;
+      const hasDescription = description.trim().length > 0;
+      const shouldCancelWhenCollapsed = !isExpanded && !hasDescription && !hasOpenOverlay;
+      const shouldCancelWhenExpanded = isExpanded && !hasDescription && !hasOpenOverlay;
+
+      if (shouldCancelWhenCollapsed || shouldCancelWhenExpanded) {
+        onCancel();
+      }
+    };
+
+    card.addEventListener("focusout", handleFocusOut);
+    return () => card.removeEventListener("focusout", handleFocusOut);
+  }, [description, isExpanded, onCancel, showDeps, showAgentPicker, isModelModalOpen, showPresets]);
+
+  // Clean up object URLs on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      pendingImages.forEach((img) => URL.revokeObjectURL(img.previewUrl));
+
+      // Clear localStorage on unmount if there's no description (user abandoned)
+      if (typeof window !== "undefined") {
+        const current = getScopedItem(STORAGE_KEY, projectId);
+        if (current && current.trim() === "") {
+          removeScopedItem(STORAGE_KEY, projectId);
+        }
+      }
+    };
+  }, [projectId]);
+
+  /**
+   * Handles paste events on the textarea. Extracts image files from the
+   * clipboard data, creates object URL previews, and appends them to
+   * the pendingImages state. Non-image files are silently ignored.
+   */
+  const handlePaste = useCallback(
+    (e: React.ClipboardEvent) => {
+      if (submitting) return;
+      const files = e.clipboardData?.files;
+      if (!files || files.length === 0) return;
+
+      const newImages: PendingImage[] = [];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (ALLOWED_IMAGE_TYPES.includes(file.type)) {
+          newImages.push({ file, previewUrl: URL.createObjectURL(file) });
+        }
+      }
+      if (newImages.length > 0) {
+        setPendingImages((prev) => [...prev, ...newImages]);
+      }
+    },
+    [submitting],
+  );
+
+  const removeImage = useCallback((index: number) => {
+    setPendingImages((prev) => {
+      const removed = prev[index];
+      if (removed) URL.revokeObjectURL(removed.previewUrl);
+      return prev.filter((_, i) => i !== index);
+    });
+  }, []);
+
+  const handleSubmit = useCallback(async () => {
+    if (!description.trim() || submitting) return;
+    setSubmitting(true);
+    try {
+      const task = await onSubmit({
+        description: description.trim(),
+        column: "triage",
+        dependencies: dependencies.length ? dependencies : undefined,
+        ...(selectedAgentId ? { assignedAgentId: selectedAgentId } : {}),
+        modelPresetId: selectedPresetId,
+        modelProvider: hasExecutorOverride ? executorProvider : undefined,
+        modelId: hasExecutorOverride ? executorModelId : undefined,
+        validatorModelProvider: hasValidatorOverride ? validatorProvider : undefined,
+        validatorModelId: hasValidatorOverride ? validatorModelId : undefined,
+        enabledWorkflowSteps: browserVerification ? ["browser-verification"] : undefined,
+        priority,
+        nodeId,
+      });
+
+      // Upload pending images as attachments
+      if (pendingImages.length > 0) {
+        const failures: string[] = [];
+        for (const img of pendingImages) {
+          try {
+            await uploadAttachment(task.id, img.file, projectId);
+          } catch {
+            failures.push(img.file.name);
+          }
+        }
+        if (failures.length > 0) {
+          addToast(`Failed to upload: ${failures.join(", ")}`, "error");
+        }
+      }
+
+      // Clean up preview URLs
+      pendingImages.forEach((img) => URL.revokeObjectURL(img.previewUrl));
+      setPendingImages([]);
+
+      setDescription("");
+      if (inputRef.current) {
+        inputRef.current.style.height = "auto";
+      }
+      setSelectedPresetId(undefined);
+      setExecutorProvider(undefined);
+      setExecutorModelId(undefined);
+      setValidatorProvider(undefined);
+      setValidatorModelId(undefined);
+      setBrowserVerification(false);
+      setPriority(DEFAULT_TASK_PRIORITY);
+      setDependencies([]);
+      setSelectedAgentId(null);
+      setNodeId(undefined);
+      setShowDeps(false);
+      setShowNodePicker(false);
+      setShowAgentPicker(false);
+      setIsModelModalOpen(false);
+      setShowPresets(false);
+      addToast(`Created ${task.id}`, "success");
+
+      // Collapse and clear localStorage after successful task creation
+      setIsExpanded(false);
+      setIsDescriptionExpanded(false); // Exit fullscreen mode on submit
+      justResetRef.current = true;
+      if (typeof window !== "undefined") {
+        removeScopedItem(STORAGE_KEY, projectId);
+      }
+    } catch (err) {
+      addToast(getErrorMessage(err), "error");
+    } finally {
+      setSubmitting(false);
+    }
+  }, [
+    description,
+    dependencies,
+    selectedAgentId,
+    hasExecutorOverride,
+    executorProvider,
+    executorModelId,
+    hasValidatorOverride,
+    validatorProvider,
+    validatorModelId,
+    browserVerification,
+    priority,
+    submitting,
+    pendingImages,
+    onSubmit,
+    addToast,
+    projectId,
+    selectedPresetId,
+    nodeId,
+  ]);
+
+  const handleKeyDown = useCallback(
+    async (e: React.KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        // Exit fullscreen mode first - highest priority
+        if (isDescriptionExpanded) {
+          setIsDescriptionExpanded(false);
+          return;
+        }
+        // Close dropdowns first if open
+        if (showDeps || showNodePicker || showAgentPicker || isModelModalOpen || showPresets) {
+          setShowDeps(false);
+          setShowNodePicker(false);
+          setShowAgentPicker(false);
+          setIsModelModalOpen(false);
+          setShowPresets(false);
+          return;
+        }
+        // Clear non-empty input on Escape and clear localStorage
+        if (description.trim()) {
+          setDescription("");
+          // Reset height
+          if (inputRef.current) {
+            inputRef.current.style.height = "auto";
+          }
+          // Clear localStorage when user explicitly clears input
+          if (typeof window !== "undefined") {
+            removeScopedItem(STORAGE_KEY, projectId);
+          }
+        }
+        // Collapse and cancel on escape
+        setIsExpanded(false);
+        onCancel();
+        return;
+      }
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        handleSubmit();
+      }
+    },
+    [
+      handleSubmit,
+      onCancel,
+      description,
+      isDescriptionExpanded,
+      showDeps,
+      showNodePicker,
+      showAgentPicker,
+      isModelModalOpen,
+      showPresets,
+      projectId,
+    ],
+  );
+
+  const toggleDep = useCallback((id: string) => {
+    setDependencies((prev) =>
+      prev.includes(id) ? prev.filter((d) => d !== id) : [...prev, id],
+    );
+  }, []);
+
+  const toggleDepsDropdown = useCallback(() => {
+    setShowDeps((prev) => {
+      const next = !prev;
+      if (next) {
+        setIsModelModalOpen(false);
+        setShowNodePicker(false);
+        setShowAgentPicker(false);
+      }
+      return next;
+    });
+  }, []);
+
+  const toggleModelsDropdown = useCallback(() => {
+    setIsModelModalOpen(true);
+    setShowDeps(false);
+    setShowNodePicker(false);
+    setShowAgentPicker(false);
+  }, []);
+
+  const loadAgents = useCallback(async () => {
+    if (agents.length > 0) {
+      setShowNodePicker(false);
+      setShowAgentPicker(true);
+      return;
+    }
+
+    setAgentsLoading(true);
+    try {
+      const result = await fetchAgents(undefined, projectId);
+      setAgents(result);
+      setShowNodePicker(false);
+      setShowAgentPicker(true);
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      addToast(msg ? `Failed to load agents: ${msg}` : "Failed to load agents", "error");
+      setShowAgentPicker(false);
+    } finally {
+      setAgentsLoading(false);
+    }
+  }, [agents.length, projectId, addToast]);
+
+  const selectedAgent = selectedAgentId ? agents.find((agent) => agent.id === selectedAgentId) : undefined;
+  const selectedAgentLabel = selectedAgent?.name ?? selectedAgentId;
+  const selectedNode = nodeId ? nodes.find((node) => node.id === nodeId) : undefined;
+
+  const handleExecutorChange = useCallback((value: string) => {
+    const next = parseModelSelection(value);
+    setExecutorProvider(next.provider);
+    setExecutorModelId(next.modelId);
+  }, []);
+
+  const handleValidatorChange = useCallback((value: string) => {
+    const next = parseModelSelection(value);
+    setValidatorProvider(next.provider);
+    setValidatorModelId(next.modelId);
+  }, []);
+
+  const handleToggleFavorite = useCallback(async (provider: string) => {
+    const currentFavorites = favoriteProviders;
+    const isFavorite = currentFavorites.includes(provider);
+    const newFavorites = isFavorite
+      ? currentFavorites.filter((p) => p !== provider)
+      : [provider, ...currentFavorites];
+
+    setFavoriteProviders(newFavorites);
+
+    try {
+      await updateGlobalSettings({ favoriteProviders: newFavorites, favoriteModels });
+    } catch {
+      // Revert on error
+      setFavoriteProviders(currentFavorites);
+    }
+  }, [favoriteProviders, favoriteModels]);
+
+  const handleToggleModelFavorite = useCallback(async (modelId: string) => {
+    const currentFavorites = favoriteModels;
+    const isFavorite = currentFavorites.includes(modelId);
+    const newFavorites = isFavorite
+      ? currentFavorites.filter((m) => m !== modelId)
+      : [modelId, ...currentFavorites];
+
+    setFavoriteModels(newFavorites);
+
+    try {
+      await updateGlobalSettings({ favoriteProviders, favoriteModels: newFavorites });
+    } catch {
+      // Revert on error
+      setFavoriteModels(currentFavorites);
+    }
+  }, [favoriteModels, favoriteProviders]);
+
+  const handleModelDropdownMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target;
+    if (
+      target instanceof HTMLElement &&
+      (target.closest("button") || target.closest("input"))
+    ) {
+      return;
+    }
+    e.preventDefault();
+  }, []);
+
+  const handlePlanClick = useCallback(() => {
+    const trimmed = description.trim();
+    if (!trimmed) {
+      addToast("Enter a description first", "error");
+      return;
+    }
+    onPlanningMode?.(trimmed);
+    // Clear the input after triggering planning mode
+    setDescription("");
+    setDependencies([]);
+    setExecutorProvider(undefined);
+    setExecutorModelId(undefined);
+    setValidatorProvider(undefined);
+    setValidatorModelId(undefined);
+    setBrowserVerification(false);
+    setSelectedPresetId(undefined);
+    setSelectedAgentId(null);
+    setNodeId(undefined);
+    setShowDeps(false);
+    setShowAgentPicker(false);
+    setIsModelModalOpen(false);
+    setShowPresets(false);
+    setIsExpanded(false);
+  }, [description, onPlanningMode, addToast]);
+
+  const handleSubtaskClick = useCallback(() => {
+    const trimmed = description.trim();
+    if (!trimmed) {
+      addToast("Enter a description first", "error");
+      return;
+    }
+    onSubtaskBreakdown?.(trimmed);
+    // Clear the input after triggering subtask breakdown
+    setDescription("");
+    setDependencies([]);
+    setExecutorProvider(undefined);
+    setExecutorModelId(undefined);
+    setValidatorProvider(undefined);
+    setValidatorModelId(undefined);
+    setBrowserVerification(false);
+    setSelectedPresetId(undefined);
+    setSelectedAgentId(null);
+    setNodeId(undefined);
+    setShowDeps(false);
+    setShowAgentPicker(false);
+    setIsModelModalOpen(false);
+    setShowPresets(false);
+    setIsExpanded(false);
+  }, [description, onSubtaskBreakdown, addToast]);
+
+  const truncate = (s: string, len: number) =>
+    s.length > len ? s.slice(0, len) + "…" : s;
+
+  const toggleExpanded = useCallback(() => {
+    setIsExpanded((prev) => !prev);
+  }, []);
+
+  const handleToggleDescriptionExpand = useCallback(() => {
+    setIsDescriptionExpanded((prev) => {
+      const next = !prev;
+      // Focus the fullscreen textarea after it renders
+      if (next && inputRef.current) {
+        setTimeout(() => inputRef.current?.focus(), 0);
+      }
+      return next;
+    });
+  }, []);
+
+  const handleDescriptionFullscreenKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!isDescriptionExpanded || e.key !== "Escape") return;
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDescriptionExpanded(false);
+  }, [isDescriptionExpanded]);
+
+  return (
+    <div className={`inline-create-card ${isExpanded ? "inline-create-card--expanded" : "inline-create-card--collapsed"}`} ref={cardRef}>
+      <div
+        className={`description-with-refine${isDescriptionExpanded ? " description--fullscreen" : ""}`}
+        onKeyDown={handleDescriptionFullscreenKeyDown}
+      >
+        {isDescriptionExpanded && (
+          <div className="description-fullscreen-header">
+            <span>Editing Description</span>
+            <button
+              type="button"
+              className="btn btn-sm description-expand-btn"
+              onClick={handleToggleDescriptionExpand}
+              aria-label="Collapse description"
+              title="Collapse description"
+              data-testid="inline-create-collapse"
+            >
+              <Minimize2 size={14} />
+            </button>
+          </div>
+        )}
+        {!isDescriptionExpanded && (
+          <div className="inline-create-main-row">
+            <div className="inline-create-textarea-wrap">
+              <textarea
+                ref={inputRef}
+                rows={1}
+                className="inline-create-input"
+                placeholder="What needs to be done?"
+                value={description}
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                  const el = e.target;
+                  el.style.height = "auto";
+                  el.style.height = el.scrollHeight + "px";
+                }}
+                onKeyDown={handleKeyDown}
+                onPaste={handlePaste}
+                onFocus={() => setIsDescriptionFocused(true)}
+                onBlur={() => setIsDescriptionFocused(false)}
+                disabled={submitting}
+                aria-controls={isExpanded ? "inline-create-controls" : undefined}
+              />
+              {isDescriptionFocused && description.trim() && !submitting && (
+                <button
+                  type="button"
+                  className="btn btn-sm inline-create-expand-btn"
+                  onClick={handleToggleDescriptionExpand}
+                  onMouseDown={(e) => e.preventDefault()}
+                  aria-label="Expand description"
+                  title="Expand description"
+                  data-testid="inline-create-expand"
+                >
+                  <Maximize2 size={14} />
+                </button>
+              )}
+            </div>
+            <button
+              type="button"
+              className="btn btn-sm inline-create-toggle"
+              onClick={toggleExpanded}
+              aria-expanded={isExpanded}
+              aria-controls={isExpanded ? "inline-create-controls" : undefined}
+              aria-label={isExpanded ? "Collapse advanced task options" : "Expand advanced task options"}
+              data-testid="inline-create-toggle"
+              title={isExpanded ? "Collapse" : "Expand"}
+            >
+              {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+            </button>
+          </div>
+        )}
+        {isDescriptionExpanded && (
+          <textarea
+            ref={inputRef}
+            rows={10}
+            className="inline-create-input inline-create-input--fullscreen"
+            placeholder="What needs to be done?"
+            value={description}
+            onChange={(e) => {
+              setDescription(e.target.value);
+              const el = e.target;
+              el.style.height = "auto";
+              el.style.height = el.scrollHeight + "px";
+            }}
+            onKeyDown={handleKeyDown}
+            onPaste={handlePaste}
+            onFocus={() => setIsDescriptionFocused(true)}
+            onBlur={() => setIsDescriptionFocused(false)}
+            disabled={submitting}
+            data-testid="inline-create-input-fullscreen"
+          />
+        )}
+      </div>
+      {pendingImages.length > 0 && (
+        <div className="inline-create-previews">
+          {pendingImages.map((img, i) => (
+            <div key={img.previewUrl} className="inline-create-preview">
+              <img src={img.previewUrl} alt={img.file.name} />
+              <button
+                type="button"
+                className="inline-create-preview-remove"
+                onClick={() => removeImage(i)}
+                disabled={submitting}
+                title="Remove image"
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+      {isExpanded && (
+        <div id="inline-create-controls" className="inline-create-footer">
+          <div className="inline-create-controls">
+            <button
+              type="button"
+              className="btn btn-sm"
+              onClick={handlePlanClick}
+              onMouseDown={(e) => e.preventDefault()}
+              disabled={!description.trim()}
+              data-testid="plan-button"
+              title="Open planning mode with current description"
+            >
+              <Lightbulb size={12} style={{ verticalAlign: "middle", marginRight: 4 }} />
+              Plan
+            </button>
+            <button
+              type="button"
+              className="btn btn-sm"
+              onClick={handleSubtaskClick}
+              onMouseDown={(e) => e.preventDefault()}
+              disabled={!description.trim()}
+              data-testid="subtask-button"
+              title="Break down into AI-generated subtasks"
+            >
+              <ListTree size={12} style={{ verticalAlign: "middle", marginRight: 4 }} />
+              Subtask
+            </button>
+            <div className="dep-trigger-wrap">
+              <button
+                type="button"
+                className="btn btn-sm dep-trigger"
+                onClick={toggleDepsDropdown}
+              >
+                <Link size={12} style={{ verticalAlign: "middle" }} />
+                {dependencies.length > 0 ? ` ${dependencies.length} deps` : " Deps"}
+              </button>
+              {showDeps && (() => {
+                const term = depSearch.toLowerCase();
+                const filtered = (term
+                  ? tasks.filter((t) =>
+                      t.id.toLowerCase().includes(term) ||
+                      (t.title && t.title.toLowerCase().includes(term)) ||
+                      (t.description && t.description.toLowerCase().includes(term))
+                    )
+                  : [...tasks]
+                ).sort((a, b) => {
+                  const cmp = b.createdAt.localeCompare(a.createdAt);
+                  if (cmp !== 0) return cmp;
+                  const aNum = parseInt(a.id.slice(a.id.lastIndexOf("-") + 1), 10) || 0;
+                  const bNum = parseInt(b.id.slice(b.id.lastIndexOf("-") + 1), 10) || 0;
+                  return bNum - aNum;
+                });
+                return (
+                  <div className="dep-dropdown" onMouseDown={(e) => e.preventDefault()}>
+                    <input
+                      className="dep-dropdown-search"
+                      placeholder="Search tasks…"
+                      autoFocus
+                      value={depSearch}
+                      onChange={(e) => setDepSearch(e.target.value)}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                    {filtered.length === 0 ? (
+                      <div className="dep-dropdown-empty">No existing tasks</div>
+                    ) : (
+                      filtered.map((t) => (
+                        <div
+                          key={t.id}
+                          className={`dep-dropdown-item${dependencies.includes(t.id) ? " selected" : ""}`}
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => toggleDep(t.id)}
+                        >
+                          <span className="dep-dropdown-id">{t.id}</span>
+                          <span className="dep-dropdown-title">{truncate(t.title || t.description || t.id, 30)}</span>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                );
+              })()}
+            </div>
+
+            <div className="node-trigger-wrap" ref={nodePickerRef}>
+              <button
+                type="button"
+                className="btn btn-sm dep-trigger"
+                data-testid="inline-create-node-button"
+                onClick={() => {
+                  setShowNodePicker((prev) => {
+                    const next = !prev;
+                    if (next) {
+                      setShowDeps(false);
+                      setShowAgentPicker(false);
+                      setIsModelModalOpen(false);
+                      setShowPresets(false);
+                    }
+                    return next;
+                  });
+                }}
+              >
+                <Server size={12} style={{ verticalAlign: "middle" }} />
+                {selectedNode ? ` ${selectedNode.name}` : " Node"}
+                {selectedNode && <NodeHealthDot status={selectedNode.status} showLabel />}
+              </button>
+              {showNodePicker && (
+                <div className="dep-dropdown node-picker-dropdown" onMouseDown={(e) => e.preventDefault()}>
+                  <div className="dep-dropdown-search-header">Select execution node</div>
+                  <button
+                    type="button"
+                    className={`dep-dropdown-item node-picker-item${nodeId === undefined ? " selected" : ""}`}
+                    onClick={() => {
+                      setNodeId(undefined);
+                      setShowNodePicker(false);
+                    }}
+                  >
+                    <span className="dep-dropdown-title">Project default / local</span>
+                  </button>
+                  {nodes.map((node) => (
+                    <button
+                      key={node.id}
+                      type="button"
+                      className={`dep-dropdown-item node-picker-item${nodeId === node.id ? " selected" : ""}`}
+                      onClick={() => {
+                        setNodeId(node.id);
+                        setShowNodePicker(false);
+                      }}
+                    >
+                      <NodeHealthDot status={node.status} />
+                      <span className="dep-dropdown-title">{node.name}</span>
+                      <span className="node-picker-status-label">{getNodeStatusLabel(node.status)}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="agent-trigger-wrap" ref={agentPickerRef}>
+              <button
+                type="button"
+                className="btn btn-sm dep-trigger"
+                onClick={() => {
+                  if (showAgentPicker) {
+                    setShowAgentPicker(false);
+                  } else {
+                    void loadAgents();
+                  }
+                }}
+                data-testid="inline-create-agent-button"
+              >
+                <Bot size={12} style={{ verticalAlign: "middle" }} />
+                {selectedAgentLabel ? ` ${selectedAgentLabel}` : " Agent"}
+              </button>
+              {showAgentPicker && (
+                <div className="dep-dropdown agent-picker-dropdown" onMouseDown={(e) => e.preventDefault()}>
+                  <div className="dep-dropdown-search-header">Select agent</div>
+                  {agentsLoading && <div className="dep-dropdown-empty">Loading agents...</div>}
+                  {!agentsLoading && agents.map((a) => (
+                    <div
+                      key={a.id}
+                      className={`dep-dropdown-item${selectedAgentId === a.id ? " selected" : ""}`}
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => {
+                        setSelectedAgentId(a.id === selectedAgentId ? null : a.id);
+                        setShowAgentPicker(false);
+                      }}
+                    >
+                      <Bot size={12} style={{ marginRight: 6 }} />
+                      <span className="dep-dropdown-id">{a.role}</span>
+                      <span className="dep-dropdown-title">{a.name}</span>
+                    </div>
+                  ))}
+                  {!agentsLoading && agents.length === 0 && (
+                    <div className="dep-dropdown-empty">No agents available</div>
+                  )}
+                  {selectedAgentId && (
+                    <div
+                      className="dep-dropdown-item"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => {
+                        setSelectedAgentId(null);
+                        setShowAgentPicker(false);
+                      }}
+                    >
+                      <span className="dep-dropdown-title">Clear selection</span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <button
+              type="button"
+              className="btn btn-sm"
+              data-testid="inline-create-browser-verification-toggle"
+              aria-pressed={browserVerification}
+              onClick={() => setBrowserVerification((prev) => !prev)}
+              title="Enable browser verification workflow step"
+            >
+              {browserVerification ? "Browser Verify ✓" : "Browser Verify"}
+            </button>
+
+            <label className="inline-create-priority-wrap" htmlFor="inline-create-priority-select">
+              <span className="visually-hidden">Priority</span>
+              <select
+                id="inline-create-priority-select"
+                className="select inline-create-priority-select"
+                data-testid="inline-create-priority-select"
+                value={priority}
+                onChange={(e) => setPriority(e.target.value as TaskPriority)}
+              >
+                {TASK_PRIORITIES.map((taskPriority) => (
+                  <option key={taskPriority} value={taskPriority}>
+                    {`Priority: ${taskPriority[0].toUpperCase()}${taskPriority.slice(1)}`}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <div className="inline-create-model-wrap">
+              <button
+                type="button"
+                className="btn btn-sm inline-create-model-trigger"
+                onClick={() => {
+                  setShowPresets((prev) => {
+                    const next = !prev;
+                    if (next) {
+                      setShowDeps(false);
+                      setShowNodePicker(false);
+                      setShowAgentPicker(false);
+                      setIsModelModalOpen(false);
+                    }
+                    return next;
+                  });
+                }}
+                aria-expanded={showPresets}
+                aria-haspopup="listbox"
+              >
+                <Zap size={12} style={{ verticalAlign: "middle" }} />
+                {selectedPreset ? ` ${selectedPreset.name}` : " Preset"}
+              </button>
+              {showPresets && (
+                <div className="inline-create-model-dropdown" onMouseDown={handleModelDropdownMouseDown}>
+                  <button
+                    type="button"
+                    className="btn btn-sm"
+                    onClick={() => {
+                      setSelectedPresetId(undefined);
+                      setExecutorProvider(undefined);
+                      setExecutorModelId(undefined);
+                      setValidatorProvider(undefined);
+                      setValidatorModelId(undefined);
+                      setShowPresets(false);
+                    }}
+                  >
+                    Use default
+                  </button>
+                  {availablePresets.map((preset) => (
+                    <button
+                      key={preset.id}
+                      type="button"
+                      className="btn btn-sm"
+                      onClick={() => {
+                        const selection = applyPresetToSelection(preset);
+                        const executor = parseModelSelection(selection.executorValue);
+                        const validator = parseModelSelection(selection.validatorValue);
+                        setSelectedPresetId(preset.id);
+                        setExecutorProvider(executor.provider);
+                        setExecutorModelId(executor.modelId);
+                        setValidatorProvider(validator.provider);
+                        setValidatorModelId(validator.modelId);
+                        setShowPresets(false);
+                      }}
+                    >
+                      {preset.name}
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    className="btn btn-sm"
+                    onClick={() => setShowPresets(false)}
+                  >
+                    Custom
+                  </button>
+                </div>
+              )}
+              <button
+                type="button"
+                className="btn btn-sm inline-create-model-trigger"
+                onClick={toggleModelsDropdown}
+                aria-expanded={isModelModalOpen}
+                aria-haspopup="dialog"
+              >
+                <Brain size={12} style={{ verticalAlign: "middle" }} />
+                {selectedPreset
+                  ? ` ${selectedPreset.name} · ${selectedModelCount} model${selectedModelCount === 1 ? "" : "s"}`
+                  : selectedModelCount > 0
+                    ? ` ${selectedModelCount} model${selectedModelCount === 1 ? "" : "s"}`
+                    : " Models"}
+              </button>
+
+            </div>
+
+          </div>
+          <div className="inline-create-actions">
+            <span className="inline-create-hint">Enter to create · Esc to cancel</span>
+            <button
+              type="button"
+              className="btn btn-task-create btn-sm"
+              onClick={handleSubmit}
+              disabled={!description.trim() || submitting}
+              data-testid="save-button"
+            >
+              {submitting ? "Creating..." : "Save"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {typeof document !== "undefined"
+        ? createPortal(
+            <ModelSelectionModal
+              isOpen={isModelModalOpen}
+              onClose={() => setIsModelModalOpen(false)}
+              models={loadedModels}
+              executorValue={executorSelectionValue}
+              validatorValue={validatorSelectionValue}
+              onExecutorChange={handleExecutorChange}
+              onValidatorChange={handleValidatorChange}
+              modelsLoading={modelsLoading}
+              modelsError={modelsError}
+              onRetry={loadModels}
+              favoriteProviders={favoriteProviders}
+              onToggleFavorite={handleToggleFavorite}
+              favoriteModels={favoriteModels}
+              onToggleModelFavorite={handleToggleModelFavorite}
+              presets={availablePresets}
+              selectedPresetId={selectedPresetId}
+              onPresetChange={(presetId) => setSelectedPresetId(presetId)}
+            />,
+            document.body,
+          )
+        : null}
+    </div>
+  );
+}

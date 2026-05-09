@@ -1,0 +1,35 @@
+{
+  "name": "@fusion/pi-claude-cli",
+  "version": "0.23.0",
+  "description": "Fusion vendored fork: pi coding-agent extension that routes LLM calls through the Claude Code CLI. Forked from rchern/pi-claude-cli (MIT). See UPSTREAM.md.",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "main": "index.ts",
+  "keywords": [
+    "pi-package"
+  ],
+  "pi": {
+    "extensions": [
+      "index.ts"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Runfusion/Fusion",
+    "directory": "packages/pi-claude-cli"
+  },
+  "peerDependencies": {
+    "@mariozechner/pi-ai": "*",
+    "@mariozechner/pi-coding-agent": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  },
+  "scripts": {
+    "test": "vitest run --reporter=dot",
+    "typecheck": "tsc --noEmit"
+  }
+}

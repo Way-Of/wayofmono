@@ -1,0 +1,1881 @@
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { AgentLogViewer } from "../AgentLogViewer";
+import type { AgentLogEntry } from "@fusion/core";
+import "../../styles.css";
+import "../TaskDetailModal.css";
+
+// Mock lucide-react icons used by AgentLogViewer and ProviderIcon
+vi.mock("lucide-react", () => ({
+  Maximize2: () => null,
+  Minimize2: () => null,
+  Loader2: () => null,
+  Cpu: () => null,
+  ChevronDown: () => null,
+  ChevronRight: () => null,
+}));
+
+function makeEntry(overrides: Partial<AgentLogEntry> = {}): AgentLogEntry {
+  return {
+    timestamp: "2026-01-01T00:00:00Z",
+    taskId: "FN-001",
+    text: "Hello world",
+    type: "text",
+    ...overrides,
+  };
+}
+
+function getScrollContainer(container: HTMLElement): HTMLDivElement {
+  return container.querySelector(".agent-log-viewer-scroll") as HTMLDivElement;
+}
+
+describe("AgentLogViewer", () => {
+  beforeEach(() => {
+    window.localStorage.clear();
+  });
+
+  it("shows loading message when loading with no entries", () => {
+    render(<AgentLogViewer entries={[]} loading={true} />);
+    expect(screen.getByText("Loading agent logs…")).toBeTruthy();
+  });
+
+  it("shows empty message when no entries and not loading", () => {
+    render(<AgentLogViewer entries={[]} loading={false} />);
+    expect(screen.getByText("No agent output yet.")).toBeTruthy();
+  });
+
+  it("rerenders from empty state to populated logs without changing hook order", () => {
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const entry = makeEntry({ text: "streamed chunk" });
+    const { rerender } = render(<AgentLogViewer entries={[]} loading={false} />);
+
+    expect(() => {
+      rerender(<AgentLogViewer entries={[entry]} loading={false} />);
+    }).not.toThrow();
+
+    expect(screen.getByText("streamed chunk")).toBeTruthy();
+    consoleErrorSpy.mockRestore();
+  });
+
+  it("renders grouped text entries in chronological order (oldest first)", () => {
+    const entries = [
+      makeEntry({ text: "first chunk", agent: "executor" }),
+      makeEntry({ text: " second chunk", agent: "executor" }),
+    ];
+    const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+    const textSpans = container.querySelectorAll(".agent-log-text");
+    expect(textSpans).toHaveLength(1);
+    expect(textSpans[0].textContent).toContain("first chunk second chunk");
+  });
+
+  it("keeps existing DOM rows stable when a new live entry appears at the bottom", () => {
+    const initialEntries = [
+      makeEntry({ text: "first chunk", timestamp: "2026-01-01T00:00:00Z", agent: "triage" }),
+      makeEntry({ text: "second chunk", timestamp: "2026-01-01T00:00:01Z", agent: "executor" }),
+    ];
+
+    const { container, rerender } = render(
+      <AgentLogViewer entries={initialEntries} loading={false} />,
+    );
+
+    const initialTextRows = container.querySelectorAll(".agent-log-text");
+    const firstChunkNode = initialTextRows[0] as HTMLElement;
+    const secondChunkNode = initialTextRows[1] as HTMLElement;
+    expect(firstChunkNode.textContent).toContain("first chunk");
+    expect(secondChunkNode.textContent).toContain("second chunk");
+
+    const withLiveUpdate = [
+      ...initialEntries,
+      makeEntry({ text: "third chunk", timestamp: "2026-01-01T00:00:02Z", agent: "reviewer" }),
+    ];
+
+    rerender(<AgentLogViewer entries={withLiveUpdate} loading={false} />);
+
+    const updatedTextRows = container.querySelectorAll(".agent-log-text");
+    expect(updatedTextRows).toHaveLength(3);
+    expect(updatedTextRows[0].textContent).toContain("first chunk");
+    expect(updatedTextRows[1].textContent).toContain("second chunk");
+    expect(updatedTextRows[2].textContent).toContain("third chunk");
+    expect(updatedTextRows[0]).toBe(firstChunkNode);
+    expect(updatedTextRows[1]).toBe(secondChunkNode);
+  });
+
+  it("avoids duplicate-key collisions when entries are exact duplicates", () => {
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const duplicateEntry = makeEntry({
+      timestamp: "2026-01-01T00:00:00Z",
+      taskId: "FN-001",
+      text: "same chunk",
+      type: "text",
+      agent: "executor",
+      detail: "same detail",
+    });
+
+    const { container, rerender } = render(
+      <AgentLogViewer entries={[duplicateEntry, { ...duplicateEntry }]} loading={false} />,
+    );
+
+    rerender(
+      <AgentLogViewer
+        entries={[duplicateEntry, { ...duplicateEntry }, { ...duplicateEntry }]}
+        loading={false}
+      />,
+    );
+
+    expect(container.querySelectorAll(".agent-log-text")).toHaveLength(1);
+    expect(
+      consoleErrorSpy.mock.calls.some((call) =>
+        String(call[0]).includes("Encountered two children with the same key"),
+      ),
+    ).toBe(false);
+
+    consoleErrorSpy.mockRestore();
+  });
+
+  it("renders tool entries with distinct styling", () => {
+    const entries = [
+      makeEntry({ text: "Read", type: "tool" }),
+    ];
+    const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+    const toolDiv = container.querySelector(".agent-log-tool");
+    expect(toolDiv).toBeTruthy();
+    expect(toolDiv!.textContent).toContain("Read");
+  });
+
+  it("renders a mix of text and tool entries in chronological order", () => {
+    const entries = [
+      makeEntry({ text: "Starting...", type: "text" }),
+      makeEntry({ text: "Bash", type: "tool" }),
+      makeEntry({ text: "Done!", type: "text" }),
+    ];
+    const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+    const textSpans = container.querySelectorAll(".agent-log-text");
+    expect(textSpans).toHaveLength(2);
+    expect(textSpans[0].textContent).toContain("Starting...");
+    expect(textSpans[1].textContent).toContain("Done!");
+
+    const toolDivs = container.querySelectorAll(".agent-log-tool");
+    expect(toolDivs).toHaveLength(1);
+  });
+
+  describe("entry grouping", () => {
+    it("groups consecutive text entries from the same agent into one container", () => {
+      const entries = [
+        makeEntry({ text: "hello", agent: "executor" }),
+        makeEntry({ text: " world", agent: "executor" }),
+        makeEntry({ text: "!", agent: "executor" }),
+      ];
+
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const textRows = container.querySelectorAll(".agent-log-text");
+      expect(textRows).toHaveLength(1);
+      expect(textRows[0].textContent).toContain("hello world!");
+    });
+
+    it("groups consecutive thinking entries from the same agent into one container", () => {
+      const entries = [
+        makeEntry({ text: "think", type: "thinking", agent: "triage" }),
+        makeEntry({ text: "ing", type: "thinking", agent: "triage" }),
+      ];
+
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const thinkingRows = container.querySelectorAll(".agent-log-thinking");
+      expect(thinkingRows).toHaveLength(1);
+      expect(thinkingRows[0].textContent).toContain("thinking");
+    });
+
+    it("does not group text across tool entries", () => {
+      const entries = [
+        makeEntry({ text: "part 1", type: "text", agent: "executor" }),
+        makeEntry({ text: "Read", type: "tool", agent: "executor" }),
+        makeEntry({ text: " part 2", type: "text", agent: "executor" }),
+      ];
+
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      expect(container.querySelectorAll(".agent-log-text")).toHaveLength(2);
+      expect(container.querySelectorAll(".agent-log-tool")).toHaveLength(1);
+    });
+
+    it("does not group text entries from different agents", () => {
+      const entries = [
+        makeEntry({ text: "triage", agent: "triage" }),
+        makeEntry({ text: "executor", agent: "executor" }),
+      ];
+
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      expect(container.querySelectorAll(".agent-log-text")).toHaveLength(2);
+    });
+
+    it("does not group entries across text and thinking type boundaries", () => {
+      const entries = [
+        makeEntry({ text: "text", type: "text", agent: "executor" }),
+        makeEntry({ text: "thought", type: "thinking", agent: "executor" }),
+      ];
+
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      expect(container.querySelectorAll(".agent-log-text")).toHaveLength(1);
+      expect(container.querySelectorAll(".agent-log-thinking")).toHaveLength(1);
+    });
+
+    it("shows badge and timestamp only once at the start of a grouped text run", () => {
+      const entries = [
+        makeEntry({ text: "a", type: "text", agent: "executor", timestamp: "2026-01-01T00:00:00Z" }),
+        makeEntry({ text: "b", type: "text", agent: "executor", timestamp: "2026-01-01T00:00:01Z" }),
+      ];
+
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      expect(container.querySelectorAll(".agent-log-agent-badge")).toHaveLength(1);
+      expect(container.querySelectorAll(".agent-log-timestamp")).toHaveLength(1);
+    });
+  });
+
+  it("renders tool entry detail toggle collapsed by default when detail is present", () => {
+    const entries = [
+      makeEntry({ text: "Bash", type: "tool", detail: "ls -la packages/" }),
+    ];
+    render(<AgentLogViewer entries={entries} loading={false} />);
+
+    const toggle = screen.getByTestId("tool-detail-toggle");
+    expect(toggle).toBeTruthy();
+    expect(toggle.getAttribute("aria-expanded")).toBe("false");
+    const content = screen.getByTestId("tool-detail-content");
+    expect(content.classList.contains("agent-log-tool-detail-content--collapsed")).toBe(true);
+  });
+
+  it("does not render detail toggle when detail is absent", () => {
+    const entries = [
+      makeEntry({ text: "Bash", type: "tool" }),
+      makeEntry({ text: "Bash", type: "tool_result" }),
+      makeEntry({ text: "Bash", type: "tool_error" }),
+    ];
+    render(<AgentLogViewer entries={entries} loading={false} />);
+    expect(screen.queryByTestId("tool-detail-toggle")).toBeNull();
+  });
+
+  it("renders long detail text without breaking layout", () => {
+    const longDetail = "a/very/long/path/".repeat(10) + "file.ts";
+    const entries = [
+      makeEntry({ text: "Read", type: "tool", detail: longDetail }),
+    ];
+    const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+    fireEvent.click(screen.getByTestId("tool-detail-toggle"));
+    const detail = container.querySelector(".agent-log-tool-detail");
+    expect(detail).toBeTruthy();
+    expect(detail!.textContent).toContain(longDetail);
+    // Verify the tool div still renders correctly
+    const toolDiv = container.querySelector(".agent-log-tool");
+    expect(toolDiv).toBeTruthy();
+  });
+
+  it("collapses tool-like detail by default across tool, tool_result, and tool_error", () => {
+    const entries = [
+      makeEntry({ text: "Read", type: "tool", detail: "tool output" }),
+      makeEntry({ text: "Done", type: "tool_result", detail: "result output" }),
+      makeEntry({ text: "Oops", type: "tool_error", detail: "error output" }),
+    ];
+    render(<AgentLogViewer entries={entries} loading={false} />);
+
+    const toggles = screen.getAllByTestId("tool-detail-toggle");
+    expect(toggles).toHaveLength(3);
+    const contents = screen.getAllByTestId("tool-detail-content");
+    expect(contents).toHaveLength(3);
+    for (const content of contents) {
+      expect(content.classList.contains("agent-log-tool-detail-content--collapsed")).toBe(true);
+    }
+  });
+
+  it("expands and collapses tool detail on toggle click", () => {
+    const entries = [
+      makeEntry({ text: "Bash", type: "tool", detail: "line 1\nline 2" }),
+    ];
+    render(<AgentLogViewer entries={entries} loading={false} />);
+
+    const toggle = screen.getByTestId("tool-detail-toggle");
+    expect(toggle.getAttribute("aria-expanded")).toBe("false");
+    fireEvent.click(toggle);
+    expect(toggle.getAttribute("aria-expanded")).toBe("true");
+    const content = screen.getByTestId("tool-detail-content");
+    expect(content.textContent).toContain("line 1");
+    expect(content.classList.contains("agent-log-tool-detail-content--collapsed")).toBe(false);
+    fireEvent.click(toggle);
+    expect(toggle.getAttribute("aria-expanded")).toBe("false");
+    expect(content.classList.contains("agent-log-tool-detail-content--collapsed")).toBe(true);
+  });
+
+  it("applies the viewer styling via the agent-log-viewer class", () => {
+    const entries = [makeEntry()];
+    const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+    const viewer = container.querySelector("[data-testid='agent-log-viewer']") as HTMLElement;
+    expect(viewer.classList.contains("agent-log-viewer")).toBe(true);
+    // Theme/layout styles come from CSS classes, not inline style attributes.
+    expect(viewer.style.fontFamily).toBe("");
+  });
+
+  describe("agent badge deduplication", () => {
+    it("shows badge only on the first (oldest) of consecutive text entries from the same agent", () => {
+      const entries = [
+        makeEntry({ text: "chunk 1", type: "text", agent: "executor" }),
+        makeEntry({ text: "chunk 2", type: "text", agent: "executor" }),
+        makeEntry({ text: "chunk 3", type: "text", agent: "executor" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const badges = container.querySelectorAll(".agent-log-agent-badge");
+      expect(badges).toHaveLength(1);
+      // In chronological order, the oldest (chunk 1) gets the badge
+      expect(badges[0].textContent).toBe("[executor]");
+    });
+
+    it("shows badge on each agent transition in chronological order", () => {
+      const entries = [
+        makeEntry({ text: "hello", type: "text", agent: "triage" }),
+        makeEntry({ text: "world", type: "text", agent: "triage" }),
+        makeEntry({ text: "starting", type: "text", agent: "executor" }),
+        makeEntry({ text: "done", type: "text", agent: "executor" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const badges = container.querySelectorAll(".agent-log-agent-badge");
+      expect(badges).toHaveLength(2);
+      expect(badges[0].textContent).toBe("[Plan]");
+      expect(badges[1].textContent).toBe("[executor]");
+    });
+
+    it("shows badge on text, tool, and text-after-tool (same agent, type change) in chronological order", () => {
+      const entries = [
+        makeEntry({ text: "reading...", type: "text", agent: "executor" }),
+        makeEntry({ text: "Read", type: "tool", agent: "executor" }),
+        makeEntry({ text: "got it", type: "text", agent: "executor" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const badges = container.querySelectorAll(".agent-log-agent-badge");
+      // Chronological: reading... (text), Read (tool), got it (text)
+      // Badge on reading... (i=0), Read (always block-level), got it (type changed from tool)
+      expect(badges).toHaveLength(3);
+    });
+
+    it("shows badge only on the first (oldest) of consecutive thinking entries from the same agent", () => {
+      const entries = [
+        makeEntry({ text: "hmm", type: "thinking", agent: "triage" }),
+        makeEntry({ text: "let me think", type: "thinking", agent: "triage" }),
+        makeEntry({ text: "ok", type: "thinking", agent: "triage" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const badges = container.querySelectorAll(".agent-log-agent-badge");
+      expect(badges).toHaveLength(1);
+      // In chronological order, the oldest (hmm) gets the badge
+      expect(badges[0].textContent).toBe("[Plan]");
+    });
+
+    it("always shows badge on tool entries regardless of surrounding entries", () => {
+      const entries = [
+        makeEntry({ text: "Bash", type: "tool", agent: "executor" }),
+        makeEntry({ text: "Read", type: "tool", agent: "executor" }),
+        makeEntry({ text: "Write", type: "tool", agent: "executor" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const badges = container.querySelectorAll(".agent-log-agent-badge");
+      expect(badges).toHaveLength(3);
+    });
+
+    it("always shows badge on tool_result and tool_error entries", () => {
+      const entries = [
+        makeEntry({ text: "Bash", type: "tool", agent: "executor" }),
+        makeEntry({ text: "ok", type: "tool_result", agent: "executor" }),
+        makeEntry({ text: "Read", type: "tool", agent: "executor" }),
+        makeEntry({ text: "not found", type: "tool_error", agent: "executor" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const badges = container.querySelectorAll(".agent-log-agent-badge");
+      expect(badges).toHaveLength(4);
+    });
+
+    it("produces no badges when entries have no agent field", () => {
+      const entries = [
+        makeEntry({ text: "legacy chunk 1", type: "text" }),
+        makeEntry({ text: "legacy chunk 2", type: "text" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const badges = container.querySelectorAll(".agent-log-agent-badge");
+      expect(badges).toHaveLength(0);
+    });
+  });
+
+  describe("model info header", () => {
+    it("renders model info header with executor model when set", () => {
+      const entries = [makeEntry()];
+      const { container } = render(
+        <AgentLogViewer
+          entries={entries}
+          loading={false}
+          executorModel={{ provider: "anthropic", modelId: "claude-sonnet-4-5" }}
+        />,
+      );
+      const header = container.querySelector("[data-testid='agent-log-model-header']");
+      expect(header).toBeTruthy();
+      expect(container.querySelector('[data-provider="anthropic"]')).toBeTruthy();
+      expect(header!.textContent).not.toContain("Executor:");
+
+      fireEvent.click(screen.getByTestId("agent-log-model-expand"));
+      expect(header!.textContent).toContain("Executor:");
+      expect(header!.textContent).toContain("anthropic/claude-sonnet-4-5");
+    });
+
+    it("renders 'Using default' when no executor model override is set", () => {
+      const entries = [makeEntry()];
+      const { container } = render(
+        <AgentLogViewer entries={entries} loading={false} executorModel={null} />,
+      );
+      const header = container.querySelector("[data-testid='agent-log-model-header']");
+      expect(header).toBeTruthy();
+      expect(header!.textContent).not.toContain("Using default");
+    });
+
+    it("renders 'Using default' when executorModel is undefined", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const header = container.querySelector("[data-testid='agent-log-model-header']");
+      expect(header).toBeTruthy();
+      expect(header!.textContent).not.toContain("Using default");
+    });
+
+    it("renders model info header with validator model when set", () => {
+      const entries = [makeEntry()];
+      const { container } = render(
+        <AgentLogViewer
+          entries={entries}
+          loading={false}
+          validatorModel={{ provider: "openai", modelId: "gpt-4o" }}
+        />,
+      );
+      const header = container.querySelector("[data-testid='agent-log-model-header']");
+      expect(header).toBeTruthy();
+      expect(container.querySelector('[data-provider="openai"]')).toBeTruthy();
+      expect(header!.textContent).not.toContain("Reviewer:");
+
+      fireEvent.click(screen.getByTestId("agent-log-model-expand"));
+      expect(header!.textContent).toContain("Reviewer:");
+      expect(header!.textContent).toContain("openai/gpt-4o");
+    });
+
+    it("renders 'Using default' when no validator model override is set", () => {
+      const entries = [makeEntry()];
+      const { container } = render(
+        <AgentLogViewer entries={entries} loading={false} validatorModel={null} />,
+      );
+      const header = container.querySelector("[data-testid='agent-log-model-header']");
+      expect(header).toBeTruthy();
+      expect(header!.textContent).not.toContain("Using default");
+    });
+
+    it("renders both models when both are configured", () => {
+      const entries = [makeEntry()];
+      const { container } = render(
+        <AgentLogViewer
+          entries={entries}
+          loading={false}
+          executorModel={{ provider: "anthropic", modelId: "claude-opus-4" }}
+          validatorModel={{ provider: "openai", modelId: "gpt-4o" }}
+        />,
+      );
+      const header = container.querySelector("[data-testid='agent-log-model-header']");
+      expect(header).toBeTruthy();
+      expect(container.querySelector('[data-provider="anthropic"]')).toBeTruthy();
+      expect(container.querySelector('[data-provider="openai"]')).toBeTruthy();
+      expect(header!.textContent).not.toContain("anthropic/claude-opus-4");
+      expect(header!.textContent).not.toContain("openai/gpt-4o");
+
+      fireEvent.click(screen.getByTestId("agent-log-model-expand"));
+      expect(header!.textContent).toContain("anthropic/claude-opus-4");
+      expect(header!.textContent).toContain("openai/gpt-4o");
+    });
+
+    it("renders header with 'Using default' for both models when both are null/undefined", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const header = container.querySelector("[data-testid='agent-log-model-header']");
+      expect(header).toBeTruthy();
+      expect(header!.textContent).not.toContain("Using default");
+    });
+
+    it("shows 'Using default' when executorModel has only provider but no modelId", () => {
+      const entries = [makeEntry()];
+      const { container } = render(
+        <AgentLogViewer
+          entries={entries}
+          loading={false}
+          executorModel={{ provider: "anthropic" }}
+        />,
+      );
+      const header = container.querySelector("[data-testid='agent-log-model-header']");
+      expect(header).toBeTruthy();
+      expect(header!.textContent).not.toContain("Using default");
+    });
+
+    it("shows 'Using default' when executorModel has only modelId but no provider", () => {
+      const entries = [makeEntry()];
+      const { container } = render(
+        <AgentLogViewer
+          entries={entries}
+          loading={false}
+          executorModel={{ modelId: "claude-sonnet-4-5" }}
+        />,
+      );
+      const header = container.querySelector("[data-testid='agent-log-model-header']");
+      expect(header).toBeTruthy();
+      expect(header!.textContent).not.toContain("Using default");
+    });
+
+    it("renders model info header with planning model when set", () => {
+      const entries = [makeEntry()];
+      const { container } = render(
+        <AgentLogViewer
+          entries={entries}
+          loading={false}
+          planningModel={{ provider: "anthropic", modelId: "claude-opus-4" }}
+        />,
+      );
+      const header = container.querySelector("[data-testid='agent-log-model-header']");
+      expect(header).toBeTruthy();
+      expect(container.querySelector('[data-provider="anthropic"]')).toBeTruthy();
+      expect(header!.textContent).not.toContain("Planning:");
+
+      fireEvent.click(screen.getByTestId("agent-log-model-expand"));
+      expect(header!.textContent).toContain("Planning:");
+      expect(header!.textContent).toContain("anthropic/claude-opus-4");
+    });
+
+    it("renders 'Using default' for planning when no planning model is set", () => {
+      const entries = [makeEntry()];
+      const { container } = render(
+        <AgentLogViewer entries={entries} loading={false} planningModel={null} />,
+      );
+      const header = container.querySelector("[data-testid='agent-log-model-header']");
+      expect(header).toBeTruthy();
+      expect(header!.textContent).not.toContain("Using default");
+    });
+
+    it("renders 'Using default' for planning when planningModel is undefined", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const header = container.querySelector("[data-testid='agent-log-model-header']");
+      expect(header).toBeTruthy();
+      expect(header!.textContent).not.toContain("Using default");
+    });
+
+    it("renders all three models when all are configured", () => {
+      const entries = [makeEntry()];
+      const { container } = render(
+        <AgentLogViewer
+          entries={entries}
+          loading={false}
+          executorModel={{ provider: "anthropic", modelId: "claude-opus-4" }}
+          validatorModel={{ provider: "openai", modelId: "gpt-4o" }}
+          planningModel={{ provider: "google", modelId: "gemini-pro" }}
+        />,
+      );
+      const header = container.querySelector("[data-testid='agent-log-model-header']");
+      expect(header).toBeTruthy();
+      expect(container.querySelector('[data-provider="anthropic"]')).toBeTruthy();
+      expect(container.querySelector('[data-provider="openai"]')).toBeTruthy();
+      expect(container.querySelector('[data-provider="google"]')).toBeTruthy();
+      expect(header!.textContent).not.toContain("anthropic/claude-opus-4");
+      expect(header!.textContent).not.toContain("openai/gpt-4o");
+      expect(header!.textContent).not.toContain("google/gemini-pro");
+
+      fireEvent.click(screen.getByTestId("agent-log-model-expand"));
+      expect(header!.textContent).toContain("anthropic/claude-opus-4");
+      expect(header!.textContent).toContain("openai/gpt-4o");
+      expect(header!.textContent).toContain("google/gemini-pro");
+    });
+
+    it("shows 'Using default' for planning when planningModel has only provider but no modelId", () => {
+      const entries = [makeEntry()];
+      const { container } = render(
+        <AgentLogViewer
+          entries={entries}
+          loading={false}
+          planningModel={{ provider: "anthropic" }}
+        />,
+      );
+      const header = container.querySelector("[data-testid='agent-log-model-header']");
+      expect(header).toBeTruthy();
+      expect(header!.textContent).not.toContain("Using default");
+    });
+  });
+
+  describe("model header expand/collapse", () => {
+    it("shows only provider icons in collapsed state, hides model text", () => {
+      const entries = [makeEntry()];
+      const { container } = render(
+        <AgentLogViewer
+          entries={entries}
+          loading={false}
+          executorModel={{ provider: "anthropic", modelId: "claude-sonnet-4-5" }}
+        />,
+      );
+
+      expect(container.querySelector('[data-provider="anthropic"]')).toBeTruthy();
+      expect(screen.getByTestId("agent-log-model-expand")).toBeTruthy();
+      expect(container.textContent).not.toContain("Executor:");
+      expect(container.textContent).not.toContain("claude-sonnet-4-5");
+    });
+
+    it("shows model details when expand button is clicked", () => {
+      const entries = [makeEntry()];
+      const { container } = render(
+        <AgentLogViewer
+          entries={entries}
+          loading={false}
+          executorModel={{ provider: "anthropic", modelId: "claude-sonnet-4-5" }}
+        />,
+      );
+
+      fireEvent.click(screen.getByTestId("agent-log-model-expand"));
+      expect(container.textContent).toContain("Executor:");
+      expect(container.textContent).toContain("anthropic/claude-sonnet-4-5");
+    });
+
+    it("collapses model details when expand button is clicked again", () => {
+      const entries = [makeEntry()];
+      const { container } = render(
+        <AgentLogViewer
+          entries={entries}
+          loading={false}
+          executorModel={{ provider: "anthropic", modelId: "claude-sonnet-4-5" }}
+        />,
+      );
+
+      const button = screen.getByTestId("agent-log-model-expand");
+      fireEvent.click(button);
+      expect(container.textContent).toContain("Executor:");
+      fireEvent.click(button);
+      expect(container.textContent).not.toContain("Executor:");
+    });
+
+    it("shows no provider icons when no model overrides are set", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+
+      expect(container.querySelector("[data-provider]")).toBeNull();
+    });
+
+    it("has aria-expanded=false when collapsed and aria-expanded=true when expanded", () => {
+      const entries = [makeEntry()];
+      render(
+        <AgentLogViewer
+          entries={entries}
+          loading={false}
+          executorModel={{ provider: "anthropic", modelId: "claude-sonnet-4-5" }}
+        />,
+      );
+
+      const button = screen.getByTestId("agent-log-model-expand");
+      expect(button.getAttribute("aria-expanded")).toBe("false");
+      fireEvent.click(button);
+      expect(button.getAttribute("aria-expanded")).toBe("true");
+    });
+
+    it("renders multiple provider icons for multiple overrides", () => {
+      const entries = [makeEntry()];
+      const { container } = render(
+        <AgentLogViewer
+          entries={entries}
+          loading={false}
+          executorModel={{ provider: "anthropic", modelId: "claude-opus-4" }}
+          validatorModel={{ provider: "openai", modelId: "gpt-4o" }}
+          planningModel={{ provider: "google", modelId: "gemini-pro" }}
+        />,
+      );
+
+      expect(container.querySelector('[data-provider="anthropic"]')).toBeTruthy();
+      expect(container.querySelector('[data-provider="openai"]')).toBeTruthy();
+      expect(container.querySelector('[data-provider="google"]')).toBeTruthy();
+    });
+  });
+
+  describe("timestamp display", () => {
+    it("renders no timestamps for entries without agent field", () => {
+      const entries = [
+        makeEntry({ text: "legacy 1", type: "text" }),
+        makeEntry({ text: "legacy 2", type: "text" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const timestamps = container.querySelectorAll(".agent-log-timestamp");
+      expect(timestamps).toHaveLength(0);
+    });
+
+    it("renders relative timestamps for recent entries next to the badge", () => {
+      const recentTimestamp = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+      const entries = [
+        makeEntry({ text: "hello", type: "text", agent: "executor", timestamp: recentTimestamp }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const timestamp = container.querySelector(".agent-log-timestamp");
+      expect(timestamp).toBeTruthy();
+      expect(timestamp!.textContent).toBe("5m ago");
+
+      const badge = container.querySelector(".agent-log-agent-badge") as HTMLElement;
+      expect(badge).toBeTruthy();
+      expect(badge.parentElement?.querySelector(".agent-log-timestamp")).toBeTruthy();
+    });
+
+    it("renders 'just now' for entries less than a minute old", () => {
+      const recentTimestamp = new Date(Date.now() - 30 * 1000).toISOString();
+      const entries = [
+        makeEntry({ text: "hello", type: "text", agent: "executor", timestamp: recentTimestamp }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const timestamp = container.querySelector(".agent-log-timestamp");
+      expect(timestamp!.textContent).toBe("just now");
+    });
+
+    it("renders hours ago for older entries", () => {
+      const olderTimestamp = new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString();
+      const entries = [
+        makeEntry({ text: "hello", type: "text", agent: "executor", timestamp: olderTimestamp }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const timestamp = container.querySelector(".agent-log-timestamp");
+      expect(timestamp!.textContent).toBe("3h ago");
+    });
+
+    it("renders days ago for entries older than a day", () => {
+      const oldTimestamp = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString();
+      const entries = [
+        makeEntry({ text: "hello", type: "text", agent: "executor", timestamp: oldTimestamp }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const timestamp = container.querySelector(".agent-log-timestamp");
+      expect(timestamp!.textContent).toBe("2d ago");
+    });
+
+    it("renders locale date for entries older than 7 days", () => {
+      const veryOldTimestamp = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+      const entries = [
+        makeEntry({ text: "hello", type: "text", agent: "executor", timestamp: veryOldTimestamp }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const timestamp = container.querySelector(".agent-log-timestamp");
+      // Should be a locale date string, not a relative time
+      expect(timestamp!.textContent).not.toContain("ago");
+      expect(timestamp!.textContent).not.toBe("just now");
+    });
+
+    it("uses the timestamp class inside the badge row", () => {
+      const entries = [makeEntry({ text: "hello", type: "text", agent: "executor" })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const badge = container.querySelector(".agent-log-agent-badge") as HTMLElement;
+      expect(badge).toBeTruthy();
+      const timestamp = badge.parentElement?.querySelector(".agent-log-timestamp") as HTMLElement;
+      expect(timestamp).toBeTruthy();
+      expect(timestamp.classList.contains("agent-log-timestamp")).toBe(true);
+      // Theme styles are class-based now, not inline.
+      expect(timestamp.style.fontSize).toBe("");
+      expect(timestamp.style.opacity).toBe("");
+    });
+
+    it("includes timestamp in the badge container for tool entries", () => {
+      const entries = [makeEntry({ text: "Bash", type: "tool", agent: "executor" })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toolDiv = container.querySelector(".agent-log-tool");
+      expect(toolDiv).toBeTruthy();
+      const badge = toolDiv!.querySelector(".agent-log-agent-badge") as HTMLElement;
+      expect(badge).toBeTruthy();
+      expect(badge.parentElement?.querySelector(".agent-log-timestamp")).toBeTruthy();
+    });
+
+    it("includes timestamp in the badge container for tool_result entries", () => {
+      const entries = [makeEntry({ text: "ok", type: "tool_result", agent: "executor" })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const resultDiv = container.querySelector(".agent-log-tool-result");
+      expect(resultDiv).toBeTruthy();
+      const badge = resultDiv!.querySelector(".agent-log-agent-badge") as HTMLElement;
+      expect(badge).toBeTruthy();
+      expect(badge.parentElement?.querySelector(".agent-log-timestamp")).toBeTruthy();
+    });
+
+    it("includes timestamp in the badge container for tool_error entries", () => {
+      const entries = [makeEntry({ text: "fail", type: "tool_error", agent: "executor" })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const errorDiv = container.querySelector(".agent-log-tool-error");
+      expect(errorDiv).toBeTruthy();
+      const badge = errorDiv!.querySelector(".agent-log-agent-badge") as HTMLElement;
+      expect(badge).toBeTruthy();
+      expect(badge.parentElement?.querySelector(".agent-log-timestamp")).toBeTruthy();
+    });
+
+    it("includes timestamp in the badge container for thinking entries", () => {
+      const entries = [makeEntry({ text: "hmm", type: "thinking", agent: "executor" })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const thinkingSpan = container.querySelector(".agent-log-thinking");
+      expect(thinkingSpan).toBeTruthy();
+      const badge = thinkingSpan!.querySelector(".agent-log-agent-badge") as HTMLElement;
+      expect(badge).toBeTruthy();
+      expect(badge.parentElement?.querySelector(".agent-log-timestamp")).toBeTruthy();
+    });
+
+    it("shows exactly one timestamp for consecutive text entries from the same agent", () => {
+      const entries = [
+        makeEntry({ text: "chunk 1", type: "text", agent: "executor" }),
+        makeEntry({ text: "chunk 2", type: "text", agent: "executor" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const timestamps = container.querySelectorAll(".agent-log-timestamp");
+      expect(timestamps).toHaveLength(1);
+    });
+
+    it("renders timestamps at each agent transition", () => {
+      const entries = [
+        makeEntry({ text: "triage output", type: "text", agent: "triage" }),
+        makeEntry({ text: "executor output", type: "text", agent: "executor" }),
+        makeEntry({ text: "review notes", type: "text", agent: "reviewer" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const badges = Array.from(container.querySelectorAll(".agent-log-agent-badge"));
+      const timestamps = container.querySelectorAll(".agent-log-timestamp");
+
+      expect(badges).toHaveLength(3);
+      expect(timestamps).toHaveLength(3);
+      expect(badges.map((badge) => badge.textContent)).toEqual(["[Plan]", "[executor]", "[reviewer]"]);
+    });
+
+    it("badge container includes both badge text and timestamp text", () => {
+      const recentTimestamp = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+      const entries = [
+        makeEntry({ text: "hello", type: "text", agent: "executor", timestamp: recentTimestamp }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const badge = container.querySelector(".agent-log-agent-badge") as HTMLElement;
+      expect(badge).toBeTruthy();
+
+      const badgeContainer = badge.parentElement as HTMLElement;
+      expect(badgeContainer.textContent).toContain("[executor]");
+      expect(badgeContainer.textContent).toContain("5m ago");
+    });
+  });
+
+  describe("horizontal overflow prevention", () => {
+    it("uses the scroll container class for overflow-x handling", () => {
+      const longString = "A".repeat(300);
+      const entries = [makeEntry({ text: longString })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const scrollContainer = getScrollContainer(container);
+      expect(scrollContainer.classList.contains("agent-log-viewer-scroll")).toBe(true);
+      expect(scrollContainer.style.overflowX).toBe("");
+    });
+
+    it("uses the scroll container class for overflow-wrap handling", () => {
+      const entries = [makeEntry({ text: "x".repeat(250) })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const scrollContainer = getScrollContainer(container);
+      expect(scrollContainer.classList.contains("agent-log-viewer-scroll")).toBe(true);
+      expect(scrollContainer.style.overflowWrap).toBe("");
+    });
+
+    it("renders pre elements with overflow-x auto for internal scrolling", () => {
+      const longLine = "const x = " + "'a'.repeat(500)";
+      const entries = [makeEntry({ text: "```\n" + longLine + "\n```" })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const pre = container.querySelector("pre") as HTMLElement;
+      expect(pre).toBeTruthy();
+      expect(pre.style.overflowX).toBe("auto");
+      expect(pre.style.maxWidth).toBe("100%");
+    });
+
+    it("applies model-header wrapping via class", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const header = container.querySelector("[data-testid='agent-log-model-header']") as HTMLElement;
+      expect(header.classList.contains("agent-log-model-header")).toBe(true);
+      expect(header.style.flexWrap).toBe("");
+    });
+  });
+
+  describe("full-height layout", () => {
+    it("does not have a fixed maxHeight constraint", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const viewer = container.querySelector("[data-testid='agent-log-viewer']") as HTMLElement;
+      // The viewer should NOT have a maxHeight of 500px (the old fixed constraint)
+      expect(viewer.style.maxHeight).not.toBe("500px");
+      // maxHeight should be empty (unset) so the viewer can grow to fill available space
+      expect(viewer.style.maxHeight).toBe("");
+    });
+
+    it("uses class-based overflow-y scrolling on the entries container", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const scrollContainer = getScrollContainer(container);
+      // Scrolling behavior is now defined in CSS.
+      expect(scrollContainer.classList.contains("agent-log-viewer-scroll")).toBe(true);
+      expect(scrollContainer.style.overflowY).toBe("");
+    });
+
+    it("uses agent-log-viewer--streaming class when entries are present", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const viewer = container.querySelector("[data-testid='agent-log-viewer']") as HTMLElement;
+      expect(viewer.classList.contains("agent-log-viewer")).toBe(true);
+      expect(viewer.classList.contains("agent-log-viewer--streaming")).toBe(true);
+    });
+
+    it("does not use streaming class on loading state", () => {
+      const { container } = render(<AgentLogViewer entries={[]} loading={true} />);
+      const viewer = container.querySelector("[data-testid='agent-log-viewer']") as HTMLElement;
+      expect(viewer.classList.contains("agent-log-viewer")).toBe(true);
+      expect(viewer.classList.contains("agent-log-viewer--streaming")).toBe(false);
+    });
+  });
+
+  describe("sticky header layout", () => {
+    it("renders the model header as a sibling of the scroll container", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const viewer = container.querySelector("[data-testid='agent-log-viewer']") as HTMLElement;
+      const header = screen.getByTestId("agent-log-model-header");
+      const scrollContainer = getScrollContainer(container);
+
+      expect(header.parentElement).toBe(viewer);
+      expect(scrollContainer.parentElement).toBe(viewer);
+      expect(scrollContainer.contains(header)).toBe(false);
+    });
+
+    it("renders log entry rows inside the scroll container", () => {
+      const entries = [
+        makeEntry({ type: "text", text: "hello" }),
+        makeEntry({ type: "tool", text: "Bash" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const scrollContainer = getScrollContainer(container);
+
+      expect(scrollContainer.querySelector(".agent-log-text")).toBeTruthy();
+      expect(scrollContainer.querySelector(".agent-log-tool")).toBeTruthy();
+    });
+
+    it("renders pagination summary and load-more controls inside the scroll container", () => {
+      const entries = [makeEntry({ text: "hello" })];
+      const { container } = render(
+        <AgentLogViewer
+          entries={entries}
+          loading={false}
+          totalCount={42}
+          hasMore={true}
+          onLoadMore={() => {}}
+        />,
+      );
+      const scrollContainer = getScrollContainer(container);
+
+      expect(scrollContainer.querySelector("[data-testid='agent-log-summary']")).toBeTruthy();
+      expect(scrollContainer.querySelector("[data-testid='agent-log-load-more']")).toBeTruthy();
+    });
+
+    it("renders the return-to-live button inside the scroll container", () => {
+      const entries = [
+        makeEntry({ text: "first", timestamp: "2026-01-01T00:00:00Z" }),
+        makeEntry({ text: "second", timestamp: "2026-01-01T00:00:01Z" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const scrollContainer = getScrollContainer(container);
+
+      Object.defineProperty(scrollContainer, "scrollHeight", { configurable: true, value: 1000 });
+      Object.defineProperty(scrollContainer, "clientHeight", { configurable: true, value: 200 });
+
+      scrollContainer.scrollTop = 300;
+      fireEvent.scroll(scrollContainer);
+
+      const returnToLive = screen.getByTestId("agent-log-return-to-live");
+      expect(returnToLive.parentElement).toBe(scrollContainer);
+    });
+  });
+
+  describe("auto-scroll behavior", () => {
+    it("scrolls to bottom when streaming updates arrive and user is near the bottom", () => {
+      const initialEntries = [
+        makeEntry({ text: "first", timestamp: "2026-01-01T00:00:00Z" }),
+      ];
+      const streamedEntries = [
+        ...initialEntries,
+        makeEntry({ text: "second", timestamp: "2026-01-01T00:00:01Z" }),
+      ];
+
+      const { rerender, container } = render(<AgentLogViewer entries={initialEntries} loading={false} />);
+      const viewer = getScrollContainer(container);
+
+      let scrollHeight = 600;
+      Object.defineProperty(viewer, "scrollHeight", {
+        configurable: true,
+        get: () => scrollHeight,
+      });
+
+      viewer.scrollTop = 560;
+      rerender(<AgentLogViewer entries={[...initialEntries]} loading={false} />);
+
+      scrollHeight = 720;
+      rerender(<AgentLogViewer entries={streamedEntries} loading={false} />);
+
+      expect(viewer.scrollTop).toBe(720);
+    });
+
+    it("does not auto-scroll when streaming updates arrive and user is reading older output", () => {
+      const initialEntries = [
+        makeEntry({ text: "first", timestamp: "2026-01-01T00:00:00Z" }),
+      ];
+      const streamedEntries = [
+        ...initialEntries,
+        makeEntry({ text: "second", timestamp: "2026-01-01T00:00:01Z" }),
+      ];
+
+      const { rerender, container } = render(<AgentLogViewer entries={initialEntries} loading={false} />);
+      const viewer = getScrollContainer(container);
+
+      let scrollHeight = 1000;
+      Object.defineProperty(viewer, "scrollHeight", {
+        configurable: true,
+        get: () => scrollHeight,
+      });
+
+      viewer.scrollTop = 220;
+      rerender(<AgentLogViewer entries={[...initialEntries]} loading={false} />);
+
+      scrollHeight = 1120;
+      rerender(<AgentLogViewer entries={streamedEntries} loading={false} />);
+
+      expect(viewer.scrollTop).toBe(220);
+    });
+
+    it("keeps viewport anchored when older history is prepended", () => {
+      const initialEntries = [
+        makeEntry({ text: "recent", timestamp: "2026-01-01T00:00:00Z" }),
+      ];
+      const olderLoadedEntries = [
+        makeEntry({ text: "older", timestamp: "2025-12-31T23:59:00Z" }),
+        ...initialEntries,
+      ];
+
+      const { rerender, container } = render(<AgentLogViewer entries={initialEntries} loading={false} />);
+      const viewer = getScrollContainer(container);
+
+      let scrollHeight = 900;
+      Object.defineProperty(viewer, "scrollHeight", {
+        configurable: true,
+        get: () => scrollHeight,
+      });
+
+      viewer.scrollTop = 260;
+      rerender(<AgentLogViewer entries={[...initialEntries]} loading={false} />);
+
+      scrollHeight = 1030;
+      rerender(<AgentLogViewer entries={olderLoadedEntries} loading={false} />);
+
+      // Anchored by delta (1030 - 900): 260 + 130
+      expect(viewer.scrollTop).toBe(390);
+    });
+
+    it("shows return-to-live button when user scrolls away from bottom", () => {
+      const entries = [
+        makeEntry({ text: "first", timestamp: "2026-01-01T00:00:00Z" }),
+        makeEntry({ text: "second", timestamp: "2026-01-01T00:00:01Z" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const viewer = getScrollContainer(container);
+
+      Object.defineProperty(viewer, "scrollHeight", { configurable: true, value: 1000 });
+      Object.defineProperty(viewer, "clientHeight", { configurable: true, value: 200 });
+
+      viewer.scrollTop = 300;
+      fireEvent.scroll(viewer);
+
+      expect(screen.getByTestId("agent-log-return-to-live")).toBeTruthy();
+    });
+
+    it("hides return-to-live button when user is following live output", () => {
+      const entries = [
+        makeEntry({ text: "first", timestamp: "2026-01-01T00:00:00Z" }),
+        makeEntry({ text: "second", timestamp: "2026-01-01T00:00:01Z" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const viewer = getScrollContainer(container);
+
+      Object.defineProperty(viewer, "scrollHeight", { configurable: true, value: 1000 });
+      Object.defineProperty(viewer, "clientHeight", { configurable: true, value: 200 });
+
+      viewer.scrollTop = 760;
+      fireEvent.scroll(viewer);
+
+      expect(screen.queryByTestId("agent-log-return-to-live")).toBeNull();
+    });
+
+    it("returns to bottom and resumes following when return-to-live is clicked", () => {
+      const entries = [
+        makeEntry({ text: "first", timestamp: "2026-01-01T00:00:00Z" }),
+        makeEntry({ text: "second", timestamp: "2026-01-01T00:00:01Z" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const viewer = getScrollContainer(container);
+
+      Object.defineProperty(viewer, "scrollHeight", { configurable: true, value: 1000 });
+      Object.defineProperty(viewer, "clientHeight", { configurable: true, value: 200 });
+
+      viewer.scrollTop = 280;
+      fireEvent.scroll(viewer);
+
+      const returnButton = screen.getByTestId("agent-log-return-to-live");
+      fireEvent.click(returnButton);
+
+      expect(viewer.scrollTop).toBe(1000);
+      expect(screen.queryByTestId("agent-log-return-to-live")).toBeNull();
+    });
+  });
+
+  describe("pagination placement", () => {
+    it("renders the load-more control above the first log entry", () => {
+      const entries = [
+        makeEntry({ text: "oldest", timestamp: "2026-01-01T00:00:00Z" }),
+        makeEntry({ text: "newest", timestamp: "2026-01-01T00:00:01Z" }),
+      ];
+
+      const { container } = render(
+        <AgentLogViewer
+          entries={entries}
+          loading={false}
+          hasMore={true}
+          onLoadMore={() => {}}
+        />,
+      );
+
+      const loadMore = screen.getByTestId("agent-log-load-more");
+      const firstRow = container.querySelector(".agent-log-text") as HTMLElement;
+      expect(firstRow).toBeTruthy();
+
+      expect(loadMore.compareDocumentPosition(firstRow) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+  });
+
+  describe("long content preservation", () => {
+    it("renders very long text entries without truncation", () => {
+      const longText = "A".repeat(5000);
+      const entries = [makeEntry({ text: longText })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const textSpans = container.querySelectorAll(".agent-log-text");
+      expect(textSpans).toHaveLength(1);
+      expect(textSpans[0].textContent).toContain(longText);
+    });
+
+    it("renders very long detail text without truncation", () => {
+      const longDetail = "B".repeat(5000);
+      const entries = [makeEntry({ text: "Read", type: "tool", detail: longDetail })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      fireEvent.click(screen.getByTestId("tool-detail-toggle"));
+      const detail = container.querySelector(".agent-log-tool-detail");
+      expect(detail).toBeTruthy();
+      expect(detail!.textContent).toContain(longDetail);
+      expect(detail!.textContent!.length).toBe(5000);
+    });
+
+    it("renders multiline text content without truncation", () => {
+      const multilineText = [
+        "## Analysis",
+        "",
+        "After reviewing the codebase:",
+        "",
+        "1. First issue found",
+        "2. Second issue found",
+        "",
+        "```typescript",
+        "const x = 1;",
+        "```",
+        "",
+        "Line " + "C".repeat(2000) + " end",
+      ].join("\n");
+      const entries = [makeEntry({ text: multilineText })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const textSpans = container.querySelectorAll(".agent-log-text");
+      expect(textSpans).toHaveLength(1);
+      // The markdown-rendered content should still contain the essential parts
+      expect(textSpans[0].textContent).toContain("Analysis");
+      expect(textSpans[0].textContent).toContain("First issue found");
+      expect(textSpans[0].textContent).toContain("const x = 1");
+    });
+
+    it("renders long tool_result detail without truncation", () => {
+      const longDetail = "D".repeat(5000);
+      const entries = [makeEntry({ text: "Bash", type: "tool_result", detail: longDetail })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      fireEvent.click(screen.getByTestId("tool-detail-toggle"));
+      const detail = container.querySelector(".agent-log-tool-detail");
+      expect(detail).toBeTruthy();
+      expect(detail!.textContent).toContain(longDetail);
+    });
+
+    it("renders long tool_error detail without truncation", () => {
+      const longDetail = "E".repeat(5000);
+      const entries = [makeEntry({ text: "Write", type: "tool_error", detail: longDetail })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      fireEvent.click(screen.getByTestId("tool-detail-toggle"));
+      const detail = container.querySelector(".agent-log-tool-detail");
+      expect(detail).toBeTruthy();
+      expect(detail!.textContent).toContain(longDetail);
+    });
+
+    it("preserves raw whitespace in tool detail blocks", () => {
+      const detailText = "stdout:\n  line one\n    indented line two\n";
+      const entries = [makeEntry({ text: "Bash", type: "tool_result", detail: detailText })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      fireEvent.click(screen.getByTestId("tool-detail-toggle"));
+      const detail = container.querySelector(".agent-log-tool-detail") as HTMLElement;
+      expect(detail).toBeTruthy();
+      expect(detail.tagName).toBe("PRE");
+      expect(detail.textContent).toBe(detailText);
+    });
+  });
+
+  describe("markdown rendering", () => {
+    it("renders plain text without markdown correctly", () => {
+      const entries = [
+        makeEntry({ text: "Hello world, this is plain text." }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const textSpans = container.querySelectorAll(".agent-log-text");
+      expect(textSpans).toHaveLength(1);
+      expect(textSpans[0].textContent).toContain("Hello world, this is plain text.");
+    });
+
+    it("renders text entries inside markdown-body in markdown mode", () => {
+      const entries = [
+        makeEntry({ text: "Paragraph one\n\nParagraph two" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const textRow = container.querySelector(".agent-log-text") as HTMLElement;
+      expect(textRow).toBeTruthy();
+
+      const proseContainer = textRow.querySelector(".markdown-body") as HTMLElement;
+      expect(proseContainer).toBeTruthy();
+      expect(proseContainer.querySelectorAll("p")).toHaveLength(2);
+    });
+
+    it("renders thinking entries inside markdown-body in markdown mode", () => {
+      const entries = [
+        makeEntry({ text: "Considering:\n\n- option A\n- option B", type: "thinking" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const thinkingRow = container.querySelector(".agent-log-thinking") as HTMLElement;
+      expect(thinkingRow).toBeTruthy();
+
+      const proseContainer = thinkingRow.querySelector(".markdown-body") as HTMLElement;
+      expect(proseContainer).toBeTruthy();
+      expect(proseContainer.querySelector("ul")).toBeTruthy();
+    });
+
+    it("renders inline markdown elements (bold, italic, inline code)", () => {
+      const entries = [
+        makeEntry({ text: "This is **bold** and *italic* with `inline code`." }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const textSpans = container.querySelectorAll(".agent-log-text");
+      expect(textSpans).toHaveLength(1);
+      // Check that the markdown elements are rendered
+      const strong = textSpans[0].querySelector("strong");
+      expect(strong).toBeTruthy();
+      expect(strong!.textContent).toBe("bold");
+      const em = textSpans[0].querySelector("em");
+      expect(em).toBeTruthy();
+      expect(em!.textContent).toBe("italic");
+      const code = textSpans[0].querySelector("code");
+      expect(code).toBeTruthy();
+      expect(code!.textContent).toBe("inline code");
+    });
+
+    it("renders code blocks with GFM support", () => {
+      const entries = [
+        makeEntry({ text: "```typescript\nconst x = 1;\n```" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const textSpans = container.querySelectorAll(".agent-log-text");
+      expect(textSpans).toHaveLength(1);
+      // Check that code block is rendered
+      const pre = textSpans[0].querySelector("pre");
+      expect(pre).toBeTruthy();
+      const code = pre!.querySelector("code");
+      expect(code).toBeTruthy();
+      expect(code!.textContent).toContain("const x = 1");
+    });
+
+    it("renders GFM task lists", () => {
+      const entries = [
+        makeEntry({ text: "- [x] Completed task\n- [ ] Pending task" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const textSpans = container.querySelectorAll(".agent-log-text");
+      expect(textSpans).toHaveLength(1);
+      // Check that task list is rendered
+      const ul = textSpans[0].querySelector("ul");
+      expect(ul).toBeTruthy();
+      const taskListItems = ul!.querySelectorAll("li");
+      expect(taskListItems).toHaveLength(2);
+      // Check checkboxes
+      const checkboxes = ul!.querySelectorAll('input[type="checkbox"]');
+      expect(checkboxes).toHaveLength(2);
+      expect((checkboxes[0] as HTMLInputElement).checked).toBe(true);
+      expect((checkboxes[1] as HTMLInputElement).checked).toBe(false);
+    });
+
+    it("renders blockquotes", () => {
+      const entries = [
+        makeEntry({ text: "> This is a blockquote\n> with multiple lines" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const textSpans = container.querySelectorAll(".agent-log-text");
+      expect(textSpans).toHaveLength(1);
+      // Check that blockquote is rendered
+      const blockquote = textSpans[0].querySelector("blockquote");
+      expect(blockquote).toBeTruthy();
+      expect(blockquote!.textContent).toContain("This is a blockquote");
+    });
+
+    it("renders markdown in thinking entries", () => {
+      const entries = [
+        makeEntry({ text: "Let me think about **this problem**...", type: "thinking" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const thinkingSpans = container.querySelectorAll(".agent-log-thinking");
+      expect(thinkingSpans).toHaveLength(1);
+      const strong = thinkingSpans[0].querySelector("strong");
+      expect(strong).toBeTruthy();
+      expect(strong!.textContent).toBe("this problem");
+    });
+
+    it("renders mixed content with markdown and plain text", () => {
+      const entries = [
+        makeEntry({ text: "The code:\n\n```js\nconsole.log('hello');\n```\n\nworks!" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const textSpans = container.querySelectorAll(".agent-log-text");
+      expect(textSpans).toHaveLength(1);
+      const pre = textSpans[0].querySelector("pre");
+      expect(pre).toBeTruthy();
+      // Plain text before and after should be preserved
+      expect(textSpans[0].textContent).toContain("The code:");
+      expect(textSpans[0].textContent).toContain("works!");
+    });
+  });
+
+  describe("markdown render toggle", () => {
+    it("renders the toggle button in the model info header", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-mode-toggle']");
+      expect(toggle).toBeTruthy();
+      expect(toggle!.textContent).toBe("Markdown");
+    });
+
+    it("defaults to markdown mode", () => {
+      const entries = [makeEntry({ text: "**bold** text" })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      // In markdown mode, bold should be rendered as <strong>
+      const textSpans = container.querySelectorAll(".agent-log-text");
+      const strong = textSpans[0].querySelector("strong");
+      expect(strong).toBeTruthy();
+      expect(strong!.textContent).toBe("bold");
+    });
+
+    it("has correct aria attributes on the toggle", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-mode-toggle']") as HTMLButtonElement;
+      expect(toggle).toBeTruthy();
+      expect(toggle.getAttribute("aria-pressed")).toBe("true");
+      expect(toggle.getAttribute("aria-label")).toBe("Switch to plain text mode");
+    });
+
+    it("switches to plain text mode when clicked", () => {
+      const entries = [makeEntry({ text: "**bold** and *italic*" })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-mode-toggle']") as HTMLButtonElement;
+
+      // Markdown mode starts with prose container + rendered markdown
+      const markdownModeTextRow = container.querySelector(".agent-log-text") as HTMLElement;
+      expect(markdownModeTextRow.querySelector(".markdown-body")).toBeTruthy();
+      expect(markdownModeTextRow.querySelector("strong")?.textContent).toBe("bold");
+
+      // Click to switch to plain text mode
+      fireEvent.click(toggle);
+
+      // Button should update
+      expect(toggle.textContent).toBe("Plain");
+      expect(toggle.getAttribute("aria-pressed")).toBe("false");
+      expect(toggle.getAttribute("aria-label")).toBe("Switch to markdown mode");
+
+      // Text should now show raw markdown syntax literally
+      const textSpans = container.querySelectorAll(".agent-log-text");
+      expect(textSpans).toHaveLength(1);
+      expect(textSpans[0].textContent).toContain("**bold** and *italic*");
+      const plainBlock = textSpans[0].querySelector(".agent-log-plain-block") as HTMLElement;
+      expect(plainBlock).toBeTruthy();
+      // Plain mode should remove markdown rendering/prose container
+      expect(textSpans[0].querySelector(".markdown-body")).toBeNull();
+      expect(textSpans[0].querySelector("strong")).toBeNull();
+      expect(textSpans[0].querySelector("em")).toBeNull();
+    });
+
+    it("concatenates grouped text into a single markdown render", () => {
+      const entries = [
+        makeEntry({ text: "**bold", type: "text", agent: "executor" }),
+        makeEntry({ text: "** text", type: "text", agent: "executor" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+
+      const textRows = container.querySelectorAll(".agent-log-text");
+      expect(textRows).toHaveLength(1);
+      expect(textRows[0].querySelectorAll(".markdown-body")).toHaveLength(1);
+      const strong = textRows[0].querySelector("strong");
+      expect(strong).toBeTruthy();
+      expect(strong!.textContent).toBe("bold");
+    });
+
+    it("joins grouped chunks inline in plain text mode", () => {
+      const entries = [
+        makeEntry({ text: "hello", type: "text", agent: "executor" }),
+        makeEntry({ text: " world", type: "text", agent: "executor" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-mode-toggle']") as HTMLButtonElement;
+
+      fireEvent.click(toggle);
+
+      const textRows = container.querySelectorAll(".agent-log-text");
+      expect(textRows).toHaveLength(1);
+      expect(textRows[0].querySelector(".markdown-body")).toBeNull();
+      expect(textRows[0].textContent).toContain("hello world");
+    });
+
+    it("toggles back to markdown mode from plain text", () => {
+      const entries = [makeEntry({ text: "**bold** text" })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-mode-toggle']") as HTMLButtonElement;
+
+      // Switch to plain text
+      fireEvent.click(toggle);
+      expect(toggle.textContent).toBe("Plain");
+
+      // Switch back to markdown
+      fireEvent.click(toggle);
+      expect(toggle.textContent).toBe("Markdown");
+
+      // Markdown elements should be present again
+      const textSpans = container.querySelectorAll(".agent-log-text");
+      const strong = textSpans[0].querySelector("strong");
+      expect(strong).toBeTruthy();
+      expect(strong!.textContent).toBe("bold");
+    });
+
+    it("preserves line breaks in plain text mode for thinking entries", () => {
+      const entries = [makeEntry({ text: "line1\nline2\nline3", type: "thinking", agent: "executor" })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-mode-toggle']") as HTMLButtonElement;
+
+      fireEvent.click(toggle);
+
+      const plainThinking = container.querySelector(".agent-log-thinking .agent-log-plain-block") as HTMLElement;
+      expect(plainThinking).toBeTruthy();
+      expect(plainThinking.textContent).toContain("line1\nline2\nline3");
+    });
+
+    it("shows raw markdown syntax literally in plain text mode for text entries", () => {
+      const entries = [
+        makeEntry({ text: "## Heading\n\n- item 1\n- item 2\n\n`code` and **bold**" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-mode-toggle']") as HTMLButtonElement;
+
+      // Switch to plain text
+      fireEvent.click(toggle);
+
+      const textSpans = container.querySelectorAll(".agent-log-text");
+      expect(textSpans).toHaveLength(1);
+      // Raw markdown syntax should appear literally
+      expect(textSpans[0].textContent).toContain("## Heading");
+      expect(textSpans[0].textContent).toContain("- item 1");
+      expect(textSpans[0].textContent).toContain("`code`");
+      expect(textSpans[0].textContent).toContain("**bold**");
+      // No rendered markdown elements
+      expect(textSpans[0].querySelector("h2")).toBeNull();
+      expect(textSpans[0].querySelector("ul")).toBeNull();
+      expect(textSpans[0].querySelector("code")).toBeNull();
+      expect(textSpans[0].querySelector("strong")).toBeNull();
+    });
+
+    it("respects toggle for thinking entries", () => {
+      const entries = [
+        makeEntry({ text: "Thinking about **this**", type: "thinking" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-mode-toggle']") as HTMLButtonElement;
+
+      // In markdown mode, bold is rendered
+      const thinkingSpans = container.querySelectorAll(".agent-log-thinking");
+      expect(thinkingSpans[0].querySelector("strong")).toBeTruthy();
+
+      // Switch to plain text
+      fireEvent.click(toggle);
+
+      const thinkingSpansUpdated = container.querySelectorAll(".agent-log-thinking");
+      expect(thinkingSpansUpdated[0].textContent).toContain("Thinking about **this**");
+      expect(thinkingSpansUpdated[0].querySelector("strong")).toBeNull();
+    });
+
+    it("does not affect tool entries in either mode", () => {
+      const entries = [
+        makeEntry({ text: "Read", type: "tool" }),
+        makeEntry({ text: "done", type: "tool_result" }),
+        makeEntry({ text: "fail", type: "tool_error" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-mode-toggle']") as HTMLButtonElement;
+
+      // Tool entries in markdown mode
+      expect(container.querySelector(".agent-log-tool")!.textContent).toContain("Read");
+      expect(container.querySelector(".agent-log-tool-result")!.textContent).toContain("done");
+      expect(container.querySelector(".agent-log-tool-error")!.textContent).toContain("fail");
+
+      // Switch to plain text - tool entries should be unchanged
+      fireEvent.click(toggle);
+
+      expect(container.querySelector(".agent-log-tool")!.textContent).toContain("Read");
+      expect(container.querySelector(".agent-log-tool-result")!.textContent).toContain("done");
+      expect(container.querySelector(".agent-log-tool-error")!.textContent).toContain("fail");
+    });
+
+    it("safely renders HTML tags as text in plain text mode (no XSS)", () => {
+      const entries = [
+        makeEntry({ text: '<script>alert("xss")</script> and <b>bold</b>' }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-mode-toggle']") as HTMLButtonElement;
+
+      // Switch to plain text
+      fireEvent.click(toggle);
+
+      const textSpans = container.querySelectorAll(".agent-log-text");
+      // The text content should contain the literal HTML tags
+      expect(textSpans[0].textContent).toContain('<script>alert("xss")</script>');
+      expect(textSpans[0].textContent).toContain("<b>bold</b>");
+      // No actual script or bold HTML elements should be rendered
+      expect(textSpans[0].querySelector("script")).toBeNull();
+      expect(textSpans[0].querySelector("b")).toBeNull();
+    });
+
+    it("safely renders HTML in markdown mode via react-markdown sanitization", () => {
+      const entries = [
+        makeEntry({ text: "**safe** text here" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      // In markdown mode, react-markdown sanitizes HTML (no script execution)
+      const textSpans = container.querySelectorAll(".agent-log-text");
+      // Markdown formatting should work
+      const strong = textSpans[0].querySelector("strong");
+      expect(strong).toBeTruthy();
+      expect(strong!.textContent).toBe("safe");
+      // No script elements are rendered for any HTML content in markdown
+      expect(textSpans[0].querySelector("script")).toBeNull();
+    });
+  });
+
+  describe("tool output toggle", () => {
+    it("renders the tool output toggle defaulting to On", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-tool-output-toggle']") as HTMLButtonElement;
+      expect(toggle).toBeTruthy();
+      expect(toggle.textContent).toBe("Tools: On");
+      expect(toggle.getAttribute("aria-pressed")).toBe("true");
+    });
+
+    it("hides tool entries when toggled off and shows them again when toggled back on", () => {
+      const entries = [
+        makeEntry({ text: "before tool", type: "text", agent: "executor" }),
+        makeEntry({ text: "Read", type: "tool", agent: "executor" }),
+        makeEntry({ text: "done", type: "tool_result", agent: "executor" }),
+        makeEntry({ text: "fail", type: "tool_error", agent: "executor" }),
+        makeEntry({ text: "after tool", type: "text", agent: "executor" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-tool-output-toggle']") as HTMLButtonElement;
+
+      expect(container.querySelector(".agent-log-tool")).toBeTruthy();
+      expect(container.querySelector(".agent-log-tool-result")).toBeTruthy();
+      expect(container.querySelector(".agent-log-tool-error")).toBeTruthy();
+
+      fireEvent.click(toggle);
+      expect(toggle.textContent).toBe("Tools: Off");
+      expect(toggle.getAttribute("aria-pressed")).toBe("false");
+
+      expect(container.querySelector(".agent-log-tool")).toBeNull();
+      expect(container.querySelector(".agent-log-tool-result")).toBeNull();
+      expect(container.querySelector(".agent-log-tool-error")).toBeNull();
+      const textRows = container.querySelectorAll(".agent-log-text");
+      const combined = Array.from(textRows).map((r) => r.textContent).join(" ");
+      expect(combined).toContain("before tool");
+      expect(combined).toContain("after tool");
+
+      fireEvent.click(toggle);
+      expect(toggle.textContent).toBe("Tools: On");
+      expect(container.querySelector(".agent-log-tool")).toBeTruthy();
+      expect(container.querySelector(".agent-log-tool-result")).toBeTruthy();
+      expect(container.querySelector(".agent-log-tool-error")).toBeTruthy();
+    });
+
+    it("keeps the latest non-tool message visible as its own row when tools are hidden", () => {
+      const entries = [
+        makeEntry({ text: "Starting plan", type: "text", agent: "executor", timestamp: "2026-01-01T00:00:00Z" }),
+        makeEntry({ text: "read file", type: "tool", agent: "executor", timestamp: "2026-01-01T00:00:01Z" }),
+        makeEntry({ text: "Final answer", type: "text", agent: "executor", timestamp: "2026-01-01T00:00:02Z" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-tool-output-toggle']") as HTMLButtonElement;
+
+      fireEvent.click(toggle);
+
+      const textRows = container.querySelectorAll(".agent-log-text");
+      expect(textRows).toHaveLength(2);
+      expect(textRows[0].textContent).toContain("Starting plan");
+      expect(textRows[1].textContent).toContain("Final answer");
+      expect(container.querySelectorAll(".agent-log-agent-badge")).toHaveLength(2);
+      expect(container.querySelectorAll(".agent-log-timestamp")).toHaveLength(2);
+    });
+
+    it("does not render any tool log entries when off (only agent text)", () => {
+      const entries = [
+        makeEntry({ text: "Read", type: "tool", agent: "executor", detail: "some/path" }),
+        makeEntry({ text: "thinking out loud", type: "thinking", agent: "executor" }),
+      ];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-tool-output-toggle']") as HTMLButtonElement;
+      fireEvent.click(toggle);
+
+      expect(container.querySelector(".agent-log-tool")).toBeNull();
+      expect(container.querySelector("[data-testid='tool-detail-toggle']")).toBeNull();
+      expect(container.querySelector(".agent-log-thinking")).toBeTruthy();
+    });
+
+    it("reflects hidden tool entries in the pagination summary", () => {
+      const entries = [
+        makeEntry({ text: "hi", type: "text" }),
+        makeEntry({ text: "Read", type: "tool" }),
+        makeEntry({ text: "done", type: "tool_result" }),
+      ];
+      const { container } = render(
+        <AgentLogViewer entries={entries} loading={false} totalCount={3} />,
+      );
+      const toggle = container.querySelector("[data-testid='agent-log-tool-output-toggle']") as HTMLButtonElement;
+      fireEvent.click(toggle);
+
+      const summary = container.querySelector("[data-testid='agent-log-summary']") as HTMLElement;
+      expect(summary).toBeTruthy();
+      expect(summary.textContent).toContain("Showing 1 of 3 entries");
+      expect(summary.textContent).toContain("2 tool entries hidden");
+    });
+  });
+
+  describe("toggle persistence across remounts", () => {
+    it("persists the markdown toggle state in localStorage", () => {
+      const entries = [makeEntry()];
+      const first = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = first.container.querySelector(
+        "[data-testid='agent-log-mode-toggle']",
+      ) as HTMLButtonElement;
+      fireEvent.click(toggle);
+      expect(window.localStorage.getItem("fn-agent-log-markdown")).toBe("false");
+      first.unmount();
+
+      const second = render(<AgentLogViewer entries={entries} loading={false} />);
+      const restoredToggle = second.container.querySelector(
+        "[data-testid='agent-log-mode-toggle']",
+      ) as HTMLButtonElement;
+      expect(restoredToggle.textContent).toBe("Plain");
+      expect(restoredToggle.getAttribute("aria-pressed")).toBe("false");
+    });
+
+    it("persists the tool output toggle state in localStorage", () => {
+      const entries = [
+        makeEntry({ text: "Read", type: "tool" }),
+        makeEntry({ text: "hi", type: "text" }),
+      ];
+      const first = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = first.container.querySelector(
+        "[data-testid='agent-log-tool-output-toggle']",
+      ) as HTMLButtonElement;
+      fireEvent.click(toggle);
+      expect(window.localStorage.getItem("fn-agent-log-tool-output")).toBe("false");
+      first.unmount();
+
+      const second = render(<AgentLogViewer entries={entries} loading={false} />);
+      const restoredToggle = second.container.querySelector(
+        "[data-testid='agent-log-tool-output-toggle']",
+      ) as HTMLButtonElement;
+      expect(restoredToggle.textContent).toBe("Tools: Off");
+      expect(second.container.querySelector(".agent-log-tool")).toBeNull();
+    });
+
+    it("uses default true values when no preference is stored", () => {
+      const entries = [makeEntry({ text: "Read", type: "tool" })];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const markdown = container.querySelector(
+        "[data-testid='agent-log-mode-toggle']",
+      ) as HTMLButtonElement;
+      const tools = container.querySelector(
+        "[data-testid='agent-log-tool-output-toggle']",
+      ) as HTMLButtonElement;
+      expect(markdown.textContent).toBe("Markdown");
+      expect(tools.textContent).toBe("Tools: On");
+    });
+  });
+
+  describe("fullscreen toggle", () => {
+    it("applies matching min dimensions to markdown and fullscreen header toggles", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const markdownToggle = container.querySelector(
+        "[data-testid='agent-log-mode-toggle']",
+      ) as HTMLButtonElement;
+      const fullscreenToggle = container.querySelector(
+        "[data-testid='agent-log-fullscreen-toggle']",
+      ) as HTMLButtonElement;
+
+      const markdownStyle = getComputedStyle(markdownToggle);
+      const fullscreenStyle = getComputedStyle(fullscreenToggle);
+
+      expect(markdownStyle.minWidth).toBe(fullscreenStyle.minWidth);
+      expect(markdownStyle.minHeight).toBe(fullscreenStyle.minHeight);
+      expect(markdownStyle.minWidth).not.toBe("0px");
+      expect(markdownStyle.minHeight).not.toBe("0px");
+    });
+
+    it("adds visible gap spacing between header toggle buttons", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggleGroup = container.querySelector(".agent-log-model-header-toggle") as HTMLElement;
+      const toggleGroupStyle = getComputedStyle(toggleGroup);
+
+      expect(toggleGroupStyle.gap).not.toBe("");
+      expect(toggleGroupStyle.gap).not.toBe("normal");
+    });
+
+    it("renders the fullscreen toggle button in the model info header", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-fullscreen-toggle']");
+      expect(toggle).toBeTruthy();
+    });
+
+    it("has correct aria attributes on the fullscreen toggle", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-fullscreen-toggle']") as HTMLButtonElement;
+      expect(toggle).toBeTruthy();
+      expect(toggle.getAttribute("aria-label")).toBe("Expand agent log to full screen");
+      expect(toggle.getAttribute("title")).toBe("Expand agent log to full screen");
+    });
+
+    it("adds fullscreen class when toggle is clicked", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const viewer = container.querySelector("[data-testid='agent-log-viewer']") as HTMLElement;
+      const toggle = container.querySelector("[data-testid='agent-log-fullscreen-toggle']") as HTMLButtonElement;
+
+      // Initially not fullscreen
+      expect(viewer.classList.contains("agent-log-viewer--fullscreen")).toBe(false);
+
+      // Click to enter fullscreen
+      fireEvent.click(toggle);
+
+      // Should have fullscreen class
+      expect(viewer.classList.contains("agent-log-viewer--fullscreen")).toBe(true);
+    });
+
+    it("removes fullscreen class when toggle is clicked while in fullscreen", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const viewer = container.querySelector("[data-testid='agent-log-viewer']") as HTMLElement;
+      const toggle = container.querySelector("[data-testid='agent-log-fullscreen-toggle']") as HTMLButtonElement;
+
+      // Enter fullscreen
+      fireEvent.click(toggle);
+      expect(viewer.classList.contains("agent-log-viewer--fullscreen")).toBe(true);
+
+      // Exit fullscreen
+      fireEvent.click(toggle);
+      expect(viewer.classList.contains("agent-log-viewer--fullscreen")).toBe(false);
+    });
+
+    it("updates aria label when toggling fullscreen", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const toggle = container.querySelector("[data-testid='agent-log-fullscreen-toggle']") as HTMLButtonElement;
+
+      // Initially shows expand label
+      expect(toggle.getAttribute("aria-label")).toBe("Expand agent log to full screen");
+
+      // Enter fullscreen
+      fireEvent.click(toggle);
+      expect(toggle.getAttribute("aria-label")).toBe("Exit full screen");
+
+      // Exit fullscreen
+      fireEvent.click(toggle);
+      expect(toggle.getAttribute("aria-label")).toBe("Expand agent log to full screen");
+    });
+
+    it("exits fullscreen when Escape key is pressed", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const viewer = container.querySelector("[data-testid='agent-log-viewer']") as HTMLElement;
+      const toggle = container.querySelector("[data-testid='agent-log-fullscreen-toggle']") as HTMLButtonElement;
+
+      // Enter fullscreen
+      fireEvent.click(toggle);
+      expect(viewer.classList.contains("agent-log-viewer--fullscreen")).toBe(true);
+
+      // Press Escape to exit
+      fireEvent.keyDown(document, { key: "Escape" });
+
+      expect(viewer.classList.contains("agent-log-viewer--fullscreen")).toBe(false);
+    });
+
+    it("does nothing when Escape key is pressed while not in fullscreen", () => {
+      const entries = [makeEntry()];
+      const { container } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const viewer = container.querySelector("[data-testid='agent-log-viewer']") as HTMLElement;
+      const toggle = container.querySelector("[data-testid='agent-log-fullscreen-toggle']") as HTMLButtonElement;
+
+      // Initially not fullscreen
+      expect(viewer.classList.contains("agent-log-viewer--fullscreen")).toBe(false);
+
+      // Press Escape - should do nothing
+      fireEvent.keyDown(document, { key: "Escape" });
+
+      expect(viewer.classList.contains("agent-log-viewer--fullscreen")).toBe(false);
+
+      // Toggle should still work normally
+      fireEvent.click(toggle);
+      expect(viewer.classList.contains("agent-log-viewer--fullscreen")).toBe(true);
+    });
+
+    it("only responds to Escape key when in fullscreen mode", () => {
+      const entries = [makeEntry()];
+      const { container, unmount } = render(<AgentLogViewer entries={entries} loading={false} />);
+      const viewer = container.querySelector("[data-testid='agent-log-viewer']") as HTMLElement;
+      const toggle = container.querySelector("[data-testid='agent-log-fullscreen-toggle']") as HTMLButtonElement;
+
+      // Press Escape when not fullscreen - no effect
+      fireEvent.keyDown(document, { key: "Escape" });
+      expect(viewer.classList.contains("agent-log-viewer--fullscreen")).toBe(false);
+
+      // Enter fullscreen
+      fireEvent.click(toggle);
+      expect(viewer.classList.contains("agent-log-viewer--fullscreen")).toBe(true);
+
+      // Clean up to remove the keydown listener
+      unmount();
+
+      // Verify the listener was removed (no errors should occur when Escape is pressed after unmount)
+    });
+  });
+});

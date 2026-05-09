@@ -1,0 +1,44 @@
+{
+  "name": "@juicesharp/rpiv-args",
+  "version": "1.3.0",
+  "description": "Pi extension. Shell-style $1 and $ARGUMENTS placeholders, expanded into your Pi skills at invocation.",
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "rpiv",
+    "skills",
+    "arguments"
+  ],
+  "type": "module",
+  "license": "MIT",
+  "author": "juicesharp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juicesharp/rpiv-mono.git",
+    "directory": "packages/rpiv-args"
+  },
+  "homepage": "https://github.com/juicesharp/rpiv-mono/tree/main/packages/rpiv-args#readme",
+  "bugs": {
+    "url": "https://github.com/juicesharp/rpiv-mono/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "files": [
+    "index.ts",
+    "args.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  }
+}

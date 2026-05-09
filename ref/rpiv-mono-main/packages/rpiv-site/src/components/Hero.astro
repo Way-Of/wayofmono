@@ -1,0 +1,128 @@
+---
+import { getPipelineSkills } from "../lib/skills";
+import SumiInk from "./SumiInk.astro";
+const pipeline = await getPipelineSkills();
+---
+
+<section id="top" class="hero">
+	<SumiInk variant="backdrop" />
+	<div class="container hero__inner">
+		<p class="kicker hero__kicker">§ rpiv-pi · pi plugin</p>
+
+		<h1 class="hero__title">
+			<span class="hero__line hero__line--1">research</span>
+			<span class="hero__line hero__line--2">design</span>
+			<span class="hero__line hero__line--3">ship</span>
+		</h1>
+
+		<p class="hero__lede">
+			A pipeline of skills and subagents for the Pi coding agent. Turns a vague
+			task into research questions, into a design, into a plan, into shipped code.
+		</p>
+
+		<ol class="hero__rail" aria-label="default pipeline">
+			{pipeline.map((skill, i) => (
+				<li class="hero__node" style={`--rail-i: ${i}`}>
+					<span class="chip chip--sage">/skill:{skill.data.name}</span>
+					{i < pipeline.length - 1 && <span class="hero__arrow" aria-hidden="true">→</span>}
+				</li>
+			))}
+		</ol>
+
+		<p class="hero__cta">
+			<a href="#install" class="hero__link">install &nbsp;↓</a>
+		</p>
+	</div>
+</section>
+
+<style>
+	.hero {
+		min-height: 92dvh;
+		display: flex;
+		align-items: center;
+		padding: var(--space-10) 0 var(--space-9);
+		position: relative;
+		overflow: hidden;
+	}
+	.hero__inner { position: relative; z-index: 1; }
+	.hero__title {
+		font-size: var(--type-h1);
+		line-height: 0.95;
+		margin-bottom: var(--space-6);
+	}
+	.hero__line {
+		display: block;
+	}
+
+	/* ── Page-load stagger ──
+	   Single orchestrated reveal: kicker, then three title lines (offset 80ms each),
+	   then lede, then pipeline rail chips (each 60ms apart), then CTA.
+	   Uses the system tokens (--ease-ink, --dur-ink) so motion stays on-vocabulary. */
+	@keyframes hero-rise {
+		from { opacity: 0; transform: translateY(8px); }
+		to   { opacity: 1; transform: translateY(0);   }
+	}
+	.hero__kicker,
+	.hero__line,
+	.hero__lede,
+	.hero__node,
+	.hero__cta {
+		opacity: 0;
+		animation: hero-rise var(--dur-ink) var(--ease-ink) forwards;
+	}
+	.hero__kicker  { animation-delay:   0ms; }
+	.hero__line--1 { animation-delay: 120ms; }
+	.hero__line--2 { animation-delay: 200ms; }
+	.hero__line--3 { animation-delay: 280ms; }
+	.hero__lede    { animation-delay: 460ms; }
+	.hero__node    { animation-delay: calc(620ms + var(--rail-i, 0) * 60ms); }
+	.hero__cta     { animation-delay: 1080ms; }
+
+	@media (prefers-reduced-motion: reduce) {
+		.hero__kicker,
+		.hero__line,
+		.hero__lede,
+		.hero__node,
+		.hero__cta {
+			opacity: 1;
+			animation: none;
+		}
+	}
+	.hero__lede {
+		font-family: var(--font-serif);
+		max-width: 56ch;
+		color: var(--text-quiet);
+		font-size: 18px;
+		line-height: var(--leading-body);
+		margin-bottom: var(--space-7);
+	}
+	.hero__rail {
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-3);
+		padding: 0;
+		margin: 0 0 var(--space-7);
+	}
+	.hero__node {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-3);
+	}
+	.hero__arrow {
+		color: var(--text-distant);
+		font-family: var(--font-mono);
+	}
+	.hero__cta {
+		font-family: var(--font-mono);
+		font-size: var(--type-small);
+		margin: 0;
+	}
+	.hero__link {
+		color: var(--ochre);
+		border-bottom-color: var(--kuro);
+	}
+	@media (max-width: 720px) {
+		.hero { min-height: auto; padding: var(--space-8) 0 var(--space-7); }
+	}
+</style>

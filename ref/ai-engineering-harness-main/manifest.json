@@ -1,0 +1,768 @@
+{
+  "version": "1",
+  "tools": {
+    "claude": {
+      "target": "~/.claude",
+      "components": {
+        "settings": {
+          "description": "Claude Code global settings and MCP configuration",
+          "files": [
+            { "src": "claude/settings.json", "dest": "settings.json" },
+            { "src": "claude/.mcp.json",     "dest": ".mcp.json"     }
+          ]
+        },
+        "agents": {
+          "description": "Specialized subagents for Claude Code",
+          "files": [
+            { "src": "claude/agents/codebase_analyzer.md",      "dest": "agents/codebase_analyzer.md"      },
+            { "src": "claude/agents/codebase_locator.md",       "dest": "agents/codebase_locator.md"       },
+            { "src": "claude/agents/codebase_pattern_finder.md","dest": "agents/codebase_pattern_finder.md" },
+            { "src": "claude/agents/thoughts_analyzer.md",      "dest": "agents/thoughts_analyzer.md"      },
+            { "src": "claude/agents/thoughts_locator.md",       "dest": "agents/thoughts_locator.md"       },
+            { "src": "claude/agents/web_search_researcher.md",  "dest": "agents/web_search_researcher.md"  }
+          ]
+        },
+        "skill/commit": {
+          "description": "Git commit workflow skill",
+          "files": [
+            { "src": "claude/skills/commit/SKILL.md", "dest": "skills/commit/SKILL.md" }
+          ]
+        },
+        "skill/create_plan": {
+          "description": "Create detailed implementation plans skill",
+          "files": [
+            { "src": "claude/skills/create_plan/SKILL.md", "dest": "skills/create_plan/SKILL.md" }
+          ]
+        },
+        "skill/debug": {
+          "description": "Debugging investigation skill",
+          "files": [
+            { "src": "claude/skills/debug/SKILL.md", "dest": "skills/debug/SKILL.md" }
+          ]
+        },
+        "skill/debug-k8s": {
+          "description": "Kubernetes cluster debugging skill",
+          "files": [
+            { "src": "claude/skills/debug-k8s/SKILL.md", "dest": "skills/debug-k8s/SKILL.md" }
+          ]
+        },
+        "skill/experimental-pr-workflow": {
+          "description": "Experimental PR workflow (no-ticket commits) skill",
+          "files": [
+            { "src": "claude/skills/experimental-pr-workflow/SKILL.md", "dest": "skills/experimental-pr-workflow/SKILL.md" }
+          ]
+        },
+        "skill/git-commit-helper": {
+          "description": "Auto-triggered git commit helper skill",
+          "files": [
+            { "src": "claude/skills/git-commit-helper/SKILL.md", "dest": "skills/git-commit-helper/SKILL.md" }
+          ]
+        },
+        "skill/implement_plan": {
+          "description": "Execute an approved implementation plan skill",
+          "files": [
+            { "src": "claude/skills/implement_plan/SKILL.md", "dest": "skills/implement_plan/SKILL.md" }
+          ]
+        },
+        "skill/init_harness": {
+          "description": "Initialize harness in a new repository skill",
+          "files": [
+            { "src": "claude/skills/init_harness/SKILL.md", "dest": "skills/init_harness/SKILL.md" }
+          ]
+        },
+        "skill/pr-description-generator": {
+          "description": "Automated PR description generator skill",
+          "files": [
+            { "src": "claude/skills/pr-description-generator/SKILL.md", "dest": "skills/pr-description-generator/SKILL.md" }
+          ]
+        },
+        "skill/research_codebase": {
+          "description": "Comprehensive codebase research skill",
+          "files": [
+            { "src": "claude/skills/research_codebase/SKILL.md", "dest": "skills/research_codebase/SKILL.md" }
+          ]
+        },
+        "skill/validate_plan": {
+          "description": "Validate an implementation against its plan skill",
+          "files": [
+            { "src": "claude/skills/validate_plan/SKILL.md", "dest": "skills/validate_plan/SKILL.md" }
+          ]
+        },
+        "skill/validate_telemetry": {
+          "description": "Validate local telemetry against a narrative spec skill",
+          "files": [
+            { "src": "claude/skills/validate_telemetry/SKILL.md", "dest": "skills/validate_telemetry/SKILL.md" }
+          ]
+        },
+        "skill/observability-driven-development": {
+          "description": "Observability Driven Development (ODD) — design the trace before the feature; local OTel feedback loop",
+          "files": [
+            { "src": "claude/skills/observability-driven-development/SKILL.md",        "dest": "skills/observability-driven-development/SKILL.md"        },
+            { "src": "claude/skills/observability-driven-development/narrative.md",    "dest": "skills/observability-driven-development/narrative.md"    },
+            { "src": "claude/skills/observability-driven-development/loop.md",         "dest": "skills/observability-driven-development/loop.md"         },
+            { "src": "claude/skills/observability-driven-development/local-setup.md",  "dest": "skills/observability-driven-development/local-setup.md"  }
+          ]
+        },
+        "skill/worktree": {
+          "description": "Git worktree manager for parallel development",
+          "files": [
+            { "src": "claude/skills/worktree/SKILL.md", "dest": "skills/worktree/SKILL.md" }
+          ]
+        },
+        "skill/github-tracker": {
+          "description": "GitHub activity tracker and PR/issue query skill",
+          "files": [
+            { "src": "claude/skills/github-tracker/SKILL.md", "dest": "skills/github-tracker/SKILL.md" }
+          ]
+        },
+        "skill/todoist-task-manager": {
+          "description": "Todoist task management via MCP skill",
+          "files": [
+            { "src": "claude/skills/todoist-task-manager/SKILL.md", "dest": "skills/todoist-task-manager/SKILL.md" }
+          ]
+        },
+        "skill/interview": {
+          "description": "Stress-test plans via relentless user interview skill",
+          "files": [
+            { "src": "claude/skills/interview/SKILL.md", "dest": "skills/interview/SKILL.md" }
+          ]
+        },
+        "skill/tdd": {
+          "description": "Test-driven development with red-green-refactor loop skill",
+          "files": [
+            { "src": "claude/skills/tdd/SKILL.md",              "dest": "skills/tdd/SKILL.md"              },
+            { "src": "claude/skills/tdd/tests.md",              "dest": "skills/tdd/tests.md"              },
+            { "src": "claude/skills/tdd/mocking.md",            "dest": "skills/tdd/mocking.md"            },
+            { "src": "claude/skills/tdd/deep-modules.md",       "dest": "skills/tdd/deep-modules.md"       },
+            { "src": "claude/skills/tdd/interface-design.md",   "dest": "skills/tdd/interface-design.md"   },
+            { "src": "claude/skills/tdd/refactoring.md",        "dest": "skills/tdd/refactoring.md"        }
+          ]
+        },
+        "skill/improve-codebase-architecture": {
+          "description": "Find architectural friction and propose deep-module refactors skill",
+          "files": [
+            { "src": "claude/skills/improve-codebase-architecture/SKILL.md",     "dest": "skills/improve-codebase-architecture/SKILL.md"     },
+            { "src": "claude/skills/improve-codebase-architecture/REFERENCE.md", "dest": "skills/improve-codebase-architecture/REFERENCE.md" }
+          ]
+        },
+        "skill/prd-to-issues": {
+          "description": "Break a PRD into vertical-slice issue files skill",
+          "files": [
+            { "src": "claude/skills/prd-to-issues/SKILL.md", "dest": "skills/prd-to-issues/SKILL.md" }
+          ]
+        },
+        "skill/write-a-prd": {
+          "description": "Generate a PRD from a client brief skill",
+          "files": [
+            { "src": "claude/skills/write-a-prd/SKILL.md", "dest": "skills/write-a-prd/SKILL.md" }
+          ]
+        }
+      }
+    },
+    "opencode": {
+      "target": "~/.config/opencode",
+      "components": {
+        "settings": {
+          "description": "OpenCode global configuration",
+          "files": [
+            { "src": "opencode/opencode.json", "dest": "opencode.json" }
+          ]
+        },
+        "agents": {
+          "description": "Specialized subagents for OpenCode",
+          "files": [
+            { "src": "opencode/agents/codebase_analyzer.md",      "dest": "agents/codebase_analyzer.md"      },
+            { "src": "opencode/agents/codebase_locator.md",       "dest": "agents/codebase_locator.md"       },
+            { "src": "opencode/agents/codebase_pattern_finder.md","dest": "agents/codebase_pattern_finder.md" },
+            { "src": "opencode/agents/thoughts_analyzer.md",      "dest": "agents/thoughts_analyzer.md"      },
+            { "src": "opencode/agents/thoughts_locator.md",       "dest": "agents/thoughts_locator.md"       },
+            { "src": "opencode/agents/web_search_researcher.md",  "dest": "agents/web_search_researcher.md"  }
+          ]
+        },
+        "command/commit": {
+          "description": "Git commit workflow command",
+          "files": [
+            { "src": "opencode/commands/commit.md", "dest": "commands/commit.md" }
+          ]
+        },
+        "command/create_plan": {
+          "description": "Create implementation plans command",
+          "files": [
+            { "src": "opencode/commands/create_plan.md", "dest": "commands/create_plan.md" }
+          ]
+        },
+        "command/debug": {
+          "description": "Debugging investigation command",
+          "files": [
+            { "src": "opencode/commands/debug.md", "dest": "commands/debug.md" }
+          ]
+        },
+        "command/debug-k8s": {
+          "description": "Kubernetes cluster debugging command",
+          "files": [
+            { "src": "opencode/commands/debug-k8s.md", "dest": "commands/debug-k8s.md" }
+          ]
+        },
+        "command/implement_plan": {
+          "description": "Execute an approved plan command",
+          "files": [
+            { "src": "opencode/commands/implement_plan.md", "dest": "commands/implement_plan.md" }
+          ]
+        },
+        "command/init_harness": {
+          "description": "Initialize harness in a new repository command",
+          "files": [
+            { "src": "opencode/commands/init_harness.md", "dest": "commands/init_harness.md" }
+          ]
+        },
+        "command/research_codebase": {
+          "description": "Comprehensive codebase research command",
+          "files": [
+            { "src": "opencode/commands/research_codebase.md", "dest": "commands/research_codebase.md" }
+          ]
+        },
+        "command/validate_plan": {
+          "description": "Validate implementation against plan command",
+          "files": [
+            { "src": "opencode/commands/validate_plan.md", "dest": "commands/validate_plan.md" }
+          ]
+        },
+        "command/validate_telemetry": {
+          "description": "Validate local telemetry against a narrative spec command",
+          "files": [
+            { "src": "opencode/commands/validate_telemetry.md", "dest": "commands/validate_telemetry.md" }
+          ]
+        },
+        "skill/observability-driven-development": {
+          "description": "Observability Driven Development (ODD) — design the trace before the feature; local OTel feedback loop",
+          "files": [
+            { "src": "opencode/skills/observability-driven-development/SKILL.md",        "dest": "skills/observability-driven-development/SKILL.md"        },
+            { "src": "opencode/skills/observability-driven-development/narrative.md",    "dest": "skills/observability-driven-development/narrative.md"    },
+            { "src": "opencode/skills/observability-driven-development/loop.md",         "dest": "skills/observability-driven-development/loop.md"         },
+            { "src": "opencode/skills/observability-driven-development/local-setup.md",  "dest": "skills/observability-driven-development/local-setup.md"  }
+          ]
+        },
+        "skill/experimental-pr-workflow": {
+          "description": "Experimental PR workflow skill",
+          "files": [
+            { "src": "opencode/skills/experimental-pr-workflow/SKILL.md", "dest": "skills/experimental-pr-workflow/SKILL.md" }
+          ]
+        },
+        "skill/git-commit-helper": {
+          "description": "Auto-triggered git commit helper skill",
+          "files": [
+            { "src": "opencode/skills/git-commit-helper/SKILL.md", "dest": "skills/git-commit-helper/SKILL.md" }
+          ]
+        },
+        "skill/init_harness": {
+          "description": "Initialize harness skill",
+          "files": [
+            { "src": "opencode/skills/init_harness/SKILL.md", "dest": "skills/init_harness/SKILL.md" }
+          ]
+        },
+        "skill/pr-description-generator": {
+          "description": "Automated PR description generator skill",
+          "files": [
+            { "src": "opencode/skills/pr-description-generator/SKILL.md", "dest": "skills/pr-description-generator/SKILL.md" }
+          ]
+        },
+        "command/worktree": {
+          "description": "Git worktree manager command",
+          "files": [
+            { "src": "opencode/commands/worktree.md", "dest": "commands/worktree.md" }
+          ]
+        },
+        "skill/interview": {
+          "description": "Stress-test plans via relentless user interview skill",
+          "files": [
+            { "src": "opencode/skills/interview/SKILL.md", "dest": "skills/interview/SKILL.md" }
+          ]
+        },
+        "skill/tdd": {
+          "description": "Test-driven development with red-green-refactor loop skill",
+          "files": [
+            { "src": "opencode/skills/tdd/SKILL.md",              "dest": "skills/tdd/SKILL.md"              },
+            { "src": "opencode/skills/tdd/tests.md",              "dest": "skills/tdd/tests.md"              },
+            { "src": "opencode/skills/tdd/mocking.md",            "dest": "skills/tdd/mocking.md"            },
+            { "src": "opencode/skills/tdd/deep-modules.md",       "dest": "skills/tdd/deep-modules.md"       },
+            { "src": "opencode/skills/tdd/interface-design.md",   "dest": "skills/tdd/interface-design.md"   },
+            { "src": "opencode/skills/tdd/refactoring.md",        "dest": "skills/tdd/refactoring.md"        }
+          ]
+        },
+        "skill/improve-codebase-architecture": {
+          "description": "Find architectural friction and propose deep-module refactors skill",
+          "files": [
+            { "src": "opencode/skills/improve-codebase-architecture/SKILL.md",     "dest": "skills/improve-codebase-architecture/SKILL.md"     },
+            { "src": "opencode/skills/improve-codebase-architecture/REFERENCE.md", "dest": "skills/improve-codebase-architecture/REFERENCE.md" }
+          ]
+        },
+        "skill/prd-to-issues": {
+          "description": "Break a PRD into vertical-slice issue files skill",
+          "files": [
+            { "src": "opencode/skills/prd-to-issues/SKILL.md", "dest": "skills/prd-to-issues/SKILL.md" }
+          ]
+        },
+        "skill/write-a-prd": {
+          "description": "Generate a PRD from a client brief skill",
+          "files": [
+            { "src": "opencode/skills/write-a-prd/SKILL.md", "dest": "skills/write-a-prd/SKILL.md" }
+          ]
+        }
+      }
+    },
+    "gemini": {
+      "target": "~/.gemini",
+      "components": {
+        "agents": {
+          "description": "Specialized subagents for Gemini CLI",
+          "files": [
+            { "src": "gemini/agents/codebase_investigator.md",   "dest": "agents/codebase_investigator.md"   },
+            { "src": "gemini/agents/codebase_locator.md",        "dest": "agents/codebase_locator.md"        },
+            { "src": "gemini/agents/codebase_pattern_finder.md", "dest": "agents/codebase_pattern_finder.md" },
+            { "src": "gemini/agents/thoughts_analyzer.md",       "dest": "agents/thoughts_analyzer.md"       },
+            { "src": "gemini/agents/thoughts_locator.md",        "dest": "agents/thoughts_locator.md"        },
+            { "src": "gemini/agents/web_search_researcher.md",   "dest": "agents/web_search_researcher.md"   }
+          ]
+        },
+        "command/commit": {
+          "description": "Git commit workflow command",
+          "files": [
+            { "src": "gemini/commands/commit.toml", "dest": "commands/commit.toml" }
+          ]
+        },
+        "command/create_plan": {
+          "description": "Create implementation plans command",
+          "files": [
+            { "src": "gemini/commands/create_plan.toml", "dest": "commands/create_plan.toml" }
+          ]
+        },
+        "command/debug": {
+          "description": "Debugging investigation command",
+          "files": [
+            { "src": "gemini/commands/debug.toml", "dest": "commands/debug.toml" }
+          ]
+        },
+        "command/debug-k8s": {
+          "description": "Kubernetes cluster debugging command",
+          "files": [
+            { "src": "gemini/commands/debug-k8s.toml", "dest": "commands/debug-k8s.toml" }
+          ]
+        },
+        "command/experimental-pr-workflow": {
+          "description": "Experimental PR workflow command",
+          "files": [
+            { "src": "gemini/commands/experimental-pr-workflow.toml", "dest": "commands/experimental-pr-workflow.toml" }
+          ]
+        },
+        "command/git_commit_helper": {
+          "description": "Auto-triggered git commit helper command",
+          "files": [
+            { "src": "gemini/commands/git_commit_helper.toml", "dest": "commands/git_commit_helper.toml" }
+          ]
+        },
+        "command/implement_plan": {
+          "description": "Execute an approved plan command",
+          "files": [
+            { "src": "gemini/commands/implement_plan.toml", "dest": "commands/implement_plan.toml" }
+          ]
+        },
+        "command/init_harness": {
+          "description": "Initialize harness in a new repository command",
+          "files": [
+            { "src": "gemini/commands/init_harness.toml", "dest": "commands/init_harness.toml" }
+          ]
+        },
+        "command/pr_description_generator": {
+          "description": "Automated PR description generator command",
+          "files": [
+            { "src": "gemini/commands/pr_description_generator.toml", "dest": "commands/pr_description_generator.toml" }
+          ]
+        },
+        "command/research_codebase": {
+          "description": "Comprehensive codebase research command",
+          "files": [
+            { "src": "gemini/commands/research_codebase.toml", "dest": "commands/research_codebase.toml" }
+          ]
+        },
+        "command/validate_plan": {
+          "description": "Validate implementation against plan command",
+          "files": [
+            { "src": "gemini/commands/validate_plan.toml", "dest": "commands/validate_plan.toml" }
+          ]
+        },
+        "command/validate_telemetry": {
+          "description": "Validate local telemetry against a narrative spec command",
+          "files": [
+            { "src": "gemini/commands/validate_telemetry.toml", "dest": "commands/validate_telemetry.toml" }
+          ]
+        },
+        "skill/observability_driven_development": {
+          "description": "Observability Driven Development (ODD) — design the trace before the feature; local OTel feedback loop",
+          "files": [
+            { "src": "gemini/skills/observability_driven_development/SKILL.md",        "dest": "skills/observability_driven_development/SKILL.md"        },
+            { "src": "gemini/skills/observability_driven_development/narrative.md",    "dest": "skills/observability_driven_development/narrative.md"    },
+            { "src": "gemini/skills/observability_driven_development/loop.md",         "dest": "skills/observability_driven_development/loop.md"         },
+            { "src": "gemini/skills/observability_driven_development/local-setup.md",  "dest": "skills/observability_driven_development/local-setup.md"  }
+          ]
+        },
+        "skill/commit": {
+          "description": "Git commit workflow skill",
+          "files": [
+            { "src": "gemini/skills/commit/SKILL.md", "dest": "skills/commit/SKILL.md" }
+          ]
+        },
+        "skill/create_plan": {
+          "description": "Create implementation plans skill",
+          "files": [
+            { "src": "gemini/skills/create_plan/SKILL.md", "dest": "skills/create_plan/SKILL.md" }
+          ]
+        },
+        "skill/debug": {
+          "description": "Debugging investigation skill",
+          "files": [
+            { "src": "gemini/skills/debug/SKILL.md", "dest": "skills/debug/SKILL.md" }
+          ]
+        },
+        "skill/debug-k8s": {
+          "description": "Kubernetes cluster debugging skill",
+          "files": [
+            { "src": "gemini/skills/debug-k8s/SKILL.md", "dest": "skills/debug-k8s/SKILL.md" }
+          ]
+        },
+        "skill/experimental_pr_workflow": {
+          "description": "Experimental PR workflow skill",
+          "files": [
+            { "src": "gemini/skills/experimental_pr_workflow/SKILL.md", "dest": "skills/experimental_pr_workflow/SKILL.md" }
+          ]
+        },
+        "skill/git_commit_helper": {
+          "description": "Auto-triggered git commit helper skill",
+          "files": [
+            { "src": "gemini/skills/git_commit_helper/SKILL.md", "dest": "skills/git_commit_helper/SKILL.md" }
+          ]
+        },
+        "skill/implement_plan": {
+          "description": "Execute an approved plan skill",
+          "files": [
+            { "src": "gemini/skills/implement_plan/SKILL.md", "dest": "skills/implement_plan/SKILL.md" }
+          ]
+        },
+        "skill/init_harness": {
+          "description": "Initialize harness skill",
+          "files": [
+            { "src": "gemini/skills/init_harness/SKILL.md", "dest": "skills/init_harness/SKILL.md" }
+          ]
+        },
+        "skill/pr_description_generator": {
+          "description": "Automated PR description generator skill",
+          "files": [
+            { "src": "gemini/skills/pr_description_generator/SKILL.md", "dest": "skills/pr_description_generator/SKILL.md" }
+          ]
+        },
+        "skill/research_codebase": {
+          "description": "Comprehensive codebase research skill",
+          "files": [
+            { "src": "gemini/skills/research_codebase/SKILL.md", "dest": "skills/research_codebase/SKILL.md" }
+          ]
+        },
+        "skill/validate_plan": {
+          "description": "Validate implementation against plan skill",
+          "files": [
+            { "src": "gemini/skills/validate_plan/SKILL.md", "dest": "skills/validate_plan/SKILL.md" }
+          ]
+        },
+        "command/worktree": {
+          "description": "Git worktree manager command",
+          "files": [
+            { "src": "gemini/commands/worktree.toml", "dest": "commands/worktree.toml" }
+          ]
+        },
+        "skill/worktree": {
+          "description": "Git worktree manager for parallel development",
+          "files": [
+            { "src": "gemini/skills/worktree/SKILL.md", "dest": "skills/worktree/SKILL.md" }
+          ]
+        },
+        "skill/interview": {
+          "description": "Stress-test plans via relentless user interview skill",
+          "files": [
+            { "src": "gemini/skills/interview/SKILL.md", "dest": "skills/interview/SKILL.md" }
+          ]
+        },
+        "skill/tdd": {
+          "description": "Test-driven development with red-green-refactor loop skill",
+          "files": [
+            { "src": "gemini/skills/tdd/SKILL.md",              "dest": "skills/tdd/SKILL.md"              },
+            { "src": "gemini/skills/tdd/tests.md",              "dest": "skills/tdd/tests.md"              },
+            { "src": "gemini/skills/tdd/mocking.md",            "dest": "skills/tdd/mocking.md"            },
+            { "src": "gemini/skills/tdd/deep-modules.md",       "dest": "skills/tdd/deep-modules.md"       },
+            { "src": "gemini/skills/tdd/interface-design.md",   "dest": "skills/tdd/interface-design.md"   },
+            { "src": "gemini/skills/tdd/refactoring.md",        "dest": "skills/tdd/refactoring.md"        }
+          ]
+        },
+        "skill/improve_codebase_architecture": {
+          "description": "Find architectural friction and propose deep-module refactors skill",
+          "files": [
+            { "src": "gemini/skills/improve_codebase_architecture/SKILL.md",     "dest": "skills/improve_codebase_architecture/SKILL.md"     },
+            { "src": "gemini/skills/improve_codebase_architecture/REFERENCE.md", "dest": "skills/improve_codebase_architecture/REFERENCE.md" }
+          ]
+        },
+        "skill/prd_to_issues": {
+          "description": "Break a PRD into vertical-slice issue files skill",
+          "files": [
+            { "src": "gemini/skills/prd_to_issues/SKILL.md", "dest": "skills/prd_to_issues/SKILL.md" }
+          ]
+        },
+        "skill/write_a_prd": {
+          "description": "Generate a PRD from a client brief skill",
+          "files": [
+            { "src": "gemini/skills/write_a_prd/SKILL.md", "dest": "skills/write_a_prd/SKILL.md" }
+          ]
+        }
+      }
+    },
+    "pi": {
+      "target": "~/.pi/agent",
+      "components": {
+        "agents": {
+          "description": "Specialized subagents for Pi",
+          "files": [
+            { "src": "pi/agents/codebase-analyzer.md",      "dest": "agents/codebase-analyzer.md"      },
+            { "src": "pi/agents/codebase-locator.md",       "dest": "agents/codebase-locator.md"       },
+            { "src": "pi/agents/codebase-pattern-finder.md","dest": "agents/codebase-pattern-finder.md" },
+            { "src": "pi/agents/thoughts-analyzer.md",      "dest": "agents/thoughts-analyzer.md"      },
+            { "src": "pi/agents/thoughts-locator.md",       "dest": "agents/thoughts-locator.md"       },
+            { "src": "pi/agents/web-search-researcher.md",  "dest": "agents/web-search-researcher.md"  }
+          ]
+        },
+        "extension/open-editor": {
+          "description": "Open files from cwd in $VISUAL/$EDITOR via /edit or ctrl+e",
+          "files": [
+            { "src": "pi/extensions/open-editor.ts", "dest": "extensions/open-editor.ts" }
+          ]
+        },
+        "extension/bifrost": {
+          "description": "Support custom models through the bifrost proxy",
+          "files": [
+            { "src": "pi/extensions/bifrost.ts", "dest": "extensions/bifrost.ts" }
+          ]
+        },
+        "extension/subagent": {
+          "description": "Subagent tool for multi-agent workflows (single, parallel, chain)",
+          "files": [
+            { "src": "pi/extensions/subagent/index.ts",                    "dest": "extensions/subagent/index.ts"                    },
+            { "src": "pi/extensions/subagent/agents.ts",                   "dest": "extensions/subagent/agents.ts"                   },
+            { "src": "pi/extensions/subagent/agents/planner.md",           "dest": "extensions/subagent/agents/planner.md"           },
+            { "src": "pi/extensions/subagent/agents/reviewer.md",          "dest": "extensions/subagent/agents/reviewer.md"          },
+            { "src": "pi/extensions/subagent/agents/scout.md",             "dest": "extensions/subagent/agents/scout.md"             },
+            { "src": "pi/extensions/subagent/agents/worker.md",            "dest": "extensions/subagent/agents/worker.md"            },
+            { "src": "pi/extensions/subagent/prompts/implement.md",        "dest": "extensions/subagent/prompts/implement.md"        },
+            { "src": "pi/extensions/subagent/prompts/implement-and-review.md", "dest": "extensions/subagent/prompts/implement-and-review.md" },
+            { "src": "pi/extensions/subagent/prompts/scout-and-plan.md",   "dest": "extensions/subagent/prompts/scout-and-plan.md"   }
+          ]
+        },
+        "prompt/commit": {
+          "description": "Git commit workflow prompt",
+          "files": [
+            { "src": "pi/prompts/commit.md", "dest": "prompts/commit.md" }
+          ]
+        },
+        "prompt/create_plan": {
+          "description": "Create implementation plans prompt",
+          "files": [
+            { "src": "pi/prompts/create_plan.md", "dest": "prompts/create_plan.md" }
+          ]
+        },
+        "prompt/debug": {
+          "description": "Debugging investigation prompt",
+          "files": [
+            { "src": "pi/prompts/debug.md", "dest": "prompts/debug.md" }
+          ]
+        },
+        "prompt/debug-k8s": {
+          "description": "Kubernetes cluster debugging prompt",
+          "files": [
+            { "src": "pi/prompts/debug-k8s.md", "dest": "prompts/debug-k8s.md" }
+          ]
+        },
+        "prompt/implement_plan": {
+          "description": "Execute an approved plan prompt",
+          "files": [
+            { "src": "pi/prompts/implement_plan.md", "dest": "prompts/implement_plan.md" }
+          ]
+        },
+        "prompt/init_harness": {
+          "description": "Initialize harness in a new repository prompt",
+          "files": [
+            { "src": "pi/prompts/init_harness.md", "dest": "prompts/init_harness.md" }
+          ]
+        },
+        "prompt/otel_instrument": {
+          "description": "OpenTelemetry instrumentation orchestrator prompt",
+          "files": [
+            { "src": "pi/prompts/otel_instrument.md", "dest": "prompts/otel_instrument.md" }
+          ]
+        },
+        "prompt/research_codebase": {
+          "description": "Comprehensive codebase research prompt",
+          "files": [
+            { "src": "pi/prompts/research_codebase.md", "dest": "prompts/research_codebase.md" }
+          ]
+        },
+        "prompt/validate_plan": {
+          "description": "Validate implementation against plan prompt",
+          "files": [
+            { "src": "pi/prompts/validate_plan.md", "dest": "prompts/validate_plan.md" }
+          ]
+        },
+        "prompt/validate_telemetry": {
+          "description": "Validate local telemetry against a narrative spec prompt",
+          "files": [
+            { "src": "pi/prompts/validate_telemetry.md", "dest": "prompts/validate_telemetry.md" }
+          ]
+        },
+        "skill/observability-driven-development": {
+          "description": "Observability Driven Development (ODD) — design the trace before the feature; local OTel feedback loop",
+          "files": [
+            { "src": "pi/skills/observability-driven-development/SKILL.md",        "dest": "skills/observability-driven-development/SKILL.md"        },
+            { "src": "pi/skills/observability-driven-development/narrative.md",    "dest": "skills/observability-driven-development/narrative.md"    },
+            { "src": "pi/skills/observability-driven-development/loop.md",         "dest": "skills/observability-driven-development/loop.md"         },
+            { "src": "pi/skills/observability-driven-development/local-setup.md",  "dest": "skills/observability-driven-development/local-setup.md"  }
+          ]
+        },
+        "prompt/worktree": {
+          "description": "Git worktree manager prompt",
+          "files": [
+            { "src": "pi/prompts/worktree.md", "dest": "prompts/worktree.md" }
+          ]
+        },
+        "skill/codebase-analyzer": {
+          "description": "Codebase implementation analysis skill",
+          "files": [
+            { "src": "pi/skills/codebase-analyzer/SKILL.md", "dest": "skills/codebase-analyzer/SKILL.md" }
+          ]
+        },
+        "skill/codebase-locator": {
+          "description": "File and component locator skill",
+          "files": [
+            { "src": "pi/skills/codebase-locator/SKILL.md", "dest": "skills/codebase-locator/SKILL.md" }
+          ]
+        },
+        "skill/codebase-pattern-finder": {
+          "description": "Pattern and implementation discovery skill",
+          "files": [
+            { "src": "pi/skills/codebase-pattern-finder/SKILL.md", "dest": "skills/codebase-pattern-finder/SKILL.md" }
+          ]
+        },
+        "skill/experimental-pr-workflow": {
+          "description": "Experimental PR workflow skill",
+          "files": [
+            { "src": "pi/skills/experimental-pr-workflow/SKILL.md", "dest": "skills/experimental-pr-workflow/SKILL.md" }
+          ]
+        },
+        "skill/git-commit-helper": {
+          "description": "Auto-triggered git commit helper skill",
+          "files": [
+            { "src": "pi/skills/git-commit-helper/SKILL.md", "dest": "skills/git-commit-helper/SKILL.md" }
+          ]
+        },
+        "skill/init-harness": {
+          "description": "Initialize harness skill",
+          "files": [
+            { "src": "pi/skills/init-harness/SKILL.md", "dest": "skills/init-harness/SKILL.md" }
+          ]
+        },
+        "skill/otel-collector": {
+          "description": "OpenTelemetry Collector configuration skill",
+          "files": [
+            { "src": "pi/skills/otel-collector/SKILL.md", "dest": "skills/otel-collector/SKILL.md" }
+          ]
+        },
+        "skill/otel-instrument": {
+          "description": "OpenTelemetry instrumentation orchestrator skill",
+          "files": [
+            { "src": "pi/skills/otel-instrument/SKILL.md", "dest": "skills/otel-instrument/SKILL.md" }
+          ]
+        },
+        "skill/otel-instrumentation": {
+          "description": "OpenTelemetry SDK instrumentation skill",
+          "files": [
+            { "src": "pi/skills/otel-instrumentation/SKILL.md", "dest": "skills/otel-instrumentation/SKILL.md" }
+          ]
+        },
+        "skill/otel-ottl": {
+          "description": "OpenTelemetry OTTL expressions skill",
+          "files": [
+            { "src": "pi/skills/otel-ottl/SKILL.md", "dest": "skills/otel-ottl/SKILL.md" }
+          ]
+        },
+        "skill/otel-semantic-conventions": {
+          "description": "OpenTelemetry semantic conventions skill",
+          "files": [
+            { "src": "pi/skills/otel-semantic-conventions/SKILL.md", "dest": "skills/otel-semantic-conventions/SKILL.md" }
+          ]
+        },
+        "skill/pr-description-generator": {
+          "description": "Automated PR description generator skill",
+          "files": [
+            { "src": "pi/skills/pr-description-generator/SKILL.md", "dest": "skills/pr-description-generator/SKILL.md" }
+          ]
+        },
+        "skill/thoughts-analyzer": {
+          "description": "Research document analysis skill",
+          "files": [
+            { "src": "pi/skills/thoughts-analyzer/SKILL.md", "dest": "skills/thoughts-analyzer/SKILL.md" }
+          ]
+        },
+        "skill/thoughts-locator": {
+          "description": "Thoughts directory document discovery skill",
+          "files": [
+            { "src": "pi/skills/thoughts-locator/SKILL.md", "dest": "skills/thoughts-locator/SKILL.md" }
+          ]
+        },
+        "skill/web-search-researcher": {
+          "description": "Web research skill",
+          "files": [
+            { "src": "pi/skills/web-search-researcher/SKILL.md", "dest": "skills/web-search-researcher/SKILL.md" }
+          ]
+        },
+        "skill/interview": {
+          "description": "Stress-test plans via relentless user interview skill",
+          "files": [
+            { "src": "pi/skills/interview/SKILL.md", "dest": "skills/interview/SKILL.md" }
+          ]
+        },
+        "skill/tdd": {
+          "description": "Test-driven development with red-green-refactor loop skill",
+          "files": [
+            { "src": "pi/skills/tdd/SKILL.md",              "dest": "skills/tdd/SKILL.md"              },
+            { "src": "pi/skills/tdd/tests.md",              "dest": "skills/tdd/tests.md"              },
+            { "src": "pi/skills/tdd/mocking.md",            "dest": "skills/tdd/mocking.md"            },
+            { "src": "pi/skills/tdd/deep-modules.md",       "dest": "skills/tdd/deep-modules.md"       },
+            { "src": "pi/skills/tdd/interface-design.md",   "dest": "skills/tdd/interface-design.md"   },
+            { "src": "pi/skills/tdd/refactoring.md",        "dest": "skills/tdd/refactoring.md"        }
+          ]
+        },
+        "skill/improve-codebase-architecture": {
+          "description": "Find architectural friction and propose deep-module refactors skill",
+          "files": [
+            { "src": "pi/skills/improve-codebase-architecture/SKILL.md",     "dest": "skills/improve-codebase-architecture/SKILL.md"     },
+            { "src": "pi/skills/improve-codebase-architecture/REFERENCE.md", "dest": "skills/improve-codebase-architecture/REFERENCE.md" }
+          ]
+        },
+        "skill/prd-to-issues": {
+          "description": "Break a PRD into vertical-slice issue files skill",
+          "files": [
+            { "src": "pi/skills/prd-to-issues/SKILL.md", "dest": "skills/prd-to-issues/SKILL.md" }
+          ]
+        },
+        "skill/write-a-prd": {
+          "description": "Generate a PRD from a client brief skill",
+          "files": [
+            { "src": "pi/skills/write-a-prd/SKILL.md", "dest": "skills/write-a-prd/SKILL.md" }
+          ]
+        }
+      }
+    }
+  }
+}

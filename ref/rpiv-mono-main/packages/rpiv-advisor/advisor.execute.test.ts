@@ -1,0 +1,130 @@
+import {
+	buildSessionEntries,
+	createMockCtx,
+	createMockPi,
+	makeAssistantMessage,
+	makeUserMessage,
+} from "@juicesharp/rpiv-test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+vi.mock("@earendil-works/pi-ai", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("@earendil-works/pi-ai")>();
+	return {
+		...actual,
+		completeSimple: vi.fn(),
+		getSupportedThinkingLevels: vi.fn(() => ["off", "minimal", "low", "medium", "high"]),
+	};
+});
+
+import { completeSimple } from "@earendil-works/pi-ai";
+import { registerAdvisorTool, setAdvisorModel } from "./advisor.js";
+
+function resp(input: { text?: string; stopReason?: "done" | "aborted" | "error" | "toolUse"; errorMessage?: string }) {
+	return {
+		role: "assistant",
+		content: input.text ? [{ type: "text", text: input.text }] : [],
+		timestamp: Date.now(),
+		stopReason: input.stopReason ?? "done",
+		errorMessage: input.errorMessage,
+	};
+}
+
+beforeEach(() => {
+	vi.mocked(completeSimple).mockReset();
+});
+
+describe("executeAdvisor — 4 StopReason branches", () => {
+	it("happy path returns advisor text", async () => {
+		setAdvisorModel({ provider: "a", id: "m" } as never);
+		vi.mocked(completeSimple).mockResolvedValueOnce(resp({ text: "advice" }) as never);
+		const { pi, captured } = createMockPi();
+		registerAdvisorTool(pi);
+		const ctx = createMockCtx({
+			branch: buildSessionEntries([makeUserMessage("q"), makeAssistantMessage({ text: "a" })]),
+		});
+		const r = await captured.tools.get("advisor")?.execute?.("tc", {}, undefined as never, undefined as never, ctx);
+		expect(r?.content[0]).toMatchObject({ type: "text", text: "advice" });
+		expect(r?.details).toMatchObject({ advisorModel: "a:m" });
+	});
+
+	it("aborted stopReason returns cancel envelope", async () => {
+		setAdvisorModel({ provider: "a", id: "m" } as never);
+		vi.mocked(completeSimple).mockResolvedValueOnce(resp({ stopReason: "aborted" }) as never);
+		const { pi, captured } = createMockPi();
+		registerAdvisorTool(pi);
+		const ctx = createMockCtx();
+		const r = await captured.tools.get("advisor")?.execute?.("tc", {}, undefined as never, undefined as never, ctx);
+		expect(r?.details).toMatchObject({ stopReason: "aborted", errorMessage: "aborted" });
+	});
+
+	it("error stopReason returns wrapped errorMessage", async () => {
+		setAdvisorModel({ provider: "a", id: "m" } as never);
+		vi.mocked(completeSimple).mockResolvedValueOnce(resp({ stopReason: "error", errorMessage: "502" }) as never);
+		const { pi, captured } = createMockPi();
+		registerAdvisorTool(pi);
+		const ctx = createMockCtx();
+		const r = await captured.tools.get("advisor")?.execute?.("tc", {}, undefined as never, undefined as never, ctx);
+		expect(r?.content[0]).toMatchObject({ text: expect.stringContaining("502") });
+		expect(r?.details).toMatchObject({ stopReason: "error", errorMessage: "502" });
+	});
+
+	it("empty-response returns ERR_EMPTY_RESPONSE envelope", async () => {
+		setAdvisorModel({ provider: "a", id: "m" } as never);
+		vi.mocked(completeSimple).mockResolvedValueOnce(resp({ text: "   " }) as never);
+		const { pi, captured } = createMockPi();
+		registerAdvisorTool(pi);
+		const ctx = createMockCtx();
+		const r = await captured.tools.get("advisor")?.execute?.("tc", {}, undefined as never, undefined as never, ctx);
+		expect(r?.details).toMatchObject({ errorMessage: "empty response" });
+	});
+
+	it("thrown error is caught and wrapped in details.errorMessage", async () => {
+		setAdvisorModel({ provider: "a", id: "m" } as never);
+		vi.mocked(completeSimple).mockRejectedValueOnce(new Error("boom"));
+		const { pi, captured } = createMockPi();
+		registerAdvisorTool(pi);
+		const ctx = createMockCtx();
+		const r = await captured.tools.get("advisor")?.execute?.("tc", {}, undefined as never, undefined as never, ctx);
+		expect(r?.content[0]).toMatchObject({ text: expect.stringContaining("boom") });
+		expect(r?.details).toMatchObject({ errorMessage: "boom" });
+	});
+});
+
+describe("executeAdvisor — auth envelopes", () => {
+	it("returns no-model envelope when advisor is not configured", async () => {
+		const { pi, captured } = createMockPi();
+		registerAdvisorTool(pi);
+		const ctx = createMockCtx();
+		const r = await captured.tools.get("advisor")?.execute?.("tc", {}, undefined as never, undefined as never, ctx);
+		expect(r?.details).toMatchObject({ errorMessage: "no advisor model selected" });
+	});
+
+	it("wraps misconfigured auth into details.errorMessage", async () => {
+		setAdvisorModel({ provider: "a", id: "m" } as never);
+		const { pi, captured } = createMockPi();
+		registerAdvisorTool(pi);
+		const ctx = createMockCtx();
+		(ctx.modelRegistry.getApiKeyAndHeaders as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+			ok: false,
+			error: "bad config",
+		});
+		const r = await captured.tools.get("advisor")?.execute?.("tc", {}, undefined as never, undefined as never, ctx);
+		expect(r?.content[0]).toMatchObject({ text: expect.stringContaining("bad config") });
+		expect(r?.details).toMatchObject({ errorMessage: "bad config", advisorModel: "a:m" });
+	});
+
+	it("returns no-api-key envelope when auth.ok but apiKey is missing", async () => {
+		setAdvisorModel({ provider: "a", id: "m" } as never);
+		const { pi, captured } = createMockPi();
+		registerAdvisorTool(pi);
+		const ctx = createMockCtx();
+		(ctx.modelRegistry.getApiKeyAndHeaders as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+			ok: true,
+			apiKey: undefined,
+			headers: {},
+		});
+		const r = await captured.tools.get("advisor")?.execute?.("tc", {}, undefined as never, undefined as never, ctx);
+		expect(r?.content[0]).toMatchObject({ text: expect.stringContaining("no API key") });
+		expect(r?.details).toMatchObject({ errorMessage: "no API key for a", advisorModel: "a:m" });
+	});
+});

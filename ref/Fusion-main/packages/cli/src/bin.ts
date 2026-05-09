@@ -1,0 +1,1590 @@
+#!/usr/bin/env node
+
+/**
+ * Bootstrap: pi-coding-agent reads package.json at module-init time (top-level
+ * `readFileSync` in its config module) and uses `piConfig.configDir` to decide
+ * where project-local resources live. Fusion wants those resources in `.fusion`
+ * rather than `.pi`, so we provide pi with a package.json config before any
+ * application imports can load pi.
+ *
+ * Node built-ins are safe to import statically — they have no side-effects
+ * that depend on package.json. All application imports MUST be dynamic
+ * (after the env is configured) so they resolve after PI_PACKAGE_DIR is set.
+ */
+import { existsSync, mkdtempSync, readFileSync, symlinkSync, writeFileSync } from "node:fs";
+import { createRequire } from "node:module";
+import { join, dirname, resolve } from "node:path";
+import { tmpdir } from "node:os";
+import { performance } from "node:perf_hooks";
+import { fileURLToPath } from "node:url";
+
+// @ts-expect-error -- Bun-only global; undefined in Node
+const isBunBinary = typeof Bun !== "undefined" && !!Bun.embeddedFiles;
+
+function configurePiPackage(): void {
+  if (process.env.PI_PACKAGE_DIR) {
+    return;
+  }
+
+  const tmp = mkdtempSync(join(tmpdir(), "fn-pkg-"));
+  let packageJson: Record<string, unknown> = {
+    name: "pi",
+    version: "0.1.0",
+    type: "module",
+  };
+
+  try {
+    const require = createRequire(import.meta.url);
+    const piPackagePath = require.resolve("@mariozechner/pi-coding-agent/package.json");
+    const piPackageDir = dirname(piPackagePath);
+    packageJson = JSON.parse(readFileSync(piPackagePath, "utf-8")) as Record<string, unknown>;
+
+    for (const entry of ["dist", "docs", "examples", "README.md", "CHANGELOG.md"]) {
+      const source = join(piPackageDir, entry);
+      if (existsSync(source)) {
+        symlinkSync(source, join(tmp, entry));
+      }
+    }
+  } catch {
+    // A bundled binary may not expose pi's package.json. The config value is
+    // the only part required by Fusion's non-interactive agent sessions.
+  }
+
+  packageJson.piConfig = {
+    ...((packageJson.piConfig as Record<string, unknown> | undefined) ?? {}),
+    configDir: ".fusion",
+  };
+
+  writeFileSync(join(tmp, "package.json"), JSON.stringify(packageJson, null, 2) + "\n");
+  process.env.PI_PACKAGE_DIR = tmp;
+}
+
+configurePiPackage();
+
+// Drain Node's User Timing buffer. Ink (react-reconciler) in dev mode emits
+// performance.mark()/measure() on every render; entries accumulate forever
+// without an observer, retaining ~600MB after 20-30min of TUI rendering.
+setInterval(() => {
+  performance.clearMeasures();
+  performance.clearMarks();
+}, 30_000).unref();
+
+/**
+ * Load `.env` (and `.env.local`) from the current working directory into
+ * process.env so that secrets like FUSION_DAEMON_TOKEN can live in a local
+ * gitignored file instead of being exported manually each session.
+ *
+ * Existing environment variables always win — this loader never clobbers
+ * values the user set explicitly in their shell. `.env.local` overrides
+ * `.env` when both are present.
+ *
+ * We deliberately hand-roll a minimal parser instead of pulling in dotenv:
+ * the CLI ships as a single bundled binary and we want to keep it lean.
+ */
+function loadEnvFile(path: string): void {
+  if (!existsSync(path)) return;
+  const contents = readFileSync(path, "utf-8");
+  for (const rawLine of contents.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#")) continue;
+    const eq = line.indexOf("=");
+    if (eq === -1) continue;
+    const key = line.slice(0, eq).trim();
+    if (!key || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(key)) continue;
+    if (process.env[key] !== undefined) continue; // Shell wins.
+    let value = line.slice(eq + 1).trim();
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+    process.env[key] = value;
+  }
+}
+
+function loadLocalEnv(): void {
+  const cwd = process.cwd();
+  loadEnvFile(join(cwd, ".env"));
+  loadEnvFile(join(cwd, ".env.local"));
+}
+
+loadLocalEnv();
+
+// Command handlers are loaded lazily so --help can return immediately
+// without importing the full command graph.
+async function loadCommandHandlers() {
+  const { runDashboard } = await import("./commands/dashboard.js");
+  const { runServe } = await import("./commands/serve.js");
+  const { runDaemon } = await import("./commands/daemon.js");
+  const { runDesktop } = await import("./commands/desktop.js");
+  const { runTaskCreate, runTaskList, runTaskMove, runTaskMerge, runTaskUpdate, runTaskLog, runTaskLogs, runTaskShow, runTaskAttach, runTaskPause, runTaskUnpause, runTaskImportFromGitHub, runTaskDuplicate, runTaskArchive, runTaskUnarchive, runTaskRefine, runTaskPlan, runTaskDelete, runTaskRetry, runTaskComment, runTaskComments, runTaskSteer, runTaskSetNode, runTaskClearNode, runTaskPrCreate } = await import("./commands/task.js");
+  const { runSettingsShow, runSettingsSet } = await import("./commands/settings.js");
+  const { runSettingsExport } = await import("./commands/settings-export.js");
+  const { runSettingsImport } = await import("./commands/settings-import.js");
+  const { runGitStatus, runGitFetch, runGitPull, runGitPush } = await import("./commands/git.js");
+  const { runBackupCreate, runBackupList, runBackupRestore, runBackupCleanup } = await import("./commands/backup.js");
+  const { runMissionCreate, runMissionList, runMissionShow, runMissionDelete, runMissionActivateSlice } = await import("./commands/mission.js");
+  const { runProjectList, runProjectAdd, runProjectRemove, runProjectShow, runProjectInfo, runProjectSetDefault, runProjectDetect } = await import("./commands/project.js");
+  const { runNodeList, runNodeConnect, runNodeDisconnect, runNodeShow, runNodeHealth, runMeshStatus } = await import("./commands/node.js");
+  const { runInit } = await import("./commands/init.js");
+  const { runAgentStop, runAgentStart } = await import("./commands/agent.js");
+  const { runAgentImport } = await import("./commands/agent-import.js");
+  const { runAgentExport } = await import("./commands/agent-export.js");
+  const { runMessageInbox, runMessageOutbox, runMessageSend, runMessageRead, runMessageDelete, runAgentMailbox } = await import("./commands/message.js");
+  const { runPluginList, runPluginInstall, runPluginUninstall, runPluginEnable, runPluginDisable, runPluginSetupStatus, runPluginSetup, runPluginAvailable, runPluginSettings, runPluginRescan } = await import("./commands/plugin.js");
+  const { runPluginCreate } = await import("./commands/plugin-scaffold.js");
+  const { runSkillsSearch, runSkillsInstall } = await import("./commands/skills.js");
+  const { runResearchCreate, runResearchList, runResearchShow, runResearchExport, runResearchCancel, runResearchRetry } = await import("./commands/research.js");
+  const { runUpdate } = await import("./commands/update.js");
+
+  return {
+    runDashboard,
+    runServe,
+    runDaemon,
+    runDesktop,
+    runTaskCreate,
+    runTaskList,
+    runTaskMove,
+    runTaskMerge,
+    runTaskUpdate,
+    runTaskLog,
+    runTaskLogs,
+    runTaskShow,
+    runTaskAttach,
+    runTaskPause,
+    runTaskUnpause,
+    runTaskImportFromGitHub,
+    runTaskDuplicate,
+    runTaskArchive,
+    runTaskUnarchive,
+    runTaskRefine,
+    runTaskPlan,
+    runTaskDelete,
+    runTaskRetry,
+    runTaskComment,
+    runTaskComments,
+    runTaskSteer,
+    runTaskSetNode,
+    runTaskClearNode,
+    runTaskPrCreate,
+    runSettingsShow,
+    runSettingsSet,
+    runSettingsExport,
+    runSettingsImport,
+    runGitStatus,
+    runGitFetch,
+    runGitPull,
+    runGitPush,
+    runBackupCreate,
+    runBackupList,
+    runBackupRestore,
+    runBackupCleanup,
+    runMissionCreate,
+    runMissionList,
+    runMissionShow,
+    runMissionDelete,
+    runMissionActivateSlice,
+    runProjectList,
+    runProjectAdd,
+    runProjectRemove,
+    runProjectShow,
+    runProjectInfo,
+    runProjectSetDefault,
+    runProjectDetect,
+    runNodeList,
+    runNodeConnect,
+    runNodeDisconnect,
+    runNodeShow,
+    runNodeHealth,
+    runMeshStatus,
+    runInit,
+    runAgentStop,
+    runAgentStart,
+    runAgentImport,
+    runAgentExport,
+    runMessageInbox,
+    runMessageOutbox,
+    runMessageSend,
+    runMessageRead,
+    runMessageDelete,
+    runAgentMailbox,
+    runPluginList,
+    runPluginInstall,
+    runPluginUninstall,
+    runPluginEnable,
+    runPluginDisable,
+    runPluginSetupStatus,
+    runPluginSetup,
+    runPluginAvailable,
+    runPluginSettings,
+    runPluginRescan,
+    runPluginCreate,
+    runSkillsSearch,
+    runSkillsInstall,
+    runResearchCreate,
+    runResearchList,
+    runResearchShow,
+    runResearchExport,
+    runResearchCancel,
+    runResearchRetry,
+    runUpdate,
+  };
+}
+
+const HELP = `
+fn — AI-orchestrated task board
+
+Usage:
+  fn                                  Launch the dashboard (same as fn dashboard)
+  fn init [opts]                      Initialize a new fn project (--name, --path, --git)
+  fn dashboard                        Start the board web UI
+  fn dashboard --paused               Start with automation paused
+  fn dashboard --dev                  Start web UI only (no AI engine)
+  fn dashboard --interactive          Start with interactive port selection
+  fn serve [--port <port>] [--host <host>] [--paused] [--daemon]
+                                      Start Fusion as a headless node (API + engine, no UI)
+                                      Use --daemon to enable bearer token authentication
+  fn daemon [--port <port>] [--host <host>] [--token <token>] [--paused] [--token-only]
+                                      Start Fusion daemon (API + engine, auth required)
+  fn desktop                          Launch the Fusion desktop app (Electron)
+  fn desktop --dev                    Launch with hot-reload (connects to Vite dev server)
+  fn desktop --paused                 Launch with automation paused
+  fn update [--check] [--global] [--json]   Update Fusion to the latest version
+  fn upgrade                           Alias for fn update
+  fn task create [desc] [opts]         Create a new task (goes to triage; supports --node <name>)
+  fn task plan [description] [opts]    Create task via AI-guided planning
+  fn task list                        List all tasks
+  fn task show <id>                   Show task details, steps, log
+  fn task logs <id> [--follow] [--limit <n>] [--type <type>]
+                                      Show task agent execution logs
+  fn task move <id> <col>             Move a task to a column
+  fn task update <id> <step> <status> Update step status (pending|in-progress|done|skipped)
+  fn task log <id> <message>          Add a log entry
+  fn task merge <id>                  Merge an in-review task and close it
+  fn task duplicate <id>              Duplicate a task (creates copy in triage)
+  fn task refine <id> [opts]          Create a refinement task from done/in-review
+  fn task archive <id>                Archive a done task
+  fn task unarchive <id>              Unarchive an archived task
+  fn task delete <id> [--force]       Delete a task (use --force to skip confirmation)
+  fn task attach <id> <file>          Attach a file to a task
+  fn task pause <id>                  Pause a task (stops all automation)
+  fn task unpause <id>                Unpause a task (resumes automation)
+  fn task comment <id> [message]      Add task comment (prompts if message omitted)
+  fn task comments <id>               List task comments
+  fn task steer <id> [message]        Add steering comment (prompts if message omitted)
+  fn task set-node <id> <node-name-or-id>  Set a per-task node override
+  fn task clear-node <id>                Clear a per-task node override
+  fn task retry <id>                  Retry a failed task (clears error, moves to todo)
+  fn task pr-create <id> [--title <title>] [--base <branch>] [--body <body>]
+                         Create a GitHub PR for an in-review task
+  fn task import <owner/repo> [opts]  Import GitHub issues as tasks
+  fn research create --query <text> [--wait] [--max-wait-ms <ms>] [--json]
+                                      Create and optionally wait for a research run
+  fn research list | ls [--status <status>] [--limit <n>] [--json]
+                                      List research runs
+  fn research show <run-id> [--json]  Show research run details
+  fn research export <run-id> [--format <json|markdown|pdf>] [--output <path>] [--json]
+                                      Export research run results
+  fn research cancel <run-id> [--json]
+                                      Cancel an active research run
+  fn research retry <run-id> [--json]
+                                      Retry a failed/cancelled research run
+  fn mission create [title] [desc]    Create a new mission
+  fn mission list | ls                List missions
+  fn mission show | info <id>         Show mission details
+  fn mission delete <id> [--force]    Delete a mission
+  fn mission activate-slice <id>      Mark a slice active
+  fn project list | ls [--json]       List all registered projects
+  fn project add [name] [path] [opts]  Register a new project
+  fn project remove | rm <name> [--force]
+                                      Unregister a project
+  fn project show <name>               Show project details with health
+  fn project info [name]               Show project details (alias for show)
+  fn project set-default | default <name>
+                                      Set default project
+  fn project detect                    Detect project from current directory
+  fn node list | ls [--json]          List all nodes with status and type
+  fn node connect <name> --url <url> [--api-key <key>] [--max-concurrent <n>]
+                                      Connect to a remote node
+  fn node disconnect <name> [--force]  Remove a node connection
+  fn node show | info [name] [--json] Show node details
+  fn node health <name>               Health check a node
+  fn mesh status [--json]              Show full mesh state
+  fn settings                          Show current Fusion configuration
+  fn settings set <key> <value>        Update a configuration setting
+  fn settings set defaultNodeId <node-id>
+  fn settings set unavailableNodePolicy <block|fallback-local>
+  fn settings export [opts]              Export settings to a JSON file
+  fn settings import <file> [opts]       Import settings from a JSON file
+
+  fn git status              Show current branch, commit, dirty state, ahead/behind
+  fn git push                Push current branch
+  fn git pull                Pull current branch
+  fn git fetch [remote]      Fetch from remote (default: origin)
+  fn agent stop <id>                Stop a running agent (pause execution)
+  fn agent start <id>               Start a stopped agent (resume execution)
+  fn agent import <path> [--dry-run] [--skip-existing]
+                                      Import agents from an Agent Companies package (directory, archive, or AGENTS.md file)
+  fn agent export <dir> [--company-name <name>] [--company-slug <slug>]
+                                      Export Fusion agents to an Agent Companies package directory
+                                      (agent skills assigned via metadata.skills affect execution-time tools)
+  fn agent mailbox <id>             View an agent's mailbox
+  fn message inbox                  List inbox messages
+  fn message outbox                 List sent messages
+  fn message send <agent-id> <msg>  Send a message to an agent
+  fn message read <id>              Read a specific message
+  fn message delete <id>            Delete a message
+  fn backup --create         Create a database backup immediately
+  fn backup --list           List all database backups
+  fn backup --restore <file> Restore database from a backup file
+  fn backup --cleanup        Remove old backups exceeding retention limit
+  fn plugin list | ls                List installed plugins
+  fn plugin install <path-or-package> [--ai-scan] Install a plugin from path or package
+  fn plugin add <path-or-package>     Alias for plugin install
+  fn plugin uninstall <id> [--force] Uninstall a plugin
+  fn plugin enable <id>             Enable a plugin
+  fn plugin disable <id>             Disable a plugin
+  fn plugin available                List built-in plugin catalog entries
+  fn plugin settings <id> [key] [value]
+                                      Read/update installed plugin settings
+  fn plugin rescan <id>              Rescan and reload a plugin
+  fn plugin setup-status <id>        Check plugin setup binary/runtime status
+  fn plugin setup <id> [--action install|uninstall]
+                                      Install or uninstall plugin setup binaries/runtimes
+  fn plugin create <name>           Scaffold a new plugin project
+  fn skills search <query>            Search skills.sh for agent skills
+  fn skills search <query> --limit 5  Limit results
+  fn skills install <owner/repo>      Install skills from a source
+  fn skills install <owner/repo> --skill <name>
+                                      Install a specific skill
+
+Options:
+  --project, -P <name>       Target a specific project (bypasses CWD detection)
+  --port, -p <port>          Dashboard/serve port (default: 4040)
+  --host <host>              Serve host (default: 127.0.0.1 — localhost only; pass 0.0.0.0 to expose)
+  --token <token>            Dashboard/daemon bearer token. Default: $FUSION_DASHBOARD_TOKEN, $FUSION_DAEMON_TOKEN, or auto-generated.
+  --no-auth                  Disable dashboard bearer-token auth (local-only; not recommended on 0.0.0.0)
+  --interactive              Interactive mode (port selection for dashboard, issue selection for import)
+  --paused                   Start with engine paused (automation disabled)
+  --dev                      Start dashboard only (no AI engine)
+  --attach <file>            Attach file(s) on task create (repeatable)
+  --depends <id>             Declare dependency on task create (repeatable)
+  --feedback <text>          Refinement feedback (non-interactive mode)
+  --yes                      Skip confirmation prompts (planning mode)
+  --limit, -l <n>            Max issues to import (default: 30, max: 100)
+  --labels, -L <labels>      Comma-separated label filter for import
+  --interactive, -i          Interactive mode for issue selection
+  --help, -h                 Show this help
+
+Columns: triage, todo, in-progress, in-review, done, archived
+Supported file types: png, jpg, gif, webp, txt, log, json, yaml, yml, toml, csv, xml
+`.trim();
+
+function extractGlobalProjectFlag(argv: string[]): { cleanedArgs: string[]; projectName?: string } {
+  const cleanedArgs: string[] = [];
+  let projectName: string | undefined;
+
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg === "--project" || arg === "-P") {
+      if (projectName) {
+        throw new Error("Duplicate --project flag. Specify a project only once.");
+      }
+      const value = argv[i + 1];
+      if (!value || value.startsWith("-")) {
+        throw new Error("Usage: --project <name>");
+      }
+      projectName = value;
+      i++;
+      continue;
+    }
+    cleanedArgs.push(arg);
+  }
+
+  return { cleanedArgs, projectName };
+}
+
+function getFlagValue(args: string[], flag: string): string | undefined {
+  const index = args.indexOf(flag);
+  if (index === -1 || index + 1 >= args.length) {
+    return undefined;
+  }
+
+  const value = args[index + 1];
+  if (!value || value.startsWith("-")) {
+    return undefined;
+  }
+
+  return value;
+}
+
+function getFlagValueNumber(args: string[], flag: string): number | undefined {
+  const value = getFlagValue(args, flag);
+  if (value === undefined) {
+    return undefined;
+  }
+
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+/**
+ * Locate `@runfusion/fusion`'s own version by walking up from the running
+ * `bin.js`. Mirrors `packages/dashboard/src/cli-package-version.ts` but is
+ * inlined here to avoid pulling the dashboard barrel into the bin's static
+ * import graph (bin keeps app imports dynamic until env bootstrap is done).
+ */
+function readOwnCliVersion(): string | undefined {
+  let currentDir: string;
+  try {
+    currentDir = dirname(fileURLToPath(import.meta.url));
+  } catch {
+    return undefined;
+  }
+  for (let i = 0; i < 8; i += 1) {
+    const pkgPath = resolve(currentDir, "package.json");
+    if (existsSync(pkgPath)) {
+      try {
+        const parsed = JSON.parse(readFileSync(pkgPath, "utf-8")) as {
+          name?: string;
+          version?: string;
+        };
+        if (parsed.name === "@runfusion/fusion" && typeof parsed.version === "string") {
+          return parsed.version;
+        }
+      } catch {
+        // Ignore malformed manifest and keep walking.
+      }
+    }
+    const parentDir = resolve(currentDir, "..");
+    if (parentDir === currentDir) break;
+    currentDir = parentDir;
+  }
+  return undefined;
+}
+
+async function main() {
+  const { cleanedArgs: args, projectName } = extractGlobalProjectFlag(process.argv.slice(2));
+
+  // Print version and exit before any application imports. This is what the
+  // dashboard's CLI Binary panel probes via `<bin> --version`; without an
+  // early exit, the flag falls through to the default `dashboard` command and
+  // boots the full server.
+  if (args.includes("--version") || args.includes("-v")) {
+    console.log(readOwnCliVersion() ?? "unknown");
+    process.exit(0);
+  }
+
+  if (args.includes("--help") || args.includes("-h")) {
+    console.log(HELP);
+    process.exit(0);
+  }
+
+  // No subcommand (or only flags) — default to the dashboard command so flags
+  // like --no-auth, --port, --host, etc. work without typing `dashboard`.
+  if (args.length === 0 || args[0]!.startsWith("-")) {
+    args.unshift("dashboard");
+  }
+
+  const command = args[0];
+
+  const {
+    runDashboard,
+    runServe,
+    runDaemon,
+    runDesktop,
+    runTaskCreate,
+    runTaskList,
+    runTaskMove,
+    runTaskMerge,
+    runTaskUpdate,
+    runTaskLog,
+    runTaskLogs,
+    runTaskShow,
+    runTaskAttach,
+    runTaskPause,
+    runTaskUnpause,
+    runTaskImportFromGitHub,
+    runTaskDuplicate,
+    runTaskArchive,
+    runTaskUnarchive,
+    runTaskRefine,
+    runTaskPlan,
+    runTaskDelete,
+    runTaskRetry,
+    runTaskComment,
+    runTaskComments,
+    runTaskSteer,
+    runTaskSetNode,
+    runTaskClearNode,
+    runTaskPrCreate,
+    runSettingsShow,
+    runSettingsSet,
+    runSettingsExport,
+    runSettingsImport,
+    runGitStatus,
+    runGitFetch,
+    runGitPull,
+    runGitPush,
+    runBackupCreate,
+    runBackupList,
+    runBackupRestore,
+    runBackupCleanup,
+    runMissionCreate,
+    runMissionList,
+    runMissionShow,
+    runMissionDelete,
+    runMissionActivateSlice,
+    runProjectList,
+    runProjectAdd,
+    runProjectRemove,
+    runProjectShow,
+    runProjectInfo,
+    runProjectSetDefault,
+    runProjectDetect,
+    runNodeList,
+    runNodeConnect,
+    runNodeDisconnect,
+    runNodeShow,
+    runNodeHealth,
+    runMeshStatus,
+    runInit,
+    runAgentStop,
+    runAgentStart,
+    runAgentImport,
+    runAgentExport,
+    runMessageInbox,
+    runMessageOutbox,
+    runMessageSend,
+    runMessageRead,
+    runMessageDelete,
+    runAgentMailbox,
+    runPluginList,
+    runPluginInstall,
+    runPluginUninstall,
+    runPluginEnable,
+    runPluginDisable,
+    runPluginSetupStatus,
+    runPluginSetup,
+    runPluginAvailable,
+    runPluginSettings,
+    runPluginRescan,
+    runPluginCreate,
+    runSkillsSearch,
+    runSkillsInstall,
+    runResearchCreate,
+    runResearchList,
+    runResearchShow,
+    runResearchExport,
+    runResearchCancel,
+    runResearchRetry,
+    runUpdate,
+  } = await loadCommandHandlers();
+
+  try {
+    switch (command) {
+      case "init": {
+        // Parse init options
+        const nameIdx = args.indexOf("--name");
+        const name = nameIdx !== -1 && nameIdx + 1 < args.length ? args[nameIdx + 1] : undefined;
+        const pathIdx = args.indexOf("--path");
+        const path = pathIdx !== -1 && pathIdx + 1 < args.length ? args[pathIdx + 1] : undefined;
+        const git = args.includes("--git");
+
+        await runInit({ name, path, git });
+        break;
+      }
+
+      case "dashboard": {
+        // Initialize native module resolution for Bun binary before starting dashboard
+        // This sets up the paths so node-pty can find its native assets
+        if (isBunBinary) {
+          const { initNativePatch } = await import("./runtime/native-patch.js");
+          initNativePatch();
+        }
+
+        const portIdx = args.indexOf("--port");
+        const portIdxShort = args.indexOf("-p");
+        const pi = portIdx !== -1 ? portIdx : portIdxShort;
+        const port = pi !== -1 ? parseInt(args[pi + 1], 10) : 4040;
+        const paused = args.includes("--paused");
+        const dev = args.includes("--dev");
+        const interactive = args.includes("--interactive");
+        const dashHostIdx = args.indexOf("--host");
+        const host = dashHostIdx !== -1 && dashHostIdx + 1 < args.length ? args[dashHostIdx + 1] : undefined;
+        const noAuth = args.includes("--no-auth");
+        const dashTokenIdx = args.indexOf("--token");
+        const token = dashTokenIdx !== -1 && dashTokenIdx + 1 < args.length ? args[dashTokenIdx + 1] : undefined;
+        await runDashboard(port, { paused, dev, interactive, host, noAuth, token });
+        break;
+      }
+
+      case "serve": {
+        const portIdx = args.indexOf("--port");
+        const portIdxShort = args.indexOf("-p");
+        const pi = portIdx !== -1 ? portIdx : portIdxShort;
+        const port = pi !== -1 ? parseInt(args[pi + 1], 10) : 4040;
+        const paused = args.includes("--paused");
+        const interactive = args.includes("--interactive");
+        const hostIdx = args.indexOf("--host");
+        const host = hostIdx !== -1 && hostIdx + 1 < args.length ? args[hostIdx + 1] : undefined;
+        const daemon = args.includes("--daemon");
+        await runServe(port, { paused, interactive, host, daemon });
+        break;
+      }
+
+      case "daemon": {
+        const portIdx = args.indexOf("--port");
+        const portIdxShort = args.indexOf("-p");
+        const pi = portIdx !== -1 ? portIdx : portIdxShort;
+        const port = pi !== -1 ? parseInt(args[pi + 1], 10) : 0;
+        const paused = args.includes("--paused");
+        const interactive = args.includes("--interactive");
+        const hostIdx = args.indexOf("--host");
+        const host = hostIdx !== -1 && hostIdx + 1 < args.length ? args[hostIdx + 1] : undefined;
+        const tokenIdx = args.indexOf("--token");
+        const token = tokenIdx !== -1 && tokenIdx + 1 < args.length ? args[tokenIdx + 1] : undefined;
+        const tokenOnly = args.includes("--token-only");
+        await runDaemon({ port, paused, interactive, host, token, tokenOnly });
+        break;
+      }
+
+      case "desktop": {
+        const paused = args.includes("--paused");
+        const dev = args.includes("--dev");
+        const interactive = args.includes("--interactive");
+        await runDesktop({ paused, dev, interactive });
+        break;
+      }
+
+      case "update":
+      case "upgrade": {
+        await runUpdate({
+          check: args.includes("--check"),
+          global: args.includes("--global") ? true : undefined,
+          json: args.includes("--json"),
+        });
+        break;
+      }
+
+      case "project": {
+        const subcommand = args[1];
+        switch (subcommand) {
+          case "list":
+          case "ls":
+            {
+              const json = args.includes("--json");
+              await runProjectList({ json });
+            }
+            break;
+          case "add": {
+            const name = args[2];
+            const path = args[3];
+            const isolationIdx = args.indexOf("--isolation");
+            const isolation = isolationIdx !== -1 && isolationIdx + 1 < args.length
+              ? args[isolationIdx + 1] as "in-process" | "child-process"
+              : undefined;
+            const force = args.includes("--force");
+            const interactive = args.includes("--interactive");
+            await runProjectAdd(name, path, { isolation, force, interactive });
+            break;
+          }
+          case "info": {
+            const name = args[2];
+            await runProjectInfo(name);
+            break;
+          }
+          case "remove":
+          case "rm": {
+            const name = args[2];
+            const force = args.includes("--force");
+            await runProjectRemove(name, { force });
+            break;
+          }
+          case "show": {
+            const name = args[2];
+            await runProjectShow(name);
+            break;
+          }
+          case "set-default":
+          case "default": {
+            const name = args[2];
+            await runProjectSetDefault(name);
+            break;
+          }
+          case "detect":
+            await runProjectDetect();
+            break;
+          default:
+            console.error(`Unknown subcommand: project ${subcommand || ""}`);
+            console.log("Try: fn project list | add | remove | show | info | set-default | detect");
+            process.exit(1);
+        }
+        break;
+      }
+
+      case "node": {
+        const subcommand = args[1];
+        switch (subcommand) {
+          case "list":
+          case "ls": {
+            await runNodeList({ json: args.includes("--json") });
+            break;
+          }
+          case "connect": {
+            const name = args[2];
+            const url = getFlagValue(args, "--url");
+            if (!url) {
+              console.error("Usage: fn node connect <name> --url <url> [--api-key <key>] [--max-concurrent <n>]");
+              process.exit(1);
+            }
+            await runNodeConnect(name, {
+              url,
+              apiKey: getFlagValue(args, "--api-key"),
+              maxConcurrent: getFlagValueNumber(args, "--max-concurrent"),
+            });
+            break;
+          }
+          case "disconnect": {
+            const name = args[2];
+            await runNodeDisconnect(name, { force: args.includes("--force") });
+            break;
+          }
+          case "add": {
+            // Legacy alias for connect
+            const name = args[2];
+            const url = getFlagValue(args, "--url");
+            if (url) {
+              await runNodeConnect(name, {
+                url,
+                apiKey: getFlagValue(args, "--api-key"),
+                maxConcurrent: getFlagValueNumber(args, "--max-concurrent"),
+              });
+            } else {
+              console.error("Usage: fn node add <name> --url <url> [--api-key <key>] [--max-concurrent <n>]");
+              process.exit(1);
+            }
+            break;
+          }
+          case "remove":
+          case "rm": {
+            // Legacy alias for disconnect
+            const name = args[2];
+            await runNodeDisconnect(name, { force: args.includes("--force") });
+            break;
+          }
+          case "show":
+          case "info": {
+            await runNodeShow(args[2], { json: args.includes("--json") });
+            break;
+          }
+          case "health": {
+            await runNodeHealth(args[2]);
+            break;
+          }
+          default:
+            console.error(`Unknown subcommand: node ${subcommand || ""}`);
+            console.log("Try: fn node list | connect | disconnect | show | health");
+            process.exit(1);
+        }
+        break;
+      }
+
+      case "mesh": {
+        const subcommand = args[1];
+        switch (subcommand) {
+          case "status": {
+            await runMeshStatus({ json: args.includes("--json") });
+            break;
+          }
+          default:
+            console.error(`Unknown subcommand: mesh ${subcommand || ""}`);
+            console.log("Try: fn mesh status");
+            process.exit(1);
+        }
+        break;
+      }
+
+      case "research": {
+        const subcommand = args[1];
+        switch (subcommand) {
+          case "create": {
+            const query = getFlagValue(args, "--query") ?? args.slice(2).filter((value) => !value.startsWith("--")).join(" ").trim();
+            if (!query) {
+              console.error("Usage: fn research create --query <text> [--wait] [--max-wait-ms <ms>] [--json]");
+              process.exit(1);
+            }
+            await runResearchCreate({
+              query,
+              waitForCompletion: args.includes("--wait"),
+              maxWaitMs: getFlagValueNumber(args, "--max-wait-ms"),
+              json: args.includes("--json"),
+              projectName,
+            });
+            break;
+          }
+          case "list":
+          case "ls": {
+            const status = getFlagValue(args, "--status");
+            await runResearchList({
+              status,
+              limit: getFlagValueNumber(args, "--limit"),
+              json: args.includes("--json"),
+              projectName,
+            });
+            break;
+          }
+          case "show": {
+            const runId = args[2];
+            if (!runId) {
+              console.error("Usage: fn research show <run-id> [--json]");
+              process.exit(1);
+            }
+            await runResearchShow(runId, { json: args.includes("--json"), projectName });
+            break;
+          }
+          case "export": {
+            const runId = args[2];
+            if (!runId) {
+              console.error("Usage: fn research export <run-id> [--format <json|markdown|pdf>] [--output <path>] [--json]");
+              process.exit(1);
+            }
+            await runResearchExport({
+              runId,
+              format: getFlagValue(args, "--format"),
+              output: getFlagValue(args, "--output"),
+              json: args.includes("--json"),
+              projectName,
+            });
+            break;
+          }
+          case "cancel": {
+            const runId = args[2];
+            if (!runId) {
+              console.error("Usage: fn research cancel <run-id> [--json]");
+              process.exit(1);
+            }
+            await runResearchCancel(runId, { json: args.includes("--json"), projectName });
+            break;
+          }
+          case "retry": {
+            const runId = args[2];
+            if (!runId) {
+              console.error("Usage: fn research retry <run-id> [--json]");
+              process.exit(1);
+            }
+            await runResearchRetry(runId, { json: args.includes("--json"), projectName });
+            break;
+          }
+          default:
+            console.error(`Unknown subcommand: research ${subcommand || ""}`);
+            console.log("Try: fn research create | list | show | export | cancel | retry");
+            process.exit(1);
+        }
+        break;
+      }
+
+      case "task": {
+        const subcommand = args[1];
+        switch (subcommand) {
+          case "create": {
+            const createArgs = args.slice(2);
+            const attachFiles: string[] = [];
+            const dependsIds: string[] = [];
+            let nodeName: string | undefined;
+            const descParts: string[] = [];
+            for (let i = 0; i < createArgs.length; i++) {
+              if (createArgs[i] === "--attach" && i + 1 < createArgs.length) {
+                attachFiles.push(createArgs[i + 1]);
+                i++; // skip the value
+              } else if (createArgs[i] === "--depends" && i + 1 < createArgs.length) {
+                dependsIds.push(createArgs[i + 1]);
+                i++; // skip the value
+              } else if (createArgs[i] === "--node" && i + 1 < createArgs.length) {
+                nodeName = createArgs[i + 1];
+                i++; // skip the value
+              } else {
+                descParts.push(createArgs[i]);
+              }
+            }
+            const title = descParts.join(" ");
+            await runTaskCreate(title || undefined, attachFiles.length > 0 ? attachFiles : undefined, dependsIds.length > 0 ? dependsIds : undefined, projectName, nodeName);
+            break;
+          }
+          case "plan": {
+            const planArgs = args.slice(2);
+            const yesFlag = planArgs.includes("--yes");
+            const descParts: string[] = [];
+            for (let i = 0; i < planArgs.length; i++) {
+              if (planArgs[i] === "--yes") {
+                continue; // skip flag
+              } else {
+                descParts.push(planArgs[i]);
+              }
+            }
+            const initialPlan = descParts.join(" ");
+            await runTaskPlan(initialPlan || undefined, yesFlag, projectName);
+            break;
+          }
+          case "list":
+          case "ls":
+            await runTaskList(projectName);
+            break;
+          case "move": {
+            const id = args[2];
+            const column = args[3];
+            if (!id || !column) {
+              console.error("Usage: fn task move <id> <column>");
+              process.exit(1);
+            }
+            await runTaskMove(id, column, projectName);
+            break;
+          }
+          case "show": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn task show <id>"); process.exit(1); }
+            await runTaskShow(id, projectName);
+            break;
+          }
+          case "update": {
+            const id = args[2], step = args[3], status = args[4];
+            if (!id || !step || !status) {
+              console.error("Usage: fn task update <id> <step> <status>");
+              console.error("Status: pending | in-progress | done | skipped");
+              process.exit(1);
+            }
+            await runTaskUpdate(id, step, status, projectName);
+            break;
+          }
+          case "log": {
+            const id = args[2], message = args.slice(3).join(" ");
+            if (!id || !message) { console.error("Usage: fn task log <id> <message>"); process.exit(1); }
+            await runTaskLog(id, message, undefined, projectName);
+            break;
+          }
+          case "logs": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn task logs <id> [--follow] [--limit <n>] [--type <type>]"); process.exit(1); }
+            
+            // Parse flags
+            const follow = args.includes("--follow");
+            
+            let limit: number | undefined;
+            const limitIdx = args.indexOf("--limit");
+            if (limitIdx !== -1 && limitIdx + 1 < args.length) {
+              const parsed = parseInt(args[limitIdx + 1], 10);
+              if (!isNaN(parsed)) {
+                limit = parsed;
+              }
+            }
+            
+            let type: string | undefined;
+            const typeIdx = args.indexOf("--type");
+            if (typeIdx !== -1 && typeIdx + 1 < args.length) {
+              type = args[typeIdx + 1];
+            }
+            
+            await runTaskLogs(id, { follow, limit, type: type as "text" | "thinking" | "tool" | "tool_result" | "tool_error" | undefined }, projectName);
+            break;
+          }
+          case "merge": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn task merge <id>"); process.exit(1); }
+            await runTaskMerge(id, projectName);
+            break;
+          }
+          case "duplicate": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn task duplicate <id>"); process.exit(1); }
+            await runTaskDuplicate(id, projectName);
+            break;
+          }
+          case "refine": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn task refine <id> [--feedback <text>]"); process.exit(1); }
+            // Parse optional --feedback flag
+            const feedbackIdx = args.indexOf("--feedback");
+            const feedback = feedbackIdx !== -1 && feedbackIdx + 1 < args.length
+              ? args[feedbackIdx + 1]
+              : undefined;
+            await runTaskRefine(id, feedback, projectName);
+            break;
+          }
+          case "archive": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn task archive <id>"); process.exit(1); }
+            await runTaskArchive(id, projectName);
+            break;
+          }
+          case "unarchive": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn task unarchive <id>"); process.exit(1); }
+            await runTaskUnarchive(id, projectName);
+            break;
+          }
+          case "delete": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn task delete <id> [--force]"); process.exit(1); }
+            const force = args.includes("--force");
+            await runTaskDelete(id, force, projectName);
+            break;
+          }
+          case "attach": {
+            const id = args[2], file = args[3];
+            if (!id || !file) {
+              console.error("Usage: fn task attach <id> <file>");
+              process.exit(1);
+            }
+            await runTaskAttach(id, file, projectName);
+            break;
+          }
+          case "pause": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn task pause <id>"); process.exit(1); }
+            await runTaskPause(id, projectName);
+            break;
+          }
+          case "unpause": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn task unpause <id>"); process.exit(1); }
+            await runTaskUnpause(id, projectName);
+            break;
+          }
+          case "comment": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn task comment <id> [message] [--author <name>]"); process.exit(1); }
+            const authorIdx = args.indexOf("--author");
+            const author = authorIdx !== -1 && authorIdx + 1 < args.length ? args[authorIdx + 1] : undefined;
+            const messageParts = args.slice(3).filter((arg, index) => {
+              const absoluteIndex = index + 3;
+              return absoluteIndex !== authorIdx && absoluteIndex !== authorIdx + 1;
+            });
+            const message = messageParts.join(" ");
+            await runTaskComment(id, message || undefined, author || process.env.USER || "user", projectName);
+            break;
+          }
+          case "comments": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn task comments <id>"); process.exit(1); }
+            await runTaskComments(id, projectName);
+            break;
+          }
+          case "steer": {
+            const id = args[2];
+            const message = args.slice(3).join(" ");
+            if (!id) { console.error("Usage: fn task steer <id> [message]"); process.exit(1); }
+            await runTaskSteer(id, message || undefined, projectName);
+            break;
+          }
+          case "set-node": {
+            const id = args[2];
+            const nodeName = args[3];
+            if (!id || !nodeName) {
+              console.error("Usage: fn task set-node <id> <node-name-or-id>");
+              process.exit(1);
+            }
+            await runTaskSetNode(id, nodeName, projectName);
+            break;
+          }
+          case "clear-node": {
+            const id = args[2];
+            if (!id) {
+              console.error("Usage: fn task clear-node <id>");
+              process.exit(1);
+            }
+            await runTaskClearNode(id, projectName);
+            break;
+          }
+          case "retry": {
+            const id = args[2];
+            if (!id) {
+              console.error("Usage: fn task retry <id>");
+              process.exit(1);
+            }
+            await runTaskRetry(id, projectName);
+            break;
+          }
+          case "pr-create": {
+            const id = args[2];
+            if (!id) {
+              console.error("Usage: fn task pr-create <id> [--title <title>] [--base <branch>] [--body <body>]");
+              process.exit(1);
+            }
+
+            // Parse optional flags
+            let title: string | undefined;
+            let base: string | undefined;
+            let body: string | undefined;
+
+            const titleIdx = args.indexOf("--title");
+            if (titleIdx !== -1 && titleIdx + 1 < args.length) {
+              title = args[titleIdx + 1];
+            }
+
+            const baseIdx = args.indexOf("--base");
+            if (baseIdx !== -1 && baseIdx + 1 < args.length) {
+              base = args[baseIdx + 1];
+            }
+
+            const bodyIdx = args.indexOf("--body");
+            if (bodyIdx !== -1 && bodyIdx + 1 < args.length) {
+              body = args[bodyIdx + 1];
+            }
+
+            await runTaskPrCreate(id, { title, base, body }, projectName);
+            break;
+          }
+          case "import": {
+            const ownerRepo = args[2];
+            if (!ownerRepo) {
+              console.error("Usage: fn task import <owner/repo> [options]");
+              console.error("Options: --limit <n>, -l <n>  (default: 30, max: 100)");
+              console.error("         --labels <labels>, -L <labels>  (comma-separated)");
+              console.error("         --interactive, -i  (interactive mode)");
+              process.exit(1);
+            }
+
+            // Parse options
+            let limit = 30;
+            const limitIdx = args.indexOf("--limit");
+            const limitIdxShort = args.indexOf("-l");
+            const li = limitIdx !== -1 ? limitIdx : limitIdxShort;
+            if (li !== -1 && li + 1 < args.length) {
+              const parsed = parseInt(args[li + 1], 10);
+              if (!isNaN(parsed)) {
+                limit = Math.min(Math.max(parsed, 1), 100);
+              }
+            }
+
+            let labels: string[] | undefined;
+            const labelsIdx = args.indexOf("--labels");
+            const labelsIdxShort = args.indexOf("-L");
+            const labi = labelsIdx !== -1 ? labelsIdx : labelsIdxShort;
+            if (labi !== -1 && labi + 1 < args.length) {
+              labels = args[labi + 1].split(",").map(l => l.trim()).filter(Boolean);
+            }
+
+            // Check for interactive mode
+            const interactive = args.includes("--interactive") || args.includes("-i");
+
+            if (interactive) {
+              const { runTaskImportGitHubInteractive } = await import("./commands/task.js");
+              await runTaskImportGitHubInteractive(ownerRepo, { limit, labels }, projectName);
+            } else {
+              await runTaskImportFromGitHub(ownerRepo, { limit, labels }, projectName);
+            }
+            break;
+          }
+          default:
+            console.error(`Unknown subcommand: task ${subcommand || ""}`);
+            console.log("Try: fn task create | list | move | set-node | clear-node");
+            process.exit(1);
+        }
+        break;
+      }
+
+      case "mission": {
+        const subcommand = args[1];
+        switch (subcommand) {
+          case "create": {
+            const title = args[2];
+            const description = args.length > 3 ? args.slice(3).join(" ") : undefined;
+            await runMissionCreate(title, description, projectName);
+            break;
+          }
+          case "list":
+          case "ls":
+            await runMissionList(projectName);
+            break;
+          case "show":
+          case "info": {
+            const id = args[2];
+            await runMissionShow(id, projectName);
+            break;
+          }
+          case "delete": {
+            const id = args[2];
+            const force = args.includes("--force");
+            await runMissionDelete(id, force, projectName);
+            break;
+          }
+          case "activate-slice": {
+            const id = args[2];
+            await runMissionActivateSlice(id, projectName);
+            break;
+          }
+          default:
+            console.error(`Unknown subcommand: mission ${subcommand || ""}`);
+            console.log("Try: fn mission create | list | show | delete | activate-slice");
+            process.exit(1);
+        }
+        break;
+      }
+
+      case "settings": {
+        const subcommand = args[1];
+        if (!subcommand || subcommand === "show") {
+          await runSettingsShow(projectName);
+          break;
+        }
+        if (subcommand === "set") {
+          const key = args[2];
+          const value = args.slice(3).join(" ");
+          if (!key || value === undefined) {
+            console.error("Usage: fn settings set <key> <value>");
+            console.error("Example: fn settings set maxConcurrent 4");
+            process.exit(1);
+          }
+          await runSettingsSet(key, value, projectName);
+          break;
+        }
+        if (subcommand === "export") {
+          // Parse export options
+          const scopeIdx = args.indexOf("--scope");
+          const scope = scopeIdx !== -1 && scopeIdx + 1 < args.length
+            ? args[scopeIdx + 1] as "global" | "project" | "both"
+            : "both";
+          
+          const outputIdx = args.indexOf("--output");
+          const output = outputIdx !== -1 && outputIdx + 1 < args.length
+            ? args[outputIdx + 1]
+            : undefined;
+
+          await runSettingsExport({ scope, output, projectName });
+          break;
+        }
+        if (subcommand === "import") {
+          const file = args[2];
+          if (!file) {
+            console.error("Usage: fn settings import <file> [--scope global|project|both] [--merge] [--yes]");
+            console.error("Example: fn settings import fusion-settings-2026-03-31.json --yes");
+            process.exit(1);
+          }
+
+          // Parse import options
+          const scopeIdx = args.indexOf("--scope");
+          const scope = scopeIdx !== -1 && scopeIdx + 1 < args.length
+            ? args[scopeIdx + 1] as "global" | "project" | "both"
+            : "both";
+
+          const merge = args.includes("--merge");
+          const yes = args.includes("--yes");
+
+          await runSettingsImport(file, { scope, merge, yes, projectName });
+          break;
+        }
+        console.error(`Unknown settings subcommand: ${subcommand}`);
+        console.error("Try: fn settings | fn settings set <key> <value> | fn settings export | fn settings import <file>");
+        process.exit(1);
+        break;
+      }
+
+      case "git": {
+        const subcommand = args[1];
+        switch (subcommand) {
+          case "status":
+            await runGitStatus(projectName);
+            break;
+          // fallthrough - git commands need consistent project resolution
+          case "fetch": {
+            const remote = args[2];
+            await runGitFetch(remote, projectName);
+            break;
+          }
+          case "pull": {
+            const skipConfirm = args.includes("--yes");
+            await runGitPull({ skipConfirm, projectName });
+            break;
+          }
+          case "push": {
+            const skipConfirm = args.includes("--yes");
+            await runGitPush({ skipConfirm, projectName });
+            break;
+          }
+          default:
+            console.error(`Unknown subcommand: git ${subcommand || ""}`);
+            console.log("Try: fn git status | fetch | pull | push");
+            process.exit(1);
+        }
+        break;
+      }
+
+      case "backup": {
+        const create = args.includes("--create");
+        const list = args.includes("--list");
+        const cleanup = args.includes("--cleanup");
+        const restoreIdx = args.indexOf("--restore");
+        const restoreFile = restoreIdx !== -1 && restoreIdx + 1 < args.length ? args[restoreIdx + 1] : undefined;
+
+        if (create) {
+          await runBackupCreate(projectName);
+        } else if (list) {
+          await runBackupList(projectName);
+        } else if (cleanup) {
+          await runBackupCleanup(projectName);
+        } else if (restoreFile) {
+          await runBackupRestore(restoreFile, projectName);
+        } else {
+          console.error("Usage: fn backup --create | --list | --cleanup | --restore <filename>");
+          process.exit(1);
+        }
+        break;
+      }
+
+      case "agent": {
+        const subcommand = args[1];
+        switch (subcommand) {
+          case "stop": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn agent stop <id>"); process.exit(1); }
+            await runAgentStop(id, projectName);
+            break;
+          }
+          case "start": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn agent start <id>"); process.exit(1); }
+            await runAgentStart(id, projectName);
+            break;
+          }
+          case "mailbox": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn agent mailbox <id>"); process.exit(1); }
+            await runAgentMailbox(id, projectName);
+            break;
+          }
+          case "import": {
+            const source = args[2];
+            if (!source) { console.error("Usage: fn agent import <path> [--dry-run] [--skip-existing]"); process.exit(1); }
+            const importArgs = args.slice(3);
+            const dryRun = importArgs.includes("--dry-run");
+            const skipExisting = importArgs.includes("--skip-existing");
+            await runAgentImport(source, { dryRun, skipExisting, project: projectName });
+            break;
+          }
+          case "export": {
+            const outputDir = args[2];
+            if (!outputDir) {
+              console.error("Usage: fn agent export <dir> [--company-name <name>] [--company-slug <slug>]");
+              process.exit(1);
+            }
+
+            const exportArgs = args.slice(3);
+            const companyName = getFlagValue(exportArgs, "--company-name");
+            const companySlug = getFlagValue(exportArgs, "--company-slug");
+            await runAgentExport(outputDir, { project: projectName, companyName, companySlug });
+            break;
+          }
+          default:
+            console.error(`Unknown subcommand: agent ${subcommand || ""}`);
+            console.log("Try: fn agent stop <id> | fn agent start <id> | fn agent mailbox <id> | fn agent import <path> | fn agent export <dir>");
+            process.exit(1);
+        }
+        break;
+      }
+
+      case "message": {
+        const subcommand = args[1];
+        switch (subcommand) {
+          case "inbox": {
+            await runMessageInbox(projectName);
+            break;
+          }
+          case "outbox": {
+            await runMessageOutbox(projectName);
+            break;
+          }
+          case "send": {
+            const toId = args[2];
+            const content = args.slice(3).join(" ").trim();
+            if (!toId || !content) {
+              console.error("Usage: fn message send <agent-id> <content>");
+              process.exit(1);
+            }
+            await runMessageSend(toId, content, projectName);
+            break;
+          }
+          case "read": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn message read <id>"); process.exit(1); }
+            await runMessageRead(id, projectName);
+            break;
+          }
+          case "delete": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn message delete <id>"); process.exit(1); }
+            await runMessageDelete(id, projectName);
+            break;
+          }
+          default:
+            console.error(`Unknown subcommand: message ${subcommand || ""}`);
+            console.log("Try: fn message inbox | fn message outbox | fn message send | fn message read | fn message delete");
+            process.exit(1);
+        }
+        break;
+      }
+
+      case "plugin": {
+        const sub = args[1];
+        switch (sub) {
+          case "list":
+          case "ls":
+            await runPluginList(projectName);
+            break;
+          case "install":
+          case "add": {
+            const source = args[2];
+            if (!source) {
+              console.error("Usage: fn plugin install <path-or-package> [--ai-scan] (alias: fn plugin add <path-or-package>)");
+              process.exit(1);
+            }
+            await runPluginInstall(source, { projectName, aiScan: args.includes("--ai-scan") });
+            break;
+          }
+          case "uninstall": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn plugin uninstall <id> [--force]"); process.exit(1); }
+            const force = args.includes("--force");
+            await runPluginUninstall(id, { force, projectName });
+            break;
+          }
+          case "enable": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn plugin enable <id>"); process.exit(1); }
+            await runPluginEnable(id, { projectName });
+            break;
+          }
+          case "disable": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn plugin disable <id>"); process.exit(1); }
+            await runPluginDisable(id, { projectName });
+            break;
+          }
+          case "available": {
+            await runPluginAvailable();
+            break;
+          }
+          case "settings": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn plugin settings <id> [key] [value]"); process.exit(1); }
+            await runPluginSettings(id, args[3], args[4], { projectName });
+            break;
+          }
+          case "rescan": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn plugin rescan <id>"); process.exit(1); }
+            await runPluginRescan(id, { projectName });
+            break;
+          }
+          case "setup-status": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn plugin setup-status <id>"); process.exit(1); }
+            await runPluginSetupStatus(id, { projectName });
+            break;
+          }
+          case "setup": {
+            const id = args[2];
+            if (!id) { console.error("Usage: fn plugin setup <id> [--action install|uninstall]"); process.exit(1); }
+            const actionIndex = args.indexOf("--action");
+            const action = actionIndex >= 0 ? args[actionIndex + 1] : "install";
+            if (action !== "install" && action !== "uninstall") {
+              console.error("--action must be install or uninstall");
+              process.exit(1);
+            }
+            await runPluginSetup(id, { action, projectName });
+            break;
+          }
+          case "create": {
+            const pluginName = args[2];
+            if (!pluginName) { console.error("Usage: fn plugin create <name>"); process.exit(1); }
+            await runPluginCreate(pluginName);
+            break;
+          }
+          default:
+            console.error(`Unknown subcommand: plugin ${sub || ""}`);
+            console.log("Try: fn plugin list | install | add (alias for install) | uninstall | enable | disable | available | settings | rescan | setup-status | setup | create");
+            process.exit(1);
+        }
+        break;
+      }
+
+      case "skills": {
+        const subcommand = args[1];
+
+        if (!subcommand || subcommand === "--help" || subcommand === "-h") {
+          console.log("fn skills — Browse and install skills from skills.sh\n");
+          console.log("Usage:");
+          console.log("  fn skills search <query>            Search skills.sh for agent skills");
+          console.log("  fn skills search <query> --limit 5  Limit results (default: 10, max: 50)");
+          console.log("  fn skills install <owner/repo>      Install skills from a source");
+          console.log("  fn skills install <owner/repo> --skill <name>");
+          console.log("                                      Install a specific skill");
+          console.log("\nExamples:");
+          console.log("  fn skills search react");
+          console.log("  fn skills search firebase --limit 5");
+          console.log("  fn skills install firebase/agent-skills");
+          console.log("  fn skills install firebase/agent-skills --skill firebase-basics");
+          break;
+        }
+
+        if (subcommand === "search") {
+          // Collect all remaining args as the query
+          const queryArgs = args.slice(2);
+
+          // Parse --limit option
+          let limit = 10;
+          const filteredArgs: string[] = [];
+          for (let i = 0; i < queryArgs.length; i++) {
+            if (queryArgs[i] === "--limit" && i + 1 < queryArgs.length) {
+              const parsed = parseInt(queryArgs[i + 1], 10);
+              if (!isNaN(parsed)) {
+                limit = Math.min(Math.max(parsed, 1), 50);
+              }
+              i++; // skip the value
+            } else {
+              filteredArgs.push(queryArgs[i]!);
+            }
+          }
+
+          await runSkillsSearch(filteredArgs, { limit });
+          break;
+        }
+
+        if (subcommand === "install") {
+          // Collect all remaining args as the source and options
+          const installArgs = args.slice(2);
+
+          // Parse --skill option
+          let skill: string | undefined;
+          const filteredArgs: string[] = [];
+          for (let i = 0; i < installArgs.length; i++) {
+            if (installArgs[i] === "--skill" && i + 1 < installArgs.length) {
+              skill = installArgs[i + 1];
+              i++; // skip the value
+            } else {
+              filteredArgs.push(installArgs[i]!);
+            }
+          }
+
+          await runSkillsInstall(filteredArgs, { skill });
+          break;
+        }
+
+        console.error(`Unknown subcommand: skills ${subcommand}`);
+        console.log("Try: fn skills search | install");
+        process.exit(1);
+        break;
+      }
+
+      default:
+        console.error(`Unknown command: ${command}`);
+        console.log(HELP);
+        process.exit(1);
+    }
+  } catch (err) {
+    console.error(`Error: ${err instanceof Error ? err.message : String(err)}`);
+    process.exit(1);
+  }
+}
+
+await main();

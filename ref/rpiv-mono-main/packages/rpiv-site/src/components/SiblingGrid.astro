@@ -1,0 +1,59 @@
+---
+import { loadSiblings } from "../lib/siblings";
+import SiblingCard from "./SiblingCard.astro";
+import SumiInk from "./SumiInk.astro";
+
+const siblings = loadSiblings();
+---
+
+<section id="siblings">
+	<div class="container">
+		<p class="kicker">§ siblings · {siblings.length} packages · npm:@juicesharp/rpiv-*</p>
+		<h2>Tools, not infrastructure.</h2>
+		<p class="siblings__lede">
+			rpiv-pi registers zero tools. Every tool surface lives in a sibling extension,
+			detected by a regex over <code>~/.pi/agent/settings.json</code>.
+			<code>/rpiv-setup</code> installs the missing ones in a single confirm.
+		</p>
+
+		<SumiInk variant="divider" />
+
+		<div class="siblings__list" role="list">
+			{siblings.map((s, i) => (
+				<div role="listitem" class="siblings__cell">
+					<SiblingCard sibling={s} index={i + 1} />
+				</div>
+			))}
+		</div>
+	</div>
+</section>
+
+<style>
+	.siblings__lede {
+		color: var(--text-quiet);
+		max-width: 64ch;
+		margin-bottom: var(--space-5);
+	}
+	.siblings__list {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--space-4);
+		align-items: stretch;
+		justify-items: stretch;
+	}
+	/* min-width: 0 prevents cell content (e.g. install pre with white-space:nowrap)
+	   from forcing the grid track wider than its 1fr share — guarantees uniform columns.
+	   width: 100% keeps single-column rows from collapsing to content width. */
+	.siblings__cell {
+		display: flex;
+		min-width: 0;
+		width: 100%;
+	}
+	.siblings__cell > .sibling {
+		flex: 1 1 0;
+		min-width: 0;
+		width: 100%;
+	}
+	@media (min-width: 720px)  { .siblings__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+	@media (min-width: 1080px) { .siblings__list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+</style>

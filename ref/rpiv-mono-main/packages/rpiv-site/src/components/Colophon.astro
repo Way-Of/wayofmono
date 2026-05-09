@@ -1,0 +1,93 @@
+---
+import { getPipelineSkills } from "../lib/skills";
+import { VERSION } from "../lib/version";
+import SumiInk from "./SumiInk.astro";
+const pipeline = await getPipelineSkills();
+---
+
+<aside class="colophon" aria-label="colophon">
+	<div class="container colophon__inner">
+		<SumiInk variant="divider" />
+		<p class="colophon__kicker mono">§ colophon · dogfood</p>
+		<p class="colophon__statement">
+			This site was built running its own pipeline.
+		</p>
+		<ol class="colophon__rail mono" aria-label="pipeline used to build this site">
+			{pipeline.map((skill, i) => (
+				<li class="colophon__node">
+					<span class="colophon__chip">/skill:{skill.data.name}</span>
+					{i < pipeline.length - 1 && <span class="colophon__arrow" aria-hidden="true">→</span>}
+				</li>
+			))}
+		</ol>
+		<p class="colophon__edition mono" aria-label={`edition v${VERSION}`}>
+			edition · <span class="colophon__edition-num">v{VERSION}</span>
+		</p>
+	</div>
+</aside>
+
+<style>
+	.colophon {
+		padding: var(--space-8) 0 var(--space-6);
+	}
+	.colophon__inner {
+		max-width: 64ch;
+		margin: 0 auto;
+		text-align: center;
+	}
+	.colophon__kicker {
+		color: var(--text-distant);
+		font-size: var(--type-kicker);
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		margin: 0 0 var(--space-4);
+	}
+	.colophon__statement {
+		font-family: var(--font-serif);
+		color: var(--washi);
+		font-size: var(--type-h3);
+		line-height: var(--leading-relaxed);
+		margin: 0 0 var(--space-5);
+	}
+	.colophon__rail {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+		gap: var(--space-2);
+		font-size: var(--type-kicker);
+	}
+	.colophon__node {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2);
+	}
+	.colophon__chip {
+		color: var(--ochre);
+		opacity: 0.9;
+	}
+	.colophon__arrow {
+		color: var(--text-distant);
+	}
+	/* Edition mark — quiet echo of the nav__version masthead imprint. Tracked
+	   uppercase + tabular numerics, ochre on the version word so the only
+	   chromatic event in the block agrees with the rail's chip ochre. */
+	.colophon__edition {
+		margin: var(--space-5) 0 0;
+		font-size: var(--type-tiny);
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--text-distant);
+	}
+	.colophon__edition-num {
+		color: var(--ochre);
+		font-variant-numeric: tabular-nums;
+	}
+	@media (max-width: 720px) {
+		.colophon { padding: var(--space-7) 0 var(--space-5); }
+		.colophon__statement { font-size: var(--type-lead); }
+	}
+</style>

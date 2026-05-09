@@ -1,0 +1,3174 @@
+import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import { Type, type TSchema } from "typebox";
+import { StringEnum } from "@mariozechner/pi-ai";
+import {
+  TaskStore,
+  COLUMNS,
+  COLUMN_LABELS,
+  validateNodeOverrideChange,
+  type Task,
+  type InsightCategory,
+  type InsightStatus,
+  type InsightRunStatus,
+  type InsightRunTrigger,
+  type ResearchRun,
+  type ResearchRunStatus,
+  RESEARCH_RUN_STATUSES,
+  isResearchExperimentalEnabled,
+  resolveResearchSettings,
+  canAgentTakeImplementationTask,
+  formatRoleMismatchReason,
+} from "@fusion/core";
+import {
+  getGhErrorMessage,
+  isGhAuthenticated,
+  isGhAvailable,
+  runGhJsonAsync,
+} from "@fusion/core/gh-cli";
+import { fetchWebContent } from "@fusion/engine";
+import { resolve, basename, extname, join } from "node:path";
+import { readFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { spawn, type ChildProcess } from "node:child_process";
+
+// ── Helpers ────────────────────────────────────────────────────────
+
+const MIME_TYPES: Record<string, string> = {
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".gif": "image/gif",
+  ".webp": "image/webp",
+  ".txt": "text/plain",
+  ".log": "text/plain",
+  ".json": "application/json",
+  ".yaml": "text/yaml",
+  ".yml": "text/yaml",
+  ".toml": "text/x-toml",
+  ".csv": "text/csv",
+  ".xml": "application/xml",
+};
+
+function resolveProjectRoot(cwd: string): string {
+  let current = resolve(cwd);
+  while (true) {
+    if (existsSync(join(current, ".fusion"))) {
+      return current;
+    }
+
+    const parent = resolve(current, "..");
+    if (parent === current) {
+      return resolve(cwd);
+    }
+    current = parent;
+  }
+}
+
+/** Cache stores per project root to avoid re-init on every tool call. */
+const storeCache = new Map<string, TaskStore>();
+
+async function getStore(cwd: string): Promise<TaskStore> {
+  const projectRoot = resolveProjectRoot(cwd);
+  const existing = storeCache.get(projectRoot);
+  if (existing) return existing;
+
+  const store = new TaskStore(projectRoot);
+  await store.init();
+  storeCache.set(projectRoot, store);
+  return store;
+}
+
+function getFusionDir(cwd: string): string {
+  return join(resolveProjectRoot(cwd), ".fusion");
+}
+
+/**
+ * Validate an agent id supplied to task create/update tools.
+ * Returns null on success, or an error message describing why the id was rejected.
+ *
+ * Rejects unknown agents and ephemeral/runtime-managed agents — mirrors fn_delegate
+ * so callers can't park hallucinated or task-worker IDs in `task.assignedAgentId`.
+ */
+async function validateAssignableAgentId(
+  cwd: string,
+  agentId: string,
+  task?: Pick<Task, "id" | "column"> | null,
+  override = false,
+): Promise<string | null> {
+  const { AgentStore, isEphemeralAgent } = await import("@fusion/core");
+  const agentStore = new AgentStore({ rootDir: getFusionDir(cwd) });
+  await agentStore.init();
+  const agent = await agentStore.getAgent(agentId);
+  if (!agent) {
+    return `Agent ${agentId} not found`;
+  }
+  if (isEphemeralAgent(agent)) {
+    return `Cannot assign task to ephemeral/runtime agent ${agentId}`;
+  }
+  if (task && !override && !canAgentTakeImplementationTask(agent, task)) {
+    return formatRoleMismatchReason(agent, task);
+  }
+  return null;
+}
+
+const INSIGHT_CATEGORIES: InsightCategory[] = [
+  "quality",
+  "performance",
+  "architecture",
+  "security",
+  "reliability",
+  "ux",
+  "testability",
+  "documentation",
+  "dependency",
+  "workflow",
+  "other",
+  "features",
+  "competitive_analysis",
+  "research",
+  "trends",
+];
+
+const INSIGHT_STATUSES: InsightStatus[] = ["generated", "confirmed", "stale", "dismissed", "archived"];
+const INSIGHT_RUN_STATUSES: InsightRunStatus[] = ["pending", "running", "completed", "failed", "cancelled"];
+const INSIGHT_RUN_TRIGGERS: InsightRunTrigger[] = ["schedule", "manual", "task_completion", "merge_event", "api"];
+
+function getTaskSourceAgentLabel(task: Pick<Task, "sourceMetadata" | "sourceAgentId">): string | undefined {
+  const metadataAgentName = task.sourceMetadata?.agentName;
+  if (typeof metadataAgentName === "string" && metadataAgentName.trim().length > 0) {
+    return metadataAgentName.trim();
+  }
+
+  if (typeof task.sourceAgentId === "string" && task.sourceAgentId.trim().length > 0) {
+    return task.sourceAgentId.trim();
+  }
+
+  return undefined;
+}
+
+function getTaskSourceLabel(task: Pick<Task, "sourceType" | "sourceMetadata" | "sourceAgentId" | "sourceParentTaskId">): string | undefined {
+  switch (task.sourceType) {
+    case "dashboard_ui":
+      return "Dashboard";
+    case "quick_chat":
+      return "Quick Chat";
+    case "chat_session":
+      return "Chat Session";
+    case "agent_heartbeat": {
+      const sourceAgent = getTaskSourceAgentLabel(task);
+      return sourceAgent ? `Agent (${sourceAgent})` : "Agent";
+    }
+    case "automation": {
+      const sourceAgent = getTaskSourceAgentLabel(task);
+      return sourceAgent ? `Automation (${sourceAgent})` : "Automation";
+    }
+    case "cron":
+      return "Scheduled Task";
+    case "workflow_step":
+      return "Workflow Step";
+    case "github_import": {
+      const issueUrl = task.sourceMetadata?.issueUrl;
+      return typeof issueUrl === "string" && issueUrl.length > 0
+        ? `GitHub Import (${issueUrl})`
+        : "GitHub Import";
+    }
+    case "research": {
+      const findingLabel = task.sourceMetadata?.findingLabel;
+      if (typeof findingLabel === "string" && findingLabel.length > 0) {
+        return `Research (${findingLabel})`;
+      }
+      const runId = task.sourceMetadata?.runId;
+      return typeof runId === "string" && runId.length > 0
+        ? `Research (${runId})`
+        : "Research";
+    }
+    case "task" + "_refine":
+      return task.sourceParentTaskId ? `Refinement of ${task.sourceParentTaskId}` : "Refinement";
+    case "task" + "_duplicate":
+      return task.sourceParentTaskId ? `Duplicate of ${task.sourceParentTaskId}` : "Duplicate";
+    case "cli":
+      return "CLI";
+    case "api":
+      return "API";
+    case "recovery":
+      return "Recovery";
+    default:
+      return undefined;
+  }
+}
+
+function formatTaskLine(t: Task): string {
+  const label =
+    t.title || t.description.slice(0, 60) + (t.description.length > 60 ? "…" : "");
+  const source = getTaskSourceLabel(t);
+  const sourceSuffix = source ? ` [via: ${source}]` : "";
+  const deps = t.dependencies.length ? ` [deps: ${t.dependencies.join(", ")}]` : "";
+  const paused = t.paused ? " (paused)" : "";
+  return `${t.id}  ${label}${sourceSuffix}${deps}${paused}`;
+}
+
+async function getResearchAvailability(store: TaskStore): Promise<{ ok: boolean; code?: string; message?: string }> {
+  const settings = await store.getSettings();
+  if (!isResearchExperimentalEnabled(settings)) {
+    return { ok: false, code: "feature-disabled", message: "Research tools are disabled. Enable experimentalFeatures.researchView first." };
+  }
+
+  const resolved = resolveResearchSettings(settings);
+  if (!resolved.enabled) {
+    return { ok: false, code: "feature-disabled", message: "Research is disabled in settings." };
+  }
+
+  const backend = (resolved.searchProvider as string | undefined) ?? settings.researchGlobalWebSearchProvider;
+  const configured = backend === "searxng"
+    ? Boolean(settings.researchGlobalSearxngUrl)
+    : backend === "brave"
+      ? Boolean(settings.researchGlobalBraveApiKey)
+      : backend === "google"
+        ? Boolean(settings.researchGlobalGoogleSearchApiKey && settings.researchGlobalGoogleSearchCx)
+        : backend === "tavily"
+          ? Boolean(settings.researchGlobalTavilyApiKey)
+          : false;
+
+  if (!backend) {
+    return { ok: false, code: "provider-unavailable", message: "Research provider is not configured. Set research provider credentials in Settings." };
+  }
+
+  if (!configured) {
+    return { ok: false, code: "missing-credentials", message: `Missing credentials for ${backend}. Add provider keys in Authentication and verify Research defaults.` };
+  }
+
+  return { ok: true };
+}
+
+const RESEARCH_RUN_TERMINAL_STATUSES = new Set<ResearchRunStatus>([
+  "completed",
+  "failed",
+  "cancelled",
+  "timed_out",
+  "retry_exhausted",
+]);
+
+function toResearchRunDetails(run: ResearchRun) {
+  return {
+    runId: run.id,
+    status: run.status,
+    query: run.query,
+    summary: run.results?.summary ?? null,
+    findings: run.results?.findings ?? [],
+    citations: run.results?.citations ?? [],
+    sourceCount: Array.isArray(run.sources) ? run.sources.length : 0,
+    error: run.error ?? null,
+    setup: null,
+  };
+}
+
+function isResearchRunTerminal(status: ResearchRunStatus): boolean {
+  return RESEARCH_RUN_TERMINAL_STATUSES.has(status);
+}
+
+async function sleepWithSignal(ms: number, signal?: AbortSignal): Promise<void> {
+  if (ms <= 0) {
+    return;
+  }
+
+  await new Promise<void>((resolve, reject) => {
+    const timer = setTimeout(() => {
+      signal?.removeEventListener("abort", onAbort);
+      resolve();
+    }, ms);
+
+    const onAbort = () => {
+      clearTimeout(timer);
+      reject(new Error("Operation aborted"));
+    };
+
+    if (signal?.aborted) {
+      onAbort();
+      return;
+    }
+
+    signal?.addEventListener("abort", onAbort, { once: true });
+  });
+}
+
+interface GitHubIssueApiResult {
+  number: number;
+  title: string;
+  body: string | null;
+  html_url: string;
+  labels?: Array<{ name: string }>;
+  pull_request?: unknown;
+}
+
+function ensureGhCliAuth(): void {
+  if (!isGhAvailable() || !isGhAuthenticated()) {
+    throw new Error("GitHub CLI (gh) is not available or not authenticated. Run 'gh auth login'.");
+  }
+}
+
+async function fetchGitHubIssuesViaGh(
+  owner: string,
+  repo: string,
+  options: { limit?: number; labels?: string[]; signal?: AbortSignal } = {},
+): Promise<GitHubIssueApiResult[]> {
+  ensureGhCliAuth();
+
+  const queryParams = new URLSearchParams();
+  queryParams.append("state", "open");
+  queryParams.append("per_page", String(Math.min(options.limit ?? 30, 100)));
+  if (options.labels && options.labels.length > 0) {
+    queryParams.append("labels", options.labels.join(","));
+  }
+
+  const path = `repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/issues?${queryParams.toString()}`;
+
+  try {
+    const issues = await runGhJsonAsync<GitHubIssueApiResult[]>(["api", path], { signal: options.signal });
+    return issues.filter((issue) => !issue.pull_request);
+  } catch (error) {
+    throw new Error(getGhErrorMessage(error));
+  }
+}
+
+function buildGitHubIssueSource(owner: string, repo: string, issue: { number: number; html_url: string }) {
+  return {
+    sourceIssue: {
+      provider: "github" as const,
+      repository: `${owner}/${repo}`,
+      externalIssueId: String(issue.number),
+      issueNumber: issue.number,
+      url: issue.html_url,
+    },
+    sourceMetadata: { issueUrl: issue.html_url, issueNumber: issue.number },
+  };
+}
+
+async function fetchGitHubIssueViaGh(
+  owner: string,
+  repo: string,
+  issueNumber: number,
+  options: { signal?: AbortSignal } = {},
+): Promise<GitHubIssueApiResult> {
+  ensureGhCliAuth();
+
+  const path = `repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/issues/${issueNumber}`;
+
+  try {
+    return await runGhJsonAsync<GitHubIssueApiResult>(["api", path], { signal: options.signal });
+  } catch (error) {
+    throw new Error(getGhErrorMessage(error));
+  }
+}
+
+// ── Extension entry point ──────────────────────────────────────────
+
+export default function kbExtension(pi: ExtensionAPI) {
+  // ── fn_task_create ───────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_task_create",
+    label: "fn: Create Task",
+    description:
+      "Create a new task on the Fusion task board. The task enters the planning column " +
+      "where the AI planning agent will plan it into a full prompt with steps, " +
+      "file scope, and acceptance criteria.",
+    promptSnippet: "Create a task on the Fusion AI-orchestrated task board",
+    promptGuidelines: [
+      "Use fn_task_create for task tracking — be descriptive so the planning agent can write a good plan.",
+      "Include the problem AND desired outcome. For bugs, describe current vs expected behavior.",
+    ],
+    parameters: Type.Object({
+      description: Type.String({ description: "What needs to be done — be descriptive" }),
+      depends: Type.Optional(
+        Type.Array(Type.String(), {
+          description: "Task IDs this depends on (e.g. ['FN-001', 'FN-002'])",
+        }),
+      ),
+      agentId: Type.Optional(
+        Type.String({
+          description: "Agent ID to assign this task to (e.g. 'agent-abc123')",
+        }),
+      ),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+
+      if (params.agentId !== undefined) {
+        const candidateTask: Pick<Task, "id" | "column"> = { id: "<new>", column: "triage" };
+        const error = await validateAssignableAgentId(ctx.cwd, params.agentId, candidateTask);
+        if (error) {
+          return {
+            content: [{ type: "text", text: error }],
+            isError: true,
+            details: { error },
+          };
+        }
+      }
+
+      const task = await store.createTask({
+        description: params.description.trim(),
+        dependencies: params.depends,
+        assignedAgentId: params.agentId,
+        source: { sourceType: "api" },
+      });
+
+      const label =
+        task.description.length > 80
+          ? task.description.slice(0, 80) + "…"
+          : task.description;
+
+      return {
+        content: [
+          {
+            type: "text",
+            text:
+              `Created ${task.id}: ${label}\n` +
+              `Column: triage\n` +
+              (task.dependencies.length
+                ? `Dependencies: ${task.dependencies.join(", ")}\n`
+                : "") +
+              (task.assignedAgentId
+                ? `Assigned to: ${task.assignedAgentId}\n`
+                : "") +
+              `Path: .fusion/tasks/${task.id}/`,
+          },
+        ],
+        details: {
+          taskId: task.id,
+          column: task.column,
+          dependencies: task.dependencies,
+          assignedAgentId: task.assignedAgentId,
+        },
+      };
+    },
+  });
+
+  // ── fn_task_update ────────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_task_update",
+    label: "fn: Update Task",
+    description:
+      "Update fields on an existing task. Supports modifying the title, " +
+      "description, dependencies, and assigned agent after task creation.",
+    promptSnippet: "Update fields on an existing Fusion task",
+    promptGuidelines: [
+      "Use fn_task_update to modify task title, description, dependencies, or assigned agent after creation.",
+      "At least one field must be provided to update.",
+    ],
+    parameters: Type.Object({
+      id: Type.String({ description: "Task ID (e.g. FN-001)" }),
+      title: Type.Optional(Type.String({ description: "New task title" })),
+      description: Type.Optional(Type.String({ description: "New task description" })),
+      depends: Type.Optional(
+        Type.Array(Type.String(), {
+          description: "New dependency list — replaces existing dependencies (e.g. ['FN-001', 'FN-002'])",
+        }),
+      ),
+      agentId: Type.Optional(
+        Type.Union([
+          Type.String(),
+          Type.Null(),
+        ], {
+          description: "Agent ID to assign this task to, or null to clear (e.g. 'agent-abc123')",
+        }),
+      ),
+      nodeId: Type.Optional(
+        Type.Union([Type.String(), Type.Null()], {
+          description: "Node ID override for this task, or null to clear",
+        }),
+      ),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+
+      // Validate task exists
+      let task: Task;
+      try {
+        task = await store.getTask(params.id);
+      } catch {
+        return {
+          content: [{ type: "text", text: `Task ${params.id} not found` }],
+          isError: true,
+          details: { error: "Task not found" },
+        };
+      }
+
+      // Build update payload
+      const updates: Record<string, unknown> = {};
+      const updatedFields: string[] = [];
+
+      if (params.title !== undefined) {
+        updates.title = params.title.trim();
+        updatedFields.push("title");
+      }
+      if (params.description !== undefined) {
+        updates.description = params.description.trim();
+        updatedFields.push("description");
+      }
+      if (params.depends !== undefined) {
+        updates.dependencies = params.depends;
+        updatedFields.push("dependencies");
+      }
+      if (params.agentId !== undefined) {
+        if (params.agentId !== null) {
+          const error = await validateAssignableAgentId(ctx.cwd, params.agentId, task);
+          if (error) {
+            return {
+              content: [{ type: "text", text: error }],
+              isError: true,
+              details: { error },
+            };
+          }
+        }
+        updates.assignedAgentId = params.agentId;
+        updatedFields.push("agentId");
+      }
+      if (params.nodeId !== undefined) {
+        const validation = validateNodeOverrideChange(task, params.nodeId ?? null);
+        if (!validation.allowed) {
+          return {
+            content: [{ type: "text", text: validation.message ?? "Node override change blocked" }],
+            isError: true,
+            details: { error: validation.reason },
+          };
+        }
+        updates.nodeId = params.nodeId;
+        updatedFields.push("nodeId");
+      }
+
+      if (updatedFields.length === 0) {
+        return {
+          content: [{ type: "text", text: "No fields to update. Provide at least one of: title, description, depends, agentId, nodeId." }],
+          isError: true,
+          details: { error: "No fields provided" },
+        };
+      }
+
+      await store.updateTask(params.id, updates);
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Updated ${params.id}: ${updatedFields.join(", ")}`,
+          },
+        ],
+        details: { taskId: params.id, updatedFields },
+      };
+    },
+  });
+
+  // ── fn_task_list ─────────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_task_list",
+    label: "fn: List Tasks",
+    description: "List all tasks on the Fusion board, grouped by column.",
+    promptSnippet: "List all tasks on the Fusion board grouped by column",
+    parameters: Type.Object({
+      column: Type.Optional(
+        StringEnum([...COLUMNS] as unknown as string[], {
+          description: "Filter to a specific column",
+        }) as unknown as TSchema,
+      ),
+      limit: Type.Optional(
+        Type.Number({
+          description: "Max tasks to show per column (default: 10)",
+        }),
+      ),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const tasks = await store.listTasks({ slim: true });
+
+      if (tasks.length === 0) {
+        return {
+          content: [{ type: "text", text: "No tasks yet." }],
+          details: { count: 0 },
+        };
+      }
+
+      const perColumn = params.limit ?? 10;
+      const lines: string[] = [];
+      for (const col of COLUMNS) {
+        if (params.column && params.column !== col) continue;
+
+        const colTasks = tasks.filter((t) => t.column === col);
+        if (colTasks.length === 0) continue;
+
+        lines.push(`${COLUMN_LABELS[col]} (${colTasks.length}):`);
+        const shown = colTasks.slice(0, perColumn);
+        for (const t of shown) {
+          lines.push(`  ${formatTaskLine(t)}`);
+        }
+        const hidden = colTasks.length - shown.length;
+        if (hidden > 0) {
+          lines.push(`  ... and ${hidden} more`);
+        }
+        lines.push("");
+      }
+
+      return {
+        content: [{ type: "text", text: lines.join("\n").trimEnd() }],
+        details: { count: tasks.length },
+      };
+    },
+  });
+
+  // ── fn_task_show ─────────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_task_show",
+    label: "fn: Show Task",
+    description: "Show full details for a task including steps, progress, and log entries.",
+    promptSnippet: "Show full details for a Fusion task",
+    parameters: Type.Object({
+      id: Type.String({ description: "Task ID (e.g. FN-001)" }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const task = await store.getTask(params.id);
+
+      const lines: string[] = [];
+      lines.push(`${task.id}: ${task.title || task.description}`);
+      lines.push(
+        `Column: ${COLUMN_LABELS[task.column]}` +
+          (task.size ? ` · Size: ${task.size}` : "") +
+          (task.reviewLevel !== undefined ? ` · Review: ${task.reviewLevel}` : ""),
+      );
+      if (task.dependencies.length) {
+        lines.push(`Dependencies: ${task.dependencies.join(", ")}`);
+      }
+      const sourceLabel = getTaskSourceLabel(task);
+      if (sourceLabel) {
+        lines.push(`Created via: ${sourceLabel}`);
+      }
+      if (task.paused) lines.push("Status: PAUSED");
+      lines.push("");
+
+      // Steps
+      if (task.steps.length > 0) {
+        const done = task.steps.filter((s) => s.status === "done").length;
+        lines.push(`Steps (${done}/${task.steps.length}):`);
+        for (let i = 0; i < task.steps.length; i++) {
+          const s = task.steps[i];
+          const icon =
+            s.status === "done"
+              ? "✓"
+              : s.status === "in-progress"
+                ? "▸"
+                : s.status === "skipped"
+                  ? "–"
+                  : " ";
+          const marker =
+            i === task.currentStep && s.status !== "done" ? " ◀" : "";
+          lines.push(`  [${icon}] ${i}: ${s.name}${marker}`);
+        }
+        lines.push("");
+      }
+
+      // Prompt (truncated)
+      if (task.prompt) {
+        const promptPreview =
+          task.prompt.length > 500
+            ? task.prompt.slice(0, 500) + "\n... (truncated)"
+            : task.prompt;
+        lines.push("Prompt:");
+        lines.push(promptPreview);
+        lines.push("");
+      }
+
+      // Recent log
+      if (task.log.length > 0) {
+        const recent = task.log.slice(-5);
+        lines.push(`Log (last ${recent.length}):`);
+        for (const l of recent) {
+          const ts = new Date(l.timestamp).toLocaleTimeString();
+          lines.push(
+            `  ${ts}  ${l.action}${l.outcome ? ` → ${l.outcome}` : ""}`,
+          );
+        }
+      }
+
+      return {
+        content: [{ type: "text", text: lines.join("\n").trimEnd() }],
+        details: { task },
+      };
+    },
+  });
+
+  // ── fn_task_attach ───────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_task_attach",
+    label: "fn: Attach File",
+    description:
+      "Attach a file to a task. Supports images (png, jpg, gif, webp) and " +
+      "text files (txt, log, json, yaml, yml, toml, csv, xml).",
+    promptSnippet: "Attach a file to a Fusion task",
+    parameters: Type.Object({
+      id: Type.String({ description: "Task ID (e.g. FN-001)" }),
+      path: Type.String({ description: "Path to the file to attach" }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const filePath = resolve(ctx.cwd, params.path.replace(/^@/, ""));
+      const filename = basename(filePath);
+      const ext = extname(filename).toLowerCase();
+      const mimeType = MIME_TYPES[ext];
+
+      if (!mimeType) {
+        throw new Error(
+          `Unsupported file type: ${ext}. Supported: ${Object.keys(MIME_TYPES).join(", ")}`,
+        );
+      }
+
+      let content: Buffer;
+      try {
+        content = await readFile(filePath);
+      } catch {
+        throw new Error(`Cannot read file: ${params.path}`);
+      }
+
+      const store = await getStore(ctx.cwd);
+      const attachment = await store.addAttachment(params.id, filename, content, mimeType);
+      const sizeKB = (attachment.size / 1024).toFixed(1);
+
+      return {
+        content: [
+          {
+            type: "text",
+            text:
+              `Attached to ${params.id}: ${attachment.originalName} (${sizeKB} KB)\n` +
+              `Path: .fusion/tasks/${params.id}/attachments/${attachment.filename}`,
+          },
+        ],
+        details: { taskId: params.id, attachment },
+      };
+    },
+  });
+
+  // ── fn_task_pause ────────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_task_pause",
+    label: "fn: Pause Task",
+    description:
+      "Pause a task — stops all automated agent and scheduler interaction for this task.",
+    promptSnippet: "Pause a Fusion task (stops automation)",
+    parameters: Type.Object({
+      id: Type.String({ description: "Task ID (e.g. FN-001)" }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const task = await store.pauseTask(params.id, true);
+
+      return {
+        content: [{ type: "text", text: `Paused ${task.id}` }],
+        details: { taskId: task.id },
+      };
+    },
+  });
+
+  // ── fn_task_unpause ──────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_task_unpause",
+    label: "fn: Unpause Task",
+    description:
+      "Unpause a task — resumes automated agent and scheduler interaction.",
+    promptSnippet: "Unpause a Fusion task (resumes automation)",
+    parameters: Type.Object({
+      id: Type.String({ description: "Task ID (e.g. FN-001)" }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const task = await store.pauseTask(params.id, false);
+
+      return {
+        content: [{ type: "text", text: `Unpaused ${task.id}` }],
+        details: { taskId: task.id },
+      };
+    },
+  });
+
+  // ── fn_task_retry ────────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_task_retry",
+    label: "fn: Retry Task",
+    description:
+      "Retry a failed task — clears the error state. Tasks in other columns move to todo; tasks in in-review stay in-place for auto-merge retry.",
+    promptSnippet: "Retry a failed Fusion task (clears error, moves to todo or stays in in-review)",
+    promptGuidelines: [
+      "Use when a task has failed and needs to be retried",
+      "Only tasks in 'failed' or 'stuck-killed' state can be retried",
+      "Tasks in 'in-review' stay in in-review — only the error/retry state is cleared, and the auto-merge system re-attempts",
+      "Tasks in other columns are moved to the todo column with error state cleared",
+    ],
+    parameters: Type.Object({
+      id: Type.String({ description: "Task ID to retry (e.g. FN-001). Must be in 'failed' state." }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      
+      // Validate task exists
+      let task;
+      try {
+        task = await store.getTask(params.id);
+      } catch {
+        return {
+          content: [{ type: "text", text: `Task ${params.id} not found` }],
+          isError: true,
+          details: { error: "Task not found" },
+        };
+      }
+      
+      // Validate task is in a retryable state
+      if (task.status !== 'failed' && task.status !== 'stuck-killed') {
+        return {
+          content: [{ type: "text", text: `Task ${params.id} is not in a retryable state (status: ${task.status || 'none'})` }],
+          isError: true,
+          details: { taskId: params.id, currentStatus: task.status },
+        };
+      }
+      
+      // In-review retry: keep the task in in-review, clear only error/retry state
+      if (task.column === 'in-review') {
+        await store.updateTask(params.id, { status: null, error: null, stuckKillCount: 0, mergeRetries: 0 });
+        await store.logEntry(params.id, "Retry requested via Fusion extension (in-review retry, mergeRetries reset)");
+        return {
+          content: [{ type: "text", text: `Retried ${params.id} → in-review (merge retry state cleared, task stays in in-review)` }],
+          details: { taskId: params.id, newColumn: 'in-review' },
+        };
+      }
+
+      // Clear failure state and move to todo for other columns
+      await store.updateTask(params.id, { status: null, error: null });
+      
+      // Move to todo column
+      await store.moveTask(params.id, 'todo');
+      
+      // Log the retry action
+      await store.logEntry(params.id, "Retry requested via Fusion extension", "Task reset to todo for retry");
+      
+      return {
+        content: [{ type: "text", text: `Retried ${params.id} → todo (failure state cleared)` }],
+        details: { taskId: params.id, newColumn: 'todo' },
+      };
+    },
+  });
+
+  // ── fn_task_duplicate ─────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_task_duplicate",
+    label: "fn: Duplicate Task",
+    description:
+      "Duplicate an existing task, creating a fresh copy in planning. " +
+      "Copies the title and description but resets all execution state. " +
+      "The AI planning agent will replan the new task.",
+    promptSnippet: "Duplicate a Fusion task (creates copy in planning)",
+    promptGuidelines: [
+      "Use when a task needs to be re-done, split, or used as a template",
+      "The duplicated task will be placed in planning for replanning",
+      "Dependencies, attachments, and execution state are NOT copied",
+    ],
+    parameters: Type.Object({
+      id: Type.String({ description: "Source task ID to duplicate (e.g. FN-001)" }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const newTask = await store.duplicateTask(params.id);
+
+      return {
+        content: [{ type: "text", text: `Duplicated ${params.id} → ${newTask.id}` }],
+        details: { sourceId: params.id, newTaskId: newTask.id },
+      };
+    },
+  });
+
+  // ── fn_task_refine ──────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_task_refine",
+    label: "fn: Refine Task",
+    description:
+      "Request a refinement of a completed or in-review task. " +
+      "Creates a new follow-up task in planning that references the original task as a dependency. " +
+      "Use this when a done or in-review task needs additional work, improvements, or follow-up changes.",
+    promptSnippet: "Create a refinement task for follow-up work on a completed task",
+    promptGuidelines: [
+      "Use when a completed or in-review task needs follow-up work or improvements",
+      "The original task must be in 'done' or 'in-review' column",
+      "The refinement task will be created in planning and depend on the original task",
+      "Provide clear feedback about what needs to be refined or improved",
+    ],
+    parameters: Type.Object({
+      id: Type.String({ description: "Task ID to refine (e.g. FN-001). Must be in 'done' or 'in-review' column." }),
+      feedback: Type.String({ 
+        description: "Description of what needs to be refined or improved",
+        minLength: 1,
+        maxLength: 2000,
+      }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const newTask = await store.refineTask(params.id, params.feedback);
+
+      return {
+        content: [
+          { type: "text", text: `Created refinement ${newTask.id} for ${params.id}` },
+        ],
+        details: { sourceId: params.id, newTaskId: newTask.id, feedback: params.feedback },
+      };
+    },
+  });
+
+  // ── fn_task_archive ───────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_task_archive",
+    label: "fn: Archive Task",
+    description:
+      "Archive a done task (move from done → archived). " +
+      "Archived tasks are preserved for historical reference but moved out of the main board view.",
+    promptSnippet: "Archive a done Fusion task (moves to archived column)",
+    promptGuidelines: [
+      "Use to clean up old completed tasks from the done column",
+      "Only tasks in the 'done' column can be archived",
+      "Archived tasks can be unarchived later if needed",
+    ],
+    parameters: Type.Object({
+      id: Type.String({ description: "Task ID to archive (e.g. FN-001). Must be in 'done' column." }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const task = await store.archiveTask(params.id);
+
+      return {
+        content: [{ type: "text", text: `Archived ${task.id} → ${COLUMN_LABELS[task.column]}` }],
+        details: { taskId: task.id, column: task.column },
+      };
+    },
+  });
+
+  // ── fn_task_unarchive ─────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_task_unarchive",
+    label: "fn: Unarchive Task",
+    description:
+      "Unarchive an archived task (move from archived → done). " +
+      "Restores the task to the done column.",
+    promptSnippet: "Unarchive a Fusion task (restores to done column)",
+    promptGuidelines: [
+      "Use to restore an archived task back to the done column",
+      "Only tasks in the 'archived' column can be unarchived",
+    ],
+    parameters: Type.Object({
+      id: Type.String({ description: "Task ID to unarchive (e.g. FN-001). Must be in 'archived' column." }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const task = await store.unarchiveTask(params.id);
+
+      return {
+        content: [{ type: "text", text: `Unarchived ${task.id} → ${COLUMN_LABELS[task.column]}` }],
+        details: { taskId: task.id, column: task.column },
+      };
+    },
+  });
+
+  // ── fn_task_delete ─────────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_task_delete",
+    label: "fn: Delete Task",
+    description:
+      "Permanently delete a task from the Fusion board. " +
+      "Tasks are deleted immediately and cannot be recovered.",
+    promptSnippet: "Delete a Fusion task",
+    promptGuidelines: [
+      "Use for cleaning up test tasks or tasks created in error",
+      "Tasks are permanently deleted and cannot be recovered",
+      "Consider archiving instead of deleting for completed work you may need to reference later",
+    ],
+    parameters: Type.Object({
+      id: Type.String({ description: "Task ID to delete (e.g. FN-001)" }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const task = await store.deleteTask(params.id);
+
+      return {
+        content: [{ type: "text", text: `Deleted ${task.id}` }],
+        details: { taskId: task.id },
+      };
+    },
+  });
+
+  // ── fn_task_import_github ─────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_task_import_github",
+    label: "fn: Import GitHub Issues",
+    description:
+      "Import GitHub issues as Fusion tasks. Fetches open issues from a repository " +
+      "and creates tasks in the planning column. Each task includes the issue title " +
+      "and body with a link to the source issue.",
+    promptSnippet: "Import GitHub issues as Fusion tasks",
+    promptGuidelines: [
+      "Use for syncing GitHub issue backlog to Fusion board",
+      "Uses gh CLI authentication (run 'gh auth login')",
+      "Use --limit to control how many issues to import (default: 30)",
+      "Use --labels to filter by specific labels",
+    ],
+    parameters: Type.Object({
+      ownerRepo: Type.String({
+        description: "Repository in owner/repo format (e.g., 'dustinbyrne/fusion')",
+        pattern: "^[^/]+/[^/]+$",
+      }),
+      limit: Type.Optional(
+        Type.Number({
+          description: "Max issues to import (default: 30, max: 100)",
+          minimum: 1,
+          maximum: 100,
+        })
+      ),
+      labels: Type.Optional(
+        Type.Array(Type.String(), {
+          description: "Label names to filter by",
+        })
+      ),
+    }),
+
+    async execute(_toolCallId, params, signal, _onUpdate, ctx) {
+      const [owner, repo] = params.ownerRepo.split("/");
+      const limit = params.limit ?? 30;
+      const labels = params.labels;
+
+      const issues = await fetchGitHubIssuesViaGh(owner, repo, { limit, labels, signal });
+
+      if (issues.length === 0) {
+        return {
+          content: [{ type: "text", text: `No open issues found in ${owner}/${repo}.` }],
+          details: { createdTasks: [], summary: `Imported 0 tasks from ${owner}/${repo}` },
+        };
+      }
+
+      const store = await getStore(ctx.cwd);
+      const existingTasks = await store.listTasks({ slim: true });
+      const createdTasks: Array<{ id: string; title: string }> = [];
+
+      for (const issue of issues) {
+        const sourceUrl = issue.html_url;
+        const alreadyImported = existingTasks.some((task) => task.description.includes(sourceUrl));
+        if (alreadyImported) {
+          continue;
+        }
+
+        const title = issue.title.slice(0, 200);
+        const body = issue.body?.trim() || "(no description)";
+        const description = `${body}\n\nSource: ${sourceUrl}`;
+
+        const source = buildGitHubIssueSource(owner, repo, issue);
+        const task = await store.createTask({
+          title: title || undefined,
+          description,
+          column: "triage",
+          dependencies: [],
+          sourceIssue: source.sourceIssue,
+          source: {
+            sourceType: "github_import",
+            sourceMetadata: source.sourceMetadata,
+          },
+        });
+
+        await store.logEntry(task.id, "Imported from GitHub", sourceUrl);
+        createdTasks.push({ id: task.id, title: task.title || issue.title });
+
+        existingTasks.push({ ...task, description });
+      }
+
+      const summary = `✓ Imported ${createdTasks.length} tasks from ${owner}/${repo}`;
+      return {
+        content: [
+          {
+            type: "text",
+            text: `${summary}\n\nCreated tasks:\n${createdTasks.map((task) => `  ${task.id}: ${task.title}`).join("\n") || "  None"}`,
+          },
+        ],
+        details: { createdTasks, summary },
+      };
+    },
+  });
+
+  // ── fn_task_import_github_issue ───────────────────────────────────
+  // Import a single GitHub issue by its issue number
+
+  pi.registerTool({
+    name: "fn_task_import_github_issue",
+    label: "fn: Import GitHub Issue",
+    description:
+      "Import a specific GitHub issue as a Fusion task. Fetches the issue by number " +
+      "and creates a single task in the planning column with the issue title and body.",
+    promptSnippet: "Import a specific GitHub issue as a Fusion task",
+    promptGuidelines: [
+      "Use for importing a single known issue by its number",
+      "Uses gh CLI authentication (run 'gh auth login')",
+      "Skips import if the issue is already imported (checks for existing Source URL)",
+    ],
+    parameters: Type.Object({
+      owner: Type.String({
+        description: "Repository owner (e.g., 'dustinbyrne')",
+      }),
+      repo: Type.String({
+        description: "Repository name (e.g., 'fusion')",
+      }),
+      issueNumber: Type.Number({
+        description: "GitHub issue number to import",
+        minimum: 1,
+      }),
+    }),
+
+    async execute(_toolCallId, params, signal, _onUpdate, ctx) {
+      const { owner, repo, issueNumber } = params;
+      const issue = await fetchGitHubIssueViaGh(owner, repo, issueNumber, { signal });
+
+      if (issue.pull_request) {
+        throw new Error(`#${issueNumber} is a pull request, not an issue`);
+      }
+
+      // Check if already imported
+      const store = await getStore(ctx.cwd);
+      const existingTasks = await store.listTasks({ slim: true });
+      const sourceUrl = issue.html_url;
+
+      for (const task of existingTasks) {
+        if (task.description.includes(sourceUrl)) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `Issue #${issueNumber} already imported as ${task.id}\nSource: ${sourceUrl}`,
+              },
+            ],
+            details: { skipped: true, existingTaskId: task.id, sourceUrl },
+          };
+        }
+      }
+
+      // Create the task
+      const title = issue.title.slice(0, 200);
+      const body = issue.body?.trim() || "(no description)";
+      const description = `${body}\n\nSource: ${sourceUrl}`;
+
+      const source = buildGitHubIssueSource(owner, repo, issue);
+      const task = await store.createTask({
+        title: title || undefined,
+        description,
+        column: "triage",
+        dependencies: [],
+        sourceIssue: source.sourceIssue,
+        source: {
+          sourceType: "github_import",
+          sourceMetadata: source.sourceMetadata,
+        },
+      });
+
+      await store.logEntry(task.id, "Imported from GitHub", sourceUrl);
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Imported ${task.id} from GitHub\n${sourceUrl}`,
+          },
+        ],
+        details: { taskId: task.id, sourceUrl },
+      };
+    },
+  });
+
+  // ── fn_task_browse_github_issues ──────────────────────────────────
+  // Browse available GitHub issues before importing
+
+  pi.registerTool({
+    name: "fn_task_browse_github_issues",
+    label: "fn: Browse GitHub Issues",
+    description:
+      "List open GitHub issues from a repository to browse before importing. " +
+      "Returns issue numbers, titles, and URLs for selection. Use with fn_task_import_github_issue " +
+      "to import specific issues by number.",
+    promptSnippet: "Browse open GitHub issues in a repository",
+    promptGuidelines: [
+      "Use to preview available issues before importing",
+      "Returns a list you can reference when importing specific issues",
+      "Use --limit to control how many issues to show (default: 30)",
+      "Use --labels to filter by specific labels",
+      "Uses gh CLI authentication (run 'gh auth login')",
+    ],
+    parameters: Type.Object({
+      owner: Type.String({
+        description: "Repository owner (e.g., 'dustinbyrne')",
+      }),
+      repo: Type.String({
+        description: "Repository name (e.g., 'fusion')",
+      }),
+      limit: Type.Optional(
+        Type.Number({
+          description: "Max issues to show (default: 30, max: 100)",
+          minimum: 1,
+          maximum: 100,
+        })
+      ),
+      labels: Type.Optional(
+        Type.Array(Type.String(), {
+          description: "Label names to filter by",
+        })
+      ),
+    }),
+
+    async execute(_toolCallId, params, signal, _onUpdate, ctx) {
+      const { owner, repo, limit = 30, labels } = params;
+      const issues = await fetchGitHubIssuesViaGh(owner, repo, { limit, labels, signal });
+
+      if (issues.length === 0) {
+        return {
+          content: [{ type: "text", text: `No open issues found in ${owner}/${repo}.` }],
+          details: { count: 0, issues: [] },
+        };
+      }
+
+      // Check which issues are already imported
+      const store = await getStore(ctx.cwd);
+      const existingTasks = await store.listTasks({ slim: true });
+      const importedUrls = new Set<string>();
+
+      for (const task of existingTasks) {
+        const match = task.description.match(/Source: (https:\/\/github\.com\/[^/]+\/[^/]+\/issues\/\d+)/);
+        if (match) {
+          importedUrls.add(match[1]);
+        }
+      }
+
+      const lines: string[] = [];
+      lines.push(`Found ${issues.length} open issues in ${owner}/${repo}:\n`);
+
+      for (const issue of issues) {
+        const isImported = importedUrls.has(issue.html_url);
+        const issueLabels = issue.labels ?? [];
+        const labelStr = issueLabels.length > 0 ? ` [${issueLabels.map((label) => label.name).join(", ")}]` : "";
+        const importedStr = isImported ? " ✓ Imported" : "";
+        lines.push(`  #${issue.number}: ${issue.title.slice(0, 80)}${issue.title.length > 80 ? "…" : ""}${labelStr}${importedStr}`);
+        lines.push(`     ${issue.html_url}`);
+      }
+
+      lines.push("\nUse fn_task_import_github_issue to import a specific issue by number.");
+
+      return {
+        content: [{ type: "text", text: lines.join("\n") }],
+        details: {
+          count: issues.length,
+          issues: issues.map((issue) => ({
+            number: issue.number,
+            title: issue.title,
+            url: issue.html_url,
+            labels: (issue.labels ?? []).map((label) => label.name),
+            imported: importedUrls.has(issue.html_url),
+          })),
+        },
+      };
+    },
+  });
+
+  // ── fn_task_plan ────────────────────────────────────────────────
+  // Create a task via AI-guided planning mode
+
+  pi.registerTool({
+    name: "fn_task_plan",
+    label: "fn: Plan Task",
+    description:
+      "Create a task via AI-guided planning mode — interactive conversation to refine your idea into a well-specified task.",
+    promptSnippet: "Create a task via AI-guided planning mode",
+    promptGuidelines: [
+      "Use for breaking down vague ideas into actionable tasks",
+      "The AI will ask clarifying questions before creating the task",
+    ],
+    parameters: Type.Object({
+      description: Type.Optional(
+        Type.String({
+          description: "Initial plan description (optional) — the AI will ask clarifying questions if not provided",
+        })
+      ),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
+      // Import the planning function dynamically to avoid circular dependencies
+      const { runTaskPlan } = await import("./commands/task.js");
+
+      // Capture console output
+      const originalLog = console.log;
+      const originalError = console.error;
+      const logs: string[] = [];
+
+      console.log = (...args: unknown[]) => {
+        const line = args.map(String).join(" ");
+        logs.push(line);
+        originalLog.apply(console, args);
+      };
+      console.error = (...args: unknown[]) => {
+        const line = args.map(String).join(" ");
+        logs.push(line);
+        originalError.apply(console, args);
+      };
+
+      let taskId: string | undefined;
+      try {
+        taskId = await runTaskPlan(params.description, true); // Use --yes flag for non-interactive
+      } catch (err) {
+        console.error = originalError;
+        console.log = originalLog;
+        throw new Error(`Planning mode failed: ${err instanceof Error ? err.message : String(err)}`);
+      } finally {
+        console.error = originalError;
+        console.log = originalLog;
+      }
+
+      // Get summary line
+      const summaryLine = logs.find((l) => l.includes("✓ Created")) || "Task created";
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: summaryLine + (taskId ? `\n\nPlanning session completed. Task ${taskId} is now in planning and will be auto-planned by the AI planning agent.` : ""),
+          },
+        ],
+        details: { taskId, logs },
+      };
+    },
+  });
+
+  pi.registerTool({
+    name: "fn_web_fetch",
+    label: "fn: Web Fetch",
+    description: "Lightweight URL fetch (no JS rendering). Use agent-browser skill for JS-heavy pages.",
+    parameters: Type.Object({
+      url: Type.String({ description: "URL to fetch (http/https)" }),
+      prompt: Type.Optional(Type.String({ description: "Optional extraction hint for downstream summarization" })),
+      timeoutMs: Type.Optional(Type.Number({ description: "Timeout in milliseconds (default: 30000)" })),
+      maxBytes: Type.Optional(Type.Number({ description: "Max bytes to return (default: 512000)" })),
+    }),
+    promptSnippet: "Fetch and extract readable text from a webpage URL",
+    promptGuidelines: [
+      "Use for lightweight GET requests where JS rendering is not required.",
+      "For JS-rendered pages or complex browsing flows, use agent-browser skill instead.",
+    ],
+    async execute(_toolCallId, params) {
+      const result = await fetchWebContent(params.url, {
+        timeoutMs: params.timeoutMs,
+        maxBytes: params.maxBytes,
+      });
+      return {
+        content: [{
+          type: "text",
+          text: [
+            `URL: ${result.finalUrl}`,
+            `Status: ${result.status}`,
+            `Content-Type: ${result.contentType}`,
+            params.prompt ? `Prompt: ${params.prompt}` : undefined,
+            result.title ? `Title: ${result.title}` : undefined,
+            "",
+            result.content,
+            result.truncated ? "\n[truncated to maxBytes]" : "",
+          ].filter(Boolean).join("\n"),
+        }],
+        details: {
+          finalUrl: result.finalUrl,
+          status: result.status,
+          contentType: result.contentType,
+          title: result.title,
+          truncated: result.truncated,
+          bytesRead: result.bytesRead,
+          promptSnippet: params.prompt ? params.prompt.slice(0, 200) : undefined,
+          promptGuidelines: "Lightweight fetch only; for JS-rendered pages, use agent-browser skill.",
+        },
+      };
+    },
+  });
+
+  // ── Research Tools ──────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_research_run",
+    label: "fn: Run Research",
+    description: "Start a bounded research run and optionally wait for findings.",
+    parameters: Type.Object({
+      query: Type.String({ description: "Research query or question" }),
+      wait_for_completion: Type.Optional(Type.Boolean({ description: "Wait for the run to complete before returning (default: false)" })),
+      max_wait_ms: Type.Optional(Type.Number({ description: "Max wait time when wait_for_completion=true (default: 90000, capped by settings)" })),
+    }),
+    async execute(_toolCallId, params, signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const availability = await getResearchAvailability(store);
+      if (!availability.ok) {
+        return {
+          content: [{ type: "text", text: availability.message! }],
+          details: { runId: null, status: "unavailable", summary: null, findings: [], citations: [], error: availability.message, setup: { code: availability.code, message: availability.message } },
+        };
+      }
+
+      const researchStore = store.getResearchStore();
+      const run = researchStore.createRun({
+        query: params.query,
+        topic: params.query,
+        providerConfig: {},
+      });
+
+      if (!params.wait_for_completion) {
+        return {
+          content: [{ type: "text", text: `Created research run ${run.id}. Start the project engine to process pending runs, then use fn_research_get.` }],
+          details: toResearchRunDetails(run),
+        };
+      }
+
+      const maxWaitMs = Number.isFinite(params.max_wait_ms)
+        ? Math.max(0, params.max_wait_ms ?? 90_000)
+        : 90_000;
+      const pollIntervalMs = 2_000;
+      const deadline = Date.now() + maxWaitMs;
+      let latestRun = run;
+
+      while (Date.now() <= deadline) {
+        const current = researchStore.getRun(run.id);
+        if (!current) {
+          break;
+        }
+
+        latestRun = current;
+        if (isResearchRunTerminal(current.status)) {
+          return {
+            content: [{ type: "text", text: `Research run ${current.id} is ${current.status}.` }],
+            details: toResearchRunDetails(current),
+          };
+        }
+
+        await sleepWithSignal(pollIntervalMs, signal);
+      }
+
+      return {
+        content: [{ type: "text", text: `Research run ${latestRun.id} is ${latestRun.status}.` }],
+        details: toResearchRunDetails(latestRun),
+      };
+    },
+  });
+
+  pi.registerTool({
+    name: "fn_research_list",
+    label: "fn: List Research Runs",
+    description: "List recent research runs.",
+    parameters: Type.Object({
+      status: Type.Optional(StringEnum([...RESEARCH_RUN_STATUSES], { description: "Filter by run status" }) as unknown as TSchema),
+      limit: Type.Optional(Type.Number({ description: "Max runs to return (default: 10)" })),
+    }),
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const availability = await getResearchAvailability(store);
+      if (!availability.ok) {
+        return {
+          content: [{ type: "text", text: availability.message! }],
+          details: { runs: [], setup: { code: availability.code, message: availability.message } },
+        };
+      }
+
+      const runs = store.getResearchStore().listRuns({ status: params.status as ResearchRunStatus | undefined, limit: params.limit ?? 10 });
+      const text = runs.length ? runs.map((run) => `- ${run.id} [${run.status}] ${run.query}`).join("\n") : "No research runs found.";
+      return { content: [{ type: "text", text }], details: { runs: runs.map(toResearchRunDetails) } };
+    },
+  });
+
+  pi.registerTool({
+    name: "fn_research_get",
+    label: "fn: Get Research Run",
+    description: "Get one research run and structured findings.",
+    parameters: Type.Object({ id: Type.String({ description: "Research run ID" }) }),
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const availability = await getResearchAvailability(store);
+      if (!availability.ok) {
+        return {
+          content: [{ type: "text", text: availability.message! }],
+          details: {
+            runId: params.id,
+            status: "unavailable",
+            summary: null,
+            findings: [],
+            citations: [],
+            error: availability.message,
+            setup: { code: availability.code, message: availability.message },
+          },
+        };
+      }
+
+      const run = store.getResearchStore().getRun(params.id);
+      if (!run) {
+        return {
+          content: [{ type: "text", text: `Research run ${params.id} not found.` }],
+          details: {
+            runId: params.id,
+            status: "missing",
+            summary: null,
+            findings: [],
+            citations: [],
+            error: "not found",
+            setup: { code: "NOT_FOUND", message: `Research run ${params.id} not found.` },
+          },
+        };
+      }
+      return { content: [{ type: "text", text: `Research run ${run.id} is ${run.status}.` }], details: toResearchRunDetails(run) };
+    },
+  });
+
+  pi.registerTool({
+    name: "fn_research_cancel",
+    label: "fn: Cancel Research Run",
+    description: "Cancel an in-flight research run. Terminal runs return INVALID_TRANSITION.",
+    parameters: Type.Object({ id: Type.String({ description: "Research run ID" }) }),
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const availability = await getResearchAvailability(store);
+      if (!availability.ok) {
+        return {
+          content: [{ type: "text", text: availability.message! }],
+          isError: true,
+          details: {
+            runId: params.id,
+            status: "unavailable",
+            summary: null,
+            findings: [],
+            citations: [],
+            error: availability.message,
+            setup: { code: availability.code, message: availability.message },
+          },
+        };
+      }
+
+      const researchStore = store.getResearchStore();
+      const run = researchStore.getRun(params.id);
+      if (!run) {
+        return {
+          content: [{ type: "text", text: `Research run ${params.id} not found.` }],
+          isError: true,
+          details: {
+            runId: params.id,
+            status: "missing",
+            summary: null,
+            findings: [],
+            citations: [],
+            error: "not found",
+            setup: { code: "NOT_FOUND", message: `Research run ${params.id} not found.` },
+          },
+        };
+      }
+
+      if (!["queued", "running", "cancelling", "retry_waiting"].includes(run.status)) {
+        return {
+          content: [{ type: "text", text: `Research run ${params.id} cannot be cancelled from status ${run.status}.` }],
+          isError: true,
+          details: {
+            ...toResearchRunDetails(run),
+            error: "invalid transition",
+            setup: { code: "INVALID_TRANSITION", message: "Cancel is only available for queued/running/cancelling/retry_waiting runs." },
+          },
+        };
+      }
+
+      const updated = researchStore.requestCancellation(params.id);
+      return {
+        content: [{ type: "text", text: `Requested cancellation for research run ${params.id} (status: ${updated.status}).` }],
+        details: toResearchRunDetails(updated),
+      };
+    },
+  });
+
+  pi.registerTool({
+    name: "fn_research_retry",
+    label: "fn: Retry Research Run",
+    description: "Retry a failed research run when lifecycle marks it retryable.",
+    parameters: Type.Object({ id: Type.String({ description: "Research run ID" }) }),
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const availability = await getResearchAvailability(store);
+      if (!availability.ok) {
+        return {
+          content: [{ type: "text", text: availability.message! }],
+          isError: true,
+          details: {
+            runId: params.id,
+            status: "unavailable",
+            summary: null,
+            findings: [],
+            citations: [],
+            error: availability.message,
+            setup: { code: availability.code, message: availability.message },
+          },
+        };
+      }
+
+      const researchStore = store.getResearchStore();
+      const run = researchStore.getRun(params.id);
+      if (!run) {
+        return {
+          content: [{ type: "text", text: `Research run ${params.id} not found.` }],
+          isError: true,
+          details: {
+            runId: params.id,
+            status: "missing",
+            summary: null,
+            findings: [],
+            citations: [],
+            error: "not found",
+            setup: { code: "NOT_FOUND", message: `Research run ${params.id} not found.` },
+          },
+        };
+      }
+      const isRetryExhausted = run.status === "retry_exhausted" || run.lifecycle?.errorCode === "RETRY_EXHAUSTED";
+      if ((run.status !== "failed" && run.status !== "timed_out") || run.lifecycle?.retryable === false || isRetryExhausted) {
+        return {
+          content: [{ type: "text", text: `Research run ${params.id} is not retryable from status ${run.status}.` }],
+          isError: true,
+          details: {
+            ...toResearchRunDetails(run),
+            error: "not retryable",
+            setup: { code: isRetryExhausted ? "RETRY_EXHAUSTED" : "INVALID_TRANSITION", message: "Retry is only available for failed/timed_out retryable runs." },
+          },
+        };
+      }
+
+      const retryRun = researchStore.createRetryRun(params.id);
+      return {
+        content: [{ type: "text", text: `Created retry run ${retryRun.id} from ${params.id}.` }],
+        details: toResearchRunDetails(retryRun),
+      };
+    },
+  });
+
+  // ── Insights Tools ──────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_insight_list",
+    label: "fn: List Insights",
+    description: "List persisted project insights with optional category/status filters.",
+    promptSnippet: "List persisted project insights",
+    parameters: Type.Object({
+      category: Type.Optional(
+        StringEnum([...INSIGHT_CATEGORIES], {
+          description: "Filter by insight category",
+        }) as unknown as TSchema,
+      ),
+      status: Type.Optional(
+        StringEnum([...INSIGHT_STATUSES], {
+          description: "Filter by insight status",
+        }) as unknown as TSchema,
+      ),
+      runId: Type.Optional(Type.String({ description: "Filter to insights linked to a specific run ID" })),
+      limit: Type.Optional(Type.Number({ description: "Max insights to return" })),
+      offset: Type.Optional(Type.Number({ description: "Number of rows to skip" })),
+    }),
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      if (params.limit !== undefined && (!Number.isInteger(params.limit) || params.limit < 1)) {
+        return {
+          content: [{ type: "text", text: "Invalid limit. Provide an integer >= 1." }],
+          isError: true,
+          details: { error: "Invalid limit" },
+        };
+      }
+      if (params.offset !== undefined && (!Number.isInteger(params.offset) || params.offset < 0)) {
+        return {
+          content: [{ type: "text", text: "Invalid offset. Provide an integer >= 0." }],
+          isError: true,
+          details: { error: "Invalid offset" },
+        };
+      }
+
+      const store = await getStore(ctx.cwd);
+      const insightStore = store.getInsightStore();
+      const category = params.category as InsightCategory | undefined;
+      const status = params.status as InsightStatus | undefined;
+      const options = {
+        category,
+        status,
+        runId: params.runId,
+        limit: params.limit,
+        offset: params.offset,
+      };
+      const insights = insightStore.listInsights(options);
+      const count = insightStore.countInsights({
+        category,
+        status,
+        runId: params.runId,
+      });
+
+      if (insights.length === 0) {
+        return {
+          content: [{ type: "text", text: "No insights found for the provided filters." }],
+          details: { count, insights: [] },
+        };
+      }
+
+      const lines = [`Insights (${insights.length}/${count} shown):`];
+      for (const insight of insights) {
+        const title = insight.title.length > 80 ? `${insight.title.slice(0, 80)}…` : insight.title;
+        lines.push(`  ${insight.id} [${insight.category}] [${insight.status}] ${title}`);
+      }
+
+      return {
+        content: [{ type: "text", text: lines.join("\n") }],
+        details: { count, insights },
+      };
+    },
+  });
+
+  pi.registerTool({
+    name: "fn_insight_show",
+    label: "fn: Show Insight",
+    description: "Show a single persisted insight by ID.",
+    promptSnippet: "Show full details for a persisted insight",
+    parameters: Type.Object({
+      id: Type.String({ description: "Insight ID (e.g. INS-XXXXX)" }),
+    }),
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const insightStore = store.getInsightStore();
+      const insight = insightStore.getInsight(params.id);
+
+      if (!insight) {
+        return {
+          content: [{ type: "text", text: `Insight ${params.id} not found.` }],
+          isError: true,
+          details: { error: "Insight not found", id: params.id },
+        };
+      }
+
+      const lines = [
+        `${insight.id}: ${insight.title}`,
+        `Category: ${insight.category}`,
+        `Status: ${insight.status}`,
+        `Last run: ${insight.lastRunId ?? "none"}`,
+        `Created: ${insight.createdAt}`,
+        `Updated: ${insight.updatedAt}`,
+      ];
+
+      if (insight.content) {
+        lines.push("", "Content:", insight.content.length > 500 ? `${insight.content.slice(0, 500)}\n... (truncated)` : insight.content);
+      }
+
+      return {
+        content: [{ type: "text", text: lines.join("\n") }],
+        details: { insight },
+      };
+    },
+  });
+
+  pi.registerTool({
+    name: "fn_insight_run_list",
+    label: "fn: List Insight Runs",
+    description: "List recent insight-generation runs with optional status/trigger filters.",
+    promptSnippet: "List recent insight-generation runs",
+    parameters: Type.Object({
+      status: Type.Optional(
+        StringEnum([...INSIGHT_RUN_STATUSES], {
+          description: "Filter by run status",
+        }) as unknown as TSchema,
+      ),
+      trigger: Type.Optional(
+        StringEnum([...INSIGHT_RUN_TRIGGERS], {
+          description: "Filter by run trigger",
+        }) as unknown as TSchema,
+      ),
+      limit: Type.Optional(Type.Number({ description: "Max runs to return" })),
+      offset: Type.Optional(Type.Number({ description: "Number of runs to skip" })),
+    }),
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      if (params.limit !== undefined && (!Number.isInteger(params.limit) || params.limit < 1)) {
+        return {
+          content: [{ type: "text", text: "Invalid limit. Provide an integer >= 1." }],
+          isError: true,
+          details: { error: "Invalid limit" },
+        };
+      }
+      if (params.offset !== undefined && (!Number.isInteger(params.offset) || params.offset < 0)) {
+        return {
+          content: [{ type: "text", text: "Invalid offset. Provide an integer >= 0." }],
+          isError: true,
+          details: { error: "Invalid offset" },
+        };
+      }
+
+      const store = await getStore(ctx.cwd);
+      const insightStore = store.getInsightStore();
+      const status = params.status as InsightRunStatus | undefined;
+      const trigger = params.trigger as InsightRunTrigger | undefined;
+      const options = {
+        status,
+        trigger,
+        limit: params.limit,
+        offset: params.offset,
+      };
+      const runs = insightStore.listRuns(options);
+      const count = insightStore.countRuns({ status, trigger });
+
+      if (runs.length === 0) {
+        return {
+          content: [{ type: "text", text: "No insight runs found for the provided filters." }],
+          details: { count, runs: [] },
+        };
+      }
+
+      const lines = [`Insight runs (${runs.length}/${count} shown):`];
+      for (const run of runs) {
+        lines.push(
+          `  ${run.id} [${run.status}] [${run.trigger}] created=${run.insightsCreated} updated=${run.insightsUpdated}`,
+        );
+      }
+
+      return {
+        content: [{ type: "text", text: lines.join("\n") }],
+        details: { count, runs },
+      };
+    },
+  });
+
+  pi.registerTool({
+    name: "fn_insight_run_show",
+    label: "fn: Show Insight Run",
+    description: "Show a single insight-generation run by ID.",
+    promptSnippet: "Show full details for an insight-generation run",
+    parameters: Type.Object({
+      id: Type.String({ description: "Insight run ID (e.g. INSR-XXXXX)" }),
+    }),
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const insightStore = store.getInsightStore();
+      const run = insightStore.getRun(params.id);
+
+      if (!run) {
+        return {
+          content: [{ type: "text", text: `Insight run ${params.id} not found.` }],
+          isError: true,
+          details: { error: "Insight run not found", id: params.id },
+        };
+      }
+
+      const lines = [
+        `${run.id}`,
+        `Trigger: ${run.trigger}`,
+        `Status: ${run.status}`,
+        `Insights: created ${run.insightsCreated}, updated ${run.insightsUpdated}`,
+        `Created: ${run.createdAt}`,
+        `Started: ${run.startedAt ?? "not started"}`,
+        `Completed: ${run.completedAt ?? "not completed"}`,
+      ];
+      if (run.summary) lines.push(`Summary: ${run.summary}`);
+      if (run.error) lines.push(`Error: ${run.error}`);
+
+      return {
+        content: [{ type: "text", text: lines.join("\n") }],
+        details: { run },
+      };
+    },
+  });
+
+  // ── Mission Tools ───────────────────────────────────────────────
+  // Mission hierarchy management for multi-phase project planning
+
+  // ── fn_mission_create ───────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_mission_create",
+    label: "fn: Create Mission",
+    description:
+      "Create a new mission — a high-level objective that can span multiple milestones. " +
+      "Missions contain milestones that break down work into phases.",
+    promptSnippet: "Create a new mission for high-level project planning",
+    promptGuidelines: [
+      "Use for high-level project objectives that span multiple work phases",
+      "Missions are broken down into milestones → slices → features → tasks",
+      "Be descriptive so the mission purpose is clear",
+    ],
+    parameters: Type.Object({
+      title: Type.String({ description: "Mission title — brief but descriptive" }),
+      description: Type.Optional(
+        Type.String({ description: "Detailed mission objectives and context" })
+      ),
+      autoAdvance: Type.Optional(
+        Type.Boolean({ description: "Automatically activate the next pending slice when the current slice completes" })
+      ),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const missionStore = store.getMissionStore();
+
+      const mission = missionStore.createMission({
+        title: params.title.trim(),
+        description: params.description?.trim(),
+      });
+
+      if (params.autoAdvance !== undefined) {
+        missionStore.updateMission(mission.id, { autoAdvance: params.autoAdvance });
+      }
+
+      const createdMission = missionStore.getMission(mission.id)!;
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Created ${createdMission.id}: ${createdMission.title}\nStatus: ${createdMission.status}${createdMission.autoAdvance ? "\nAuto-advance: enabled" : ""}`,
+          },
+        ],
+        details: {
+          missionId: createdMission.id,
+          title: createdMission.title,
+          status: createdMission.status,
+          autoAdvance: createdMission.autoAdvance ?? false,
+        },
+      };
+    },
+  });
+
+  // ── fn_mission_list ──────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_mission_list",
+    label: "fn: List Missions",
+    description: "List all missions with their current status.",
+    promptSnippet: "List all missions",
+    promptGuidelines: [
+      "Use to see all missions and their current status",
+      "Missions are grouped by status (active, planning, complete, etc.)",
+      "Use before fn_mission_show to find a specific mission ID",
+    ],
+    parameters: Type.Object({}),
+
+    async execute(_toolCallId, _params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const missionStore = store.getMissionStore();
+
+      const missions = missionStore.listMissions();
+
+      if (missions.length === 0) {
+        return {
+          content: [{ type: "text", text: "No missions yet." }],
+          details: { count: 0 },
+        };
+      }
+
+      const summary = {
+        planning: missions.filter((mission) => mission.status === "planning").length,
+        active: missions.filter((mission) => mission.status === "active").length,
+        blocked: missions.filter((mission) => mission.status === "blocked").length,
+        complete: missions.filter((mission) => mission.status === "complete").length,
+        archived: missions.filter((mission) => mission.status === "archived").length,
+      };
+
+      const lines: string[] = [];
+      lines.push(`Missions (${missions.length})`);
+      lines.push(
+        `Summary: active ${summary.active}, planning ${summary.planning}, blocked ${summary.blocked}, complete ${summary.complete}, archived ${summary.archived}\n`,
+      );
+
+      for (const mission of missions) {
+        const statusIcon = mission.status === "complete" ? "✓" : mission.status === "active" ? "●" : mission.status === "blocked" ? "⚠" : "○";
+        const autoAdvance = mission.autoAdvance ? " · auto-advance" : "";
+        lines.push(`  ${statusIcon} ${mission.id}: ${mission.title} (${mission.status}${autoAdvance})`);
+      }
+
+      return {
+        content: [{ type: "text", text: lines.join("\n") }],
+        details: { count: missions.length, missions: missions.map((m) => ({ id: m.id, title: m.title, status: m.status })) },
+      };
+    },
+  });
+
+  // ── fn_mission_show ──────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_mission_show",
+    label: "fn: Show Mission",
+    description: "Show mission details with full hierarchy: milestones → slices → features.",
+    promptSnippet: "Show mission details with hierarchy",
+    promptGuidelines: [
+      "Use to see the full mission structure before planning work",
+      "Shows milestones, slices, and features in hierarchical order",
+      "Check slice status to see if features can be linked to tasks",
+    ],
+    parameters: Type.Object({
+      id: Type.String({ description: "Mission ID (e.g., M-001)" }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const missionStore = store.getMissionStore();
+
+      const mission = missionStore.getMissionWithHierarchy(params.id);
+      if (!mission) {
+        return {
+          content: [{ type: "text", text: `Mission ${params.id} not found` }],
+          isError: true,
+          details: { error: "Mission not found" },
+        };
+      }
+
+      const lines: string[] = [];
+      lines.push(`${mission.id}: ${mission.title}`);
+      lines.push(`Status: ${mission.status}`);
+      if (mission.description) {
+        lines.push(`Description: ${mission.description}`);
+      }
+      lines.push("");
+
+      if (mission.milestones.length === 0) {
+        lines.push("No milestones yet.");
+      } else {
+        lines.push("Milestones:");
+        for (const milestone of mission.milestones) {
+          const mIcon = milestone.status === "complete" ? "✓" : milestone.status === "active" ? "●" : "○";
+          lines.push(`  ${mIcon} ${milestone.id}: ${milestone.title} (${milestone.status})`);
+
+          for (const slice of milestone.slices) {
+            const sIcon = slice.status === "complete" ? "✓" : slice.status === "active" ? "●" : "○";
+            lines.push(`    ${sIcon} ${slice.id}: ${slice.title} (${slice.status})`);
+
+            for (const feature of slice.features) {
+              const fIcon = feature.status === "done" ? "✓" : feature.status === "in-progress" ? "▸" : feature.status === "triaged" ? "●" : "○";
+              const taskLink = feature.taskId ? ` → ${feature.taskId}` : "";
+              lines.push(`      ${fIcon} ${feature.id}: ${feature.title} (${feature.status})${taskLink}`);
+            }
+          }
+        }
+      }
+
+      return {
+        content: [{ type: "text", text: lines.join("\n") }],
+        details: { mission },
+      };
+    },
+  });
+
+  // ── fn_mission_delete ───────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_mission_delete",
+    label: "fn: Delete Mission",
+    description: "Delete a mission and all its milestones, slices, and features. Cannot be undone.",
+    promptSnippet: "Delete a mission and all its contents",
+    promptGuidelines: [
+      "Use for cleaning up test missions or mistakenly created missions",
+      "Permanently deletes all milestones, slices, and features within the mission",
+      "Tasks linked to features are NOT deleted — only the feature links are removed",
+    ],
+    parameters: Type.Object({
+      id: Type.String({ description: "Mission ID to delete (e.g., M-001)" }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const missionStore = store.getMissionStore();
+
+      const mission = missionStore.getMission(params.id);
+      if (!mission) {
+        return {
+          content: [{ type: "text", text: `Mission ${params.id} not found` }],
+          isError: true,
+          details: { error: "Mission not found" },
+        };
+      }
+
+      missionStore.deleteMission(params.id);
+
+      return {
+        content: [{ type: "text", text: `Deleted ${params.id}: "${mission.title}"` }],
+        details: { missionId: params.id, title: mission.title },
+      };
+    },
+  });
+
+  // ── fn_milestone_add ────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_milestone_add",
+    label: "fn: Add Milestone",
+    description: "Add a milestone to a mission. Milestones represent phases of work.",
+    promptSnippet: "Add a milestone to a mission",
+    promptGuidelines: [
+      "Use to break down a mission into manageable phases",
+      "Milestones are ordered and contain slices (work units)",
+    ],
+    parameters: Type.Object({
+      missionId: Type.String({ description: "Parent mission ID (e.g., M-001)" }),
+      title: Type.String({ description: "Milestone title" }),
+      description: Type.Optional(Type.String({ description: "Milestone description" })),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const missionStore = store.getMissionStore();
+
+      const mission = missionStore.getMission(params.missionId);
+      if (!mission) {
+        return {
+          content: [{ type: "text", text: `Mission ${params.missionId} not found` }],
+          isError: true,
+          details: { error: "Mission not found" },
+        };
+      }
+
+      const milestone = missionStore.addMilestone(params.missionId, {
+        title: params.title.trim(),
+        description: params.description?.trim(),
+      });
+
+      return {
+        content: [
+          { type: "text", text: `Added ${milestone.id}: "${milestone.title}" to ${params.missionId}` },
+        ],
+        details: { milestoneId: milestone.id, missionId: params.missionId, title: milestone.title },
+      };
+    },
+  });
+
+  // ── fn_slice_add ─────────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_slice_add",
+    label: "fn: Add Slice",
+    description: "Add a slice to a milestone. Slices are work units that can be activated for implementation.",
+    promptSnippet: "Add a work slice to a milestone",
+    promptGuidelines: [
+      "Slices represent work units within a milestone",
+      "Slices are activated for implementation, linking features to tasks",
+      "Order slices by priority — they execute in sequence",
+    ],
+    parameters: Type.Object({
+      milestoneId: Type.String({ description: "Parent milestone ID (e.g., MS-001)" }),
+      title: Type.String({ description: "Slice title" }),
+      description: Type.Optional(Type.String({ description: "Slice description" })),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const missionStore = store.getMissionStore();
+
+      const milestone = missionStore.getMilestone(params.milestoneId);
+      if (!milestone) {
+        return {
+          content: [{ type: "text", text: `Milestone ${params.milestoneId} not found` }],
+          isError: true,
+          details: { error: "Milestone not found" },
+        };
+      }
+
+      const slice = missionStore.addSlice(params.milestoneId, {
+        title: params.title.trim(),
+        description: params.description?.trim(),
+      });
+
+      return {
+        content: [
+          { type: "text", text: `Added ${slice.id}: "${slice.title}" to ${params.milestoneId}` },
+        ],
+        details: { sliceId: slice.id, milestoneId: params.milestoneId, title: slice.title },
+      };
+    },
+  });
+
+  // ── fn_feature_add ────────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_feature_add",
+    label: "fn: Add Feature",
+    description: "Add a feature to a slice. Features are deliverables that can be linked to tasks.",
+    promptSnippet: "Add a feature to a slice",
+    promptGuidelines: [
+      "Features represent deliverables within a slice",
+      "Features start as 'defined' and progress through 'triaged' → 'in-progress' → 'done'",
+      "Link features to tasks using fn_feature_link_task",
+    ],
+    parameters: Type.Object({
+      sliceId: Type.String({ description: "Parent slice ID (e.g., SL-001)" }),
+      title: Type.String({ description: "Feature title" }),
+      description: Type.Optional(Type.String({ description: "Feature description" })),
+      acceptanceCriteria: Type.Optional(
+        Type.String({ description: "Acceptance criteria for completing the feature" })
+      ),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const missionStore = store.getMissionStore();
+
+      const slice = missionStore.getSlice(params.sliceId);
+      if (!slice) {
+        return {
+          content: [{ type: "text", text: `Slice ${params.sliceId} not found` }],
+          isError: true,
+          details: { error: "Slice not found" },
+        };
+      }
+
+      const feature = missionStore.addFeature(params.sliceId, {
+        title: params.title.trim(),
+        description: params.description?.trim(),
+        acceptanceCriteria: params.acceptanceCriteria?.trim(),
+      });
+
+      return {
+        content: [
+          { type: "text", text: `Added ${feature.id}: "${feature.title}" to ${params.sliceId}` },
+        ],
+        details: { featureId: feature.id, sliceId: params.sliceId, title: feature.title },
+      };
+    },
+  });
+
+  // ── fn_slice_activate ────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_slice_activate",
+    label: "fn: Activate Slice",
+    description:
+      "Activate a pending slice for implementation. " +
+      "Sets status to 'active' and enables task linking for its features.",
+    promptSnippet: "Activate a slice for implementation",
+    promptGuidelines: [
+      "Activating a slice allows its features to be linked to tasks",
+      "Only pending slices can be activated",
+      "Slice activation triggers auto-advance when linked tasks complete",
+    ],
+    parameters: Type.Object({
+      id: Type.String({ description: "Slice ID to activate (e.g., SL-001)" }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const missionStore = store.getMissionStore();
+
+      const slice = missionStore.getSlice(params.id);
+      if (!slice) {
+        return {
+          content: [{ type: "text", text: `Slice ${params.id} not found` }],
+          isError: true,
+          details: { error: "Slice not found" },
+        };
+      }
+
+      if (slice.status !== "pending") {
+        return {
+          content: [{ type: "text", text: `Slice ${params.id} is not pending (status: ${slice.status})` }],
+          isError: true,
+          details: { error: "Slice not pending", currentStatus: slice.status },
+        };
+      }
+
+      const activated = await missionStore.activateSlice(params.id);
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Activated ${activated.id}: "${activated.title}"\nStatus: ${activated.status}`,
+          },
+        ],
+        details: { sliceId: activated.id, title: activated.title, status: activated.status },
+      };
+    },
+  });
+
+  // ── fn_feature_link_task ──────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_feature_link_task",
+    label: "fn: Link Feature to Task",
+    description:
+      "Link a feature to a fn task for implementation. " +
+      "Updates the feature status to 'triaged' and associates it with the task.",
+    promptSnippet: "Link a feature to a task",
+    promptGuidelines: [
+      "Use when a feature is ready for implementation and has a corresponding task",
+      "The feature's slice must be active to link tasks",
+      "Linking updates the feature status to 'triaged'",
+      "When the linked task moves to 'done', the feature status becomes 'done'",
+    ],
+    parameters: Type.Object({
+      featureId: Type.String({ description: "Feature ID to link (e.g., F-001)" }),
+      taskId: Type.String({ description: "Task ID to link to (e.g., FN-001)" }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const store = await getStore(ctx.cwd);
+      const missionStore = store.getMissionStore();
+
+      const feature = missionStore.getFeature(params.featureId);
+      if (!feature) {
+        return {
+          content: [{ type: "text", text: `Feature ${params.featureId} not found` }],
+          isError: true,
+          details: { error: "Feature not found" },
+        };
+      }
+
+      // Check if task exists
+      try {
+        await store.getTask(params.taskId);
+      } catch {
+        return {
+          content: [{ type: "text", text: `Task ${params.taskId} not found` }],
+          isError: true,
+          details: { error: "Task not found" },
+        };
+      }
+
+      const updated = missionStore.linkFeatureToTask(params.featureId, params.taskId);
+      await store.updateTask(params.taskId, { sliceId: feature.sliceId });
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Linked ${updated.id}: "${updated.title}" → ${params.taskId}\nStatus: ${updated.status}`,
+          },
+        ],
+        details: { featureId: updated.id, taskId: params.taskId, title: updated.title, status: updated.status },
+      };
+    },
+  });
+
+  // ── fn_agent_stop ─────────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_agent_stop",
+    label: "fn: Stop Agent",
+    description:
+      "Stop a running agent — pauses its execution. " +
+      "Transitions the agent from running/active to paused state.",
+    promptSnippet: "Stop (pause) a running Fusion agent",
+    promptGuidelines: [
+      "Use to pause an agent that is currently running or active",
+      "Stopped agents can be resumed with fn_agent_start",
+      "Agents in 'idle', 'error', or already-paused state cannot be stopped",
+    ],
+    parameters: Type.Object({
+      id: Type.String({ description: "Agent ID to stop (e.g., agent-abc123)" }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const { AgentStore, AGENT_VALID_TRANSITIONS } = await import("@fusion/core");
+
+      const agentStore = new AgentStore({ rootDir: getFusionDir(ctx.cwd) });
+      await agentStore.init();
+
+      const agent = await agentStore.getAgent(params.id);
+      if (!agent) {
+        return {
+          content: [{ type: "text", text: `Agent ${params.id} not found` }],
+          isError: true,
+          details: { error: "Agent not found" },
+        };
+      }
+
+      if (agent.state === "paused") {
+        return {
+          content: [{ type: "text", text: `Agent ${params.id} is already paused` }],
+          details: { agentId: params.id, state: agent.state },
+        };
+      }
+
+      const validTargets = AGENT_VALID_TRANSITIONS[agent.state];
+      if (!validTargets.includes("paused")) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `Cannot stop agent ${params.id} — current state '${agent.state}' cannot transition to 'paused'. Valid transitions: ${validTargets.join(", ")}`,
+            },
+          ],
+          isError: true,
+          details: { agentId: params.id, currentState: agent.state, validTargets },
+        };
+      }
+
+      await agentStore.updateAgentState(params.id, "paused");
+
+      return {
+        content: [{ type: "text", text: `Stopped ${params.id}` }],
+        details: { agentId: params.id, previousState: agent.state, newState: "paused" },
+      };
+    },
+  });
+
+  // ── fn_agent_start ────────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_agent_start",
+    label: "fn: Start Agent",
+    description:
+      "Start a stopped agent — resumes its execution. " +
+      "Transitions the agent from paused to active state.",
+    promptSnippet: "Start (resume) a stopped Fusion agent",
+    promptGuidelines: [
+      "Use to resume an agent that has been paused",
+      "Only agents in 'paused' state can be started",
+      "Agents in 'idle' or 'error' state cannot be started — use reset instead",
+    ],
+    parameters: Type.Object({
+      id: Type.String({ description: "Agent ID to start (e.g., agent-abc123)" }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const { AgentStore, AGENT_VALID_TRANSITIONS } = await import("@fusion/core");
+
+      const agentStore = new AgentStore({ rootDir: getFusionDir(ctx.cwd) });
+      await agentStore.init();
+
+      const agent = await agentStore.getAgent(params.id);
+      if (!agent) {
+        return {
+          content: [{ type: "text", text: `Agent ${params.id} not found` }],
+          isError: true,
+          details: { error: "Agent not found" },
+        };
+      }
+
+      if (agent.state === "active" || agent.state === "running") {
+        return {
+          content: [{ type: "text", text: `Agent ${params.id} is already running (${agent.state})` }],
+          details: { agentId: params.id, state: agent.state },
+        };
+      }
+
+      const validTargets = AGENT_VALID_TRANSITIONS[agent.state];
+      if (!validTargets.includes("active")) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `Cannot start agent ${params.id} — current state '${agent.state}' cannot transition to 'active'. Valid transitions: ${validTargets.join(", ")}`,
+            },
+          ],
+          isError: true,
+          details: { agentId: params.id, currentState: agent.state, validTargets },
+        };
+      }
+
+      await agentStore.updateAgentState(params.id, "active");
+
+      return {
+        content: [{ type: "text", text: `Started ${params.id}` }],
+        details: { agentId: params.id, previousState: agent.state, newState: "active" },
+      };
+    },
+  });
+
+  // ── fn_agent_create ─────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_agent_create",
+    label: "fn: Create Agent",
+    description: "Create a new non-ephemeral agent.",
+    parameters: Type.Object({
+      name: Type.String({ description: "Agent name" }),
+      role: Type.String({ description: "Agent role/capability" }),
+      soul: Type.Optional(Type.String({ description: "Agent personality/identity text" })),
+      instructions_text: Type.Optional(Type.String({ description: "Inline custom instructions" })),
+      instructions_path: Type.Optional(Type.String({ description: "Path to instructions markdown" })),
+      reportsTo: Type.Optional(Type.String({ description: "Manager agent ID" })),
+      heartbeat_interval_ms: Type.Optional(Type.Number({ minimum: 1000 })),
+      heartbeat_timeout_ms: Type.Optional(Type.Number({ minimum: 5000 })),
+      max_concurrent_runs: Type.Optional(Type.Number({ minimum: 1 })),
+      message_response_mode: Type.Optional(Type.Union([Type.Literal("immediate"), Type.Literal("on-heartbeat")])),
+    }),
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const { AgentStore } = await import("@fusion/core");
+      const agentStore = new AgentStore({ rootDir: getFusionDir(ctx.cwd) });
+      await agentStore.init();
+
+      const runtimeConfig: Record<string, unknown> = {
+        ...(params.heartbeat_interval_ms !== undefined ? { heartbeatIntervalMs: params.heartbeat_interval_ms } : {}),
+        ...(params.heartbeat_timeout_ms !== undefined ? { heartbeatTimeoutMs: params.heartbeat_timeout_ms } : {}),
+        ...(params.max_concurrent_runs !== undefined ? { maxConcurrentRuns: params.max_concurrent_runs } : {}),
+        ...(params.message_response_mode !== undefined ? { messageResponseMode: params.message_response_mode } : {}),
+      };
+
+      const created = await agentStore.createAgent({
+        name: params.name,
+        role: params.role as never,
+        ...(params.soul !== undefined ? { soul: params.soul } : {}),
+        ...(params.instructions_text !== undefined ? { instructionsText: params.instructions_text } : {}),
+        ...(params.instructions_path !== undefined ? { instructionsPath: params.instructions_path } : {}),
+        ...(params.reportsTo !== undefined ? { reportsTo: params.reportsTo } : {}),
+        ...(Object.keys(runtimeConfig).length > 0 ? { runtimeConfig } : {}),
+      });
+
+      return {
+        content: [{ type: "text" as const, text: `Created agent ${created.name} (${created.id})` }],
+        details: { agent: created },
+      };
+    },
+  });
+
+  // ── fn_agent_delete ─────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_agent_delete",
+    label: "fn: Delete Agent",
+    description: "Delete a non-ephemeral agent.",
+    parameters: Type.Object({
+      id: Type.String({ description: "Agent ID to delete" }),
+      force: Type.Optional(Type.Boolean({ description: "Force delete when holding checkout" })),
+      reassign_to: Type.Optional(Type.String({ description: "Optional replacement agent for assigned tasks" })),
+    }),
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const { AgentStore } = await import("@fusion/core");
+      const agentStore = new AgentStore({ rootDir: getFusionDir(ctx.cwd) });
+      await agentStore.init();
+      await agentStore.deleteAgent(params.id, { force: params.force === true, reassignTo: params.reassign_to });
+      return { content: [{ type: "text" as const, text: `Deleted ${params.id}` }], details: { agentId: params.id } };
+    },
+  });
+
+  // ── fn_list_agents ───────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_list_agents",
+    label: "fn: List Agents",
+    description:
+      "List all available agents in the system. Shows each agent's name, role, state, " +
+      "personality (soul), and current assignment. Use this to discover which agents exist " +
+      "and what they specialize in before delegating work.",
+    promptSnippet: "List all available Fusion agents",
+    promptGuidelines: [
+      "Use fn_list_agents to discover which agents exist before delegating work",
+      "Filter by role or state to narrow results",
+      "Ephemeral/runtime agents are excluded by default",
+    ],
+    parameters: Type.Object({
+      role: Type.Optional(
+        Type.String({ description: "Filter by agent role/capability (e.g., 'executor', 'reviewer', 'qa')" }),
+      ),
+      state: Type.Optional(
+        Type.String({ description: "Filter by agent state (e.g., 'idle', 'active', 'running')" }),
+      ),
+      includeEphemeral: Type.Optional(
+        Type.Boolean({ description: "Include ephemeral/runtime agents (default: false)" }),
+      ),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const { AgentStore } = await import("@fusion/core");
+
+      const agentStore = new AgentStore({ rootDir: getFusionDir(ctx.cwd) });
+      await agentStore.init();
+
+      const filter: Record<string, unknown> = {};
+      if (params.role) filter.role = params.role;
+      if (params.state) filter.state = params.state;
+      if (params.includeEphemeral !== undefined) filter.includeEphemeral = params.includeEphemeral;
+
+      const agents = await agentStore.listAgents(filter as Parameters<typeof agentStore.listAgents>[0]);
+
+      if (agents.length === 0) {
+        return {
+          content: [{ type: "text" as const, text: "No agents found matching the specified filters." }],
+          details: { agents: [], count: 0 },
+        };
+      }
+
+      const lines = agents.map((agent) => {
+        const parts: string[] = [
+          `ID: ${agent.id}`,
+          `Name: ${agent.name}`,
+          `Role: ${agent.role}`,
+          `State: ${agent.state}`,
+        ];
+
+        if (agent.title) parts.push(`Title: ${agent.title}`);
+        if (agent.soul) parts.push(`Soul: ${agent.soul.slice(0, 200)}`);
+        if (agent.instructionsText) {
+          const snippet = agent.instructionsText.slice(0, 100);
+          parts.push(`Custom Instructions: ${snippet}${agent.instructionsText.length > 100 ? "…" : ""}`);
+        }
+        if (agent.taskId) parts.push(`Current Task: ${agent.taskId}`);
+
+        return parts.join("\n");
+      });
+
+      return {
+        content: [{ type: "text" as const, text: `Available agents (${agents.length}):\n\n${lines.join("\n\n")}` }],
+        details: { agents, count: agents.length },
+      };
+    },
+  });
+
+  // ── fn_delegate_task ──────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_delegate_task",
+    label: "fn: Delegate Task",
+    description:
+      "Create a new task and assign it to a specific agent for execution. The task goes to " +
+      "'todo' and will be picked up by the target agent on their next heartbeat cycle. " +
+      "Use fn_list_agents first to find available agents and their capabilities.",
+    promptSnippet: "Delegate a task to a specific Fusion agent",
+    promptGuidelines: [
+      "Use fn_list_agents first to find available agents and their capabilities",
+      "The task is created in 'todo' and assigned to the target agent",
+      "Cannot delegate to ephemeral/runtime agents",
+      "Implementation tasks require an executor-role agent unless override=true",
+      "Optionally specify dependencies on other tasks",
+    ],
+    parameters: Type.Object({
+      agent_id: Type.String({ description: "The agent ID to delegate work to" }),
+      description: Type.String({ description: "What needs to be done" }),
+      dependencies: Type.Optional(
+        Type.Array(Type.String(), { description: "Task IDs this new task depends on (e.g. [\"KB-001\"]" }),
+      ),
+      override: Type.Optional(
+        Type.Boolean({ description: "Set true to bypass executor-role assignment policy" }),
+      ),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      // Validate target agent exists and is not ephemeral
+      const delegateTask: Pick<Task, "id" | "column"> = { id: "<new>", column: "todo" };
+      const agentError = await validateAssignableAgentId(ctx.cwd, params.agent_id, delegateTask, params.override === true);
+      if (agentError) {
+        return {
+          content: [{ type: "text", text: `ERROR: ${agentError}` }],
+          isError: true,
+          details: { error: agentError },
+        };
+      }
+
+      const { AgentStore } = await import("@fusion/core");
+      const agentStore = new AgentStore({ rootDir: getFusionDir(ctx.cwd) });
+      await agentStore.init();
+      const agent = await agentStore.getAgent(params.agent_id);
+
+      // Create task assigned to the target agent
+      const store = await getStore(ctx.cwd);
+      const task = await store.createTask({
+        description: params.description,
+        dependencies: params.dependencies,
+        column: "todo",
+        assignedAgentId: params.agent_id,
+        source: { sourceType: "api" },
+      });
+
+      const deps = task.dependencies.length ? ` (depends on: ${task.dependencies.join(", ")})` : "";
+      return {
+        content: [{
+          type: "text" as const,
+          text: `Delegated to ${agent!.name} (${agent!.id}): Created ${task.id}${deps}. ` +
+            `The task will be picked up by ${agent!.name} on their next heartbeat cycle.`,
+        }],
+        details: { taskId: task.id, agentId: agent!.id, agentName: agent!.name },
+      };
+    },
+  });
+
+  // ── fn_agent_show ─────────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_agent_show",
+    label: "fn: Show Agent",
+    description:
+      "Show detailed information about a single agent, including their role, state, " +
+      "position in the org hierarchy (reports-to, direct reports), skills, and current assignment.",
+    promptSnippet: "Show details of a specific Fusion agent",
+    promptGuidelines: [
+      "Use to get full details about a specific agent",
+      "Provide agent ID or a resolvable name",
+      "Shows the agent's position in the org hierarchy",
+    ],
+    parameters: Type.Object({
+      id: Type.String({ description: "Agent ID or resolvable name" }),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const { AgentStore } = await import("@fusion/core");
+
+      const agentStore = new AgentStore({ rootDir: getFusionDir(ctx.cwd) });
+      await agentStore.init();
+
+      const agent = await agentStore.resolveAgent(params.id);
+      if (!agent) {
+        return {
+          content: [{ type: "text", text: `Agent '${params.id}' not found` }],
+          isError: true,
+          details: { error: "Agent not found" },
+        };
+      }
+
+      // Get direct reports
+      const directReports = await agentStore.getAgentsByReportsTo(agent.id);
+
+      const parts: string[] = [
+        `ID: ${agent.id}`,
+        `Name: ${agent.name}`,
+        `Role: ${agent.role}`,
+        `State: ${agent.state}`,
+      ];
+
+      if (agent.title) parts.push(`Title: ${agent.title}`);
+      if (agent.icon) parts.push(`Icon: ${agent.icon}`);
+
+      if (agent.reportsTo) {
+        const manager = await agentStore.getAgent(agent.reportsTo);
+        if (manager) {
+          parts.push(`Reports To: ${manager.name} (${manager.id})`);
+        } else {
+          parts.push(`Reports To: ${agent.reportsTo}`);
+        }
+      }
+
+      if (directReports.length > 0) {
+        parts.push(`Direct Reports: ${directReports.map((r) => `${r.name} (${r.id})`).join(", ")}`);
+      }
+
+      if (agent.taskId) parts.push(`Current Task: ${agent.taskId}`);
+
+      if (agent.instructionsText) {
+        const snippet = agent.instructionsText.slice(0, 100);
+        parts.push(`Custom Instructions: ${snippet}${agent.instructionsText.length > 100 ? "…" : ""}`);
+      }
+
+      if (agent.soul) {
+        const snippet = agent.soul.slice(0, 200);
+        parts.push(`Soul: ${snippet}${agent.soul.length > 200 ? "…" : ""}`);
+      }
+
+      if (agent.metadata?.skills) {
+        parts.push(`Skills: ${JSON.stringify(agent.metadata.skills)}`);
+      }
+
+      return {
+        content: [{ type: "text" as const, text: parts.join("\n") }],
+        details: {
+          agent,
+          directReports: directReports.map((r) => ({ id: r.id, name: r.name, role: r.role })),
+        },
+      };
+    },
+  });
+
+  // ── fn_agent_org_chart ────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_agent_org_chart",
+    label: "fn: Agent Org Chart",
+    description:
+      "Show the organizational tree of agents, displaying the role hierarchy. " +
+      "Optionally filter to a subtree rooted at a specific agent.",
+    promptSnippet: "Show the Fusion agent org chart",
+    promptGuidelines: [
+      "Use to understand the team structure and reporting hierarchy",
+      "Optionally specify a root agent to see only their subtree",
+      "Ephemeral/runtime agents are excluded by default",
+    ],
+    parameters: Type.Object({
+      root_agent_id: Type.Optional(
+        Type.String({ description: "If provided, show only the subtree rooted at this agent" }),
+      ),
+      include_ephemeral: Type.Optional(
+        Type.Boolean({ description: "Include ephemeral/runtime agents (default: false)" }),
+      ),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      const { AgentStore } = await import("@fusion/core");
+      type OrgTreeNode = { agent: { id: string; icon?: string; name: string; role: string; state: string; taskId?: string }; children: OrgTreeNode[] };
+
+      const agentStore = new AgentStore({ rootDir: getFusionDir(ctx.cwd) });
+      await agentStore.init();
+
+      const includeEphemeral = params.include_ephemeral ?? false;
+
+      // If root_agent_id specified, show subtree via chain-of-command + reports
+      if (params.root_agent_id) {
+        const rootAgent = await agentStore.resolveAgent(params.root_agent_id);
+        if (!rootAgent) {
+          return {
+            content: [{ type: "text", text: `Agent '${params.root_agent_id}' not found` }],
+            isError: true,
+            details: { error: "Root agent not found" },
+          };
+        }
+
+        // Get the full tree, then find the subtree
+        const fullTree = await agentStore.getOrgTree({ includeEphemeral });
+
+        // Find the subtree rooted at the specified agent
+        const findSubtree = (nodes: OrgTreeNode[]): OrgTreeNode | null => {
+          for (const node of nodes) {
+            if (node.agent.id === rootAgent.id) return node;
+            const found = findSubtree(node.children);
+            if (found) return found;
+          }
+          return null;
+        };
+
+        const subtree = findSubtree(fullTree);
+        if (!subtree) {
+          // Agent exists but has no tree position — show just that agent
+          return {
+            content: [{
+              type: "text" as const,
+              text: `${rootAgent.icon ?? "🤖"} ${rootAgent.name} (${rootAgent.role}) — ${rootAgent.state}${rootAgent.taskId ? ` [${rootAgent.taskId}]` : ""}`,
+            }],
+            details: { tree: [{ agent: rootAgent, children: [] }] },
+          };
+        }
+
+        const lines: string[] = [];
+        const renderNode = (node: OrgTreeNode, indent: string) => {
+          const a = node.agent;
+          lines.push(
+            `${indent}${a.icon ?? "🤖"} ${a.name} (${a.role}) — ${a.state}${a.taskId ? ` [${a.taskId}]` : ""}`,
+          );
+          for (const child of node.children) {
+            renderNode(child, indent + "  ");
+          }
+        };
+        renderNode(subtree, "");
+
+        return {
+          content: [{ type: "text" as const, text: `Agent Org Tree (subtree: ${rootAgent.name}):\n${lines.join("\n")}` }],
+          details: { tree: [subtree] },
+        };
+      }
+
+      // Full tree
+      const tree = await agentStore.getOrgTree({ includeEphemeral });
+
+      if (tree.length === 0) {
+        return {
+          content: [{ type: "text" as const, text: "No agents found." }],
+          details: { tree: [], count: 0 },
+        };
+      }
+
+      const lines: string[] = [];
+      let count = 0;
+      const renderNode = (node: OrgTreeNode, indent: string) => {
+        const a = node.agent;
+        lines.push(
+          `${indent}${a.icon ?? "🤖"} ${a.name} (${a.role}) — ${a.state}${a.taskId ? ` [${a.taskId}]` : ""}`,
+        );
+        count++;
+        for (const child of node.children) {
+          renderNode(child, indent + "  ");
+        }
+      };
+      for (const root of tree) {
+        renderNode(root, "");
+      }
+
+      return {
+        content: [{ type: "text" as const, text: `Agent Org Tree (${count} agents):\n${lines.join("\n")}` }],
+        details: { tree, count },
+      };
+    },
+  });
+
+  // ── fn_skills_search ─────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_skills_search",
+    label: "FN: Search Skills",
+    description:
+      "Search the skills.sh directory for agent skills. Returns matching skills with names, " +
+      "sources (owner/repo), install counts, and install commands. " +
+      "Use fn_skills_install to install a selected skill.",
+    promptSnippet: "Search skills.sh for agent skills",
+    promptGuidelines: [
+      "Use fn_skills_search to discover skills before installing",
+      "Returns skills sorted by popularity (install count)",
+    ],
+    parameters: Type.Object({
+      query: Type.String({
+        description:
+          "Search query — framework name, technology, or capability (e.g., 'react', 'firebase', 'testing', 'docker')",
+      }),
+      limit: Type.Optional(
+        Type.Number({
+          description: "Max results to return (default: 10, max: 50)",
+          minimum: 1,
+          maximum: 50,
+        }),
+      ),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
+      // Dynamic import to match existing extension patterns
+      const { searchSkills, formatInstalls } = await import("./commands/skills.js");
+
+      const skills = await searchSkills(params.query, params.limit ?? 10);
+
+      if (skills.length === 0) {
+        return {
+          content: [{ type: "text", text: `No skills found for '${params.query}'` }],
+          details: { count: 0, skills: [] },
+        };
+      }
+
+      const lines: string[] = [];
+      lines.push(`Found ${skills.length} skills matching '${params.query}':\n`);
+
+      for (let i = 0; i < skills.length; i++) {
+        const skill = skills[i]!;
+        const installs = formatInstalls(skill.installs);
+        lines.push(`${i + 1}. ${skill.name} (${skill.source})${installs ? ` — ${installs}` : ""}`);
+      }
+
+      lines.push("\nInstall a skill with: fn_skills_install({ source: \"<owner/repo>\", skill: \"<name>\" })");
+
+      return {
+        content: [{ type: "text", text: lines.join("\n") }],
+        details: {
+          count: skills.length,
+          skills: skills.map((s) => ({
+            name: s.name,
+            source: s.source,
+            installs: s.installs,
+            installCommand: `fn skills install ${s.source} --skill ${s.name}`,
+          })),
+        },
+      };
+    },
+  });
+
+  // ── fn_skills_install ─────────────────────────────────────────────
+
+  pi.registerTool({
+    name: "fn_skills_install",
+    label: "FN: Install Skill",
+    description:
+      "Install an agent skill from skills.sh into the current project. " +
+      "Downloads skill files into the project's skill directories (.fusion/skills/, legacy .pi/skills/, .agents/skills/). " +
+      "The skill becomes available to AI agents in subsequent sessions.",
+    promptSnippet: "Install a skill from skills.sh into the current project",
+    promptGuidelines: [
+      "Use fn_skills_install after fn_skills_search to install a discovered skill",
+      "The source is in owner/repo format (e.g., 'firebase/agent-skills')",
+      "Specify the skill name to install a specific skill, or omit to install all from the source",
+    ],
+    parameters: Type.Object({
+      source: Type.String({
+        description: "GitHub source in owner/repo format (e.g., 'firebase/agent-skills')",
+      }),
+      skill: Type.Optional(
+        Type.String({
+          description: "Specific skill name to install (e.g., 'firebase-basics'). Omit to install all skills from the source.",
+        }),
+      ),
+    }),
+
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      // Validate source format
+      if (!/^[^/]+\/[^/]+$/.test(params.source)) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `Invalid source format: '${params.source}'. Use owner/repo format (e.g., 'firebase/agent-skills').`,
+            },
+          ],
+          isError: true,
+          details: { error: "Invalid source format" },
+        };
+      }
+
+      // Build npx skills add arguments
+      const npxArgs = ["skills", "add", params.source];
+
+      if (params.skill) {
+        npxArgs.push("--skill", params.skill);
+      }
+
+      // Non-interactive mode (-y) targeting pi agent (-a pi)
+      npxArgs.push("-y", "-a", "pi");
+
+      // Execute via spawn
+      const child = spawn("npx", npxArgs, {
+        cwd: resolveProjectRoot(ctx.cwd),
+        stdio: "pipe",
+        shell: true,
+      });
+
+      let stderr = "";
+
+      child.stdout?.on("data", () => {});
+
+      child.stderr?.on("data", (data) => {
+        stderr += data.toString();
+      });
+
+      const exitCode = await new Promise<number>((resolve) => {
+        child.on("exit", (code) => {
+          resolve(code ?? 1);
+        });
+        child.on("error", () => {
+          resolve(1);
+        });
+      });
+
+      try {
+        // Always dispose the child process
+        child.kill();
+      } catch {
+        // Ignore errors during cleanup
+      }
+
+      if (exitCode !== 0) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `Failed to install skill: ${stderr || "npx skills add exited with code " + exitCode}`,
+            },
+          ],
+          isError: true,
+          details: { exitCode, stderr },
+        };
+      }
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Installed skill from ${params.source}. Skills are discovered from .fusion/skills/, legacy .pi/skills/, and .agents/skills/. The skill will be available in future agent sessions.`,
+          },
+        ],
+        details: { source: params.source, skill: params.skill ?? "all" },
+      };
+    },
+  });
+
+  // ── /fn command — start the dashboard + engine ───────────────────
+
+  let dashboardProcess: ChildProcess | null = null;
+  let dashboardPort: number | null = null;
+
+  pi.registerCommand("fn", {
+    description: "Start (or stop) the Fusion dashboard and AI engine",
+    handler: async (args, ctx) => {
+      const trimmed = (args ?? "").trim();
+
+      // /fn stop — kill the dashboard
+      if (trimmed === "stop") {
+        if (dashboardProcess) {
+          dashboardProcess.kill("SIGINT");
+          dashboardProcess = null;
+          dashboardPort = null;
+          ctx.ui.setStatus("fn", "");
+          ctx.ui.notify("Fusion dashboard stopped", "info");
+        } else {
+          ctx.ui.notify("Fusion dashboard is not running", "warning");
+        }
+        return;
+      }
+
+      // /fn status
+      if (trimmed === "status") {
+        if (dashboardProcess && !dashboardProcess.killed) {
+          ctx.ui.notify(`Fusion dashboard running on http://localhost:${dashboardPort}`, "info");
+        } else {
+          dashboardProcess = null;
+          dashboardPort = null;
+          ctx.ui.notify("Fusion dashboard is not running", "info");
+        }
+        return;
+      }
+
+      // /fn [port] — start the dashboard
+      if (dashboardProcess && !dashboardProcess.killed) {
+        ctx.ui.notify(
+          `Fusion dashboard already running on http://localhost:${dashboardPort}. Use /fn stop first.`,
+          "warning",
+        );
+        return;
+      }
+
+      const port = trimmed ? parseInt(trimmed, 10) || 4040 : 4040;
+
+      // Find the fn binary: prefer local node_modules, then global
+      const child = spawn("fn", ["dashboard", "--port", String(port)], {
+        cwd: resolveProjectRoot(ctx.cwd),
+        stdio: ["ignore", "pipe", "pipe"],
+        detached: false,
+        env: { ...process.env },
+        shell: true,
+      });
+
+      dashboardProcess = child;
+      dashboardPort = port;
+
+      // Watch for early exit (e.g. fn not found)
+      child.on("error", (err) => {
+        dashboardProcess = null;
+        dashboardPort = null;
+        ctx.ui.setStatus("fn", "");
+        ctx.ui.notify(`Failed to start Fusion dashboard: ${err.message}`, "error");
+      });
+
+      child.on("exit", (code) => {
+        if (dashboardProcess === child) {
+          dashboardProcess = null;
+          dashboardPort = null;
+          ctx.ui.setStatus("fn", "");
+          if (code !== 0 && code !== null) {
+            ctx.ui.notify(`Fusion dashboard exited with code ${code}`, "warning");
+          }
+        }
+      });
+
+      // Wait briefly to see if it crashes immediately
+      await new Promise((r) => setTimeout(r, 500));
+
+      if (dashboardProcess && !dashboardProcess.killed) {
+        const url = `http://localhost:${port}`;
+        ctx.ui.notify(`Fusion dashboard started on ${url} (AI engine active)`, "info");
+        const link = `\x1b]8;;${url}\x1b\\${url}\x1b]8;;\x1b\\`;
+        ctx.ui.setStatus("fn", `Fusion ● ${link}`);
+      }
+    },
+  });
+
+  // ── Cleanup on session end ───────────────────────────────────────
+
+  pi.on("session_shutdown", async () => {
+    if (dashboardProcess) {
+      dashboardProcess.kill("SIGINT");
+      dashboardProcess = null;
+      dashboardPort = null;
+    }
+    storeCache.clear();
+  });
+}

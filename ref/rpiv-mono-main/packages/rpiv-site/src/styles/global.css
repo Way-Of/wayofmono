@@ -1,0 +1,185 @@
+@import "./tokens.css";
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	background: var(--ink);
+	color: var(--text);
+	font-family: var(--font-serif);
+	font-size: var(--type-base);
+	line-height: var(--leading-body);
+	scroll-behavior: smooth;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+body {
+	margin: 0;
+	min-height: 100dvh;
+}
+
+h1,
+h2,
+h3,
+.mono {
+	font-family: var(--font-mono);
+	font-weight: 400;
+	letter-spacing: -0.01em;
+	color: var(--washi);
+}
+
+h1 {
+	font-size: var(--type-h1);
+	line-height: var(--leading-tight);
+	margin: 0;
+}
+h2 {
+	font-size: var(--type-h2);
+	line-height: var(--leading-snug);
+	margin: 0;
+}
+h3 {
+	font-size: var(--type-h3);
+	line-height: var(--leading-snug);
+	margin: 0;
+}
+
+p {
+	margin: 0 0 var(--space-4);
+	max-width: 64ch;
+	color: var(--text);
+}
+
+a {
+	color: var(--sage);
+	text-decoration: none;
+	border-bottom: 1px solid var(--underline);
+	transition:
+		color var(--dur-ink) var(--ease-ink),
+		border-color var(--dur-ink) var(--ease-ink);
+}
+a:hover {
+	color: var(--washi);
+	border-bottom-color: var(--underline-hover);
+}
+
+code,
+pre,
+.chip {
+	font-family: var(--font-mono);
+}
+
+/* SVG <text>/<tspan> presentation attributes don't resolve CSS variables —
+   inline `font-family="var(--font-mono)"` silently falls back to the UA
+   default. CSS rules beat presentation attributes (zero specificity), so
+   this single rule fixes all diagram labels at once. */
+svg text,
+svg tspan {
+	font-family: var(--font-mono);
+}
+
+pre {
+	background: var(--ink-raised);
+	color: var(--washi);
+	padding: var(--space-4) var(--space-5);
+	overflow-x: auto;
+	border-left: 1px solid var(--sage-deep);
+	font-size: var(--type-small);
+	line-height: var(--leading-relaxed);
+	border-radius: var(--radius-sm);
+}
+
+section[id] {
+	scroll-margin-top: var(--space-7);
+}
+section {
+	padding: var(--space-9) 0;
+	position: relative;
+}
+@media (max-width: 720px) {
+	section {
+		padding: var(--space-7) 0;
+	}
+}
+
+.container {
+	margin: 0 auto;
+	padding: 0 var(--space-5);
+	max-width: 1100px;
+}
+@media (min-width: 1200px) {
+	.container {
+		padding: 0 var(--space-6);
+	}
+}
+
+.kicker {
+	font-family: var(--font-mono);
+	font-size: var(--type-tiny);
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--text-distant);
+	margin-bottom: var(--space-4);
+}
+
+.chip {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+	font-size: var(--type-tiny);
+	padding: var(--space-1) var(--space-3);
+	border: 1px solid var(--rule-strong);
+	color: var(--text-quiet);
+	background: transparent;
+	border-radius: var(--radius-sm);
+}
+.chip--sage {
+	color: var(--sage);
+	border-color: var(--sage-deep);
+}
+.chip--ochre {
+	color: var(--ochre);
+	border-color: var(--kuro);
+}
+.chip--muted {
+	color: var(--text-distant);
+	border-color: var(--rule);
+}
+
+.card {
+	padding: var(--space-6) var(--space-5);
+	background: var(--ink-raised);
+	border-top: 1px solid var(--rule);
+	border-left: 1px solid var(--rule);
+	border-right: 1px solid var(--rule);
+	border-bottom: 1px solid var(--rule-strong);
+	position: relative;
+	overflow: hidden;
+}
+
+.card::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background:
+		radial-gradient(1200px 200px at 30% 0%, rgba(168, 137, 108, 0.04), transparent 60%),
+		radial-gradient(800px 200px at 80% 100%, rgba(138, 149, 128, 0.03), transparent 60%);
+	mix-blend-mode: lighten;
+}
+
+section:target h2 {
+	color: var(--ochre);
+}
+
+footer {
+	border-top: 1px solid var(--rule);
+	margin-top: var(--space-9);
+	padding: var(--space-6) 0 var(--space-7);
+	color: var(--text-distant);
+	font-size: var(--type-small);
+}

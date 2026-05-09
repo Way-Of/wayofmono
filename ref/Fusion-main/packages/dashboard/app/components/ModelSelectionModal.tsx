@@ -1,0 +1,276 @@
+import { useCallback, useEffect } from "react";
+import type { ModelPreset } from "@fusion/core";
+import type { ModelInfo } from "../api";
+import { applyPresetToSelection } from "../utils/modelPresets";
+import { CustomModelDropdown } from "./CustomModelDropdown";
+import { Brain, X } from "lucide-react";
+
+interface ModelSelectionModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  models: ModelInfo[];
+  executorValue: string;
+  validatorValue: string;
+  onExecutorChange: (value: string) => void;
+  onValidatorChange: (value: string) => void;
+  modelsLoading: boolean;
+  modelsError: string | null;
+  onRetry: () => void;
+  favoriteProviders?: string[];
+  onToggleFavorite?: (provider: string) => void;
+  favoriteModels?: string[];
+  onToggleModelFavorite?: (modelId: string) => void;
+  /** Available model presets for quick selection. When provided, a preset selector is shown. */
+  presets?: ModelPreset[];
+  /** Currently selected preset ID, or undefined if no preset is active. */
+  selectedPresetId?: string;
+  /** Called when the user selects a preset or reverts to default/custom mode. */
+  onPresetChange?: (presetId: string | undefined) => void;
+}
+
+function getModelBadgeLabel(models: ModelInfo[], value: string): string {
+  if (!value) return "Using default";
+  const slashIdx = value.indexOf("/");
+  if (slashIdx === -1) return value;
+  const provider = value.slice(0, slashIdx);
+  const modelId = value.slice(slashIdx + 1);
+  const matched = models.find((m) => m.provider === provider && m.id === modelId);
+  return matched ? `${matched.provider}/${matched.id}` : `${provider}/${modelId}`;
+}
+
+export function ModelSelectionModal({
+  isOpen,
+  onClose,
+  models,
+  executorValue,
+  validatorValue,
+  onExecutorChange,
+  onValidatorChange,
+  modelsLoading,
+  modelsError,
+  onRetry,
+  favoriteProviders = [],
+  onToggleFavorite,
+  favoriteModels = [],
+  onToggleModelFavorite,
+  presets,
+  selectedPresetId,
+  onPresetChange,
+}: ModelSelectionModalProps) {
+  // Handle Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
+  // Handle overlay click
+  const handleOverlayClick = useCallback(
+    (event: React.MouseEvent) => {
+      if (event.target === event.currentTarget) {
+        onClose();
+      }
+    },
+    [onClose],
+  );
+
+  const showPresets = !!(presets && presets.length > 0 && onPresetChange);
+  const selectedPreset = presets?.find((p) => p.id === selectedPresetId);
+
+  const handlePresetSelect = useCallback(
+    (value: string) => {
+      if (!onPresetChange) return;
+      if (value === "default") {
+        onPresetChange(undefined);
+        onExecutorChange("");
+        onValidatorChange("");
+        return;
+      }
+      if (value === "custom") {
+        onPresetChange(undefined);
+        return;
+      }
+      const preset = presets?.find((p) => p.id === value);
+      if (preset) {
+        const selection = applyPresetToSelection(preset);
+        onExecutorChange(selection.executorValue);
+        onValidatorChange(selection.validatorValue);
+        onPresetChange(preset.id);
+      }
+    },
+    [onPresetChange, presets, onExecutorChange, onValidatorChange],
+  );
+
+  const handleExecutorChange = useCallback(
+    (value: string) => {
+      // Manual model selection clears preset mode
+      if (onPresetChange && selectedPresetId) {
+        onPresetChange(undefined);
+      }
+      onExecutorChange(value);
+    },
+    [onPresetChange, selectedPresetId, onExecutorChange],
+  );
+
+  const handleValidatorChange = useCallback(
+    (value: string) => {
+      // Manual model selection clears preset mode
+      if (onPresetChange && selectedPresetId) {
+        onPresetChange(undefined);
+      }
+      onValidatorChange(value);
+    },
+    [onPresetChange, selectedPresetId, onValidatorChange],
+  );
+
+  if (!isOpen) return null;
+
+  const hasExecutorOverride = Boolean(executorValue);
+  const hasValidatorOverride = Boolean(validatorValue);
+
+  return (
+    <div className="modal-overlay open" onClick={handleOverlayClick} role="dialog" aria-modal="true" data-testid="model-selection-modal">
+      <div className="modal modal-lg">
+        <div className="modal-header">
+          <div className="detail-title-row">
+            <Brain size={20} style={{ color: "var(--todo)" }} />
+            <h3>Select Models</h3>
+          </div>
+          <button className="modal-close" onClick={onClose} aria-label="Close" data-testid="model-selection-close">
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="planning-modal-body">
+          {modelsLoading ? (
+            <div className="planning-loading">
+              <div className="detail-section">
+                <p className="text-muted">Loading models…</p>
+              </div>
+            </div>
+          ) : modelsError ? (
+            <div className="detail-section">
+              <div className="form-error planning-error">
+                <span>{modelsError}</span>
+              </div>
+              <button type="button" className="btn btn-sm" onClick={onRetry} data-testid="model-selection-retry">
+                Retry
+              </button>
+            </div>
+          ) : models.length === 0 ? (
+            <div className="detail-section">
+              <div className="inline-create-model-empty">
+                No models available. Configure authentication in Settings to enable model selection.
+              </div>
+            </div>
+          ) : (
+            <div className="planning-summary">
+              <div className="planning-view-scroll planning-summary-scroll">
+                <div className="planning-summary-header">
+                  <p className="text-muted">Choose models for this task. If not selected, default models will be used.</p>
+                </div>
+
+                <div className="planning-summary-form">
+                  {showPresets && (
+                    <div className="task-detail-section">
+                      <div className="inline-create-model-row">
+                        <label htmlFor="model-selection-preset" className="inline-create-model-label">
+                          Preset
+                        </label>
+                        <span
+                          className={`model-badge ${selectedPresetId ? "model-badge-custom" : "model-badge-default"}`}
+                          data-testid="preset-badge"
+                        >
+                          {selectedPreset ? selectedPreset.name : "Use default"}
+                        </span>
+                        <select
+                          id="model-selection-preset"
+                          value={selectedPresetId || "default"}
+                          onChange={(e) => handlePresetSelect(e.target.value)}
+                          data-testid="model-selection-preset"
+                        >
+                          <option value="default">Use default</option>
+                          {presets!.length > 0 && <option disabled>──────────</option>}
+                          {presets!.map((preset) => (
+                            <option key={preset.id} value={preset.id}>{preset.name}</option>
+                          ))}
+                          <option value="custom">Custom</option>
+                        </select>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="task-detail-section">
+                    <div className="inline-create-model-row">
+                      <label htmlFor="model-selection-executor" className="inline-create-model-label">
+                        Executor Model
+                      </label>
+                      <span
+                        className={`model-badge ${hasExecutorOverride ? "model-badge-custom" : "model-badge-default"}`}
+                        data-testid="executor-badge"
+                      >
+                        {getModelBadgeLabel(models, executorValue)}
+                      </span>
+                      <CustomModelDropdown
+                        id="model-selection-executor"
+                        label="Executor Model"
+                        value={executorValue}
+                        onChange={handleExecutorChange}
+                        models={models}
+                        placeholder="Select executor model…"
+                        favoriteProviders={favoriteProviders}
+                        onToggleFavorite={onToggleFavorite}
+                        favoriteModels={favoriteModels}
+                        onToggleModelFavorite={onToggleModelFavorite}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="task-detail-section">
+                    <div className="inline-create-model-row">
+                      <label htmlFor="model-selection-validator" className="inline-create-model-label">
+                        Reviewer Model
+                      </label>
+                      <span
+                        className={`model-badge ${hasValidatorOverride ? "model-badge-custom" : "model-badge-default"}`}
+                        data-testid="validator-badge"
+                      >
+                        {getModelBadgeLabel(models, validatorValue)}
+                      </span>
+                      <CustomModelDropdown
+                        id="model-selection-validator"
+                        label="Reviewer Model"
+                        value={validatorValue}
+                        onChange={handleValidatorChange}
+                        models={models}
+                        placeholder="Select reviewer model…"
+                        favoriteProviders={favoriteProviders}
+                        onToggleFavorite={onToggleFavorite}
+                        favoriteModels={favoriteModels}
+                        onToggleModelFavorite={onToggleModelFavorite}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="planning-actions planning-summary-actions">
+                <button className="btn" onClick={onClose} data-testid="model-selection-done">
+                  Done
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

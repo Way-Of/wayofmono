@@ -1,0 +1,8 @@
+diff --git a/example.txt b/example.txt
+index 1111111..2222222 100644
+--- a/example.txt
++++ b/example.txt
+@@ -1,2 +1,2 @@
+-Old line [an: delete note $x_n^2 \to 0$ and *tone* and [docs](https://example.com/docs)]
++New line [an: add note $\epsilon_n=\frac{1}{n}$ and `npm test` and *focus*]
+ context line that should stay neutral

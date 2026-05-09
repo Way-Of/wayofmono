@@ -1,0 +1,310 @@
+/* === Executor Status Bar === */
+
+/**
+ * Footer status bar that displays real-time executor statistics.
+ * Fixed at bottom of viewport, only visible in project view.
+ */
+.executor-status-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-lg);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+  height: 36px;
+  box-sizing: border-box;
+}
+
+/* State variants */
+.executor-status-bar--error {
+  background: var(--executor-status-error-bg);
+}
+
+.executor-status-bar--loading {
+  background: var(--surface);
+}
+
+/* Individual stat segment */
+.executor-status-bar__segment {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  white-space: nowrap;
+}
+
+.executor-status-bar__segment--time {
+  color: var(--text-dim);
+}
+
+.executor-status-bar__segment--stuck {
+  color: var(--color-error);
+}
+
+/* Colored dot indicator */
+/* Colored dot indicator */
+.executor-status-bar__indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  /* Force GPU compositing to keep indicator in sync with parent during scroll */
+  transform: translateZ(0);
+}
+
+.executor-status-bar__indicator--running {
+  background: var(--in-progress);
+}
+
+.executor-status-bar__indicator--running.executor-status-bar__indicator--active {
+  background: var(--in-progress);
+  animation: executor-pulse 1.5s ease-in-out infinite;
+}
+
+.executor-status-bar__indicator--blocked {
+  background: var(--triage);
+}
+
+.executor-status-bar__indicator--blocked.executor-status-bar__indicator--active {
+  background: var(--triage);
+}
+
+.executor-status-bar__indicator--stuck {
+  background: var(--color-error);
+}
+
+.executor-status-bar__indicator--stuck.executor-status-bar__indicator--active {
+  animation: executor-pulse 1s ease-in-out infinite;
+}
+
+.executor-status-bar__indicator--queued {
+  background: var(--todo);
+}
+
+.executor-status-bar__indicator--review {
+  background: var(--in-review);
+}
+
+/* Numeric count display */
+.executor-status-bar__count {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+
+.executor-status-bar__count--warning {
+  color: var(--triage);
+}
+
+.executor-status-bar__count--error {
+  color: var(--color-error);
+}
+
+/* Label text */
+.executor-status-bar__label {
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+/* Max concurrent display */
+.executor-status-bar__max {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--text-dim);
+  line-height: 1;
+}
+
+/* Separator between count and max */
+.executor-status-bar__separator {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--text-dim);
+  margin: 0 2px;
+  line-height: 1;
+}
+
+/* Divider between segments */
+.executor-status-bar__divider {
+  width: 1px;
+  height: 16px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* Project directory toggle/link */
+.executor-status-bar__segment--project-directory {
+  min-width: 0;
+  flex-shrink: 1;
+}
+
+.executor-status-bar__folder-toggle {
+  --executor-status-touch-size: calc(var(--space-lg) * 2 + var(--space-xs));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
+  transform: translate(-2px, -1px);
+  transition: color var(--transition-fast);
+}
+
+/* Mobile keeps a tappable 40-ish px target. Desktop collapses to the icon
+   so it aligns on the same baseline as the surrounding status-bar text. */
+@media (pointer: coarse), (max-width: 768px) {
+  .executor-status-bar__folder-toggle {
+    min-width: var(--executor-status-touch-size);
+    min-height: var(--executor-status-touch-size);
+  }
+}
+
+.executor-status-bar__folder-toggle:hover {
+  color: var(--text);
+}
+
+.executor-status-bar__folder-toggle:focus-visible,
+.executor-status-bar__project-path:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-strong);
+  border-radius: var(--radius-sm);
+}
+
+.executor-status-bar__folder-toggle--active {
+  color: var(--todo);
+}
+
+.executor-status-bar__project-path {
+  min-width: 0;
+  max-width: min(44ch, 34vw);
+  min-height: var(--executor-status-touch-size, calc(var(--space-lg) * 2 + var(--space-xs)));
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: inherit;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--text-muted) 70%, transparent);
+  text-underline-offset: calc(var(--space-xs) / 2);
+  padding: 0 var(--space-xs);
+}
+
+.executor-status-bar__project-path:hover {
+  color: var(--todo);
+  text-decoration-color: var(--todo);
+}
+
+/* Spacer to push right-aligned elements */
+.executor-status-bar__spacer {
+  flex: 1;
+}
+
+/* Time display */
+.executor-status-bar__time {
+  color: var(--text-dim);
+}
+
+.executor-status-bar__icon {
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+/* Executor state badge */
+.executor-status-bar__state {
+  font-weight: 600;
+}
+
+/* Error message */
+.executor-status-bar__error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-error);
+}
+
+/* Loading message */
+.executor-status-bar__loading-text {
+  color: var(--text-muted);
+}
+
+/* Pulsing animation for active indicators */
+@keyframes executor-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.2);
+  }
+}
+
+/* Responsive: collapse on small screens */
+@media (max-width: 768px) {
+  /* Update the footer height token for mobile - must be on the wrapper, not on :root */
+  .project-content--with-footer {
+    --executor-footer-height: calc(var(--space-lg) * 2 + var(--space-xs));
+  }
+
+  .executor-status-bar {
+    padding: var(--space-xs) var(--space-md);
+    gap: 4px;
+    font-size: 11px;
+    height: calc(var(--space-lg) * 2 + var(--space-xs));
+    overflow: hidden;
+    bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px) + var(--standalone-bottom-gap));
+  }
+
+  .executor-status-bar__segment {
+    min-width: 0;
+    gap: 4px;
+    overflow: hidden;
+  }
+
+  .executor-status-bar__label {
+    display: none;
+  }
+
+  .executor-status-bar__divider {
+    height: 12px;
+  }
+
+  .executor-status-bar__project-path {
+    max-width: min(26ch, 30vw);
+  }
+
+  .background-tasks-indicator {
+    flex-shrink: 0;
+  }
+}
+
+/* Light theme support */
+[data-theme="light"] .executor-status-bar {
+  background: var(--surface);
+  border-top-color: var(--border);
+}
+
+[data-theme="light"] .executor-status-bar__count {
+  color: var(--text);
+}
+
+[data-theme="light"] .executor-status-bar__state {
+  color: var(--color-success);
+}
+

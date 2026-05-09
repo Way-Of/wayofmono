@@ -1,0 +1,41 @@
+{
+  "name": "@fusion/mobile",
+  "version": "0.23.0",
+  "license": "MIT",
+  "description": "Fusion mobile: Capacitor wrapper around the Fusion dashboard for iOS and Android.",
+  "homepage": "https://github.com/Runfusion/Fusion#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Runfusion/Fusion",
+    "directory": "packages/mobile"
+  },
+  "bugs": {
+    "url": "https://github.com/Runfusion/Fusion/issues"
+  },
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "cap": "cap",
+    "dev:ios": "tsx scripts/live-reload.ts --platform ios",
+    "dev:android": "tsx scripts/live-reload.ts --platform android",
+    "build:mobile": "pnpm --filter @fusion/dashboard build && npx cap sync",
+    "test": "vitest run --silent=passed-only --reporter=dot",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@capacitor/app": "^7.1.2",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/preferences": "^7.0.0",
+    "@capacitor/push-notifications": "^7.0.0",
+    "@capacitor/share": "^7.0.4"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/cli": "^7.0.0",
+    "@capacitor/ios": "^7.0.0",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.1.0"
+  }
+}

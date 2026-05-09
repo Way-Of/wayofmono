@@ -1,0 +1,1222 @@
+import {
+  getCurrentRepo,
+  resolveDependencyOrder,
+  sortTasksByPriorityThenAgeAndId,
+  type TaskStore,
+  type Task,
+  type MissionStore,
+  type MissionFeature,
+  type PrInfo,
+} from "@fusion/core";
+import { existsSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import type { AgentSemaphore } from "./concurrency.js";
+import { planTaskWorktreePath } from "./worktree-names.js";
+import { schedulerLog } from "./logger.js";
+import { type PrMonitor, type PrComment } from "./pr-monitor.js";
+import { reconcileMissionFeatureState } from "./mission-feature-sync.js";
+import { evaluateSpecStaleness, getPromptPath } from "./spec-staleness.js";
+import { resolveEffectiveNode } from "./effective-node.js";
+import { applyUnavailableNodePolicy } from "./node-routing-policy.js";
+import type { NodeDispatchValidationResult } from "./node-dispatch-validation.js";
+
+/**
+ * Check whether two sets of file scope paths overlap.
+ * Paths overlap if they are identical, or if one is a directory prefix of the other.
+ * Glob patterns (ending with `/*`) are treated as directory prefixes.
+ *
+ * Exported for direct unit testing; used internally by {@link Scheduler}.
+ */
+export function pathsOverlap(a: string[], b: string[]): boolean {
+  for (const pa of a) {
+    const prefixA = pa.endsWith("/*") ? pa.slice(0, -1) : null;
+    for (const pb of b) {
+      const prefixB = pb.endsWith("/*") ? pb.slice(0, -1) : null;
+
+      // Exact match (ignoring glob suffix)
+      const cleanA = prefixA ? pa.slice(0, -2) : pa;
+      const cleanB = prefixB ? pb.slice(0, -2) : pb;
+      if (cleanA === cleanB) return true;
+
+      // Check prefix overlap
+      if (prefixA && pb.startsWith(prefixA)) return true;
+      if (prefixB && pa.startsWith(prefixB)) return true;
+      if (prefixA && prefixB) {
+        if (prefixA.startsWith(prefixB) || prefixB.startsWith(prefixA))
+          return true;
+      }
+
+      // Exact file path match
+      if (pa === pb) return true;
+    }
+  }
+  return false;
+}
+
+function normalizeOverlapPath(path: string): string {
+  return path.trim().replaceAll("\\", "/").replace(/^\.\//, "");
+}
+
+function isIgnoredOverlapPath(path: string, ignorePath: string): boolean {
+  const normalizedPath = normalizeOverlapPath(path);
+  const normalizedIgnore = normalizeOverlapPath(ignorePath);
+
+  if (normalizedIgnore.endsWith("/*")) {
+    const directory = normalizedIgnore.slice(0, -2);
+    return normalizedPath === directory || normalizedPath.startsWith(`${directory}/`);
+  }
+
+  if (normalizedIgnore.endsWith("/")) {
+    const directory = normalizedIgnore.slice(0, -1);
+    return normalizedPath === directory || normalizedPath.startsWith(normalizedIgnore);
+  }
+
+  return normalizedPath === normalizedIgnore || normalizedPath.startsWith(`${normalizedIgnore}/`);
+}
+
+/**
+ * Remove scope entries that match configured overlap-ignore paths.
+ * Used by scheduler overlap gating so shared safe paths (docs/generated/etc.)
+ * can bypass serialization while keeping overlap protection enabled globally.
+ */
+export function filterPathsByIgnoreList(paths: string[], ignorePaths?: string[]): string[] {
+  if (!ignorePaths || ignorePaths.length === 0) {
+    return paths;
+  }
+
+  const normalizedIgnorePaths = ignorePaths.map(normalizeOverlapPath).filter(Boolean);
+  if (normalizedIgnorePaths.length === 0) {
+    return paths;
+  }
+
+  return paths.filter((path) => !normalizedIgnorePaths.some((ignore) => isIgnoredOverlapPath(path, ignore)));
+}
+
+export interface SchedulerOptions {
+  /** Max concurrent in-progress tasks. Default: 2 */
+  maxConcurrent?: number;
+  /** Max worktrees for active (in-progress) tasks. Default: 4 */
+  maxWorktrees?: number;
+  /** Milliseconds between scheduling polls. Default: 15000 */
+  pollIntervalMs?: number;
+  /**
+   * Shared concurrency semaphore. When provided, the scheduler uses
+   * `semaphore.availableCount` to avoid scheduling more tasks than the
+   * global concurrency limit allows (accounting for triage and merge
+   * agents that also hold slots).
+   */
+  semaphore?: AgentSemaphore;
+  /** Called when scheduler starts a task */
+  onSchedule?: (task: Task) => void;
+  /** Called when a task is blocked by deps */
+  onBlocked?: (task: Task, blockedBy: string[]) => void;
+  /** Called when a mission-linked task fails and is queued for retry handling. */
+  onTaskFailed?: (taskId: string) => void | Promise<void>;
+  /** Optional PR monitor for tracking in-review PRs */
+  prMonitor?: PrMonitor;
+  /** Optional MissionStore for slice activation and auto-advance */
+  missionStore?: MissionStore;
+  /** Optional MissionAutopilot for autonomous mission progression */
+  missionAutopilot?: import("./mission-autopilot.js").MissionAutopilot;
+  /**
+   * Called when a task with a closed/merged PR moves out of in-review
+   * and the PrMonitor has buffered actionable comments.
+   * The callback receives the task ID, PR info, and the drained comments.
+   * If no comments were buffered, this callback is NOT invoked.
+   */
+  onClosedPrFeedback?: (
+    taskId: string,
+    prInfo: PrInfo,
+    comments: PrComment[]
+  ) => void | Promise<void>;
+  /** Optional MissionExecutionLoop for validation cycle handling */
+  missionExecutionLoop?: import("./mission-execution-loop.js").MissionExecutionLoop;
+  /** Optional NodeHealthMonitor for node health checks during dispatch.
+   *  Reserved for FN-2722-C (unavailable node policy enforcement).
+   *  Accepted here so the option can be wired at construction time. */
+  nodeHealthMonitor?: import("./node-health-monitor.js").NodeHealthMonitor;
+  /** Optional dispatch validator used to block dispatch on configuration issues before health policy checks. */
+  validateNodeDispatch?: (nodeId: string) => Promise<NodeDispatchValidationResult>;
+}
+
+/**
+ * Scheduler watches the "todo" column and moves tasks to "in-progress"
+ * when their dependencies are satisfied and concurrency allows.
+ *
+ * It respects:
+ * - Dependency ordering (tasks depending on others wait)
+ * - Concurrency limits (max N tasks in-progress at once)
+ *
+ * **Dynamic settings reload:** On every `schedule()` call the scheduler
+ * reads `maxConcurrent`, `maxWorktrees`, and `pollIntervalMs` from the
+ * persisted store settings (`store.getSettings()`).  This means changes
+ * made via the dashboard Settings modal (`PUT /settings`) take effect on
+ * the very next poll cycle without an engine restart.  The poll interval
+ * itself is also refreshed: if `pollIntervalMs` differs from the active
+ * timer, the `setInterval` is transparently restarted.
+ */
+export class Scheduler {
+  private running = false;
+  private scheduling = false;
+  private wasWorktreeLimited = false;
+  private wasGlobalPaused = false;
+  private wasEnginePaused = false;
+  private pollInterval: ReturnType<typeof setInterval> | null = null;
+  /** The interval (ms) of the currently active `setInterval` timer. */
+  private activePollMs: number | null = null;
+  /** Tracks which task IDs are currently paused, to detect unpause transitions. */
+  private pausedTaskIds = new Set<string>();
+  /** Tracks mission-linked tasks observed with status=failed before moveTask clears status/error. */
+  private failedTaskIds = new Set<string>();
+  /** Tracks tasks blocked by unavailable-node policy to deduplicate block log entries. */
+  private wasNodeBlocked = new Set<string>();
+  /** Tracks tasks blocked by missing project-node mapping to deduplicate block log entries. */
+  private wasNodeDispatchValidationBlocked = new Set<string>();
+
+  /**
+   * Async listener guard convention:
+   * - Any async mission helper invoked from event listeners is wrapped in internal try/catch
+   *   (`handleMissionTaskMove` / `handleMissionTaskCompletion`).
+   * - Fire-and-forget Promise chains in listeners terminate with `.catch(...)`.
+   * Keep this invariant when adding new async EventEmitter callbacks.
+   */
+  constructor(
+    private store: TaskStore,
+    private options: SchedulerOptions = {},
+  ) {
+    /**
+     * Event-driven scheduling: when a task is created, trigger a scheduling
+     * pass immediately instead of waiting for the next poll interval.
+     * This reduces latency from up to 15 seconds to near-instant.
+     */
+    this.store.on("task:created", () => {
+      schedulerLog.log("Task created — triggering scheduling");
+      this.schedule();
+    });
+
+    /**
+     * Immediate unpause resume: when `globalPause` transitions from `true`
+     * to `false`, trigger a scheduling pass right away instead of waiting
+     * for the next poll interval (up to 15 s). Only reacts to true→false
+     * transitions — no-ops on false→false and true→true.
+     *
+     * The re-entrance guard (`this.scheduling`) inside `schedule()` safely
+     * drops the call if a poll-based pass is already in flight.
+     */
+    this.store.on("settings:updated", ({ settings, previous }) => {
+      if (previous.globalPause && !settings.globalPause && this.running) {
+        this.schedule();
+      }
+    });
+
+    /**
+     * Immediate soft-unpause resume: when `enginePaused` transitions from
+     * `true` to `false`, trigger a scheduling pass right away instead of
+     * waiting for the next poll interval. Same pattern as the globalPause
+     * unpause handler above.
+     */
+    this.store.on("settings:updated", ({ settings, previous }) => {
+      if (previous.enginePaused && !settings.enginePaused && this.running) {
+        this.schedule();
+      }
+    });
+
+    /**
+     * PR Monitoring: Start monitoring when a task moves to "in-review",
+     * stop monitoring when it moves out.
+     * 
+     * Also handles mission auto-advance: when a linked task completes,
+     * update feature status and potentially activate next pending slice.
+     */
+    this.store.on("task:moved", ({ task, from, to }) => {
+      // PR Monitoring
+      if (this.options.prMonitor) {
+        if (to === "in-review" && task.prInfo) {
+          // Start monitoring existing PR
+          const repo = getCurrentRepo(this.store.getRootDir());
+          if (repo) {
+            this.options.prMonitor.startMonitoring(task.id, repo.owner, repo.repo, task.prInfo);
+          }
+        } else if (from === "in-review" && to !== "in-review") {
+          // If task has a closed/merged PR, drain buffered comments before
+          // stopping monitoring (drainComments needs the tracked PR to still exist)
+          if (task.prInfo && (task.prInfo.status === "closed" || task.prInfo.status === "merged")) {
+            const comments = this.options.prMonitor.drainComments(task.id);
+            if (comments.length > 0 && this.options.onClosedPrFeedback) {
+              void Promise.resolve(this.options.onClosedPrFeedback(task.id, task.prInfo, comments))
+                .then(() => {
+                  schedulerLog.log(`Invoked onClosedPrFeedback for ${task.id} with ${comments.length} comment(s)`);
+                })
+                .catch((err) => {
+                  schedulerLog.error(`Error in onClosedPrFeedback for ${task.id}:`, err);
+                });
+            }
+          }
+
+          // Task moved out of in-review, stop monitoring
+          this.options.prMonitor.stopMonitoring(task.id);
+        }
+      }
+
+      // Mission progress tracking. Resolve by linked feature instead of only
+      // task.sliceId so older one-way-linked mission tasks are kept in sync too.
+      if (this.options.missionStore) {
+        void this.handleMissionTaskMove(task.id, to);
+      }
+
+      // Mission failure tracking: status/error are cleared during moveTask(in-progress → todo),
+      // so we pair this with failedTaskIds captured from task:updated events.
+      if (task.sliceId && to === "todo" && this.options.onTaskFailed) {
+        if (task.status === "failed" || this.failedTaskIds.has(task.id)) {
+          this.failedTaskIds.delete(task.id);
+          void Promise.resolve(this.options.onTaskFailed(task.id)).catch((err) => {
+            schedulerLog.error(`Error in onTaskFailed for ${task.id}:`, err);
+          });
+        }
+      }
+
+      // Event-driven scheduling: when a task moves to "done" (completion) or "todo" (retry/manual move),
+      // trigger scheduling immediately so waiting tasks can start without waiting
+      // for the next poll interval (up to 15 seconds).
+      if (to === "done" || to === "todo") {
+        schedulerLog.log(`Task moved to ${to} — triggering scheduling`);
+        this.schedule();
+      }
+    });
+
+    /**
+     * PR Monitoring: Start monitoring when PR is linked to an in-review task.
+     * Also detects task-level unpause transitions and triggers immediate scheduling.
+     */
+    this.store.on("task:updated", (task) => {
+      // Track mission failure signals before moveTask clears failure metadata.
+      if (task.sliceId && task.column === "in-progress" && task.status === "failed") {
+        this.failedTaskIds.add(task.id);
+      } else if (task.status !== "failed") {
+        this.failedTaskIds.delete(task.id);
+      }
+
+      // Track pause state transitions for event-driven scheduling on unpause.
+      // When a previously-paused task is unpaused in a schedulable column,
+      // trigger a scheduling pass immediately instead of waiting for the next
+      // poll interval (up to 15 seconds).
+      if (task.paused) {
+        this.pausedTaskIds.add(task.id);
+      } else if (this.pausedTaskIds.has(task.id)) {
+        // Task was paused, now unpaused — trigger scheduling
+        this.pausedTaskIds.delete(task.id);
+        if (this.running && (task.column === "todo" || task.column === "triage")) {
+          schedulerLog.log(`Task ${task.id} unpaused — triggering scheduling`);
+          this.schedule();
+        }
+      }
+
+      if (!this.options.prMonitor) return;
+      if (task.column !== "in-review") return;
+      if (!task.prInfo) return;
+
+      // Check if we're already monitoring this task
+      const tracked = this.options.prMonitor.getTrackedPrs();
+      if (tracked.has(task.id)) {
+        this.options.prMonitor.updatePrInfo(task.id, task.prInfo);
+        return;
+      }
+
+      const repo = getCurrentRepo(this.store.getRootDir());
+      if (repo) {
+        this.options.prMonitor.startMonitoring(task.id, repo.owner, repo.repo, task.prInfo);
+      }
+    });
+  }
+
+  /**
+   * Validate that a task's filesystem state is intact.
+   * Checks that the task directory exists and PROMPT.md is present and non-empty.
+   * 
+   * @param id - The task ID to validate
+   * @returns Object with `valid: true` if checks pass, or `valid: false` with a `reason` string if they fail
+   */
+  private async validateTaskFilesystem(id: string): Promise<{ valid: boolean; reason?: string }> {
+    const taskDir = join(this.store.getTasksDir(), id);
+    
+    // Check if task directory exists
+    if (!existsSync(taskDir)) {
+      return { valid: false, reason: "missing directory" };
+    }
+    
+    // Check if PROMPT.md exists and has non-empty content
+    const promptPath = join(taskDir, "PROMPT.md");
+    if (!existsSync(promptPath)) {
+      return { valid: false, reason: "missing or empty PROMPT.md" };
+    }
+    
+    try {
+      const content = await readFile(promptPath, "utf-8");
+      if (!content || content.trim().length === 0) {
+        return { valid: false, reason: "missing or empty PROMPT.md" };
+      }
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      schedulerLog.warn(`PROMPT.md read failed for task dispatch validation (${id}): ${errorMessage}`);
+      return { valid: false, reason: "missing or empty PROMPT.md" };
+    }
+    
+    return { valid: true };
+  }
+
+  start(): void {
+    if (this.running) return;
+    this.running = true;
+
+    const interval = this.options.pollIntervalMs ?? 15_000;
+    this.activePollMs = interval;
+    this.pollInterval = setInterval(() => this.schedule(), interval);
+    this.schedule();
+    schedulerLog.log(`Started (poll interval: ${interval}ms)`);
+
+    // Wire up MissionAutopilot: set scheduler reference for lazy injection
+    // and start watching all missions with autopilotEnabled: true
+    if (this.options.missionAutopilot && this.options.missionStore) {
+      this.options.missionAutopilot.setScheduler(this);
+      const missions = this.options.missionStore.listMissions();
+      for (const mission of missions) {
+        if (mission.autopilotEnabled && mission.status !== "complete" && mission.status !== "archived") {
+          this.options.missionAutopilot.watchMission(mission.id);
+        }
+      }
+      this.options.missionAutopilot.start();
+    }
+  }
+
+  stop(): void {
+    this.running = false;
+    if (this.pollInterval) {
+      clearInterval(this.pollInterval);
+      this.pollInterval = null;
+      this.activePollMs = null;
+    }
+    // Stop all PR monitoring when scheduler shuts down
+    if (this.options.prMonitor) {
+      this.options.prMonitor.stopAll();
+    }
+    // Stop MissionAutopilot when scheduler shuts down
+    if (this.options.missionAutopilot) {
+      this.options.missionAutopilot.stop();
+    }
+    this.failedTaskIds.clear();
+    this.wasNodeBlocked.clear();
+    this.wasNodeDispatchValidationBlocked.clear();
+    schedulerLog.log("Stopped");
+  }
+
+  /**
+   * If `newIntervalMs` differs from the currently active timer, restart
+   * the `setInterval` so the new cadence takes effect immediately.
+   */
+  private refreshPollInterval(newIntervalMs?: number): void {
+    if (!this.running || !newIntervalMs) return;
+    if (newIntervalMs === this.activePollMs) return;
+
+    if (this.pollInterval) {
+      clearInterval(this.pollInterval);
+    }
+    this.activePollMs = newIntervalMs;
+    this.pollInterval = setInterval(() => this.schedule(), newIntervalMs);
+    schedulerLog.log(`Poll interval updated to ${newIntervalMs}ms`);
+  }
+
+  getMissionAutopilot(): import("./mission-autopilot.js").MissionAutopilot | undefined {
+    return this.options.missionAutopilot;
+  }
+
+  configurePrMonitoring(options: {
+    prMonitor?: PrMonitor;
+    onClosedPrFeedback?: SchedulerOptions["onClosedPrFeedback"];
+  }): void {
+    this.options.prMonitor = options.prMonitor;
+    this.options.onClosedPrFeedback = options.onClosedPrFeedback;
+
+    if (!options.prMonitor) {
+      return;
+    }
+
+    void this.store.listTasks({ slim: true, includeArchived: false })
+      .then((tasks) => {
+        const repo = getCurrentRepo(this.store.getRootDir());
+        if (!repo) return;
+
+        for (const task of tasks) {
+          if (task.column !== "in-review" || !task.prInfo) continue;
+          options.prMonitor!.startMonitoring(task.id, repo.owner, repo.repo, task.prInfo);
+        }
+      })
+      .catch((err) => {
+        schedulerLog.error("Failed to hydrate PR monitoring from existing in-review tasks:", err);
+      });
+  }
+
+  /**
+   * Resolve the base branch for a task being started.
+   *
+   * Checks explicit dependencies and implicit `blockedBy` for an in-review
+   * task with an unmerged branch. Returns the git branch name to start from,
+   * or `null` if the task should start from HEAD (default).
+   *
+   * Priority: explicit dep in-review (first with worktree) > blockedBy in-review.
+   */
+  private resolveBaseBranch(task: Task, allTasks: Task[]): string | null {
+    // Check explicit dependencies for in-review tasks with worktrees
+    for (const depId of task.dependencies) {
+      const dep = allTasks.find((t) => t.id === depId);
+      if (dep && dep.column === "in-review" && dep.worktree) {
+        return dep.branch || `fusion/${dep.id.toLowerCase()}`;
+      }
+    }
+
+    // Check implicit blockedBy for in-review task with worktree
+    if (task.blockedBy) {
+      const blocker = allTasks.find((t) => t.id === task.blockedBy);
+      if (blocker && blocker.column === "in-review" && blocker.worktree) {
+        return blocker.branch || `fusion/${blocker.id.toLowerCase()}`;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Delegates to the module-level {@link pathsOverlap} for testability.
+   */
+  private pathsOverlap(a: string[], b: string[]): boolean {
+    return pathsOverlap(a, b);
+  }
+
+  /**
+   * Reserve the worktree path a task will use before it enters in-progress.
+   * This prevents tasks from appearing active without an assigned worktree.
+   */
+  private planWorktreePath(
+    task: Task,
+    naming: string | undefined,
+    reservedNames: Set<string>,
+  ): string {
+    return planTaskWorktreePath(task, this.store.getRootDir(), naming, reservedNames);
+  }
+
+  /**
+   * Run one scheduling pass.
+   *
+   * Uses a re-entrance guard (`this.scheduling`) to prevent overlapping
+   * passes. Because `schedule()` is async but triggered by `setInterval`,
+   * a slow pass could still be running when the next interval fires.
+   * Without the guard, two passes would snapshot the same task list and
+   * both could start tasks whose file scopes overlap — defeating the
+   * overlap detection that relies on `inProgressScopes` being accurate.
+   */
+  async schedule(): Promise<void> {
+    if (!this.running) return;
+    if (this.scheduling) return;
+    this.scheduling = true;
+
+    try {
+      const tasks = await this.store.listTasks({ slim: true, includeArchived: false });
+      const settings = await this.store.getSettings();
+      const maxConcurrent = settings.maxConcurrent ?? this.options.maxConcurrent ?? 2;
+      const maxWorktrees = settings.maxWorktrees ?? this.options.maxWorktrees ?? 4;
+
+      // Refresh the poll interval if the persisted setting has changed
+      this.refreshPollInterval(settings.pollIntervalMs);
+
+      // Global pause (hard stop): halt all scheduling activity
+      if (settings.globalPause) {
+        if (!this.wasGlobalPaused) {
+          schedulerLog.warn("⚠ Global pause active — scheduling halted. To resume: set globalPause to false in settings.");
+          this.wasGlobalPaused = true;
+        }
+        return;
+      }
+      if (this.wasGlobalPaused) {
+        schedulerLog.log("Global pause cleared — scheduling resumed");
+      }
+      this.wasGlobalPaused = false;
+
+      // Engine paused (soft pause): halt new work dispatch, but let agents finish
+      if (settings.enginePaused) {
+        if (!this.wasEnginePaused) {
+          schedulerLog.warn("⚠ Engine paused — scheduling halted (in-flight agents continue). To resume: set enginePaused to false.");
+          this.wasEnginePaused = true;
+        }
+        return;
+      }
+      if (this.wasEnginePaused) {
+        schedulerLog.log("Engine pause cleared — scheduling resumed");
+      }
+      this.wasEnginePaused = false;
+
+      // Count only in-progress tasks toward the worktree limit.
+      // In-review tasks with worktrees are idle (waiting to merge) and
+      // should not block new tasks from starting.
+      const activeWorktrees = tasks.filter(
+        (t) => t.column === "in-progress",
+      ).length;
+
+      if (activeWorktrees >= maxWorktrees) {
+        if (!this.wasWorktreeLimited) {
+          schedulerLog.log(`Worktree limit reached (${activeWorktrees}/${maxWorktrees})`);
+          this.wasWorktreeLimited = true;
+        }
+        return;
+      }
+
+      this.wasWorktreeLimited = false;
+
+      const inProgress = tasks.filter((t) => t.column === "in-progress");
+
+      // Execution tasks occupy concurrency slots governed by maxConcurrent.
+      // Triage/specification tasks have their own limit (maxTriageConcurrent)
+      // and do not count against this slot.
+      const agentSlots = inProgress.length;
+
+      // When a semaphore is provided, factor in its available slots so we
+      // don't schedule more tasks than the global limit allows.
+      const semaphoreAvailable = this.options.semaphore
+        ? this.options.semaphore.availableCount
+        : Infinity;
+
+      const available = Math.min(
+        maxConcurrent - agentSlots,
+        maxWorktrees - activeWorktrees,
+        semaphoreAvailable,
+      );
+      if (available <= 0) return;
+
+      const now = Date.now();
+      let todo = tasks.filter((t) => {
+        if (t.column !== "todo" || t.paused) return false;
+        // Skip tasks with a recovery backoff that hasn't elapsed yet
+        if (t.nextRecoveryAt && new Date(t.nextRecoveryAt).getTime() > now) return false;
+        return true;
+      });
+
+      // Filter out tasks belonging to blocked missions
+      if (todo.length > 0 && this.options.missionStore) {
+        const blockedSliceIds = new Set<string>();
+        for (const t of todo) {
+          if (t.sliceId && !blockedSliceIds.has(t.sliceId)) {
+            try {
+              const slice = this.options.missionStore.getSlice(t.sliceId);
+              if (slice) {
+                const milestone = this.options.missionStore.getMilestone(slice.milestoneId);
+                if (milestone) {
+                  const mission = this.options.missionStore.getMission(milestone.missionId);
+                  if (mission && mission.status === "blocked") {
+                    blockedSliceIds.add(t.sliceId);
+                  }
+                }
+              }
+            } catch (err: unknown) {
+              const errorMessage = err instanceof Error ? err.message : String(err);
+              schedulerLog.warn(
+                `Mission/slice lookup failed during scheduling (task ${t.id}): ${errorMessage} — proceeding without blocked-slice check`,
+              );
+              // If lookup fails, don't block the task
+            }
+          }
+        }
+        if (blockedSliceIds.size > 0) {
+          todo = todo.filter((t) => !t.sliceId || !blockedSliceIds.has(t.sliceId));
+        }
+      }
+
+      if (todo.length === 0) return;
+
+      todo = sortTasksByPriorityThenAgeAndId(todo);
+
+      /**
+       * Pre-compute file scopes for all currently active tasks (in-progress
+       * AND in-review with unmerged worktrees) so that todo tasks are never
+       * started when their files overlap with work already underway or
+       * awaiting merge.
+       *
+       * Including in-review tasks prevents a blocked task from starting on
+       * main HEAD when the blocker's changes haven't been merged yet.
+       *
+       * The re-entrance guard on this method ensures that this snapshot
+       * stays consistent throughout the pass — without it, a concurrent
+       * pass could read stale state and start conflicting tasks.
+       *
+       * Newly started tasks are appended to this map further below so that
+       * subsequent todo tasks in the same pass also see them.
+       */
+      const activeScopes = new Map<string, string[]>();
+      if (settings.groupOverlappingFiles) {
+        const overlapIgnorePaths = settings.overlapIgnorePaths ?? [];
+        // In-progress tasks
+        for (const t of inProgress) {
+          const scope = await this.store.parseFileScopeFromPrompt(t.id);
+          const filteredScope = filterPathsByIgnoreList(scope, overlapIgnorePaths);
+          if (filteredScope.length > 0) activeScopes.set(t.id, filteredScope);
+        }
+        // In-review tasks with unmerged worktrees
+        const inReviewWithWorktree = tasks.filter(
+          (t) => t.column === "in-review" && t.worktree,
+        );
+        for (const t of inReviewWithWorktree) {
+          const scope = await this.store.parseFileScopeFromPrompt(t.id);
+          const filteredScope = filterPathsByIgnoreList(scope, overlapIgnorePaths);
+          if (filteredScope.length > 0) activeScopes.set(t.id, filteredScope);
+        }
+      }
+
+      // Resolve dependency order among todo tasks
+      const ordered = resolveDependencyOrder(todo);
+      let started = 0;
+
+      for (const taskId of ordered) {
+        const task = tasks.find((t) => t.id === taskId)!;
+
+        // Check all deps are satisfied (done, in-review, or archived)
+        const unmetDeps = task.dependencies.filter((depId) => {
+          const dep = tasks.find((t) => t.id === depId);
+          return dep && dep.column !== "done" && dep.column !== "in-review" && dep.column !== "archived";
+        });
+
+        if (unmetDeps.length > 0) {
+          await this.store.updateTask(task.id, { status: "queued" });
+          this.options.onBlocked?.(task, unmetDeps);
+          continue;
+        }
+
+        // Validate filesystem state before starting (only for tasks with satisfied deps)
+        const validation = await this.validateTaskFilesystem(task.id);
+        if (!validation.valid) {
+          schedulerLog.warn(`Task ${task.id} filesystem validation failed: ${validation.reason}`);
+          await this.store.moveTask(task.id, "triage");
+          await this.store.logEntry(task.id, "Task moved to triage — filesystem validation failed", validation.reason);
+          continue;
+        }
+
+        // Stale spec enforcement: check if PROMPT.md has aged beyond the configured threshold.
+        // When enabled, stale tasks are moved back to triage with status "needs-replan"
+        // so they receive fresh specification before execution. This guard runs after
+        // filesystem validation so missing/unreadable files skip staleness checks entirely.
+        const promptPath = getPromptPath(this.store.getTasksDir(), task.id);
+        const staleness = await evaluateSpecStaleness({ settings, promptPath });
+        if (staleness.isStale) {
+          schedulerLog.warn(`Task ${task.id} specification is stale — ${staleness.reason}`);
+          await this.store.moveTask(task.id, "triage");
+          await this.store.updateTask(task.id, { status: "needs-replan" });
+          await this.store.logEntry(task.id, staleness.reason);
+          continue;
+        }
+        // If staleness evaluation was skipped (missing/unreadable file), continue to
+        // existing scheduler logic which handles filesystem validation separately.
+
+        // Check file scope overlap when enabled
+        if (settings.groupOverlappingFiles) {
+          const overlapIgnorePaths = settings.overlapIgnorePaths ?? [];
+          const taskScope = filterPathsByIgnoreList(
+            await this.store.parseFileScopeFromPrompt(task.id),
+            overlapIgnorePaths,
+          );
+          if (taskScope.length > 0) {
+            let overlappingTaskId: string | null = null;
+            for (const [ipId, ipScope] of activeScopes) {
+              if (this.pathsOverlap(taskScope, ipScope)) {
+                overlappingTaskId = ipId;
+                break;
+              }
+            }
+            if (overlappingTaskId) {
+              await this.store.updateTask(task.id, { status: "queued", blockedBy: overlappingTaskId });
+              continue;
+            }
+          }
+        }
+
+        // Dependencies met — check concurrency
+        if (started >= available) {
+          continue;
+        }
+
+        // Dependencies met — resolve base branch from in-review deps.
+        // Worktree allocation is deferred to moveTask below, where it
+        // runs under TaskStore's cross-task allocation lock so it can't
+        // race against a concurrent manual-move.
+        const baseBranch = this.resolveBaseBranch(task, tasks);
+
+        // Compare-and-swap: re-read the task to verify it's still in "todo" before dispatching.
+        // This prevents dispatching a task twice if another schedule() call or user action
+        // moved it away from "todo" between our initial snapshot and this dispatch attempt.
+        // The re-entrance guard prevents overlapping schedule() passes, but external events
+        // (user moves, API calls) can still trigger concurrent state changes.
+        const freshTask = await this.store.getTask(task.id);
+        if (!freshTask || freshTask.column !== "todo") {
+          schedulerLog.log(`Task ${task.id} no longer in "todo" (column=${freshTask?.column ?? "N/A"}) — skipping dispatch`);
+          continue;
+        }
+        if (freshTask.paused) {
+          schedulerLog.log(`Task ${task.id} is paused — skipping dispatch`);
+          continue;
+        }
+
+        const latestSettings = await this.store.getSettings();
+        if (latestSettings.globalPause) {
+          schedulerLog.log(`Task ${task.id} dispatch aborted — globalPause became active mid-pass`);
+          continue;
+        }
+        if (latestSettings.enginePaused) {
+          schedulerLog.log(`Task ${task.id} dispatch aborted — enginePaused became active mid-pass`);
+          continue;
+        }
+
+        // Resolve effective node for routing
+        let effectiveNode = resolveEffectiveNode(freshTask, settings);
+        schedulerLog.log(`Task ${task.id} routed to node=${effectiveNode.nodeId ?? "local"} (source=${effectiveNode.source})`);
+
+        // Enforce dispatch configuration validation before node-health fallback logic.
+        if (effectiveNode.nodeId !== undefined && this.options.validateNodeDispatch) {
+          const validation = await this.options.validateNodeDispatch(effectiveNode.nodeId);
+          if (!validation.allowed) {
+            if (!this.wasNodeDispatchValidationBlocked.has(task.id)) {
+              this.wasNodeDispatchValidationBlocked.add(task.id);
+              schedulerLog.log(`Task ${task.id} dispatch blocked — ${validation.reason}`);
+              await this.store.logEntry(task.id, validation.reason);
+            }
+            continue;
+          }
+
+          this.wasNodeDispatchValidationBlocked.delete(task.id);
+        }
+
+        // Enforce unavailable-node policy
+        if (effectiveNode.nodeId !== undefined && this.options.nodeHealthMonitor) {
+          const nodeHealth = this.options.nodeHealthMonitor.getNodeHealth(effectiveNode.nodeId);
+          const decision = applyUnavailableNodePolicy({
+            effectiveNode,
+            nodeHealth,
+            policy: settings.unavailableNodePolicy,
+          });
+
+          if (!decision.allowed) {
+            if (!this.wasNodeBlocked.has(task.id)) {
+              this.wasNodeBlocked.add(task.id);
+              schedulerLog.log(`Task ${task.id} dispatch blocked — ${decision.reason}`);
+              await this.store.logEntry(task.id, decision.reason);
+            }
+            continue;
+          }
+
+          this.wasNodeBlocked.delete(task.id);
+
+          if (decision.fallbackToLocal) {
+            schedulerLog.log(`Task ${task.id} falling back to local — ${decision.reason}`);
+            await this.store.logEntry(task.id, decision.reason);
+            effectiveNode = { nodeId: undefined, source: "local" };
+          }
+        }
+
+        // Clear status, reserve worktree path, and then move to in-progress.
+        // Reset mergeRetries so a fresh execution gets a fresh merge budget —
+        // otherwise a task whose previous run exhausted its 3 retries (e.g.
+        // verification failure that was later cleared) lands back in in-review
+        // with mergeRetries=MAX, the merger refuses it (canMergeTask false),
+        // and the ghost-review fallback bounces it back to todo every 10 min
+        // before the 30-min cooldown can elapse — infinite loop. See FN-3305.
+        schedulerLog.log(`Starting ${task.id}: ${task.title || task.id} (deps satisfied)`);
+        await this.store.updateTask(task.id, {
+          status: null,
+          blockedBy: null,
+          executionStartBranch: baseBranch ?? undefined,
+          effectiveNodeId: effectiveNode.nodeId ?? null,
+          effectiveNodeSource: effectiveNode.source,
+          mergeRetries: 0,
+        });
+        await this.store.moveTask(task.id, "in-progress", {
+          allocateWorktree: (reservedNames) =>
+            this.planWorktreePath(task, settings.worktreeNaming, reservedNames),
+        });
+        this.wasNodeBlocked.delete(task.id);
+        this.wasNodeDispatchValidationBlocked.delete(task.id);
+        await this.store.logEntry(task.id, `Node routing resolved: ${effectiveNode.nodeId ?? "local"} (source: ${effectiveNode.source})`);
+        this.options.onSchedule?.(task);
+        started++;
+
+        // Track newly started task's file scope for overlap with remaining todo tasks
+        if (settings.groupOverlappingFiles) {
+          const scope = filterPathsByIgnoreList(
+            await this.store.parseFileScopeFromPrompt(task.id),
+            settings.overlapIgnorePaths,
+          );
+          if (scope.length > 0) activeScopes.set(task.id, scope);
+        }
+      }
+    } catch (err) {
+      schedulerLog.error("Scheduling error:", err);
+    } finally {
+      this.scheduling = false;
+    }
+  }
+
+  /**
+   * Handle a mission-linked task column move.
+   * Keeps feature state synchronized with task columns across the full task
+   * lifecycle, including review/merge transitions and older tasks whose task
+   * row has mission/slice metadata but whose feature row lacks taskId.
+   */
+  private async handleMissionTaskMove(taskId: string, toColumn: import("@fusion/core").Column): Promise<void> {
+    if (!this.options.missionStore) return;
+
+    const missionStore = this.options.missionStore;
+
+    try {
+      const task = await this.store.getTask(taskId);
+      if (!task) {
+        return;
+      }
+
+      const feature = this.resolveMissionFeatureForTask(missionStore, task);
+      if (!feature) {
+        schedulerLog.log(`No linked feature found for task ${taskId} (sliceId=${task.sliceId ?? "none"}) — skipping mission status update`);
+        return;
+      }
+
+      if (task.sliceId && feature.sliceId !== task.sliceId) {
+        schedulerLog.warn(
+          `Task ${taskId} sliceId ${task.sliceId} does not match linked feature ${feature.id} sliceId ${feature.sliceId}; skipping mission update`,
+        );
+        return;
+      }
+
+      const reconciliation = await reconcileMissionFeatureState(
+        this.store,
+        { ...task, column: toColumn },
+        feature,
+      );
+
+      if (reconciliation.kind === "blocked") {
+        schedulerLog.warn(`Task ${taskId} mission update blocked — ${reconciliation.reason}`);
+        return;
+      }
+
+      if (reconciliation.kind === "failure") {
+        schedulerLog.warn(`Task ${taskId} mission update reported failure — ${reconciliation.reason}`);
+        return;
+      }
+
+      const sliceIdBeforeUpdate = feature.sliceId;
+
+      if (reconciliation.kind === "update") {
+        missionStore.updateFeatureStatus(feature.id, reconciliation.status);
+        schedulerLog.log(
+          `Feature ${feature.id} marked ${reconciliation.status} (${reconciliation.reason})`,
+        );
+      }
+
+      if (toColumn === "done") {
+        await this.handleMissionTaskCompletion(taskId, sliceIdBeforeUpdate);
+      }
+    } catch (err) {
+      schedulerLog.error(`Error handling mission task move for ${taskId}:`, err);
+    }
+  }
+
+  private resolveMissionFeatureForTask(missionStore: MissionStore, task: Task): MissionFeature | undefined {
+    const linkedFeature = missionStore.getFeatureByTaskId(task.id);
+    if (linkedFeature) {
+      return linkedFeature;
+    }
+
+    if (!task.sliceId || !task.title) {
+      return undefined;
+    }
+
+    const normalizedTaskTitle = this.normalizeMissionFeatureTitle(task.title);
+    const matchingFeature = missionStore
+      .listFeatures(task.sliceId)
+      .find((feature) =>
+        !feature.taskId
+        && this.normalizeMissionFeatureTitle(feature.title) === normalizedTaskTitle
+      );
+
+    if (!matchingFeature) {
+      return undefined;
+    }
+
+    schedulerLog.warn(
+      `Repairing one-way mission link: task ${task.id} matched unlinked feature ${matchingFeature.id}`,
+    );
+    return missionStore.linkFeatureToTask(matchingFeature.id, task.id);
+  }
+
+  private normalizeMissionFeatureTitle(title: string): string {
+    return title.trim().replace(/\s+/g, " ").toLowerCase();
+  }
+
+  /**
+   * Handle mission task completion.
+   * When a task moves to "done", advance mission execution after the linked
+   * feature status has already been reconciled by handleMissionTaskMove().
+   * updateFeatureStatus cascades via recomputeSliceStatus — if all features
+   * in the slice are done the slice status becomes "complete" automatically.
+   *
+   * If MissionAutopilot is configured, delegate slice advancement to it
+   * (which tracks autopilot state and handles retries). Otherwise fall back
+   * to the legacy onSliceComplete() path for non-autopilot missions.
+   */
+  private async handleMissionTaskCompletion(taskId: string, sliceId: string): Promise<void> {
+    if (!this.options.missionStore) return;
+
+    const missionStore = this.options.missionStore;
+
+    try {
+      const feature = missionStore.getFeatureByTaskId(taskId);
+      if (!feature) return;
+
+      if (feature.sliceId !== sliceId) {
+        schedulerLog.warn(
+          `Task ${taskId} sliceId ${sliceId} does not match linked feature ${feature.id} sliceId ${feature.sliceId}; skipping mission completion update`,
+        );
+        return;
+      }
+
+      const sliceIdBeforeUpdate = feature.sliceId;
+
+      // Trigger the mission execution loop to run validation
+      // This is called regardless of whether the slice is complete - the loop
+      // handles the validation cycle independently
+      if (this.options.missionExecutionLoop) {
+        void this.options.missionExecutionLoop.processTaskOutcome(taskId).catch((err) => {
+          schedulerLog.error(`Error in missionExecutionLoop.processTaskOutcome for ${taskId}:`, err);
+        });
+      }
+
+      // Check if the slice became complete after the feature update
+      const slice = missionStore.getSlice(sliceIdBeforeUpdate);
+      if (slice && slice.status === "complete") {
+        // If MissionAutopilot is available AND actively watching this mission,
+        // delegate progression to it. The autopilot handles: watching missions,
+        // autoAdvance guard, retry logic, and state tracking. The autopilot
+        // will call back into scheduler.activateNextPendingSlice() when appropriate.
+        //
+        // If autopilot is not watching this mission (e.g., legacy missions with
+        // autoAdvance=true but no autopilot instance, or autopilot unwatched),
+        // fall back to onSliceComplete() which uses the compatibility rule.
+        const autopilot = this.options.missionAutopilot;
+        const milestone = missionStore.getMilestone(slice.milestoneId);
+        const missionId = milestone?.missionId;
+        const isWatching = autopilot && missionId ? autopilot.isWatching(missionId) : false;
+
+        if (autopilot && isWatching) {
+          schedulerLog.log(`Slice ${slice.id} is complete — delegating to autopilot`);
+          await autopilot.handleTaskCompletion(taskId);
+        } else {
+          // Fallback path: onSliceComplete uses autopilotEnabled/autoAdvance compat
+          schedulerLog.log(`Slice ${slice.id} is complete — triggering auto-advance`);
+          await this.onSliceComplete(slice);
+        }
+      }
+    } catch (err) {
+      schedulerLog.error(`Error handling mission task completion for ${taskId}:`, err);
+    }
+  }
+
+  async onSliceComplete(slice: import("@fusion/core").Slice): Promise<void> {
+    if (!this.options.missionStore) return;
+
+    const missionStore = this.options.missionStore;
+
+    try {
+      const milestone = missionStore.getMilestone(slice.milestoneId);
+      if (!milestone) {
+        schedulerLog.warn(`Milestone ${slice.milestoneId} not found for slice ${slice.id}`);
+        return;
+      }
+
+      const mission = missionStore.getMission(milestone.missionId);
+      // Use autopilotEnabled as canonical, fall back to autoAdvance for backward compat
+      const shouldAutoAdvance =
+        mission?.autopilotEnabled === true || mission?.autoAdvance === true;
+      if (!mission || mission.status !== "active" || !shouldAutoAdvance) {
+        return;
+      }
+
+      const missionHierarchy = missionStore.getMissionWithHierarchy(mission.id);
+      const hasActiveSlice = missionHierarchy?.milestones.some((candidateMilestone) =>
+        candidateMilestone.slices.some((candidateSlice) =>
+          candidateSlice.id !== slice.id && candidateSlice.status === "active"
+        )
+      );
+      if (hasActiveSlice) {
+        schedulerLog.log(`Mission ${mission.id} already has an active slice; skipping auto-advance`);
+        return;
+      }
+
+      const nextSlice = await this.activateNextPendingSlice(mission.id);
+      if (nextSlice) {
+        schedulerLog.log(`Auto-advanced: activated slice ${nextSlice.id} for mission ${mission.id}`);
+      }
+    } catch (err) {
+      schedulerLog.error(`Error handling slice completion for ${slice.id}:`, err);
+    }
+  }
+
+  /**
+   * Activate the next pending slice in a mission.
+   * Finds the first milestone with pending slices and activates
+   * the first pending slice in that milestone.
+   *
+   * @param missionId - Mission ID
+   * @returns The activated slice, or null if no pending slices
+   */
+  async activateNextPendingSlice(missionId: string): Promise<import("@fusion/core").Slice | null> {
+    if (!this.options.missionStore) return null;
+
+    const missionStore = this.options.missionStore;
+
+    try {
+      const mission = missionStore.getMissionWithHierarchy(missionId);
+      if (!mission || mission.status !== "active") {
+        schedulerLog.log(`Mission ${missionId}: not active, skipping slice activation`);
+        return null;
+      }
+
+      const sortedMilestones = [...mission.milestones].sort((a, b) => a.orderIndex - b.orderIndex);
+
+      for (const milestone of sortedMilestones) {
+        const dependenciesMet = milestone.dependencies.every((dependencyId) => {
+          const dependency = mission.milestones.find((candidate) => candidate.id === dependencyId);
+          return dependency?.status === "complete";
+        });
+        if (!dependenciesMet) {
+          continue;
+        }
+
+        const pendingSlice = [...milestone.slices]
+          .sort((a, b) => a.orderIndex - b.orderIndex)
+          .find((slice) => slice.status === "pending");
+        if (!pendingSlice) {
+          continue;
+        }
+
+        const activated = await missionStore.activateSlice(pendingSlice.id);
+        schedulerLog.log(`Activated slice ${activated.id} for mission ${missionId}`);
+        return activated;
+      }
+
+      schedulerLog.log(`Mission ${missionId}: no pending slices to activate`);
+      return null;
+    } catch (err) {
+      schedulerLog.error(`Error activating next slice for mission ${missionId}:`, err);
+      return null;
+    }
+  }
+
+  /**
+   * Reconcile feature status for all active missions on startup.
+   *
+   * This ensures that feature statuses are in sync with their linked task
+   * columns for all missions, not just autopilot-enabled ones. The
+   * reconciliation logic mirrors MissionAutopilot.reconcileMissionConsistency()
+   * but runs unconditionally on startup.
+   *
+   * @returns The total number of fixes applied across all missions
+   */
+  async reconcileAllMissionFeatures(): Promise<number> {
+    if (!this.options.missionStore) {
+      return 0;
+    }
+
+    const missionStore = this.options.missionStore;
+    let totalFixed = 0;
+
+    try {
+      const missions = missionStore.listMissions();
+      const activeMissions = missions.filter((m) => m.status === "active");
+      const activeMissionIds = new Set(activeMissions.map((mission) => mission.id));
+      const taskBySliceAndTitle = new Map<string, Task | null>();
+      const missionTasks = await this.store.listTasks({ slim: true, includeArchived: false });
+
+      for (const task of missionTasks) {
+        if (!task.missionId || !task.sliceId || !task.title || !activeMissionIds.has(task.missionId)) {
+          continue;
+        }
+
+        const key = this.getMissionFeatureTitleKey(task.sliceId, task.title);
+        taskBySliceAndTitle.set(
+          key,
+          taskBySliceAndTitle.has(key) ? null : task,
+        );
+      }
+
+      for (const mission of activeMissions) {
+        const hierarchy = missionStore.getMissionWithHierarchy(mission.id);
+        if (!hierarchy) continue;
+
+        const activeSlices = hierarchy.milestones
+          .flatMap((milestone) => milestone.slices)
+          .filter((slice) => slice.status === "active");
+
+        for (const slice of activeSlices) {
+          for (const feature of slice.features) {
+            let featureForReconciliation = feature;
+            let task: Task | undefined;
+
+            if (feature.taskId) {
+              task = await this.store.getTask(feature.taskId);
+            } else {
+              const matchedTask = taskBySliceAndTitle.get(
+                this.getMissionFeatureTitleKey(feature.sliceId, feature.title),
+              );
+              if (matchedTask) {
+                schedulerLog.warn(
+                  `Repairing one-way mission link during reconciliation: task ${matchedTask.id} matched unlinked feature ${feature.id}`,
+                );
+                featureForReconciliation = missionStore.linkFeatureToTask(feature.id, matchedTask.id);
+                task = matchedTask;
+                totalFixed++;
+              }
+            }
+
+            if (!task) continue;
+
+            const reconciliation = await reconcileMissionFeatureState(this.store, task, featureForReconciliation);
+
+            if (reconciliation.kind === "failure") {
+              if (this.options.onTaskFailed) {
+                await this.options.onTaskFailed(task.id);
+                totalFixed++;
+              } else {
+                schedulerLog.warn(`Skipping failed feature reconciliation for ${feature.id} — ${reconciliation.reason}`);
+              }
+              continue;
+            }
+
+            if (reconciliation.kind === "blocked") {
+              schedulerLog.warn(`Skipping feature ${feature.id} reconciliation — ${reconciliation.reason}`);
+              continue;
+            }
+
+            if (reconciliation.kind === "update") {
+              missionStore.updateFeatureStatus(featureForReconciliation.id, reconciliation.status);
+              totalFixed++;
+            }
+          }
+        }
+      }
+
+      if (totalFixed > 0) {
+        schedulerLog.log(`Mission feature reconciliation: fixed ${totalFixed} inconsistencies`);
+      }
+    } catch (err) {
+      schedulerLog.error("Error during mission feature reconciliation:", err);
+    }
+
+    return totalFixed;
+  }
+
+  private getMissionFeatureTitleKey(sliceId: string, title: string): string {
+    return `${sliceId}\0${this.normalizeMissionFeatureTitle(title)}`;
+  }
+}

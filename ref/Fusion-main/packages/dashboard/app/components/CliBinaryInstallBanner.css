@@ -1,0 +1,113 @@
+.cli-binary-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 12px 16px 0;
+  padding: 12px 16px;
+  background: linear-gradient(
+    90deg,
+    rgba(59, 130, 246, 0.12),
+    rgba(59, 130, 246, 0.04)
+  );
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  border-radius: 8px;
+}
+
+.cli-binary-banner__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cli-binary-banner__title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary, #e6edf3);
+}
+
+.cli-binary-banner__text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary, #98a3b1);
+}
+
+.cli-binary-banner__text code {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.92em;
+}
+
+.cli-binary-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.cli-binary-banner__primary,
+.cli-binary-banner__secondary {
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  border: 1px solid transparent;
+  transition: background 0.15s ease;
+}
+
+.cli-binary-banner__primary {
+  background: var(--accent, #3b82f6);
+  color: #fff;
+}
+
+.cli-binary-banner__primary:hover:not(:disabled) {
+  background: var(--accent-hover, #2563eb);
+}
+
+.cli-binary-banner__primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cli-binary-banner__secondary {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary, #e6edf3);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.cli-binary-banner__secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.cli-binary-banner__error {
+  margin-top: 4px;
+  padding: 6px 10px;
+  background: rgba(218, 54, 51, 0.1);
+  border-left: 3px solid rgba(218, 54, 51, 0.55);
+  border-radius: 0 4px 4px 0;
+  color: #f7c4c2;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.cli-binary-banner__dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  color: var(--text-secondary, #98a3b1);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.cli-binary-banner__dismiss:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary, #e6edf3);
+}

@@ -1,0 +1,11 @@
+tmp
+node_modules/
+packages/*/dist/
+packages/*/node_modules/
+packages/*/tsconfig*.tsbuildinfo
+
+# ralphi
+.ralphi/*
+!.ralphi/config.yaml
+
+!AGENTS.md

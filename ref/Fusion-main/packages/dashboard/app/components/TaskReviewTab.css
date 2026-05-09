@@ -1,0 +1,162 @@
+.task-review-tab {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.task-review-tab__header {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.task-review-tab__summary-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.task-review-tab__summary {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.task-review-tab__decision {
+  padding: 0 var(--space-sm);
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  text-transform: capitalize;
+}
+
+.task-review-tab__decision--APPROVED {
+  color: var(--color-success);
+}
+
+.task-review-tab__decision--CHANGES_REQUESTED {
+  color: var(--color-error);
+}
+
+.task-review-tab__decision--COMMENTED,
+.task-review-tab__decision--PENDING,
+.task-review-tab__decision--REVIEW_REQUIRED {
+  color: var(--color-warning);
+}
+
+.task-review-tab__actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.task-review-tab__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-review-tab__item {
+  padding: var(--space-md);
+}
+
+.task-review-tab__row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--space-sm);
+  align-items: start;
+}
+
+.task-review-tab__item-summary {
+  color: var(--text);
+}
+
+.task-review-tab__direct-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.task-review-tab__body {
+  margin: 0;
+  padding: var(--space-sm);
+  border: var(--btn-border-width) solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  white-space: pre-wrap;
+  font-family: var(--font-primary);
+}
+
+.task-review-tab__status {
+  color: var(--text-muted);
+  text-transform: capitalize;
+}
+
+.task-review-tab__status--failed {
+  color: var(--color-error);
+}
+
+.task-review-tab__status--queued,
+.task-review-tab__status--in-progress {
+  color: var(--color-warning);
+}
+
+.task-review-tab__status--addressed {
+  color: var(--color-success);
+}
+
+.task-review-tab__meta,
+.task-review-tab__empty {
+  color: var(--text-muted);
+}
+
+.task-review-tab__refresh-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.task-review-tab__refresh-meta .status-dot {
+  flex-shrink: 0;
+}
+
+.task-review-tab__error {
+  color: var(--color-error);
+}
+
+.task-review-tab__reviewers,
+.task-review-tab__blockers {
+  margin: 0;
+  padding-left: var(--space-lg);
+  color: var(--text-muted);
+}
+
+.task-review-tab__reviewer {
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  .task-review-tab__row {
+    grid-template-columns: auto 1fr;
+  }
+
+  .task-review-tab__status {
+    grid-column: 2;
+  }
+
+  .task-review-tab__actions {
+    width: 100%;
+  }
+
+  .task-review-tab__actions .btn {
+    flex: 1;
+  }
+
+  .task-review-tab__refresh-meta {
+    align-items: flex-start;
+  }
+}

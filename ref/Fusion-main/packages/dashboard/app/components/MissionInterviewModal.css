@@ -1,0 +1,133 @@
+.roadmap-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.roadmap-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.roadmap-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: calc(var(--space-sm) + var(--space-xs) * 0.5) var(--space-md);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.roadmap-card-body {
+  padding: 0 var(--space-md) var(--space-md) calc(var(--space-2xl) + var(--space-xs));
+}
+
+.roadmap-textarea-sm {
+  font-size: calc(var(--space-sm) + var(--space-xs));
+  margin-top: calc(var(--space-xs) * 0.5);
+}
+
+.roadmap-textarea-md {
+  font-size: calc(var(--space-sm) + var(--space-xs));
+  margin-top: var(--space-sm);
+}
+
+.roadmap-textarea-xs {
+  font-size: calc(var(--space-sm) + var(--space-xs) * 0.75);
+  margin-top: calc(var(--space-xs) * 0.5);
+}
+
+.roadmap-field-label {
+  font-size: calc(var(--space-sm) + var(--space-xs) * 0.75);
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.roadmap-field-group {
+  margin-top: calc(var(--space-sm) - var(--space-xs) * 0.5);
+}
+
+.roadmap-slice-card {
+  margin-top: var(--space-sm);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.roadmap-slice-header {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-sm) - var(--space-xs) * 0.5);
+  padding: var(--space-sm) calc(var(--space-sm) + var(--space-xs) * 0.5);
+  background: var(--card);
+  cursor: pointer;
+}
+
+.roadmap-slice-body {
+  padding: var(--space-sm) calc(var(--space-sm) + var(--space-xs) * 0.5) calc(var(--space-sm) + var(--space-xs) * 0.5) calc(var(--space-xl) + var(--space-sm) * 0.75);
+}
+
+.roadmap-slice-field-group {
+  margin-bottom: var(--space-sm);
+}
+
+.roadmap-input-title {
+  flex: 1;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: calc(var(--space-sm) + var(--space-xs) * 1.25);
+  font-weight: 600;
+}
+
+.roadmap-input-subtitle {
+  flex: 1;
+  padding: calc(var(--space-xs) * 0.75) calc(var(--space-sm) - var(--space-xs) * 0.5);
+  font-size: calc(var(--space-sm) + var(--space-xs));
+  font-weight: 500;
+}
+
+.roadmap-input-feature {
+  width: 100%;
+  padding: calc(var(--space-xs) * 0.5) calc(var(--space-sm) - var(--space-xs) * 0.5);
+  font-size: calc(var(--space-sm) + var(--space-xs));
+}
+
+.roadmap-feature-row {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(var(--space-sm) - var(--space-xs) * 0.5);
+  padding: calc(var(--space-sm) - var(--space-xs) * 0.5) 0;
+}
+
+.roadmap-feature-row + .roadmap-feature-row {
+  border-top: 1px solid var(--border);
+}
+
+.roadmap-feature-text,
+.roadmap-feature-text--italic {
+  font-size: calc(var(--space-sm) + var(--space-xs) * 0.75);
+  color: var(--text-muted);
+  margin: calc(var(--space-xs) * 0.5) 0 0 calc(var(--space-sm) - var(--space-xs) * 0.5);
+}
+
+.roadmap-feature-text--italic {
+  font-style: italic;
+}
+
+.roadmap-feature-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.roadmap-add-feature-btn {
+  font-size: calc(var(--space-sm) + var(--space-xs) * 0.75);
+  padding: var(--space-xs) var(--space-sm);
+  margin-top: calc(var(--space-sm) - var(--space-xs) * 0.5);
+  gap: var(--space-xs);
+  display: flex;
+  align-items: center;
+}
+
+.roadmap-shrink {
+  flex-shrink: 0;
+}

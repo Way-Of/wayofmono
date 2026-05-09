@@ -1,0 +1,264 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
+
+const sourcePath = resolve(process.cwd(), "index.ts");
+const src = readFileSync(sourcePath, "utf-8");
+
+assert.match(src, /function buildRenderCacheKey\s*\(/, "Missing buildRenderCacheKey helper.");
+assert.match(
+	src,
+	/const DEFAULT_TERMINAL_PREVIEW_FONT_SIZE_PX = 16;/,
+	"Terminal preview should keep the known-good crisp default font size.",
+);
+assert.match(
+	src,
+	/const DEFAULT_BROWSER_PREVIEW_FONT_SIZE_PX = 15;/,
+	"Browser preview default font size should match Studio's compact markdown rendering.",
+);
+assert.match(
+	src,
+	/const DEFAULT_TERMINAL_DEVICE_SCALE_FACTOR = 2;/,
+	"Terminal preview should keep the known-good screenshot density.",
+);
+assert.match(
+	src,
+	/const cacheKey = buildRenderCacheKey\(`\$\{style\.cacheKey\}\|fontSize=\$\{previewFontSizePx\}\|scale=\$\{deviceScaleFactor\}`,[\s\S]*?resourcePath,[\s\S]*?isLatex\)/,
+	"renderPreview should scope cache by style/resourcePath/isLatex/fontSize/deviceScaleFactor.",
+);
+
+assert.match(
+	src,
+	/markdown\+lists_without_preceding_blankline-blank_before_blockquote-blank_before_header\+tex_math_dollars\+autolink_bare_uris-raw_html/,
+	"HTML preview input format should allow lists, blockquotes, and headings without a preceding blank line and disable raw HTML.",
+);
+assert.match(
+	src,
+	/\["-f", inputFormat, "-t", "html5", "--mathml", "--wrap=none"\]/,
+	"HTML preview should pass --wrap=none so long annotation markers survive pandoc wrapping.",
+);
+assert.match(
+	src,
+	/markdown\+lists_without_preceding_blankline-blank_before_blockquote-blank_before_header\+tex_math_dollars\+autolink_bare_uris\+superscript\+subscript-raw_html/,
+	"PDF input format should allow lists, blockquotes, and headings without a preceding blank line and disable raw HTML.",
+);
+assert.ok(
+	src.includes(String.raw`\\usepackage{varwidth}`),
+	"PDF preamble should use a varwidth annotation box so long notes wrap cleanly.",
+);
+assert.ok(
+	src.includes(String.raw`\\newcommand{\\piannotation}[1]{\\begingroup\\setlength{\\fboxsep}{1.5pt}\\fcolorbox{PiAnnotationBorder}{PiAnnotationBg}`),
+	"PDF annotation macro should use a boxed annotation style instead of raw soul highlighting.",
+);
+assert.ok(
+	src.includes(String.raw`\\newcommand{\\PiDiffAddTok}[1]{\\textcolor{PiDiffAddText}{#1}}`),
+	"PDF preamble should define dedicated diff add token colours.",
+);
+assert.ok(
+	src.includes(String.raw`\\RecustomVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\\\\{\\},breaklines,breakanywhere}`),
+	"PDF preamble should enable wrap-friendly highlighted verbatim blocks.",
+);
+
+assert.match(
+	src,
+	/resolvePath\(ctx\.cwd,\s*expanded\)/,
+	"--file paths should resolve against ctx.cwd.",
+);
+
+assert.match(
+	src,
+	/if \(baseLower === "dockerfile"\) return "dockerfile";/,
+	"Dockerfile basename detection should be supported.",
+);
+assert.match(
+	src,
+	/if \(baseLower === "makefile"\) return "makefile";/,
+	"Makefile basename detection should be supported.",
+);
+assert.match(
+	src,
+	/const MARKDOWN_EXTENSIONS = new Set\(\["md", "markdown", "mdx", "rmd", "qmd"\]\);/,
+	"Markdown extension detection should include .qmd files.",
+);
+
+assert.match(
+	src,
+	/function formatMarkdownImageDestination\s*\(/,
+	"Missing markdown image destination formatter.",
+);
+assert.match(
+	src,
+	/formatMarkdownImageDestination\(path\)/,
+	"Obsidian image normalization should use destination formatter.",
+);
+
+assert.match(
+	src,
+	/resourcePath = ctx\.cwd;/,
+	"Assistant-response previews should resolve relative local images against ctx.cwd.",
+);
+
+assert.match(src, /function getLongestFenceRun\s*\(/, "Missing adaptive fence-length helper.");
+assert.match(src, /function normalizeMarkdownFencedBlocks\s*\(/, "Missing fenced-block normalization helper.");
+assert.match(
+	src,
+	/normalizeMarkdownFencedBlocks\(normalizeObsidianImages\(normalizeMathDelimiters\(markdown\)\)\)/,
+	"Preview/browser paths should normalize fenced blocks before pandoc rendering.",
+);
+assert.match(
+	src,
+	/normalizeSubSupTags\(normalizeMarkdownFencedBlocks\(normalizeObsidianImages\(normalizeMathDelimiters\(markdown\)\)\)\)/,
+	"PDF export should normalize fenced blocks before pandoc rendering.",
+);
+assert.match(
+	src,
+	/const markerLength = Math\.max\(3, \(markerChar === "`" \? maxBackticks : maxTildes\) \+ 1\);/,
+	"Code-file wrapping should choose a fence longer than any inner fence run.",
+);
+
+assert.match(src, /from "\.\/shared\/annotation-scanner\.js"/, "Markdown preview should import the shared annotation scanner.");
+assert.match(src, /const PREVIEW_ANNOTATION_PLACEHOLDER_PREFIX = "PIMDPREVIEWANNOT";/, "Missing browser preview annotation placeholder prefix.");
+assert.match(src, /const ANNOTATION_HELPERS_SOURCE = readFileSync\(new URL\("\.\/client\/annotation-helpers\.js", import\.meta\.url\), "utf-8"\);/, "Browser preview should embed the annotation helper script.");
+assert.match(src, /function prepareBrowserPreviewMarkdown\s*\(/, "Missing browser preview annotation preparation helper.");
+assert.match(src, /prepareMarkdownForPandocPreview\(normalizedMarkdown, PREVIEW_ANNOTATION_PLACEHOLDER_PREFIX\)/, "Browser preview should replace prose annotations with placeholders before pandoc.");
+assert.match(src, /buildBrowserHtmlFromPandocFragment\(fragmentHtml, style, resourcePath, annotationPlaceholders(?:,\s*(?:previewFontSizePx|fontSizePx))?\)/, "Browser preview HTML builder should receive annotation placeholders.");
+
+assert.match(src, /function escapeLatexText\s*\(/, "Missing PDF annotation LaTeX escaping helper.");
+assert.match(src, /function getMathPattern\s*\(/, "Missing shared PDF annotation math-pattern helper.");
+assert.ok(
+	src.includes(String.raw`return /\\\(([\s\S]*?)\\\)|\\\[([\s\S]*?)\\\]|\$\$([\s\S]*?)\$\$|\$([^$\n]+?)\$/g;`),
+	"PDF annotation escaping should preserve inline and display math segments.",
+);
+assert.match(src, /function renderAnnotationPdfLatex\s*\(/, "Missing markdown-ish PDF annotation renderer.");
+assert.match(src, /function renderAnnotationCodeSpanPdfLatex\s*\(/, "Missing PDF annotation code-span renderer.");
+assert.match(src, /function renderAnnotationPlainTextPdfLatex\s*\(/, "Missing PDF annotation emphasis renderer.");
+assert.match(src, /const cleaned = renderAnnotationPdfLatex\(marker\.body\);/, "PDF prose annotation replacement should use the markdown-ish annotation renderer.");
+assert.match(src, /return transformMarkdownOutsideFences\(markdown, \(segment(?::\s*string)?\) => replaceAnnotationMarkersForPdfInSegment\(segment\)\);/, "PDF prose annotation replacement should transform only markdown outside fences.");
+
+assert.match(src, /function decodeGeneratedLatexCodeText\s*\(/, "Missing generated-LaTeX code-text decode helper.");
+assert.ok(
+	src.includes("decodeGeneratedLatexCodeText")
+		&& src.includes("textbackslash")
+		&& src.includes("textasciigrave")
+		&& src.includes("textasciitilde")
+		&& src.includes("textasciicircum")
+		&& src.includes(String.raw`.replace(/\\\^\{\}/g, "^")`),
+	"Diff annotation PDF rewrite should decode pandoc's escaped code-text sequences before preserving math and inline code spans.",
+);
+assert.match(src, /function readVerbatimMathOperand\s*\(/, "Missing verbatim-safe diff math operand reader.");
+assert.match(src, /function makeHighlightingMathScriptsVerbatimSafe\s*\(/, "Missing verbatim-safe diff math rewrite helper.");
+assert.ok(src.includes("\\sb") && src.includes("\\sp"), "Verbatim-safe diff math should rewrite sub/superscripts via \\sb/\\sp.");
+assert.match(src, /const cleaned = makeHighlightingMathScriptsVerbatimSafe\(renderAnnotationPdfLatex\(markerText\)\);/, "Diff token annotation rewrite should use the markdown-ish PDF annotation renderer plus verbatim-safe math rewrite.");
+assert.match(src, /function replaceAnnotationMarkersInDiffTokenLine\s*\(/, "Missing diff-token annotation rewrite helper.");
+assert.match(src, /function rewriteGeneratedDiffHighlighting\s*\(/, "Missing generated LaTeX diff rewrite helper.");
+assert.match(src, /function renderMarkdownToPdfViaGeneratedLatex\s*\(/, "Missing generated-LaTeX PDF path for diff exports.");
+assert.match(
+	src,
+	/hasMarkdownDiffFence\(markdownForPdf\)/,
+	"PDF export should route diff-containing markdown through the generated-LaTeX rewrite path.",
+);
+
+assert.match(src, /const annotationHelpers = window\.PiMarkdownPreviewAnnotationHelpers \|\| null;/, "Browser preview should use the embedded annotation helper bundle.");
+assert.match(src, /const applyPreviewAnnotationPlaceholders = \(root\) =>/, "Missing browser preview annotation placeholder application helper.");
+assert.match(src, /typeof annotationHelpers\.renderPreviewAnnotationHtml === 'function'/, "Browser preview markers should render safe inline emphasis/code HTML from the helper.");
+assert.match(src, /const decorateDiffCodeBlocks = \(root\) =>/, "Missing diff-preview decoration helper.");
+assert.ok(src.includes("diff-add-line"), "Browser preview should classify added diff lines.");
+assert.ok(src.includes("diff-del-line"), "Browser preview should classify deleted diff lines.");
+assert.ok(src.includes("diff-header-line"), "Browser preview should classify diff header lines.");
+assert.ok(src.includes("diff-meta-line"), "Browser preview should classify diff metadata lines.");
+assert.ok(src.includes("diff-hunk-line"), "Browser preview should classify diff hunk lines.");
+assert.ok(
+	src.includes("if (/^\\\\+(?!\\\\+\\\\+)/.test(text)) {"),
+	"Browser diff styling should avoid misclassifying +++ header lines as added lines.",
+);
+assert.ok(
+	src.includes("} else if (/^-(?!--)/.test(text)) {"),
+	"Browser diff styling should avoid misclassifying --- header lines as deleted lines.",
+);
+assert.match(src, /const renderAnnotationMarkerMath = async \(root\) =>/, "Missing annotation-marker math rendering helper.");
+assert.match(src, /await mathJax\.typesetPromise\(markers\);/, "Browser annotation math rendering should typeset full marker elements so emphasis/code markup survives.");
+
+assert.ok(
+	src.includes("https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"),
+	"Browser/terminal preview should include a MathJax fallback loader for unsupported pandoc math.",
+);
+assert.match(
+	src,
+	/const renderMathFallback = async \(root\) =>/,
+	"Expected targeted MathJax fallback for pandoc-unsupported preview equations.",
+);
+assert.match(
+	src,
+	/await renderMermaid\(\);\s*applyPreviewAnnotationPlaceholders\(root\);\s*decorateDiffCodeBlocks\(root\);\s*await renderAnnotationMarkerMath\(root\);\s*await renderMathFallback\(root\);/s,
+	"Browser preview should apply preview placeholders, decorate diffs, render annotation math, then run general math fallback.",
+);
+
+const annotationFixture = await readFile(new URL("./annotation-markdownish.md", import.meta.url), "utf8");
+const scanner = await import(new URL("../shared/annotation-scanner.js", import.meta.url));
+await import(new URL("../client/annotation-helpers.js", import.meta.url));
+const browserHelpers = globalThis.PiMarkdownPreviewAnnotationHelpers;
+
+assert.ok(browserHelpers, "PiMarkdownPreviewAnnotationHelpers did not load for regression checks.");
+
+assert.deepEqual(
+	scanner.collectInlineAnnotationMarkers("A [an: use [docs](https://example.com/docs)] and [an: prefer `npm test` here] plus `[an: literal]`.").map((marker) => marker.body),
+	["use [docs](https://example.com/docs)", "prefer `npm test` here"],
+	"Shared annotation scanner should keep markdown-ish annotation bodies intact while ignoring inline-code literals.",
+);
+assert.equal(
+	scanner.hasMarkdownAnnotationMarkers("Literal `[an: note]` sample"),
+	false,
+	"Shared annotation scanner should ignore annotation-like inline-code literals.",
+);
+assert.equal(
+	scanner.replaceInlineAnnotationMarkers("Before [an: first] and [an: second [docs](https://example.com/second)].", (marker) => `{ANNOT:${scanner.normalizeAnnotationText(marker.body)}}`),
+	"Before {ANNOT:first} and {ANNOT:second [docs](https://example.com/second)}.",
+	"Shared annotation replacement should preserve nested markdown-ish annotation bodies.",
+);
+const preparedShared = scanner.prepareMarkdownForPandocPreview(annotationFixture, "TESTANNOT");
+assert.equal(preparedShared.placeholders.length, 7, "Shared pandoc-preview preparation should replace all prose annotations outside fences.");
+assert.deepEqual(
+	preparedShared.placeholders.map((entry) => entry.text),
+	[
+		"note",
+		"see https://example.com/docs?a=1&b=2",
+		"use [docs](https://example.com/docs)",
+		"prefer `npm test` here",
+		"keep *focus* and _tone_",
+		"first",
+		"second [docs](https://example.com/second)",
+	],
+	"Shared pandoc-preview preparation should preserve markdown-ish annotation label text.",
+);
+assert.match(
+	preparedShared.markdown,
+	/```md\n\[an: literal \[docs\]\(https:\/\/example\.com\/literal\)\] should stay literal inside fenced code\n```/,
+	"Shared pandoc-preview preparation should leave fenced annotation-like literals untouched.",
+);
+
+assert.deepEqual(
+	browserHelpers.collectInlineAnnotationMarkers("Multiple [an: first] markers [an: second [docs](https://example.com/second)] here.").map((marker) => marker.body),
+	["first", "second [docs](https://example.com/second)"],
+	"Browser annotation helper should parse multiple markdown-ish annotations on one line.",
+);
+assert.equal(
+	browserHelpers.renderPreviewAnnotationHtml("keep *focus* and **tone** plus `npm test`"),
+	"keep <em>focus</em> and <strong>tone</strong> plus <code>npm test</code>",
+	"Browser annotation helper should render safe inline emphasis and code.",
+);
+assert.equal(
+	browserHelpers.renderPreviewAnnotationHtml("use [docs](https://example.com/docs) and https://example.com/docs"),
+	"use [docs](https://example.com/docs) and https://example.com/docs",
+	"Browser annotation helper should not activate links inside annotation badges.",
+);
+const preparedBrowser = browserHelpers.prepareMarkdownForPandocPreview(annotationFixture, "TESTANNOT");
+assert.equal(preparedBrowser.placeholders.length, 7, "Browser annotation helper should prepare preview placeholders for prose annotations.");
+assert.ok(preparedBrowser.markdown.includes("TESTANNOT0TOKEN") && preparedBrowser.markdown.includes("TESTANNOT6TOKEN"), "Browser annotation helper should inject deterministic preview placeholder tokens.");
+assert.equal(
+	browserHelpers.prepareMarkdownForPandocPreview("- `[an: prefer \\`npm test\\` here]`\n- [an: keep *focus* and _tone_!]", "TESTANNOT").placeholders.length,
+	1,
+	"Browser annotation helper should ignore fully inline-code annotation examples without desynchronizing later parsing.",
+);
+
+console.log("Regression checks passed.");

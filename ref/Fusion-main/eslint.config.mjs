@@ -1,0 +1,476 @@
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
+
+/**
+ * ESLint Flat Config for Fusion Workspace
+ * 
+ * Configuration hierarchy (order matters for flat configs):
+ * 1. Global ignores — files never linted (must come first)
+ * 2. Base recommendations — eslint/recommended + typescript-eslint/recommended
+ * 3. Context-specific overrides — production, test-support, node, sw, etc.
+ * 
+ * Key scoping decisions:
+ * - Global ignores come first to prevent base configs from processing excluded files
+ * - Test support files use relaxed rules (no-explicit-any off) without blanket-ignoring them
+ * - Node scripts get proper Node globals (process, console, require, etc.)
+ * - Service worker gets browser SW globals (self, caches, fetch, etc.)
+ * - Production source keeps @typescript-eslint/no-explicit-any as warning
+ */
+export default tseslint.config(
+  // ─────────────────────────────────────────────────────────────
+  // GLOBAL IGNORES FIRST
+  // (per memory guidance: must come before recommended configs)
+  // ─────────────────────────────────────────────────────────────
+  {
+    ignores: [
+      // Node modules and build artifacts
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/out/**",
+      "**/build/**",
+      "coverage/**",
+      // Project metadata (fn data, worktrees, etc.)
+      ".fusion/**",
+      ".worktrees/**",
+      // Vitest temporary workspace resolution directories
+      ".tmp-fn-*/**",
+      ".claude/**",
+      // Lock files
+      "*.lock",
+      "pnpm-lock.yaml",
+      // Git internals
+      ".git/**",
+      // Logs
+      "*.log",
+      // Test files — ignored for all packages EXCEPT dashboard.
+      // Dashboard test files are intentionally NOT ignored so that the
+      // no-restricted-syntax rule further down can lint them. The
+      // "DASHBOARD TEST FILES — relaxed rules" block compensates by turning off
+      // the strict production rules that legitimately fire in test code.
+      //
+      // Extglob "!(dashboard)" requires ESLint ≥ 9 / minimatch ≥ 9 (both in use).
+      "packages/!(dashboard)/**/*.test.ts",
+      "packages/!(dashboard)/**/*.test.tsx",
+      "packages/!(dashboard)/**/*.spec.ts",
+      "packages/!(dashboard)/**/*.spec.tsx",
+      "packages/!(dashboard)/**/__tests__/**",
+      "plugins/**/*.test.ts",
+      "plugins/**/*.test.tsx",
+      "plugins/**/*.spec.ts",
+      "plugins/**/*.spec.tsx",
+      "plugins/**/__tests__/**",
+      // Dashboard test support directory — fixture helpers used by test files
+      // (cssFixture.ts, setup.ts). NOT a test file itself; excluded so the
+      // no-restricted-syntax rule doesn't fire on the fixture that legitimately
+      // reads styles.css.
+      "packages/dashboard/app/test/**",
+      // __tests__ directories inside dashboard are intentionally NOT ignored
+      // so that the no-restricted-syntax rule can lint them.
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // BASE RECOMMENDATIONS
+  // ─────────────────────────────────────────────────────────────
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+
+  // ─────────────────────────────────────────────────────────────
+  // TEST SUPPORT FILES — relaxed rules for vitest setup/config
+  // (runs BEFORE production config to disable no-explicit-any for test helpers)
+  // ─────────────────────────────────────────────────────────────
+  {
+    // Dashboard vitest.setup.ts — test infrastructure, not production source
+    // Includes mock factories, vi.fn() signatures, etc. that legitimately use `any`
+    files: [
+      "packages/dashboard/vitest.setup.ts",
+    ],
+    plugins: {
+      "@typescript-eslint": tseslint.plugin,
+    },
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+      },
+    },
+    rules: {
+      // Test setup files commonly use `any` for mock types and event handlers
+      "@typescript-eslint/no-explicit-any": "off",
+      // Allow unused vars in test setup (globals, config, etc.)
+      "@typescript-eslint/no-unused-vars": "off",
+      "no-unused-vars": "off",
+      // Allow empty blocks in test setup
+      "no-empty": "off",
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // PRODUCTION TYPESCRIPT FILES — strict rules with project conventions
+  // Enforces @typescript-eslint/no-explicit-any for production source
+  // ─────────────────────────────────────────────────────────────
+  {
+    files: [
+      "packages/*/src/**/*.ts",
+      "packages/*/src/**/*.tsx",
+      "packages/dashboard/app/**/*.ts",
+      "packages/dashboard/app/**/*.tsx",
+      "packages/dashboard/src/**/*.ts",
+      "packages/dashboard/src/**/*.tsx",
+      // NOTE: vitest.setup.ts is excluded here (handled by test-support block above)
+    ],
+    plugins: {
+      "@typescript-eslint": tseslint.plugin,
+    },
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+      },
+    },
+    rules: {
+      // Ratcheted from warn → error once the codebase was clean.
+      // Use `_`-prefix to intentionally declare an unused binding.
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          vars: "all",
+          args: "after-used",
+          ignoreRestSiblings: true,
+          varsIgnorePattern: "^_",
+          argsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
+      // Ratcheted to error once the codebase was clean. Caught errors should
+      // use `catch (err) { ... getErrorMessage(err) ... }` from @fusion/core;
+      // SQLite rows should be cast via `as unknown as XxxRow[]` with a typed
+      // row interface. Reach for `// eslint-disable-next-line` only when a
+      // library's own types are genuinely wrong, with a one-line justification.
+      "@typescript-eslint/no-explicit-any": ["error", {
+        "ignoreRestArgs": true,
+      }],
+      // Fallthrough only permitted with an explicit comment.
+      "no-fallthrough": ["error", { "commentPattern": ".*fallthrough.*" }],
+      // Ratcheted to error: codebase is clean for these mechanical rules.
+      "no-useless-escape": "error",
+      "no-case-declarations": "error",
+      "prefer-const": "error",
+      "@typescript-eslint/no-unused-expressions": "error",
+      "@typescript-eslint/no-empty-object-type": "error",
+      "@typescript-eslint/no-empty-interface": "error",
+      // Remaining soft rules — leave as warn while we tackle them later.
+      "no-empty": "warn",
+      "@typescript-eslint/ban-ts-comment": "warn",
+      "no-control-regex": "warn",
+      "no-useless-catch": "warn",
+    },
+    ignores: ["**/*.gen.ts", "**/*.gen.tsx"],
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // NODE SCRIPTS — proper Node.js globals
+  // (scripts/dev-with-memory.mjs, fix.cjs, etc.)
+  // ─────────────────────────────────────────────────────────────
+  {
+    files: [
+      "scripts/**/*.js",
+      "scripts/**/*.mjs",
+      "**/*.cjs",
+      "packages/cli-alias/**/*.js",
+    ],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "module",
+      globals: {
+        // Node.js core globals
+        process: "readonly",
+        console: "readonly",
+        setTimeout: "readonly",
+        setInterval: "readonly",
+        clearTimeout: "readonly",
+        clearInterval: "readonly",
+        globalThis: "readonly",
+        require: "readonly",
+        module: "readonly",
+        __dirname: "readonly",
+        __filename: "readonly",
+        Buffer: "readonly",
+        AbortController: "readonly",
+        fetch: "readonly",
+      },
+    },
+    rules: {
+      // Node scripts commonly use require()
+      "@typescript-eslint/no-require-imports": "off",
+      // Allow console in scripts (dev tooling)
+      "no-console": "off",
+      // Allow unused vars in scripts (tooling often has them)
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // DEMO FILES — tooling/linting noise, not production code
+  // ─────────────────────────────────────────────────────────────
+  {
+    files: ["demo/**/*.ts"],
+    plugins: {
+      "@typescript-eslint": tseslint.plugin,
+    },
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+      },
+    },
+    rules: {
+      // Allow explicit any in demo files
+      "@typescript-eslint/no-explicit-any": "off",
+      // Allow unused vars in demo files
+      "@typescript-eslint/no-unused-vars": "off",
+      // Allow console in demo files
+      "no-console": "off",
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // PLUGIN EXAMPLES — relaxed rules for plugin development
+  // ─────────────────────────────────────────────────────────────
+  {
+    files: ["plugins/**/*.ts", "plugins/**/*.tsx"],
+    plugins: {
+      "@typescript-eslint": tseslint.plugin,
+    },
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+      },
+    },
+    rules: {
+      // Allow explicit any for mocks
+      "@typescript-eslint/no-explicit-any": "off",
+      // Allow unused vars in tests
+      "@typescript-eslint/no-unused-vars": "off",
+      // Allow unsafe function types
+      "@typescript-eslint/no-unsafe-function-type": "off",
+      // Allow prefer-const
+      "prefer-const": "off",
+      // Allow fallthrough
+      "no-fallthrough": "off",
+      // Allow useless escape
+      "no-useless-escape": "off",
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // AGENT SKILL TEMPLATES — template code with underscore prefix support
+  // (agent prompt templates use _prefixed placeholders intentionally)
+  // ─────────────────────────────────────────────────────────────
+  {
+    files: [".pi/agent/skills/**/*.ts", ".pi/agent/skills/**/*.tsx"],
+    plugins: {
+      "@typescript-eslint": tseslint.plugin,
+    },
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+      },
+    },
+    rules: {
+      // Allow unused vars with underscore prefix (intentional placeholder pattern)
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          vars: "all",
+          args: "after-used",
+          ignoreRestSiblings: true,
+          varsIgnorePattern: "^_",
+          argsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
+      // Allow explicit any in templates
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // ROOT-LEVEL MJS FILES — common JS/ESM patterns at project root
+  // ─────────────────────────────────────────────────────────────
+  {
+    files: ["*.mjs", "*.js"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "module",
+      globals: {
+        // Common ESM globals
+        process: "readonly",
+        console: "readonly",
+        setTimeout: "readonly",
+        setInterval: "readonly",
+        clearTimeout: "readonly",
+        clearInterval: "readonly",
+        globalThis: "readonly",
+      },
+    },
+    rules: {
+      "no-console": "off",
+      "no-unused-vars": "off",
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // DASHBOARD TEST FILES — relaxed rules for vitest test code
+  //
+  // Dashboard test files are NOT globally ignored (see ignores block above) so
+  // that the no-restricted-syntax rule below can lint them. This block
+  // compensates by turning off the strict production rules that legitimately
+  // fire in test code (any-typed mocks, unused destructuring, vi.fn() overloads,
+  // etc.). Scoped to packages/dashboard only — other packages' test files remain
+  // in the global ignore.
+  // ─────────────────────────────────────────────────────────────
+  {
+    files: [
+      "packages/dashboard/**/*.test.ts",
+      "packages/dashboard/**/*.test.tsx",
+      "packages/dashboard/**/*.spec.ts",
+      "packages/dashboard/**/*.spec.tsx",
+      "packages/dashboard/**/__tests__/**/*.ts",
+      "packages/dashboard/**/__tests__/**/*.tsx",
+    ],
+    plugins: {
+      "@typescript-eslint": tseslint.plugin,
+    },
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+      },
+    },
+    rules: {
+      // Tests commonly use `any` for mock types, spy return values, etc.
+      "@typescript-eslint/no-explicit-any": "off",
+      // Tests commonly have intentionally unused vars (destructured render results, etc.)
+      "@typescript-eslint/no-unused-vars": "off",
+      "no-unused-vars": "off",
+      // Tests sometimes need mutable bindings for reassigning mocks
+      "prefer-const": "off",
+      // Tests commonly have regex-heavy string matching with escapes
+      "no-useless-escape": "off",
+      // Tests may use function types for mock signatures
+      "@typescript-eslint/no-unsafe-function-type": "off",
+      // Tests sometimes use require() for dynamic fixture loading
+      "@typescript-eslint/no-require-imports": "off",
+      // Tests sometimes use expression-only statements (e.g. `result.current;`)
+      // for side-effects or access verification
+      "@typescript-eslint/no-unused-expressions": "off",
+      // Test descriptions may reference internal terms (styles.css in test titles is fine)
+      // — only the Literal selector below flags actual readFileSync path arguments.
+      "no-restricted-syntax": "off",
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // DASHBOARD TEST FILES — ban direct styles.css reads
+  //
+  // After the CSS extraction project (app/styles.css → 55 co-located component
+  // CSS files), tests that read styles.css via readFileSync/path.resolve will
+  // silently miss rules that moved to component files. Use loadAllAppCss() from
+  // packages/dashboard/app/test/cssFixture.ts instead — it concatenates
+  // app/styles.css + every app/components/**/*.css so tests see the full
+  // stylesheet regardless of where rules live.
+  //
+  // Scoped to packages/dashboard only because cssFixture lives there.
+  // ─────────────────────────────────────────────────────────────
+  {
+    files: [
+      "packages/dashboard/**/*.test.ts",
+      "packages/dashboard/**/*.test.tsx",
+      "packages/dashboard/**/*.spec.ts",
+      "packages/dashboard/**/*.spec.tsx",
+      "packages/dashboard/**/__tests__/**/*.ts",
+      "packages/dashboard/**/__tests__/**/*.tsx",
+    ],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          // Catches string literals ending in "styles.css" when passed to file-path
+          // or file-read functions. Uses two selectors (simple callee vs member callee)
+          // to cover both `readFileSync("../styles.css")` and
+          // `fs.readFileSync(path.resolve(__dirname, "../styles.css"))`.
+          // Test description strings like it("...styles.css", …) are NOT caught
+          // because "it"/"describe"/"test" are not in the callee allowlist.
+          //
+          // Covered patterns:
+          //   readFileSync(path.resolve(__dirname, "../styles.css"), ...)
+          //   readFileSync("../../styles.css", ...)
+          //   fs.readFileSync(path.join(__dirname, "../../styles.css"), ...)
+          //   path.resolve(__dirname, "../styles.css")
+          //   path.join(__dirname, "../../styles.css")
+          //   resolve(PACKAGE_ROOT, "app/styles.css")
+          selector:
+            "CallExpression[callee.name=/^(readFileSync|readFile|resolve|join)$/] Literal[value=/styles\\.css$/]",
+          message:
+            "Don't read styles.css directly in tests — use loadAllAppCss() from " +
+            "app/test/cssFixture.ts. After CSS extraction, rules move between files " +
+            "and direct reads silently miss them.",
+        },
+        {
+          selector:
+            "CallExpression[callee.property.name=/^(readFileSync|readFile|resolve|join)$/] Literal[value=/styles\\.css$/]",
+          message:
+            "Don't read styles.css directly in tests — use loadAllAppCss() from " +
+            "app/test/cssFixture.ts. After CSS extraction, rules move between files " +
+            "and direct reads silently miss them.",
+        },
+      ],
+    },
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // SERVICE WORKER FILES — browser service worker globals
+  // (packages/dashboard/app/public/sw.js uses self, caches, fetch, etc.)
+  // ─────────────────────────────────────────────────────────────
+  {
+    files: ["**/sw.js"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "module",
+      globals: {
+        // Service worker globals
+        self: "readonly",
+        caches: "readonly",
+        fetch: "readonly",
+        console: "readonly",
+        URL: "readonly",
+        Promise: "readonly",
+        Request: "readonly",
+        Response: "readonly",
+        Headers: "readonly",
+        Cache: "readonly",
+        CacheStorage: "readonly",
+        ExtendableEvent: "readonly",
+        FetchEvent: "readonly",
+        Clients: "readonly",
+        Client: "readonly",
+        WindowClient: "readonly",
+      },
+    },
+    rules: {
+      "no-undef": "error",
+      "no-unused-vars": "off",
+      "no-console": "off",
+    },
+  },
+);

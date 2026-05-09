@@ -1,0 +1,70 @@
+---
+import type { AgentEntry } from "../lib/agents";
+import { siteDescription, DISPATCHER_COUNT } from "../lib/agents";
+
+interface Props {
+	agent: AgentEntry;
+}
+
+const { agent } = Astro.props;
+const desc = siteDescription(agent);
+const dispatched = DISPATCHER_COUNT[agent.slug] ?? 0;
+const tools = agent.data.tools?.split(",").map((t) => t.trim()).filter(Boolean) ?? [];
+---
+
+<article class="card agent">
+	<header class="agent__head">
+		<h4 class="mono agent__name">{agent.slug}</h4>
+		<span class="chip" title={`dispatched by ${dispatched} skill${dispatched === 1 ? "" : "s"}`}>
+			×{dispatched}
+		</span>
+	</header>
+
+	<p class="agent__desc">{desc}</p>
+
+	{tools.length > 0 && (
+		<ul class="agent__tools" aria-label="tool allowlist">
+			{tools.map((tool) => (
+				<li class="chip chip--sage">{tool}</li>
+			))}
+		</ul>
+	)}
+</article>
+
+<style>
+	.agent {
+		padding: var(--space-4);
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+	.agent__head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: var(--space-3);
+		margin-bottom: var(--space-3);
+		position: relative; z-index: 1;
+	}
+	.agent__name {
+		font-size: var(--type-base);
+		margin: 0;
+		color: var(--washi);
+		word-break: break-word;
+	}
+	.agent__desc {
+		font-family: var(--font-serif);
+		font-size: var(--type-small);
+		color: var(--text);
+		margin: 0 0 var(--space-4);
+		max-width: none;
+		position: relative; z-index: 1;
+	}
+	.agent__tools {
+		list-style: none; padding: var(--space-3) 0 0; margin: 0;
+		display: flex; flex-wrap: wrap; gap: var(--space-2);
+		position: relative; z-index: 1;
+		margin-top: auto;
+		border-top: 1px solid var(--rule);
+	}
+</style>

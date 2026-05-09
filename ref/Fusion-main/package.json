@@ -1,0 +1,78 @@
+{
+  "name": "fusion-workspace",
+  "version": "0.23.0",
+  "private": true,
+  "license": "MIT",
+  "homepage": "https://github.com/Runfusion/Fusion#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Runfusion/Fusion"
+  },
+  "bugs": {
+    "url": "https://github.com/Runfusion/Fusion/issues"
+  },
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "local": "node scripts/start-local.mjs",
+    "dev": "node scripts/dev-with-memory.mjs",
+    "dev:ui": "pnpm --filter @fusion/dashboard dev",
+    "dev:hmr": "node scripts/dev-hmr.mjs",
+    "lint": "eslint .",
+    "sync:fusion-skill": "node scripts/sync-fusion-skill-tools.mjs",
+    "sync:fusion-skill:check": "node scripts/sync-fusion-skill-tools.mjs --check",
+    "build": "pnpm -r --filter=!@fusion/desktop --filter=!@fusion/mobile build",
+    "build:all": "pnpm -r build",
+    "verify:workspace": "pnpm lint && pnpm test:full && pnpm build",
+    "build:exe": "pnpm build && pnpm --filter @runfusion/fusion build:exe",
+    "build:exe:all": "pnpm build && pnpm --filter @runfusion/fusion build:exe:all",
+    "test": "node scripts/test-changed.mjs",
+    "test:scripts": "node --test scripts/__tests__/*.test.mjs",
+    "test:full": "node scripts/test-changed.mjs --full --no-cache",
+    "test:ci:shard": "node scripts/ci-test-shard.mjs",
+    "test:serial": "FUSION_TEST_CONCURRENCY=1 FUSION_TEST_WORKSPACE_CONCURRENCY=1 pnpm test:full",
+    "test:fast": "FUSION_TEST_CONCURRENCY=4 FUSION_TEST_WORKSPACE_CONCURRENCY=4 pnpm test:full",
+    "test:locked": "node scripts/test-with-lock.mjs",
+    "test:build": "pnpm --filter @fusion/dashboard test:build",
+    "test:isolated": "node scripts/check-test-isolation.mjs --before && pnpm test:full && node scripts/check-test-isolation.mjs",
+    "test:check-isolation": "node scripts/check-test-isolation.mjs",
+    "test:coverage": "pnpm -r --workspace-concurrency=1 exec vitest run --silent=passed-only --reporter=dot --coverage",
+    "test:coverage:core": "pnpm --filter @fusion/core exec vitest run --silent=passed-only --reporter=dot --coverage",
+    "test:coverage:engine": "pnpm --filter @fusion/engine exec vitest run --silent=passed-only --reporter=dot --coverage",
+    "test:coverage:cli": "pnpm --filter @runfusion/fusion exec vitest run --silent=passed-only --reporter=dot --coverage",
+    "test:coverage:dashboard": "pnpm --filter @fusion/dashboard exec vitest run --silent=passed-only --reporter=dot --coverage",
+    "test:slow-cli": "pnpm --filter @runfusion/fusion test:pre-release",
+    "typecheck": "pnpm -r --filter=!@fusion/desktop --filter=!@fusion/mobile typecheck",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "node scripts/release.mjs",
+    "release:version": "changeset version && node scripts/sync-workspace-version.mjs",
+    "mobile:build": "pnpm --filter @fusion/dashboard build && pnpm --filter @fusion/mobile cap sync",
+    "mobile:ios": "pnpm mobile:build && pnpm --filter @fusion/mobile cap open ios",
+    "mobile:android": "pnpm mobile:build && pnpm --filter @fusion/mobile cap open android",
+    "mobile:dev:ios": "pnpm --filter @fusion/mobile dev:ios",
+    "mobile:dev:android": "pnpm --filter @fusion/mobile dev:android",
+    "mobile:sync": "pnpm --filter @fusion/mobile cap sync",
+    "build:desktop": "pnpm --filter @fusion/desktop build"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@homebridge/node-pty-prebuilt-multiarch",
+      "electron",
+      "esbuild",
+      "koffi",
+      "protobufjs"
+    ]
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.30.0",
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "fast-glob": "^3.3.3",
+    "react-devtools-core": "^7.0.1",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.0.0",
+    "yaml": "^2.8.3"
+  }
+}

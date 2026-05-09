@@ -1,0 +1,34 @@
+.shell-connection-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.shell-connection-status__kind {
+  color: var(--text-muted);
+  font-size: calc(var(--space-sm) + var(--space-xs));
+}
+
+.shell-connection-status__summary {
+  color: var(--text);
+  max-width: calc(var(--space-2xl) * 8);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shell-connection-status__action {
+  color: var(--color-info);
+  font-size: calc(var(--space-sm) + var(--space-xs));
+}
+
+@media (max-width: 768px) {
+  .shell-connection-status {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .shell-connection-status__summary {
+    max-width: calc(var(--space-2xl) * 5);
+  }
+}

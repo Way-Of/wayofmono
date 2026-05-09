@@ -1,0 +1,2997 @@
+// @vitest-environment node
+
+import { describe, it, expect, vi, beforeAll, beforeEach, afterAll, afterEach } from "vitest";
+import express from "express";
+import http from "node:http";
+import { EventEmitter } from "node:events";
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { execFileSync } from "node:child_process";
+import { createHmac } from "node:crypto";
+import { createApiRoutes } from "../routes.js";
+import {
+  getProjectIdFromRequest as getProjectIdFromRouteRequest,
+  getProjectContext as resolveRouteProjectContext,
+  getScopedStore as resolveRouteScopedStore,
+} from "../routes/context.js";
+import { GitHubClient } from "../github.js";
+import * as resolveDiffBaseModule from "../routes/resolve-diff-base.js";
+import { githubRateLimiter } from "../github-poll.js";
+import type { TaskStore, TaskAttachment, Routine, RoutineCreateInput, RoutineUpdateInput, RoutineExecutionResult, ChatSession, ChatMessage } from "@fusion/core";
+import type { TaskDetail } from "@fusion/core";
+import type { AuthStorageLike, ModelRegistryLike } from "../routes.js";
+import { __resetBatchImportRateLimiter, __setCreateFnAgentForRefine } from "../routes.js";
+import * as agentGenerationModule from "../agent-generation.js";
+import { __resetPlanningState, __setCreateFnAgent, planningStreamManager } from "../planning.js";
+import * as planningModule from "../planning.js";
+import { __resetSubtaskBreakdownState, subtaskStreamManager } from "../subtask-breakdown.js";
+import * as subtaskBreakdownModule from "../subtask-breakdown.js";
+import { SESSION_CLEANUP_DEFAULT_MAX_AGE_MS } from "../ai-session-store.js";
+import * as usageModule from "../usage.js";
+import * as claudeCliProbeModule from "../claude-cli-probe.js";
+import * as droidCliProbeModule from "../droid-cli-probe.js";
+import * as projectStoreResolver from "../project-store-resolver.js";
+import * as terminalServiceModule from "../terminal-service.js";
+import { get as performGet, request as performRequest } from "../test-request.js";
+import { resetRuntimeLogSink, setRuntimeLogSink } from "../runtime-logger.js";
+import { resetDiagnosticsSink, setDiagnosticsSink, type LogEntry } from "../ai-session-diagnostics.js";
+import * as updateCheckModule from "../update-check.js";
+import { __setAgentReflectionServiceForTests } from "../routes/register-agent-reflection-rating-routes.js";
+
+// Mock @fusion/core for gh CLI auth checks
+const mockCentralListProjects = vi.fn().mockResolvedValue([]);
+const mockCentralInit = vi.fn().mockResolvedValue(undefined);
+const mockCentralClose = vi.fn().mockResolvedValue(undefined);
+const mockCentralReconcileProjectStatuses = vi.fn().mockResolvedValue(undefined);
+const { mockPerformUpdateCheck, mockClearUpdateCheckCache, mockExecSync, mockExecFile } = vi.hoisted(() => ({
+  mockPerformUpdateCheck: vi.fn(),
+  mockClearUpdateCheckCache: vi.fn(),
+  mockExecSync: vi.fn(),
+  mockExecFile: vi.fn(),
+}));
+
+vi.mock("../update-check.js", async () => {
+  const actual = await vi.importActual<typeof import("../update-check.js")>("../update-check.js");
+  return {
+    ...actual,
+    performUpdateCheck: mockPerformUpdateCheck,
+    clearUpdateCheckCache: mockClearUpdateCheckCache,
+  };
+});
+
+vi.mock("node:child_process", async () => {
+  const actual = await vi.importActual<typeof import("node:child_process")>("node:child_process");
+  mockExecSync.mockImplementation(((...args: Parameters<typeof actual.execSync>) => actual.execSync(...args)) as typeof actual.execSync);
+  // Default execFile mock blocks host-process pgrep calls used by /kill-vitest
+  // but passes through all other commands (including git) to preserve route
+  // behavior for integration-style API tests in this file.
+  mockExecFile.mockImplementation((...callArgs: unknown[]) => {
+    const [file, argsOrCb, maybeOptions, maybeCb] = callArgs as [string, unknown, unknown, unknown];
+    const args = Array.isArray(argsOrCb) ? argsOrCb : [];
+    const cb =
+      typeof maybeCb === "function"
+        ? (maybeCb as (err: unknown, stdout?: string, stderr?: string) => void)
+        : typeof maybeOptions === "function"
+          ? (maybeOptions as (err: unknown, stdout?: string, stderr?: string) => void)
+          : typeof argsOrCb === "function"
+            ? (argsOrCb as (err: unknown, stdout?: string, stderr?: string) => void)
+            : null;
+
+    if (file === "pgrep" && args[0] === "-f" && args[1] === "vitest") {
+      if (cb) queueMicrotask(() => cb(null, "", ""));
+      return;
+    }
+
+    return (actual.execFile as (...innerArgs: unknown[]) => unknown)(...callArgs);
+  });
+  return {
+    ...actual,
+    execSync: mockExecSync,
+    execFile: mockExecFile,
+  };
+});
+
+vi.mock("@fusion/core", async (importOriginal) => {
+  const { createCoreMock } = await import("../test/mockCoreEngine.js");
+  return createCoreMock(() => importOriginal<typeof import("@fusion/core")>(), {
+    resolveGlobalDir: vi.fn().mockReturnValue("/tmp/fusion-test"),
+    isGhAvailable: vi.fn(),
+    isGhAuthenticated: vi.fn(),
+    isQmdAvailable: vi.fn().mockResolvedValue(false),
+    CentralCore: vi.fn().mockImplementation(() => ({
+      init: mockCentralInit,
+      close: mockCentralClose,
+      listProjects: mockCentralListProjects,
+      reconcileProjectStatuses: mockCentralReconcileProjectStatuses,
+    })),
+  });
+});
+
+vi.mock("@fusion/engine", async () => {
+  const { createEngineMock } = await import("../test/mockCoreEngine.js");
+  return createEngineMock({
+  createFnAgent: vi.fn(async (options?: { onText?: (delta: string) => void }) => ({
+    session: {
+      state: {
+        messages: [] as Array<{ role: string; content: string }>,
+      },
+      prompt: vi.fn(async function (this: { state?: { messages?: Array<{ role: string; content: string }> } }, message: string) {
+        options?.onText?.("mock-ai-output");
+        const messages = this.state?.messages ?? [];
+        messages.push({ role: "user", content: message });
+        messages.push({
+          role: "assistant",
+          content: JSON.stringify({
+            subtasks: [
+              {
+                id: "subtask-1",
+                title: "Mock subtask",
+                description: "Generated by the route test engine mock",
+                suggestedSize: "S",
+                dependsOn: [],
+              },
+            ],
+          }),
+        });
+      }),
+      dispose: vi.fn(),
+    },
+  })),
+  promptWithFallback: vi.fn(async (session: { prompt: (message: string) => Promise<void> }, prompt: string) => {
+    await session.prompt(prompt);
+  }),
+  AgentReflectionService: class MockAgentReflectionService {
+    async generateReflection(): Promise<import("@fusion/core").AgentReflection | null> {
+      throw new Error("Reflection service unavailable in route tests");
+    }
+
+    async buildReflectionContext(): Promise<never> {
+      throw new Error("Reflection service unavailable in route tests");
+    }
+  },
+  });
+});
+
+import { AgentStore, Database, RoutineStore, isGhAvailable, isGhAuthenticated } from "@fusion/core";
+import { createFnAgent } from "@fusion/engine";
+
+const mockIsGhAvailable = vi.mocked(isGhAvailable);
+const mockIsGhAuthenticated = vi.mocked(isGhAuthenticated);
+
+function createMockGlobalSettingsStore() {
+  return {
+    getSettings: vi.fn().mockResolvedValue({}),
+    updateSettings: vi.fn().mockResolvedValue({}),
+    getSettingsPath: vi.fn().mockReturnValue("/fake/home/.fusion/settings.json"),
+    init: vi.fn().mockResolvedValue(false),
+    invalidateCache: vi.fn(),
+  };
+}
+
+function createMockStore(overrides: Partial<TaskStore> = {}): TaskStore {
+  return {
+    getTask: vi.fn(),
+    listTasks: vi.fn().mockResolvedValue([]),
+    searchTasks: vi.fn().mockResolvedValue([]),
+    createTask: vi.fn(),
+    moveTask: vi.fn(),
+    updateTask: vi.fn(),
+    deleteTask: vi.fn(),
+    mergeTask: vi.fn(),
+    archiveTask: vi.fn(),
+    unarchiveTask: vi.fn(),
+    getSettings: vi.fn().mockResolvedValue({}),
+    getSettingsFast: vi.fn().mockResolvedValue({}),
+    updateSettings: vi.fn(),
+    updateGlobalSettings: vi.fn(),
+    getSettingsByScope: vi.fn().mockResolvedValue({ global: {}, project: {} }),
+    getSettingsByScopeFast: vi.fn().mockResolvedValue({ global: {}, project: {} }),
+    getGlobalSettingsStore: vi.fn().mockReturnValue(createMockGlobalSettingsStore()),
+    logEntry: vi.fn().mockResolvedValue(undefined),
+    getAgentLogs: vi.fn().mockResolvedValue([]),
+    getAgentLogCount: vi.fn().mockResolvedValue(0),
+    getAgentLogsByTimeRange: vi.fn().mockResolvedValue([]),
+    addSteeringComment: vi.fn(),
+    addTaskComment: vi.fn(),
+    updateTaskComment: vi.fn(),
+    deleteTaskComment: vi.fn(),
+    getTaskDocuments: vi.fn().mockResolvedValue([]),
+    getTaskDocument: vi.fn().mockResolvedValue(null),
+    getTaskDocumentRevisions: vi.fn().mockResolvedValue([]),
+    getAllDocuments: vi.fn().mockResolvedValue([]),
+    upsertTaskDocument: vi.fn(),
+    deleteTaskDocument: vi.fn().mockResolvedValue(undefined),
+    updatePrInfo: vi.fn().mockResolvedValue(undefined),
+    updateIssueInfo: vi.fn().mockResolvedValue(undefined),
+    getRootDir: vi.fn().mockReturnValue("/fake/root"),
+    listWorkflowSteps: vi.fn().mockResolvedValue([]),
+    createWorkflowStep: vi.fn(),
+    getWorkflowStep: vi.fn(),
+    updateWorkflowStep: vi.fn(),
+    deleteWorkflowStep: vi.fn(),
+    getMissionStore: vi.fn().mockReturnValue({
+      listMissions: vi.fn().mockReturnValue([]),
+      createMission: vi.fn(),
+      getMissionWithHierarchy: vi.fn(),
+      updateMission: vi.fn(),
+      getMission: vi.fn(),
+      deleteMission: vi.fn(),
+      listMilestonesByMission: vi.fn().mockReturnValue([]),
+      createMilestone: vi.fn(),
+      updateMilestone: vi.fn(),
+      getMilestone: vi.fn(),
+      deleteMilestone: vi.fn(),
+      listTasksByMilestone: vi.fn().mockReturnValue([]),
+      createMissionTask: vi.fn(),
+      updateMissionTask: vi.fn(),
+      getMissionTask: vi.fn(),
+      deleteMissionTask: vi.fn(),
+    }),
+    ...overrides,
+  } as unknown as TaskStore;
+}
+
+const TASK_TOKEN_USAGE_FIXTURE = {
+  inputTokens: 1200,
+  outputTokens: 450,
+  cachedTokens: 210,
+  totalTokens: 1860,
+  firstUsedAt: "2026-04-24T09:00:00.000Z",
+  lastUsedAt: "2026-04-24T10:15:00.000Z",
+};
+
+const FAKE_TASK_DETAIL: TaskDetail = {
+  id: "FN-001",
+  description: "Test task",
+  column: "in-progress",
+  dependencies: [],
+  steps: [],
+  currentStep: 0,
+  log: [],
+  tokenUsage: TASK_TOKEN_USAGE_FIXTURE,
+  createdAt: "2026-01-01T00:00:00.000Z",
+  updatedAt: "2026-01-01T00:00:00.000Z",
+  prompt: "# KB-001\n\nTest task",
+};
+
+async function GET(app: express.Express, path: string): Promise<{ status: number; body: any }> {
+  const res = await performGet(app, path);
+  return { status: res.status, body: res.body };
+}
+
+async function REQUEST(
+  app: express.Express,
+  method: string,
+  path: string,
+  body?: Buffer | string,
+  headers?: Record<string, string>,
+): Promise<{ status: number; body: any }> {
+  const res = await performRequest(app, method, path, body, headers);
+  return { status: res.status, body: res.body };
+}
+
+function collectOrderedRouteKeys(router: express.Router): string[] {
+  const stack = (router as unknown as {
+    stack?: Array<{ route?: { path?: string; methods?: Record<string, boolean> } }>;
+  }).stack ?? [];
+
+  const orderedKeys: string[] = [];
+  for (const layer of stack) {
+    const route = layer.route;
+    if (!route?.path || !route.methods) continue;
+    const method = Object.keys(route.methods).find((name) => route.methods?.[name]);
+    if (!method) continue;
+    orderedKeys.push(`${method.toUpperCase()} ${route.path}`);
+  }
+  return orderedKeys;
+}
+
+afterEach(() => {
+  resetDiagnosticsSink();
+});
+
+
+describe("Planning Mode Routes", () => {
+    let store: TaskStore;
+
+    function buildApp() {
+      const app = express();
+      app.use(express.json());
+      app.use("/api", createApiRoutes(store));
+      return app;
+    }
+
+    /** Mock agent for planning session tests */
+    function setupPlanningMockAgent() {
+      const questionResponses = [
+        JSON.stringify({
+          type: "question",
+          data: {
+            id: "q-scope",
+            type: "single_select",
+            question: "What is the scope of this plan?",
+            description: "This helps estimate the size and complexity of the task.",
+            options: [
+              { id: "small", label: "Small", description: "Quick" },
+              { id: "medium", label: "Medium", description: "Standard" },
+              { id: "large", label: "Large", description: "Complex" },
+            ],
+          },
+        }),
+        JSON.stringify({
+          type: "question",
+          data: {
+            id: "q-requirements",
+            type: "text",
+            question: "What are the key requirements?",
+            description: "List acceptance criteria.",
+          },
+        }),
+        JSON.stringify({
+          type: "question",
+          data: {
+            id: "q-confirm",
+            type: "confirm",
+            question: "Are there specific technologies to use?",
+            description: "Answer yes if you have preferences.",
+          },
+        }),
+        JSON.stringify({
+          type: "complete",
+          data: {
+            title: "Build a user auth system",
+            description: "Build a user authentication system\n\nRequirements: Standard implementation\n\nGenerated via Planning Mode",
+            suggestedSize: "M",
+            suggestedDependencies: [],
+            keyDeliverables: ["Implementation", "Tests", "Documentation"],
+          },
+        }),
+      ];
+
+      const messages: Array<{ role: string; content: string }> = [];
+      let callIndex = 0;
+      const mockAgent = {
+        session: {
+          state: { messages },
+          prompt: vi.fn(async (msg: string) => {
+            messages.push({ role: "user", content: msg });
+            const response = questionResponses[callIndex++] ?? questionResponses[questionResponses.length - 1];
+            messages.push({ role: "assistant", content: response });
+          }),
+          dispose: vi.fn(),
+        },
+      };
+      __setCreateFnAgent(async () => mockAgent);
+    }
+
+    beforeEach(() => {
+      // Reset planning state before each test to avoid cross-test contamination
+      store = createMockStore();
+      __resetPlanningState();
+      setupPlanningMockAgent();
+    });
+
+    afterEach(() => {
+      __setCreateFnAgent(undefined as any);
+    });
+
+    describe("POST /planning/start", () => {
+      it("creates a new planning session", async () => {
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "Build a user auth system" }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(201);
+        expect(res.body.sessionId).toBeDefined();
+        expect(typeof res.body.sessionId).toBe("string");
+        expect(res.body.firstQuestion).toBeDefined();
+        expect(res.body.firstQuestion.id).toBe("q-scope");
+        expect(res.body.firstQuestion.type).toBe("single_select");
+      });
+
+      it("requires initialPlan in body", async () => {
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({}),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(400);
+        expect(res.body.error).toContain("initialPlan is required");
+      });
+
+      it("accepts long initialPlan (no character limit)", async () => {
+        // Test that the server accepts long initialPlan values (removed 500-char limit)
+        const longPlan = "a".repeat(2000);
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: longPlan }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(201);
+        expect(res.body.sessionId).toBeDefined();
+      });
+
+      it("enforces rate limiting (1000 sessions per hour per IP)", async () => {
+        // Create 1000 sessions (should succeed)
+        for (let i = 0; i < 1000; i++) {
+          const res = await REQUEST(
+            buildApp(),
+            "POST",
+            "/api/planning/start",
+            JSON.stringify({ initialPlan: `Plan ${i}` }),
+            { "Content-Type": "application/json" }
+          );
+          expect(res.status).toBe(201);
+        }
+
+        // 1001st session should be rate limited
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "Plan 1001" }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(429);
+        expect(res.body.error).toContain("Rate limit exceeded");
+      });
+    });
+
+    describe("POST /planning/start-streaming", () => {
+      it("rejects invalid planning depth", async () => {
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start-streaming",
+          JSON.stringify({
+            initialPlan: "Build a user auth system",
+            planningDepth: "extra-large",
+          }),
+          { "Content-Type": "application/json" },
+        );
+
+        expect(res.status).toBe(400);
+        expect(res.body.error).toContain("planningDepth");
+      });
+
+      it("rejects out-of-range custom question count", async () => {
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start-streaming",
+          JSON.stringify({
+            initialPlan: "Build a user auth system",
+            customQuestionCount: 21,
+          }),
+          { "Content-Type": "application/json" },
+        );
+
+        expect(res.status).toBe(400);
+        expect(res.body.error).toContain("customQuestionCount");
+      });
+
+      it("accepts optional model params in request body", async () => {
+        const messages: Array<{ role: string; content: string }> = [];
+        const mockAgent = {
+          session: {
+            state: { messages },
+            prompt: vi.fn(async (msg: string) => {
+              messages.push({ role: "user", content: msg });
+              messages.push({
+                role: "assistant",
+                content: JSON.stringify({
+                  type: "question",
+                  data: {
+                    id: "q-scope",
+                    type: "text",
+                    question: "What should we plan first?",
+                  },
+                }),
+              });
+            }),
+            dispose: vi.fn(),
+          },
+        };
+
+        const createFnAgentSpy = vi.fn(async () => mockAgent);
+        __setCreateFnAgent(createFnAgentSpy as any);
+
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start-streaming",
+          JSON.stringify({
+            initialPlan: "Build a user auth system",
+            planningModelProvider: "google",
+            planningModelId: "gemini-2.5-pro",
+          }),
+          { "Content-Type": "application/json" },
+        );
+
+        expect(res.status).toBe(201);
+        expect(res.body.sessionId).toBeDefined();
+
+        await vi.waitFor(() => {
+          expect(createFnAgentSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+              defaultProvider: "google",
+              defaultModelId: "gemini-2.5-pro",
+            }),
+          );
+        });
+      });
+
+      // ── Lane Precedence Regression Tests ────────────────────────────────────────
+      // Tests for FN-1730: ensure model resolution follows the documented hierarchy:
+      // 1. Request body planningModelProvider + planningModelId (explicit override)
+      // 2. Project settings planningProvider + planningModelId (project lane)
+      // 3. Global settings planningGlobalProvider + planningGlobalModelId (global lane)
+      // 4. Default settings defaultProvider + defaultModelId (default fallback)
+      // 5. No explicit model (automatic resolution)
+
+      it("uses request body model override when both provider and modelId provided", async () => {
+        const mockAgent = {
+          session: {
+            state: { messages: [] },
+            prompt: vi.fn(),
+            dispose: vi.fn(),
+          },
+        };
+        const createFnAgentSpy = vi.fn(async () => mockAgent);
+        __setCreateFnAgent(createFnAgentSpy as any);
+
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start-streaming",
+          JSON.stringify({
+            initialPlan: "Test plan",
+            planningModelProvider: "google",
+            planningModelId: "gemini-2.5-pro",
+          }),
+          { "Content-Type": "application/json" },
+        );
+
+        expect(res.status).toBe(201);
+        await vi.waitFor(() => {
+          expect(createFnAgentSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+              defaultProvider: "google",
+              defaultModelId: "gemini-2.5-pro",
+            }),
+          );
+        });
+      });
+
+      it("falls back to project planning lane when no request override", async () => {
+        const mockAgent = {
+          session: {
+            state: { messages: [] },
+            prompt: vi.fn(),
+            dispose: vi.fn(),
+          },
+        };
+        const createFnAgentSpy = vi.fn(async () => mockAgent);
+        __setCreateFnAgent(createFnAgentSpy as any);
+
+        // Mock project settings with planningProvider + planningModelId
+        (store.getSettings as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+          planningProvider: "anthropic",
+          planningModelId: "claude-sonnet-4-5",
+        });
+
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start-streaming",
+          JSON.stringify({ initialPlan: "Test plan" }),
+          { "Content-Type": "application/json" },
+        );
+
+        expect(res.status).toBe(201);
+        await vi.waitFor(() => {
+          expect(createFnAgentSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+              defaultProvider: "anthropic",
+              defaultModelId: "claude-sonnet-4-5",
+            }),
+          );
+        });
+      });
+
+      it("falls back to global planning lane when project lane unset", async () => {
+        const mockAgent = {
+          session: {
+            state: { messages: [] },
+            prompt: vi.fn(),
+            dispose: vi.fn(),
+          },
+        };
+        const createFnAgentSpy = vi.fn(async () => mockAgent);
+        __setCreateFnAgent(createFnAgentSpy as any);
+
+        // Mock project settings with planningGlobalProvider + planningGlobalModelId (no project lane)
+        (store.getSettings as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+          planningGlobalProvider: "openai",
+          planningGlobalModelId: "gpt-4o",
+        });
+
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start-streaming",
+          JSON.stringify({ initialPlan: "Test plan" }),
+          { "Content-Type": "application/json" },
+        );
+
+        expect(res.status).toBe(201);
+        await vi.waitFor(() => {
+          expect(createFnAgentSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+              defaultProvider: "openai",
+              defaultModelId: "gpt-4o",
+            }),
+          );
+        });
+      });
+
+      it("falls back to default lane when all planning lanes unset", async () => {
+        const mockAgent = {
+          session: {
+            state: { messages: [] },
+            prompt: vi.fn(),
+            dispose: vi.fn(),
+          },
+        };
+        const createFnAgentSpy = vi.fn(async () => mockAgent);
+        __setCreateFnAgent(createFnAgentSpy as any);
+
+        // Mock project settings with only defaultProvider + defaultModelId
+        (store.getSettings as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+          defaultProvider: "mistral",
+          defaultModelId: "mistral-large",
+        });
+
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start-streaming",
+          JSON.stringify({ initialPlan: "Test plan" }),
+          { "Content-Type": "application/json" },
+        );
+
+        expect(res.status).toBe(201);
+        await vi.waitFor(() => {
+          expect(createFnAgentSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+              defaultProvider: "mistral",
+              defaultModelId: "mistral-large",
+            }),
+          );
+        });
+      });
+
+      it("passes no model when all lanes unset (automatic resolution)", async () => {
+        const mockAgent = {
+          session: {
+            state: { messages: [] },
+            prompt: vi.fn(),
+            dispose: vi.fn(),
+          },
+        };
+        const createFnAgentSpy = vi.fn(async () => mockAgent);
+        __setCreateFnAgent(createFnAgentSpy as any);
+
+        // Mock project settings with no model configuration
+        (store.getSettings as ReturnType<typeof vi.fn>).mockResolvedValueOnce({});
+
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start-streaming",
+          JSON.stringify({ initialPlan: "Test plan" }),
+          { "Content-Type": "application/json" },
+        );
+
+        expect(res.status).toBe(201);
+        await vi.waitFor(() => {
+          // No explicit defaultProvider/defaultModelId means automatic resolution
+          expect(createFnAgentSpy).toHaveBeenCalledWith(
+            expect.not.objectContaining({
+              defaultProvider: expect.anything(),
+              defaultModelId: expect.anything(),
+            }),
+          );
+        });
+      });
+
+      it("rejects partial request override (provider only, no modelId)", async () => {
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start-streaming",
+          JSON.stringify({
+            initialPlan: "Test plan",
+            planningModelProvider: "google",
+            // missing planningModelId
+          }),
+          { "Content-Type": "application/json" },
+        );
+
+        // Partial overrides should be treated as no override
+        // The route validates individual fields, not pair consistency
+        // Request override is ignored when modelId is missing
+        expect(res.status).toBe(201);
+      });
+
+      it("ignores partial project lane (provider only, no modelId)", async () => {
+        const mockAgent = {
+          session: {
+            state: { messages: [] },
+            prompt: vi.fn(),
+            dispose: vi.fn(),
+          },
+        };
+        const createFnAgentSpy = vi.fn(async () => mockAgent);
+        __setCreateFnAgent(createFnAgentSpy as any);
+
+        // Mock project settings with partial provider (no modelId)
+        (store.getSettings as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+          planningProvider: "anthropic",
+          // missing planningModelId
+        });
+
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start-streaming",
+          JSON.stringify({ initialPlan: "Test plan" }),
+          { "Content-Type": "application/json" },
+        );
+
+        expect(res.status).toBe(201);
+        // Partial project lane should be ignored, falls through to next tier
+        await vi.waitFor(() => {
+          // Should NOT use the partial provider
+          expect(createFnAgentSpy).toHaveBeenCalledWith(
+            expect.not.objectContaining({
+              defaultProvider: "anthropic",
+            }),
+          );
+        });
+      });
+    });
+
+    describe("GET /planning/:sessionId/stream", () => {
+      it("replays buffered events when Last-Event-ID header is provided", async () => {
+        const startRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "Reconnect planning stream" }),
+          { "Content-Type": "application/json" },
+        );
+
+        const sessionId = startRes.body.sessionId as string;
+
+        planningStreamManager.broadcast(sessionId, { type: "thinking", data: "first" });
+        planningStreamManager.broadcast(sessionId, { type: "thinking", data: "second" });
+
+        setTimeout(() => {
+          planningStreamManager.broadcast(sessionId, { type: "complete" });
+        }, 0);
+
+        const streamRes = await REQUEST(
+          buildApp(),
+          "GET",
+          `/api/planning/${sessionId}/stream`,
+          undefined,
+          { "Last-Event-ID": "1" },
+        );
+
+        expect(streamRes.status).toBe(200);
+        expect(typeof streamRes.body).toBe("string");
+        expect(streamRes.body).toContain("id: 2");
+        expect(streamRes.body).toContain("event: thinking");
+        expect(streamRes.body).toContain("id: 3");
+        expect(streamRes.body).toContain("event: complete");
+        expect(streamRes.body).not.toContain("id: 1\nevent: thinking");
+      });
+
+      it("skips replay when Last-Event-ID is missing", async () => {
+        const startRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "No replay planning stream" }),
+          { "Content-Type": "application/json" },
+        );
+
+        const sessionId = startRes.body.sessionId as string;
+
+        planningStreamManager.broadcast(sessionId, { type: "thinking", data: "first" });
+
+        setTimeout(() => {
+          planningStreamManager.broadcast(sessionId, { type: "complete" });
+        }, 0);
+
+        const streamRes = await REQUEST(buildApp(), "GET", `/api/planning/${sessionId}/stream`);
+
+        expect(streamRes.status).toBe(200);
+        expect(streamRes.body).not.toContain("id: 1\nevent: thinking");
+        expect(streamRes.body).toContain("id: 2");
+        expect(streamRes.body).toContain("event: complete");
+      });
+
+      it("gracefully ignores invalid Last-Event-ID values", async () => {
+        const startRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "Invalid last event id" }),
+          { "Content-Type": "application/json" },
+        );
+
+        const sessionId = startRes.body.sessionId as string;
+
+        planningStreamManager.broadcast(sessionId, { type: "thinking", data: "first" });
+
+        setTimeout(() => {
+          planningStreamManager.broadcast(sessionId, { type: "complete" });
+        }, 0);
+
+        const streamRes = await REQUEST(
+          buildApp(),
+          "GET",
+          `/api/planning/${sessionId}/stream`,
+          undefined,
+          { "Last-Event-ID": "not-a-number" },
+        );
+
+        expect(streamRes.status).toBe(200);
+        expect(streamRes.body).not.toContain("id: 1\nevent: thinking");
+        expect(streamRes.body).toContain("id: 2");
+        expect(streamRes.body).toContain("event: complete");
+      });
+
+      it("emits catch-up question event for awaiting_input sessions", async () => {
+        // This test verifies the fix for the mismatch where a session was advertised as
+        // needing input but the resume path initially entered loading state.
+        // When a session is already awaiting input, the stream should emit a catch-up
+        // question event immediately so late subscribers don't miss the transition.
+        const startRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "Catch-up test planning" }),
+          { "Content-Type": "application/json" },
+        );
+        const sessionId = startRes.body.sessionId as string;
+
+        // Manually simulate an awaiting_input session by updating the session state
+        // In the real app, this happens via respondToPlanning which sets currentQuestion
+        const { planningStreamManager, getSession } = await import("../planning.js");
+        const session = getSession(sessionId);
+        expect(session).toBeDefined();
+
+        // Simulate the session being in awaiting_input state with a question
+        const mockQuestion = {
+          id: "q-catchup",
+          type: "text",
+          question: "What is your preference?",
+          description: "Please choose",
+        };
+        // @ts-expect-error - accessing internal state for testing
+        session!.currentQuestion = mockQuestion;
+
+        // Broadcast a complete event after a short delay so the stream ends
+        setTimeout(() => {
+          planningStreamManager.broadcast(sessionId, { type: "complete" });
+        }, 10);
+
+        // Connect to the stream - should receive catch-up question immediately
+        const streamRes = await REQUEST(
+          buildApp(),
+          "GET",
+          `/api/planning/${sessionId}/stream`,
+        );
+
+        expect(streamRes.status).toBe(200);
+        expect(typeof streamRes.body).toBe("string");
+
+        // Should emit the question as a catch-up event
+        expect(streamRes.body).toContain("event: question");
+        expect(streamRes.body).toContain("What is your preference?");
+
+        // Should also emit complete
+        expect(streamRes.body).toContain("event: complete");
+      });
+    });
+
+    describe("POST /planning/respond", () => {
+      it("processes response and returns next question", async () => {
+        // First create a session
+        const startRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "Build a user auth system" }),
+          { "Content-Type": "application/json" }
+        );
+        expect(startRes.status).toBe(201);
+        const sessionId = startRes.body.sessionId;
+
+        // Submit a response
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { scope: "medium" } }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(200);
+        expect(res.body.type).toBe("question");
+        expect(res.body.data).toBeDefined();
+      });
+
+      it("returns summary after completing all questions", async () => {
+        // Create a session
+        const startRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "Build a user auth system" }),
+          { "Content-Type": "application/json" }
+        );
+        const sessionId = startRes.body.sessionId;
+
+        // Submit 3 responses to complete the session
+        await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { scope: "medium" } }),
+          { "Content-Type": "application/json" }
+        );
+
+        await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { requirements: "Must have login" } }),
+          { "Content-Type": "application/json" }
+        );
+
+        const finalRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { confirm: true } }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(finalRes.status).toBe(200);
+        expect(finalRes.body.type).toBe("complete");
+        expect(finalRes.body.data.title).toBeDefined();
+        expect(finalRes.body.data.description).toBeDefined();
+        expect(finalRes.body.data.suggestedSize).toBeDefined();
+        expect(finalRes.body.data.keyDeliverables).toBeInstanceOf(Array);
+      });
+
+      it("allows refine requests from completed sessions", async () => {
+        const startRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "Build a user auth system" }),
+          { "Content-Type": "application/json" }
+        );
+        const sessionId = startRes.body.sessionId;
+
+        await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { scope: "medium" } }),
+          { "Content-Type": "application/json" }
+        );
+        await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { requirements: "Must have login" } }),
+          { "Content-Type": "application/json" }
+        );
+        await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { confirm: true } }),
+          { "Content-Type": "application/json" }
+        );
+
+        const refineRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { refine: true } }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(refineRes.status).toBe(200);
+        expect(["question", "complete"]).toContain(refineRes.body.type);
+      });
+
+      it("returns 404 for invalid session ID", async () => {
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId: "invalid-session-id", responses: {} }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(404);
+        expect(res.body.error).toContain("not found");
+      });
+
+      it("requires sessionId in body", async () => {
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ responses: {} }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(400);
+        expect(res.body.error).toContain("sessionId is required");
+      });
+
+      it("requires responses object", async () => {
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId: "some-id" }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(400);
+        expect(res.body.error).toContain("responses is required");
+      });
+    });
+
+    describe("POST /planning/:sessionId/back", () => {
+      it("rewinds an active planning session", async () => {
+        const rewindSpy = vi.spyOn(planningModule, "rewindSession").mockResolvedValue({
+          currentQuestion: {
+            id: "q-scope",
+            type: "single_select",
+            question: "What is the scope of this plan?",
+            options: [],
+          },
+          history: [],
+        });
+
+        const res = await REQUEST(buildApp(), "POST", "/api/planning/session-123/back");
+
+        expect(res.status).toBe(200);
+        expect(res.body.currentQuestion.id).toBe("q-scope");
+        expect(rewindSpy).toHaveBeenCalledWith("session-123", expect.any(String), undefined);
+      });
+
+      it("returns 400 when there is no previous question", async () => {
+        vi.spyOn(planningModule, "rewindSession").mockRejectedValueOnce(
+          new planningModule.InvalidSessionStateError("Planning session has no previous question to rewind to"),
+        );
+
+        const res = await REQUEST(buildApp(), "POST", "/api/planning/session-400/back");
+
+        expect(res.status).toBe(400);
+        expect(res.body.error).toContain("no previous question");
+      });
+    });
+
+    describe("POST /planning/:sessionId/retry", () => {
+      it("retries a failed planning session", async () => {
+        const retrySpy = vi.spyOn(planningModule, "retrySession").mockResolvedValue();
+
+        const res = await REQUEST(buildApp(), "POST", "/api/planning/session-123/retry");
+
+        expect(res.status).toBe(200);
+        expect(res.body).toEqual({ success: true, sessionId: "session-123" });
+        expect(retrySpy).toHaveBeenCalledWith("session-123", expect.any(String), undefined);
+      });
+
+      it("returns 404 when planning retry session is missing", async () => {
+        vi.spyOn(planningModule, "retrySession").mockRejectedValueOnce(
+          new planningModule.SessionNotFoundError("Planning session missing"),
+        );
+
+        const res = await REQUEST(buildApp(), "POST", "/api/planning/session-404/retry");
+
+        expect(res.status).toBe(404);
+        expect(res.body.error).toContain("Planning session missing");
+      });
+
+      it("returns 400 when planning retry session is not in error state", async () => {
+        vi.spyOn(planningModule, "retrySession").mockRejectedValueOnce(
+          new planningModule.InvalidSessionStateError("Planning session is not in an error state"),
+        );
+
+        const res = await REQUEST(buildApp(), "POST", "/api/planning/session-400/retry");
+
+        expect(res.status).toBe(400);
+        expect(res.body.error).toContain("not in an error state");
+      });
+    });
+
+    describe("POST /planning/:sessionId/stop", () => {
+      it("stops an active generation", async () => {
+        const stopSpy = vi.spyOn(planningModule, "stopGeneration").mockReturnValue(true);
+
+        const res = await REQUEST(buildApp(), "POST", "/api/planning/session-123/stop");
+
+        expect(res.status).toBe(200);
+        expect(res.body).toEqual({ success: true });
+        expect(stopSpy).toHaveBeenCalledWith("session-123");
+      });
+
+      it("returns 404 when session is missing", async () => {
+        vi.spyOn(planningModule, "stopGeneration").mockReturnValue(false);
+
+        const res = await REQUEST(buildApp(), "POST", "/api/planning/session-404/stop");
+
+        expect(res.status).toBe(404);
+        expect(res.body.error).toContain("not found");
+      });
+    });
+
+    describe("POST /planning/cancel", () => {
+      it("cancels an active session", async () => {
+        // Create a session first
+        const startRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "Build a user auth system" }),
+          { "Content-Type": "application/json" }
+        );
+        const sessionId = startRes.body.sessionId;
+
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/cancel",
+          JSON.stringify({ sessionId }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(200);
+        expect(res.body.success).toBe(true);
+      });
+
+      it("returns 404 for non-existent session", async () => {
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/cancel",
+          JSON.stringify({ sessionId: "non-existent-id" }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(404);
+        expect(res.body.error).toContain("not found");
+      });
+
+      it("requires sessionId in body", async () => {
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/cancel",
+          JSON.stringify({}),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(400);
+        expect(res.body.error).toContain("sessionId is required");
+      });
+    });
+
+    describe("POST /planning/start-breakdown", () => {
+      it("uses summary override when generating subtasks", async () => {
+        const startRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "Build a user auth system" }),
+          { "Content-Type": "application/json" }
+        );
+        const sessionId = startRes.body.sessionId;
+
+        await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { scope: "medium" } }),
+          { "Content-Type": "application/json" }
+        );
+        await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { requirements: "Must have login" } }),
+          { "Content-Type": "application/json" }
+        );
+        await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { confirm: true } }),
+          { "Content-Type": "application/json" }
+        );
+
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start-breakdown",
+          JSON.stringify({
+            sessionId,
+            summary: {
+              title: "Edited auth implementation",
+              description: "Use OAuth providers and secure refresh tokens",
+              suggestedSize: "L",
+              suggestedDependencies: ["FN-321"],
+              keyDeliverables: ["OAuth integration"],
+            },
+          }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(200);
+        expect(res.body.sessionId).toBe(sessionId);
+        expect(res.body.subtasks).toHaveLength(1);
+        expect(res.body.subtasks[0]).toEqual(
+          expect.objectContaining({
+            title: "OAuth integration",
+          }),
+        );
+        expect(res.body.subtasks[0].description).toContain("Use OAuth providers and secure refresh tokens");
+      });
+    });
+
+    describe("POST /planning/create-task", () => {
+      it("creates a task from completed planning session", async () => {
+        // Setup mock store for task creation
+        (store.createTask as ReturnType<typeof vi.fn>).mockResolvedValue({
+          id: "FN-042",
+          description: "Build a user auth system",
+          column: "triage",
+          dependencies: [],
+          createdAt: "2026-01-01T00:00:00.000Z",
+          updatedAt: "2026-01-01T00:00:00.000Z",
+        });
+        (store.updateTask as ReturnType<typeof vi.fn>).mockResolvedValue({});
+        (store.logEntry as ReturnType<typeof vi.fn>).mockResolvedValue(undefined);
+
+        // Create a session and complete it
+        const startRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "Build a user auth system" }),
+          { "Content-Type": "application/json" }
+        );
+        const sessionId = startRes.body.sessionId;
+
+        // Complete the session
+        await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { scope: "medium" } }),
+          { "Content-Type": "application/json" }
+        );
+        await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { requirements: "Must have login" } }),
+          { "Content-Type": "application/json" }
+        );
+        await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { confirm: true } }),
+          { "Content-Type": "application/json" }
+        );
+
+        // Create task from planning
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/create-task",
+          JSON.stringify({ sessionId }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(201);
+        expect(store.createTask).toHaveBeenCalled();
+      });
+
+      it("uses summary override when provided", async () => {
+        (store.createTask as ReturnType<typeof vi.fn>).mockResolvedValue({
+          id: "FN-099",
+          description: "Edited task description",
+          column: "triage",
+          dependencies: ["FN-500"],
+          createdAt: "2026-01-01T00:00:00.000Z",
+          updatedAt: "2026-01-01T00:00:00.000Z",
+        });
+        (store.updateTask as ReturnType<typeof vi.fn>).mockResolvedValue({});
+        (store.logEntry as ReturnType<typeof vi.fn>).mockResolvedValue(undefined);
+
+        const startRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "Build a user auth system" }),
+          { "Content-Type": "application/json" }
+        );
+        const sessionId = startRes.body.sessionId;
+
+        await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { scope: "medium" } }),
+          { "Content-Type": "application/json" }
+        );
+        await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { requirements: "Must have login" } }),
+          { "Content-Type": "application/json" }
+        );
+        await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/respond",
+          JSON.stringify({ sessionId, responses: { confirm: true } }),
+          { "Content-Type": "application/json" }
+        );
+
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/create-task",
+          JSON.stringify({
+            sessionId,
+            summary: {
+              title: "Edited auth task",
+              description: "Edited description from summary view",
+              suggestedSize: "S",
+              suggestedDependencies: ["FN-500"],
+              keyDeliverables: ["Login flow"],
+            },
+          }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(201);
+        expect(store.createTask).toHaveBeenCalledWith(
+          expect.objectContaining({
+            title: "Edited auth task",
+            description: "Edited description from summary view",
+            dependencies: ["FN-500"],
+            priority: "normal",
+          }),
+        );
+        expect(store.updateTask).toHaveBeenCalledWith("FN-099", { size: "S" });
+      });
+
+      it("creates a task from a persisted complete session when in-memory session is missing", async () => {
+        (store.createTask as ReturnType<typeof vi.fn>).mockResolvedValue({
+          id: "FN-043",
+          description: "Build a resumable planning flow",
+          column: "triage",
+          dependencies: [],
+          createdAt: "2026-01-01T00:00:00.000Z",
+          updatedAt: "2026-01-01T00:00:00.000Z",
+        });
+        (store.updateTask as ReturnType<typeof vi.fn>).mockResolvedValue({});
+        (store.logEntry as ReturnType<typeof vi.fn>).mockResolvedValue(undefined);
+
+        const sessionId = "session-from-sqlite";
+        const mockAiSessionStore = {
+          get: vi.fn().mockReturnValue({
+            id: sessionId,
+            type: "planning",
+            status: "complete",
+            title: "Build resumable planning",
+            inputPayload: JSON.stringify({ initialPlan: "Build resumable planning sessions" }),
+            conversationHistory: "[]",
+            currentQuestion: null,
+            result: JSON.stringify({
+              title: "Build resumable planning flow",
+              description: "Persist planning results so users can create tasks later",
+              suggestedSize: "M",
+              suggestedDependencies: ["FN-100"],
+              keyDeliverables: ["Persist sessions", "Support resume"],
+            }),
+            thinkingOutput: "",
+            error: null,
+            projectId: null,
+            createdAt: "2026-01-01T00:00:00.000Z",
+            updatedAt: "2026-01-01T00:00:00.000Z",
+          }),
+          delete: vi.fn(),
+        };
+
+        const appWithAiSessionStore = express();
+        appWithAiSessionStore.use(express.json());
+        appWithAiSessionStore.use(
+          "/api",
+          createApiRoutes(store, { aiSessionStore: mockAiSessionStore as any }),
+        );
+
+        const res = await REQUEST(
+          appWithAiSessionStore,
+          "POST",
+          "/api/planning/create-task",
+          JSON.stringify({ sessionId }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(201);
+        expect(store.createTask).toHaveBeenCalledWith(
+          expect.objectContaining({
+            title: "Build resumable planning flow",
+            dependencies: ["FN-100"],
+          }),
+        );
+        expect(store.logEntry).toHaveBeenCalledWith(
+          "FN-043",
+          "Created via Planning Mode",
+          expect.stringContaining("Initial plan: Build resumable planning sessions"),
+        );
+        expect(mockAiSessionStore.delete).toHaveBeenCalledWith(sessionId);
+      });
+
+      it("creates task with explicit summary priority", async () => {
+        (store.createTask as ReturnType<typeof vi.fn>).mockResolvedValue({
+          id: "FN-100",
+          description: "Priority task",
+          column: "triage",
+          dependencies: [],
+          createdAt: "2026-01-01T00:00:00.000Z",
+          updatedAt: "2026-01-01T00:00:00.000Z",
+        });
+        (store.updateTask as ReturnType<typeof vi.fn>).mockResolvedValue({});
+        (store.logEntry as ReturnType<typeof vi.fn>).mockResolvedValue(undefined);
+
+        const startRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "Build a user auth system" }),
+          { "Content-Type": "application/json" }
+        );
+        const sessionId = startRes.body.sessionId;
+
+        await REQUEST(buildApp(), "POST", "/api/planning/respond", JSON.stringify({ sessionId, responses: { scope: "medium" } }), { "Content-Type": "application/json" });
+        await REQUEST(buildApp(), "POST", "/api/planning/respond", JSON.stringify({ sessionId, responses: { requirements: "Must have login" } }), { "Content-Type": "application/json" });
+        await REQUEST(buildApp(), "POST", "/api/planning/respond", JSON.stringify({ sessionId, responses: { confirm: true } }), { "Content-Type": "application/json" });
+
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/create-task",
+          JSON.stringify({
+            sessionId,
+            summary: {
+              title: "Priority auth task",
+              description: "High-priority planning output",
+              suggestedSize: "M",
+              priority: "high",
+              suggestedDependencies: [],
+              keyDeliverables: ["Login flow"],
+            },
+          }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(201);
+        expect(store.createTask).toHaveBeenCalledWith(
+          expect.objectContaining({
+            title: "Priority auth task",
+            priority: "high",
+          }),
+        );
+      });
+
+      it("creates multiple planning tasks with per-subtask priorities and defaults", async () => {
+        (store.createTask as ReturnType<typeof vi.fn>)
+          .mockResolvedValueOnce({
+            id: "FN-201",
+            description: "First",
+            column: "triage",
+            dependencies: [],
+            createdAt: "2026-01-01T00:00:00.000Z",
+            updatedAt: "2026-01-01T00:00:00.000Z",
+          })
+          .mockResolvedValueOnce({
+            id: "FN-202",
+            description: "Second",
+            column: "triage",
+            dependencies: [],
+            createdAt: "2026-01-01T00:00:00.000Z",
+            updatedAt: "2026-01-01T00:00:00.000Z",
+          });
+        (store.updateTask as ReturnType<typeof vi.fn>).mockResolvedValue({});
+        (store.logEntry as ReturnType<typeof vi.fn>).mockResolvedValue(undefined);
+
+        const startRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "Build a user auth system" }),
+          { "Content-Type": "application/json" }
+        );
+        const planningSessionId = startRes.body.sessionId;
+
+        await REQUEST(buildApp(), "POST", "/api/planning/respond", JSON.stringify({ sessionId: planningSessionId, responses: { scope: "medium" } }), { "Content-Type": "application/json" });
+        await REQUEST(buildApp(), "POST", "/api/planning/respond", JSON.stringify({ sessionId: planningSessionId, responses: { requirements: "Must have login" } }), { "Content-Type": "application/json" });
+        await REQUEST(buildApp(), "POST", "/api/planning/respond", JSON.stringify({ sessionId: planningSessionId, responses: { confirm: true } }), { "Content-Type": "application/json" });
+
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/create-tasks",
+          JSON.stringify({
+            planningSessionId,
+            subtasks: [
+              {
+                id: "subtask-1",
+                title: "Auth backend",
+                description: "Implement backend",
+                suggestedSize: "M",
+                priority: "urgent",
+                dependsOn: [],
+              },
+              {
+                id: "subtask-2",
+                title: "Auth UI",
+                description: "Implement UI",
+                suggestedSize: "S",
+                dependsOn: ["subtask-1"],
+              },
+            ],
+          }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(201);
+        expect(store.createTask).toHaveBeenNthCalledWith(
+          1,
+          expect.objectContaining({ title: "Auth backend", priority: "urgent" }),
+        );
+        expect(store.createTask).toHaveBeenNthCalledWith(
+          2,
+          expect.objectContaining({ title: "Auth UI", priority: "normal" }),
+        );
+      });
+
+      it("returns 400 if session is not complete", async () => {
+        // Create a session but don't complete it
+        const startRes = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/start",
+          JSON.stringify({ initialPlan: "Build a user auth system" }),
+          { "Content-Type": "application/json" }
+        );
+        const sessionId = startRes.body.sessionId;
+
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/create-task",
+          JSON.stringify({ sessionId }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(400);
+        expect(res.body.error).toContain("not complete");
+      });
+
+      it("returns 404 for invalid session ID", async () => {
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/create-task",
+          JSON.stringify({ sessionId: "invalid-session-id" }),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(404);
+        expect(res.body.error).toContain("not found");
+      });
+
+      it("requires sessionId in body", async () => {
+        const res = await REQUEST(
+          buildApp(),
+          "POST",
+          "/api/planning/create-task",
+          JSON.stringify({}),
+          { "Content-Type": "application/json" }
+        );
+
+        expect(res.status).toBe(400);
+        expect(res.body.error).toContain("sessionId is required");
+      });
+    });
+});
+
+/**
+ * Saturated-slot regression coverage for utility AI routes.
+ * These tests prove that planning, subtask, and interview routes remain executable
+ * when the task-lane is saturated (maxConcurrent = 0).
+ *
+ * UTILITY PATH contract: These routes are on the heartbeat control-plane lane
+ * and must NOT be gated on task-lane saturation (maxConcurrent, semaphore, queue depth).
+ *
+ * See .fusion/memory/MEMORY.md "Heartbeat Control-Plane Lane (FN-1487)"
+ */
+describe("Saturated-slot regression: utility AI routes", () => {
+  /**
+   * Helper to create a store with saturated settings (maxConcurrent = 0).
+   * This simulates the task-lane being fully saturated.
+   */
+  function createSaturatedStore(overrides: Partial<TaskStore> = {}): TaskStore {
+    return createMockStore({
+      getSettings: vi.fn().mockResolvedValue({
+        maxConcurrent: 0, // SATURATED: zero task slots available
+        promptOverrides: {},
+      }),
+      getSettingsFast: vi.fn().mockResolvedValue({
+        maxConcurrent: 0,
+      }),
+      ...overrides,
+    } as Partial<TaskStore>);
+  }
+
+  /**
+   * Helper to create an app with saturated settings and optional aiSessionStore.
+   */
+  function buildSaturatedApp(options: { aiSessionStore?: any } = {}) {
+    const store = createSaturatedStore();
+    const app = express();
+    app.use(express.json());
+    const routeOptions = options.aiSessionStore ? { aiSessionStore: options.aiSessionStore } : undefined;
+    app.use("/api", createApiRoutes(store, routeOptions as any));
+    return { app, store };
+  }
+
+  /**
+   * Setup a mock agent for planning session tests.
+   */
+  function setupSaturatedPlanningMockAgent() {
+    const questionResponses = [
+      JSON.stringify({
+        type: "question",
+        data: {
+          id: "q-scope",
+          type: "single_select",
+          question: "What is the scope?",
+          description: "Choose scope.",
+          options: [
+            { id: "small", label: "Small" },
+            { id: "medium", label: "Medium" },
+            { id: "large", label: "Large" },
+          ],
+        },
+      }),
+      JSON.stringify({
+        type: "question",
+        data: {
+          id: "q-req",
+          type: "text",
+          question: "Requirements?",
+        },
+      }),
+      JSON.stringify({
+        type: "complete",
+        data: {
+          title: "Saturated Plan",
+          description: "A plan created under saturation",
+          suggestedSize: "M",
+          suggestedDependencies: [],
+          keyDeliverables: ["Item 1", "Item 2"],
+        },
+      }),
+    ];
+
+    const messages: Array<{ role: string; content: string }> = [];
+    let callIndex = 0;
+    const mockAgent = {
+      session: {
+        state: { messages },
+        prompt: vi.fn(async (msg: string) => {
+          messages.push({ role: "user", content: msg });
+          const response = questionResponses[callIndex++] ?? questionResponses[questionResponses.length - 1];
+          messages.push({ role: "assistant", content: response });
+        }),
+        dispose: vi.fn(),
+      },
+    };
+    __setCreateFnAgent(async () => mockAgent);
+  }
+
+  describe("POST /api/planning/start — utility lane independence", () => {
+    beforeEach(() => {
+      __resetPlanningState();
+      setupSaturatedPlanningMockAgent();
+    });
+
+    afterEach(() => {
+      __setCreateFnAgent(undefined as any);
+    });
+
+    it("executes successfully when task-lane is saturated (maxConcurrent=0)", async () => {
+      const { app } = buildSaturatedApp();
+
+      const res = await REQUEST(
+        app,
+        "POST",
+        "/api/planning/start",
+        JSON.stringify({ initialPlan: "Plan a feature under saturated task-lane" }),
+        { "Content-Type": "application/json" },
+      );
+
+      // UTILITY PATH: Planning start must NOT be gated on maxConcurrent
+      expect(res.status).toBe(201);
+      expect(res.body.sessionId).toBeDefined();
+      expect(res.body.firstQuestion).toBeDefined();
+    });
+  });
+
+  describe("POST /api/planning/start-streaming — utility lane independence", () => {
+    beforeEach(() => {
+      __resetPlanningState();
+    });
+
+    afterEach(() => {
+      __setCreateFnAgent(undefined as any);
+    });
+
+    it("executes successfully when task-lane is saturated (maxConcurrent=0)", async () => {
+      // Mock agent for streaming
+      const messages: Array<{ role: string; content: string }> = [];
+      const mockAgent = {
+        session: {
+          state: { messages },
+          prompt: vi.fn(async (msg: string) => {
+            messages.push({ role: "user", content: msg });
+            messages.push({
+              role: "assistant",
+              content: JSON.stringify({
+                type: "question",
+                data: { id: "q-scope", type: "text", question: "What to plan?" },
+              }),
+            });
+          }),
+          dispose: vi.fn(),
+        },
+      };
+      __setCreateFnAgent(async () => mockAgent);
+
+      const { app } = buildSaturatedApp();
+
+      const res = await REQUEST(
+        app,
+        "POST",
+        "/api/planning/start-streaming",
+        JSON.stringify({ initialPlan: "Streaming plan under saturation" }),
+        { "Content-Type": "application/json" },
+      );
+
+      // UTILITY PATH: Planning streaming must NOT be gated on maxConcurrent
+      expect(res.status).toBe(201);
+      expect(res.body.sessionId).toBeDefined();
+    });
+  });
+
+  describe("POST /api/planning/respond — utility lane independence", () => {
+    beforeEach(() => {
+      __resetPlanningState();
+      setupSaturatedPlanningMockAgent();
+    });
+
+    afterEach(() => {
+      __setCreateFnAgent(undefined as any);
+    });
+
+    it("executes successfully when task-lane is saturated (maxConcurrent=0)", async () => {
+      const { app } = buildSaturatedApp();
+
+      // First create a session
+      const startRes = await REQUEST(
+        app,
+        "POST",
+        "/api/planning/start",
+        JSON.stringify({ initialPlan: "Test respond under saturation" }),
+        { "Content-Type": "application/json" },
+      );
+      expect(startRes.status).toBe(201);
+      const sessionId = startRes.body.sessionId;
+
+      // Submit response - must NOT be blocked by maxConcurrent
+      const res = await REQUEST(
+        app,
+        "POST",
+        "/api/planning/respond",
+        JSON.stringify({ sessionId, responses: { scope: "medium" } }),
+        { "Content-Type": "application/json" },
+      );
+
+      expect(res.status).toBe(200);
+      expect(res.body.type).toBe("question");
+    });
+
+    it("preserves lock-conflict 409 semantics when task-lane is saturated", async () => {
+      // Create mock aiSessionStore that returns conflict on acquire
+      const mockAiSessionStore = {
+        acquireLock: vi.fn().mockReturnValue({ acquired: false, currentHolder: "tab-a" }),
+        releaseLock: vi.fn(),
+      };
+
+      const { app } = buildSaturatedApp({ aiSessionStore: mockAiSessionStore });
+
+      // Create session
+      const startRes = await REQUEST(
+        app,
+        "POST",
+        "/api/planning/start",
+        JSON.stringify({ initialPlan: "Test respond lock under saturation" }),
+        { "Content-Type": "application/json" },
+      );
+      expect(startRes.status).toBe(201);
+      const sessionId = startRes.body.sessionId;
+
+      // Respond with conflicting tabId - mock returns conflict
+      const conflictRes = await REQUEST(
+        app,
+        "POST",
+        "/api/planning/respond",
+        JSON.stringify({ sessionId, responses: { scope: "medium" }, tabId: "tab-b" }),
+        { "Content-Type": "application/json" },
+      );
+
+      expect(conflictRes.status).toBe(409);
+      expect(conflictRes.body).toEqual({
+        error: "Session locked by another tab",
+        lockedByTab: "tab-a",
+      });
+    });
+  });
+
+  describe("POST /api/planning/:sessionId/retry — utility lane independence", () => {
+    it("executes successfully when task-lane is saturated (maxConcurrent=0)", async () => {
+      const retrySpy = vi.spyOn(planningModule, "retrySession").mockResolvedValue();
+      const { app } = buildSaturatedApp();
+
+      const res = await REQUEST(app, "POST", "/api/planning/session-sat-retry/retry");
+
+      // UTILITY PATH: Planning retry must NOT be gated on maxConcurrent
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual({ success: true, sessionId: "session-sat-retry" });
+      expect(retrySpy).toHaveBeenCalled();
+    });
+
+    it("preserves lock-conflict 409 semantics when task-lane is saturated", async () => {
+      // Create mock that returns conflict
+      const mockAiSessionStore = {
+        acquireLock: vi.fn().mockReturnValue({ acquired: false, currentHolder: "tab-x" }),
+        releaseLock: vi.fn(),
+      };
+
+      const { app } = buildSaturatedApp({ aiSessionStore: mockAiSessionStore });
+
+      const conflictRes = await REQUEST(
+        app,
+        "POST",
+        "/api/planning/session-locked-retry/retry",
+        JSON.stringify({ tabId: "tab-y" }),
+        { "Content-Type": "application/json" },
+      );
+
+      expect(conflictRes.status).toBe(409);
+      expect(conflictRes.body).toEqual({
+        error: "Session locked by another tab",
+        lockedByTab: "tab-x",
+      });
+    });
+  });
+
+  describe("POST /api/subtasks/start-streaming — utility lane independence", () => {
+    it("executes successfully when task-lane is saturated (maxConcurrent=0)", async () => {
+      // Mock the subtask breakdown module to return proper format
+      const mockCreateSubtaskSession = vi.fn().mockResolvedValue({ sessionId: "subtask-sat-session" });
+      vi.spyOn(subtaskBreakdownModule, "createSubtaskSession").mockImplementation(mockCreateSubtaskSession);
+
+      try {
+        const { app } = buildSaturatedApp();
+
+        const res = await REQUEST(
+          app,
+          "POST",
+          "/api/subtasks/start-streaming",
+          JSON.stringify({ description: "Break into subtasks under saturation" }),
+          { "Content-Type": "application/json" },
+        );
+
+        // UTILITY PATH: Subtask start must NOT be gated on maxConcurrent
+        expect(res.status).toBe(201);
+        expect(res.body.sessionId).toBeDefined();
+        expect(mockCreateSubtaskSession).toHaveBeenCalled();
+      } finally {
+        vi.restoreAllMocks();
+      }
+    });
+  });
+
+  describe("POST /api/subtasks/:sessionId/retry — utility lane independence", () => {
+    it("executes successfully when task-lane is saturated (maxConcurrent=0)", async () => {
+      const retrySpy = vi.spyOn(subtaskBreakdownModule, "retrySubtaskSession").mockResolvedValue();
+      const { app } = buildSaturatedApp();
+
+      const res = await REQUEST(app, "POST", "/api/subtasks/session-sat-retry/retry");
+
+      // UTILITY PATH: Subtask retry must NOT be gated on maxConcurrent
+      expect(res.status).toBe(200);
+      expect(retrySpy).toHaveBeenCalled();
+    });
+
+    it("preserves lock-conflict 409 semantics when task-lane is saturated", async () => {
+      // Create mock that returns conflict
+      const mockAiSessionStore = {
+        acquireLock: vi.fn().mockReturnValue({ acquired: false, currentHolder: "tab-locked" }),
+        releaseLock: vi.fn(),
+      };
+
+      const { app } = buildSaturatedApp({ aiSessionStore: mockAiSessionStore });
+
+      const conflictRes = await REQUEST(
+        app,
+        "POST",
+        "/api/subtasks/subtask-locked-retry/retry",
+        JSON.stringify({ tabId: "tab-conflict" }),
+        { "Content-Type": "application/json" },
+      );
+
+      expect(conflictRes.status).toBe(409);
+      expect(conflictRes.body).toEqual({
+        error: "Session locked by another tab",
+        lockedByTab: "tab-locked",
+      });
+    });
+  });
+});
+
+/**
+ * Saturated-slot regression coverage for heartbeat wake routes.
+ * These tests prove that comment-triggered and steering-triggered heartbeat wake
+ * paths remain executable when the task-lane is saturated.
+ *
+ * UTILITY PATH contract: Wake delegation (heartbeatMonitor.executeHeartbeat) is on
+ * the heartbeat control-plane lane and must NOT be gated on task-lane saturation.
+ *
+ * See .fusion/memory/MEMORY.md "Heartbeat Control-Plane Lane (FN-1487)"
+ */
+describe("Saturated-slot regression: heartbeat wake routes", () => {
+  /**
+   * Helper to create a store with saturated settings (maxConcurrent = 0).
+   */
+  function createSaturatedStore(overrides: Partial<TaskStore> = {}): TaskStore {
+    return createMockStore({
+      getSettings: vi.fn().mockResolvedValue({
+        maxConcurrent: 0, // SATURATED: zero task slots available
+        promptOverrides: {},
+      }),
+      getSettingsFast: vi.fn().mockResolvedValue({
+        maxConcurrent: 0,
+      }),
+      ...overrides,
+    } as Partial<TaskStore>);
+  }
+
+  describe("POST /api/tasks/:id/comments — utility lane independence", () => {
+    it("triggers heartbeat wake for assigned agent when task-lane is saturated", async () => {
+      const tempDir = mkdtempSync(join(tmpdir(), "kb-routes-sat-comment-"));
+      const fusionDir = join(tempDir, ".fusion");
+      mkdirSync(fusionDir, { recursive: true });
+
+      try {
+        const { AgentStore } = await import("@fusion/core");
+        const agentStore = new AgentStore({ rootDir: fusionDir });
+        await agentStore.init();
+        const agent = await agentStore.createAgent({ name: "Saturated Wake Agent", role: "executor" });
+        await agentStore.updateAgent(agent.id, {
+          runtimeConfig: { messageResponseMode: "immediate" },
+        });
+
+        const heartbeatMonitor = {
+          executeHeartbeat: vi.fn().mockResolvedValue({ id: "run-sat-1" }),
+        };
+
+        const updatedTask = {
+          ...FAKE_TASK_DETAIL,
+          id: "KB-SAT-001",
+          assignedAgentId: agent.id,
+          comments: [{ id: "comment-sat-1", text: "Hello", author: "user", createdAt: "2026-01-01T00:00:00.000Z" }],
+        };
+
+        const store = createSaturatedStore({
+          addTaskComment: vi.fn().mockResolvedValue(updatedTask),
+          getFusionDir: vi.fn().mockReturnValue(fusionDir),
+        });
+
+        const app = express();
+        app.use(express.json());
+        app.use("/api", createApiRoutes(store, { heartbeatMonitor } as any));
+
+        const res = await REQUEST(
+          app,
+          "POST",
+          "/api/tasks/KB-SAT-001/comments",
+          JSON.stringify({ text: "Hello" }),
+          { "Content-Type": "application/json" },
+        );
+
+        expect(res.status).toBe(200);
+        // UTILITY PATH: Wake must NOT be blocked by maxConcurrent=0
+        await vi.waitFor(() => {
+          expect(heartbeatMonitor.executeHeartbeat).toHaveBeenCalledWith(expect.objectContaining({
+            agentId: agent.id,
+            source: "on_demand",
+            taskId: "KB-SAT-001",
+            triggeringCommentIds: ["comment-sat-1"],
+            triggeringCommentType: "task",
+          }));
+        }, { timeout: 1000 });
+      } finally {
+        rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+
+    it("preserves active-run conflict 409 semantics when task-lane is saturated", async () => {
+      const tempDir = mkdtempSync(join(tmpdir(), "kb-routes-sat-active-run-"));
+      const fusionDir = join(tempDir, ".fusion");
+      mkdirSync(fusionDir, { recursive: true });
+      let agentStore: any;
+
+      try {
+        const { AgentStore } = await import("@fusion/core");
+        agentStore = new AgentStore({ rootDir: fusionDir });
+        await agentStore.init();
+        const agent = await agentStore.createAgent({ name: "Active Run Agent", role: "executor" });
+        await agentStore.updateAgent(agent.id, {
+          runtimeConfig: { messageResponseMode: "immediate" },
+        });
+        // Start an active run (simulates existing heartbeat)
+        await agentStore.startHeartbeatRun(agent.id);
+
+        const heartbeatMonitor = {
+          executeHeartbeat: vi.fn().mockResolvedValue({ id: "run-sat-2" }),
+        };
+
+        const updatedTask = {
+          ...FAKE_TASK_DETAIL,
+          id: "KB-SAT-002",
+          assignedAgentId: agent.id,
+          comments: [{ id: "comment-sat-2", text: "Hello", author: "user", createdAt: "2026-01-01T00:00:00.000Z" }],
+        };
+
+        const store = createSaturatedStore({
+          addTaskComment: vi.fn().mockResolvedValue(updatedTask),
+          getFusionDir: vi.fn().mockReturnValue(fusionDir),
+        });
+
+        const app = express();
+        app.use(express.json());
+        app.use("/api", createApiRoutes(store, { heartbeatMonitor } as any));
+
+        const res = await REQUEST(
+          app,
+          "POST",
+          "/api/tasks/KB-SAT-002/comments",
+          JSON.stringify({ text: "Hello" }),
+          { "Content-Type": "application/json" },
+        );
+
+        expect(res.status).toBe(200);
+        // Active run conflict must still work under saturation
+        await vi.waitFor(() => {
+          expect(heartbeatMonitor.executeHeartbeat).not.toHaveBeenCalled();
+        }, { timeout: 1000 });
+      } finally {
+        agentStore?.close?.();
+        rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+  });
+
+  describe("POST /api/agents/:id/runs — utility lane independence", () => {
+    it("accepts triggering comment wake fields when task-lane is saturated", async () => {
+      const tempDir = mkdtempSync(join(tmpdir(), "kb-routes-sat-agent-runs-"));
+      const fusionDir = join(tempDir, ".fusion");
+      mkdirSync(fusionDir, { recursive: true });
+
+      try {
+        const { AgentStore } = await import("@fusion/core");
+        const agentStore = new AgentStore({ rootDir: fusionDir });
+        await agentStore.init();
+        const agent = await agentStore.createAgent({
+          name: "Saturated Run Agent",
+          role: "executor",
+        });
+
+        const store = createSaturatedStore({
+          getFusionDir: vi.fn().mockReturnValue(fusionDir),
+        } as any);
+
+        const app = express();
+        app.use(express.json());
+        app.use("/api", createApiRoutes(store));
+
+        const res = await REQUEST(
+          app,
+          "POST",
+          `/api/agents/${agent.id}/runs`,
+          JSON.stringify({
+            source: "on_demand",
+            triggerDetail: "task-comment",
+            taskId: "FN-SAT-001",
+            triggeringCommentIds: ["c-sat-1", "c-sat-2"],
+            triggeringCommentType: "task",
+          }),
+          { "Content-Type": "application/json" },
+        );
+
+        // UTILITY PATH: Agent run creation must NOT be blocked by maxConcurrent=0
+        expect(res.status).toBe(201);
+        expect(res.body.contextSnapshot).toMatchObject({
+          wakeReason: "on_demand",
+          triggerDetail: "task-comment",
+          taskId: "FN-SAT-001",
+          triggeringCommentIds: ["c-sat-1", "c-sat-2"],
+          triggeringCommentType: "task",
+        });
+      } finally {
+        rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+
+    it("preserves validation 400 for invalid triggeringCommentIds when task-lane is saturated", async () => {
+      const tempDir = mkdtempSync(join(tmpdir(), "kb-routes-sat-validation-"));
+      const fusionDir = join(tempDir, ".fusion");
+      mkdirSync(fusionDir, { recursive: true });
+
+      try {
+        const { AgentStore } = await import("@fusion/core");
+        const agentStore = new AgentStore({ rootDir: fusionDir });
+        await agentStore.init();
+        const agent = await agentStore.createAgent({
+          name: "Validation Agent",
+          role: "executor",
+        });
+
+        const store = createSaturatedStore({
+          getFusionDir: vi.fn().mockReturnValue(fusionDir),
+        } as any);
+
+        const app = express();
+        app.use(express.json());
+        app.use("/api", createApiRoutes(store));
+
+        // Invalid: triggeringCommentIds is a string, not array
+        const res = await REQUEST(
+          app,
+          "POST",
+          `/api/agents/${agent.id}/runs`,
+          JSON.stringify({
+            source: "on_demand",
+            triggeringCommentIds: "not-an-array",
+          }),
+          { "Content-Type": "application/json" },
+        );
+
+        // Validation must still work under saturation
+        expect(res.status).toBe(400);
+        expect(res.body.error).toContain("triggeringCommentIds must be an array");
+      } finally {
+        rmSync(tempDir, { recursive: true, force: true });
+      }
+    }, 15_000);
+  });
+});
+
+describe("DELETE /api/ai-sessions/cleanup", () => {
+  let store: TaskStore;
+
+  beforeEach(() => {
+    store = createMockStore();
+  });
+
+  it("returns cleanup summary with default maxAgeMs", async () => {
+    const mockAiSessionStore = {
+      cleanupStaleSessions: vi.fn().mockReturnValue({
+        terminalDeleted: 5,
+        orphanedDeleted: 2,
+        totalDeleted: 7,
+      }),
+    };
+
+    const app = express();
+    app.use(express.json());
+    app.use("/api", createApiRoutes(store, { aiSessionStore: mockAiSessionStore as any }));
+
+    const res = await REQUEST(app, "DELETE", "/api/ai-sessions/cleanup");
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      terminalDeleted: 5,
+      orphanedDeleted: 2,
+      totalDeleted: 7,
+      maxAgeMs: SESSION_CLEANUP_DEFAULT_MAX_AGE_MS,
+    });
+    expect(mockAiSessionStore.cleanupStaleSessions).toHaveBeenCalledWith(SESSION_CLEANUP_DEFAULT_MAX_AGE_MS);
+  });
+
+  it("respects maxAgeMs override and clamps values below one hour", async () => {
+    const mockAiSessionStore = {
+      cleanupStaleSessions: vi.fn().mockReturnValue({
+        terminalDeleted: 1,
+        orphanedDeleted: 1,
+        totalDeleted: 2,
+      }),
+    };
+
+    const app = express();
+    app.use(express.json());
+    app.use("/api", createApiRoutes(store, { aiSessionStore: mockAiSessionStore as any }));
+
+    const res = await REQUEST(app, "DELETE", "/api/ai-sessions/cleanup?maxAgeMs=1000");
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      terminalDeleted: 1,
+      orphanedDeleted: 1,
+      totalDeleted: 2,
+      maxAgeMs: 60 * 60 * 1000,
+    });
+    expect(mockAiSessionStore.cleanupStaleSessions).toHaveBeenCalledWith(60 * 60 * 1000);
+  });
+
+  it("returns 503 when aiSessionStore is unavailable", async () => {
+    const app = express();
+    app.use(express.json());
+    app.use("/api", createApiRoutes(store));
+
+    const res = await REQUEST(app, "DELETE", "/api/ai-sessions/cleanup");
+
+    expect(res.status).toBe(503);
+    expect(res.body).toEqual({ error: "Session store not available" });
+  });
+});
+
+describe("POST /api/ai-sessions/:id/ping", () => {
+  let store: TaskStore;
+
+  beforeEach(() => {
+    store = createMockStore();
+  });
+
+  it("returns 200 when the session exists", async () => {
+    const mockAiSessionStore = {
+      ping: vi.fn().mockReturnValue(true),
+    };
+
+    const app = express();
+    app.use(express.json());
+    app.use("/api", createApiRoutes(store, { aiSessionStore: mockAiSessionStore as any }));
+
+    const res = await REQUEST(app, "POST", "/api/ai-sessions/session-123/ping");
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ ok: true });
+    expect(mockAiSessionStore.ping).toHaveBeenCalledWith("session-123");
+  });
+
+  it("returns 404 when the session does not exist", async () => {
+    const mockAiSessionStore = {
+      ping: vi.fn().mockReturnValue(false),
+    };
+
+    const app = express();
+    app.use(express.json());
+    app.use("/api", createApiRoutes(store, { aiSessionStore: mockAiSessionStore as any }));
+
+    const res = await REQUEST(app, "POST", "/api/ai-sessions/missing-session/ping");
+
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({ error: "Session not found" });
+    expect(mockAiSessionStore.ping).toHaveBeenCalledWith("missing-session");
+  });
+});
+
+// ── AI Summarize Title Routes ───────────────────────────────────────────────
+// Tests for FN-1730: Lane precedence regression for title summarization endpoint
+// Model resolution hierarchy:
+// 1. Request body provider + modelId (explicit override)
+// 2. Project titleSummarizerProvider + titleSummarizerModelId (project lane)
+// 3. Global titleSummarizerGlobalProvider + titleSummarizerGlobalModelId (global lane)
+// 4. Default defaultProvider + defaultModelId (default fallback)
+//
+// Note: These tests verify that the route accepts the correct parameters and validates
+// them properly. The actual AI summarization is tested separately in the core package.
+// The lane precedence behavior is verified through integration tests.
+
+describe("POST /api/ai/summarize-title", () => {
+  let store: TaskStore;
+
+  beforeEach(() => {
+    store = createMockStore({
+      getRootDir: vi.fn().mockReturnValue("/test/project"),
+    });
+  });
+
+  function buildApp() {
+    const app = express();
+    app.use(express.json());
+    app.use("/api", createApiRoutes(store));
+    return app;
+  }
+
+  function captureDiagnostics(): LogEntry[] {
+    const entries: LogEntry[] = [];
+    setDiagnosticsSink((level, scope, message, context) => {
+      entries.push({
+        level,
+        scope,
+        message,
+        context,
+        timestamp: new Date(),
+      });
+    });
+    return entries;
+  }
+
+  it("validates description is required", async () => {
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      "/api/ai/summarize-title",
+      JSON.stringify({}),
+      { "Content-Type": "application/json" },
+    );
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toContain("description");
+  });
+
+  it("validates description must be a string", async () => {
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      "/api/ai/summarize-title",
+      JSON.stringify({ description: 123 }),
+      { "Content-Type": "application/json" },
+    );
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toContain("description");
+  });
+
+  it("validates description length (minimum 200 characters)", async () => {
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      "/api/ai/summarize-title",
+      JSON.stringify({
+        description: "Short description",
+      }),
+      { "Content-Type": "application/json" },
+    );
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toContain("at least 201 characters");
+  });
+
+  it("accepts optional provider and modelId parameters", async () => {
+    const fusionCore = await import("@fusion/core");
+    const summarizeTitleSpy = vi
+      .spyOn(fusionCore, "summarizeTitle")
+      .mockResolvedValueOnce("Generated title");
+
+    const description = "x".repeat(300);
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      "/api/ai/summarize-title",
+      JSON.stringify({
+        description,
+        provider: "google",
+        modelId: "gemini-2.5-pro",
+      }),
+      { "Content-Type": "application/json" },
+    );
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ title: "Generated title" });
+    expect(summarizeTitleSpy).toHaveBeenCalledWith(
+      description,
+      "/test/project",
+      "google",
+      "gemini-2.5-pro",
+    );
+  });
+
+  it("emits structured diagnostics for unexpected summarize failures", async () => {
+    const diagnostics = captureDiagnostics();
+    const fusionCore = await import("@fusion/core");
+    vi.spyOn(fusionCore, "summarizeTitle").mockRejectedValueOnce(new Error("summarize boom"));
+
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      "/api/ai/summarize-title",
+      JSON.stringify({ description: "x".repeat(300) }),
+      { "Content-Type": "application/json" },
+    );
+
+    expect(res.status).toBe(500);
+    expect(res.body.error).toContain("summarize boom");
+    expect(diagnostics).toContainEqual(
+      expect.objectContaining({
+        level: "error",
+        scope: "ai-summarize",
+        message: "Unexpected summarize title error",
+        context: expect.objectContaining({
+          operation: "summarize-title",
+          error: expect.objectContaining({ message: "summarize boom" }),
+        }),
+      }),
+    );
+  });
+
+  it("emits debug-gated summarize request and model diagnostics when FUSION_DEBUG_AI is enabled", async () => {
+    const diagnostics = captureDiagnostics();
+    const fusionCore = await import("@fusion/core");
+    vi.spyOn(fusionCore, "summarizeTitle").mockResolvedValueOnce("Generated title");
+
+    const previousDebug = process.env.FUSION_DEBUG_AI;
+    process.env.FUSION_DEBUG_AI = "1";
+
+    try {
+      const description = "x".repeat(320);
+      const res = await REQUEST(
+        buildApp(),
+        "POST",
+        "/api/ai/summarize-title",
+        JSON.stringify({
+          description,
+          provider: "google",
+          modelId: "gemini-2.5-pro",
+        }),
+        { "Content-Type": "application/json" },
+      );
+
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual({ title: "Generated title" });
+      expect(diagnostics).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            level: "info",
+            scope: "ai-summarize",
+            message: "Summarize title request",
+            context: expect.objectContaining({
+              descriptionLength: description.length,
+              operation: "summarize-title-request",
+            }),
+          }),
+          expect.objectContaining({
+            level: "info",
+            scope: "ai-summarize",
+            message: "Summarize title model resolved",
+            context: expect.objectContaining({
+              provider: "google",
+              modelId: "gemini-2.5-pro",
+              operation: "summarize-title-model-resolution",
+            }),
+          }),
+        ]),
+      );
+    } finally {
+      if (previousDebug === undefined) {
+        delete process.env.FUSION_DEBUG_AI;
+      } else {
+        process.env.FUSION_DEBUG_AI = previousDebug;
+      }
+    }
+  });
+
+  it("uses the project default override for summarize-title when no higher lane is configured", async () => {
+    const fusionCore = await import("@fusion/core");
+    const summarizeTitleSpy = vi
+      .spyOn(fusionCore, "summarizeTitle")
+      .mockResolvedValueOnce("Generated title");
+
+    (store.getSettings as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      defaultProviderOverride: "openai",
+      defaultModelIdOverride: "gpt-4o",
+      defaultProvider: "anthropic",
+      defaultModelId: "claude-sonnet-4-5",
+    });
+
+    const description = "x".repeat(300);
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      "/api/ai/summarize-title",
+      JSON.stringify({ description }),
+      { "Content-Type": "application/json" },
+    );
+
+    expect(res.status).toBe(200);
+    expect(summarizeTitleSpy).toHaveBeenCalledWith(
+      description,
+      "/test/project",
+      "openai",
+      "gpt-4o",
+    );
+  });
+});
+
+describe("POST /planning/start-streaming with projectId scoping", () => {
+  const projectId = "proj-planning-scoped";
+
+  let defaultStore: TaskStore;
+  let scopedStore: TaskStore;
+
+  beforeEach(() => {
+    defaultStore = createMockStore();
+    scopedStore = createMockStore({
+      getRootDir: vi.fn().mockReturnValue("/scoped/planning/project"),
+    });
+
+    vi.spyOn(projectStoreResolver, "getOrCreateProjectStore").mockResolvedValue(scopedStore);
+    __resetPlanningState();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    __setCreateFnAgent(undefined as any);
+  });
+
+  function buildApp() {
+    const app = express();
+    app.use(express.json());
+    app.use("/api", createApiRoutes(defaultStore));
+    return app;
+  }
+
+  it("uses scoped store settings for prompt resolution when projectId is provided", async () => {
+    const customPlanningPrompt = "CUSTOM SCOPED PLANNING PROMPT";
+    (scopedStore.getSettings as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      promptOverrides: {
+        "planning-system": customPlanningPrompt,
+      },
+      defaultProvider: "scoped-provider",
+      defaultModelId: "scoped-model",
+    });
+
+    const mockAgent = {
+      session: {
+        state: { messages: [] },
+        prompt: vi.fn(async () => {
+          return JSON.stringify({
+            type: "question",
+            data: { id: "q-1", type: "text", question: "What is the scope?" },
+          });
+        }),
+        dispose: vi.fn(),
+      },
+    };
+    const createFnAgentSpy = vi.fn(async () => mockAgent);
+    __setCreateFnAgent(createFnAgentSpy as any);
+
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      `/api/planning/start-streaming?projectId=${projectId}`,
+      JSON.stringify({ initialPlan: "Test planning" }),
+      { "Content-Type": "application/json" },
+    );
+
+    expect(res.status).toBe(201);
+    expect(projectStoreResolver.getOrCreateProjectStore).toHaveBeenCalledWith(projectId);
+    expect(scopedStore.getSettings).toHaveBeenCalled();
+    expect(scopedStore.getRootDir()).toBe("/scoped/planning/project");
+    // Verify scoped settings were used for prompt resolution
+    await vi.waitFor(() => {
+      expect(createFnAgentSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          systemPrompt: customPlanningPrompt,
+          defaultProvider: "scoped-provider",
+          defaultModelId: "scoped-model",
+        }),
+      );
+    });
+  });
+
+  it("uses request body model override when provided alongside projectId", async () => {
+    (scopedStore.getSettings as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      defaultProvider: "scoped-provider",
+      defaultModelId: "scoped-model",
+    });
+
+    const mockAgent = {
+      session: {
+        state: { messages: [] },
+        prompt: vi.fn(async () => {
+          return JSON.stringify({
+            type: "question",
+            data: { id: "q-1", type: "text", question: "What is the scope?" },
+          });
+        }),
+        dispose: vi.fn(),
+      },
+    };
+    const createFnAgentSpy = vi.fn(async () => mockAgent);
+    __setCreateFnAgent(createFnAgentSpy as any);
+
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      `/api/planning/start-streaming?projectId=${projectId}`,
+      JSON.stringify({
+        initialPlan: "Test planning",
+        planningModelProvider: "google",
+        planningModelId: "gemini-2.5-pro",
+      }),
+      { "Content-Type": "application/json" },
+    );
+
+    expect(res.status).toBe(201);
+    // Request body override takes precedence over scoped settings
+    await vi.waitFor(() => {
+      expect(createFnAgentSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          defaultProvider: "google",
+          defaultModelId: "gemini-2.5-pro",
+        }),
+      );
+    });
+  });
+
+  it("falls back to scoped settings when no request override provided", async () => {
+    (scopedStore.getSettings as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      planningProvider: "anthropic",
+      planningModelId: "claude-sonnet-4",
+    });
+
+    const mockAgent = {
+      session: {
+        state: { messages: [] },
+        prompt: vi.fn(async () => {
+          return JSON.stringify({
+            type: "question",
+            data: { id: "q-1", type: "text", question: "What is the scope?" },
+          });
+        }),
+        dispose: vi.fn(),
+      },
+    };
+    const createFnAgentSpy = vi.fn(async () => mockAgent);
+    __setCreateFnAgent(createFnAgentSpy as any);
+
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      `/api/planning/start-streaming?projectId=${projectId}`,
+      JSON.stringify({ initialPlan: "Test planning" }),
+      { "Content-Type": "application/json" },
+    );
+
+    expect(res.status).toBe(201);
+    // Scoped settings planning lane should be used
+    await vi.waitFor(() => {
+      expect(createFnAgentSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          defaultProvider: "anthropic",
+          defaultModelId: "claude-sonnet-4",
+        }),
+      );
+    });
+  });
+
+  it("uses default store when projectId is omitted", async () => {
+    // When projectId is omitted, default store should be used
+    const defaultRootDir = "/fake/root";
+    (defaultStore.getRootDir as ReturnType<typeof vi.fn>).mockReturnValue(defaultRootDir);
+    (defaultStore.getSettings as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      defaultProvider: "default-provider",
+      defaultModelId: "default-model",
+    });
+
+    const mockAgent = {
+      session: {
+        state: { messages: [] },
+        prompt: vi.fn(async () => {
+          return JSON.stringify({
+            type: "question",
+            data: { id: "q-1", type: "text", question: "What is the scope?" },
+          });
+        }),
+        dispose: vi.fn(),
+      },
+    };
+    const createFnAgentSpy = vi.fn(async () => mockAgent);
+    __setCreateFnAgent(createFnAgentSpy as any);
+
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      "/api/planning/start-streaming",
+      JSON.stringify({ initialPlan: "Test planning" }),
+      { "Content-Type": "application/json" },
+    );
+
+    expect(res.status).toBe(201);
+    // Default store should be used (getOrCreateProjectStore should not be called)
+    expect(projectStoreResolver.getOrCreateProjectStore).not.toHaveBeenCalled();
+    await vi.waitFor(() => {
+      expect(createFnAgentSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          defaultProvider: "default-provider",
+          defaultModelId: "default-model",
+        }),
+      );
+    });
+  });
+});
+
+describe("POST /subtasks/start-streaming with projectId scoping", () => {
+  const projectId = "proj-subtask-scoped";
+
+  let defaultStore: TaskStore;
+  let scopedStore: TaskStore;
+
+  beforeEach(() => {
+    defaultStore = createMockStore();
+    scopedStore = createMockStore({
+      getRootDir: vi.fn().mockReturnValue("/scoped/subtask/project"),
+    });
+
+    vi.spyOn(projectStoreResolver, "getOrCreateProjectStore").mockResolvedValue(scopedStore);
+    __resetSubtaskBreakdownState();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  function buildApp() {
+    const app = express();
+    app.use(express.json());
+    app.use("/api", createApiRoutes(defaultStore));
+    return app;
+  }
+
+  it("uses scoped store settings for prompt resolution when projectId is provided", async () => {
+    const customSubtaskPrompt = "CUSTOM SCOPED SUBTASK BREAKDOWN PROMPT";
+    (scopedStore.getSettings as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      promptOverrides: {
+        "subtask-breakdown-system": customSubtaskPrompt,
+      },
+    });
+
+    const mockCreateSubtaskSession = vi.fn().mockResolvedValue({ sessionId: "scoped-subtask-session" });
+    vi.spyOn(subtaskBreakdownModule, "createSubtaskSession").mockImplementation(mockCreateSubtaskSession);
+
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      `/api/subtasks/start-streaming?projectId=${projectId}`,
+      JSON.stringify({ description: "Break into subtasks" }),
+      { "Content-Type": "application/json" },
+    );
+
+    expect(res.status).toBe(201);
+    expect(res.body.sessionId).toBe("scoped-subtask-session");
+    expect(projectStoreResolver.getOrCreateProjectStore).toHaveBeenCalledWith(projectId);
+    expect(scopedStore.getSettings).toHaveBeenCalled();
+    expect(scopedStore.getRootDir()).toBe("/scoped/subtask/project");
+    // Verify scoped settings were passed for prompt resolution
+    expect(mockCreateSubtaskSession).toHaveBeenCalledWith(
+      "Break into subtasks",
+      scopedStore,
+      "/scoped/subtask/project",
+      expect.objectContaining({
+        "subtask-breakdown-system": customSubtaskPrompt,
+      }),
+      projectId,
+    );
+  });
+
+  it("uses scoped rootDir for subtask generation", async () => {
+    const scopedRootDir = "/different/scoped/root";
+    scopedStore = createMockStore({
+      getRootDir: vi.fn().mockReturnValue(scopedRootDir),
+    });
+    vi.spyOn(projectStoreResolver, "getOrCreateProjectStore").mockResolvedValue(scopedStore);
+
+    (scopedStore.getSettings as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      promptOverrides: {},
+    });
+
+    const mockCreateSubtaskSession = vi.fn().mockResolvedValue({ sessionId: "session-2" });
+    vi.spyOn(subtaskBreakdownModule, "createSubtaskSession").mockImplementation(mockCreateSubtaskSession);
+
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      `/api/subtasks/start-streaming?projectId=${projectId}`,
+      JSON.stringify({ description: "Break into subtasks" }),
+      { "Content-Type": "application/json" },
+    );
+
+    expect(res.status).toBe(201);
+    expect(mockCreateSubtaskSession).toHaveBeenCalledWith(
+      "Break into subtasks",
+      scopedStore,
+      scopedRootDir,
+      expect.any(Object),
+      projectId,
+    );
+  });
+
+  it("uses default store when projectId is omitted", async () => {
+    // When projectId is omitted, default store should be used
+    const defaultRootDir = "/fake/root";
+    (defaultStore.getRootDir as ReturnType<typeof vi.fn>).mockReturnValue(defaultRootDir);
+    (defaultStore.getSettings as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      promptOverrides: {
+        "subtask-breakdown-system": "Default subtask prompt",
+      },
+    });
+
+    const mockCreateSubtaskSession = vi.fn().mockResolvedValue({ sessionId: "default-session" });
+    vi.spyOn(subtaskBreakdownModule, "createSubtaskSession").mockImplementation(mockCreateSubtaskSession);
+
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      "/api/subtasks/start-streaming",
+      JSON.stringify({ description: "Break into subtasks" }),
+      { "Content-Type": "application/json" },
+    );
+
+    expect(res.status).toBe(201);
+    // Default store should be used (getOrCreateProjectStore should not be called)
+    expect(projectStoreResolver.getOrCreateProjectStore).not.toHaveBeenCalled();
+    expect(mockCreateSubtaskSession).toHaveBeenCalledWith(
+      "Break into subtasks",
+      defaultStore,
+      defaultRootDir,
+      expect.any(Object),
+      undefined,
+    );
+  });
+
+  it("passes projectId to subtask session for multi-project scoping", async () => {
+    (scopedStore.getSettings as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      promptOverrides: {},
+    });
+
+    const mockCreateSubtaskSession = vi.fn().mockResolvedValue({ sessionId: "session-with-projectid" });
+    vi.spyOn(subtaskBreakdownModule, "createSubtaskSession").mockImplementation(mockCreateSubtaskSession);
+
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      `/api/subtasks/start-streaming?projectId=${projectId}`,
+      JSON.stringify({ description: "Scoped subtask" }),
+      { "Content-Type": "application/json" },
+    );
+
+    expect(res.status).toBe(201);
+    // Ensure projectId is passed through for multi-project scoping
+    expect(mockCreateSubtaskSession).toHaveBeenCalledWith(
+      "Scoped subtask",
+      scopedStore,
+      "/scoped/subtask/project",
+      expect.any(Object),
+      projectId,
+    );
+  });
+});
+
+describe("POST /api/ai/summarize-title with projectId scoping", () => {
+  const projectId = "proj-summarize-scoped";
+  let defaultStore: TaskStore;
+  let scopedStore: TaskStore;
+
+  beforeEach(() => {
+    defaultStore = createMockStore();
+    scopedStore = createMockStore({
+      getRootDir: vi.fn().mockReturnValue("/scoped/project"),
+    });
+
+    vi.spyOn(projectStoreResolver, "getOrCreateProjectStore").mockResolvedValue(scopedStore);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  function buildApp() {
+    const app = express();
+    app.use(express.json());
+    app.use("/api", createApiRoutes(defaultStore));
+    return app;
+  }
+
+  it("uses scoped store when projectId is provided for rate limit check", async () => {
+    // The route checks rate limit first using getOrCreateProjectStore
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      `/api/ai/summarize-title?projectId=${projectId}`,
+      JSON.stringify({
+        description: "Short description", // Short to fail validation quickly
+      }),
+      { "Content-Type": "application/json" },
+    );
+
+    // Verify scoped store is used
+    expect(projectStoreResolver.getOrCreateProjectStore).toHaveBeenCalledWith(projectId);
+    // Verify request completes (either 400 validation or 503 AI unavailable)
+    expect([400, 503]).toContain(res.status);
+  });
+
+  it("does not use default store when projectId is provided", async () => {
+    const res = await REQUEST(
+      buildApp(),
+      "POST",
+      `/api/ai/summarize-title?projectId=${projectId}`,
+      JSON.stringify({
+        description: "Short description", // Short to fail validation quickly
+      }),
+      { "Content-Type": "application/json" },
+    );
+
+    // Default store should not be used
+    expect(defaultStore.getSettings).not.toHaveBeenCalled();
+    expect([400, 503]).toContain(res.status);
+  });
+});
+

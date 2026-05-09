@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "types": ["node", "vitest/globals"],
+    "paths": {
+      "@fusion/test-utils": ["../core/src/__test-utils__/workspace.ts"]
+    }
+  },
+  "include": ["src/**/*"]
+}

@@ -1,0 +1,24 @@
+{
+	"name": "@wayofmono/lens",
+	"version": "1.0.0",
+	"type": "module",
+	"description": "WayOfMono high-fidelity codebase analysis and safety engine.",
+	"main": "src/index.ts",
+	"scripts": {
+		"build": "tsc",
+		"test": "vitest run",
+		"lint": "eslint ."
+	},
+	"dependencies": {
+		"@ast-grep/napi": "^0.42.1",
+		"minimatch": "^10.2.5",
+		"typebox": "^1.0.0",
+		"typescript": "^6.0.3",
+		"vscode-jsonrpc": "^8.2.1",
+		"web-tree-sitter": "^0.25.10"
+	},
+	"devDependencies": {
+		"@types/node": "^25.6.0",
+		"vitest": "^4.1.1"
+	}
+}

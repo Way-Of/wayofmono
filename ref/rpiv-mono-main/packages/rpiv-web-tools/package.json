@@ -1,0 +1,45 @@
+{
+  "name": "@juicesharp/rpiv-web-tools",
+  "version": "1.3.0",
+  "description": "Pi extension. Web search and fetch for the model, backed by the Brave Search API.",
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "rpiv",
+    "web-search",
+    "brave"
+  ],
+  "type": "module",
+  "license": "MIT",
+  "author": "juicesharp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juicesharp/rpiv-mono.git",
+    "directory": "packages/rpiv-web-tools"
+  },
+  "homepage": "https://github.com/juicesharp/rpiv-mono/tree/main/packages/rpiv-web-tools#readme",
+  "bugs": {
+    "url": "https://github.com/juicesharp/rpiv-mono/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "files": [
+    "index.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*",
+    "typebox": "*"
+  }
+}

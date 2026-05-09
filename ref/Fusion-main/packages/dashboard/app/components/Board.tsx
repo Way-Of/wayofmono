@@ -1,0 +1,234 @@
+import type { Task, TaskDetail, Column as ColumnType, TaskCreateInput } from "@fusion/core";
+import { COLUMNS, DEFAULT_COLUMN, isColumn } from "@fusion/core";
+import { sortTasksForDisplayColumn } from "./taskSorting";
+import { Column } from "./Column";
+import type { ToastType } from "../hooks/useToast";
+import { useState, useMemo, useEffect, useCallback, useRef } from "react";
+import { useBatchBadgeFetch } from "../hooks/useBatchBadgeFetch";
+import { fetchWorkflowSteps, type ModelInfo } from "../api";
+
+interface BoardProps {
+  tasks: Task[];
+  projectId?: string;
+  maxConcurrent: number;
+  onMoveTask: (id: string, column: ColumnType) => Promise<Task>;
+  onPauseTask?: (id: string) => Promise<Task>;
+  onOpenDetail: (task: Task | TaskDetail) => void;
+  addToast: (message: string, type?: ToastType) => void;
+  onQuickCreate?: (input: TaskCreateInput) => Promise<Task | void>;
+  onNewTask: () => void;
+  autoMerge: boolean;
+  onToggleAutoMerge: () => void;
+  globalPaused?: boolean;
+  onUpdateTask?: (
+    id: string,
+    updates: { title?: string; description?: string; dependencies?: string[] }
+  ) => Promise<Task>;
+  onRetryTask?: (id: string) => Promise<Task>;
+  onArchiveTask?: (id: string) => Promise<Task>;
+  onUnarchiveTask?: (id: string) => Promise<Task>;
+  onDeleteTask?: (id: string) => Promise<Task>;
+  onArchiveAllDone?: () => Promise<Task[]>;
+  /** Lazy-load archived tasks. Called the first time the user expands the archived column. */
+  onLoadArchivedTasks?: () => Promise<void>;
+  searchQuery?: string;
+  availableModels?: ModelInfo[];
+  /**
+   * Called when the user clicks the "Plan" button in the inline create card.
+   */
+  onPlanningMode?: (initialPlan: string) => void;
+  /**
+   * Called when the user clicks the "Subtask" button in the inline create card.
+   */
+  onSubtaskBreakdown?: (description: string) => void;
+  onOpenDetailWithTab?: (task: Task | TaskDetail, initialTab: "changes") => void;
+  favoriteProviders?: string[];
+  favoriteModels?: string[];
+  onToggleFavorite?: (provider: string) => void;
+  onToggleModelFavorite?: (modelId: string) => void;
+  /** Project-level stuck task timeout in milliseconds (undefined = disabled) */
+  taskStuckTimeoutMs?: number;
+  /** Called when user clicks a mission badge on a task card */
+  onOpenMission?: (missionId: string) => void;
+  /** Timestamp (ms) when task data was last confirmed fresh from the server. Used for freshness-aware stuck detection. */
+  lastFetchTimeMs?: number;
+}
+
+
+function areTaskArraysEqual(previous: Task[], next: Task[]): boolean {
+  if (previous.length !== next.length) return false;
+  return previous.every((task, index) => task === next[index]);
+}
+
+const EMPTY_WORKFLOW_STEP_NAME_LOOKUP: ReadonlyMap<string, string> = new Map();
+
+function areWorkflowNameLookupsEqual(previous: ReadonlyMap<string, string>, next: ReadonlyMap<string, string>): boolean {
+  if (previous.size !== next.size) return false;
+  for (const [key, value] of previous) {
+    if (next.get(key) !== value) return false;
+  }
+  return true;
+}
+
+export function Board({ tasks, projectId, maxConcurrent, onMoveTask, onPauseTask, onOpenDetail, addToast, onQuickCreate, onNewTask, autoMerge, onToggleAutoMerge, globalPaused, onUpdateTask, onRetryTask, onArchiveTask, onUnarchiveTask, onDeleteTask, onArchiveAllDone, onLoadArchivedTasks, searchQuery = "", availableModels, onPlanningMode, onSubtaskBreakdown, onOpenDetailWithTab, favoriteProviders, favoriteModels, onToggleFavorite, onToggleModelFavorite, taskStuckTimeoutMs, onOpenMission, lastFetchTimeMs }: BoardProps) {
+  const [archivedCollapsed, setArchivedCollapsed] = useState(true);
+  const archivedLoadedRef = useRef(false);
+  const { fetchBatch } = useBatchBadgeFetch(projectId);
+  const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [workflowStepNameLookup, setWorkflowStepNameLookup] = useState<ReadonlyMap<string, string>>(EMPTY_WORKFLOW_STEP_NAME_LOOKUP);
+  // Normalized search-active signal: trimmed and non-empty
+  const isSearchActive = searchQuery.trim() !== "";
+  const tasksByColumnCacheRef = useRef<Record<ColumnType, Task[]>>({
+    triage: [],
+    todo: [],
+    "in-progress": [],
+    "in-review": [],
+    done: [],
+    archived: [],
+  });
+
+  const handleToggleArchivedCollapse = useCallback(() => {
+    setArchivedCollapsed((current) => {
+      const next = !current;
+      if (!next && !archivedLoadedRef.current && onLoadArchivedTasks) {
+        archivedLoadedRef.current = true;
+        void onLoadArchivedTasks();
+      }
+      return next;
+    });
+  }, [onLoadArchivedTasks]);
+
+  // Tasks are already server-filtered when searchQuery is active (via useTasks hook).
+  // Client-side filtering is removed - tasks prop is used directly.
+  // Keep per-column array identities stable for unchanged columns so React.memo(Column)
+  // can skip sibling rerenders during unrelated task updates.
+  const tasksByColumn = useMemo(() => {
+    const nextGrouped: Record<ColumnType, Task[]> = {
+      triage: [],
+      todo: [],
+      "in-progress": [],
+      "in-review": [],
+      done: [],
+      archived: [],
+    };
+
+    for (const task of tasks) {
+      const column = isColumn(task.column) ? task.column : DEFAULT_COLUMN;
+      const bucket = nextGrouped[column] ?? nextGrouped[DEFAULT_COLUMN];
+      bucket.push(task);
+    }
+
+    const previousGrouped = tasksByColumnCacheRef.current;
+    const stableGrouped = {} as Record<ColumnType, Task[]>;
+
+    for (const column of COLUMNS) {
+      const sortedTasks = sortTasksForDisplayColumn(nextGrouped[column], column);
+      stableGrouped[column] = areTaskArraysEqual(previousGrouped[column], sortedTasks)
+        ? previousGrouped[column]
+        : sortedTasks;
+    }
+
+    tasksByColumnCacheRef.current = stableGrouped;
+    return stableGrouped;
+  }, [tasks]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchWorkflowSteps(projectId)
+      .then((steps) => {
+        if (cancelled) return;
+
+        const nextLookup = new Map(steps.map((step) => [step.id, step.name] as const));
+        setWorkflowStepNameLookup((previous) => (
+          areWorkflowNameLookupsEqual(previous, nextLookup) ? previous : nextLookup
+        ));
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setWorkflowStepNameLookup((previous) => (previous.size === 0 ? previous : EMPTY_WORKFLOW_STEP_NAME_LOOKUP));
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [projectId]);
+
+  // Collect task IDs with GitHub badge info for batch fetching
+  const taskIdsWithBadges = useMemo(() => {
+    return tasks
+      .filter((t) => t.prInfo || t.issueInfo)
+      .map((t) => t.id);
+  }, [tasks]);
+
+  // Batch fetch badge statuses on mount and when visible tasks change
+  useEffect(() => {
+    if (taskIdsWithBadges.length === 0) return;
+
+    // Debounce the batch fetch to handle rapid changes
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+
+    debounceTimeoutRef.current = setTimeout(() => {
+      // Fetch in chunks of 50 to respect the API limit
+      const chunks: string[][] = [];
+      for (let i = 0; i < taskIdsWithBadges.length; i += 50) {
+        chunks.push(taskIdsWithBadges.slice(i, i + 50));
+      }
+
+      // Fire all chunks concurrently - the hook handles deduplication
+      chunks.forEach((chunk) => {
+        void fetchBatch(chunk);
+      });
+    }, 500);
+
+    return () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
+  }, [taskIdsWithBadges, fetchBatch]);
+
+  return (
+    <>
+      <main className="board" id="board">
+        {COLUMNS.map((col) => (
+          <Column
+            key={col}
+            column={col}
+            tasks={tasksByColumn[col]}
+            projectId={projectId}
+            maxConcurrent={maxConcurrent}
+            onMoveTask={onMoveTask}
+            onPauseTask={onPauseTask}
+            onOpenDetail={onOpenDetail}
+            addToast={addToast}
+            globalPaused={globalPaused}
+            onUpdateTask={onUpdateTask}
+            onRetryTask={onRetryTask}
+            onArchiveTask={onArchiveTask}
+            onUnarchiveTask={onUnarchiveTask}
+            onDeleteTask={onDeleteTask}
+            allTasks={tasks}
+            availableModels={availableModels}
+            onOpenDetailWithTab={onOpenDetailWithTab}
+            favoriteProviders={favoriteProviders}
+            favoriteModels={favoriteModels}
+            onToggleFavorite={onToggleFavorite}
+            onToggleModelFavorite={onToggleModelFavorite}
+            isSearchActive={isSearchActive}
+            taskStuckTimeoutMs={taskStuckTimeoutMs}
+            onOpenMission={onOpenMission}
+            lastFetchTimeMs={lastFetchTimeMs}
+            workflowStepNameLookup={workflowStepNameLookup}
+            {...(col === "triage" ? { onQuickCreate, onNewTask, onPlanningMode, onSubtaskBreakdown } : {})}
+            {...(col === "in-review" ? { autoMerge, onToggleAutoMerge } : {})}
+            {...(col === "done" ? { onArchiveAllDone } : {})}
+            {...(col === "archived" ? { collapsed: archivedCollapsed, onToggleCollapse: handleToggleArchivedCollapse } : {})}
+          />
+        ))}
+      </main>
+    </>
+  );
+}

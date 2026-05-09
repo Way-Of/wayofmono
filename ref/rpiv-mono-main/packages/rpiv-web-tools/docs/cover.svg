@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" role="img" aria-label="rpiv-web-tools — Brave-backed web search and fetch for Pi Agent" preserveAspectRatio="xMidYMid meet">
+  <title>rpiv-web-tools — Brave-backed web search and fetch for Pi Agent</title>
+  <defs>
+    <style>
+      .mono { font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', ui-monospace, Menlo, Consolas, monospace; }
+      .ink { fill: #F4EFE6; }
+      .muted { fill: #7A7468; }
+      .dim { fill: #4A463F; }
+      .accent { fill: #FF7A3D; }
+      .mint { fill: #6FD0B8; }
+    </style>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="29"/>
+      <feColorMatrix values="0 0 0 0 0.96  0 0 0 0 0.94  0 0 0 0 0.88  0 0 0 0.04 0"/>
+    </filter>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+      <stop offset="55%" stop-color="#070605" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.7"/>
+    </radialGradient>
+    <filter id="winShadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="14" stdDeviation="22" flood-color="#000" flood-opacity="0.6"/>
+    </filter>
+    <clipPath id="wclip"><rect x="64" y="56" width="1152" height="688" rx="12"/></clipPath>
+  </defs>
+
+  <rect width="1280" height="800" fill="#070605"/>
+  <rect width="1280" height="800" filter="url(#grain)" opacity="0.45"/>
+  <rect width="1280" height="800" fill="url(#vignette)"/>
+
+  <rect x="64" y="56" width="1152" height="688" rx="12" fill="#0E0D0B" filter="url(#winShadow)"/>
+
+  <g clip-path="url(#wclip)">
+    <rect x="64" y="56" width="1152" height="44" fill="#16120E"/>
+    <line x1="64" y1="100" x2="1216" y2="100" stroke="#2A2620"/>
+    <circle cx="92"  cy="78" r="7" fill="#FF5F57"/>
+    <circle cx="120" cy="78" r="7" fill="#FFBD2E"/>
+    <circle cx="148" cy="78" r="7" fill="#28C840"/>
+    <text class="mono muted" x="640" y="84" font-size="14" letter-spacing="1.4" text-anchor="middle">~/rpiv-mono &#8212; pi &#8212; rpiv-web-tools</text>
+
+    <text class="mono mint" x="120" y="184" font-size="46" font-weight="700"># rpiv-web-tools</text>
+    <text class="mono muted" x="120" y="222" font-size="20" letter-spacing="0.5">Search the web. Read the page.</text>
+
+    <text class="mono" x="120" y="298" font-size="22"><tspan class="mint" font-weight="700">&#10095;</tspan> <tspan class="ink">web_search</tspan> <tspan class="muted">"server-sent events vs websockets"</tspan></text>
+
+    <text class="mono" x="120" y="368" font-size="22"><tspan class="accent" font-weight="700">01</tspan>  <tspan class="ink" font-weight="700">Server-Sent Events vs WebSockets</tspan></text>
+    <text class="mono mint" x="120" y="400" font-size="18">    https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events</text>
+
+    <text class="mono" x="120" y="458" font-size="22"><tspan class="accent" font-weight="700">02</tspan>  <tspan class="ink" font-weight="700">When to choose SSE over WebSockets</tspan></text>
+    <text class="mono mint" x="120" y="490" font-size="18">    https://ably.com/blog/sse-vs-websockets</text>
+
+    <text class="mono" x="120" y="548" font-size="22"><tspan class="accent" font-weight="700">03</tspan>  <tspan class="ink" font-weight="700">EventSource: a tour through the standard</tspan></text>
+    <text class="mono mint" x="120" y="580" font-size="18">    https://html.spec.whatwg.org/multipage/server-sent-events.html</text>
+
+    <text class="mono" x="120" y="630" font-size="14" letter-spacing="2"><tspan class="mint" font-weight="700">[200 OK]</tspan>  <tspan class="muted">3 RESULTS &#183; BRAVE SEARCH &#183; 0.42s</tspan></text>
+
+    <rect x="64" y="708" width="1152" height="36" fill="#16120E"/>
+    <line x1="64" y1="708" x2="1216" y2="708" stroke="#2A2620"/>
+    <text class="mono" font-size="14" y="731" letter-spacing="1">
+      <tspan x="92" class="accent" font-weight="700">&#9612; rpiv-web-tools</tspan>
+      <tspan dx="14" class="dim">&#9474;</tspan>
+      <tspan dx="14" class="mint">brave search</tspan>
+      <tspan dx="14" class="dim">&#9474;</tspan>
+      <tspan dx="14" class="muted">pi 0.9.4</tspan>
+      <tspan dx="14" class="dim">&#9474;</tspan>
+      <tspan dx="14" class="muted">npm:@juicesharp/rpiv-web-tools</tspan>
+    </text>
+  </g>
+
+  <rect x="64" y="56" width="1152" height="688" rx="12" fill="none" stroke="#3A352D" stroke-width="1"/>
+</svg>

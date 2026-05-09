@@ -1,0 +1,468 @@
+/* === Split Project Button === */
+/* === Project Selector === */
+.project-selector {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-xs);
+  overflow: visible;
+  min-width: 0;
+  max-width: min(32ch, 24vw);
+}
+
+.project-selector-trigger,
+.project-selector__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  justify-content: center;
+  min-width: 0;
+  max-width: 100%;
+  padding: calc(var(--space-xs) + var(--space-xs) / 2) calc(var(--space-xs) + var(--space-xs) / 2);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.project-selector-trigger-label,
+.project-selector__trigger-text {
+  min-width: 0;
+  max-width: min(24ch, 18vw);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1;
+}
+
+.project-selector-trigger:hover,
+.project-selector__trigger:hover {
+  background: var(--card-hover);
+  color: var(--text);
+  border-color: var(--text-dim);
+}
+
+.project-selector-trigger--open,
+.project-selector__trigger.open {
+  color: var(--text);
+  border-color: var(--text-dim);
+}
+
+.project-selector-chevron,
+.project-selector__trigger-chevron {
+  transition: transform var(--transition-fast);
+}
+
+.project-selector-chevron--open,
+.project-selector__trigger-chevron.rotate {
+  transform: rotate(180deg);
+}
+
+.project-selector-dropdown,
+.project-selector__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 100;
+  min-width: 240px;
+  max-width: 360px;
+  padding: var(--space-sm);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.project-selector-item,
+.project-selector__item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 8px 10px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--transition-fast);
+}
+
+.project-selector-item:hover,
+.project-selector__item:hover,
+.project-selector__item.highlighted {
+  background: var(--card-hover);
+}
+
+.project-selector-item--current,
+.project-selector__item[aria-selected="true"] {
+  background: var(--card-hover);
+}
+
+.project-selector-divider {
+  height: 1px;
+  margin: var(--space-xs) var(--space-sm);
+  background: var(--border);
+}
+
+.project-selector-manage {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--space-sm) calc(var(--space-sm) + var(--space-xs));
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--transition-fast);
+}
+
+.project-selector-manage:hover {
+  background: var(--card-hover);
+}
+
+.project-selector-manage:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-strong);
+}
+
+.project-selector__trigger-icon {
+  flex-shrink: 0;
+}
+
+.project-selector__search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  margin-bottom: var(--space-xs);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.project-selector__search-icon {
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+.project-selector__search-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.project-selector__search-input:focus-visible {
+  outline: none;
+}
+
+.project-selector__search-clear {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-selector__section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.project-selector__section + .project-selector__section {
+  margin-top: var(--space-xs);
+}
+
+.project-selector__section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) calc(var(--space-sm) + var(--space-xs));
+  color: var(--text-dim);
+  font-size: calc(var(--space-sm) + var(--space-xs) * 0.75);
+}
+
+.project-selector__no-results {
+  padding: var(--space-sm) calc(var(--space-sm) + var(--space-xs));
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.project-selector__footer {
+  margin-top: var(--space-xs);
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--border);
+}
+
+.project-selector__view-all {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  justify-content: flex-start;
+  padding: var(--space-sm) calc(var(--space-sm) + var(--space-xs));
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.project-selector__view-all:hover,
+.project-selector__view-all.highlighted {
+  background: var(--card-hover);
+}
+
+.project-selector__view-all:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-strong);
+}
+
+.project-selector-dot,
+.project-selector__dot,
+.project-selector__item-check {
+  flex-shrink: 0;
+}
+
+.project-selector-dot,
+.project-selector__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.project-selector-info,
+.project-selector__item-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.project-selector-name,
+.project-selector__item-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.project-selector-path,
+.project-selector__item-path {
+  font-size: calc(var(--space-sm) + var(--space-xs) * 0.75);
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-selector-check,
+.project-selector__item-check {
+  color: var(--todo);
+}
+
+/* Light theme overrides for project selector */
+[data-theme="light"] .project-selector-trigger:hover {
+  background: var(--card-hover);
+}
+
+[data-theme="light"] .project-selector-dropdown {
+  background: var(--surface);
+}
+
+[data-theme="light"] .project-selector-item:hover {
+  background: var(--card-hover);
+}
+
+[data-theme="light"] .project-selector-item--current,
+[data-theme="light"] .project-selector__item[aria-selected="true"] {
+  background: color-mix(in srgb, var(--todo) 10%, transparent);
+}
+
+/* === Mobile Project Switch (logo-adjacent dropdown) === */
+.mobile-project-switch {
+  position: relative;
+  display: none; /* Hidden by default, shown on mobile via media query */
+}
+
+.mobile-project-switch-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 6px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.mobile-project-switch-trigger:hover {
+  background: var(--card-hover);
+  color: var(--text);
+}
+
+.project-selector-trigger:focus-visible,
+.project-selector__trigger:focus-visible,
+.project-selector-item:focus-visible,
+.project-selector__item:focus-visible,
+.mobile-project-switch-trigger:focus-visible,
+.mobile-project-switch-item:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-strong);
+}
+
+.mobile-project-switch-trigger--open {
+  color: var(--todo);
+  background: var(--card-hover);
+}
+
+.mobile-project-switch-chevron {
+  transition: transform var(--transition-fast);
+}
+
+.mobile-project-switch-chevron--open {
+  transform: rotate(180deg);
+}
+
+.mobile-project-switch-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 100;
+  min-width: 200px;
+  max-width: 280px;
+  padding: var(--space-xs);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.mobile-project-switch-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--transition-fast);
+}
+
+.mobile-project-switch-item:hover {
+  background: var(--card-hover);
+}
+
+.mobile-project-switch-item--current {
+  background: var(--card-hover);
+}
+
+.mobile-project-switch-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.mobile-project-switch-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mobile-project-switch-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.mobile-project-switch-path {
+  font-size: calc(var(--space-sm) + var(--space-xs) * 0.75);
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobile-project-switch-check {
+  flex-shrink: 0;
+  color: var(--todo);
+}
+
+/* Compact styles for mobile-project-switch (mobile + tablet) */
+@media (max-width: 768px), (min-width: 769px) and (max-width: 1024px) {
+  .mobile-project-switch {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+/* === Project Content Wrapper (footer-safe layout) === */
+
+/**
+ * Wrapper for project-view content (board, list, agents) that reserves space
+ * for the fixed ExecutorStatusBar footer. This wrapper is the single source of
+ * truth for the footer-safe content area — child views simply use height: 100%
+ * to fill the available space without needing to know about the footer.
+ *
+ * When the footer is present, --with-footer reserves space via padding-bottom
+ * equal to the footer height. Because the wrapper uses box-sizing: border-box,
+ * children with height: 100% resolve to the content area (wrapper height minus
+ * padding), which is exactly the safe zone above the fixed footer.
+ *
+ * On mobile the token is overridden to 32px to match the shorter footer.
+ */
+.project-content {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.project-content--with-footer {
+  --executor-footer-height: 36px;
+  padding-bottom: var(--executor-footer-height);
+}
+
+@media (max-width: 768px) {
+  /* Hide project selector on mobile (belt-and-suspenders with conditional rendering) */
+  .project-selector {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Hide project selector on tablet (controlled by React rendering too) */
+  .project-selector {
+    display: none;
+  }
+}

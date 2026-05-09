@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "noEmit": true,
+    "types": ["vitest/globals", "@testing-library/jest-dom", "node", "vite/client"],
+    "paths": {
+      "@fusion/test-utils": ["../core/src/__test-utils__/workspace.ts"],
+      "node-pty": ["./src/types/node-pty/index.d.ts"]
+    }
+  },
+  "include": ["app/**/*"]
+}

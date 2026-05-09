@@ -1,0 +1,1693 @@
+import "./TaskCard.css";
+import { memo, useCallback, useState, useRef, useEffect, useMemo } from "react";
+import { Link, Clock, Layers, Pencil, ChevronDown, Folder, Target, Bot, Trash2, RotateCw, Zap } from "lucide-react";
+import type { Task, TaskDetail, Column, PrInfo, IssueInfo, TaskPriority } from "@fusion/core";
+import { COLUMN_LABELS, DEFAULT_TASK_PRIORITY, TASK_PRIORITIES, VALID_TRANSITIONS, getErrorMessage } from "@fusion/core";
+import { fetchTaskDetail, uploadAttachment, fetchMission, fetchAgent } from "../api";
+import { GitHubBadge } from "./GitHubBadge";
+import { pickPreferredBadge } from "./TaskCardBadge";
+import { ProviderIcon } from "./ProviderIcon";
+import { PluginSlot } from "./PluginSlot";
+import { useBadgeWebSocket } from "../hooks/useBadgeWebSocket";
+import { getFreshBatchData } from "../hooks/useBatchBadgeFetch";
+import { useTaskDiffStats } from "../hooks/useTaskDiffStats";
+import { isTaskStuck } from "../utils/taskStuck";
+import { getUnifiedTaskProgress } from "../utils/taskProgress";
+import { getEndToEndDurationMs, getTimedDurationMs, getWorkflowRuntimeMs, parseTimestampToMs } from "../utils/taskTiming";
+import type { ToastType } from "../hooks/useToast";
+import { useConfirm } from "../hooks/useConfirm";
+
+// ── Mission title caching ───────────────────────────────────────────────────
+
+const missionTitleCache = new Map<string, string>();
+
+/** @internal Test helper to reset the mission title cache between tests */
+export function __test_clearMissionTitleCache(): void {
+  missionTitleCache.clear();
+}
+
+async function getMissionTitle(missionId: string, projectId?: string): Promise<string> {
+  const cached = missionTitleCache.get(missionId);
+  if (cached) return cached;
+
+  try {
+    const mission = await fetchMission(missionId, projectId);
+    missionTitleCache.set(missionId, mission.title);
+    return mission.title;
+  } catch {
+    return missionId;
+  }
+}
+
+const MAX_MISSION_TITLE_LENGTH = 12;
+
+function abbreviateMissionTitle(title: string): string {
+  if (title.length <= MAX_MISSION_TITLE_LENGTH) return title;
+  return title.slice(0, MAX_MISSION_TITLE_LENGTH - 3) + "...";
+}
+
+// ── Assigned agent name caching ─────────────────────────────────────────────
+
+const agentNameCache = new Map<string, string>();
+
+/** @internal Test helper to reset the assigned agent cache between tests */
+export function __test_clearAgentNameCache(): void {
+  agentNameCache.clear();
+}
+
+async function getAgentName(agentId: string, projectId?: string): Promise<string> {
+  const cached = agentNameCache.get(agentId);
+  if (cached) return cached;
+
+  try {
+    const agent = await fetchAgent(agentId, projectId);
+    agentNameCache.set(agentId, agent.name);
+    return agent.name;
+  } catch {
+    return agentId;
+  }
+}
+
+function normalizeTaskPriorityValue(priority: Task["priority"]): TaskPriority {
+  return typeof priority === "string" && (TASK_PRIORITIES as readonly string[]).includes(priority)
+    ? (priority as TaskPriority)
+    : DEFAULT_TASK_PRIORITY;
+}
+
+function abbreviateBadge(text: string, max: number): string {
+  if (text.length <= max) return text;
+  return text.slice(0, max - 3) + "...";
+}
+
+function getSourceAgentName(task: Task): string | undefined {
+  const metadataAgentName = task.sourceMetadata?.agentName;
+  if (typeof metadataAgentName === "string" && metadataAgentName.trim().length > 0) {
+    return metadataAgentName.trim();
+  }
+
+  if (typeof task.sourceAgentId === "string" && task.sourceAgentId.trim().length > 0) {
+    return task.sourceAgentId.trim();
+  }
+
+  return undefined;
+}
+
+function isAgentCreatedTask(task: Task): boolean {
+  return task.sourceType === "agent_heartbeat" || task.sourceType === "automation" || Boolean(getSourceAgentName(task));
+}
+
+// ── Constants ───────────────────────────────────────────────────────────────
+
+const EDITABLE_COLUMNS: Set<Column> = new Set(["triage", "todo"]);
+
+const ACTIVE_STATUSES = new Set(["planning", "researching", "executing", "finalizing", "merging", "merging-fix"]);
+const ACTIVE_MERGE_STATUSES = new Set(["merging", "merging-pr", "merging-fix"]);
+
+const COLUMN_PROGRESS_COLOR_MAP: Record<Column, string> = {
+  triage: "var(--triage)",
+  todo: "var(--todo)",
+  "in-progress": "var(--in-progress)",
+  "in-review": "var(--in-review)",
+  done: "var(--done)",
+  archived: "var(--text-muted)",
+};
+
+const TIME_INDICATOR_COLUMNS = new Set<Column>([
+  "in-progress",
+  "in-review",
+  "done",
+]);
+const LIVE_TIME_INDICATOR_POLL_MS = 30_000;
+
+function getTaskStatusLabel(status: string): string {
+  if (status === "merging-fix") return "Merging fixes…";
+  return status;
+}
+
+function getDoneCompletionMs(task: Task): number | null {
+  const completionMs = parseTimestampToMs(task.columnMovedAt ?? task.updatedAt);
+  if (completionMs == null) return null;
+
+  const now = Date.now();
+  if (completionMs > now) return null;
+
+  return completionMs;
+}
+
+function getInProgressElapsedMs(task: Task, nowMs: number): number | null {
+  const startedMs = parseTimestampToMs(task.columnMovedAt ?? task.updatedAt);
+  if (startedMs == null) return null;
+
+  return Math.max(0, nowMs - startedMs);
+}
+
+// Wall-clock end-to-end runtime: from when the task first entered in-progress
+// to when it first entered done (or `now` if not yet done). Preferred over the
+// instrumented `[timing]` sum on cards in in-progress / in-review / done so the
+// timer reflects how long the task actually took, not just the time spent
+// inside instrumented code paths. Returns null on legacy tasks that completed
+// before `executionStartedAt` was tracked, so callers can fall back.
+function getTaskEndToEndDurationMs(task: Task, nowMs: number): number | null {
+  return getEndToEndDurationMs(task.executionStartedAt, task.executionCompletedAt, nowMs);
+}
+
+function getInReviewCompletionMs(task: Task): number | null {
+  return task.column === "done" ? getDoneCompletionMs(task) : null;
+}
+
+function getMergeElapsedMs(task: Task, nowMs: number): number | null {
+  const mergeStartedMs = parseTimestampToMs(task.updatedAt);
+  if (mergeStartedMs == null) {
+    return null;
+  }
+
+  return Math.max(0, nowMs - mergeStartedMs);
+}
+
+function getActiveMergeTotalMs(task: Task, nowMs: number): number | null {
+  const endToEndMs = getTaskEndToEndDurationMs(task, nowMs);
+  if (endToEndMs != null) {
+    return endToEndMs;
+  }
+
+  const mergeElapsedMs = getMergeElapsedMs(task, nowMs);
+  const instrumentedMs = getInstrumentedDurationMs(task, nowMs);
+  if (instrumentedMs != null) {
+    return instrumentedMs + (mergeElapsedMs ?? 0);
+  }
+
+  return mergeElapsedMs;
+}
+
+
+function getInstrumentedDurationMs(task: Task, nowMs: number): number | null {
+  // Prefer server aggregate when present: it is the canonical persisted runtime
+  // and may already include workflow execution. Avoid adding workflow runtime
+  // again in that case.
+  if (typeof task.timedExecutionMs === "number") {
+    return task.timedExecutionMs;
+  }
+
+  const timed = getTimedDurationMs(task.log);
+  const workflow = getWorkflowRuntimeMs(task.workflowStepResults, nowMs);
+  if (timed == null && workflow == null) return null;
+  return (timed ?? 0) + (workflow ?? 0);
+}
+
+function formatElapsedDuration(elapsedMs: number): string {
+  if (!Number.isFinite(elapsedMs) || elapsedMs < 0) return "";
+
+  if (elapsedMs < 60_000) return "<1m";
+
+  const elapsedMinutes = Math.floor(elapsedMs / 60_000);
+  if (elapsedMinutes < 60) return `${elapsedMinutes}m`;
+
+  const elapsedHours = Math.floor(elapsedMinutes / 60);
+  if (elapsedHours < 24) return `${elapsedHours}h`;
+
+  const elapsedDays = Math.floor(elapsedHours / 24);
+  return `${elapsedDays}d`;
+}
+
+function normalizeBranchValue(value: string | undefined): string | null {
+  if (!value) return null;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+function getVisibleTaskCardBranches(task: Task): { branch: string | null; baseBranch: string | null } {
+  const branch = normalizeBranchValue(task.branch);
+  const baseBranch = normalizeBranchValue(task.baseBranch);
+  const defaultBranchPrefix = `fusion/${task.id.toLowerCase()}`;
+
+  const visibleBranch =
+    branch && (branch === defaultBranchPrefix || branch.startsWith(`${defaultBranchPrefix}-`))
+      ? null
+      : branch;
+
+  const visibleBaseBranch = baseBranch?.toLowerCase() === "main" ? null : baseBranch;
+
+  return {
+    branch: visibleBranch,
+    baseBranch: visibleBaseBranch ?? null,
+  };
+}
+
+export function formatElapsedDurationDone(elapsedMs: number): string {
+  if (!Number.isFinite(elapsedMs) || elapsedMs < 0) return "";
+  if (elapsedMs === 0) return "";
+
+  const elapsedMinutes = Math.ceil(elapsedMs / 60_000);
+  if (elapsedMinutes < 59) return `${elapsedMinutes}m`;
+
+  const elapsedHours = Math.ceil(elapsedMs / 3_600_000);
+  if (elapsedHours < 24) return `${elapsedHours}h`;
+
+  const elapsedDays = Math.ceil(elapsedMs / 86_400_000);
+  return `${elapsedDays}d`;
+}
+
+
+interface TaskCardProps {
+  task: Task;
+  projectId?: string;
+  queued?: boolean;
+  onOpenDetail: (task: Task | TaskDetail) => void;
+  addToast: (message: string, type?: ToastType) => void;
+  globalPaused?: boolean;
+  onUpdateTask?: (
+    id: string,
+    updates: { title?: string; description?: string; dependencies?: string[] }
+  ) => Promise<Task>;
+  onArchiveTask?: (id: string) => Promise<Task>;
+  onUnarchiveTask?: (id: string) => Promise<Task>;
+  onDeleteTask?: (id: string, options?: { removeDependencyReferences?: boolean }) => Promise<Task>;
+  onRetryTask?: (id: string) => Promise<Task>;
+  onOpenDetailWithTab?: (task: Task | TaskDetail, initialTab: "changes") => void;
+  /** Project-level stuck task timeout in milliseconds (undefined = disabled) */
+  taskStuckTimeoutMs?: number;
+  /** Called when user clicks the mission badge on a task card. */
+  onOpenMission?: (missionId: string) => void;
+  /** Called when user moves a task to a different column from the card. */
+  onMoveTask?: (id: string, column: Column, optionsOrPosition?: { preserveProgress?: boolean } | number) => Promise<Task>;
+  /** Timestamp (ms) when task data was last confirmed fresh from the server. Used for freshness-aware stuck detection. */
+  lastFetchTimeMs?: number;
+  /** Lookup of workflow step IDs to display names, fetched once at board level. */
+  workflowStepNameLookup?: ReadonlyMap<string, string>;
+  /** Disable card drag semantics when embedding in custom draggable containers (e.g. dependency graph). */
+  disableDrag?: boolean;
+}
+
+function areTaskBadgeInfosEqual(
+  previous: PrInfo | IssueInfo | undefined,
+  next: PrInfo | IssueInfo | undefined,
+): boolean {
+  if (!previous && !next) return true;
+  if (!previous || !next) return false;
+
+  const previousKeys = Object.keys(previous) as Array<keyof typeof previous>;
+  const nextKeys = Object.keys(next) as Array<keyof typeof next>;
+
+  if (previousKeys.length !== nextKeys.length) return false;
+
+  return previousKeys.every((key) => previous[key] === next[key]);
+}
+
+function areTaskStepsEqual(previous: Task["steps"], next: Task["steps"]): boolean {
+  if (previous.length !== next.length) return false;
+  return previous.every((step, index) => step.name === next[index]?.name && step.status === next[index]?.status);
+}
+
+function areTaskDependenciesEqual(previous: string[], next: string[]): boolean {
+  if (previous.length !== next.length) return false;
+  return previous.every((dependency, index) => dependency === next[index]);
+}
+
+function areTaskWorkflowStepIdsEqual(previous?: string[], next?: string[]): boolean {
+  if (!previous && !next) return true;
+  if (!previous || !next) return false;
+  if (previous.length !== next.length) return false;
+  return previous.every((stepId, index) => stepId === next[index]);
+}
+
+function getIssueUrlFromMetadata(metadata: Task["sourceMetadata"]): string | undefined {
+  const issueUrl = metadata?.issueUrl;
+  return typeof issueUrl === "string" && issueUrl.length > 0 ? issueUrl : undefined;
+}
+
+function extractDependencyDeleteConflict(err: unknown): { dependentIds: string[] } | null {
+  if (!(err instanceof Error)) {
+    return null;
+  }
+
+  const details = (err as { details?: { code?: string; dependentIds?: unknown } }).details;
+  if (details?.code === "TASK_HAS_DEPENDENTS" && Array.isArray(details.dependentIds)) {
+    return { dependentIds: details.dependentIds.filter((id): id is string => typeof id === "string") };
+  }
+
+  const idsInMessage = err.message.match(/[A-Z]+-\d+/g) ?? [];
+  if (idsInMessage.length > 1) {
+    return { dependentIds: [...new Set(idsInMessage.slice(1))] };
+  }
+
+  return null;
+}
+
+function areTaskWorkflowResultsEqual(previous?: Task["workflowStepResults"], next?: Task["workflowStepResults"]): boolean {
+  if (!previous && !next) return true;
+  if (!previous || !next) return false;
+  if (previous.length !== next.length) return false;
+  return previous.every((result, index) => {
+    const nextResult = next[index];
+    if (!nextResult) return false;
+    return (
+      result.workflowStepId === nextResult.workflowStepId &&
+      result.workflowStepName === nextResult.workflowStepName &&
+      result.phase === nextResult.phase &&
+      result.status === nextResult.status &&
+      result.output === nextResult.output &&
+      result.startedAt === nextResult.startedAt &&
+      result.completedAt === nextResult.completedAt
+    );
+  });
+}
+
+/**
+ * Lightweight comparison for attachment metadata (not file content).
+ * Compares counts and top-level fields that affect card rendering.
+ */
+function areAttachmentsEqual(previous: Task["attachments"], next: Task["attachments"]): boolean {
+  if (!previous && !next) return true;
+  if (!previous || !next) return false;
+  if (previous.length !== next.length) return false;
+
+  // Compare attachment metadata that affects card rendering
+  return previous.every((att, i) => {
+    const nextAtt = next[i];
+    if (!nextAtt) return false;
+    // Compare fields that affect the card's visual state
+    return (
+      att.filename === nextAtt.filename &&
+      att.mimeType === nextAtt.mimeType &&
+      att.size === nextAtt.size
+    );
+  });
+}
+
+/**
+ * Lightweight comparison for comments.
+ * Compares counts and top-level fields that affect card rendering.
+ */
+function areCommentsEqual(previous: Task["comments"], next: Task["comments"]): boolean {
+  if (!previous && !next) return true;
+  if (!previous || !next) return false;
+  if (previous.length !== next.length) return false;
+
+  // Compare comment metadata that affects card rendering
+  return previous.every((comment, i) => {
+    const nextComment = next[i];
+    if (!nextComment) return false;
+    return (
+      comment.author === nextComment.author &&
+      comment.text === nextComment.text &&
+      comment.createdAt === nextComment.createdAt
+    );
+  });
+}
+
+// Keep this comparator aligned with the fields TaskCard renders directly and the
+// task metadata that influences child badge freshness/subscriptions.
+function areTaskCardPropsEqual(previous: TaskCardProps, next: TaskCardProps): boolean {
+  const previousTask = previous.task;
+  const nextTask = next.task;
+
+  return (
+    previous.queued === next.queued &&
+    previous.projectId === next.projectId &&
+    previous.globalPaused === next.globalPaused &&
+    previous.taskStuckTimeoutMs === next.taskStuckTimeoutMs &&
+    previous.onOpenDetail === next.onOpenDetail &&
+    previous.addToast === next.addToast &&
+    previous.onUpdateTask === next.onUpdateTask &&
+    previous.onArchiveTask === next.onArchiveTask &&
+    previous.onUnarchiveTask === next.onUnarchiveTask &&
+    previous.onDeleteTask === next.onDeleteTask &&
+    previous.onRetryTask === next.onRetryTask &&
+    previous.onOpenDetailWithTab === next.onOpenDetailWithTab &&
+    previous.onOpenMission === next.onOpenMission &&
+    previous.onMoveTask === next.onMoveTask &&
+    previous.workflowStepNameLookup === next.workflowStepNameLookup &&
+    previous.disableDrag === next.disableDrag &&
+    previousTask.id === nextTask.id &&
+    previousTask.title === nextTask.title &&
+    previousTask.description === nextTask.description &&
+    previousTask.column === nextTask.column &&
+    previousTask.columnMovedAt === nextTask.columnMovedAt &&
+    previousTask.timedExecutionMs === nextTask.timedExecutionMs &&
+    previousTask.updatedAt === nextTask.updatedAt &&
+    previousTask.createdAt === nextTask.createdAt &&
+    previousTask.status === nextTask.status &&
+    previousTask.priority === nextTask.priority &&
+    previousTask.executionMode === nextTask.executionMode &&
+    previousTask.paused === nextTask.paused &&
+    previousTask.error === nextTask.error &&
+    previousTask.size === nextTask.size &&
+    previousTask.blockedBy === nextTask.blockedBy &&
+    previousTask.worktree === nextTask.worktree &&
+    previousTask.branch === nextTask.branch &&
+    previousTask.baseBranch === nextTask.baseBranch &&
+    previousTask.breakIntoSubtasks === nextTask.breakIntoSubtasks &&
+    previousTask.currentStep === nextTask.currentStep &&
+    previousTask.modelProvider === nextTask.modelProvider &&
+    previousTask.modelId === nextTask.modelId &&
+    previousTask.validatorModelProvider === nextTask.validatorModelProvider &&
+    previousTask.validatorModelId === nextTask.validatorModelId &&
+    previousTask.planningModelProvider === nextTask.planningModelProvider &&
+    previousTask.planningModelId === nextTask.planningModelId &&
+    previousTask.reviewLevel === nextTask.reviewLevel &&
+    previousTask.missionId === nextTask.missionId &&
+    previousTask.assignedAgentId === nextTask.assignedAgentId &&
+    previousTask.mergeRetries === nextTask.mergeRetries &&
+    previousTask.sourceType === nextTask.sourceType &&
+    previousTask.sourceAgentId === nextTask.sourceAgentId &&
+    previousTask.sourceMetadata?.issueUrl === nextTask.sourceMetadata?.issueUrl &&
+    previousTask.sourceMetadata?.agentName === nextTask.sourceMetadata?.agentName &&
+    areAttachmentsEqual(previousTask.attachments, nextTask.attachments) &&
+    areCommentsEqual(previousTask.comments, nextTask.comments) &&
+    areTaskDependenciesEqual(previousTask.dependencies, nextTask.dependencies) &&
+    areTaskStepsEqual(previousTask.steps, nextTask.steps) &&
+    areTaskWorkflowStepIdsEqual(previousTask.enabledWorkflowSteps, nextTask.enabledWorkflowSteps) &&
+    areTaskWorkflowResultsEqual(previousTask.workflowStepResults, nextTask.workflowStepResults) &&
+    areTaskBadgeInfosEqual(previousTask.prInfo, nextTask.prInfo) &&
+    areTaskBadgeInfosEqual(previousTask.issueInfo, nextTask.issueInfo)
+  );
+}
+
+function TaskCardComponent({
+  task,
+  projectId,
+  queued,
+  onOpenDetail,
+  addToast,
+  globalPaused,
+  onUpdateTask,
+  onArchiveTask,
+  onUnarchiveTask,
+  onDeleteTask,
+  onRetryTask,
+  onOpenDetailWithTab,
+  taskStuckTimeoutMs,
+  onOpenMission,
+  onMoveTask,
+  lastFetchTimeMs,
+  workflowStepNameLookup,
+  disableDrag,
+}: TaskCardProps) {
+  const [dragging, setDragging] = useState(false);
+  const [fileDragOver, setFileDragOver] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editDescription, setEditDescription] = useState(task.description || "");
+  const [isSaving, setIsSaving] = useState(false);
+  const [showSteps, setShowSteps] = useState(
+    task.column === "in-progress" ||
+    (task.column === "triage" && task.steps.some(s => s.status === "done" || s.status === "skipped"))
+  );
+  const [missionTitle, setMissionTitle] = useState<string | null>(null);
+  const [agentName, setAgentName] = useState<string | null>(null);
+  const [showSendBackMenu, setShowSendBackMenu] = useState(false);
+  const [isRetrying, setIsRetrying] = useState(false);
+  const [timeIndicatorNowMs, setTimeIndicatorNowMs] = useState(() => Date.now());
+
+  const descTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const touchOpenHandledRef = useRef(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const sendBackRef = useRef<HTMLDivElement>(null);
+  const [isInViewport, setIsInViewport] = useState(false);
+  const { badgeUpdates, subscribeToBadge, unsubscribeFromBadge } = useBadgeWebSocket(projectId);
+  const { confirm } = useConfirm();
+
+  // Touch gesture detection refs
+  const touchStartPosRef = useRef<{ x: number; y: number; time: number } | null>(null);
+  const hasTouchMovedRef = useRef(false);
+
+  const isInteractiveTarget = useCallback((target: EventTarget | null): boolean => {
+    if (!(target instanceof Element)) return false;
+    return !!target.closest("button, a, input, textarea, select, label, [role='button']");
+  }, []);
+
+  // Reset edit state when task changes
+  useEffect(() => {
+    setEditDescription(task.description || "");
+  }, [task.id, task.description]);
+
+  // Close send-back menu on outside click
+  useEffect(() => {
+    if (!showSendBackMenu) return;
+    const handleClick = (e: MouseEvent) => {
+      if (sendBackRef.current && !sendBackRef.current.contains(e.target as Node)) {
+        setShowSendBackMenu(false);
+      }
+    };
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, [showSendBackMenu]);
+
+  // Fetch mission title when missionId is set
+  useEffect(() => {
+    if (!task.missionId) {
+      setMissionTitle(null);
+      return;
+    }
+
+    // Check cache synchronously first
+    const cached = missionTitleCache.get(task.missionId);
+    if (cached) {
+      setMissionTitle(cached);
+      return;
+    }
+
+    let cancelled = false;
+    void getMissionTitle(task.missionId, projectId).then((title) => {
+      if (!cancelled) setMissionTitle(title);
+    });
+    return () => { cancelled = true; };
+  }, [task.missionId, projectId]);
+
+  // Fetch assigned agent name when assignedAgentId is set
+  useEffect(() => {
+    if (!task.assignedAgentId) {
+      setAgentName(null);
+      return;
+    }
+
+    // Check cache synchronously first
+    const cached = agentNameCache.get(task.assignedAgentId);
+    if (cached) {
+      setAgentName(cached);
+      return;
+    }
+
+    setAgentName(null);
+
+    let cancelled = false;
+    void getAgentName(task.assignedAgentId, projectId).then((name) => {
+      if (!cancelled) setAgentName(name);
+    });
+    return () => { cancelled = true; };
+  }, [task.assignedAgentId, projectId]);
+
+  // Auto-focus and auto-resize description textarea when entering edit mode
+  useEffect(() => {
+    if (isEditing && descTextareaRef.current) {
+      const el = descTextareaRef.current;
+      el.focus();
+      // Apply the same resize logic used in handleDescChange so the textarea
+      // opens at the correct height for existing long descriptions without
+      // requiring the user to type first.
+      el.style.height = "auto";
+      el.style.height = el.scrollHeight + "px";
+    }
+  }, [isEditing]);
+
+  useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") {
+      setIsInViewport(true);
+      return;
+    }
+
+    const element = cardRef.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInViewport(entry?.isIntersecting ?? true);
+      },
+      { rootMargin: "200px" },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [isEditing, task.id]);
+
+  const handleDragStart = useCallback((e: React.DragEvent) => {
+    e.dataTransfer.setData("text/plain", task.id);
+    e.dataTransfer.effectAllowed = "move";
+    setDragging(true);
+  }, [task.id]);
+
+  const handleDragEnd = useCallback(() => {
+    setDragging(false);
+  }, []);
+
+  const isFileDrag = useCallback((e: React.DragEvent) => {
+    return e.dataTransfer.types.includes("Files");
+  }, []);
+
+  const handleFileDragOver = useCallback((e: React.DragEvent) => {
+    if (!isFileDrag(e)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    e.dataTransfer.dropEffect = "copy";
+    setFileDragOver(true);
+  }, [isFileDrag]);
+
+  const handleFileDragLeave = useCallback((e: React.DragEvent) => {
+    if (!isFileDrag(e)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    setFileDragOver(false);
+  }, [isFileDrag]);
+
+  const handleFileDrop = useCallback(async (e: React.DragEvent) => {
+    if (!isFileDrag(e)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    setFileDragOver(false);
+
+    const files = Array.from(e.dataTransfer.files);
+    for (const file of files) {
+      try {
+        await uploadAttachment(task.id, file, projectId);
+        addToast(`Attached ${file.name} to ${task.id}`, "success");
+      } catch (err) {
+        addToast(`Failed to attach ${file.name}: ${getErrorMessage(err)}`, "error");
+      }
+    }
+  }, [task.id, isFileDrag, addToast]);
+
+  const handleClick = useCallback(() => {
+    if (isEditing) return; // Don't open detail when editing
+    onOpenDetail(task);
+  }, [task, onOpenDetail, isEditing]);
+
+  const handleCardClick = useCallback((e: React.MouseEvent) => {
+    if (touchOpenHandledRef.current) {
+      touchOpenHandledRef.current = false;
+      return;
+    }
+    if (isInteractiveTarget(e.target)) return;
+    void handleClick();
+  }, [handleClick, isInteractiveTarget]);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    if (!touch) return;
+    
+    touchStartPosRef.current = { x: touch.clientX, y: touch.clientY, time: Date.now() };
+    hasTouchMovedRef.current = false;
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!touchStartPosRef.current) return;
+    
+    const touch = e.touches[0];
+    if (!touch) return;
+    
+    const dx = Math.abs(touch.clientX - touchStartPosRef.current.x);
+    const dy = Math.abs(touch.clientY - touchStartPosRef.current.y);
+    
+    // If moved beyond threshold, mark as moved (scrolling/dragging)
+    if (dx > TOUCH_MOVE_THRESHOLD || dy > TOUCH_MOVE_THRESHOLD) {
+      hasTouchMovedRef.current = true;
+    }
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (isInteractiveTarget(e.target)) return;
+    
+    // Check if this was a valid tap (not a scroll)
+    if (!touchStartPosRef.current) return;
+    
+    const touchDuration = Date.now() - touchStartPosRef.current.time;
+    const isQuickTap = touchDuration < TOUCH_TAP_MAX_DURATION;
+    const isStationary = !hasTouchMovedRef.current;
+    
+    // Only open modal for quick taps that didn't move significantly
+    if (isQuickTap && isStationary) {
+      touchOpenHandledRef.current = true;
+      void handleClick();
+    }
+    
+    // Reset touch tracking
+    touchStartPosRef.current = null;
+    hasTouchMovedRef.current = false;
+  }, [handleClick, isInteractiveTarget]);
+
+  const handleDepClick = useCallback(async (e: React.MouseEvent, depId: string) => {
+    e.stopPropagation(); // Prevent card click
+    try {
+      const detail = await fetchTaskDetail(depId, projectId);
+      onOpenDetail(detail);
+    } catch {
+      addToast(`Failed to load dependency ${depId}`, "error");
+    }
+  }, [onOpenDetail, addToast]);
+
+  const isFailed = task.status === "failed";
+  const isPaused = task.paused === true;
+  const pausedByAgent = Boolean(task.paused && task.pausedByAgentId);
+  const normalizedPriority = normalizeTaskPriorityValue(task.priority);
+  const showPriorityBadge = normalizedPriority !== DEFAULT_TASK_PRIORITY;
+  const isStuck = isTaskStuck(task, taskStuckTimeoutMs, lastFetchTimeMs);
+  const isAwaitingApproval = task.column === "triage" && task.status === "awaiting-approval";
+  const isArchived = task.column === "archived";
+  const isAgentActive = !globalPaused && !queued && !isFailed && !isPaused && !isStuck && !isAwaitingApproval && (task.column === "in-progress" || ACTIVE_STATUSES.has(task.status as string));
+  const isDraggable = !disableDrag && !queued && !isPaused && !isEditing && !isArchived; // Disable drag during edit/archived or host embedding
+
+  // Check if this card can be edited inline
+  const canEdit = EDITABLE_COLUMNS.has(task.column) && !isAgentActive && !isPaused && !queued && onUpdateTask;
+  const hasGitHubBadge = Boolean(task.prInfo || task.issueInfo);
+  const isGitHubImportedTask = task.sourceType === "github_import";
+  const branchMetadata = useMemo(() => getVisibleTaskCardBranches(task), [task.id, task.branch, task.baseBranch]);
+  const hasBranchMetadata = Boolean(branchMetadata.branch || branchMetadata.baseBranch);
+  const sourceIssueUrl = getIssueUrlFromMetadata(task.sourceMetadata);
+  const isAgentCreated = isAgentCreatedTask(task);
+  const sourceAgentName = getSourceAgentName(task);
+  const agentCreatedTitle = sourceAgentName ? `Created by agent: ${sourceAgentName}` : "Created by agent";
+  const isAgentNameLoading = Boolean(task.assignedAgentId && agentName === null);
+  const taskProviders = useMemo(() => {
+    const providers: string[] = [];
+    if (task.modelProvider) providers.push(task.modelProvider);
+    if (task.validatorModelProvider && !providers.includes(task.validatorModelProvider)) {
+      providers.push(task.validatorModelProvider);
+    }
+    if (task.planningModelProvider && !providers.includes(task.planningModelProvider)) {
+      providers.push(task.planningModelProvider);
+    }
+    return providers;
+  }, [task.modelProvider, task.validatorModelProvider, task.planningModelProvider]);
+  const unifiedProgress = useMemo(
+    () => getUnifiedTaskProgress(task, workflowStepNameLookup),
+    [task.steps, task.enabledWorkflowSteps, task.workflowStepResults, workflowStepNameLookup],
+  );
+  const showProgressSection =
+    unifiedProgress.total > 0 && (task.status === "executing" || task.column === "in-progress");
+
+  useEffect(() => {
+    if (task.column !== "in-progress" && task.column !== "in-review") {
+      return;
+    }
+
+    const merging = task.status != null && ACTIVE_MERGE_STATUSES.has(task.status);
+
+    if (task.column === "in-progress") {
+      const endToEndMs = getTaskEndToEndDurationMs(task, Date.now());
+      const elapsedMs = getInProgressElapsedMs(task, Date.now());
+      const instrumentedMs = getInstrumentedDurationMs(task, Date.now());
+      if (endToEndMs == null && elapsedMs == null && instrumentedMs == null) {
+        return;
+      }
+    }
+
+    if (!merging && task.column === "in-review") {
+      const endToEndMs = getTaskEndToEndDurationMs(task, Date.now());
+      const instrumentedMs = getInstrumentedDurationMs(task, Date.now());
+      if (endToEndMs == null && instrumentedMs == null) {
+        return;
+      }
+    }
+
+    setTimeIndicatorNowMs(Date.now());
+    const interval = window.setInterval(() => {
+      setTimeIndicatorNowMs(Date.now());
+    }, LIVE_TIME_INDICATOR_POLL_MS);
+
+    return () => window.clearInterval(interval);
+  }, [task.column, task.status, task.columnMovedAt, task.updatedAt, task.workflowStepResults, task.timedExecutionMs, task.executionStartedAt, task.executionCompletedAt]);
+
+  const timeIndicator = useMemo(() => {
+    if (!TIME_INDICATOR_COLUMNS.has(task.column)) {
+      return null;
+    }
+
+    // While a merge is actively running, continue showing live end-to-end
+    // execution time. For legacy tasks without executionStartedAt, fall back
+    // to instrumented runtime plus live merge-phase elapsed since `updatedAt`.
+    if (task.status != null && ACTIVE_MERGE_STATUSES.has(task.status)) {
+      const totalMs = getActiveMergeTotalMs(task, timeIndicatorNowMs);
+      if (totalMs != null) {
+        const elapsedLabel = formatElapsedDurationDone(totalMs);
+        if (elapsedLabel) {
+          const mergeElapsedMs = getMergeElapsedMs(task, timeIndicatorNowMs);
+          const mergeLabel = mergeElapsedMs == null ? null : formatElapsedDuration(mergeElapsedMs);
+          const title = mergeLabel
+            ? `Execution time ${elapsedLabel}. Merge phase ${mergeLabel}`
+            : `Execution time ${elapsedLabel}. Merging`;
+          return {
+            label: elapsedLabel,
+            title,
+            ariaLabel: title,
+          };
+        }
+      }
+    }
+
+    if (task.column === "in-progress") {
+      // Prefer the persistent execution start (set on first transition to
+      // in-progress, never reset on retry-loop bounces). Fall back to the
+      // columnMovedAt heuristic for legacy tasks predating the new field.
+      const elapsedMs =
+        getTaskEndToEndDurationMs(task, timeIndicatorNowMs)
+        ?? getInProgressElapsedMs(task, timeIndicatorNowMs)
+        ?? getInstrumentedDurationMs(task, timeIndicatorNowMs);
+      if (elapsedMs == null) {
+        return null;
+      }
+
+      const elapsedLabel = formatElapsedDuration(elapsedMs);
+      if (!elapsedLabel) {
+        return null;
+      }
+
+      return {
+        label: elapsedLabel,
+        title: `In progress ${elapsedLabel}`,
+        ariaLabel: `In progress ${elapsedLabel}`,
+      };
+    }
+
+    // in-review and done: show wall-clock end-to-end runtime. Falls back to
+    // the instrumented `[timing]` aggregate for tasks completed before
+    // `executionStartedAt`/`executionCompletedAt` were tracked.
+    const endToEndMs = getTaskEndToEndDurationMs(task, timeIndicatorNowMs);
+    const totalMs = endToEndMs ?? getInstrumentedDurationMs(task, timeIndicatorNowMs);
+    if (totalMs == null) {
+      return null;
+    }
+
+    const elapsedLabel = formatElapsedDurationDone(totalMs);
+    if (!elapsedLabel) {
+      return null;
+    }
+
+    const completionMs = getInReviewCompletionMs(task);
+    if (completionMs == null) {
+      return {
+        label: elapsedLabel,
+        title: `Execution time ${elapsedLabel}`,
+        ariaLabel: `Execution time ${elapsedLabel}`,
+      };
+    }
+
+    const completedAt = new Date(completionMs).toLocaleString();
+    return {
+      label: elapsedLabel,
+      title: `Execution time ${elapsedLabel}. Completed ${completedAt}`,
+      ariaLabel: `Execution time ${elapsedLabel}. Completed ${completedAt}`,
+    };
+  }, [task.column, task.status, task.columnMovedAt, task.timedExecutionMs, task.updatedAt, task.workflowStepResults, task.log, task.executionStartedAt, task.executionCompletedAt, timeIndicatorNowMs]);
+
+  useEffect(() => {
+    if (!hasGitHubBadge || !isInViewport) {
+      unsubscribeFromBadge(task.id);
+      return;
+    }
+
+    subscribeToBadge(task.id);
+    return () => {
+      unsubscribeFromBadge(task.id);
+    };
+  }, [hasGitHubBadge, isInViewport, subscribeToBadge, task.id, unsubscribeFromBadge]);
+
+  const liveBadgeData = badgeUpdates.get(`${projectId ?? "default"}:${task.id}`);
+
+  // Compute step version for diff stats refresh when steps change
+  const isActiveColumn = task.column === "in-progress" || task.column === "in-review";
+  const stepVersion = useMemo(
+    () => task.steps.map((s) => `${s.name}:${s.status}`).join("|"),
+    [task.steps],
+  );
+
+  // Viewport-gated diff stats fetching - only fetch when card is visible
+  const { stats: diffStats } = useTaskDiffStats(
+    task.id,
+    task.column,
+    task.mergeDetails?.commitSha,
+    projectId,
+    {
+      enabled: isInViewport,
+      worktree: task.worktree,
+      stepVersion: isActiveColumn ? stepVersion : undefined,
+      pollIntervalMs: isActiveColumn ? 30_000 : undefined,
+    },
+  );
+
+  // Get fresh batch data if available
+  const batchData = useMemo(() => getFreshBatchData(task.id, projectId), [task.id, projectId]);
+
+  // Pick the freshest data among WebSocket, batch, and task data
+  const livePrInfo = useMemo(() => {
+    const wsData = liveBadgeData?.prInfo;
+    const wsTimestamp = liveBadgeData?.timestamp;
+    const batchInfo = batchData?.result?.prInfo;
+    const batchTimestamp = batchData?.timestamp ? new Date(batchData.timestamp).toISOString() : undefined;
+    const taskInfo = task.prInfo;
+    const taskTimestamp = task.prInfo?.lastCheckedAt ?? task.updatedAt;
+
+    // Compare all three sources and pick the freshest
+    let bestData = pickPreferredBadge<PrInfo>(wsData, wsTimestamp, taskInfo, taskTimestamp);
+    const bestTimestamp = wsTimestamp && wsTimestamp >= taskTimestamp ? wsTimestamp : taskTimestamp;
+
+    if (batchInfo && batchTimestamp) {
+      if (!bestTimestamp || batchTimestamp > bestTimestamp) {
+        bestData = batchInfo;
+      }
+    }
+
+    return bestData;
+  }, [liveBadgeData, batchData, task.prInfo, task.updatedAt]);
+
+  const liveIssueInfo = useMemo(() => {
+    const wsData = liveBadgeData?.issueInfo;
+    const wsTimestamp = liveBadgeData?.timestamp;
+    const batchInfo = batchData?.result?.issueInfo;
+    const batchTimestamp = batchData?.timestamp ? new Date(batchData.timestamp).toISOString() : undefined;
+    const taskInfo = task.issueInfo;
+    const taskTimestamp = task.issueInfo?.lastCheckedAt ?? task.updatedAt;
+
+    // Compare all three sources and pick the freshest
+    let bestData = pickPreferredBadge<IssueInfo>(wsData, wsTimestamp, taskInfo, taskTimestamp);
+    const bestTimestamp = wsTimestamp && wsTimestamp >= taskTimestamp ? wsTimestamp : taskTimestamp;
+
+    if (batchInfo && batchTimestamp) {
+      if (!bestTimestamp || batchTimestamp > bestTimestamp) {
+        bestData = batchInfo;
+      }
+    }
+
+    return bestData;
+  }, [liveBadgeData, batchData, task.issueInfo, task.updatedAt]);
+
+  const enterEditMode = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (!canEdit || isSaving) return;
+    setIsEditing(true);
+    setEditDescription(task.description || "");
+  }, [canEdit, isSaving, task.description]);
+
+  const exitEditMode = useCallback(() => {
+    setIsEditing(false);
+    setEditDescription(task.description || "");
+  }, [task.description]);
+
+  const hasChanges = useCallback(() => {
+    return editDescription !== (task.description || "");
+  }, [editDescription, task.description]);
+
+  const saveChanges = useCallback(async () => {
+    if (!onUpdateTask || isSaving) return;
+    if (!hasChanges()) {
+      exitEditMode();
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      await onUpdateTask(task.id, {
+        description: editDescription.trim() || undefined,
+      });
+      addToast(`Updated ${task.id}`, "success");
+      setIsEditing(false);
+    } catch (err) {
+      addToast(`Failed to update ${task.id}: ${getErrorMessage(err)}`, "error");
+      // Stay in edit mode on error so user can retry
+    } finally {
+      setIsSaving(false);
+    }
+  }, [onUpdateTask, task.id, editDescription, isSaving, hasChanges, exitEditMode, addToast]);
+
+  const handleDescKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      void saveChanges();
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      exitEditMode();
+    }
+  }, [saveChanges, exitEditMode]);
+
+  const handleBlur = useCallback(() => {
+    // Small delay to allow focus to move before checking if we should save or cancel
+    setTimeout(() => {
+      const activeElement = document.activeElement;
+      const isFocusInEditArea =
+        activeElement === descTextareaRef.current ||
+        activeElement?.closest(".card-editing-content");
+
+      if (!isFocusInEditArea) {
+        if (hasChanges()) {
+          void saveChanges();
+        } else {
+          exitEditMode();
+        }
+      }
+    }, 0);
+  }, [hasChanges, saveChanges, exitEditMode]);
+
+  const handleDoubleClick = useCallback((e: React.MouseEvent) => {
+    if (canEdit) {
+      e.stopPropagation();
+      enterEditMode(e);
+    }
+  }, [canEdit, enterEditMode]);
+
+  const handleEditClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    enterEditMode(e);
+  }, [enterEditMode]);
+
+  // Auto-resize textarea (similar to InlineCreateCard)
+  const handleDescChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setEditDescription(e.target.value);
+    const el = e.target;
+    el.style.height = "auto";
+    el.style.height = el.scrollHeight + "px";
+  }, []);
+
+  const handleArchiveClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (!onArchiveTask) return;
+
+    void onArchiveTask(task.id).then(() => {
+      addToast(`Archived ${task.id}`, "success");
+    }).catch((err) => {
+      addToast(`Failed to archive ${task.id}: ${getErrorMessage(err)}`, "error");
+    });
+  }, [addToast, onArchiveTask, task.id]);
+
+  const handleUnarchiveClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (!onUnarchiveTask) return;
+
+    void onUnarchiveTask(task.id).then(() => {
+      addToast(`Unarchived ${task.id}`, "success");
+    }).catch((err) => {
+      addToast(`Failed to unarchive ${task.id}: ${getErrorMessage(err)}`, "error");
+    });
+  }, [addToast, onUnarchiveTask, task.id]);
+
+  const handleDeleteClick = useCallback(async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (!onDeleteTask) return;
+
+    const shouldDelete = await confirm({
+      title: "Delete Task",
+      message: `Delete ${task.id}?`,
+      danger: true,
+    });
+    if (!shouldDelete) {
+      return;
+    }
+
+    try {
+      await onDeleteTask(task.id);
+      addToast(`Deleted ${task.id}`, "success");
+    } catch (err) {
+      const conflict = extractDependencyDeleteConflict(err);
+      if (!conflict || conflict.dependentIds.length === 0) {
+        addToast(`Failed to delete ${task.id}: ${getErrorMessage(err)}`, "error");
+        return;
+      }
+
+      const dependentList = conflict.dependentIds.join(", ");
+      const confirmed = await confirm({
+        title: "Force Delete Task",
+        message:
+          `${task.id} is a dependency of ${dependentList}.\n\n` +
+          "Delete anyway by removing these dependency references first?",
+        danger: true,
+      });
+      if (!confirmed) {
+        return;
+      }
+
+      try {
+        await onDeleteTask(task.id, { removeDependencyReferences: true });
+        addToast(`Deleted ${task.id} after removing dependency references`, "success");
+      } catch (retryErr) {
+        addToast(`Failed to delete ${task.id}: ${getErrorMessage(retryErr)}`, "error");
+      }
+    }
+  }, [addToast, confirm, onDeleteTask, task.id]);
+
+  const handleOpenFiles = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    onOpenDetailWithTab?.(task, "changes");
+  }, [task, onOpenDetailWithTab]);
+
+  const handleToggleSteps = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setShowSteps((current) => !current);
+  }, []);
+
+  const handleMissionClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (task.missionId && onOpenMission) {
+      onOpenMission(task.missionId);
+    }
+  }, [task.missionId, onOpenMission]);
+
+  const handleSendBackClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowSendBackMenu((current) => !current);
+  }, []);
+
+  const handleSendBackOptionClick = useCallback(async (e: React.MouseEvent, column: Column) => {
+    e.stopPropagation();
+    setShowSendBackMenu(false);
+    if (!onMoveTask) return;
+
+    try {
+      const hasStepProgress = task.steps.some((step) => step.status !== "pending");
+      const shouldPrompt = (column === "todo" || column === "triage") && hasStepProgress;
+      let moveOptions: { preserveProgress?: boolean } | undefined;
+
+      if (shouldPrompt) {
+        const keepProgress = await confirm({
+          title: "Preserve Progress?",
+          message: "This task has completed steps. Keep progress before moving?",
+          confirmLabel: "Keep Progress",
+          cancelLabel: "Reset Progress",
+        });
+
+        if (keepProgress) {
+          moveOptions = { preserveProgress: true };
+        } else {
+          const resetProgress = await confirm({
+            title: "Reset Progress?",
+            message: "Reset all step progress before moving this task?",
+            confirmLabel: "Reset Progress",
+            cancelLabel: "Cancel Move",
+            danger: true,
+          });
+          if (!resetProgress) {
+            return;
+          }
+        }
+      }
+
+      await onMoveTask(task.id, column, moveOptions);
+      addToast(`Moved ${task.id} to ${COLUMN_LABELS[column]}`, "success");
+    } catch (err) {
+      addToast(`Failed to move ${task.id}: ${getErrorMessage(err)}`, "error");
+    }
+  }, [addToast, confirm, onMoveTask, task.id, task.steps]);
+
+  const handleRetryTask = useCallback(async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (!onRetryTask || isRetrying) return;
+
+    setIsRetrying(true);
+    try {
+      await onRetryTask(task.id);
+    } catch (err) {
+      addToast(`Failed to retry ${task.id}: ${getErrorMessage(err)}`, "error");
+    } finally {
+      setIsRetrying(false);
+    }
+  }, [addToast, isRetrying, onRetryTask, task.id]);
+
+  const cardClass = `card${dragging ? " dragging" : ""}${queued ? " queued" : ""}${isAgentActive ? " agent-active" : ""}${isFailed ? " failed" : ""}${isPaused ? " paused" : ""}${isStuck ? " stuck" : ""}${isAwaitingApproval ? " awaiting-approval" : ""}${fileDragOver ? " file-drop-target" : ""}${isEditing ? " card-editing" : ""}${isSaving ? " card-saving" : ""}`;
+
+  const filesChangedButton = (() => {
+    if (task.column === "in-progress") {
+      const activeDiffCount = diffStats?.filesChanged;
+      const fallbackCount =
+        activeDiffCount == null || activeDiffCount === 0
+          ? task.modifiedFiles?.length
+          : undefined;
+      const displayCount =
+        activeDiffCount != null && activeDiffCount > 0
+          ? activeDiffCount
+          : fallbackCount;
+      if (displayCount == null || displayCount === 0) {
+        return null;
+      }
+
+      return (
+        <button
+          type="button"
+          className="card-session-files"
+          onClick={handleOpenFiles}
+          disabled={!onOpenDetailWithTab}
+        >
+          <Folder size={12} />
+          <span>{displayCount} {displayCount === 1 ? "file" : "files"} changed</span>
+        </button>
+      );
+    }
+
+    if (task.column === "in-review") {
+      const reviewDiffCount = diffStats?.filesChanged;
+      const fallbackCount =
+        reviewDiffCount == null || reviewDiffCount === 0
+          ? task.modifiedFiles?.length
+          : undefined;
+      const displayCount =
+        reviewDiffCount != null && reviewDiffCount > 0
+          ? reviewDiffCount
+          : fallbackCount;
+      if (displayCount == null || displayCount === 0) {
+        return null;
+      }
+
+      return (
+        <button
+          type="button"
+          className="card-session-files"
+          onClick={handleOpenFiles}
+          disabled={!onOpenDetailWithTab}
+        >
+          <Folder size={12} />
+          <span>{displayCount} {displayCount === 1 ? "file" : "files"} changed</span>
+        </button>
+      );
+    }
+
+    if (task.column === "done") {
+      // Prefer diff stats from the same endpoint the modal uses so the
+      // count is always consistent with the Changes tab.
+      const diffCount = diffStats?.filesChanged;
+      const mergedCount = task.mergeDetails?.filesChanged;
+      const displayCount = diffCount ?? mergedCount;
+      if (displayCount != null && displayCount > 0) {
+        return (
+          <button
+            type="button"
+            className="card-session-files"
+            onClick={handleOpenFiles}
+            disabled={!onOpenDetailWithTab}
+          >
+            <Folder size={12} />
+            <span>{displayCount} {displayCount === 1 ? "file" : "files"} changed</span>
+          </button>
+        );
+      }
+
+      const modifiedCount = task.modifiedFiles?.length;
+      if (modifiedCount != null && modifiedCount > 0) {
+        return (
+          <button
+            type="button"
+            className="card-session-files"
+            onClick={handleOpenFiles}
+            disabled={!onOpenDetailWithTab}
+          >
+            <Folder size={12} />
+            <span>{modifiedCount} {modifiedCount === 1 ? "file" : "files"} changed</span>
+          </button>
+        );
+      }
+    }
+
+    return null;
+  })();
+
+  if (isEditing) {
+    return (
+      <div
+        ref={cardRef}
+        className={cardClass}
+        data-id={task.id}
+        onDoubleClick={handleDoubleClick}
+      >
+        <div className="card-editing-content">
+          <textarea
+            ref={descTextareaRef}
+            className="card-edit-desc-textarea"
+            placeholder="Task description"
+            value={editDescription}
+            onChange={handleDescChange}
+            onKeyDown={handleDescKeyDown}
+            onBlur={handleBlur}
+            disabled={isSaving}
+            rows={4}
+          />
+          {isSaving && (
+            <div className="card-edit-loading">
+              <span className="card-edit-loading-spinner" />
+              <span className="card-edit-loading-text">Saving...</span>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      ref={cardRef}
+      className={cardClass}
+      data-id={task.id}
+      draggable={isDraggable}
+      onDragStart={isDraggable ? handleDragStart : undefined}
+      onDragEnd={isDraggable ? handleDragEnd : undefined}
+      onDragOver={handleFileDragOver}
+      onDragLeave={handleFileDragLeave}
+      onDrop={handleFileDrop}
+      onClick={handleCardClick}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onDoubleClick={handleDoubleClick}
+    >
+      <div className="card-header">
+        <span className="card-id">{task.id}</span>
+        {isPaused && (
+          <span
+            className="card-status-badge paused"
+          >
+            {pausedByAgent ? "paused by agent" : "paused"}
+          </span>
+        )}
+        {!isPaused && task.status && task.status !== "queued" && (
+          <span
+            className={`card-status-badge card-status-badge--${task.column}${isAwaitingApproval ? " awaiting-approval" : ""}${ACTIVE_STATUSES.has(task.status) ? " pulsing" : ""}${isFailed ? " failed" : ""}${isStuck ? " stuck" : ""}`}
+          >
+            {isStuck ? "Stuck" : isAwaitingApproval ? "Awaiting Approval" : getTaskStatusLabel(task.status)}
+          </span>
+        )}
+        {isStuck && (isPaused || !task.status || task.status === "queued") && (
+          <span className="card-status-badge stuck">
+            Stuck
+          </span>
+        )}
+        {hasGitHubBadge && (
+          <GitHubBadge
+            prInfo={livePrInfo}
+            issueInfo={liveIssueInfo}
+          />
+        )}
+        {isAgentCreated && (
+          <span
+            className="card-agent-created-badge"
+            title={agentCreatedTitle}
+            aria-label={agentCreatedTitle}
+          >
+            <Bot size={11} aria-hidden="true" />
+            <span className="visually-hidden">{agentCreatedTitle}</span>
+            <span aria-hidden="true">Agent</span>
+          </span>
+        )}
+        {showPriorityBadge && (
+          <span className={`card-priority-badge card-priority-badge--${normalizedPriority}`}>
+            {normalizedPriority}
+          </span>
+        )}
+        {task.executionMode === "fast" && (
+          <span
+            className="card-execution-mode-badge card-execution-mode-badge--fast"
+            title="Fast mode"
+            aria-label="Fast mode"
+          >
+            <Zap aria-hidden="true" />
+            <span className="visually-hidden">Fast mode</span>
+          </span>
+        )}
+        {task.missionId && (
+          <span
+            className="card-mission-badge"
+            onClick={handleMissionClick}
+            title={`Mission: ${missionTitle ?? task.missionId}`}
+            role={onOpenMission ? "button" : undefined}
+            tabIndex={onOpenMission ? 0 : undefined}
+            style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+          >
+            <Target size={11} />
+            {abbreviateMissionTitle(missionTitle ?? task.missionId)}
+          </span>
+        )}
+        <div className="card-header-actions">
+          {canEdit && (
+            <button
+              className="card-edit-btn"
+              onClick={handleEditClick}
+              title="Edit task"
+              aria-label="Edit task"
+            >
+              <Pencil size={12} />
+            </button>
+          )}
+          {task.column === "triage" && onDeleteTask && (
+            <button
+              className="card-delete-btn"
+              onClick={handleDeleteClick}
+              title="Delete task"
+              aria-label="Delete task"
+            >
+              <Trash2 size={12} />
+            </button>
+          )}
+          {task.column === "done" && onArchiveTask && (
+            <button
+              className="card-archive-btn"
+              onClick={handleArchiveClick}
+              title="Archive task"
+              aria-label="Archive task"
+            >
+              Archive
+            </button>
+          )}
+          {task.column === "archived" && onUnarchiveTask && (
+            <button
+              className="card-unarchive-btn"
+              onClick={handleUnarchiveClick}
+              title="Unarchive task"
+              aria-label="Unarchive task"
+            >
+              Unarchive
+            </button>
+          )}
+          {task.column === "in-progress" && onMoveTask && (
+            <div className="card-send-back" ref={sendBackRef}>
+              <button
+                className="card-send-back-btn"
+                onClick={handleSendBackClick}
+                title="Send back"
+                aria-label="Send back"
+                aria-haspopup="menu"
+                aria-expanded={showSendBackMenu}
+              >
+                Send back
+                <ChevronDown size={10} />
+              </button>
+              {showSendBackMenu && (
+                <div className="card-send-back-menu" role="menu">
+                  {VALID_TRANSITIONS["in-progress"]
+                    .filter((col) => col !== "in-review")
+                    .map((col) => (
+                      <button
+                        key={col}
+                        className="card-send-back-menu-item"
+                        role="menuitem"
+                        onClick={(e) => handleSendBackOptionClick(e, col)}
+                      >
+                        {COLUMN_LABELS[col]}
+                      </button>
+                    ))}
+                </div>
+              )}
+            </div>
+          )}
+          {task.column === "in-review" && onMoveTask && (
+            <div className="card-send-back" ref={sendBackRef}>
+              <button
+                className="card-send-back-btn"
+                onClick={handleSendBackClick}
+                title="Move task"
+                aria-label="Move task"
+                aria-haspopup="menu"
+                aria-expanded={showSendBackMenu}
+              >
+                Move
+                <ChevronDown size={10} />
+              </button>
+              {showSendBackMenu && (
+                <div className="card-send-back-menu" role="menu">
+                  {VALID_TRANSITIONS["in-review"].map((col) => (
+                    <button
+                      key={col}
+                      className="card-send-back-menu-item"
+                      role="menuitem"
+                      onClick={(e) => handleSendBackOptionClick(e, col)}
+                    >
+                      {col === "done" ? "Done (no merge)" : COLUMN_LABELS[col]}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+          {task.size && (
+            <span className={`card-size-badge size-${task.size.toLowerCase()}`}>
+              {task.size}
+            </span>
+          )}
+        </div>
+      </div>
+      {isFailed && task.error && (
+        <div className="card-error" title={task.error}>
+          <span className="card-error-icon">⚠</span>
+          <span className="card-error-text">{task.error.length > 60 ? task.error.slice(0, 60) + "…" : task.error}</span>
+          {onRetryTask && (
+            <button
+              type="button"
+              className="btn btn-sm card-error-retry-btn"
+              onClick={handleRetryTask}
+              disabled={isRetrying}
+            >
+              <RotateCw size={12} />
+              {isRetrying ? "Retrying…" : "Retry"}
+            </button>
+          )}
+        </div>
+      )}
+      <div className="card-title" title={task.title || task.description || undefined}>
+        {truncate(task.title, MAX_TITLE_LENGTH) || truncate(task.description, MAX_TITLE_LENGTH) || task.id}
+      </div>
+      {hasBranchMetadata && (
+        <div className="card-branch-row" aria-label="Branch metadata">
+          {branchMetadata.branch && (
+            <span className="card-branch-chip" title={branchMetadata.branch}>
+              <span className="card-branch-label">Branch</span>
+              <span className="card-branch-value">{branchMetadata.branch}</span>
+            </span>
+          )}
+          {branchMetadata.baseBranch && (
+            <span className="card-branch-chip" title={branchMetadata.baseBranch}>
+              <span className="card-branch-label">Base</span>
+              <span className="card-branch-value">{branchMetadata.baseBranch}</span>
+            </span>
+          )}
+        </div>
+      )}
+      {showProgressSection && (() => {
+        const progressPercent = (unifiedProgress.completed / unifiedProgress.total) * 100;
+        return (
+          <>
+            <div className="card-progress">
+              <div className="card-progress-bar">
+                <div
+                  className="card-progress-fill"
+                  style={{
+                    width: `${progressPercent}%`,
+                    backgroundColor: COLUMN_PROGRESS_COLOR_MAP[task.column],
+                  }}
+                />
+              </div>
+              <span className="card-progress-label">{unifiedProgress.completed}/{unifiedProgress.total}</span>
+            </div>
+            <button
+              type="button"
+              className="card-steps-toggle"
+              onClick={handleToggleSteps}
+              aria-expanded={showSteps}
+              aria-label={showSteps ? "Hide steps" : "Show steps"}
+            >
+              <span>{unifiedProgress.total} step{unifiedProgress.total === 1 ? "" : "s"}</span>
+              <ChevronDown
+                size={14}
+                className={`card-steps-toggle-icon${showSteps ? " expanded" : ""}`}
+              />
+            </button>
+            {showSteps && (
+              <div className="card-steps-list">
+                {unifiedProgress.items.map((step) => {
+                  const isWorkflowFailed = step.source === "workflow" && step.status === "failed";
+
+                  return (
+                    <div key={step.id} className="card-step-item">
+                      <span
+                        className={`card-step-dot card-step-dot--${step.status}${isWorkflowFailed ? " card-step-dot--workflow-failed" : ""}`}
+                        aria-hidden="true"
+                      />
+                      <span className={`card-step-name${step.status === "done" ? " completed" : ""}`}>
+                        {step.name}
+                      </span>
+                      {step.source === "workflow" && (
+                        <span
+                          className={`card-step-workflow-badge card-step-workflow-badge--${step.phase}`}
+                          title="Workflow check"
+                        >
+                          workflow
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </>
+        );
+      })()}
+      {(filesChangedButton || timeIndicator || isGitHubImportedTask) && (
+        <div className="card-footer-row">
+          {filesChangedButton}
+          {isGitHubImportedTask && (
+            <span
+              className="card-source-provenance"
+              title={sourceIssueUrl ? `Imported from GitHub: ${sourceIssueUrl}` : "Imported from GitHub"}
+              aria-label="Imported from GitHub"
+            >
+              <ProviderIcon provider="github" size="sm" />
+            </span>
+          )}
+          {timeIndicator && (
+            <span
+              className="card-time-indicator"
+              title={timeIndicator.title}
+              aria-label={timeIndicator.ariaLabel}
+            >
+              <Clock size={12} />
+              <span>{timeIndicator.label}</span>
+            </span>
+          )}
+        </div>
+      )}
+      {((task.dependencies && task.dependencies.length > 0) || queued || task.status === "queued" || task.blockedBy) && (
+        <div className="card-meta">
+          {task.dependencies && task.dependencies.length > 0 && (
+            <div className="card-dep-list">
+              {task.dependencies.map((depId) => (
+                <span
+                  key={depId}
+                  className="card-dep-badge clickable"
+                  onClick={(e) => void handleDepClick(e, depId)}
+                  title={`Click to view ${depId}`}
+                >
+                  <Link size={12} style={{ verticalAlign: "middle" }} /> {depId}
+                </span>
+              ))}
+            </div>
+          )}
+          {task.blockedBy && (
+            <span className="card-scope-badge" data-tooltip={`Blocked by ${task.blockedBy} (file overlap)`}>
+              <Layers size={12} style={{ verticalAlign: "middle" }} /> {task.blockedBy}
+            </span>
+          )}
+          {(queued || task.status === "queued") && task.column !== "in-progress" && <span className="queued-badge"><Clock size={12} style={{ verticalAlign: "middle" }} /> Queued</span>}
+        </div>
+      )}
+      {(task.assignedAgentId || taskProviders.length > 0) && (
+        <div className="card-agent-row">
+          {taskProviders.length > 0 && (
+            <span className="card-provider-icons" data-testid="card-provider-icons">
+              {taskProviders.map((provider) => (
+                <ProviderIcon key={provider} provider={provider} size="sm" />
+              ))}
+            </span>
+          )}
+          {task.assignedAgentId && (
+            <span
+              className={`card-agent-badge${isAgentNameLoading ? " card-agent-badge--loading" : ""}`}
+              title={`Assigned to ${agentName ?? task.assignedAgentId}`}
+            >
+              <Bot size={11} />
+              <span className="card-agent-badge-text">
+                {abbreviateBadge(agentName ?? task.assignedAgentId, 15)}
+              </span>
+            </span>
+          )}
+        </div>
+      )}
+      <PluginSlot slotId="task-card-badge" projectId={projectId} />
+    </div>
+  );
+}
+
+const TOUCH_MOVE_THRESHOLD = 10; // pixels
+const TOUCH_TAP_MAX_DURATION = 300; // milliseconds
+const MAX_TITLE_LENGTH = 140;
+
+function truncate(s: string | undefined, max: number): string {
+  if (!s) return "";
+  return s.length > max ? s.slice(0, max) + "…" : s;
+}
+
+/** @internal Test helper to verify TaskCard memo comparator behavior */
+export function __test_areTaskCardPropsEqual(previous: TaskCardProps, next: TaskCardProps): boolean {
+  return areTaskCardPropsEqual(previous, next);
+}
+
+export const TaskCard = memo(TaskCardComponent, areTaskCardPropsEqual);
+TaskCard.displayName = "TaskCard";

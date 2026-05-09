@@ -1,0 +1,2608 @@
+import type { AddressInfo } from "node:net";
+import { join, resolve as pathResolve } from "node:path";
+import { execFile as execFileCb } from "node:child_process";
+import { promisify } from "node:util";
+import { stat, readdir, readFile as fsReadFile } from "node:fs/promises";
+import {
+  TaskStore,
+  AutomationStore,
+  CentralCore,
+  AgentStore,
+  PluginLoader,
+  getTaskMergeBlocker,
+  getEnabledPiExtensionPaths,
+  isEphemeralAgent,
+  DaemonTokenManager,
+  GlobalSettingsStore,
+  resolveGlobalDir,
+  DEFAULT_AGENT_HEARTBEAT_INTERVAL_MS,
+} from "@fusion/core";
+import {
+  createServer,
+  GitHubClient,
+  createSkillsAdapter,
+  getCliPackageVersion,
+  getProjectSettingsPath,
+  loadTlsCredentialsFromEnv,
+  stopAllDevServers,
+  type RuntimeLogger,
+} from "@fusion/dashboard";
+import { aiMergeTask, MissionAutopilot, MissionExecutionLoop, HeartbeatMonitor, HeartbeatTriggerScheduler, type WakeContext, ProjectEngineManager, PeerExchangeService, setHostExtensionPaths } from "@fusion/engine";
+import { AuthStorage, DefaultPackageManager, ModelRegistry, SettingsManager, discoverAndLoadExtensions, createExtensionRuntime } from "@mariozechner/pi-coding-agent";
+import {
+  getMergeStrategy,
+  getTaskBranchName,
+  processPullRequestMergeTask,
+} from "./task-lifecycle.js";
+import { promptForPort } from "./port-prompt.js";
+import { createReadOnlyProviderSettingsView } from "./provider-settings.js";
+import { createReadOnlyAuthFileStorage, mergeAuthStorageReads, wrapAuthStorageWithApiKeyProviders } from "./provider-auth.js";
+import { getClaudeCodeCredentialPaths, getCodexCliAuthPath, getFusionAuthPath, getLegacyAuthPaths, getModelRegistryModelsPath, getPackageManagerAgentDir } from "./auth-paths.js";
+import { resolveProject } from "../project-context.js";
+import {
+  ensureClaudeSkillsForAllProjectsOnStartup,
+  maybeInstallClaudeSkillForNewProject,
+} from "./claude-skills-runner.js";
+import {
+  getCachedClaudeCliResolution,
+  resolveClaudeCliExtensionPaths,
+  setCachedClaudeCliResolution,
+} from "./claude-cli-extension.js";
+import {
+  getCachedDroidCliResolution,
+  resolveDroidCliExtensionPaths,
+  setCachedDroidCliResolution,
+} from "./droid-cli-extension.js";
+import {
+  getCachedLlamaCppResolution,
+  resolveLlamaCppExtensionPaths,
+  setCachedLlamaCppResolution,
+} from "./llama-cpp-extension.js";
+import { getCachedUpdateStatus, isUpdateCheckEnabled } from "../update-cache.js";
+import { resolveSelfExtension } from "./self-extension.js";
+import { ensureBundledDependencyGraphPluginInstalled, ensureBundledPluginInstalled, isBundledPluginId } from "../plugins/bundled-plugin-install.js";
+import { registerCustomProviders, reregisterCustomProviders } from "./custom-provider-registry.js";
+import { syncStartupModels } from "./startup-model-sync.js";
+import { DashboardTUI, DashboardLogSink, isTTYAvailable, type SystemInfo, type GitStatus, type GitCommit, type GitCommitDetail, type GitBranch, type GitWorktree, type FileEntry, type FileReadResult, type TaskStep as TUITaskStep, type TaskLogEntry as TUITaskLogEntry, type TaskDetailData, type TaskEvent } from "./dashboard-tui/index.js";
+
+// Re-export for backward compatibility with tests
+export { promptForPort };
+
+let processDiagnosticsRegistered = false;
+let diagnosticIntervalHandle: ReturnType<typeof setInterval> | null = null;
+const DIAGNOSTIC_INTERVAL_MS = 30 * 60 * 1000; // 30 minutes
+let diagnosticStartTime = 0;
+let diagnosticDbHealthCheck: (() => boolean) | null = null;
+let diagnosticStoreListenerCheck: (() => Record<string, number>) | null = null;
+
+const STREAM_LOG_FLUSH_IDLE_MS = 100;
+
+function formatRuntimeContext(context: Record<string, unknown> | undefined): string {
+  if (context === undefined) {
+    return "";
+  }
+
+  try {
+    return ` ${JSON.stringify(context)}`;
+  } catch {
+    return ` ${String(context)}`;
+  }
+}
+
+function createDashboardRuntimeLogger(logSink: DashboardLogSink, scope: string): RuntimeLogger {
+  return {
+    scope,
+    info(message, context) {
+      logSink.log(`${message}${formatRuntimeContext(context)}`, scope);
+    },
+    warn(message, context) {
+      logSink.warn(`${message}${formatRuntimeContext(context)}`, scope);
+    },
+    error(message, context) {
+      logSink.error(`${message}${formatRuntimeContext(context)}`, scope);
+    },
+    child(childScope) {
+      return createDashboardRuntimeLogger(logSink, `${scope}:${childScope}`);
+    },
+  };
+}
+
+type StartupUpdateStatus = {
+  updateAvailable: true;
+  latestVersion: string;
+  currentVersion: string;
+};
+
+async function resolveCachedStartupUpdateStatus(importMetaUrl: string): Promise<StartupUpdateStatus | null> {
+  try {
+    const updateCheckEnabled = await Promise.race<boolean>([
+      isUpdateCheckEnabled(),
+      new Promise<boolean>((resolve) => {
+        setTimeout(() => resolve(false), 3_000);
+      }),
+    ]);
+
+    if (!updateCheckEnabled) {
+      return null;
+    }
+
+    const currentVersion = getCliPackageVersion(importMetaUrl);
+    const cachedUpdate = getCachedUpdateStatus(currentVersion);
+    if (!cachedUpdate?.updateAvailable) {
+      return null;
+    }
+
+    return {
+      updateAvailable: true,
+      currentVersion: cachedUpdate.currentVersion,
+      latestVersion: cachedUpdate.latestVersion,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function formatUpdateMessage(updateStatus: StartupUpdateStatus | null): string | null {
+  if (!updateStatus) {
+    return null;
+  }
+
+  return `⬆ Update available: v${updateStatus.latestVersion} (current: v${updateStatus.currentVersion})`;
+}
+
+export class StreamedLogBuffer {
+  private pending = "";
+  private flushTimer: ReturnType<typeof setTimeout> | null = null;
+
+  constructor(
+    private readonly emitLine: (line: string) => void,
+    private readonly flushIdleMs: number = STREAM_LOG_FLUSH_IDLE_MS,
+  ) {}
+
+  push(delta: string): void {
+    if (!delta) return;
+
+    this.pending += delta;
+    this.flushCompletedLines();
+    this.scheduleFlush();
+  }
+
+  flush(): void {
+    this.clearFlushTimer();
+    const trailing = this.pending.trim();
+    if (trailing.length > 0) {
+      this.emitLine(trailing);
+    }
+    this.pending = "";
+  }
+
+  dispose(): void {
+    this.clearFlushTimer();
+    this.pending = "";
+  }
+
+  private flushCompletedLines(): void {
+    if (!this.pending.includes("\n")) {
+      return;
+    }
+
+    const splitLines = this.pending.split(/\r?\n/);
+    const completeLines = splitLines.slice(0, -1);
+    this.pending = splitLines[splitLines.length - 1] ?? "";
+
+    for (const line of completeLines) {
+      const normalized = line.trim();
+      if (normalized.length > 0) {
+        this.emitLine(normalized);
+      }
+    }
+  }
+
+  private scheduleFlush(): void {
+    this.clearFlushTimer();
+    this.flushTimer = setTimeout(() => {
+      this.flush();
+    }, this.flushIdleMs);
+    this.flushTimer.unref?.();
+  }
+
+  private clearFlushTimer(): void {
+    if (this.flushTimer) {
+      clearTimeout(this.flushTimer);
+      this.flushTimer = null;
+    }
+  }
+}
+
+/**
+ * Format bytes to human-readable string
+ */
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes}B`;
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)}KB`;
+  if (bytes < 1024 * 1024 * 1024) return `${Math.round(bytes / (1024 * 1024))}MB`;
+  return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)}GB`;
+}
+
+/**
+ * Format milliseconds to human-readable uptime string
+ */
+function formatUptime(ms: number): string {
+  const seconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) return `${days}d${hours % 24}h`;
+  if (hours > 0) return `${hours}h${minutes % 60}m`;
+  if (minutes > 0) return `${minutes}m${seconds % 60}s`;
+  return `${seconds}s`;
+}
+
+/**
+ * Get and log current process diagnostics (memory, handles, requests)
+ * @param prefix - Log prefix (e.g., "dashboard", "serve")
+ * @param startTime - Process start timestamp
+ * @param dbHealthCheck - Optional function to check database health
+ */
+function logDiagnostics(logger: RuntimeLogger, prefix: string, startTime: number, dbHealthCheck?: () => boolean): void {
+  const mem = process.memoryUsage();
+  const uptime = Date.now() - startTime;
+
+  // Get active handles/requests if available (Node.js internal)
+  let handleCount = -1;
+  let requestCount = -1;
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    handleCount = (process as any)._getActiveHandles?.()?.length ?? -1;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    requestCount = (process as any)._getActiveRequests?.()?.length ?? -1;
+  } catch {
+    // Ignore errors if these internal APIs are not available
+  }
+
+  // Check database health if provided
+  let dbHealth = "unknown";
+  if (dbHealthCheck) {
+    try {
+      dbHealth = dbHealthCheck() ? "ok" : "failed";
+    } catch {
+      dbHealth = "error";
+    }
+  }
+
+  // Get listener counts if provided
+  let listenerInfo = "";
+  if (diagnosticStoreListenerCheck) {
+    try {
+      const counts = diagnosticStoreListenerCheck();
+      const listenerEntries = Object.entries(counts)
+        .map(([event, count]) => `${event}:${count}`)
+        .join(",");
+      listenerInfo = ` listeners=${listenerEntries}`;
+    } catch {
+      // Ignore errors getting listener counts
+    }
+  }
+
+  const logLine = `[${prefix}] diagnostics: uptime=${formatUptime(uptime)} ` +
+    `rss=${formatBytes(mem.rss)} heap=${formatBytes(mem.heapUsed)}/${formatBytes(mem.heapTotal)} ` +
+    `external=${formatBytes(mem.external)} arrayBuffers=${formatBytes(mem.arrayBuffers)} ` +
+    `handles=${handleCount} requests=${requestCount} db=${dbHealth}${listenerInfo}`;
+
+  logger.info(logLine);
+}
+
+/**
+ * Register process lifecycle diagnostics for long-running process monitoring.
+ * Logs memory usage, handle counts, and uptime at startup and every 30 minutes.
+ * Also logs beforeExit and exit events for shutdown analysis.
+ */
+function ensureProcessDiagnostics(logger: RuntimeLogger): void {
+  if (processDiagnosticsRegistered) {
+    return;
+  }
+  processDiagnosticsRegistered = true;
+
+  diagnosticStartTime = Date.now();
+
+  // Log initial diagnostics at startup (before store is created)
+  logDiagnostics(logger, "dashboard", diagnosticStartTime);
+
+  // Register periodic diagnostics every 30 minutes
+  diagnosticIntervalHandle = setInterval(() => {
+    logDiagnostics(logger, "dashboard", diagnosticStartTime, diagnosticDbHealthCheck ?? undefined);
+  }, DIAGNOSTIC_INTERVAL_MS);
+  diagnosticIntervalHandle.unref?.(); // Don't prevent process exit
+
+  // Log beforeExit when event loop drains naturally
+  process.on("beforeExit", (code: number) => {
+    const uptime = Date.now() - diagnosticStartTime;
+    let handleCount = -1;
+    let requestCount = -1;
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      handleCount = (process as any)._getActiveHandles?.()?.length ?? -1;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      requestCount = (process as any)._getActiveRequests?.()?.length ?? -1;
+    } catch {
+      // Ignore
+    }
+    logger.info(`[dashboard] beforeExit code=${code} uptime=${formatUptime(uptime)} handles=${handleCount} requests=${requestCount}`);
+  });
+
+  // Log exit event with exit code and uptime
+  process.on("exit", (code: number) => {
+    const uptime = Date.now() - diagnosticStartTime;
+    logger.info(`[dashboard] exit code=${code} uptime=${formatUptime(uptime)}`);
+  });
+
+  // Log uncaught exceptions
+  process.on("uncaughtExceptionMonitor", (error: Error) => {
+    logger.error(`[dashboard] uncaught exception pid=${process.pid}: ${error.stack || error.message}`);
+  });
+
+  // Log unhandled rejections
+  process.on("unhandledRejection", (reason: unknown) => {
+    const message = reason instanceof Error ? reason.stack || reason.message : String(reason);
+    logger.error(`[dashboard] unhandled rejection pid=${process.pid}: ${message}`);
+  });
+}
+
+/**
+ * Stop the diagnostic interval timer. Call during shutdown.
+ */
+function stopDiagnosticInterval(): void {
+  if (diagnosticIntervalHandle) {
+    clearInterval(diagnosticIntervalHandle);
+    diagnosticIntervalHandle = null;
+  }
+}
+
+/**
+ * Set the database health check function for diagnostics.
+ * Call this after the TaskStore is created.
+ */
+function setDiagnosticDbHealthCheck(check: () => boolean): void {
+  diagnosticDbHealthCheck = check;
+}
+
+/**
+ * Set the store listener count check function for diagnostics.
+ * Call this after the TaskStore is created.
+ */
+function setDiagnosticStoreListenerCheck(check: () => Record<string, number>): void {
+  diagnosticStoreListenerCheck = check;
+}
+
+const execFileAsync = promisify(execFileCb);
+
+async function gitExec(cwd: string, args: string[]): Promise<string> {
+  const { stdout } = await execFileAsync("git", args, { cwd, maxBuffer: 4 * 1024 * 1024 });
+  return stdout;
+}
+
+async function buildGitStatus(projectPath: string): Promise<GitStatus> {
+  const [sbOut, remoteOut] = await Promise.allSettled([
+    gitExec(projectPath, ["status", "-sb", "--porcelain=v1"]),
+    gitExec(projectPath, ["remote", "get-url", "origin"]),
+  ]);
+
+  const sbRaw = sbOut.status === "fulfilled" ? sbOut.value : "";
+  const remoteUrl = remoteOut.status === "fulfilled" ? remoteOut.value.trim() : "";
+
+  const lines = sbRaw.split("\n");
+  const header = lines[0] ?? "";
+
+  let branch = "HEAD";
+  let detached = false;
+  let ahead = 0;
+  let behind = 0;
+
+  const noCommitMatch = header.match(/^## No commits yet on (.+)$/);
+  if (noCommitMatch) {
+    branch = noCommitMatch[1] ?? "HEAD";
+  } else {
+    const branchMatch = header.match(/^## ([^.]+?)(?:\.\.\.(\S+?)(?:\s+\[ahead (\d+)(?:, behind (\d+))?\]|\s+\[behind (\d+)\])?)?$/);
+    if (branchMatch) {
+      branch = branchMatch[1] ?? "HEAD";
+      ahead = parseInt(branchMatch[3] ?? "0", 10);
+      behind = parseInt(branchMatch[4] ?? branchMatch[5] ?? "0", 10);
+    } else if (header.startsWith("## HEAD (no branch)")) {
+      detached = true;
+      branch = "HEAD";
+    }
+  }
+
+  const staged: GitStatus["staged"] = [];
+  const unstaged: GitStatus["unstaged"] = [];
+  const untracked: GitStatus["untracked"] = [];
+
+  for (const line of lines.slice(1)) {
+    if (line.length < 3) continue;
+    const x = line[0] ?? " ";
+    const y = line[1] ?? " ";
+    const path = line.slice(3);
+    if (x === "?" && y === "?") {
+      untracked.push({ path });
+    } else {
+      if (x !== " " && x !== "?") staged.push({ status: x, path });
+      if (y !== " " && y !== "?") unstaged.push({ status: y, path });
+    }
+  }
+
+  let lastFetchAt: number | null = null;
+  try {
+    const fetchHead = await stat(`${projectPath}/.git/FETCH_HEAD`);
+    lastFetchAt = fetchHead.mtimeMs;
+  } catch {
+    // no fetch head yet
+  }
+
+  return { branch, detached, ahead, behind, staged, unstaged, untracked, remoteUrl, lastFetchAt };
+}
+
+async function buildGitCommits(projectPath: string, limit = 15): Promise<GitCommit[]> {
+  const sep = "\x1f";
+  const recSep = "\x1e";
+  const fmt = [`%H`, `%h`, `%s`, `%an`, `%ar`, `%aI`].join(sep);
+  let out = "";
+  try {
+    out = await gitExec(projectPath, ["log", `--max-count=${limit}`, `--format=${fmt}${recSep}`]);
+  } catch {
+    return [];
+  }
+  return out.split(recSep).flatMap((rec) => {
+    const parts = rec.trim().split(sep);
+    if (parts.length < 6 || !parts[0]) return [];
+    return [{
+      sha: parts[0] ?? "",
+      shortSha: parts[1] ?? "",
+      subject: parts[2] ?? "",
+      authorName: parts[3] ?? "",
+      relativeTime: parts[4] ?? "",
+      isoTime: parts[5] ?? "",
+    }];
+  });
+}
+
+async function buildGitCommitDetail(projectPath: string, sha: string): Promise<GitCommitDetail> {
+  const sep = "\x1f";
+  const fmt = [`%H`, `%h`, `%s`, `%an`, `%ar`, `%aI`, `%b`].join(sep);
+  const [showOut, statOut] = await Promise.allSettled([
+    gitExec(projectPath, ["show", `--format=${fmt}`, "--no-patch", sha]),
+    gitExec(projectPath, ["show", "--stat", "--format=", sha]),
+  ]);
+  const raw = showOut.status === "fulfilled" ? showOut.value.trim() : "";
+  const parts = raw.split(sep);
+  return {
+    sha: parts[0] ?? sha,
+    shortSha: parts[1] ?? sha.slice(0, 7),
+    subject: parts[2] ?? "",
+    authorName: parts[3] ?? "",
+    relativeTime: parts[4] ?? "",
+    isoTime: parts[5] ?? "",
+    body: (parts[6] ?? "").trim(),
+    stat: statOut.status === "fulfilled" ? statOut.value.trim() : "",
+  };
+}
+
+async function buildGitBranches(projectPath: string): Promise<GitBranch[]> {
+  let out = "";
+  try {
+    out = await gitExec(projectPath, [
+      "for-each-ref",
+      "--sort=-committerdate",
+      "refs/heads",
+      "--format=%(refname:short)|%(objectname:short)|%(committerdate:relative)|%(upstream:track)|%(HEAD)",
+    ]);
+  } catch {
+    return [];
+  }
+  return out.trim().split("\n").flatMap((line) => {
+    if (!line) return [];
+    const parts = line.split("|");
+    return [{
+      name: parts[0] ?? "",
+      shortSha: parts[1] ?? "",
+      relativeTime: parts[2] ?? "",
+      upstreamTrack: parts[3] ?? "",
+      isCurrent: (parts[4] ?? "") === "*",
+    }];
+  });
+}
+
+async function buildGitWorktrees(projectPath: string): Promise<GitWorktree[]> {
+  let out = "";
+  try {
+    out = await gitExec(projectPath, ["worktree", "list", "--porcelain"]);
+  } catch {
+    return [];
+  }
+  const worktrees: GitWorktree[] = [];
+  let current: Partial<GitWorktree> & { rawPath?: string } = {};
+  let isFirst = true;
+  for (const line of out.split("\n")) {
+    if (line.startsWith("worktree ")) {
+      if (current.rawPath) {
+        worktrees.push({
+          path: current.rawPath,
+          branch: current.branch ?? "HEAD",
+          sha: current.sha ?? "",
+          isCurrent: current.isCurrent ?? false,
+          isLocked: current.isLocked ?? false,
+        });
+      }
+      current = { rawPath: line.slice(9), isCurrent: isFirst };
+      isFirst = false;
+    } else if (line.startsWith("HEAD ")) {
+      current.sha = line.slice(5);
+    } else if (line.startsWith("branch ")) {
+      current.branch = line.slice(7).replace("refs/heads/", "");
+    } else if (line === "locked") {
+      current.isLocked = true;
+    } else if (line.startsWith("locked ")) {
+      current.isLocked = true;
+    }
+  }
+  if (current.rawPath) {
+    worktrees.push({
+      path: current.rawPath,
+      branch: current.branch ?? "HEAD",
+      sha: current.sha ?? "",
+      isCurrent: current.isCurrent ?? false,
+      isLocked: current.isLocked ?? false,
+    });
+  }
+  return worktrees;
+}
+
+// Standard denylist applied to both listing and reads (defence-in-depth).
+const FILES_DENYLIST = new Set(["node_modules", ".git", "dist", ".next", "target", "build"]);
+const FILE_SIZE_LIMIT = 1024 * 1024; // 1 MB
+const BINARY_CHECK_BYTES = 8 * 1024; // 8 KB
+const MAX_PREVIEW_LINES = 2000;
+
+function guardRelativePath(projectPath: string, relativePath: string): string {
+  // Prevent path traversal: the resolved absolute path must start with projectPath.
+  const resolved = pathResolve(projectPath, relativePath);
+  const base = projectPath.endsWith("/") ? projectPath : projectPath + "/";
+  if (resolved !== projectPath && !resolved.startsWith(base)) {
+    throw new Error(`Path traversal denied: ${relativePath}`);
+  }
+  return resolved;
+}
+
+async function buildFileListDirectory(projectPath: string, relativePath: string): Promise<FileEntry[]> {
+  const absDir = guardRelativePath(projectPath, relativePath);
+  const dirents = await readdir(absDir, { withFileTypes: true });
+  const entries: FileEntry[] = [];
+  for (const d of dirents) {
+    if (FILES_DENYLIST.has(d.name)) continue;
+    const entryRelPath = relativePath ? `${relativePath}/${d.name}` : d.name;
+    let size = 0;
+    let modifiedAt = new Date(0).toISOString();
+    try {
+      const s = await stat(join(absDir, d.name));
+      size = d.isDirectory() ? 0 : s.size;
+      modifiedAt = s.mtime.toISOString();
+    } catch {
+      // Silently skip entries we can't stat (permission errors, broken symlinks)
+    }
+    entries.push({
+      name: d.name,
+      path: entryRelPath,
+      isDirectory: d.isDirectory(),
+      size,
+      modifiedAt,
+    });
+  }
+  // Sort: directories first, alphabetical within each group
+  entries.sort((a, b) => {
+    if (a.isDirectory !== b.isDirectory) return a.isDirectory ? -1 : 1;
+    return a.name.localeCompare(b.name);
+  });
+  return entries;
+}
+
+async function buildFileReadFile(projectPath: string, relativePath: string): Promise<FileReadResult> {
+  const absFile = guardRelativePath(projectPath, relativePath);
+  const s = await stat(absFile);
+  const modifiedAt = s.mtime.toISOString();
+  const size = s.size;
+
+  if (size > FILE_SIZE_LIMIT) {
+    return { content: null, isBinary: false, tooLarge: true, size, modifiedAt, lineCount: 0 };
+  }
+
+  const buf = await fsReadFile(absFile);
+
+  // Binary heuristic: look for null byte in the first BINARY_CHECK_BYTES
+  const checkLen = Math.min(buf.length, BINARY_CHECK_BYTES);
+  for (let i = 0; i < checkLen; i++) {
+    if (buf[i] === 0) {
+      return { content: null, isBinary: true, tooLarge: false, size, modifiedAt, lineCount: 0 };
+    }
+  }
+
+  const text = buf.toString("utf8");
+  const lines = text.split("\n");
+  const lineCount = lines.length;
+  const content = lineCount > MAX_PREVIEW_LINES
+    ? lines.slice(0, MAX_PREVIEW_LINES).join("\n")
+    : text;
+
+  return { content, isBinary: false, tooLarge: false, size, modifiedAt, lineCount };
+}
+
+async function resolveRuntimeProjectPath(): Promise<string> {
+  try {
+    return (await resolveProject(undefined)).projectPath;
+  } catch {
+    return process.cwd();
+  }
+}
+
+async function resolveDashboardAuthToken(opts: { noAuth?: boolean; token?: string }): Promise<string | undefined> {
+  if (opts.noAuth) {
+    return undefined;
+  }
+
+  const explicitToken = opts.token
+    ?? process.env.FUSION_DASHBOARD_TOKEN
+    ?? process.env.FUSION_DAEMON_TOKEN;
+
+  if (explicitToken) {
+    return explicitToken;
+  }
+
+  const globalDir = resolveGlobalDir();
+  const settingsStore = new GlobalSettingsStore(globalDir);
+  const tokenManager = new DaemonTokenManager(settingsStore);
+
+  if (typeof tokenManager.getOrCreateToken === "function") {
+    return tokenManager.getOrCreateToken();
+  }
+
+  const existingToken = await tokenManager.getToken();
+  if (existingToken) {
+    return existingToken;
+  }
+  return tokenManager.generateToken();
+}
+
+export async function runDashboard(port: number, opts: { paused?: boolean; dev?: boolean; interactive?: boolean; open?: boolean; host?: string; noAuth?: boolean; token?: string } = {}) {
+  // Default to localhost so the dashboard (and its shell-capable terminal API)
+  // is not exposed on the LAN. Pass --host 0.0.0.0 explicitly to opt-in.
+  const selectedHost = opts.host ?? "127.0.0.1";
+
+  // ── Bearer-token auth ────────────────────────────────────────────────
+  //
+  // By default the dashboard API is gated by a bearer token so that when the
+  // server is bound to a non-localhost interface (e.g. `pnpm dev dashboard`
+  // which injects --host 0.0.0.0 for LAN testing) nearby users can't hit the
+  // terminal or exec endpoints uninvited. Precedence:
+  //   1. `opts.token`             — explicit override (mostly for tests)
+  //   2. `FUSION_DASHBOARD_TOKEN` — user-provided env
+  //   3. `FUSION_DAEMON_TOKEN`    — back-compat with daemon mode
+  //   4. stored token in ~/.fusion/settings.json
+  //   5. newly generated persisted token (first authenticated run only)
+  // `--no-auth` skips the middleware entirely. The token is embedded in the
+  // launch URL (as `?token=...`) so the user can click once and the browser
+  // stores it to localStorage for subsequent loads.
+  const dashboardAuthToken = await resolveDashboardAuthToken(opts);
+
+  // Single sink/logger pair for all dashboard command diagnostics.
+  // In TTY mode this routes to DashboardTUI; in non-TTY mode it falls back to console.*.
+  const logSink = new DashboardLogSink();
+  const runtimeLogger = createDashboardRuntimeLogger(logSink, "dashboard");
+
+  // Handle interactive port selection
+  let selectedPort = port;
+  if (opts.interactive) {
+    try {
+      selectedPort = await promptForPort(port);
+    } catch (err) {
+      if (err instanceof Error && err.message === "Interactive prompt cancelled") {
+        console.log("Cancelled — exiting");
+        process.exit(0);
+      }
+      throw err;
+    }
+  }
+  const cwd = await resolveRuntimeProjectPath();
+
+  // ── TTY Detection & TUI Initialization ─────────────────────────────
+  //
+  // When both stdout and stdin are TTY, we activate the interactive TUI
+  // instead of plain console output. The TUI provides 5 sections:
+  // system, logs, utilities, stats, settings with keyboard navigation.
+  //
+  // In non-TTY mode (CI, piped output), we fall back to plain console
+  // output to maintain compatibility with automated workflows.
+  //
+  const isTTY = isTTYAvailable();
+  let tui: DashboardTUI | undefined;
+  const dashboardStartedAt = Date.now();
+  const startupUpdateStatusPromise = resolveCachedStartupUpdateStatus(import.meta.url);
+
+  // Declare store and agentStore early so callbacks can safely reference them
+  // (they're assigned after initialization, but the variables exist from the start).
+  // prefer-const disabled: callbacks close over these identifiers before the
+  // single assignment below, which requires `let` even though no reassignment occurs.
+  // eslint-disable-next-line prefer-const
+  let store: TaskStore | undefined;
+  // eslint-disable-next-line prefer-const
+  let agentStore: AgentStore | undefined;
+
+  if (isTTY) {
+    tui = new DashboardTUI();
+    void startupUpdateStatusPromise.then((updateStatus) => {
+      tui?.setUpdateStatus(updateStatus);
+    });
+    // Set up callbacks for utility actions
+    tui.setCallbacks({
+      onRefreshStats: async () => {
+        if (store && agentStore) {
+          const tasks = await store.listTasks({ slim: true, includeArchived: false });
+          const counts = new Map<string, number>();
+          for (const task of tasks) {
+            counts.set(task.column, (counts.get(task.column) ?? 0) + 1);
+          }
+          const active = tasks.filter((task) =>
+            task.column === "in-progress" || task.column === "in-review"
+          ).length;
+          const agents = await agentStore.listAgents();
+          const agentStats = { idle: 0, active: 0, running: 0, error: 0 };
+          for (const agent of agents) {
+            const state = agent.state as keyof typeof agentStats;
+            if (state in agentStats) {
+              agentStats[state]++;
+            }
+          }
+          tui!.setTaskStats({
+            total: tasks.length,
+            byColumn: Object.fromEntries(counts),
+            active,
+            agents: agentStats,
+          });
+        }
+      },
+      onClearLogs: () => {
+        // Logs are already cleared in TUI, this is for external notification
+      },
+      onTogglePause: async (paused: boolean) => {
+        if (store) {
+          await store.updateSettings({ enginePaused: paused });
+          tui!.log(`Engine ${paused ? "paused" : "resumed"}`);
+          const fullSettings = await store.getSettings();
+          // Return SettingsValues subset for TUI
+          return {
+            maxConcurrent: fullSettings.maxConcurrent ?? 1,
+            maxWorktrees: fullSettings.maxWorktrees ?? 2,
+            autoMerge: fullSettings.autoMerge ?? false,
+            mergeStrategy: fullSettings.mergeStrategy ?? "direct",
+            pollIntervalMs: fullSettings.pollIntervalMs ?? 60_000,
+            enginePaused: fullSettings.enginePaused ?? false,
+            globalPause: fullSettings.globalPause ?? false,
+            remoteActiveProvider: (fullSettings.remoteActiveProvider as "tailscale" | "cloudflare" | null) ?? null,
+            remoteShortLivedEnabled: Boolean(fullSettings.remoteShortLivedEnabled),
+            remoteShortLivedTtlMs: Number(fullSettings.remoteShortLivedTtlMs ?? 900_000),
+          };
+        }
+        return {
+          maxConcurrent: 1,
+          maxWorktrees: 2,
+          autoMerge: false,
+          mergeStrategy: "direct",
+          pollIntervalMs: 60_000,
+          enginePaused: paused,
+          globalPause: false,
+          remoteActiveProvider: null,
+          remoteShortLivedEnabled: false,
+          remoteShortLivedTtlMs: 900_000,
+        };
+      },
+      onPersistVitestKillSettings: async (partial) => {
+        if (!store) return;
+        const patch: Record<string, unknown> = {};
+        if (typeof partial.enabled === "boolean") {
+          patch.vitestAutoKillEnabled = partial.enabled;
+        }
+        if (typeof partial.thresholdPct === "number") {
+          patch.vitestKillThresholdPct = partial.thresholdPct;
+        }
+        if (Object.keys(patch).length === 0) return;
+        await store.getGlobalSettingsStore().updateSettings(patch);
+      },
+    });
+    // Start the TUI
+    await tui.start();
+    tui.setLoadingStatus("Initializing task store…");
+
+    // Wire the TUI into the log sink so all console output routes through TUI
+    logSink.setTUI(tui);
+    // Capture stdlib console.* so engine/scheduler/pi/etc. log lines (which
+    // go straight to console.error via createLogger in @fusion/engine) land
+    // in the TUI's ring buffer instead of being overwritten by the alt screen.
+    logSink.captureConsole();
+  }
+
+  // Register long-running process diagnostics after TTY sink wiring so
+  // startup/runtime lines flow into the TUI log buffer when interactive.
+  ensureProcessDiagnostics(runtimeLogger);
+
+  store = new TaskStore(cwd);
+  await store.init();
+  await store.watch();
+
+  // Set up database health check for diagnostics
+  setDiagnosticDbHealthCheck(() => store.healthCheck());
+
+  // Set up store listener count check for diagnostics
+  setDiagnosticStoreListenerCheck(() => ({
+    "task:created": store.listenerCount("task:created"),
+    "task:moved": store.listenerCount("task:moved"),
+    "task:updated": store.listenerCount("task:updated"),
+    "task:deleted": store.listenerCount("task:deleted"),
+    "settings:updated": store.listenerCount("settings:updated"),
+    "agent:log": store.listenerCount("agent:log"),
+  }));
+
+  // ── Reactive TUI Updates ─────────────────────────────────────────────
+  //
+  // Subscribe to store and agent events to keep the TUI Stats/Settings
+  // panels in sync without manual refresh.
+  //
+  let tuiRefreshPending = false;
+  let tuiRefreshDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+  // Per-project task stores for the BoardView's scoped stats. Shared with the
+  // interactiveData wiring below so we don't re-init SQLite on each refresh.
+  const projectStores = new Map<string, TaskStore>();
+  async function getProjectStore(projectPath: string): Promise<TaskStore> {
+    const cached = projectStores.get(projectPath);
+    if (cached) return cached;
+    let projectStore: TaskStore;
+    if (projectPath === cwd) {
+      if (!store) throw new Error("cwd TaskStore not yet initialized");
+      projectStore = store;
+    } else {
+      projectStore = new TaskStore(projectPath);
+      await projectStore.init();
+    }
+    projectStores.set(projectPath, projectStore);
+    return projectStore;
+  }
+
+  /**
+   * Debounced refresh of TUI stats - batches rapid task updates.
+   * If the BoardView has a scoped project path set on the controller,
+   * read tasks from that project's store instead of the launch cwd.
+   */
+  async function refreshTUIStats(): Promise<void> {
+    if (!tui || !isTTY) return;
+    if (!store || !agentStore) return;
+
+    // Mark pending to prevent duplicate refreshes
+    if (tuiRefreshPending) return;
+    tuiRefreshPending = true;
+
+    try {
+      const scopedPath = tui.boardScopedProjectPath;
+      const taskStore = scopedPath ? await getProjectStore(scopedPath) : store;
+      const tasks = await taskStore.listTasks({ slim: true, includeArchived: false });
+      const counts = new Map<string, number>();
+      for (const task of tasks) {
+        counts.set(task.column, (counts.get(task.column) ?? 0) + 1);
+      }
+      const active = tasks.filter((task) =>
+        task.column === "in-progress" || task.column === "in-review"
+      ).length;
+      const agents = await agentStore.listAgents();
+      const agentStats = { idle: 0, active: 0, running: 0, error: 0 };
+      for (const agent of agents) {
+        const state = agent.state as keyof typeof agentStats;
+        if (state in agentStats) {
+          agentStats[state]++;
+        }
+      }
+      tui.setTaskStats({
+        total: tasks.length,
+        byColumn: Object.fromEntries(counts),
+        active,
+        agents: agentStats,
+      });
+    } finally {
+      tuiRefreshPending = false;
+    }
+  }
+
+  /**
+   * Debounced settings refresh
+   */
+  async function refreshTUISettings(): Promise<void> {
+    if (!tui || !isTTY) return;
+    if (!store) return;
+
+    try {
+      const settings = await store.getSettings();
+      tui.setSettings({
+        maxConcurrent: settings.maxConcurrent ?? 1,
+        maxWorktrees: settings.maxWorktrees ?? 2,
+        autoMerge: settings.autoMerge ?? false,
+        mergeStrategy: settings.mergeStrategy ?? "direct",
+        pollIntervalMs: settings.pollIntervalMs ?? 60_000,
+        enginePaused: settings.enginePaused ?? false,
+        globalPause: settings.globalPause ?? false,
+        remoteActiveProvider: (settings.remoteActiveProvider as "tailscale" | "cloudflare" | null) ?? null,
+        remoteShortLivedEnabled: Boolean(settings.remoteShortLivedEnabled),
+        remoteShortLivedTtlMs: Number(settings.remoteShortLivedTtlMs ?? 900_000),
+      });
+    } catch {
+      // Ignore errors refreshing settings
+    }
+  }
+
+  /**
+   * Schedule a debounced stats refresh (batches rapid changes)
+   */
+  function scheduleStatsRefresh(): void {
+    if (tuiRefreshDebounceTimer) {
+      clearTimeout(tuiRefreshDebounceTimer);
+    }
+    tuiRefreshDebounceTimer = setTimeout(() => {
+      void refreshTUIStats();
+    }, 500); // 500ms debounce
+  }
+
+  // Refresh stats immediately when the BoardView changes its selected project
+  // (so the Stats panel reflects the new project without waiting for an event).
+  if (tui) {
+    tui.onBoardScopeChange(() => {
+      void refreshTUIStats();
+    });
+  }
+
+  const handlers: Array<{
+    target: NodeJS.EventEmitter;
+    event: string | symbol;
+    handler: (...args: any[]) => void;
+  }> = [];
+  const disposeCallbacks: Array<() => void> = [];
+  let disposed = false;
+  let shutdownInProgress = false;
+
+  async function logShutdownDiagnostics(reason: string): Promise<void> {
+    const uptimeSeconds = Math.round((Date.now() - dashboardStartedAt) / 1000);
+    let taskSummary = "tasks=unknown";
+    try {
+      if (!store) {
+        taskSummary = "tasks=unavailable (store not initialized)";
+        logSink.log(`shutdown requested reason=${reason} pid=${process.pid} ppid=${process.ppid} uptime=${uptimeSeconds}s ${taskSummary}`, "dashboard");
+        return;
+      }
+      const tasks = await store.listTasks({ slim: true, includeArchived: false });
+      const counts = new Map<string, number>();
+      for (const task of tasks) {
+        counts.set(task.column, (counts.get(task.column) ?? 0) + 1);
+      }
+      const active = tasks.filter((task) =>
+        task.column === "in-progress" || task.column === "in-review"
+      ).length;
+      taskSummary = `tasks=${tasks.length} active=${active} columns=${Array.from(counts.entries())
+        .map(([column, count]) => `${column}:${count}`)
+        .join(",")}`;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      taskSummary = `tasks=unavailable (${message})`;
+    }
+
+    logSink.log(
+      `shutdown requested reason=${reason} pid=${process.pid} ppid=${process.ppid} uptime=${uptimeSeconds}s ${taskSummary}`,
+      "dashboard",
+    );
+  }
+
+  async function closeCentralCoreBestEffort(core: CentralCore, context: string): Promise<void> {
+    try {
+      await core.close();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      logSink.warn(`CentralCore.close() failed during ${context}: ${message}`, "dashboard");
+    }
+  }
+
+  function registerHandler(
+    target: NodeJS.EventEmitter,
+    event: string | symbol,
+    handler: (...args: any[]) => void,
+  ): void {
+    target.on(event, handler);
+    handlers.push({ target, event, handler });
+  }
+
+  // ── AutomationStore: scheduled task persistence ──────────────────────
+  const automationStore = new AutomationStore(cwd);
+  await automationStore.init();
+
+  // ── AgentStore: agent lifecycle tracking ──────────────────────────
+  //
+  // Tracks spawned agents so they appear in the dashboard's Agents view
+  // and are properly managed throughout their lifecycle (creation, state
+  // transitions, termination). Passed to TaskExecutor for agent spawning.
+  //
+  if (tui) tui.setLoadingStatus("Initializing agent store…");
+  agentStore = new AgentStore({ rootDir: store.getFusionDir() });
+  await agentStore.init();
+  if (tui) tui.setLoadingStatus("Starting engine…");
+
+  // ── Reactive TUI Updates ─────────────────────────────────────────────
+  //
+  // Subscribe to store and agent events to keep the TUI Stats/Settings
+  // panels in sync without manual refresh.
+  //
+  if (tui && isTTY) {
+    // Subscribe to task events for reactive stats updates
+    registerHandler(store, "task:created", scheduleStatsRefresh);
+    registerHandler(store, "task:moved", scheduleStatsRefresh);
+    registerHandler(store, "task:updated", scheduleStatsRefresh);
+    registerHandler(store, "task:deleted", scheduleStatsRefresh);
+
+    // Subscribe to settings updates
+    registerHandler(store, "settings:updated", () => {
+      void refreshTUISettings();
+    });
+
+    // Subscribe to agent events via agentStore
+    registerHandler(agentStore, "agent:created", scheduleStatsRefresh);
+    registerHandler(agentStore, "agent:updated", scheduleStatsRefresh);
+    registerHandler(agentStore, "agent:deleted", scheduleStatsRefresh);
+  }
+
+  // ── PluginStore: plugin installation management ─────────────────────
+  //
+  // SQLite-backed plugin persistence for the Settings → Plugins experience.
+  // Enables the PluginManager UI to list, install, enable, disable, and
+  // configure plugins via the /api/plugins REST endpoints.
+  //
+  const pluginStore = store.getPluginStore();
+  await pluginStore.init();
+
+  // ── PluginLoader: plugin lifecycle management ───────────────────────
+  //
+  // Manages dynamic plugin loading, hot-reload, hook invocation, and
+  // dependency resolution. The PluginLoader instance also serves as the
+  // PluginRunner for the REST routes (provides getPluginRoutes and
+  // reloadPlugin methods).
+  //
+  const pluginLoader = new PluginLoader({
+    pluginStore,
+    taskStore: store,
+  });
+
+  try {
+    const installStatus = await ensureBundledDependencyGraphPluginInstalled(pluginStore, pluginLoader);
+    if (installStatus === "installed") {
+      logSink.log("Installed bundled Dependency Graph plugin", "plugins");
+    } else if (installStatus === "missing-bundle") {
+      logSink.log("Bundled Dependency Graph plugin was not found in this build", "plugins");
+    }
+  } catch (err) {
+    logSink.log(
+      `Failed to auto-install bundled Dependency Graph plugin: ${err instanceof Error ? err.message : err}`,
+      "plugins",
+    );
+  }
+
+  // Lazy-install hook for bundled runtime plugins (Hermes/OpenClaw/Paperclip).
+  // Invoked by dashboard's PUT /api/plugins/:id/settings the first time the
+  // user clicks Save in Settings. Returns true if the plugin is now registered.
+  const ensureBundledPluginInstalledCallback = async (pluginId: string): Promise<boolean> => {
+    if (!isBundledPluginId(pluginId)) {
+      logSink.log(`ensureBundledPluginInstalled: unknown bundled plugin id "${pluginId}"`, "plugins");
+      return false;
+    }
+    try {
+      const status = await ensureBundledPluginInstalled(pluginStore, pluginLoader, pluginId);
+      if (status === "missing-bundle") {
+        logSink.log(`Bundled plugin "${pluginId}" was not found in this build`, "plugins");
+        return false;
+      }
+      if (status === "installed") {
+        logSink.log(`Installed bundled plugin "${pluginId}"`, "plugins");
+      } else if (status === "updated") {
+        logSink.log(`Updated bundled plugin "${pluginId}"`, "plugins");
+      }
+      return true;
+    } catch (err) {
+      logSink.log(
+        `Failed to auto-install bundled plugin "${pluginId}": ${err instanceof Error ? err.message : err}`,
+        "plugins",
+      );
+      throw err;
+    }
+  };
+
+  // Auto-load all enabled plugins so runtime UI (NewAgentDialog, AgentDetailView)
+  // can discover installed runtimes like Hermes and OpenClaw.
+  try {
+    const { loaded, errors } = await pluginLoader.loadAllPlugins();
+    logSink.log(`Loaded ${loaded} plugins (${errors} errors)`, "plugins");
+
+    const schemaHooks = pluginLoader.getPluginSchemaInitHooks();
+    if (schemaHooks.length > 0) {
+      try {
+        await store.getDatabase().runPluginSchemaInits(schemaHooks);
+      } catch (err) {
+        logSink.log(
+          `Schema initialization failed: ${err instanceof Error ? err.message : err}`,
+          "plugins",
+        );
+      }
+    }
+  } catch (err) {
+    logSink.log(
+      `Failed to load plugins: ${err instanceof Error ? err.message : err}`,
+      "plugins"
+    );
+  }
+
+  // ── HeartbeatMonitor + HeartbeatTriggerScheduler ──────────────────────
+  //
+  // In non-dev mode: obtained from ProjectEngine after engine.start(), which
+  // delegates to InProcessRuntime's already-initialized instances. This avoids
+  // running duplicate heartbeat infrastructure alongside the engine's own.
+  //
+  // In dev mode: created inline inside the opts.dev block below, since the
+  // engine does not start in dev mode.
+  //
+  // heartbeatMonitorImpl is a mutable reference. The proxy passed to
+  // createServer delegates through it so routes work in both modes.
+  //
+  let heartbeatMonitorImpl: HeartbeatMonitor | undefined;
+  let triggerScheduler: HeartbeatTriggerScheduler | undefined;
+
+  // Set enginePaused if starting in paused mode
+  if (opts.paused) {
+    await store.updateSettings({ enginePaused: true });
+    logSink.log("Starting in paused mode — automation disabled", "engine");
+  }
+
+  // ── onMerge: AI-powered merge ─────────────────────────────────────
+  //
+  // onMergeImpl is a mutable reference so createServer always gets a stable
+  // wrapper function while the underlying implementation is swapped when the
+  // engine starts in non-dev mode.
+  //
+  // In dev mode: calls aiMergeTask directly (no engine, no semaphore).
+  // In non-dev mode: replaced by engine.onMerge() after ProjectEngine starts
+  // (semaphore-gated via the engine's InProcessRuntime).
+  //
+  const onMergeImpl = async (taskId: string) => {
+    const settings = await store.getSettings();
+    if (getMergeStrategy(settings) === "pull-request") {
+      const githubClient = new GitHubClient();
+      const outcome = await processPullRequestMergeTask(store, cwd, taskId, githubClient, getTaskMergeBlocker);
+      const task = await store.getTask(taskId);
+      return {
+        task,
+        branch: getTaskBranchName(taskId),
+        merged: outcome === "merged",
+        worktreeRemoved: false,
+        branchDeleted: false,
+        error: outcome === "waiting" ? "pull request not ready" : undefined,
+      };
+    }
+
+    const streamedMergeLog = new StreamedLogBuffer(
+      (line) => logSink.log(line, "merge"),
+      STREAM_LOG_FLUSH_IDLE_MS,
+    );
+
+    try {
+      return await aiMergeTask(store, cwd, taskId, {
+        agentStore,
+        onAgentText: (delta) => streamedMergeLog.push(delta),
+      });
+    } finally {
+      streamedMergeLog.flush();
+      streamedMergeLog.dispose();
+    }
+  };
+
+  const onMerge = (taskId: string) => onMergeImpl(taskId);
+
+  // ── MissionAutopilot + MissionExecutionLoop: mission lifecycle ────
+  //
+  // Created inline for dev mode (engine doesn't start in dev mode).
+  // In non-dev mode, the engine is passed to createServer which derives these.
+  //
+  const missionAutopilotImpl: MissionAutopilot | undefined = new MissionAutopilot(store, store.getMissionStore());
+  const missionExecutionLoopImpl: MissionExecutionLoop | undefined = new MissionExecutionLoop({
+    taskStore: store,
+    missionStore: store.getMissionStore(),
+    missionAutopilot: {
+      notifyValidationComplete: async (featureId: string, _status: "passed" | "failed" | "blocked" | "error") => {
+        if (missionAutopilotImpl) {
+          const missionStore = store.getMissionStore();
+          const feature = missionStore?.getFeature(featureId);
+          if (feature?.taskId) {
+            await missionAutopilotImpl.handleTaskCompletion(feature.taskId);
+          }
+        }
+      },
+    },
+    rootDir: cwd,
+  });
+
+  // ── Auth & model wiring ────────────────────────────────────────────
+  // AuthStorage manages OAuth/API-key credentials (stored in ~/.fusion/agent/auth.json).
+  // ModelRegistry discovers available models from configured providers.
+  // Passing these to createServer enables the dashboard's Authentication
+  // tab (login/logout) and Model selector.
+  const authStorage = AuthStorage.create(getFusionAuthPath());
+  const supplementalAuthStorage = createReadOnlyAuthFileStorage([
+    ...getLegacyAuthPaths(),
+    getCodexCliAuthPath(),
+    ...getClaudeCodeCredentialPaths(),
+  ]);
+  const mergedAuthStorage = mergeAuthStorageReads(authStorage, [supplementalAuthStorage]);
+  const modelRegistry = ModelRegistry.create(mergedAuthStorage, getModelRegistryModelsPath());
+  const dashboardAuthStorage = wrapAuthStorageWithApiKeyProviders(mergedAuthStorage, modelRegistry);
+
+  // PackageManager may be used for skills adapter even if extension loading fails
+  let packageManager: DefaultPackageManager | undefined;
+  try {
+    // Resolve extension paths from pi settings packages (npm, git, local).
+    // This picks up extensions like @howaboua/pi-glm-via-anthropic that
+    // register custom providers (e.g. glm-5.1) via registerProvider().
+    const agentDir = getPackageManagerAgentDir();
+    packageManager = new DefaultPackageManager({
+      cwd,
+      agentDir,
+      settingsManager: createReadOnlyProviderSettingsView(cwd, agentDir) as unknown as SettingsManager,
+    });
+    const resolvedPaths = await packageManager.resolve();
+    const packageExtensionPaths = resolvedPaths.extensions
+      .filter((r) => r.enabled)
+      .map((r) => r.path);
+
+    const claudeCliPaths = await (async () => {
+      try {
+        const globalSettings = await store.getGlobalSettingsStore().getSettings();
+        const result = resolveClaudeCliExtensionPaths(globalSettings);
+        setCachedClaudeCliResolution(result.resolution);
+        if (result.warning) {
+          console.warn(`[extensions] pi-claude-cli: ${result.warning}`);
+        }
+        return result.paths;
+      } catch (err) {
+        console.warn(
+          `[extensions] Unable to evaluate useClaudeCli setting: ${err instanceof Error ? err.message : String(err)}`,
+        );
+        setCachedClaudeCliResolution(null);
+        return [];
+      }
+    })();
+
+    const droidCliPaths = await (async () => {
+      try {
+        const globalSettings = await store.getGlobalSettingsStore().getSettings();
+        const result = resolveDroidCliExtensionPaths(globalSettings);
+        setCachedDroidCliResolution(result.resolution);
+        if (result.warning) {
+          console.warn(`[extensions] droid-cli: ${result.warning}`);
+        }
+        return result.paths;
+      } catch (err) {
+        console.warn(
+          `[extensions] Unable to evaluate useDroidCli setting: ${err instanceof Error ? err.message : String(err)}`,
+        );
+        setCachedDroidCliResolution(null);
+        return [];
+      }
+    })();
+
+    const llamaCppPaths = await (async () => {
+      try {
+        const globalSettings = await store.getGlobalSettingsStore().getSettings();
+        const result = resolveLlamaCppExtensionPaths(globalSettings);
+        setCachedLlamaCppResolution(result.resolution);
+        if (result.warning) {
+          console.warn(`[extensions] llama-cpp: ${result.warning}`);
+        }
+        return result.paths;
+      } catch (err) {
+        console.warn(
+          `[extensions] Unable to evaluate useLlamaCpp setting: ${err instanceof Error ? err.message : String(err)}`,
+        );
+        setCachedLlamaCppResolution(null);
+        return [];
+      }
+    })();
+
+    // Always inject the cli's own extension (`@runfusion/fusion`) so its
+    // `fn_*` tools register globally even when the user hasn't run
+    // `pi install npm:@runfusion/fusion`. Without this, agent chat with
+    // pi-claude-cli has no fn_* tools at all.
+    const selfExtension = resolveSelfExtension();
+    const selfExtensionPaths = selfExtension.status === "ok" ? [selfExtension.path] : [];
+    if (selfExtension.status !== "ok") {
+      logSink.warn(`[extensions] self: ${selfExtension.reason}`, "extensions");
+    }
+    // Propagate self-extension path to engine so createFnAgent sessions
+    // (chat, refine, mission, etc.) also load fn_* tools, not just the
+    // dashboard's extension runtime.
+    setHostExtensionPaths(selfExtensionPaths);
+
+    // Load all enabled extensions: Fusion/Pi filesystem-discovered + package-resolved.
+    const extensionsResult = await discoverAndLoadExtensions(
+      [
+        ...selfExtensionPaths,
+        ...getEnabledPiExtensionPaths(cwd),
+        ...packageExtensionPaths,
+        ...claudeCliPaths,
+        ...droidCliPaths,
+        ...llamaCppPaths,
+      ],
+      cwd,
+      join(cwd, ".fusion", "disabled-auto-extension-discovery"),
+    );
+
+    for (const { path, error } of extensionsResult.errors) {
+      logSink.log(`Failed to load ${path}: ${error}`, "extensions");
+    }
+
+    for (const { name, config, extensionPath } of extensionsResult.runtime.pendingProviderRegistrations) {
+      try {
+        modelRegistry.registerProvider(name, config);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        logSink.log(`Failed to register provider from ${extensionPath}: ${message}`, "extensions");
+      }
+    }
+
+    extensionsResult.runtime.pendingProviderRegistrations = [];
+    modelRegistry.refresh();
+
+    try {
+      const globalSettings = await store.getGlobalSettingsStore().getSettings();
+      registerCustomProviders(
+        modelRegistry,
+        globalSettings.customProviders,
+        (message) => logSink.log(message, "custom-providers"),
+      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      logSink.warn(`Failed to load custom providers from global settings: ${message}`, "custom-providers");
+    }
+
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    logSink.log(`Failed to discover extensions: ${message}`, "extensions");
+    createExtensionRuntime();
+    modelRegistry.refresh();
+  }
+
+  void syncStartupModels({
+    getSettings: () => store.getSettings(),
+    authStorage: dashboardAuthStorage,
+    modelRegistry,
+    log: (scope, message) => logSink.log(message, scope),
+  });
+
+  registerHandler(store, "settings:updated", ({ settings, previous }) => {
+    const currentProviders = settings.customProviders;
+    const previousProviders = previous.customProviders;
+    if (JSON.stringify(currentProviders ?? []) === JSON.stringify(previousProviders ?? [])) {
+      return;
+    }
+
+    reregisterCustomProviders(
+      modelRegistry,
+      previousProviders,
+      currentProviders,
+      (message) => logSink.log(message, "custom-providers"),
+    );
+  });
+
+  // ── Skills adapter for skills discovery and execution toggling ─────────────
+  //
+  // Create the skills adapter using the same DefaultPackageManager instance
+  // that was set up earlier for extension resolution.
+  const skillsAdapter = packageManager
+    ? createSkillsAdapter({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- dashboard's resolve() uses a looser onMissing signature than pi's DefaultPackageManager
+        packageManager: packageManager as any,
+        getSettingsPath: (rootDir: string) => getProjectSettingsPath(rootDir),
+      })
+    : undefined;
+
+  function dispose(): void {
+    if (disposed) return;
+    disposed = true;
+
+    // Clear pending debounce timer
+    if (tuiRefreshDebounceTimer) {
+      clearTimeout(tuiRefreshDebounceTimer);
+      tuiRefreshDebounceTimer = null;
+    }
+
+    // Stop TUI if active
+    if (tui) {
+      // Restore console.* before stopping the TUI so any log lines emitted
+      // during teardown (or by late-firing listeners) go to the real terminal
+      // instead of a ring buffer that's about to disappear.
+      logSink.releaseConsole();
+      void tui.stop();
+    }
+
+    for (const { target, event, handler } of handlers) {
+      target.off(event, handler);
+    }
+    handlers.length = 0;
+    for (const callback of disposeCallbacks.splice(0)) {
+      callback();
+    }
+  }
+
+  // ── createServer: deferred until engine is conditionally started ────
+  //
+  // In non-dev mode, pass the engine so createServer derives subsystem
+  // options (onMerge, automationStore, missionAutopilot, etc.) automatically.
+  // In dev mode, no engine — pass individual proxy objects instead.
+  //
+  let app: ReturnType<typeof createServer>;
+
+  // ── Mesh networking: peer exchange + mDNS discovery ──────────────────
+  //
+  // peerExchangeService: periodically syncs peer info with connected nodes
+  // centralCoreForMesh: CentralCore for discovery/node lifecycle (may differ from centralCoreForEngine)
+  // localNodeIdForMesh: tracks the local node ID for cleanup on shutdown
+  //
+  let peerExchangeService: PeerExchangeService | null = null;
+  let centralCoreForMesh: CentralCore | null = null;
+  let localNodeIdForMesh: string | undefined;
+
+  // Start the AI engine (unless in dev mode)
+  if (!opts.dev) {
+    // ── ProjectEngineManager: uniform engine lifecycle for all projects ──
+    //
+    // Every registered project gets an identical ProjectEngine with the
+    // full subsystem set (Scheduler, Triage, Executor, auto-merge, PR
+    // monitor, notifier, cron, settings listeners). No project is special.
+    //
+    const githubClient = new GitHubClient();
+
+    const centralCoreForEngine = new CentralCore();
+    try {
+      await centralCoreForEngine.init();
+    } catch {
+      // Non-fatal — engine uses fallback concurrency defaults
+    }
+
+    const engineManager = new ProjectEngineManager(centralCoreForEngine, {
+      getMergeStrategy,
+      processPullRequestMerge: (s, wd, taskId) =>
+        processPullRequestMergeTask(s, wd, taskId, githubClient, getTaskMergeBlocker),
+      getTaskMergeBlocker,
+    });
+
+    // Start engines for all registered projects eagerly
+    await engineManager.startAll();
+
+    // Start background reconciliation to detect and start engines for projects
+    // registered after startup (without requiring dashboard UI access).
+    // This ensures project task execution starts from backend runtime alone.
+    // The onProjectFirstAccessed callback in createServer remains as a fast-path
+    // fallback for immediate engine startup on project access, but it is NOT
+    // required for correctness — reconciliation handles all cases.
+    engineManager.startReconciliation();
+
+    // Backfill Claude Code skills for all registered projects. No-op when
+    // pi-claude-cli isn't configured; non-blocking to protect startup latency.
+    void (async () => {
+      try {
+        if (!centralCoreForEngine) return;
+        const projects = await centralCoreForEngine.listProjects();
+        ensureClaudeSkillsForAllProjectsOnStartup(
+          projects.map((p) => ({ id: p.id, name: p.name, path: p.path })),
+        );
+      } catch (err) {
+        logSink.log(
+          `Claude skill reconciliation failed: ${err instanceof Error ? err.message : String(err)}`,
+          "engine",
+        );
+      }
+    })();
+
+    // ── PeerExchangeService: gossip protocol for mesh peer discovery ──────
+    //
+    // Reuse centralCoreForEngine for peer exchange since it handles all mesh ops.
+    //
+    peerExchangeService = new PeerExchangeService(centralCoreForEngine);
+    try {
+      peerExchangeService.start();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      logSink.warn(`Failed to start peer exchange service: ${message}`, "dashboard");
+    }
+
+    // Use the same CentralCore instance for mesh operations
+    centralCoreForMesh = centralCoreForEngine;
+
+    // Resolve the cwd project's engine for the dashboard's HTTP layer defaults.
+    // The engine for the cwd project provides onMerge, automationStore, etc.
+    // for requests that arrive without ?projectId=. This is transitional —
+    // Phase 5 removes this fallback entirely.
+    let cwdEngine: ReturnType<typeof engineManager.getEngine>;
+    try {
+      const registered = await centralCoreForEngine.getProjectByPath(cwd).catch(() => null);
+      if (registered) {
+        cwdEngine = engineManager.getEngine(registered.id);
+      }
+    } catch {
+      // cwd not registered — no engine defaults for HTTP layer
+    }
+
+    // Get the trigger scheduler from any running engine
+    for (const engine of engineManager.getAllEngines().values()) {
+      const ts = engine.getHeartbeatTriggerScheduler();
+      if (ts) {
+        triggerScheduler = ts;
+        break;
+      }
+    }
+
+    disposeCallbacks.push(async () => {
+      await engineManager.stopAll();
+      await closeCentralCoreBestEffort(centralCoreForEngine, "dispose cleanup");
+    });
+
+    app = createServer(store, {
+      engine: cwdEngine,
+      engineManager,
+      centralCore: centralCoreForEngine,
+      authStorage: dashboardAuthStorage,
+      modelRegistry,
+      automationStore,
+      pluginStore,
+      pluginLoader,
+      pluginRunner: pluginLoader,
+      ensureBundledPluginInstalled: ensureBundledPluginInstalledCallback,
+      onProjectFirstAccessed: (projectId: string) => engineManager.onProjectAccessed(projectId),
+      onProjectRegistered: ({ path }) => {
+        maybeInstallClaudeSkillForNewProject(path);
+      },
+      getClaudeCliExtensionStatus: () => {
+        const r = getCachedClaudeCliResolution();
+        if (!r) return null;
+        if (r.status === "ok") {
+          return { status: "ok", path: r.path, packageVersion: r.packageVersion };
+        }
+        if (r.status === "not-installed") {
+          return { status: "not-installed" };
+        }
+        return { status: r.status, reason: r.reason };
+      },
+      getDroidCliExtensionStatus: () => {
+        const r = getCachedDroidCliResolution();
+        if (!r) return null;
+        if (r.status === "ok") {
+          return { status: "ok", path: r.path, packageVersion: r.packageVersion };
+        }
+        if (r.status === "not-installed") {
+          return { status: "not-installed" };
+        }
+        return { status: r.status, reason: r.reason };
+      },
+      getLlamaCppExtensionStatus: () => {
+        const r = getCachedLlamaCppResolution();
+        if (!r) return null;
+        if (r.status === "ok") {
+          return { status: "ok", path: r.path, packageVersion: r.packageVersion };
+        }
+        if (r.status === "not-installed") {
+          return { status: "not-installed" };
+        }
+        return { status: r.status, reason: r.reason };
+      },
+      onUseClaudeCliToggled: (_prev, next) => {
+        if (!next) return;
+        void (async () => {
+          try {
+            if (!centralCoreForEngine) return;
+            const projects = await centralCoreForEngine.listProjects();
+            ensureClaudeSkillsForAllProjectsOnStartup(
+              projects.map((p) => ({ id: p.id, name: p.name, path: p.path })),
+            );
+          } catch (err) {
+            logSink.log(
+              `Claude skill backfill on toggle failed: ${err instanceof Error ? err.message : String(err)}`,
+              "engine",
+            );
+          }
+        })();
+      },
+      onUseDroidCliToggled: (_prev, next) => {
+        if (next) {
+          logSink.log("Droid CLI enabled — restart required for full effect", "extensions");
+        }
+      },
+      skillsAdapter,
+      https: loadTlsCredentialsFromEnv(),
+      daemon: dashboardAuthToken ? { token: dashboardAuthToken } : undefined,
+      noAuth: opts.noAuth,
+      runtimeLogger,
+    });
+
+    const shutdown = async (signal: NodeJS.Signals) => {
+      if (shutdownInProgress) return;
+      shutdownInProgress = true;
+
+      // Log active handles at shutdown for diagnostics
+      const handleTypes: Record<string, number> = {};
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const handles = (process as any)._getActiveHandles?.() ?? [];
+        for (const handle of handles) {
+          const type = handle.constructor?.name ?? "unknown";
+          handleTypes[type] = (handleTypes[type] ?? 0) + 1;
+        }
+        const handleSummary = Object.entries(handleTypes)
+          .sort((a, b) => b[1] - a[1])
+          .map(([type, count]) => `${type}:${count}`)
+          .join(", ");
+        logSink.log(`active handles at shutdown: ${handleSummary}`, "dashboard");
+      } catch {
+        // Ignore errors getting handle types
+      }
+
+      await logShutdownDiagnostics(signal);
+      dispose();
+      stopDiagnosticInterval();
+
+      // Tear down user-project dev-server children (and their process groups)
+      // before exiting. server.close() is not awaited on this exit path, so
+      // its `close` listener that does the same cleanup may not run in time.
+      try {
+        await stopAllDevServers();
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        logSink.warn(`Failed to stop dev servers: ${message}`, "dashboard");
+      }
+
+      // Stop all project engines uniformly
+      await engineManager.stopAll();
+
+      // Stop peer exchange service
+      if (peerExchangeService) {
+        try {
+          await peerExchangeService.stop();
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          logSink.warn(`Failed to stop peer exchange service: ${message}`, "dashboard");
+        }
+      }
+
+      // Stop mDNS discovery and set local node offline
+      if (centralCoreForMesh && localNodeIdForMesh) {
+        try {
+          centralCoreForMesh.stopDiscovery();
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          logSink.warn(`Failed to stop mDNS discovery: ${message}`, "dashboard");
+        }
+        try {
+          await centralCoreForMesh.updateNode(localNodeIdForMesh, { status: "offline" });
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          logSink.warn(`Failed to set local node offline: ${message}`, "dashboard");
+        }
+      }
+
+      await closeCentralCoreBestEffort(centralCoreForEngine, `shutdown (${signal})`);
+
+      store.close();
+      process.exit(0);
+    };
+    registerHandler(process, "SIGINT", () => void shutdown("SIGINT"));
+    registerHandler(process, "SIGTERM", () => void shutdown("SIGTERM"));
+
+    // Ignore SIGHUP so the dashboard survives SSH session disconnects.
+    // Without this, SIGHUP (sent when the controlling terminal closes) kills
+    // the process silently — the exit handler tries to log to the now-dead
+    // PTY and the write is lost.
+    registerHandler(process, "SIGHUP", () => {
+      logSink.log("Received SIGHUP (terminal disconnected) — ignoring", "dashboard");
+    });
+  } else {
+  // Dev mode: create HeartbeatMonitor + TriggerScheduler inline (engine not started)
+
+    // ── Mesh networking for dev mode ─────────────────────────────────────
+    //
+    // In dev mode we don't use the engine's CentralCore, so create a separate
+    // instance for peer exchange and mDNS discovery.
+    //
+    try {
+      centralCoreForMesh = new CentralCore();
+      await centralCoreForMesh.init();
+
+      peerExchangeService = new PeerExchangeService(centralCoreForMesh);
+      peerExchangeService.start();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      logSink.warn(`Failed to initialize mesh networking: ${message}`, "dashboard");
+    }
+
+    try {
+      heartbeatMonitorImpl = new HeartbeatMonitor({
+        store: agentStore,
+        agentStore,
+        taskStore: store,
+        rootDir: cwd,
+        onMissed: (agentId, reason) => {
+          logSink.warn(`Agent ${agentId} missed heartbeat: ${reason}`, "engine");
+        },
+        onTerminated: (agentId, reason) => {
+          logSink.warn(`Agent ${agentId} terminated (unresponsive): ${reason}`, "engine");
+        },
+      });
+      heartbeatMonitorImpl.start();
+
+      triggerScheduler = new HeartbeatTriggerScheduler(
+        agentStore,
+        async (agentId, source, context: WakeContext) => {
+          if (!heartbeatMonitorImpl) return;
+          await heartbeatMonitorImpl.executeHeartbeat({
+            agentId,
+            source,
+            triggerDetail: context.triggerDetail,
+            taskId: typeof context.taskId === "string" ? context.taskId : undefined,
+            triggeringCommentIds: Array.isArray(context.triggeringCommentIds)
+              ? context.triggeringCommentIds.filter((id): id is string => typeof id === "string" && id.length > 0)
+              : undefined,
+            triggeringCommentType:
+              context.triggeringCommentType === "steering"
+              || context.triggeringCommentType === "task"
+              || context.triggeringCommentType === "pr"
+                ? context.triggeringCommentType
+                : undefined,
+            contextSnapshot: { ...context },
+          });
+        },
+        store,
+      );
+      triggerScheduler.start();
+
+      const agents = await agentStore.listAgents();
+      const missedCatchupTargets: { agentId: string; lastHeartbeatAt: string }[] = [];
+      for (const agent of agents) {
+        // State is the source of truth: arm timers only for non-ephemeral
+        // agents that are currently active/running. Transitions into
+        // tickable states while the scheduler is already running are
+        // handled by the scheduler's own agent:updated listener.
+        if (isEphemeralAgent(agent)) continue;
+        if (agent.state !== "active" && agent.state !== "running") continue;
+        const rc = agent.runtimeConfig;
+        const intervalMs = (rc?.heartbeatIntervalMs as number | undefined) ?? DEFAULT_AGENT_HEARTBEAT_INTERVAL_MS;
+        triggerScheduler.registerAgent(
+          agent.id,
+          {
+            heartbeatIntervalMs: rc?.heartbeatIntervalMs as number | undefined,
+            maxConcurrentRuns: rc?.maxConcurrentRuns as number | undefined,
+          },
+          { lastHeartbeatAt: agent.lastHeartbeatAt },
+        );
+
+        // Per-agent opt-in: if the server was down across a scheduled tick,
+        // fire one catch-up heartbeat. We require explicit lastHeartbeatAt to
+        // avoid firing on agents that have never run.
+        if (
+          rc?.runMissedHeartbeatOnStartup === true
+          && rc?.enabled !== false
+          && typeof agent.lastHeartbeatAt === "string"
+          && agent.lastHeartbeatAt.length > 0
+        ) {
+          const lastMs = Date.parse(agent.lastHeartbeatAt);
+          if (Number.isFinite(lastMs) && Date.now() - lastMs > intervalMs) {
+            missedCatchupTargets.push({ agentId: agent.id, lastHeartbeatAt: agent.lastHeartbeatAt });
+          }
+        }
+      }
+      if (agents.length > 0) {
+        logSink.log(`Registered ${triggerScheduler.getRegisteredAgents().length} agents for heartbeat triggers`, "engine");
+      }
+
+      for (const target of missedCatchupTargets) {
+        const monitor = heartbeatMonitorImpl;
+        if (!monitor) break;
+        logSink.log(
+          `Firing catch-up heartbeat for ${target.agentId} (lastHeartbeatAt=${target.lastHeartbeatAt})`,
+          "engine",
+        );
+        // Fire and forget; serialized per-agent inside executeHeartbeat.
+        void monitor.executeHeartbeat({
+          agentId: target.agentId,
+          source: "timer",
+          triggerDetail: "startup-missed-heartbeat-catchup",
+        }).catch((err) => {
+          const message = err instanceof Error ? err.message : String(err);
+          logSink.warn(`Catch-up heartbeat for ${target.agentId} failed: ${message}`, "engine");
+        });
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      logSink.log(`HeartbeatMonitor initialization failed (continuing without agent monitoring): ${message}`, "engine");
+    }
+
+    // Dev mode: no engine, pass individual proxy objects to createServer
+    app = createServer(store, {
+      onMerge,
+      centralCore: centralCoreForMesh ?? undefined,
+      authStorage: dashboardAuthStorage,
+      modelRegistry,
+      automationStore,
+      missionAutopilot: {
+        watchMission: (missionId: string) => missionAutopilotImpl?.watchMission(missionId),
+        unwatchMission: (missionId: string) => missionAutopilotImpl?.unwatchMission(missionId),
+        isWatching: (missionId: string) => missionAutopilotImpl?.isWatching(missionId) ?? false,
+        getAutopilotStatus: (missionId: string) => missionAutopilotImpl!.getAutopilotStatus(missionId),
+        checkAndStartMission: (missionId: string) => missionAutopilotImpl?.checkAndStartMission(missionId) ?? Promise.resolve(),
+        recoverStaleMission: (missionId: string) => missionAutopilotImpl?.recoverStaleMission(missionId) ?? Promise.resolve(),
+        start: () => missionAutopilotImpl?.start(),
+        stop: () => missionAutopilotImpl?.stop(),
+      },
+      missionExecutionLoop: {
+        recoverActiveMissions: () => missionExecutionLoopImpl?.recoverActiveMissions() ?? Promise.resolve({ recoveredCount: 0 }),
+        isRunning: () => missionExecutionLoopImpl?.isRunning() ?? false,
+      },
+      heartbeatMonitor: {
+        rootDir: cwd,
+        startRun: (...args: Parameters<HeartbeatMonitor["startRun"]>) => heartbeatMonitorImpl!.startRun(...args),
+        executeHeartbeat: (...args: Parameters<HeartbeatMonitor["executeHeartbeat"]>) => heartbeatMonitorImpl!.executeHeartbeat(...args),
+        stopRun: (...args: Parameters<HeartbeatMonitor["stopRun"]>) => heartbeatMonitorImpl!.stopRun(...args),
+      },
+      pluginStore,
+      pluginLoader,
+      pluginRunner: pluginLoader,
+      ensureBundledPluginInstalled: ensureBundledPluginInstalledCallback,
+      onProjectRegistered: ({ path }) => {
+        maybeInstallClaudeSkillForNewProject(path);
+      },
+      getClaudeCliExtensionStatus: () => {
+        const r = getCachedClaudeCliResolution();
+        if (!r) return null;
+        if (r.status === "ok") {
+          return { status: "ok", path: r.path, packageVersion: r.packageVersion };
+        }
+        if (r.status === "not-installed") {
+          return { status: "not-installed" };
+        }
+        return { status: r.status, reason: r.reason };
+      },
+      getDroidCliExtensionStatus: () => {
+        const r = getCachedDroidCliResolution();
+        if (!r) return null;
+        if (r.status === "ok") {
+          return { status: "ok", path: r.path, packageVersion: r.packageVersion };
+        }
+        if (r.status === "not-installed") {
+          return { status: "not-installed" };
+        }
+        return { status: r.status, reason: r.reason };
+      },
+      getLlamaCppExtensionStatus: () => {
+        const r = getCachedLlamaCppResolution();
+        if (!r) return null;
+        if (r.status === "ok") {
+          return { status: "ok", path: r.path, packageVersion: r.packageVersion };
+        }
+        if (r.status === "not-installed") {
+          return { status: "not-installed" };
+        }
+        return { status: r.status, reason: r.reason };
+      },
+      onUseClaudeCliToggled: (_prev, next) => {
+        if (!next) return;
+        void (async () => {
+          try {
+            if (!centralCoreForMesh) return;
+            const projects = await centralCoreForMesh.listProjects();
+            ensureClaudeSkillsForAllProjectsOnStartup(
+              projects.map((p) => ({ id: p.id, name: p.name, path: p.path })),
+            );
+          } catch (err) {
+            logSink.log(
+              `Claude skill backfill on toggle failed: ${err instanceof Error ? err.message : String(err)}`,
+              "engine",
+            );
+          }
+        })();
+      },
+      onUseDroidCliToggled: (_prev, next) => {
+        if (next) {
+          logSink.log("Droid CLI enabled — restart required for full effect", "extensions");
+        }
+      },
+      skillsAdapter,
+      https: loadTlsCredentialsFromEnv(),
+      daemon: dashboardAuthToken ? { token: dashboardAuthToken } : undefined,
+      noAuth: opts.noAuth,
+      runtimeLogger,
+    });
+  }
+
+  // Dev mode: simplified shutdown handlers (no engine components)
+  if (opts.dev) {
+    const devShutdown = async (signal: NodeJS.Signals) => {
+      if (shutdownInProgress) return;
+      shutdownInProgress = true;
+
+      // Log active handles at shutdown for diagnostics
+      const handleTypes: Record<string, number> = {};
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const handles = (process as any)._getActiveHandles?.() ?? [];
+        for (const handle of handles) {
+          const type = handle.constructor?.name ?? "unknown";
+          handleTypes[type] = (handleTypes[type] ?? 0) + 1;
+        }
+        const handleSummary = Object.entries(handleTypes)
+          .sort((a, b) => b[1] - a[1])
+          .map(([type, count]) => `${type}:${count}`)
+          .join(", ");
+        logSink.log(`active handles at shutdown: ${handleSummary}`, "dashboard");
+      } catch {
+        // Ignore errors getting handle types
+      }
+
+      await logShutdownDiagnostics(signal);
+      dispose();
+      stopDiagnosticInterval();
+      if (triggerScheduler) triggerScheduler.stop();
+      if (heartbeatMonitorImpl) heartbeatMonitorImpl.stop();
+
+      // Tear down user-project dev-server children (and their process groups)
+      // before exiting. process.exit below skips server.close()'s cleanup hook.
+      try {
+        await stopAllDevServers();
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        logSink.warn(`Failed to stop dev servers: ${message}`, "dashboard");
+      }
+
+      // Stop peer exchange service
+      if (peerExchangeService) {
+        try {
+          await peerExchangeService.stop();
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          logSink.warn(`Failed to stop peer exchange service: ${message}`, "dashboard");
+        }
+      }
+
+      // Stop mDNS discovery and set local node offline
+      if (centralCoreForMesh && localNodeIdForMesh) {
+        try {
+          centralCoreForMesh.stopDiscovery();
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          logSink.warn(`Failed to stop mDNS discovery: ${message}`, "dashboard");
+        }
+        try {
+          await centralCoreForMesh.updateNode(localNodeIdForMesh, { status: "offline" });
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          logSink.warn(`Failed to set local node offline: ${message}`, "dashboard");
+        }
+      }
+
+      if (centralCoreForMesh) {
+        await closeCentralCoreBestEffort(centralCoreForMesh, `dev shutdown (${signal})`);
+      }
+
+      store.close();
+      process.exit(0);
+    };
+    registerHandler(process, "SIGINT", () => void devShutdown("SIGINT"));
+    registerHandler(process, "SIGTERM", () => void devShutdown("SIGTERM"));
+
+    // Ignore SIGHUP so the dashboard survives SSH session disconnects
+    registerHandler(process, "SIGHUP", () => {
+      logSink.log("Received SIGHUP (terminal disconnected) — ignoring", "dashboard");
+    });
+  }
+
+  const server = app.listen(selectedPort, selectedHost);
+
+  server.on("error", (err: NodeJS.ErrnoException) => {
+    if (err.code === "EADDRINUSE") {
+      server.listen(0, selectedHost);
+    } else {
+      logSink.error(`Failed to start server: ${err.message}`, "dashboard");
+      process.exit(1);
+    }
+  });
+
+  server.on("listening", async () => {
+    const actualPort = (server.address() as AddressInfo).port;
+
+    if (actualPort !== selectedPort) {
+      logSink.warn(`Port ${selectedPort} in use, using ${actualPort} instead`, "dashboard");
+    }
+
+    // ── mDNS discovery: broadcast presence and listen for other nodes ───────
+    //
+    // Advertises this node on the local network and discovers other Fusion nodes
+    // without requiring manual configuration.
+    //
+    if (centralCoreForMesh) {
+      try {
+        await centralCoreForMesh.startDiscovery({
+          broadcast: true,
+          listen: true,
+          serviceType: "_fusion._tcp",
+          port: actualPort,
+          staleTimeoutMs: 300_000,
+        });
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        logSink.warn(`Failed to start mDNS discovery: ${message}`, "dashboard");
+      }
+    }
+
+    // ── CentralCore: set local node online ─────────────────────────────────
+    //
+    // Find the local node and mark it as online now that we know the port.
+    //
+    if (centralCoreForMesh) {
+      try {
+        const nodes = await centralCoreForMesh.listNodes();
+        const localNode = nodes.find((node) => node.type === "local");
+        if (localNode) {
+          localNodeIdForMesh = localNode.id;
+          await centralCoreForMesh.updateNode(localNode.id, { status: "online" });
+        }
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        logSink.warn(`Failed to set local node online: ${message}`, "dashboard");
+      }
+    }
+
+    // Compose the user-visible URL. When we're bound to a non-localhost
+    // interface (LAN testing), surface the actual host so the URL is
+    // usable from another device. Otherwise keep it as `localhost` for
+    // the nicer click-to-open experience.
+    const displayHost =
+      selectedHost === "0.0.0.0" || selectedHost === "::" ? selectedHost : "localhost";
+    const baseUrl = `http://${displayHost}:${actualPort}`;
+    const tokenizedUrl = dashboardAuthToken
+      ? `${baseUrl}/?token=${encodeURIComponent(dashboardAuthToken)}`
+      : baseUrl;
+
+    const updateMessage = formatUpdateMessage(await startupUpdateStatusPromise);
+
+    // ── TTY Mode: Set system info on TUI ───────────────────────────────
+    //
+    // In TTY mode, we populate the TUI System panel instead of printing
+    // the plain-text banner. The TUI provides navigation and real-time
+    // log streaming.
+    //
+    if (isTTY && tui) {
+      // Determine engine mode
+      const settings = await store.getSettings();
+      const engineMode = opts.dev ? "dev" : settings.enginePaused ? "paused" : "active";
+
+      const systemInfo: SystemInfo = {
+        host: displayHost,
+        port: actualPort,
+        baseUrl,
+        authEnabled: Boolean(dashboardAuthToken),
+        authToken: dashboardAuthToken,
+        tokenizedUrl: dashboardAuthToken ? tokenizedUrl : undefined,
+        engineMode,
+        fileWatcher: true,
+        startTimeMs: dashboardStartedAt,
+      };
+      tui.setSystemInfo(systemInfo);
+      tui.setSettings({
+        maxConcurrent: settings.maxConcurrent ?? 1,
+        maxWorktrees: settings.maxWorktrees ?? 2,
+        autoMerge: settings.autoMerge ?? false,
+        mergeStrategy: settings.mergeStrategy ?? "direct",
+        pollIntervalMs: settings.pollIntervalMs ?? 60_000,
+        enginePaused: settings.enginePaused ?? false,
+        globalPause: settings.globalPause ?? false,
+        remoteActiveProvider: (settings.remoteActiveProvider as "tailscale" | "cloudflare" | null) ?? null,
+        remoteShortLivedEnabled: Boolean(settings.remoteShortLivedEnabled),
+        remoteShortLivedTtlMs: Number(settings.remoteShortLivedTtlMs ?? 900_000),
+      });
+
+      // Hydrate the TUI memory guard from persisted global settings so the
+      // user's previous toggle/threshold survives across dashboard restarts.
+      try {
+        const globalSettings = await store.getGlobalSettingsStore().getSettings();
+        tui.hydrateVitestKillSettings({
+          enabled: typeof globalSettings.vitestAutoKillEnabled === "boolean"
+            ? globalSettings.vitestAutoKillEnabled
+            : undefined,
+          thresholdPct: typeof globalSettings.vitestKillThresholdPct === "number"
+            ? globalSettings.vitestKillThresholdPct
+            : undefined,
+        });
+      } catch {
+        // Fall back to controller defaults if global settings can't be read.
+      }
+
+      // Populate initial stats
+      const tasks = await store.listTasks({ slim: true, includeArchived: false });
+      const counts = new Map<string, number>();
+      for (const task of tasks) {
+        counts.set(task.column, (counts.get(task.column) ?? 0) + 1);
+      }
+      const active = tasks.filter((task) =>
+        task.column === "in-progress" || task.column === "in-review"
+      ).length;
+      const agents = await agentStore.listAgents();
+      const agentStats = { idle: 0, active: 0, running: 0, error: 0 };
+      for (const agent of agents) {
+        const state = agent.state as keyof typeof agentStats;
+        if (state in agentStats) {
+          agentStats[state]++;
+        }
+      }
+      tui.setTaskStats({
+        total: tasks.length,
+        byColumn: Object.fromEntries(counts),
+        active,
+        agents: agentStats,
+      });
+
+      // Wire interactive-mode data source. CentralCore is shared across
+      // dev/non-dev branches via centralCoreForMesh. Per-project TaskStores
+      // are cached so repeated panel switches don't re-init SQLite.
+      if (centralCoreForMesh) {
+        const centralCore = centralCoreForMesh;
+        const buildAuthHeaders = (): Record<string, string> => {
+          const headers: Record<string, string> = { "Content-Type": "application/json" };
+          if (dashboardAuthToken) {
+            headers.Authorization = `Bearer ${dashboardAuthToken}`;
+          }
+          return headers;
+        };
+        tui.setInteractiveData({
+          listProjects: async () => {
+            const projects = await centralCore.listProjects();
+            return projects.map((p) => ({ id: p.id, name: p.name, path: p.path }));
+          },
+          listTasks: async (projectPath: string) => {
+            const projectStore = await getProjectStore(projectPath);
+            const tasks = await projectStore.listTasks({ slim: true, includeArchived: false });
+            return tasks.map((t) => ({
+              id: t.id,
+              title: t.title,
+              description: t.description ?? "",
+              column: t.column,
+              agentState: (t as { agentState?: string }).agentState,
+            }));
+          },
+          createTask: async (projectPath: string, input: { title: string; description?: string }) => {
+            const projectStore = await getProjectStore(projectPath);
+            const created = await projectStore.createTask({
+              title: input.title,
+              description: input.description ?? input.title,
+            });
+            return {
+              id: created.id,
+              title: created.title,
+              description: created.description ?? "",
+              column: created.column,
+              agentState: (created as { agentState?: string }).agentState,
+            };
+          },
+          listAgents: async () => {
+            const list = await agentStore!.listAgents();
+            return list.map((a) => ({
+              id: a.id,
+              name: a.name,
+              state: a.state,
+              role: a.role,
+              taskId: a.taskId,
+              lastHeartbeatAt: a.lastHeartbeatAt,
+            }));
+          },
+          getAgentDetail: async (id: string) => {
+            const d = await agentStore!.getAgentDetail(id, 10);
+            if (!d) return null;
+            return {
+              id: d.id,
+              name: d.name,
+              state: d.state,
+              role: d.role,
+              taskId: d.taskId,
+              lastHeartbeatAt: d.lastHeartbeatAt,
+              title: d.title,
+              capabilities: [d.role],
+              recentRuns: d.completedRuns.slice(0, 10).map((r) => ({
+                id: r.id,
+                startedAt: r.startedAt,
+                endedAt: r.endedAt,
+                status: r.status,
+                triggerDetail: r.triggerDetail,
+                invocationSource: r.invocationSource,
+                stdoutExcerpt: r.stdoutExcerpt,
+                stderrExcerpt: r.stderrExcerpt,
+                resultJson: r.resultJson,
+              })),
+            };
+          },
+          updateAgentState: async (id: string, state: string) => {
+            await agentStore!.updateAgentState(id, state as Parameters<typeof agentStore.updateAgentState>[1]);
+          },
+          deleteAgent: async (id: string) => {
+            await agentStore!.deleteAgent(id);
+          },
+          getSettings: async () => {
+            const s = await store.getSettings();
+            return {
+              maxConcurrent: s.maxConcurrent ?? 1,
+              maxWorktrees: s.maxWorktrees ?? 2,
+              autoMerge: s.autoMerge ?? false,
+              mergeStrategy: s.mergeStrategy ?? "direct",
+              pollIntervalMs: s.pollIntervalMs ?? 60_000,
+              enginePaused: s.enginePaused ?? false,
+              globalPause: s.globalPause ?? false,
+              remoteActiveProvider: (s.remoteActiveProvider as "tailscale" | "cloudflare" | null) ?? null,
+              remoteShortLivedEnabled: Boolean(s.remoteShortLivedEnabled),
+              remoteShortLivedTtlMs: Number(s.remoteShortLivedTtlMs ?? 900_000),
+              remoteSettingsSnapshot: {
+                activeProvider: (s.remoteActiveProvider as "tailscale" | "cloudflare" | null) ?? null,
+                tailscaleEnabled: Boolean(s.remoteTailscaleEnabled),
+                cloudflareEnabled: Boolean(s.remoteCloudflareEnabled),
+                shortLivedEnabled: Boolean(s.remoteShortLivedEnabled),
+                shortLivedTtlMs: Number(s.remoteShortLivedTtlMs ?? 900_000),
+              },
+            };
+          },
+          updateSettings: async (partial) => {
+            // Map SettingsValues subset to the store's Settings type (avoid string->MergeStrategy mismatch).
+            const mapped: Record<string, unknown> = {};
+            if (partial.maxConcurrent !== undefined) mapped.maxConcurrent = partial.maxConcurrent;
+            if (partial.maxWorktrees !== undefined) mapped.maxWorktrees = partial.maxWorktrees;
+            if (partial.autoMerge !== undefined) mapped.autoMerge = partial.autoMerge;
+            if (partial.mergeStrategy !== undefined) mapped.mergeStrategy = partial.mergeStrategy;
+            if (partial.pollIntervalMs !== undefined) mapped.pollIntervalMs = partial.pollIntervalMs;
+            if (partial.enginePaused !== undefined) mapped.enginePaused = partial.enginePaused;
+            if (partial.globalPause !== undefined) mapped.globalPause = partial.globalPause;
+            if (partial.remoteActiveProvider !== undefined) mapped.remoteActiveProvider = partial.remoteActiveProvider;
+            if (partial.remoteShortLivedEnabled !== undefined) mapped.remoteShortLivedEnabled = partial.remoteShortLivedEnabled;
+            if (partial.remoteShortLivedTtlMs !== undefined) mapped.remoteShortLivedTtlMs = partial.remoteShortLivedTtlMs;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            await store.updateSettings(mapped as any);
+          },
+          listModels: () => {
+            return modelRegistry.getAll().map((m) => ({
+              id: m.id,
+              name: m.name,
+              provider: (m as { provider?: string }).provider ?? "unknown",
+              contextWindow: m.contextWindow ?? 0,
+            }));
+          },
+          remote: {
+            getSettings: async () => {
+              const response = await fetch(`${baseUrl}/api/remote/settings`, { headers: buildAuthHeaders() });
+              if (!response.ok) {
+                const payload = await response.json().catch(() => null);
+                const message = payload && typeof payload === "object" && "error" in payload
+                  ? String((payload as { error: unknown }).error)
+                  : `Remote settings request failed: ${response.status}`;
+                throw new Error(message);
+              }
+              const payload = await response.json();
+              return {
+                activeProvider: (payload?.settings?.remoteActiveProvider as "tailscale" | "cloudflare" | null) ?? null,
+                tailscaleEnabled: Boolean(payload?.settings?.remoteTailscaleEnabled),
+                cloudflareEnabled: Boolean(payload?.settings?.remoteCloudflareEnabled),
+                shortLivedEnabled: Boolean(payload?.settings?.remoteShortLivedEnabled),
+                shortLivedTtlMs: Number(payload?.settings?.remoteShortLivedTtlMs ?? 900_000),
+              };
+            },
+            getStatus: async () => {
+              const response = await fetch(`${baseUrl}/api/remote/status`, { headers: buildAuthHeaders() });
+              if (!response.ok) {
+                const payload = await response.json().catch(() => null);
+                const message = payload && typeof payload === "object" && "error" in payload
+                  ? String((payload as { error: unknown }).error)
+                  : `Remote status request failed: ${response.status}`;
+                throw new Error(message);
+              }
+              return await response.json();
+            },
+            activateProvider: async (provider: "tailscale" | "cloudflare") => {
+              const response = await fetch(`${baseUrl}/api/remote/provider/activate`, {
+                method: "POST",
+                headers: buildAuthHeaders(),
+                body: JSON.stringify({ provider }),
+              });
+              if (!response.ok) {
+                const payload = await response.json().catch(() => null);
+                const message = payload && typeof payload === "object" && "error" in payload
+                  ? String((payload as { error: unknown }).error)
+                  : `Remote provider activation failed: ${response.status}`;
+                throw new Error(message);
+              }
+            },
+            startTunnel: async () => {
+              const response = await fetch(`${baseUrl}/api/remote/tunnel/start`, {
+                method: "POST",
+                headers: buildAuthHeaders(),
+              });
+              if (!response.ok) {
+                const payload = await response.json().catch(() => null);
+                const message = payload && typeof payload === "object" && "error" in payload
+                  ? String((payload as { error: unknown }).error)
+                  : `Remote start failed: ${response.status}`;
+                throw new Error(message);
+              }
+            },
+            stopTunnel: async () => {
+              const response = await fetch(`${baseUrl}/api/remote/tunnel/stop`, {
+                method: "POST",
+                headers: buildAuthHeaders(),
+              });
+              if (!response.ok) {
+                const payload = await response.json().catch(() => null);
+                const message = payload && typeof payload === "object" && "error" in payload
+                  ? String((payload as { error: unknown }).error)
+                  : `Remote stop failed: ${response.status}`;
+                throw new Error(message);
+              }
+            },
+            regeneratePersistentToken: async () => {
+              const response = await fetch(`${baseUrl}/api/remote/token/persistent/regenerate`, {
+                method: "POST",
+                headers: buildAuthHeaders(),
+              });
+              if (!response.ok) {
+                const payload = await response.json().catch(() => null);
+                const message = payload && typeof payload === "object" && "error" in payload
+                  ? String((payload as { error: unknown }).error)
+                  : `Persistent token regeneration failed: ${response.status}`;
+                throw new Error(message);
+              }
+              const payload = await response.json();
+              return {
+                token: typeof payload?.token === "string" ? payload.token : undefined,
+                maskedToken: typeof payload?.maskedToken === "string" ? payload.maskedToken : undefined,
+                tokenType: "persistent" as const,
+                expiresAt: null,
+              };
+            },
+            generateShortLivedToken: async (ttlMs: number) => {
+              const response = await fetch(`${baseUrl}/api/remote/token/short-lived/generate`, {
+                method: "POST",
+                headers: buildAuthHeaders(),
+                body: JSON.stringify({ ttlMs }),
+              });
+              if (!response.ok) {
+                const payload = await response.json().catch(() => null);
+                const message = payload && typeof payload === "object" && "error" in payload
+                  ? String((payload as { error: unknown }).error)
+                  : `Short-lived token generation failed: ${response.status}`;
+                throw new Error(message);
+              }
+              const payload = await response.json();
+              return {
+                token: typeof payload?.token === "string" ? payload.token : undefined,
+                maskedToken: typeof payload?.maskedToken === "string" ? payload.maskedToken : undefined,
+                tokenType: "short-lived" as const,
+                expiresAt: typeof payload?.expiresAt === "string" ? payload.expiresAt : null,
+              };
+            },
+            getRemoteUrl: async (tokenType: "persistent" | "short-lived", ttlMs?: number) => {
+              const params = new URLSearchParams({ tokenType });
+              if (typeof ttlMs === "number") params.set("ttlMs", String(ttlMs));
+              const response = await fetch(`${baseUrl}/api/remote/url?${params.toString()}`, { headers: buildAuthHeaders() });
+              if (!response.ok) {
+                const payload = await response.json().catch(() => null);
+                const message = payload && typeof payload === "object" && "error" in payload
+                  ? String((payload as { error: unknown }).error)
+                  : `Remote URL request failed: ${response.status}`;
+                throw new Error(message);
+              }
+              return await response.json();
+            },
+            getQrPayload: async (tokenType: "persistent" | "short-lived", ttlMs?: number, format?: "text" | "terminal" | "image/svg") => {
+              const params = new URLSearchParams({ tokenType });
+              if (typeof ttlMs === "number") params.set("ttlMs", String(ttlMs));
+              if (format) params.set("format", format);
+              const response = await fetch(`${baseUrl}/api/remote/qr?${params.toString()}`, { headers: buildAuthHeaders() });
+              if (!response.ok) {
+                const payload = await response.json().catch(() => null);
+                const message = payload && typeof payload === "object" && "error" in payload
+                  ? String((payload as { error: unknown }).error)
+                  : `Remote QR request failed: ${response.status}`;
+                throw new Error(message);
+              }
+              return await response.json();
+            },
+          },
+          git: {
+            getStatus: (projectPath: string) => buildGitStatus(projectPath),
+            listCommits: (projectPath: string, limit?: number) => buildGitCommits(projectPath, limit),
+            showCommit: (projectPath: string, sha: string) => buildGitCommitDetail(projectPath, sha),
+            listBranches: (projectPath: string) => buildGitBranches(projectPath),
+            listWorktrees: (projectPath: string) => buildGitWorktrees(projectPath),
+            push: async (projectPath: string) => {
+              try {
+                const { stdout, stderr } = await execFileAsync("git", ["push"], { cwd: projectPath, maxBuffer: 4 * 1024 * 1024 });
+                return { success: true, output: (stdout + stderr).trim() };
+              } catch (err) {
+                const msg = err instanceof Error ? (err as NodeJS.ErrnoException & { stderr?: string; stdout?: string }).stderr ?? err.message : String(err);
+                return { success: false, output: msg.trim() };
+              }
+            },
+            fetch: async (projectPath: string) => {
+              try {
+                const { stdout, stderr } = await execFileAsync("git", ["fetch"], { cwd: projectPath, maxBuffer: 4 * 1024 * 1024 });
+                return { success: true, output: (stdout + stderr).trim() };
+              } catch (err) {
+                const msg = err instanceof Error ? (err as NodeJS.ErrnoException & { stderr?: string; stdout?: string }).stderr ?? err.message : String(err);
+                return { success: false, output: msg.trim() };
+              }
+            },
+          },
+          files: {
+            listDirectory: (projectPath: string, relativePath: string) =>
+              buildFileListDirectory(projectPath, relativePath),
+            readFile: (projectPath: string, relativePath: string) =>
+              buildFileReadFile(projectPath, relativePath),
+          },
+          tasks: {
+            getTaskDetail: async (projectPath: string, taskId: string): Promise<TaskDetailData | null> => {
+              try {
+                const projectStore = await getProjectStore(projectPath);
+                // getTask loads full data: steps, log, branch, worktree.
+                const t = await projectStore.getTask(taskId);
+                // Map core StepStatus ("in-progress") → TUI status ("running").
+                const steps: TUITaskStep[] = t.steps.map((s, idx) => ({
+                  index: idx,
+                  name: s.name,
+                  status: s.status === "in-progress" ? "running" : (s.status as TUITaskStep["status"]),
+                }));
+                // Map task activity log entries (action + outcome text) → TUI log entries.
+                // The core log has no severity level, so we emit them all as "info".
+                const recentLogs: TUITaskLogEntry[] = t.log.slice(-200).map((entry) => ({
+                  timestamp: entry.timestamp,
+                  level: "info" as const,
+                  text: entry.outcome ? `${entry.action} → ${entry.outcome}` : entry.action,
+                  source: entry.runContext?.agentId ? "agent" : "executor",
+                }));
+                return {
+                  id: t.id,
+                  title: t.title,
+                  description: t.description ?? "",
+                  column: t.column,
+                  agentState: (t as { agentState?: string }).agentState,
+                  branch: t.branch,
+                  worktree: t.worktree,
+                  currentStepIndex: t.currentStep,
+                  steps,
+                  recentLogs,
+                };
+              } catch {
+                // Task not found (deleted/archived between selection and fetch).
+                return null;
+              }
+            },
+            subscribeTaskEvents: (
+              projectPath: string,
+              taskId: string,
+              handler: (event: TaskEvent) => void,
+            ): (() => void) => {
+              // Subscribe to the project store's task:updated event; filter by taskId.
+              // Steps + log both land via task:updated whenever the engine writes a task.
+              let projectStorePromise: Promise<typeof store> | null = null;
+              // Track the last log length so we only emit new entries as log:appended.
+              let lastLogLength = 0;
+
+              const listener = (task: { id: string; steps: Array<{ name: string; status: string }>; currentStep: number; log: Array<{ timestamp: string; action: string; outcome?: string; runContext?: { agentId?: string } }>; column: string; title?: string; description: string; branch?: string; worktree?: string }) => {
+                if (task.id !== taskId) return;
+
+                // Emit step:updated events for any step whose status differs.
+                task.steps.forEach((s, idx) => {
+                  const status = s.status === "in-progress" ? "running" : s.status as TUITaskStep["status"];
+                  handler({
+                    kind: "step:updated",
+                    step: { index: idx, name: s.name, status },
+                  });
+                });
+
+                // Emit log:appended for each new log entry appended since last event.
+                const newEntries = task.log.slice(lastLogLength);
+                lastLogLength = task.log.length;
+                for (const entry of newEntries) {
+                  handler({
+                    kind: "log:appended",
+                    entry: {
+                      timestamp: entry.timestamp,
+                      level: "info" as const,
+                      text: entry.outcome ? `${entry.action} → ${entry.outcome}` : entry.action,
+                      source: entry.runContext?.agentId ? "agent" : "executor",
+                    },
+                  });
+                }
+              };
+
+              // Resolve the project store and attach the listener asynchronously.
+              projectStorePromise = getProjectStore(projectPath).then((ps) => {
+                ps.on("task:updated", listener as Parameters<typeof ps.on>[1]);
+                return ps;
+              }).catch(() => null as unknown as typeof store);
+
+              return () => {
+                // Detach the listener once the store resolves (or immediately if already resolved).
+                void projectStorePromise?.then((ps) => {
+                  if (ps) ps.off("task:updated", listener as Parameters<typeof ps.off>[1]);
+                });
+              };
+            },
+          },
+        });
+      }
+
+      // Log startup messages to TUI
+      tui.log(`Dashboard started at ${baseUrl}`);
+      if (engineMode === "active") {
+        tui.log("AI engine active");
+      } else if (engineMode === "dev") {
+        tui.log("AI engine disabled (dev mode)");
+      } else {
+        tui.log("AI engine paused");
+      }
+      tui.log("File watcher active");
+      if (updateMessage) {
+        tui.log(updateMessage);
+      }
+    } else {
+      // ── Non-TTY Mode: Print plain-text banner ───────────────────────────
+      //
+      // Preserve the original banner format for CI/automated workflows
+      // and backward compatibility.
+      //
+      console.log();
+      console.log(`  fn board`);
+      console.log(`  ────────────────────────`);
+      console.log(`  → ${baseUrl}`);
+      if (dashboardAuthToken) {
+        console.log(`  Auth:    bearer token required`);
+        console.log(`  Token:   ${dashboardAuthToken}`);
+        console.log(`  Open:    ${tokenizedUrl}`);
+        console.log(`           (the browser stores the token so you only need to click once)`);
+      } else {
+        console.log(`  Auth:    disabled (--no-auth)`);
+      }
+      console.log();
+      console.log(`  Tasks stored in .fusion/tasks/`);
+      console.log(`  Merge:      AI-assisted (conflict resolution + commit messages)`);
+      if (opts.dev) {
+        console.log(`  AI engine:  ✗ disabled (dev mode)`);
+      } else {
+        console.log(`  AI engine:  ✓ active`);
+        console.log(`    • planning: auto-planning tasks`);
+        console.log(`    • scheduler: dependency-aware execution`);
+        console.log(`    • cron: scheduled task execution`);
+      }
+      console.log(`  File watcher: ✓ active`);
+      if (updateMessage) {
+        console.log(`  ${updateMessage}`);
+      }
+      console.log(`  Press Ctrl+C to stop`);
+      console.log();
+    }
+  });
+
+  return { dispose };
+}

@@ -1,0 +1,140 @@
+---
+const STEPS = [
+	{
+		title: "Headless guard",
+		body: "If Pi is non-interactive, /rpiv-setup notifies and returns. No settings read, no install fires.",
+	},
+	{
+		title: "Detect missing + legacy",
+		body: "Scans ~/.pi/agent/settings.json. Returns missing siblings (regex per registry entry) and legacy entries to prune. Fail-soft on file missing or JSON invalid.",
+	},
+	{
+		title: "Nothing-to-do short-circuit",
+		body: "Both lists empty → notify “All rpiv-pi sibling dependencies already installed.” and return.",
+	},
+	{
+		title: "Single confirm",
+		body: "Preview block: install-section + remove-section, each rendered only when non-empty. “Proceed?” once. Cancel returns silently.",
+	},
+	{
+		title: "Prune phase",
+		body: "Rewrites settings.json with the legacy entries removed. Fail-soft on write error.",
+	},
+	{
+		title: "Install phase",
+		body: "Serial loop, no parallelism. Each pi install <pkg> bounded by 120s SIGTERM + 5s SIGKILL. Windows uses cmd.exe shim because pi.exec runs shell:false (cannot launch the pi.cmd shim from npm install -g).",
+	},
+	{
+		title: "Report",
+		body: "✓ Installed: … / ✗ Failed: … (errors truncated to 300 chars). “Restart your Pi session…” appended only if any succeeded.",
+	},
+];
+---
+
+<section id="setup" aria-labelledby="setup-title">
+	<div class="container setup">
+		<p class="kicker">§ setup · /rpiv-setup, fully specified</p>
+		<h2 id="setup-title">Read-only scan, one confirmation listing every install and removal, then a serial install bounded by a 120s timeout. Fail-soft at every I/O boundary.</h2>
+
+		<ol class="trace">
+			{STEPS.map((step, i) => (
+				<li class="trace__item">
+					<div class="trace__rail" aria-hidden="true">
+						<svg class="trace__node" viewBox="0 0 40 40">
+							<circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.45" />
+							<circle cx="20" cy="20" r="10.5" fill="var(--ink-raised)" stroke="currentColor" stroke-width="1.1" />
+							<circle cx="20" cy="20" r="10.5" fill="currentColor" opacity="0.16" />
+							<text x="20" y="23.5" text-anchor="middle" class="trace__nodeNum">{String(i + 1).padStart(2, "0")}</text>
+						</svg>
+					</div>
+					<div class="trace__content">
+						<h4 class="mono trace__title">{step.title}</h4>
+						<p class="trace__body">{step.body}</p>
+					</div>
+				</li>
+			))}
+		</ol>
+	</div>
+</section>
+
+<style>
+	#setup h2 {
+		max-width: 56ch;
+		margin-bottom: var(--space-7);
+	}
+
+	.trace {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	.trace__item {
+		display: grid;
+		grid-template-columns: 56px 1fr;
+		gap: var(--space-5);
+		padding-bottom: var(--space-6);
+		position: relative;
+	}
+	.trace__item:last-child { padding-bottom: 0; }
+
+	.trace__rail {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		color: var(--ochre);
+	}
+	.trace__rail::before {
+		content: "";
+		position: absolute;
+		top: 42px;
+		bottom: -12px;
+		left: 50%;
+		width: 1px;
+		background: linear-gradient(
+			to bottom,
+			var(--kuro) 0%,
+			var(--rule-strong) 70%,
+			transparent 100%
+		);
+		transform: translateX(-0.5px);
+		opacity: 0.8;
+	}
+	.trace__item:last-child .trace__rail::before { display: none; }
+
+	.trace__node {
+		width: 44px;
+		height: 44px;
+		flex-shrink: 0;
+		position: relative;
+		z-index: 1;
+		color: var(--ochre);
+	}
+	.trace__nodeNum {
+		font-family: var(--font-mono);
+		font-size: 9px;
+		letter-spacing: 0.06em;
+		fill: var(--washi);
+	}
+
+	.trace__content { padding-top: 6px; }
+	.trace__title {
+		margin: 0 0 var(--space-2);
+		font-size: var(--type-h3);
+	}
+	.trace__body {
+		font-family: var(--font-serif);
+		color: var(--text);
+		font-size: var(--type-small);
+		margin: 0;
+		max-width: 64ch;
+	}
+
+	@media (max-width: 720px) {
+		.trace__item {
+			grid-template-columns: 40px 1fr;
+			gap: var(--space-3);
+		}
+		.trace__node { width: 36px; height: 36px; }
+		.trace__rail::before { top: 36px; }
+	}
+</style>
