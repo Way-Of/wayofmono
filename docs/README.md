@@ -1,52 +1,54 @@
-# WayOfMono Documentation
+# WayOfMono (Wo) Documentation
 
-Welcome to the comprehensive documentation for the WayOfMono consolidated monorepo. This repository integrates the capabilities of Pi, Gemini CLI, and OpenCode into a unified framework for AI-native software engineering.
+Welcome to the comprehensive documentation for the **WayOfMono** consolidated monorepo. This system integrates the capabilities of Pi, Gemini CLI, and OpenCode into a unified framework for AI-native software engineering, with **Wo (Way of Coding)** as the flagship interaction layer.
 
-## Table of Contents
+## 📖 Table of Contents
 
-- [Core Architecture](./README.md#core-architecture)
+- [Interface Architecture](#interface-architecture)
 - [Agents](./agents/README.md)
 - [Skills](./skills/README.md)
 - [Tools](./tools/README.md)
 - [Packages](./packages/README.md)
-- [Workflow & Standards](./README.md#workflow--standards)
+- [Wo (Way of Coding) Deep Dive](./wo/README.md)
+- [Alignment & Standards](#alignment--standards)
 
-## Core Architecture
+---
 
-WayOfMono follows a modular, package-based architecture aligned with the **Pi Agent Core**.
+## 🎛️ Interface Architecture
 
-### Context Engineering (thoughts/)
-The \`thoughts/\` directory is the brain of the project. It stores:
-- **Tickets:** Defined in \`shared/tickets/\`.
-- **Plans:** Structured implementation designs in \`shared/plans/\`.
-- **Research:** Scout reports, audit logs, and deep-dive investigations.
+WayOfMono is built on a shared **Intelligence Backend** that supports four distinct frontends. This allows developers to use the interaction model that best fits their workflow while sharing common project context and tools.
 
-### Multi-Agent System
-We utilize a specialized squad of agents:
-- **Planner:** Strategic design and implementation mapping.
-- **Reviewer:** Quality gates, security auditing, and verification.
-- **Scout:** High-speed reconnaissance and pattern discovery.
-- **Worker:** Precision code implementation and testing.
+### 1. Wo (Primary Interface)
+The **Wo** agent is our highly-customized synthesis of modern agent technology. It is optimized for "Vertical Slice" engineering and vertical-chain agent orchestration.
+- **Location:** `wo/`
+- **Commands:** `/wom-init`, `/wom-plan`, `/wom-build`, etc.
 
-## Workflow & Standards
+### 2. Pi (Reference Interface)
+Maintains 100% compatibility with the official [Pi Agent](https://github.com/earendil-works/pi) standards.
+- **Location:** `pi/`
 
-### The Golden Path
-1. **Ticket Creation:** Define requirements in a ticket markdown file.
-2. **Reconnaissance:** Run \`/research_codebase\` (Scout) to gather context.
-3. **Planning:** Run \`/create_plan\` (Planner) to draft an implementation plan.
-4. **Audit:** Run \`/validate_plan\` (Reviewer) to approve the plan.
-5. **Implementation:** Run \`/implement_plan\` (Worker) to apply changes.
-6. **Validation:** Run \`/validate_telemetry\` (ODD) to verify the narrative trace.
-7. **Commit:** Run \`/commit\` to finalize the changes.
+### 3. Gemini CLI (Multimodal Interface)
+Leverages the high-velocity, automation-first patterns of the [Gemini CLI](https://geminicli.com).
+- **Location:** `gemini/`
 
-### Naming Conventions
-- **Pi:** kebab-case for files and agents.
-- **Gemini:** snake_case for commands and skills.
-- **OpenCode:** snake_case for commands.
+### 4. OpenCode (Privacy Interface)
+Follows the privacy-first, TUI-driven [OpenCode](https://opencode.ai) standards.
+- **Location:** `opencode/`
 
-## Alignment Links
+---
+
+## 🛠️ The Common Backend
+
+All interfaces leverage the same core assets:
+- **Packages:** `@wayofmono/wo-*` (AI, Agent Core, TUI, Web UI).
+- **Tools:** `Wom-Lens` (LSP & Safety), `Web-Access`, and `Markdown-Preview`.
+- **Memory:** Shared context retention and session state management.
+- **Thoughts:** Standardized `thoughts/` directory for tickets, plans, and research.
+
+---
+
+## 🔗 Alignment Links
 - [Pi Standards & Repo](https://github.com/earendil-works/pi)
-- [Gemini CLI Home](https://geminicli.com/)
 - [Gemini CLI Official Docs](https://geminicli.com/docs/)
-- [OpenCode Home](https://opencode.ai/)
 - [OpenCode Official Docs](https://opencode.ai/docs)
+- [WayOfMono Installation Guide](./INSTALL.md)

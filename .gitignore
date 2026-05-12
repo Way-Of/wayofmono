@@ -1,0 +1,62 @@
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Editor directories and files
+.idea
+*.sln
+.vscode
+*.sublime-workspace
+*.sublime-project
+
+# Build and test artifacts
+*.exe
+*.dll
+*.so
+*.o
+*.pyc
+node_modules/
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Package manager logs
+*.tgz
+
+# Local config
+.config/
+.local/
+
+# Generated agent config files (symlinked locations)
+~/.claude/
+~/.config/opencode/
+~/.gemini/
+~/.pi/
+
+# Development workspace (gitignored)
+planning/
+
+# Reference harness (gitignored)
+ref/
+
+# User thoughts (context engineering - personal workspace)
+thoughts/{username}/
+
+# Cache files
+.cache/
+*.cache
+tmp/
+temp/
