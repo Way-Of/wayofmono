@@ -29,11 +29,11 @@ Unfinished tasks across all 7 wo-* packages, compiled from PROJ-002 through PROJ
 ## @wayofmono/wo-agent-core — Central Agent Runtime
 
 - [ ] Session state persistence (JSONL file-based, stored in `<project-root>/.wo/sessions/`)
-- [ ] Context compaction (cut-point algorithm, LLM summarization, overflow recovery)
-  - [ ] Copy pi/agent/src/harness/compaction/* → wo-agent-core, adapt to wo types
+- [x] Context compaction (cut-point algorithm, LLM summarization, overflow recovery)
+  - [x] Copy pi/agent/src/harness/compaction/* → wo-agent-core, adapt to wo types
 - [ ] Event cancellation support (handlers prevent default behavior)
 - [ ] Config persistence (read/write `<project-root>/.wo/config.json`)
-- [ ] Pi-extension compatibility bridge (shim for `@earendil-works/pi-*` extensions)
+- [ ] Pi-extension compatibility bridge (shim for pi-style extensions)
 - [ ] Session branching (branch/rollback for experiment workflow)
 - [ ] Concurrent tool execution (run multiple tools in parallel)
 - [ ] `renderCall` / `renderResult` on tools (optional TUI rendering)

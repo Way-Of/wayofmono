@@ -61,14 +61,15 @@ Pi reference at `ref/pi/` has 4 packages (ai, agent, coding-agent, tui) with ~19
 | `tool-definition-wrapper.ts` | types | ❌ SKIP | Wo uses ToolDefinition directly |
 | `index.ts` | all of the above | ✅ DONE | Barrel + factory |
 
-### 3. pi/agent/src/harness/compaction/ → wo-agent-core/src/compaction/
+### 3. pi/agent/src/harness/compaction/ → wo-agent-core/src/compaction/ ✅ DONE
 3 files. Session compaction (cut-point, LLM summarization, branch summarization).
+Ported May 13 — adapted to `@wayofmono/wo-ai` types and `complete()` API. Self-contained module, no dependency on pi session tree.
 
 | File | Deps | Status | Notes |
 |------|------|--------|-------|
-| `compaction.ts` | ~26KB | ❌ PENDING | Core algorithm |
-| `utils.ts` | ~5.7KB | ❌ PENDING | File ops, serialization |
-| `branch-summarization.ts` | ~11KB | ❌ PENDING | Branch summaries |
+| `compaction.ts` | ~26KB | ✅ DONE | Core algorithm, adapted to wo-ai types. Uses `complete()` from wo-ai instead of `completeSimple()` from pi-ai |
+| `utils.ts` | ~5.7KB | ✅ DONE | File ops, serialization. Adapted to wo-ai Message types |
+| `branch-summarization.ts` | ~11KB | ✅ DONE | Branch summaries. Uses wo-ai `complete()` |
 
 ### 4. pi/coding-agent/src/core/ → wo-coding-agent/src/core/session/
 The central session from pi is ~3110 lines. Wo has a ~50 line stub that needs real implementation.

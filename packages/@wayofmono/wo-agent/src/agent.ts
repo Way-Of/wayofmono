@@ -126,11 +126,7 @@ export async function createAgent(config: AgentConfig): Promise<Agent> {
 
         return {
           summary: result.content,
-          steps: steps.map(s => ({
-            description: `Step ${s.stepNumber}`,
-            result: s.content,
-            durationMs: 0,
-          })),
+          steps,
           artifacts: [],
           usage: result.usage,
         };

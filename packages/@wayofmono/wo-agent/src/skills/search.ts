@@ -17,10 +17,11 @@ Use these tools to locate relevant code, configuration, and documentation.`,
           include: Type.Optional(Type.String({ description: "File glob pattern to include (e.g. *.ts, *.md)" })),
           maxResults: Type.Optional(Type.Number({ description: "Maximum results to return (default 50)" })),
         }),
-        execute: async (_toolCallId, params, _signal, _onUpdate, ctx) => {
+        execute: async (_toolCallId, params, _signal) => {
           try {
-            const cwd = ctx?.cwd || process.cwd();
-            const searchDir = (params.path as string) ? (params.path as string).startsWith("/") ? params.path as string : `${cwd}/${params.path}` : cwd;
+            const cwd = process.cwd();
+            const rawPath = params.path as string | undefined;
+            const searchDir = rawPath ? (rawPath.startsWith("/") ? rawPath : `${cwd}/${rawPath}`) : cwd;
             const pattern = params.pattern as string;
             const include = params.include as string | undefined;
             const maxResults = (params.maxResults as number) || 50;
@@ -32,7 +33,8 @@ Use these tools to locate relevant code, configuration, and documentation.`,
             for await (const file of glob(globPattern, { cwd: searchDir })) {
               if (count >= maxResults) break;
               try {
-                const content = await readFile(file.startsWith("/") ? file : `${searchDir}/${file}`, "utf-8");
+                const filePath = file.startsWith("/") ? file : `${searchDir}/${file}`;
+                const content = await readFile(filePath, "utf-8");
                 const lines = content.split("\n");
                 for (let i = 0; i < lines.length; i++) {
                   if (count >= maxResults) break;
@@ -56,14 +58,15 @@ Use these tools to locate relevant code, configuration, and documentation.`,
         name: "find_files",
         description: "Find files by name/glob pattern",
         parameters: Type.Object({
-          pattern: Type.String({ description: "Glob pattern to match (e.g. **/*.ts, **/config*)") }),
+          pattern: Type.String({ description: "Glob pattern to match (e.g. **/*.ts, **/*.md)" }),
           path: Type.Optional(Type.String({ description: "Directory to search in" })),
           maxResults: Type.Optional(Type.Number({ description: "Maximum files to return (default 100)" })),
         }),
-        execute: async (_toolCallId, params, _signal, _onUpdate, ctx) => {
+        execute: async (_toolCallId, params, _signal) => {
           try {
-            const cwd = ctx?.cwd || process.cwd();
-            const searchDir = (params.path as string) ? (params.path as string).startsWith("/") ? params.path as string : `${cwd}/${params.path}` : cwd;
+            const cwd = process.cwd();
+            const rawPath = params.path as string | undefined;
+            const searchDir = rawPath ? (rawPath.startsWith("/") ? rawPath : `${cwd}/${rawPath}`) : cwd;
             const pattern = params.pattern as string;
             const maxResults = (params.maxResults as number) || 100;
             const results: string[] = [];

@@ -22,6 +22,34 @@ export {
 } from "./skill-loader.js";
 export { discoverAndLoadExtensions, createExtensionRuntime } from "./runtime.js";
 
+// Context compaction
+export {
+  compact,
+  prepareCompaction,
+  generateSummary,
+  estimateTokenCount,
+  estimateContextTokens,
+  shouldCompact,
+  findCutPoint,
+  generateBranchSummary,
+  prepareBranchMessages,
+  createFileOps,
+  extractFileOpsFromMessage,
+  computeFileLists,
+  serializeConversation,
+  DEFAULT_COMPACTION_SETTINGS,
+  SUMMARIZATION_SYSTEM_PROMPT,
+} from "./compaction/index.js";
+export type {
+  CompactionResult,
+  CompactionSettings,
+  CompactionDetails,
+  CutPointResult,
+  BranchSummaryResult,
+  BranchPreparation,
+  FileOperations,
+} from "./compaction/index.js";
+
 export type {
   ExtensionAPI,
   ExtensionContext,
