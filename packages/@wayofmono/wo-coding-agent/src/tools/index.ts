@@ -1,87 +1,195 @@
+export {
+	type BashOperations,
+	type BashSpawnContext,
+	type BashSpawnHook,
+	type BashToolDetails,
+	type BashToolInput,
+	type BashToolOptions,
+	createBashTool,
+	createBashToolDefinition,
+	createLocalBashOperations,
+} from "./bash.js";
+export {
+	createEditTool,
+	createEditToolDefinition,
+	type EditOperations,
+	type EditToolDetails,
+	type EditToolInput,
+	type EditToolOptions,
+} from "./edit.js";
+export {
+	createFindTool,
+	createFindToolDefinition,
+	type FindOperations,
+	type FindToolDetails,
+	type FindToolInput,
+	type FindToolOptions,
+} from "./find.js";
+export {
+	createGrepTool,
+	createGrepToolDefinition,
+	type GrepOperations,
+	type GrepToolDetails,
+	type GrepToolInput,
+	type GrepToolOptions,
+} from "./grep.js";
+export {
+	createLsTool,
+	createLsToolDefinition,
+	type LsOperations,
+	type LsToolDetails,
+	type LsToolInput,
+	type LsToolOptions,
+} from "./ls.js";
+export {
+	createReadTool,
+	createReadToolDefinition,
+	type ReadOperations,
+	type ReadToolDetails,
+	type ReadToolInput,
+	type ReadToolOptions,
+} from "./read.js";
+export {
+	createWriteTool,
+	createWriteToolDefinition,
+	type WriteOperations,
+	type WriteToolInput,
+	type WriteToolOptions,
+} from "./write.js";
+
+export { withFileMutationQueue } from "./file-mutation-queue.js";
+export {
+	DEFAULT_MAX_BYTES,
+	DEFAULT_MAX_LINES,
+	formatSize,
+	type TruncationOptions,
+	type TruncationResult,
+	truncateHead,
+	truncateLine,
+	truncateTail,
+} from "./truncate.js";
+
 import type { ToolDefinition } from "@wayofmono/wo-agent-core";
-import { Type } from "typebox";
+import { type BashToolOptions, createBashTool, createBashToolDefinition } from "./bash.js";
+import { createEditTool, createEditToolDefinition, type EditToolOptions } from "./edit.js";
+import { createFindTool, createFindToolDefinition, type FindToolOptions } from "./find.js";
+import { createGrepTool, createGrepToolDefinition, type GrepToolOptions } from "./grep.js";
+import { createLsTool, createLsToolDefinition, type LsToolOptions } from "./ls.js";
+import { createReadTool, createReadToolDefinition, type ReadToolOptions } from "./read.js";
+import { createWriteTool, createWriteToolDefinition, type WriteToolOptions } from "./write.js";
 
-export interface ToolFactories {
-  read: ToolDefinition;
-  bash: ToolDefinition;
-  write: ToolDefinition;
-  edit: ToolDefinition;
-  grep: ToolDefinition;
-  find: ToolDefinition;
-  ls: ToolDefinition;
+export type Tool = ToolDefinition;
+export type ToolName = "read" | "bash" | "edit" | "write" | "grep" | "find" | "ls";
+export const allToolNames: Set<ToolName> = new Set(["read", "bash", "edit", "write", "grep", "find", "ls"]);
+
+export interface ToolsOptions {
+	read?: ReadToolOptions;
+	bash?: BashToolOptions;
+	write?: WriteToolOptions;
+	edit?: EditToolOptions;
+	grep?: GrepToolOptions;
+	find?: FindToolOptions;
+	ls?: LsToolOptions;
 }
 
-export function createReadTool(cwd: string): ToolDefinition {
-  return {
-    name: "read",
-    description: "Read a file from the filesystem",
-    parameters: Type.Object({ path: Type.String(), offset: Type.Optional(Type.Number()), limit: Type.Optional(Type.Number()) }),
-    execute: async ({ path }) => ({ content: [{ type: "text" as const, text: `[read] ${cwd}/${path}` }] }),
-  };
+export function createToolDefinition(toolName: ToolName, cwd: string, options?: ToolsOptions): ToolDefinition {
+	switch (toolName) {
+		case "read":
+			return createReadToolDefinition(cwd, options?.read);
+		case "bash":
+			return createBashToolDefinition(cwd, options?.bash);
+		case "edit":
+			return createEditToolDefinition(cwd, options?.edit);
+		case "write":
+			return createWriteToolDefinition(cwd, options?.write);
+		case "grep":
+			return createGrepToolDefinition(cwd, options?.grep);
+		case "find":
+			return createFindToolDefinition(cwd, options?.find);
+		case "ls":
+			return createLsToolDefinition(cwd, options?.ls);
+		default:
+			throw new Error(`Unknown tool name: ${toolName}`);
+	}
 }
 
-export function createBashTool(cwd: string): ToolDefinition {
-  return {
-    name: "bash",
-    description: "Execute a bash command",
-    parameters: Type.Object({ command: Type.String(), description: Type.Optional(Type.String()) }),
-    execute: async ({ command }) => ({ content: [{ type: "text" as const, text: `[bash] ${command}` }] }),
-  };
+export function createTool(toolName: ToolName, cwd: string, options?: ToolsOptions): ToolDefinition {
+	switch (toolName) {
+		case "read":
+			return createReadTool(cwd, options?.read);
+		case "bash":
+			return createBashTool(cwd, options?.bash);
+		case "edit":
+			return createEditTool(cwd, options?.edit);
+		case "write":
+			return createWriteTool(cwd, options?.write);
+		case "grep":
+			return createGrepTool(cwd, options?.grep);
+		case "find":
+			return createFindTool(cwd, options?.find);
+		case "ls":
+			return createLsTool(cwd, options?.ls);
+		default:
+			throw new Error(`Unknown tool name: ${toolName}`);
+	}
 }
 
-export function createWriteTool(cwd: string): ToolDefinition {
-  return {
-    name: "write",
-    description: "Write content to a file",
-    parameters: Type.Object({ path: Type.String(), content: Type.String() }),
-    execute: async ({ path, content }) => ({ content: [{ type: "text" as const, text: `[write] ${cwd}/${path} (${content.length} chars)` }] }),
-  };
+export function createCodingToolDefinitions(cwd: string, options?: ToolsOptions): ToolDefinition[] {
+	return [
+		createReadToolDefinition(cwd, options?.read),
+		createBashToolDefinition(cwd, options?.bash),
+		createEditToolDefinition(cwd, options?.edit),
+		createWriteToolDefinition(cwd, options?.write),
+	];
 }
 
-export function createEditTool(cwd: string): ToolDefinition {
-  return {
-    name: "edit",
-    description: "Edit a file using find/replace",
-    parameters: Type.Object({ path: Type.String(), oldString: Type.String(), newString: Type.String() }),
-    execute: async ({ path, oldString, newString }) => ({ content: [{ type: "text" as const, text: `[edit] ${cwd}/${path}: ${oldString.length} → ${newString.length} chars` }] }),
-  };
+export function createReadOnlyToolDefinitions(cwd: string, options?: ToolsOptions): ToolDefinition[] {
+	return [
+		createReadToolDefinition(cwd, options?.read),
+		createGrepToolDefinition(cwd, options?.grep),
+		createFindToolDefinition(cwd, options?.find),
+		createLsToolDefinition(cwd, options?.ls),
+	];
 }
 
-export function createGrepTool(cwd: string): ToolDefinition {
-  return {
-    name: "grep",
-    description: "Search for a pattern in files",
-    parameters: Type.Object({ pattern: Type.String(), path: Type.Optional(Type.String()) }),
-    execute: async ({ pattern }) => ({ content: [{ type: "text" as const, text: `[grep] ${pattern}` }] }),
-  };
+export function createAllToolDefinitions(cwd: string, options?: ToolsOptions): Record<ToolName, ToolDefinition> {
+	return {
+		read: createReadToolDefinition(cwd, options?.read),
+		bash: createBashToolDefinition(cwd, options?.bash),
+		edit: createEditToolDefinition(cwd, options?.edit),
+		write: createWriteToolDefinition(cwd, options?.write),
+		grep: createGrepToolDefinition(cwd, options?.grep),
+		find: createFindToolDefinition(cwd, options?.find),
+		ls: createLsToolDefinition(cwd, options?.ls),
+	};
 }
 
-export function createFindTool(cwd: string): ToolDefinition {
-  return {
-    name: "find",
-    description: "Find files matching a glob pattern",
-    parameters: Type.Object({ pattern: Type.String() }),
-    execute: async ({ pattern }) => ({ content: [{ type: "text" as const, text: `[find] ${pattern}` }] }),
-  };
+export function createCodingTools(cwd: string, options?: ToolsOptions): ToolDefinition[] {
+	return [
+		createReadTool(cwd, options?.read),
+		createBashTool(cwd, options?.bash),
+		createEditTool(cwd, options?.edit),
+		createWriteTool(cwd, options?.write),
+	];
 }
 
-export function createLsTool(cwd: string): ToolDefinition {
-  return {
-    name: "ls",
-    description: "List directory contents",
-    parameters: Type.Object({ path: Type.Optional(Type.String()) }),
-    execute: async () => ({ content: [{ type: "text" as const, text: `[ls] ${cwd}` }] }),
-  };
+export function createReadOnlyTools(cwd: string, options?: ToolsOptions): ToolDefinition[] {
+	return [
+		createReadTool(cwd, options?.read),
+		createGrepTool(cwd, options?.grep),
+		createFindTool(cwd, options?.find),
+		createLsTool(cwd, options?.ls),
+	];
 }
 
-export function createAllToolDefinitions(cwd: string): ToolDefinition[] {
-  return [
-    createReadTool(cwd),
-    createBashTool(cwd),
-    createWriteTool(cwd),
-    createEditTool(cwd),
-    createGrepTool(cwd),
-    createFindTool(cwd),
-    createLsTool(cwd),
-  ];
+export function createAllTools(cwd: string, options?: ToolsOptions): Record<ToolName, ToolDefinition> {
+	return {
+		read: createReadTool(cwd, options?.read),
+		bash: createBashTool(cwd, options?.bash),
+		edit: createEditTool(cwd, options?.edit),
+		write: createWriteTool(cwd, options?.write),
+		grep: createGrepTool(cwd, options?.grep),
+		find: createFindTool(cwd, options?.find),
+		ls: createLsTool(cwd, options?.ls),
+	};
 }

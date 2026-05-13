@@ -37,12 +37,14 @@
     "@wayofmono/wo-ai": "workspace:*",
     "@wayofmono/wo-tui": "workspace:*",
     "@wayofmono/telemetry": "workspace:*",
+    "diff": "^7.0.0",
     "highlight.js": "^11.10.0",
     "hosted-git-info": "^7.0.0",
     "typebox": "^1.0.0",
     "yaml": "^2.6.0"
   },
   "devDependencies": {
+    "@types/diff": "^7.0.0",
     "@types/node": "^22.0.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.1"
