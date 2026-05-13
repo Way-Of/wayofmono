@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+import { main } from "./main.js";
+
+process.title = "wo";
+
+main(process.argv.slice(2)).catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

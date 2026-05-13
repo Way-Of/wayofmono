@@ -1,8 +1,8 @@
 {
-  "name": "@wayofmono/wo-agent-core",
+  "name": "@wayofmono/telemetry",
   "version": "1.0.0",
   "type": "module",
-  "description": "WayOfMono (Wo) Central Agent Runtime — ExtensionAPI, tool engine, command registry, event system, skill loader",
+  "description": "WayOfMono ODD-first instrumentation and telemetry SDK — OpenTelemetry-based tracing for agent operations",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "exports": {
@@ -21,23 +21,20 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@wayofmono/wo-ai": "workspace:*",
-    "@wayofmono/wo-tui": "workspace:*",
-    "@wayofmono/telemetry": "workspace:*",
-    "typebox": "^1.0.0"
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/sdk-trace-base": "^1.27.0",
+    "@opentelemetry/exporter-otlp-grpc": "^0.55.0",
+    "@opentelemetry/otlp-exporter-base": "^0.55.0"
   },
   "devDependencies": {
-    "@wayofmono/wo-ai": "workspace:*",
-    "@wayofmono/wo-tui": "workspace:*",
-    "@wayofmono/telemetry": "workspace:*",
     "typescript": "^6.0.3",
     "vitest": "^4.1.1"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/earendil-works/wayofmono",
-    "directory": "packages/@wayofmono/wo-agent-core"
+    "directory": "packages/@wayofmono/telemetry"
   },
   "homepage": "https://wayofmono.dev",
-  "keywords": ["agent", "runtime", "extension", "api", "wayofmono", "wo"]
+  "keywords": ["opentelemetry", "observability", "telemetry", "odd", "wayofmono"]
 }

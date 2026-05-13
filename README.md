@@ -59,7 +59,27 @@ deno install -Agf -n wo-harness \
   https://raw.githubusercontent.com/zerwiz/wayofmono/main/wo/install.ts
 ```
 
-### Manual Package Installation
+## 📦 Wo Packages
+
+All Wo packages are published under the `@wayofmono` scope. Install individually or via the monorepo.
+
+| Package | Description | Install |
+|---------|-------------|---------|
+| `@wayofmono/wo-ai` | Multi-Provider LLM API (OpenAI, Anthropic, Gemini) | `npm install @wayofmono/wo-ai` |
+| `@wayofmono/wo-tui` | High-Performance Terminal UI Library | `npm install @wayofmono/wo-tui` |
+| `@wayofmono/wo-agent-core` | Central Agent Runtime & ExtensionAPI | `npm install @wayofmono/wo-agent-core` |
+| `@wayofmono/wo-web-ui` | Web UI Components (React) | `npm install @wayofmono/wo-web-ui` |
+| `@wayofmono/telemetry` | ODD Instrumentation SDK (OpenTelemetry) | `npm install @wayofmono/telemetry` |
+| `@wayofmono/lens` | Codebase Analysis & Safety Engine | `npm install @wayofmono/lens` |
+
+### Monorepo Install
+```bash
+git clone https://github.com/earendil-works/wayofmono.git
+cd wayofmono
+npm install  # installs all packages via workspaces
+```
+
+### Manual Package Installation (Wo CLI)
 ```bash
 # Install the Wo CLI
 npm install -g @wayofmono/wo-coding-agent
