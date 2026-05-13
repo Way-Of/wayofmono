@@ -1,44 +1,42 @@
 ---
-title: "[PROJ-003] Implement @wayofmono/wo-tui — Terminal UI Library"
+title: "[PROJ-003] Adapt @wayofmono/wo-tui — 25 files from pi/tui, 0% adapted"
 type: "Feature"
 priority: "Critical"
 status: "In Progress"
 assignee: "@zerwiz"
-created: "2024-05-09"
+created: "2026-05-13"
 ---
 
 ## Context
-The `@wayofmono/wo-tui` package provides terminal rendering primitives. Reference: `@earendil-works/pi-tui` (54 source files). Wo has 21 source files — **39% coverage**.
+25 pi/tui source files copied in. ALL imports reference `@earendil-works/pi-*`. Need full adaptation.
 
-## Current Status
-wo-tui has the keyboard handler, TuiEngine, ProcessTerminal, basic components. But the interactive mode needs ~12 more components that wo-tui doesn't export.
+## Files (25 total from pi/tui)
+- `tui.ts` — TUI framework core
+- `terminal.ts` — ProcessTerminal + NodeTTY backends
+- `keys.ts` — Key event parsing (Kitty protocol, legacy)
+- `keybindings.ts` — Keybinding system
+- `stdin-buffer.ts` — Raw stdin buffering
+- `terminal-image.ts` — Image display protocols
+- `autocomplete.ts` — Autocomplete engine
+- `fuzzy.ts` — Fuzzy string matching
+- `editor-component.ts` — Editor component
+- `kill-ring.ts` — Emacs kill ring
+- `undo-stack.ts` — Undo/redo stack
+- `utils.ts` — Terminal utilities
+- `index.ts` — Barrel exports
+- `components/` — 12 component files (box, text, input, editor, select-list, settings-list, spacer, loader, cancellable-loader, markdown, image, truncated-text)
 
-## Missing Components (BULK COPY from ref/pi/tui/)
+## Requirements
+- [ ] Create/restore package.json with correct name, deps, exports
+- [ ] Bulk find-and-replace all pi import paths → wo
+- [ ] Fix index.ts exports (must export ALL components that wo-agent needs)
+- [ ] Fix any type/schema differences from pi to wo
+- [ ] Build with zero TypeScript errors
 
-### Core framework
-- [ ] `Container` — needs `alignment`, `padding` options that pi has
-- [ ] `Text` — needs styled text (color, bold, dim, italic)
-- [ ] `TruncatedText` — text with visual truncation (doesn't exist at all)
-- [ ] `Loader` / `BorderedLoader` — animated spinner (doesn't exist at all)
+## Dependencies
+- wo-ai (for types used in some tui components)
 
-### Editor infrastructure
-- [ ] `CombinedAutocompleteProvider` — doesn't exist
-- [ ] `EditorComponent` — multi-line editor (doesn't exist)
-- [ ] `autocomplete.ts` — autocomplete engine (doesn't exist)
-- [ ] `fuzzy.ts` — fuzzy matching (doesn't exist)
-
-### Exports needed by interactive mode
-- [ ] `matchesKey` — raw string key matching (currently only KeyEvent-based)
-- [ ] `fuzzyFilter` — fuzzy filter utility
-- [ ] `visibleWidth` — visible string width
-- [ ] `hyperlink` — OSC 8 hyperlink rendering
-- [ ] `getCapabilities` — terminal capability detection
-- [ ] `setKeybindings` — global keybinding manager setter
-
-### Theme support
-- [ ] Theme object with colors and styles
-- [ ] Custom theme registration
-- [ ] Default dark/light theme files
-
-## Strategy
-Bulk copy from `ref/pi/tui/src/` and adapt imports. DO NOT rewrite.
+## Success Criteria
+- [ ] `npm run build` zero errors
+- [ ] All 25 files compile
+- [ ] Components render correctly via TuiEngine

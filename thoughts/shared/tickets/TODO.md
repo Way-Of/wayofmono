@@ -1,43 +1,55 @@
-# Wo — True Gap Analysis (2026-05-13)
+# Wo — COMPREHENSIVE STATUS (2026-05-13)
 
-## Reality: 17% coverage. 98 wo files vs 587 pi reference files.
+## Architecture
 
-| Package | pi ref files | wo files | Coverage | Copy Priority |
-|---------|-------------|---------|----------|---------------|
-| wo-ai | 125 | 13 | 10% | Medium |
-| wo-agent-core | 45 | 21 | 47% | Low (different arch) |
-| wo-tui | 54 | 21 | 39% | High |
-| wo-coding-agent | 363 | 43 | 12% | **CRITICAL** |
-| **Total** | **587** | **98** | **17%** | |
+```
+wo-ai (providers) — 50 files from pi/ai/src/
+  ↑
+wo-tui (terminal UI) — 25 files from pi/tui/src/
+  ↑
+wo-agent-core (runtime) — 25 files from pi/agent/src/
+  ↑
+wo-agent (USER AGENT SDK) — ~139 files from pi/coding-agent/src/ (no cli.ts, no bun/)
+  ↑
+wo-coding-agent (CLI BINARY) — ~141 files from pi/coding-agent/src/ (keeps everything)
+```
 
-## Strategy: Bulk copy, then adapt.
+## Package Status
 
-For each package, the approach is:
-1. Copy entire pi-* directory over the wo-* source
-2. Find-and-replace `@earendil-works/pi-*` → `@wayofmono/wo-*`
-3. Fix type/schema differences
-4. Build and iterate until zero errors
+| Package | Files | tsconfig | Imports Fixed | tsc build | Assets copied |
+|---------|-------|----------|---------------|-----------|---------------|
+| wo-ai | 50 | ✅ | ✅ | ✅ | N/A |
+| wo-tui | 25 | ✅ | ✅ | ✅ | N/A |
+| wo-agent-core | 25 | ✅ | ✅ | ✅ | N/A |
+| wo-agent | ~139 | ✅ | ✅ | ✅ | ✅ |
+| wo-coding-agent | ~141 | ✅ | ✅ | ✅ | ✅ |
+| telemetry | 5 | ✅ | N/A (native) | ✅ | N/A |
+| lens | 14 .ts + 800+ .yml | ✅ | N/A | ✅ (9 missing modules created) | N/A |
+| wo-web-ui | 8 files | ✅ | N/A | ✅ (React 19 components) | N/A |
 
-## Immediate Priority: wo-coding-agent interactive mode
+## Key Differences: wo-agent vs wo-coding-agent
 
-The 5512-line interactive-mode.ts + 36 components + theme system must be copied wholesale.
-Then adapt imports for wo-* packages. This is NOT a rewrite — it's a copy+adapt.
+| Aspect | wo-agent (SDK) | wo-coding-agent (CLI) |
+|--------|---------------|----------------------|
+| `cli.ts` | ❌ Removed | ✅ Kept |
+| `bun/` dir | ❌ Removed | ✅ Kept |
+| `bin` in pkg.json | ❌ None | ✅ `"wo": "src/cli.ts"` |
+| Intended use | `import { createAgent } from "@wayofmono/wo-agent"` | `npx wo` |
 
-## Next: wo-tui components missing from wo-tui
+## Applied Changes (382 source files adapted from pi)
 
-The interactive mode depends on ~20 components that wo-tui doesn't export yet.
-Many exist in pi/tui/src/components/ and need to be copied over.
+1. **Package renames:** `@earendil-works/pi-*` → `@wayofmono/wo-*`
+2. **Config dir:** `.pi` → `.wo`, APP_NAME `"pi"` → `"wo"`, env vars `PI_*` → `WO_*`
+3. **Log paths:** `pi-debug`/`pi-crash` → `wo-debug`/`wo-crash`
+4. **Display strings:** `~/.pi/agent/` → `User config`, `.pi/` → `.wo/`
+5. **Temp files:** `pi-editor-*.pi.md` → `wo-editor-*.wo.md`
+6. **Missing deps added:** `@smithy/types`, `@smithy/node-http-handler` (wo-ai); `@types/node` (wo-tui); `@silvia-odwyer/photon-node`, `shx` (wo-agent + wo-coding-agent); `@types/node` (telemetry)
+7. **Exports added:** `./bedrock-provider` (wo-ai)
+8. **tsconfig.base.json:** ES2022 → ES2024 (+ `/v` regex), `types: ["node"]`
+9. **Telemetry fix:** `BasicTracerProvider` type usage, `setAttribute` type cast
+10. **Wo-agent files:** moved from package root → `src/`
+11. **Build scripts:** `build` → `tsc && npm run copy-assets` for agent packages
 
-## Then: wo-ai providers
+## Remaining
 
-Only 3 providers (anthropic, openai, gemini) — pi has 18. Missing bedrock, azure,
-cloudflare, mistral, vertex, github-copilot, openai-responses, etc.
-
-## Blocking dependencies
-- [ ] Copy ref/pi/coding-agent/src/modes/interactive/ → wo-coding-agent (37 files)
-- [ ] Copy ref/pi/tui/src/components/ → wo-tui (12+ missing components)
-- [ ] Fix all import paths (@earendil-works/pi-* → @wayofmono/wo-*)
-- [ ] Copy remaining wo-coding-agent core modules (agent-session-runtime, extensions, etc.)
-- [ ] Copy missing wo-ai providers
-- [ ] Build all packages with zero errors
-- [ ] Test interactive mode end-to-end
+- **Tests**: pi reference did not include test files in src/ — none to run

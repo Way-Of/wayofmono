@@ -5,7 +5,7 @@ import {
 	type KeyId,
 	TUI_KEYBINDINGS,
 	KeybindingsManager as TuiKeybindingsManager,
-} from "@earendil-works/pi-tui";
+} from "@wayofmono/wo-tui";
 import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { getAgentDir } from "../config.js";
@@ -56,7 +56,7 @@ export interface AppKeybindings {
 
 export type AppKeybinding = keyof AppKeybindings;
 
-declare module "@earendil-works/pi-tui" {
+declare module "@wayofmono/wo-tui" {
 	interface Keybindings extends AppKeybindings {}
 }
 

@@ -22,8 +22,8 @@ import type {
 	AgentState,
 	AgentTool,
 	ThinkingLevel,
-} from "@earendil-works/pi-agent-core";
-import type { AssistantMessage, ImageContent, Message, Model, TextContent } from "@earendil-works/pi-ai";
+} from "@wayofmono/wo-agent-core";
+import type { AssistantMessage, ImageContent, Message, Model, TextContent } from "@wayofmono/wo-ai";
 import {
 	clampThinkingLevel,
 	cleanupSessionResources,
@@ -31,7 +31,7 @@ import {
 	isContextOverflow,
 	modelsAreEqual,
 	resetApiProviders,
-} from "@earendil-works/pi-ai";
+} from "@wayofmono/wo-ai";
 import { theme } from "../modes/interactive/theme/theme.js";
 import { stripFrontmatter } from "../utils/frontmatter.js";
 import { sleep } from "../utils/sleep.js";

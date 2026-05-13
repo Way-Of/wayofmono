@@ -8,7 +8,7 @@
 - `createAgent()` factory with `prompt()`, `task()`, `runLoop()`, `registerTool()`, lifecycle events
 - ReAct tool loop (`runReActLoop`): send → stream → accumulate tool calls → execute → loop (max 18 steps, nudge logic)
 - Pi-compatible JSONL session store (`createSessionStore` with `loadMessages`, `syncMessages`, `appendMessage`, `appendToolCalls`)
-- Agent discovery scanner (`discoverAgents`, `parseAgentMarkdown`) — scans `.md` with YAML frontmatter across `agents/`, `.claude/agents/`, `.pi/agents/`, `.cursor/agents/`
+- Agent discovery scanner (`discoverAgents`, `parseAgentMarkdown`) — scans `.md` with YAML frontmatter across `agents/`, `.claude/agents/`, `.wo/agents/`, `.cursor/agents/`
 - Multi-block system prompt composer (`composeSystemPrompt`, `applySystemPrompt`) — env → agent body → mode notes → planner → index blocks
 - Workspace jail (`createWorkspace`) — jailed path resolution with escape prevention, max file size limits
 - Built-in skills: documentation, file-operations, search, summarization
@@ -33,9 +33,29 @@
 - Root `package.json` with workspace scripts (`build`, `test`, `typecheck`)
 - `pnpm-workspace.yaml` for pnpm workspace resolution
 - `scripts/` directory with `sync-versions.js` (lockstep version sync) and `stats.ts` (package statistics)
-- `tsconfig.base.json` at monorepo root with ES2022, NodeNext, strict mode
+- `tsconfig.base.json` at monorepo root with ES2024, NodeNext, strict mode
 - Fixed `@opentelemetry/*` dependency versions in telemetry package (0.55→0.26 for grpc exporter)
 - `@wayofmono/wo-agent` added as dependency of `wo-coding-agent`
+
+#### Pi-to-Wo Bulk Import (382 files adapted)
+- All 50 files from pi/ai/src/ → wo-ai, pi-ai import paths → wo-ai
+- All 25 files from pi/tui/src/ → wo-tui, pi-tui import paths → wo-tui
+- All 25 files from pi/agent/src/ → wo-agent-core, pi-agent-core → wo-agent-core
+- All 141 files from pi/coding-agent/src/ → wo-agent (SDK, stripped CLI entry)
+- All 141 files from pi/coding-agent/src/ → wo-coding-agent (CLI binary, keeps all)
+- Package.json files created for all 5 packages with renamed deps
+- tsconfig.json files created for all 5 packages
+- Config dir `.pi` → `.wo`, APP_NAME `"pi"` → `"wo"`, env vars `PI_*` → `WO_*`
+- Log paths `pi-debug.log`/`pi-crash.log` → `wo-debug.log`/`wo-crash.log`
+- Missing deps added: `@smithy/types`, `@smithy/node-http-handler` (wo-ai), `@types/node` (wo-tui)
+- tsconfig.base.json: ES2022 → ES2024 (for `/v` regex), added `types: ["node"]`
+- All 5 packages pass `tsc --noEmit` with zero errors
+- tsconfigs created for telemetry and lens (pre-existing non-pi packages)
+- copy-assets scripts: theme `*.json`, `assets/*.png`, `export-html/template.*` + vendor JS copied to `dist/` post-tsc
+- `./bedrock-provider` subpath export added to wo-ai
+- `cli.ts` and `bun/` directory removed from wo-agent (SDK has no CLI entry)
+- `@types/node` added to wo-tui and telemetry devDeps
+- Missing deps: `@smithy/types`, `@smithy/node-http-handler` (wo-ai); `@silvia-odwyer/photon-node`, `shx` (wo-agent + wo-coding-agent)
 
 ### Fixed
 - Build errors across all packages: duplicate `JsonlStorage`/`SessionEntry` exports in `wo-agent-core`, `Api` type mismatches in compaction, `StopReason` type in gemini provider, `AbortSignal` type in retry, `SelectItem` generic in `ExtensionUIContext`
@@ -44,6 +64,11 @@
 - Added module declarations for `hosted-git-info` and `highlight.js/lib/index.js`
 - Added `KeyEvent` type re-export to `wo-agent-core` types (needed by `DynamicBorder`)
 - Repository URLs fixed from `earendil-works` → `zerwiz` across all package.json files
+- Telemetry type errors: `BasicTracerProvider` cast to `InstanceType`, `setAttribute` type widened
+- Lens fixed: created 9 missing source modules (`ast-grep-parser`, `ast-grep-rule-manager`, `ast-grep-types`, `sg-runner`, `package-root`, `file-utils`, `tree-sitter-cache`, `tree-sitter-navigator`, `tree-sitter-query-loader`) + index.ts + 4 type error fixes
+- Lens now builds successfully
+- Wo-web-ui restored: package.json, tsconfig, 6 React components (ChatContainer, MessageBubble, ChatInput, SessionList, ToolCallCard), types, theme
+- Tests: no test files exist in any pi-copied package (pi source didn't include them in `src/`)
 
 ### Tickets
 - PROJ-007: `@wayofmono/wo-coding-agent` — Phase 2 (Real AgentSession) ✅, Phase 3 (Real Tools) ✅, Phase 5 (Session Persistence) ✅, Phase 6 (Compaction) ✅

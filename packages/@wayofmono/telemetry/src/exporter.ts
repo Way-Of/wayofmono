@@ -15,7 +15,7 @@ export function initTelemetry(config: TelemetryConfig = {}): void {
 export async function shutdownTelemetry(): Promise<void> {
   try {
     const { BasicTracerProvider } = await import("@opentelemetry/sdk-trace-base");
-    const provider = trace.getTracerProvider() as BasicTracerProvider;
+    const provider = trace.getTracerProvider() as InstanceType<typeof BasicTracerProvider>;
     if (provider?.forceFlush) await provider.forceFlush();
     if (provider?.shutdown) await provider.shutdown();
   } catch {

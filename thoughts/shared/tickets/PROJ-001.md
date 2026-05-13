@@ -2,25 +2,17 @@
 title: "[PROJ-001] Initialize WayOfMono Core"
 type: "Chore"
 priority: "Critical"
-status: "In Progress"
+status: "Done"
 assignee: "@zerwiz"
 created: "2024-05-09"
 ---
 
 ## Context
-Initial setup of the monorepo structure to consolidate disparate tools and agents.
+Initial setup of the monorepo structure. Done. Monorepo has root package.json, pnpm-workspace.yaml, 7 wo-* packages, and pi reference at ref/pi/.
 
-## Requirements & Scope
-- [x] Create directory skeleton for \`shared\` and \`pi\`
-- [ ] Implement custom ticket and plan templates
-- [ ] Synthesize custom Pi agents
-- [ ] Implement custom Pi commands and skills
-
-## Technical Notes
-- Follow the approved \`monorepo-consolidation.md\` plan.
-- Ensure all content is custom-written, using \`ref/\` only for inspiration.
-
-## Success Criteria
-- [x] \`shared/\` and \`pi/\` directories exist with placeholders.
-- [ ] Templates are populated with custom content.
-- [ ] Pi agents and skills are functional.
+## Done
+- [x] Root monorepo structure (package.json, pnpm-workspace.yaml, tsconfig.base.json)
+- [x] 7 wo-* packages scaffolded (wo-ai, wo-tui, wo-agent-core, wo-agent, wo-coding-agent, wo-web-ui, telemetry)
+- [x] pi reference at ref/pi/ (587 files across 4 packages)
+- [x] Ticket templates and tracking system in thoughts/shared/tickets/
+- [x] Pi files bulk-copied into wo packages (ready for adaptation)

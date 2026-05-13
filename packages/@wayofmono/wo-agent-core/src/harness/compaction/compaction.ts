@@ -5,8 +5,8 @@
  * and after compaction the session is reloaded.
  */
 
-import type { AssistantMessage, ImageContent, Model, TextContent, Usage } from "@earendil-works/pi-ai";
-import { completeSimple } from "@earendil-works/pi-ai";
+import type { AssistantMessage, ImageContent, Model, TextContent, Usage } from "@wayofmono/wo-ai";
+import { completeSimple } from "@wayofmono/wo-ai";
 import type { AgentMessage, ThinkingLevel } from "../../types.js";
 import {
 	convertToLlm,

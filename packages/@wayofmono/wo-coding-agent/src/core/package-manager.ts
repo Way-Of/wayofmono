@@ -2182,7 +2182,7 @@ export class DefaultPackageManager implements PackageManager {
 			}
 		};
 
-		// Project extensions from .pi/
+		// Project extensions from .wo/
 		addResources(
 			"extensions",
 			collectAutoExtensionEntries(projectDirs.extensions),
@@ -2191,7 +2191,7 @@ export class DefaultPackageManager implements PackageManager {
 			projectBaseDir,
 		);
 
-		// Project skills from .pi/
+		// Project skills from .wo/
 		addResources(
 			"skills",
 			collectAutoSkillEntries(projectDirs.skills, "pi"),
@@ -2231,7 +2231,7 @@ export class DefaultPackageManager implements PackageManager {
 			projectBaseDir,
 		);
 
-		// User extensions from ~/.pi/agent/
+		// User extensions from ~/.wo/agent/
 		addResources(
 			"extensions",
 			collectAutoExtensionEntries(userDirs.extensions),
@@ -2240,7 +2240,7 @@ export class DefaultPackageManager implements PackageManager {
 			globalBaseDir,
 		);
 
-		// User skills from ~/.pi/agent/
+		// User skills from ~/.wo/agent/
 		addResources(
 			"skills",
 			collectAutoSkillEntries(userDirs.skills, "pi"),

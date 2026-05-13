@@ -2,7 +2,7 @@
  * Shared utilities for compaction and branch summarization.
  */
 
-import type { Message } from "@earendil-works/pi-ai";
+import type { Message } from "@wayofmono/wo-ai";
 import type { AgentMessage } from "../../types.js";
 
 // ============================================================================
