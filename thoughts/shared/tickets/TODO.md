@@ -70,8 +70,10 @@ Unfinished tasks across all 7 wo-* packages, compiled from PROJ-002 through PROJ
 - [ ] Skill loading (`.md` skill file discovery + frontmatter parsing)
 - [ ] Context files (AGENTS.md/CLAUDE.md discovery from cwd up)
 - [ ] Message queue (steering + follow-up during streaming)
-- [ ] Real tool execution (bash/read/write/edit/grep/find/ls as actual operations)
-  - [ ] Copy pi core/tools/*.ts → wo-coding-agent, adapt to wo types/schema
+- [x] Real tool execution (bash/read/write/edit/grep/find/ls as actual operations)
+  - [x] Copied 13 files from pi: bash, read, write, edit, edit-diff, grep, find, ls
+  - [x] Supporting: truncate, path-utils, file-mutation-queue, output-accumulator, index
+  - [x] Added deps: `diff`, `@types/diff`
 - [x] Utility modules (14 of 22 copied)
   - [x] sleep, paths, ansi, html, mime, fs-watch, child-process
   - [x] frontmatter, changelog, shell, git, syntax-highlight, tools-manager, user-agent

@@ -41,27 +41,42 @@ WayOfMono is built on an **Interface-Agnostic Philosophy**. Our core logic and t
 
 ## 🚀 Getting Started with "Wo"
 
-1.  **Initialize:** Run `wo /wom-init` to set up the context engine and steering files (`AGENTS.md`, `GEMINI.md`).
-2.  **Explore:** Use the `wom-recon` agent to map the codebase architecture.
-3.  **Plan:** Use `wom-architect` via `wo /wom-plan` to design your implementation vertical slice.
-4.  **Execute:** Use `wom-coder` via `wo /wom-build` to apply surgical code modifications.
-5.  **Audit:** Use `wom-auditor` via `wo /wom-audit` to ensure production-readiness and security.
+1.  **Install:** `npm install --save-dev @wayofmono/wo-coding-agent` in your project.
+2.  **Run:** `npx wo -p "describe this codebase"` to get a quick analysis.
+3.  **Initialize:** `npx wo /wom-init` to set up context engine and steering files.
+4.  **Explore:** Use `wom-recon` agent to map the codebase architecture.
+5.  **Plan:** Use `wom-architect` via `npx wo /wom-plan` to design your implementation.
+6.  **Execute:** Use `wom-coder` via `npx wo /wom-build` for surgical code modifications.
+7.  **Audit:** Use `wom-auditor` via `npx wo /wom-audit` for production-readiness and security.
 
 ---
 
 ## 📦 Installation
 
-WayOfMono uses a unified harness for rapid deployment.
+`wo` is a **project-local agent** — install it per-project, not globally.
 
-### Automated Setup (Deno)
+### Add to any project
 ```bash
-deno install -Agf -n wo-harness \
-  https://raw.githubusercontent.com/zerwiz/wayofmono/main/wo/install.ts
+npm install --save-dev @wayofmono/wo-coding-agent
+npx wo -p "analyze this project"
+```
+
+All session data, config, and downloaded tools live in `<project-root>/.wo/`. This means:
+- Each project gets its own isolated agent context
+- `.wo/` can be gitignored or tracked
+- No global `~/.wo/` state pollution
+- Works with CI/CD, monorepos, and multi-project setups
+
+### Monorepo (for development of wo itself)
+```bash
+git clone https://github.com/earendil-works/wayofmono.git
+cd wayofmono
+npm install
 ```
 
 ## 📦 Wo Packages
 
-All Wo packages are published under the `@wayofmono` scope. Install individually or via the monorepo.
+All Wo packages are published under the `@wayofmono` scope. Install individually in your project.
 
 | Package | Description | Install |
 |---------|-------------|---------|
@@ -71,23 +86,13 @@ All Wo packages are published under the `@wayofmono` scope. Install individually
 | `@wayofmono/wo-web-ui` | Web UI Components (React) | `npm install @wayofmono/wo-web-ui` |
 | `@wayofmono/telemetry` | ODD Instrumentation SDK (OpenTelemetry) | `npm install @wayofmono/telemetry` |
 | `@wayofmono/lens` | Codebase Analysis & Safety Engine | `npm install @wayofmono/lens` |
+| `@wayofmono/wo-coding-agent` | Project-local CLI Coding Agent (`wo` binary) | `npm install --save-dev @wayofmono/wo-coding-agent` |
+| `@wayofmono/wo-agent` | Embeddable General-Purpose Agent SDK (for apps like wayofpi) | `npm install @wayofmono/wo-agent` |
 
-### Monorepo Install
-```bash
-git clone https://github.com/earendil-works/wayofmono.git
-cd wayofmono
-npm install  # installs all packages via workspaces
-```
-
-### Manual Package Installation (Wo CLI)
-```bash
-# Install the Wo CLI
-npm install -g @wayofmono/wo-coding-agent
-
-# Install specific monorepo capabilities
-wo install npm:@wayofmono/wo-lens
-wo install git:https://github.com/zerwiz/wayofmono.git
-```
+### External Integrations
+| Project | Description | Integration |
+|---------|-------------|-------------|
+| [Way of Pi](https://github.com/zerwiz/wayofpi) | AI-augmented engineering platform (Electron/Web IDE) | Uses `@wayofmono/wo-agent` as backend agent SDK |
 
 ---
 *Built as a unified toolset for the next generation of AI engineering.*

@@ -40,26 +40,26 @@ Pi reference at `ref/pi/` has 4 packages (ai, agent, coding-agent, tui) with ~19
 | `image-resize.ts` | pi-ai types, photon-node | ❌ SKIP | Depends on pi types + photon |
 | `version-check.ts` | pi-user-agent, pi-specific API | ❌ SKIP | pi.dev API endpoint |
 
-### 2. pi/coding-agent/src/core/tools/ → wo-coding-agent/src/tools/
-15 files. 7 tool implementations + infrastructure (truncation, path utils, mutation queue).
+### 2. pi/coding-agent/src/core/tools/ → wo-coding-agent/src/tools/ ✅ DONE
+15 files. 7 tool implementations + infrastructure (truncation, path utils, mutation queue). All copied and adapted May 13.
 
 | File | Deps | Status | Notes |
 |------|------|--------|-------|
-| `bash.ts` | child_process, shell.ts | ❌ PENDING | Core bash exec with streaming |
-| `read.ts` | fs, paths.ts, mime.ts | ❌ PENDING | File read with line range/truncation |
-| `write.ts` | fs, mutation queue | ❌ PENDING | File create/overwrite |
-| `edit.ts` | fs, mutation queue | ❌ PENDING | Surgical line edits |
-| `edit-diff.ts` | fs, mutation queue | ❌ PENDING | Unified-diff editing |
-| `grep.ts` | child_process, tools-manager | ❌ PENDING | ripgrep wrapper |
-| `find.ts` | child_process, tools-manager | ❌ PENDING | fd wrapper |
-| `ls.ts` | fs | ❌ PENDING | Directory listing |
-| `output-accumulator.ts` | none | ❌ PENDING | |
-| `path-utils.ts` | node:path | ❌ PENDING | Workspace-bound path resolution |
-| `truncate.ts` | none | ❌ PENDING | Head/tail/line truncation |
-| `file-mutation-queue.ts` | none | ❌ PENDING | Serialize file writes |
-| `render-utils.ts` | none | ❌ PENDING | Tool output rendering |
-| `tool-definition-wrapper.ts` | types | ❌ PENDING | AgentTool ↔ ToolDefinition |
-| `index.ts` | all of the above | ❌ PENDING | Barrel + factory |
+| `bash.ts` | child_process, shell.ts | ✅ DONE | Core bash exec with streaming |
+| `read.ts` | fs, paths.ts, mime.ts | ✅ DONE | File read with line range/truncation |
+| `write.ts` | fs, mutation queue | ✅ DONE | File create/overwrite |
+| `edit.ts` | fs, mutation queue | ✅ DONE | Surgical line edits |
+| `edit-diff.ts` | fs, mutation queue | ✅ DONE | Unified-diff editing |
+| `grep.ts` | child_process, tools-manager | ✅ DONE | ripgrep wrapper |
+| `find.ts` | child_process, tools-manager | ✅ DONE | fd wrapper |
+| `ls.ts` | fs | ✅ DONE | Directory listing |
+| `output-accumulator.ts` | none | ✅ DONE | |
+| `path-utils.ts` | node:path | ✅ DONE | Workspace-bound path resolution |
+| `truncate.ts` | none | ✅ DONE | Head/tail/line truncation |
+| `file-mutation-queue.ts` | none | ✅ DONE | Serialize file writes |
+| `render-utils.ts` | none | ❌ SKIP | TUI rendering stripped |
+| `tool-definition-wrapper.ts` | types | ❌ SKIP | Wo uses ToolDefinition directly |
+| `index.ts` | all of the above | ✅ DONE | Barrel + factory |
 
 ### 3. pi/agent/src/harness/compaction/ → wo-agent-core/src/compaction/
 3 files. Session compaction (cut-point, LLM summarization, branch summarization).
@@ -70,8 +70,11 @@ Pi reference at `ref/pi/` has 4 packages (ai, agent, coding-agent, tui) with ~19
 | `utils.ts` | ~5.7KB | ❌ PENDING | File ops, serialization |
 | `branch-summarization.ts` | ~11KB | ❌ PENDING | Branch summaries |
 
-### 4. pi/coding-agent/src/core/agent-session.ts → wo-coding-agent/src/core/agent-session.ts
-3110 line file, the central session class. Wo has a ~50 line stub.
+### 4. pi/coding-agent/src/core/ → wo-coding-agent/src/core/session/
+The central session from pi is ~3110 lines. Wo has a ~50 line stub that needs real implementation.
+
+### 4a. pi/coding-agent/src/core/agent-session.ts → wo-coding-agent/src/core/session/
+3110 line file — the central session class.
 
 | Component | Lines | Status | Notes |
 |-----------|-------|--------|-------|
