@@ -72,33 +72,33 @@ Skills are modular collections of tools + prompts for specific domains:
 ### Tool Loop / ReAct
 wayofpi's bundled chat (`chat-orchestrator-tools.ts`) implements its own ReAct tool loop. wo-agent needs a built-in one.
 
-- [ ] Built-in ReAct tool loop: send → parse tool_calls → execute → loop (max steps, nudge logic)
-- [ ] Tool registry with name/description/schema/executor
-- [ ] Streaming SSE parsing (OpenAI-compatible /v1/chat/completions format)
+- [x] Built-in ReAct tool loop: send → parse tool_calls → execute → loop (max steps, nudge logic)
+- [x] Tool registry with name/description/schema/executor
+- [x] Streaming SSE parsing (OpenAI-compatible /v1/chat/completions format)
 - [ ] Tool gating: per-tool enable/disable via config
-- [ ] Max steps, timeout, nudge handling
+- [x] Max steps, timeout, nudge handling
 
 ### Session Persistence
 wayofpi uses Pi-compatible JSONL format at `<project>/agent/sessions/wayofpi-chat-*.jsonl`.
 
-- [ ] JSONL session store with Pi-compatible format (`{"type":"message","message":{"role":"...","content":"..."}}`)
-- [ ] Session save/restore
-- [ ] Context budget trimming (max messages/characters)
+- [x] JSONL session store with Pi-compatible format (`{"type":"message","message":{"role":"...","content":"..."}}`)
+- [x] Session save/restore
+- [x] Context budget trimming (max messages/characters)
 - [ ] Session branching
 
 ### Agent Discovery
 wayofpi scans `agents/`, `.claude/agents/`, `.pi/agents/`, `.cursor/agents/` for `.md` agent definitions.
 
-- [ ] Agent metadata scanner — discover `.md` files with YAML frontmatter (`name`, `description`, `tools`, `skills`)
-- [ ] Agent metadata types — `{name, description, tools[], skills[], model?, body}`
+- [x] Agent metadata scanner — discover `.md` files with YAML frontmatter (`name`, `description`, `tools`, `skills`)
+- [x] Agent metadata types — `{name, description, tools[], skills[], model?, body}`
 - [ ] Team roster — read/write team definitions (teams.yaml)
 
 ### System Prompt Composition
 wayofpi composes multi-block system prompts in `session-prompts.ts`.
 
-- [ ] Structured system prompt builder: env prompt → agent body → mode notes → tool descriptions → index boost
-- [ ] Mode templates: Orchestrator, Plan, Build
-- [ ] Tool description auto-injection
+- [x] Structured system prompt builder: env prompt → agent body → mode notes → tool descriptions → index boost
+- [x] Mode templates: Orchestrator, Plan, Build
+- [x] Tool description auto-injection
 
 ### Intent Dispatch
 wayofpi has phrase dispatch (`orchestrator-dispatch-intent.ts`) for agent handoff detection.
@@ -110,9 +110,9 @@ wayofpi has phrase dispatch (`orchestrator-dispatch-intent.ts`) for agent handof
 ### Workspace Jail
 wayofpi resolves all paths relative to workspace root.
 
-- [ ] Path resolver — resolve paths relative to workspace, prevent escape
-- [ ] Max file size limits
-- [ ] Tool timeout defaults
+- [x] Path resolver — resolve paths relative to workspace, prevent escape
+- [x] Max file size limits
+- [x] Tool timeout defaults
 
 ### Relationship to wayofpi
 [wayofpi](https://github.com/zerwiz/wayofpi) will:
