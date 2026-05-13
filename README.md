@@ -69,7 +69,7 @@ All session data, config, and downloaded tools live in `<project-root>/.wo/`. Th
 
 ### Monorepo (for development of wo itself)
 ```bash
-git clone https://github.com/earendil-works/wayofmono.git
+git clone https://github.com/zerwiz/wayofmono.git
 cd wayofmono
 npm install
 ```
