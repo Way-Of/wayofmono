@@ -1,91 +1,85 @@
 # Installation Guide
 
-WayOfMono provides multiple installation paths depending on your preferred toolchain and environment.
+WayOfMono (Wo) provides high-performance coding agents designed for **project-local** use. This ensures each project has its own isolated configuration, tools, and session history without global state pollution.
 
-## 1. Unified Harness CLI (Recommended)
+## 🚀 Recommended: Local Project Installation
 
-Our main installation method uses the **AI Engineering Harness** installer (Deno-based). This allows you to configure multiple tools (Claude, OpenCode, Gemini, Pi) with a single command.
+The agents are designed to be installed as dev-dependencies in your project.
 
-### Prerequisites
-- [Deno](https://deno.com/)
+### 1. Coding Agent (`wocode`)
+Best for automated codebase modifications, refactoring, and complex engineering tasks.
 
-### One-Time Setup
 ```bash
-deno install -Agf -n ai-harness \
-  https://raw.githubusercontent.com/zerwiz/wayofmono/main/pi/install.ts
+# Install as dev dependency
+pnpm add -D @wayofmono/wo-coding-agent
+
+# Run the agent
+pnpm exec wocode "Describe the architecture of this project"
 ```
 
-### Install Tool Configs
-```bash
-ai-harness --tool=pi              # Pi-specific configs
-ai-harness --tool=gemini          # Gemini CLI configs
-ai-harness --tool=opencode        # OpenCode configs
-ai-harness --tool=claude          # Claude Code configs
-ai-harness --tool=all             # Install all four
-```
-
----
-
-## 2. Platform-Specific Installation
-
-### For Pi Users
-You can install our custom packages and agents directly into your Pi environment.
+### 2. User Agent (`wouser`)
+A general-purpose agent SDK and CLI for building AI-powered applications.
 
 ```bash
-# Install the core monorepo package
-pi install @wayofmono/core
+# Install as dependency
+pnpm add @wayofmono/wo-agent
 
-# Install specific components
-pi install @wayofmono/rpiv-todo
-pi install @wayofmono/web-access
-```
-
-### For Node.js / NPM Users
-All WayOfMono packages are available on the internal registry.
-
-```bash
-# Global installation
-npm install -g @wayofmono/pi-coding-agent
-
-# Local project installation
-npm install @wayofmono/telemetry @wayofmono/lens
+# Run the CLI
+pnpm exec wouser "Hello! How can you help me today?"
 ```
 
 ---
 
-## 3. Alternative: Direct Repo Mode (GNU Stow)
+## 📂 Zero Global Pollution (.wo/)
 
-For power users who want to keep the repository locally and symlink configurations (ideal for continuous updates via git pull).
+WayOfMono follows a **Local-First** configuration philosophy. Everything the agent needs is stored within your project directory:
 
-### Prerequisites
-- [GNU Stow](https://www.gnu.org/software/stow/)
+- **Configuration**: Local `models.json` and `settings.json` live in `.wo/`.
+- **Sessions**: All conversation history is saved in `.wo/sessions/`.
+- **Tools**: Extension tools and binaries are isolated in `.wo/tools/` and `.wo/bin/`.
 
-### Setup
+The agents **automatically detect** a local `.wo` directory in your current path or any parent directory. If found, they will use it as the root for all configuration and state.
+
+**Tip:** Add `.wo/` to your `.gitignore` to keep your repo clean while maintaining local state, or track it if you want to share agent context with your team.
+
+---
+
+## 🛠️ Monorepo Development
+
+If you are contributing to WayOfMono or building it from source:
+
 ```bash
-git clone https://github.com/zerwiz/wayofmono
+# Clone the repository
+git clone https://github.com/zerwiz/wayofmono.git
 cd wayofmono
 
-./setup.sh pi         # Symlinks to ~/.pi/agent/
-./setup.sh gemini     # Symlinks to ~/.gemini/
-./setup.sh opencode   # Symlinks to ~/.config/opencode/
-./setup.sh claude     # Symlinks to ~/.claude/
-./setup.sh all        # Symlinks all tools
+# Install dependencies
+pnpm install
+
+# IMPORTANT: Build all packages
+pnpm build
 ```
 
-### Updating
-```bash
-git pull
-./setup.sh all --restow
-```
+After building, you can test the local versions using the launcher scripts in the `test/` directory:
+- `test/coding-agent/wocode`
+- `test/user-agent/wouser`
 
 ---
 
-## 4. Verification
+## 🎛️ Manual Environment Overrides
 
-After installation, verify the setup by running the `init_harness` command in any project directory:
+While the agents are "local-first," you can manually override the configuration directory using environment variables if needed:
 
-- **Pi:** `/init_harness`
-- **Gemini:** `/init_harness` (triggers `init_harness.toml`)
-- **OpenCode:** `/init_harness`
+- `WO_CODING_AGENT_DIR`: Set the root directory for configuration and state (defaults to `./.wo` or `~/.wo/agent`).
+- `WO_CODING_AGENT_SESSION_DIR`: Set a specific directory for session storage.
 
-This will verify your directory structure and deploy the necessary steering files (`GEMINI.md` or `AGENTS.md`).
+---
+
+## 🔗 Verification
+
+After installation, verify the setup by checking the version:
+
+```bash
+pnpm exec wocode --version
+pnpm exec wouser --version
+```

@@ -47,6 +47,6 @@ export function recordEvent(name: string, attributes?: Attributes): void {
 export function setAttribute(key: string, value: unknown): void {
   const span = trace.getSpan(context.active());
   if (span) {
-    span.setAttribute(key, value as Attributes[keyof Attributes]);
+    span.setAttribute(key, value as any);
   }
 }

@@ -60,3 +60,7 @@ thoughts/{username}/
 *.cache
 tmp/
 temp/
+
+# API Keys and credentials
+models.json
+**/models.json

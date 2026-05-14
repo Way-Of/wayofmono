@@ -1,59 +1,59 @@
 {
   "name": "@wayofmono/wo-coding-agent",
   "version": "1.0.0",
+  "description": "Coding agent CLI with read, bash, edit, write tools and session management",
   "type": "module",
-  "description": "WayOfMono (Wo) Coding Agent — CLI harness for AI-assisted software development",
-  "main": "./dist/cjs/index.js",
-  "types": "./dist/cjs/index.d.ts",
   "bin": {
-    "wo": "./dist/esm/cli.js"
+    "wocode": "dist/cli.js"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/esm/index.d.ts",
-        "default": "./dist/esm/index.js"
-      },
-      "require": {
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
-      }
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./hooks": {
+      "types": "./dist/core/hooks/index.d.ts",
+      "import": "./dist/core/hooks/index.js"
     }
   },
-  "files": ["dist", "src", "package.json", "README.md"],
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://npm.wayofmono.dev"
-  },
+  "files": ["src", "README.md"],
   "scripts": {
-    "build": "npm run build:cjs && npm run build:esm",
-    "build:cjs": "tsc -p tsconfig.cjs.json",
-    "build:esm": "tsc -p tsconfig.esm.json",
-    "test": "vitest run",
-    "prepublishOnly": "npm run build"
+    "build": "tsc && npm run copy-assets",
+    "copy-assets": "shx mkdir -p dist/modes/interactive/theme && shx cp src/modes/interactive/theme/*.json dist/modes/interactive/theme/ && shx mkdir -p dist/modes/interactive/assets && shx cp src/modes/interactive/assets/*.png dist/modes/interactive/assets/ && shx mkdir -p dist/core/export-html/vendor && shx cp src/core/export-html/template.* dist/core/export-html/ && shx cp src/core/export-html/vendor/*.js dist/core/export-html/vendor/",
+    "test": "vitest --run",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@wayofmono/wo-agent-core": "workspace:*",
     "@wayofmono/wo-ai": "workspace:*",
     "@wayofmono/wo-tui": "workspace:*",
-    "@wayofmono/telemetry": "workspace:*",
-    "diff": "^7.0.0",
-    "highlight.js": "^11.10.0",
-    "hosted-git-info": "^7.0.0",
-    "typebox": "^1.0.0",
-    "yaml": "^2.6.0"
+    "chalk": "^5.5.0",
+    "diff": "^8.0.2",
+    "glob": "^11.0.2",
+    "highlight.js": "^10.7.3",
+    "hosted-git-info": "^9.0.2",
+    "ignore": "^7.0.5",
+    "jiti": "^2.7.0",
+    "minimatch": "^10.2.3",
+    "proper-lockfile": "^4.1.2",
+    "typebox": "^1.1.24",
+    "undici": "^7.19.1",
+    "yaml": "^2.8.2"
+  },
+  "optionalDependencies": {
+    "@mariozechner/clipboard": "^0.3.5",
+    "@silvia-odwyer/photon-node": "^0.3.4"
   },
   "devDependencies": {
-    "@types/diff": "^7.0.0",
-    "@types/node": "^22.0.0",
+    "@types/diff": "^7.0.2",
+    "@types/hosted-git-info": "^3.0.5",
+    "@types/ms": "^2.1.0",
+    "@types/node": "^24.3.0",
+    "@types/proper-lockfile": "^4.1.4",
     "typescript": "^6.0.3",
+    "shx": "^0.4.0",
     "vitest": "^4.1.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/earendil-works/wayofmono",
-    "directory": "packages/@wayofmono/wo-coding-agent"
-  },
-  "homepage": "https://wayofmono.dev",
-  "keywords": ["agent", "coding", "cli", "wayofmono", "wo"]
+  }
 }

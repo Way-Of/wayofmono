@@ -57,12 +57,12 @@ export class WomAstGrep {
 	 * Prefer ensureAvailable() for auto-install behavior
 	 */
 	isAvailable(): boolean {
-		if (this.available !== null) return this.available;
+		if (this.available !== null) return this.available!;
 		this.available = this.runner.isAvailable();
 		if (this.available) {
 			this.log("ast-grep available");
 		}
-		return this.available;
+		return this.available ?? false;
 	}
 
 	/**
@@ -266,7 +266,7 @@ message: found
 		showModeIndicator = false,
 	): string {
 		return this.runner.formatMatches(
-			matches as SgMatch[],
+			matches as unknown as SgMatch[],
 			isDryRun,
 			50,
 			showModeIndicator,
@@ -300,8 +300,8 @@ message: found
 			if (!output.trim()) return [];
 
 			const parser = new AstGrepParser(
-				(id) => this.getRuleDescription(id),
-				(sev) => this.mapSeverity(sev),
+				(id: string) => this.getRuleDescription(id),
+				(sev: string) => this.mapSeverity(sev),
 			);
 			return parser.parseOutput(output, absolutePath);
 		} catch (err) {

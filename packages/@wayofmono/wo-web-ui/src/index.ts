@@ -1,19 +1,10 @@
-export { ChatContainer } from "./components/ChatContainer.js";
-export { MessageBubble } from "./components/MessageBubble.js";
-export { ChatInput } from "./components/ChatInput.js";
-export { SessionList } from "./components/SessionList.js";
-export { ToolCallCard } from "./components/ToolCallCard.js";
+export { ChatContainer } from "./components/chat-container.js";
+export { MessageBubble } from "./components/message-bubble.js";
+export { ChatInput } from "./components/chat-input.js";
+export { SessionList } from "./components/session-list.js";
+export { ToolCallCard } from "./components/tool-call-card.js";
 
-export type {
-  ChatMessage,
-  ToolCall,
-  ToolResult,
-  SessionInfo,
-  DiagnosticInfo,
-  ThemeConfig,
-  WebSocketMessage,
-  MessageBubbleProps,
-  ChatInputProps,
-  SessionListProps,
-  ToolCallCardProps,
-} from "./types.js";
+export type { ChatMessage, ToolCall, ToolResult } from "./types.js";
+export type { SessionInfo, DiagnosticInfo } from "./types.js";
+export type { ThemeConfig, WebSocketMessage } from "./types.js";
+export { darkTheme, lightTheme, getTheme } from "./theme.js";

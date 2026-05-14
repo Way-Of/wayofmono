@@ -1,64 +1,37 @@
 ---
-title: "[PROJ-005] Implement @wayofmono/wo-agent-core — Central Agent Runtime"
+title: "[PROJ-005] Adapt @wayofmono/wo-agent-core — 25 files from pi/agent, 0% adapted"
 type: "Feature"
 priority: "Critical"
 status: "In Progress"
 assignee: "@zerwiz"
-created: "2024-05-09"
+created: "2026-05-13"
 ---
 
 ## Context
-The `@wayofmono/wo-agent-core` package provides the central agent runtime: ExtensionAPI, tool engine, command registry, event system, skill loader, model registry, UI context, and runtime bootstrap. Reference: `@earendil-works/pi-agent-core` (25 source files).
+25 pi/agent source files copied in. ALL imports reference `@earendil-works/pi-*`. Need full adaptation to `@wayofmono/wo-*`.
 
-## Current State (13 files)
-wo-agent-core already has:
-- `extension-api.ts` — WoExtensionAPI (15 methods: registerCommand, registerTool, registerFlag, on, exec, sendMessage, etc.)
-- `event-emitter.ts` — Priority-sorted event system with emit/emitFirst
-- `tool-engine.ts` — Tool registry and executor
-- `command-registry.ts` — Slash command registration and dispatch
-- `flag-manager.ts` — Key-value flag store
-- `models.ts` — Model registry with 8 built-in models
-- `ui-context.ts` — Extension UI context (notify, confirm, input, select, setWidget, setStatus)
-- `skill-loader.ts` — Skill discovery and frontmatter parsing
-- `runtime.ts` — Extension discovery and loading from directories
-- `dynamic-border.ts` — Spinner (DynamicBorder) and bordered loader (BorderedLoader) components
-- `utils.ts` — truncateHead, formatSize, convertToLlm, isToolCallEventType, getMarkdownTheme, withFileMutationQueue
-- `types.ts` — All type definitions
+## Files (25 from pi/agent)
+- `agent.ts` + `agent-loop.ts` — Core agent loop (LLM request/response, tool calling, steering)
+- `proxy.ts` — Remote proxy streaming
+- `types.ts` — Agent types (AgentState, AgentEvent, AgentTool, StreamFn, etc.)
 - `index.ts` — Barrel exports
+- `harness/` — Harness system: agent-harness, messages, system-prompt, prompt-templates, skills, types, execution-env
+- `harness/compaction/` — Compaction (cut-point, LLM summarization, branch summarization)
+- `harness/session/` — Session system (session.ts, uuid.ts, storage/ jsonl+memory, repo/ jsonl+memory+shared)
+- `harness/env/` — Node.js execution environment
+- `harness/utils/` — Shell output, truncation
 
-## Missing vs pi/agent (15+ files)
+## Requirements
+- [ ] Create/restore package.json with correct name, deps, exports
+- [ ] Bulk find-and-replace all pi import paths → wo
+- [ ] Fix index.ts exports (must export what wo-agent needs)
+- [ ] Fix type/schema differences between pi types and wo types
+- [ ] Build with zero TypeScript errors
 
-### Agent Loop (wo has nothing equivalent)
-- [ ] **Agent class** — Stateful `Agent` with lifecycle events (agent_start/end, turn_start/end, message_*), steering/follow-up queues, abort, subscription
-- [ ] **Agent loop** — Low-level `agentLoop()` / `runAgentLoop()`: LLM request/response, streaming assistant message assembly, tool call execution (parallel + sequential), follow-up loop
-- [ ] **Proxy streaming** — `streamProxy()` for remote LLM execution via SSE
+## Dependencies
+- wo-ai (for Message, Model, streamSimple types)
 
-### Session Persistence
-- [ ] **Session class** — Tree-based session with branching (entries linked by parentId)
-- [ ] **Session storage** — InMemorySessionStorage + JsonlSessionStorage (JSONL file format)
-- [ ] **Session repo** — InMemorySessionRepo + JsonlSessionRepo (CRUD over storage)
-- [ ] **UUIDv7** — Monotonic timestamp-based UUID generation
-
-### Context Compaction
-- [ ] **Compaction core** — `compact()`: cut-point algorithm, token estimation, LLM summarization, overflow recovery
-- [ ] **Branch summarization** — `generateBranchSummary()` for tree navigation between branches
-- [ ] **Compaction utils** — File operation extraction, conversation serialization, summarization prompts
-
-### Harness
-- [ ] **AgentHarness** — High-level orchestrator: system prompt building, skill integration, prompt templates, tool management, session binding, compaction triggering
-- [ ] **Harness types** — Skill, PromptTemplate, ExecutionEnv, Session, harness events
-- [ ] **Message types** — Custom message types (bashExecution, custom, branchSummary, compactionSummary)
-- [ ] **Prompt templates** — Template loading from .md files with argument substitution
-- [ ] **Skills system** — Skill loading from SKILL.md with ignore-file support
-- [ ] **System prompt** — Skills formatting for system prompt (XML block)
-- [ ] **Execution environment** — NodeExecutionEnv (shell exec, file I/O, temp files)
-- [ ] **Shell output** — `executeShellWithCapture()` with streaming, truncation, temp file spill
-- [ ] **Truncation** — `truncateHead()`, `truncateTail()`, `truncateLine()`, `formatSize()`
-
-## Verification
-- [ ] `npm run test` passes
-- [ ] `npm run build` produces valid ESM output
-- [ ] Session state persists and recovers across restarts via JSONL files
-- [ ] Compaction fires at threshold and recovers from overflow
-- [ ] Agent lifecycle events fire in correct order
-- [ ] Extensions can register tools, commands, and event handlers
+## Success Criteria
+- [ ] `npm run build` zero errors
+- [ ] All 25 files compile
+- [ ] Agent loop logic preserved
