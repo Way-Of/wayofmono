@@ -3,24 +3,24 @@
   "version": "1.0.0",
   "description": "Unified LLM API with automatic model discovery and provider configuration",
   "type": "module",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./src/index.ts",
-      "import": "./src/index.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
     "./anthropic": {
-      "types": "./src/providers/anthropic.ts",
-      "import": "./src/providers/anthropic.ts"
+      "types": "./dist/providers/anthropic.d.ts",
+      "import": "./dist/providers/anthropic.js"
     },
     "./bedrock-provider": {
-      "types": "./src/bedrock-provider.ts",
-      "import": "./src/bedrock-provider.ts"
+      "types": "./dist/bedrock-provider.d.ts",
+      "import": "./dist/bedrock-provider.js"
     },
     "./oauth": {
-      "types": "./src/utils/oauth/index.ts",
-      "import": "./src/utils/oauth/index.ts"
+      "types": "./dist/utils/oauth/index.d.ts",
+      "import": "./dist/utils/oauth/index.js"
     }
   },
   "files": ["src", "README.md"],

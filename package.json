@@ -8,5 +8,8 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "dependencies": {
+    "wo-coding-agent": "link:../../packages/@wayofmono/wo-coding-agent"
   }
 }

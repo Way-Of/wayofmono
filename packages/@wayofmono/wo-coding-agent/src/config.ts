@@ -418,8 +418,8 @@ const pkg = JSON.parse(readFileSync(getPackageJsonPath(), "utf-8")) as PackageJs
 
 const piConfigName: string | undefined = "wo";
 export const PACKAGE_NAME: string = pkg.name || "@wayofmono/wo-coding-agent";
-export const APP_NAME: string = "wo";
-export const APP_TITLE: string = "wo";
+export const APP_NAME: string = "wocode";
+export const APP_TITLE: string = "WayOfMono Coding Agent";
 export const CONFIG_DIR_NAME: string = ".wo";
 export const VERSION: string = pkg.version || "0.0.0";
 
@@ -445,12 +445,27 @@ export function getShareViewerUrl(gistId: string): string {
 // User Config Paths (~/.wo/agent/*)
 // =============================================================================
 
-/** Get the agent config directory (e.g., ~/.wo/agent/) */
+/** Get the agent config directory (e.g., ~/.wo/agent/ or project-local .wo/) */
 export function getAgentDir(): string {
 	const envDir = process.env[ENV_AGENT_DIR];
 	if (envDir) {
 		return expandTildePath(envDir);
 	}
+
+	// Project-local priority: look for .wo directory in CWD or ancestors
+	let curr = process.cwd();
+	while (true) {
+		const localDir = join(curr, CONFIG_DIR_NAME);
+		if (existsSync(localDir)) {
+			// Use .wo/agent if it exists, otherwise use .wo directly
+			const agentSubDir = join(localDir, "agent");
+			return existsSync(agentSubDir) ? agentSubDir : localDir;
+		}
+		const parent = dirname(curr);
+		if (parent === curr) break;
+		curr = parent;
+	}
+
 	return join(homedir(), CONFIG_DIR_NAME, "agent");
 }
 

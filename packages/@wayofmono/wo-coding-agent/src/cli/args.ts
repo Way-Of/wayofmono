@@ -208,16 +208,16 @@ ${chalk.bold("Commands:")}
   ${APP_NAME} install <source> [-l]     Install extension source and add to settings
   ${APP_NAME} remove <source> [-l]      Remove extension source from settings
   ${APP_NAME} uninstall <source> [-l]   Alias for remove
-  ${APP_NAME} update [source|self|pi]   Update pi and installed extensions
+  ${APP_NAME} update [source|self]      Update ${APP_NAME} and installed extensions
   ${APP_NAME} list                      List installed extensions from settings
   ${APP_NAME} config                    Open TUI to enable/disable package resources
   ${APP_NAME} <command> --help          Show help for install/remove/uninstall/update/list
 
-${chalk.bold("Options:")}
+  ${chalk.bold("Options:")}
   --provider <name>              Provider name (default: google)
   --model <pattern>              Model pattern or ID (supports "provider/id" and optional ":<thinking>")
   --api-key <key>                API key (defaults to env vars)
-  --system-prompt <text>         System prompt (default: coding assistant prompt)
+  --system-prompt <text>         System prompt (default: AI assistant prompt)
   --append-system-prompt <text>  Append text or file contents to the system prompt (can be used multiple times)
   --mode <mode>                  Output mode: text (default), json, or rpc
   --print, -p                    Non-interactive mode: process prompt and exit
@@ -246,10 +246,9 @@ ${chalk.bold("Options:")}
   --export <file>                Export session file to HTML and exit
   --list-models [search]         List available models (with optional fuzzy search)
   --verbose                      Force verbose startup (overrides quietStartup setting)
-  --offline                      Disable startup network operations (same as PI_OFFLINE=1)
+  --offline                      Disable startup network operations
   --help, -h                     Show this help
   --version, -v                  Show version number
-
 Extensions can register additional flags (e.g., --plan from plan-mode extension).${extensionFlagsText}
 
 ${chalk.bold("Examples:")}
