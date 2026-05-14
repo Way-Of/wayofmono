@@ -48,6 +48,7 @@ interface TreeSitterNode {
 	startPosition: { row: number; column: number };
 	startIndex: number;
 	endIndex: number;
+	parent?: TreeSitterNode | null;
 }
 
 interface TreeSitterParserInstance {
@@ -337,7 +338,7 @@ export class WomTreeSitter {
 			const cachedTree = this.treeCache.get(filePath, content, languageId);
 			if (cachedTree) {
 				this.dbg(`Using cached tree for ${filePath}`);
-				return cachedTree;
+				return cachedTree as TreeSitterTree;
 			}
 
 			// Parse and cache

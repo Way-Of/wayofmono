@@ -1,41 +1,50 @@
 {
   "name": "@wayofmono/wo-ai",
   "version": "1.0.0",
+  "description": "Unified LLM API with automatic model discovery and provider configuration",
   "type": "module",
-  "description": "WayOfMono (Wo) Unified Multi-Provider LLM API — OpenAI, Anthropic, Gemini",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./src/index.ts",
-      "types": "./src/index.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./anthropic": {
+      "types": "./dist/providers/anthropic.d.ts",
+      "import": "./dist/providers/anthropic.js"
+    },
+    "./bedrock-provider": {
+      "types": "./dist/bedrock-provider.d.ts",
+      "import": "./dist/bedrock-provider.js"
     },
     "./oauth": {
-      "import": "./src/oauth.ts",
-      "types": "./src/oauth.ts"
+      "types": "./dist/utils/oauth/index.d.ts",
+      "import": "./dist/utils/oauth/index.js"
     }
   },
-  "files": ["src", "package.json", "README.md"],
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://npm.wayofmono.dev"
-  },
+  "files": ["src", "README.md"],
   "scripts": {
     "build": "tsc",
-    "test": "vitest run"
+    "test": "vitest --run",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "typebox": "^1.0.0"
+    "@anthropic-ai/sdk": "^0.91.1",
+    "@aws-sdk/client-bedrock-runtime": "^3.1030.0",
+    "@google/genai": "^1.40.0",
+    "@mistralai/mistralai": "^2.2.0",
+    "@smithy/node-http-handler": "^4.0.3",
+    "@smithy/types": "^4.1.0",
+    "openai": "6.26.0",
+    "partial-json": "^0.1.7",
+    "proxy-agent": "^6.5.0",
+    "proxy-from-env": "^1.1.0",
+    "typebox": "^1.1.24"
   },
   "devDependencies": {
+    "@types/node": "^24.3.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/earendil-works/wayofmono",
-    "directory": "packages/@wayofmono/wo-ai"
-  },
-  "homepage": "https://wayofmono.dev",
-  "keywords": ["llm", "ai", "openai", "anthropic", "gemini", "wayofmono", "wo"]
+  }
 }

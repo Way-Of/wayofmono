@@ -41,53 +41,82 @@ WayOfMono is built on an **Interface-Agnostic Philosophy**. Our core logic and t
 
 ## 🚀 Getting Started with "Wo"
 
-1.  **Initialize:** Run `wo /wom-init` to set up the context engine and steering files (`AGENTS.md`, `GEMINI.md`).
-2.  **Explore:** Use the `wom-recon` agent to map the codebase architecture.
-3.  **Plan:** Use `wom-architect` via `wo /wom-plan` to design your implementation vertical slice.
-4.  **Execute:** Use `wom-coder` via `wo /wom-build` to apply surgical code modifications.
-5.  **Audit:** Use `wom-auditor` via `wo /wom-audit` to ensure production-readiness and security.
+1.  **Install:** `pnpm add -D @wayofmono/wo-coding-agent` in your project.
+2.  **Initialize:** `pnpm exec wocode /wom-init` to set up context engine and steering files.
+3.  **Run:** `pnpm exec wocode "Describe this codebase"` to start your first session.
+4.  **Explore:** Use specialized agents like `wom-recon` or `wom-architect` for deep engineering tasks.
 
 ---
 
-## 📦 Installation
+## 📦 Zero-Pollution Installation
 
-WayOfMono uses a unified harness for rapid deployment.
+WayOfMono agents are **project-local** and **folder-contained**. We believe your coding assistant should live where your code lives.
 
-### Automated Setup (Deno)
+### Project-Local Agents
+- **`wocode`**: High-performance coding assistant for engineering tasks.
+- **`wouser`**: General-purpose agent CLI and SDK for app integration.
+
+### Contained Environment (.wo/)
+Everything the agent needs is stored in a project-local `.wo/` folder:
+- **Zero Global Pollution**: No messy files in your home directory or global PATH.
+- **Isolated Context**: Each project gets its own sessions, tools, and configurations.
+- **Portable Setup**: Your agent configuration stays with the project.
+- **Flawless Resolution**: Internal dependencies are resolved locally within the package `dist/` folders.
+
+### Simple Installation
 ```bash
-deno install -Agf -n wo-harness \
-  https://raw.githubusercontent.com/zerwiz/wayofmono/main/wo/install.ts
+# For coding tasks
+pnpm add -D @wayofmono/wo-coding-agent
+
+# For general use or SDK integration
+pnpm add @wayofmono/wo-agent
+```
+
+---
+
+## 🏗️ Core Philosophies
+
+- **Folder Isolation:** Agents prioritize a local `.wo` directory for all state and configuration.
+- **Custom Synthesis:** Every tool and template is custom-crafted for high-performance engineering.
+- **Context Engineering:** Structured project memory via `thoughts/` and local `.wo/` state.
+- **Observability-Driven:** Narrative-first telemetry and design (ODD).
+
+---
+
+## 📂 Repository Structure
+
+```
+/home/zerwiz/wayofmono/
+├── packages/          # Reusable npm packages (@wayofmono/wo-*)
+├── tools/             # Shared tool integrations (Lens, Web Access, etc.)
+├── shared/            # Universal templates (Tickets, Plans, Research)
+├── wo/                # Synthesized Agent Interaction Layer
+├── pi/                # Pi Agent Standards Compatibility
+├── gemini/            # Gemini CLI standards
+├── opencode/          # OpenCode standards
+├── thoughts/          # Structured Context Engineering artifacts
+└── docs/              # Comprehensive Monorepo Documentation
 ```
 
 ## 📦 Wo Packages
 
-All Wo packages are published under the `@wayofmono` scope. Install individually or via the monorepo.
+All Wo packages are published under the `@wayofmono` scope.
 
 | Package | Description | Install |
 |---------|-------------|---------|
 | `@wayofmono/wo-ai` | Multi-Provider LLM API (OpenAI, Anthropic, Gemini) | `npm install @wayofmono/wo-ai` |
 | `@wayofmono/wo-tui` | High-Performance Terminal UI Library | `npm install @wayofmono/wo-tui` |
-| `@wayofmono/wo-agent-core` | Central Agent Runtime & ExtensionAPI | `npm install @wayofmono/wo-agent-core` |
-| `@wayofmono/wo-web-ui` | Web UI Components (React) | `npm install @wayofmono/wo-web-ui` |
+| `@wayofmono/wo-agent-core` | Central Agent Runtime & Extension API | `npm install @wayofmono/wo-agent-core` |
+| `@wayofmono/wo-coding-agent` | Project-local CLI Coding Agent (`wocode` binary) | `npm install --save-dev @wayofmono/wo-coding-agent` |
+| `@wayofmono/wo-agent` | General-Purpose Agent SDK & CLI (`wouser` binary) | `npm install @wayofmono/wo-agent` |
+| `@wayofmono/wo-skill-docs` | Multi-format Documentation Expert (Markdown, PDF, Word, TXT) | `pnpm add -D @wayofmono/wo-skill-docs` |
 | `@wayofmono/telemetry` | ODD Instrumentation SDK (OpenTelemetry) | `npm install @wayofmono/telemetry` |
 | `@wayofmono/lens` | Codebase Analysis & Safety Engine | `npm install @wayofmono/lens` |
 
-### Monorepo Install
-```bash
-git clone https://github.com/earendil-works/wayofmono.git
-cd wayofmono
-npm install  # installs all packages via workspaces
-```
-
-### Manual Package Installation (Wo CLI)
-```bash
-# Install the Wo CLI
-npm install -g @wayofmono/wo-coding-agent
-
-# Install specific monorepo capabilities
-wo install npm:@wayofmono/wo-lens
-wo install git:https://github.com/zerwiz/wayofmono.git
-```
+### External Integrations
+| Project | Description | Integration |
+|---------|-------------|-------------|
+| [Way of Pi](https://github.com/zerwiz/wayofpi) | AI-augmented engineering platform (Electron/Web IDE) | Uses `@wayofmono/wo-agent` as backend agent SDK |
 
 ---
 *Built as a unified toolset for the next generation of AI engineering.*

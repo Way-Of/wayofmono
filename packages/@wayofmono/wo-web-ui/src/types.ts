@@ -1,75 +1,56 @@
 export interface ChatMessage {
-  id: string;
-  role: "user" | "assistant" | "system" | "tool";
-  content: string;
-  timestamp: number;
-  toolCalls?: ToolCall[];
-  toolResult?: ToolResult;
-  streaming?: boolean;
+	id: string;
+	role: "user" | "assistant" | "system" | "tool";
+	content: string;
+	timestamp: number;
+	toolCalls?: ToolCall[];
+	toolResult?: ToolResult;
+	streaming?: boolean;
 }
 
 export interface ToolCall {
-  id: string;
-  name: string;
-  args: Record<string, unknown>;
-  status: "pending" | "running" | "done" | "error";
-  result?: string;
+	id: string;
+	name: string;
+	args: string;
+	result?: ToolResult;
 }
 
 export interface ToolResult {
-  toolCallId: string;
-  content: string;
-  isError?: boolean;
+	content: string;
+	isError?: boolean;
 }
 
 export interface SessionInfo {
-  id: string;
-  name: string;
-  createdAt: number;
-  updatedAt: number;
-  branch?: string;
+	id: string;
+	label: string;
+	createdAt: number;
+	updatedAt: number;
+	messageCount: number;
 }
 
 export interface DiagnosticInfo {
-  file: string;
-  severity: "error" | "warning" | "info";
-  message: string;
-  line?: number;
-  column?: number;
+	message: string;
+	severity: "error" | "warning" | "info" | "hint";
+	line?: number;
+	column?: number;
+	tool?: string;
 }
 
 export interface ThemeConfig {
-  mode: "light" | "dark";
-  primaryColor?: string;
-  fontSize?: number;
+	mode: "dark" | "light";
+	primary: string;
+	background: string;
+	surface: string;
+	text: string;
+	textSecondary: string;
+	border: string;
+	userBubble: string;
+	assistantBubble: string;
+	error: string;
+	success: string;
 }
 
 export interface WebSocketMessage {
-  type: "message" | "tool_call" | "tool_result" | "error" | "diagnostic" | "status" | "session";
-  payload: unknown;
-}
-
-export interface MessageBubbleProps {
-  message: ChatMessage;
-  theme: ThemeConfig;
-}
-
-export interface ChatInputProps {
-  onSend: (text: string) => void;
-  onCommand?: (command: string, args: string) => void;
-  disabled?: boolean;
-  theme: ThemeConfig;
-}
-
-export interface SessionListProps {
-  sessions: SessionInfo[];
-  activeSessionId?: string;
-  onSelect: (sessionId: string) => void;
-  onNew: () => void;
-  theme: ThemeConfig;
-}
-
-export interface ToolCallCardProps {
-  toolCall: ToolCall;
-  theme: ThemeConfig;
+	type: "message" | "tool_call" | "tool_result" | "error" | "status" | "diagnostic";
+	payload: unknown;
 }

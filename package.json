@@ -1,0 +1,15 @@
+{
+  "name": "wayofmono",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r --parallel typecheck"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "wo-coding-agent": "link:../../packages/@wayofmono/wo-coding-agent"
+  }
+}

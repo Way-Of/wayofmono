@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+/**
+ * CLI entry point for the user agent.
+ *
+ * Test with: npx tsx src/cli.ts [args...]
+ */
+import { EnvHttpProxyAgent, setGlobalDispatcher } from "undici";
+import { main } from "./main.js";
+process.title = "wouser";
+process.emitWarning = (() => { });
+// bodyTimeout/headersTimeout default to 300s in undici; long local-LLM stalls
+// exceed that and abort the SSE stream with UND_ERR_BODY_TIMEOUT.
+setGlobalDispatcher(new EnvHttpProxyAgent({ bodyTimeout: 0, headersTimeout: 0 }));
+main(process.argv.slice(2));
+//# sourceMappingURL=cli.js.map
