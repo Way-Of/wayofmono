@@ -26,15 +26,21 @@ WayOfMono is built on an **Interface-Agnostic Philosophy**. Our core logic and t
 
 ```
 /home/zerwiz/wayofmono/
-├── packages/          # Reusable npm packages (@wayofmono/wo-*)
-├── tools/             # Shared tool integrations (Lens, Web Access, etc.)
-├── shared/            # Universal templates (Tickets, Plans, Research)
-├── wo/                # Wo Agent (Synthesized Primary Interface)
-├── pi/                # Pi Agent (Reference-Aligned Interface)
-├── gemini/            # Gemini CLI Interface (TOML)
-├── opencode/          # OpenCode Interface (Markdown)
+├── packages/
+│   ├── @aiengineeringharness/   # Agent harness (agents, commands, skills, extensions)
+│   │   ├── opencode/           → ~/.config/opencode/
+│   │   ├── claude/             → ~/.claude/
+│   │   ├── gemini/             → ~/.gemini/
+│   │   ├── pi/                 → ~/.pi/agent/
+│   │   └── wocoder/            → ~/.wocoder/
+│   └── @wayofmono/*            # Wo npm packages
 ├── thoughts/          # Context engineering artifacts
-└── docs/              # Comprehensive monorepo & "Wo" documentation
+├── docs/              # Monorepo documentation
+├── scripts/           # Utility scripts
+├── test/              # Integration tests
+├── ref/               # Historical reference & legacy artifacts
+├── planning/          # Planning documents
+└── pnpm-workspace.yaml
 ```
 
 ---
@@ -129,16 +135,21 @@ To change the agent's persona, instructions, or behavior for a project, simply c
 
 ```
 /home/zerwiz/wayofmono/
-├── packages/          # Reusable npm packages (@wayofmono/wo-*)
-├── tools/             # Shared tool integrations (Lens, Web Access, etc.)
-├── pi/                # Pi Agent Standards Compatibility
-├── gemini/            # Gemini CLI Standards Compatibility
-├── opencode/          # OpenCode Agent Standards Compatibility
-├── claude/            # Claude Agent Standards Compatibility
-├── thoughts/          # Project memory, tickets, and universal templates
+├── packages/
+│   ├── @aiengineeringharness/   # Agent harness configs (5 frontends)
+│   │   ├── opencode/     → ~/.config/opencode/
+│   │   ├── claude/       → ~/.claude/
+│   │   ├── gemini/       → ~/.gemini/
+│   │   ├── pi/           → ~/.pi/agent/
+│   │   └── wocoder/      → ~/.wocoder/
+│   └── @wayofmono/*            # Wo npm packages
+├── thoughts/          # Project memory, tickets, plans, research
+├── docs/              # Monorepo documentation
+├── scripts/           # Utility scripts
+├── test/              # Integration tests
 ├── ref/               # Historical reference & legacy artifacts
-├── test/              # Local deployment & integration tests
-└── docs/              # Comprehensive Monorepo Documentation
+├── planning/          # Planning documents
+└── pnpm-workspace.yaml
 ```
 
 ## 📦 Wo Packages
@@ -156,6 +167,61 @@ All Wo packages are published under the `@wayofmono` scope.
 | `@wayofmono/wo-mermaid` | TUI Mermaid Diagram Renderer (ASCII art) | `pnpm add -D @wayofmono/wo-mermaid` |
 | `@wayofmono/telemetry` | ODD Instrumentation SDK (OpenTelemetry) | `npm install @wayofmono/telemetry` |
 | `@wayofmono/lens` | Codebase Analysis & Safety Engine | `npm install @wayofmono/lens` |
+
+## 🎛️ AI Engineering Harness
+
+Shared agents, commands, skills, and extensions for all agent frontends. Install once and instantly configure any agent with battle-tested prompts and workflows.
+
+### Prerequisites
+
+- [Deno](https://deno.com/) — `curl -fsSL https://deno.land/install.sh | sh`
+- [GNU Stow](https://www.gnu.org/software/stow/) — `sudo apt install stow` (or `brew install stow`)
+
+### Install
+
+Register the CLI (one-time):
+
+```bash
+deno install -Agf -n ai-harness \
+  https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts
+```
+
+Then install configs:
+
+```bash
+ai-harness --tool=claude          # Claude Code
+ai-harness --tool=opencode        # OpenCode
+ai-harness --tool=gemini          # Gemini CLI
+ai-harness --tool=pi              # Pi
+ai-harness --tool=wocoder         # Wo Coder
+ai-harness --tool=all             # All five
+```
+
+More options:
+
+```bash
+ai-harness --tool=claude --dry-run        # Preview
+ai-harness --tool=claude --interactive    # Pick components
+ai-harness --tool=claude --skill=agents   # Specific component
+ai-harness --help                         # Full usage
+```
+
+### Repo Mode (GNU Stow)
+
+For symlink-based installation (easier `git pull` updates):
+
+```bash
+./packages/@aiengineeringharness/setup.sh claude             # Claude Code → ~/.claude/
+./packages/@aiengineeringharness/setup.sh opencode           # OpenCode → ~/.config/opencode/
+./packages/@aiengineeringharness/setup.sh gemini             # Gemini CLI → ~/.gemini/
+./packages/@aiengineeringharness/setup.sh pi                 # Pi → ~/.pi/agent/
+./packages/@aiengineeringharness/setup.sh wocoder            # Wo Coder → ~/.wocoder/
+./packages/@aiengineeringharness/setup.sh all                # All five
+
+./packages/@aiengineeringharness/setup.sh <tool> --dry-run   # Preview
+./packages/@aiengineeringharness/setup.sh <tool> --restow    # Update after git pull
+./packages/@aiengineeringharness/setup.sh <tool> --delete    # Remove symlinks
+```
 
 ### External Integrations
 | Project | Description | Integration |
