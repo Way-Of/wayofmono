@@ -115,12 +115,6 @@
             { "src": "claude/skills/github-tracker/SKILL.md", "dest": "skills/github-tracker/SKILL.md" }
           ]
         },
-        "skill/todoist-task-manager": {
-          "description": "Todoist task management via MCP skill",
-          "files": [
-            { "src": "claude/skills/todoist-task-manager/SKILL.md", "dest": "skills/todoist-task-manager/SKILL.md" }
-          ]
-        },
         "skill/interview": {
           "description": "Stress-test plans via relentless user interview skill",
           "files": [
