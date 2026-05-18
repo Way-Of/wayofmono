@@ -106,9 +106,14 @@ Everything the agent needs is stored in a project-local `.wo/` folder:
 - **Flawless Resolution**: Internal dependencies are resolved locally within the package `dist/` folders.
 
 The `--init` command sets up the following local files:
-- **`models.json`**: Configure your LLM providers (Ollama, OpenAI, Gemini, etc.). Defaults to Ollama with `qwen3.5:9b`.
-- **`settings.json`**: Customize agent behavior and set your default provider/model.
+- **`models.json`**: Configure your LLM providers (Ollama, OpenAI, Gemini, etc.). Defaults to Ollama with `qwen3.5:9b`. **Customize this file to add your own API keys and local models.**
+- **`settings.json`**: Customize agent behavior and set your default provider/model. **Edit this to change themes, quiet mode, or default model cycling.**
 - **Launcher Script**: A local `./wouser` or `./wocode` script for one-tap agent startup.
+
+### 🎭 Custom Personas (AGENTS.md)
+To change the agent's persona, instructions, or behavior for a project, simply create an **`AGENTS.md`** file in your project root. 
+- The agent automatically discovers this file on startup.
+- You can use it to tell the agent it is a "Senior React Developer," a "Security Auditor," or any other specialized role.
 
 ---
 
@@ -120,19 +125,19 @@ The `--init` command sets up the following local files:
 - **Observability-Driven:** Narrative-first telemetry and design (ODD).
 
 ---
-
 ## 📂 Repository Structure
 
 ```
 /home/zerwiz/wayofmono/
 ├── packages/          # Reusable npm packages (@wayofmono/wo-*)
 ├── tools/             # Shared tool integrations (Lens, Web Access, etc.)
-├── shared/            # Universal templates (Tickets, Plans, Research)
-├── wo/                # Synthesized Agent Interaction Layer
 ├── pi/                # Pi Agent Standards Compatibility
-├── gemini/            # Gemini CLI standards
-├── opencode/          # OpenCode standards
-├── thoughts/          # Structured Context Engineering artifacts
+├── gemini/            # Gemini CLI Standards Compatibility
+├── opencode/          # OpenCode Agent Standards Compatibility
+├── claude/            # Claude Agent Standards Compatibility
+├── thoughts/          # Project memory, tickets, and universal templates
+├── ref/               # Historical reference & legacy artifacts
+├── test/              # Local deployment & integration tests
 └── docs/              # Comprehensive Monorepo Documentation
 ```
 
@@ -148,6 +153,7 @@ All Wo packages are published under the `@wayofmono` scope.
 | `@wayofmono/wo-coding-agent` | Project-local CLI Coding Agent (`wocode` binary) | `pnpm add -D @wayofmono/wo-coding-agent` |
 | `@wayofmono/wo-agent` | General-Purpose Agent SDK & CLI (`wouser` binary) | `pnpm add @wayofmono/wo-agent` |
 | `@wayofmono/wo-skill-docs` | Multi-format Documentation Expert (Markdown, PDF, Word, TXT) | `pnpm add -D @wayofmono/wo-skill-docs` |
+| `@wayofmono/wo-mermaid` | TUI Mermaid Diagram Renderer (ASCII art) | `pnpm add -D @wayofmono/wo-mermaid` |
 | `@wayofmono/telemetry` | ODD Instrumentation SDK (OpenTelemetry) | `npm install @wayofmono/telemetry` |
 | `@wayofmono/lens` | Codebase Analysis & Safety Engine | `npm install @wayofmono/lens` |
 

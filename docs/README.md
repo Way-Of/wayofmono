@@ -18,10 +18,10 @@ Welcome to the comprehensive documentation for the **WayOfMono** consolidated mo
 
 WayOfMono is built on a shared **Intelligence Backend** that supports four distinct frontends. This allows developers to use the interaction model that best fits their workflow while sharing common project context and tools.
 
-### 1. Wo (Primary Interface)
-The **Wo** agent is our highly-customized synthesis of modern agent technology. It is optimized for "Vertical Slice" engineering and vertical-chain agent orchestration.
-- **Location:** `wo/`
-- **Commands:** `/wom-init`, `/wom-plan`, `/wom-build`, etc.
+### 1. WayOfMono (Primary Interfaces)
+The **wocode** and **wouser** agents are our highly-customized synthesis of modern agent technology. They are optimized for "Vertical Slice" engineering and vertical-chain agent orchestration.
+- **Commands:** `wocode --init`, `wouser --init`
+- **Packages:** `@wayofmono/wo-coding-agent`, `@wayofmono/wo-agent`
 
 ### 2. Pi (Reference Interface)
 Maintains 100% compatibility with the official [Pi Agent](https://github.com/earendil-works/pi) standards.
@@ -40,10 +40,11 @@ Follows the privacy-first, TUI-driven [OpenCode](https://opencode.ai) standards.
 ## 🛠️ The Common Backend
 
 All interfaces leverage the same core assets:
-- **Packages:** `@wayofmono/wo-*` (AI, Agent Core, TUI, Web UI).
-- **Tools:** `Wom-Lens` (LSP & Safety), `Web-Access`, and `Markdown-Preview`.
+- **Packages:** `@wayofmono/wo-*` (AI, Agent Core, TUI, Web UI, Skills).
+- **Tools:** `Lens` (LSP & Safety), `Web-Access`, and `Markdown-Preview`.
 - **Memory:** Shared context retention and session state management.
 - **Thoughts:** Standardized `thoughts/` directory for tickets, plans, and research.
+- **Legacy:** Previous configurations and prompts are preserved in `ref/wo`.
 
 ---
 
