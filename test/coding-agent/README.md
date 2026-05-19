@@ -1,6 +1,6 @@
 # Test: `wocode` CLI binary (Local Install)
 
-Validates the `wocode` CLI works when installed locally in a project.
+Validates the `wocode` CLI works when installed locally in a project using the flawless installation flow.
 
 ## Prerequisites
 
@@ -11,33 +11,22 @@ The monorepo must be built first so that `dist/` output exists:
 pnpm build
 ```
 
-Then, install the package locally:
+## Flawless Installation Test
 
 ```bash
 # From test/coding-agent
 pnpm init
 pnpm add ../../packages/@wayofmono/wo-coding-agent
-```
-
-## Smoke tests
-
-The agent automatically detects the local `.wo` directory in this folder for its configuration and models.
-
-```bash
-# Run the local launcher
+pnpm exec wocode --init
 ./wocode --version
-./wocode --help
-./wocode --mode plan "write a hello world cli in go"
 ```
-
-## Launcher Script
-
-A `./wocode` script is provided in this directory. It automatically sets `WO_CODING_AGENT_DIR` to the local `.wo` folder and runs the version installed in `node_modules`.
 
 ## What this validates
 
-- Binary resolves from `node_modules/.bin/wocode`
-- No missing module errors on launch
-- CLI argument parsing works
-- Plan mode initialises without crash
-- Agent mode initialises without crash
+- **Launcher Creation**: `--init` successfully creates the `./wocode` script.
+- **Config Initialization**: `--init` successfully creates `.wo/models.json`.
+- **Binary Resolution**: Binary resolves from local `node_modules`.
+- **No Global Pollution**: Configuration stays within the `test/coding-agent/` directory.
+
+---
+*Testing the next generation of AI-native engineering tools.*

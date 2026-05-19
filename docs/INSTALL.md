@@ -2,45 +2,57 @@
 
 WayOfMono (Wo) provides high-performance coding agents designed for **project-local** use. This ensures each project has its own isolated configuration, tools, and session history without global state pollution.
 
-## 🚀 Recommended: Local Project Installation
+## 🦙 Prerequisites: Ollama
 
-The agents are designed to be installed as dev-dependencies in your project.
+WayOfMono defaults to using **Ollama** for local-first AI. Ensure it is installed and running:
 
-### 1. Coding Agent (`wocode`)
-Best for automated codebase modifications, refactoring, and complex engineering tasks.
+1.  **Install:** `curl -fsSL https://ollama.com/install.sh | sh` (or download from [ollama.com](https://ollama.com)).
+2.  **Pull Model:** `ollama pull qwen3.5:9b`
+
+---
+
+## 🚀 Flawless Installation
+
+The agents are designed to be installed locally in your project.
+
+### 1. Coding Assistant (`wocode`)
+*For automated engineering, refactoring, and complex tasks.*
 
 ```bash
-# Install as dev dependency
 pnpm add -D @wayofmono/wo-coding-agent
-
-# Run the agent
-pnpm exec wocode "Describe the architecture of this project"
+pnpm exec wocode --init
+./wocode
 ```
 
-### 2. User Agent (`wouser`)
-A general-purpose agent SDK and CLI for building AI-powered applications.
+### 2. User Assistant (`wouser`)
+*For general-purpose agent interactions and SDK integration.*
 
 ```bash
-# Install as dependency
 pnpm add @wayofmono/wo-agent
-
-# Run the CLI
-pnpm exec wouser "Hello! How can you help me today?"
+pnpm exec wouser --init
+./wouser
 ```
+
+---
+
+### 💡 Understanding Dev-Dependencies (`-D`)
+
+When you run `pnpm add -D`, you are telling the package manager to treat the agent as a **Development Dependency**.
+
+*   **Dev-Dependency (`-D`) — The Hammer:** You use `wocode` to build and refactor your app. It's a **tool** for the developer. You need it while building, but you don't "live" with it in production. Using `-D` keeps your production server clean and fast.
+*   **Standard Dependency — The House:** You use `wouser` as an **SDK** inside your application code. Your app **needs** this code to function for your users in the real world.
 
 ---
 
 ## 📂 Zero Global Pollution (.wo/)
 
-WayOfMono follows a **Local-First** configuration philosophy. Everything the agent needs is stored within your project directory:
+WayOfMono follows a **Local-First** configuration philosophy. The `--init` command sets up the following in your project:
 
-- **Configuration**: Local `models.json` and `settings.json` live in `.wo/`.
-- **Sessions**: All conversation history is saved in `.wo/sessions/`.
-- **Tools**: Extension tools and binaries are isolated in `.wo/tools/` and `.wo/bin/`.
+- **`models.json`**: Configure your LLM providers (Ollama, OpenAI, etc.).
+- **`settings.json`**: Customize agent behavior and set your default model.
+- **Launcher Script**: A local `./wouser` or `./wocode` script for one-tap agent startup.
 
-The agents **automatically detect** a local `.wo` directory in your current path or any parent directory. If found, they will use it as the root for all configuration and state.
-
-**Tip:** Add `.wo/` to your `.gitignore` to keep your repo clean while maintaining local state, or track it if you want to share agent context with your team.
+The agents **automatically detect** the local `.wo` directory. No global `~/.wo/` state pollution.
 
 ---
 
@@ -60,19 +72,6 @@ pnpm install
 pnpm build
 ```
 
-After building, you can test the local versions using the launcher scripts in the `test/` directory:
-- `test/coding-agent/wocode`
-- `test/user-agent/wouser`
-
----
-
-## 🎛️ Manual Environment Overrides
-
-While the agents are "local-first," you can manually override the configuration directory using environment variables if needed:
-
-- `WO_CODING_AGENT_DIR`: Set the root directory for configuration and state (defaults to `./.wo` or `~/.wo/agent`).
-- `WO_CODING_AGENT_SESSION_DIR`: Set a specific directory for session storage.
-
 ---
 
 ## 🔗 Verification
@@ -80,6 +79,6 @@ While the agents are "local-first," you can manually override the configuration 
 After installation, verify the setup by checking the version:
 
 ```bash
-pnpm exec wocode --version
-pnpm exec wouser --version
+./wocode --version
+./wouser --version
 ```

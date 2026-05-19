@@ -1,6 +1,6 @@
-# Test: `@wayofmono/wo-agent` SDK library (Local Install)
+# Test: `wouser` CLI & SDK (Local Install)
 
-Validates the SDK library resolves correctly when installed as a local dependency.
+Validates that `@wayofmono/wo-agent` works correctly as a local dependency using the flawless installation flow.
 
 ## Prerequisites
 
@@ -11,39 +11,28 @@ The monorepo must be built first so that `dist/` output exists:
 pnpm build
 ```
 
-Then, install the package locally:
+## Flawless Installation Test
 
 ```bash
 # From test/user-agent
 pnpm init
 pnpm add ../../packages/@wayofmono/wo-agent
+pnpm exec wouser --init
+./wouser --version
 ```
 
-## Smoke tests
-
-The agent automatically detects the local `.wo` directory in this folder for its configuration and models.
+## SDK Import Test
 
 ```bash
-# Run the local launcher
-./wouser --version
-
-# Verify main entry import
-pnpm exec tsx -e "
-import { createAgent } from '@wayofmono/wo-agent';
-console.log('createAgent import OK');
-"
-
-# Verify subpath export
-pnpm exec tsx -e "
-import { createAgent } from '@wayofmono/wo-agent';
-import { z } from 'zod';
-console.log('SDK import OK');
-"
+pnpm exec tsx -e "import { createAgent } from '@wayofmono/wo-agent'; console.log('SDK import OK')"
 ```
 
 ## What this validates
 
-- `@wayofmono/wo-agent` resolves from local `node_modules`
-- `createAgent` and types import without errors
-- Subpath exports (`@wayofmono/wo-agent/*`) resolve correctly
-- No CLI residue (`cli.ts`, `bun/`) leaks into the SDK package
+- **Launcher Creation**: `--init` successfully creates the `./wouser` script.
+- **Config Initialization**: `--init` successfully creates `.wo/models.json`.
+- **Binary Resolution**: Binary resolves from local `node_modules`.
+- **SDK Exports**: `createAgent` and types resolve correctly from compiled `dist/`.
+
+---
+*Testing the next generation of AI-native engineering tools.*

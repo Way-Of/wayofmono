@@ -22,19 +22,30 @@ WayOfMono is built on an **Interface-Agnostic Philosophy**. Our core logic and t
 
 ---
 
+## 📂 The Wo Agent creates:
+
+1. ~/.wo/agent/ — global config directory for the agent
+2. .wo/ — project-local config directory 
+
 ## 📂 Repository Structure
 
 ```
 /home/zerwiz/wayofmono/
-├── packages/          # Reusable npm packages (@wayofmono/wo-*)
-├── tools/             # Shared tool integrations (Lens, Web Access, etc.)
-├── shared/            # Universal templates (Tickets, Plans, Research)
-├── wo/                # Wo Agent (Synthesized Primary Interface)
-├── pi/                # Pi Agent (Reference-Aligned Interface)
-├── gemini/            # Gemini CLI Interface (TOML)
-├── opencode/          # OpenCode Interface (Markdown)
+├── packages/
+│   ├── @aiengineeringharness/   # Agent harness (agents, commands, skills, extensions)
+│   │   ├── opencode/           → ~/.config/opencode/
+│   │   ├── claude/             → ~/.claude/
+│   │   ├── gemini/             → ~/.gemini/
+│   │   ├── pi/                 → ~/.pi/agent/
+│   │   └── wocoder/            → ~/.wocoder/
+│   └── @wayofmono/*            # Wo npm packages
 ├── thoughts/          # Context engineering artifacts
-└── docs/              # Comprehensive monorepo & "Wo" documentation
+├── docs/              # Monorepo documentation
+├── scripts/           # Utility scripts
+├── test/              # Integration tests
+├── ref/               # Historical reference & legacy artifacts
+├── planning/          # Planning documents
+└── pnpm-workspace.yaml
 ```
 
 ---
@@ -106,9 +117,14 @@ Everything the agent needs is stored in a project-local `.wo/` folder:
 - **Flawless Resolution**: Internal dependencies are resolved locally within the package `dist/` folders.
 
 The `--init` command sets up the following local files:
-- **`models.json`**: Configure your LLM providers (Ollama, OpenAI, Gemini, etc.). Defaults to Ollama with `qwen3.5:9b`.
-- **`settings.json`**: Customize agent behavior and set your default provider/model.
+- **`models.json`**: Configure your LLM providers (Ollama, OpenAI, Gemini, etc.). Defaults to Ollama with `qwen3.5:9b`. **Customize this file to add your own API keys and local models.**
+- **`settings.json`**: Customize agent behavior and set your default provider/model. **Edit this to change themes, quiet mode, or default model cycling.**
 - **Launcher Script**: A local `./wouser` or `./wocode` script for one-tap agent startup.
+
+### 🎭 Custom Personas (AGENTS.md)
+To change the agent's persona, instructions, or behavior for a project, simply create an **`AGENTS.md`** file in your project root. 
+- The agent automatically discovers this file on startup.
+- You can use it to tell the agent it is a "Senior React Developer," a "Security Auditor," or any other specialized role.
 
 ---
 
@@ -120,20 +136,25 @@ The `--init` command sets up the following local files:
 - **Observability-Driven:** Narrative-first telemetry and design (ODD).
 
 ---
-
 ## 📂 Repository Structure
 
 ```
 /home/zerwiz/wayofmono/
-├── packages/          # Reusable npm packages (@wayofmono/wo-*)
-├── tools/             # Shared tool integrations (Lens, Web Access, etc.)
-├── shared/            # Universal templates (Tickets, Plans, Research)
-├── wo/                # Synthesized Agent Interaction Layer
-├── pi/                # Pi Agent Standards Compatibility
-├── gemini/            # Gemini CLI standards
-├── opencode/          # OpenCode standards
-├── thoughts/          # Structured Context Engineering artifacts
-└── docs/              # Comprehensive Monorepo Documentation
+├── packages/
+│   ├── @aiengineeringharness/   # Agent harness configs (5 frontends)
+│   │   ├── opencode/     → ~/.config/opencode/
+│   │   ├── claude/       → ~/.claude/
+│   │   ├── gemini/       → ~/.gemini/
+│   │   ├── pi/           → ~/.pi/agent/
+│   │   └── wocoder/      → ~/.wocoder/
+│   └── @wayofmono/*            # Wo npm packages
+├── thoughts/          # Project memory, tickets, plans, research
+├── docs/              # Monorepo documentation
+├── scripts/           # Utility scripts
+├── test/              # Integration tests
+├── ref/               # Historical reference & legacy artifacts
+├── planning/          # Planning documents
+└── pnpm-workspace.yaml
 ```
 
 ## 📦 Wo Packages
@@ -148,8 +169,64 @@ All Wo packages are published under the `@wayofmono` scope.
 | `@wayofmono/wo-coding-agent` | Project-local CLI Coding Agent (`wocode` binary) | `pnpm add -D @wayofmono/wo-coding-agent` |
 | `@wayofmono/wo-agent` | General-Purpose Agent SDK & CLI (`wouser` binary) | `pnpm add @wayofmono/wo-agent` |
 | `@wayofmono/wo-skill-docs` | Multi-format Documentation Expert (Markdown, PDF, Word, TXT) | `pnpm add -D @wayofmono/wo-skill-docs` |
+| `@wayofmono/wo-mermaid` | TUI Mermaid Diagram Renderer (ASCII art) | `pnpm add -D @wayofmono/wo-mermaid` |
 | `@wayofmono/telemetry` | ODD Instrumentation SDK (OpenTelemetry) | `npm install @wayofmono/telemetry` |
 | `@wayofmono/lens` | Codebase Analysis & Safety Engine | `npm install @wayofmono/lens` |
+
+## 🎛️ AI Engineering Harness
+
+Shared agents, commands, skills, and extensions for all agent frontends. Install once and instantly configure any agent with battle-tested prompts and workflows.
+
+### Prerequisites
+
+- [Deno](https://deno.com/) — `curl -fsSL https://deno.land/install.sh | sh`
+- [GNU Stow](https://www.gnu.org/software/stow/) — `sudo apt install stow` (or `brew install stow`)
+
+### Install
+
+Register the CLI (one-time):
+
+```bash
+deno install -Agf -n ai-harness \
+  https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts
+```
+
+Then install configs:
+
+```bash
+ai-harness --tool=claude          # Claude Code
+ai-harness --tool=opencode        # OpenCode
+ai-harness --tool=gemini          # Gemini CLI
+ai-harness --tool=pi              # Pi
+ai-harness --tool=wocoder         # Wo Coder
+ai-harness --tool=all             # All five
+```
+
+More options:
+
+```bash
+ai-harness --tool=claude --dry-run        # Preview
+ai-harness --tool=claude --interactive    # Pick components
+ai-harness --tool=claude --skill=agents   # Specific component
+ai-harness --help                         # Full usage
+```
+
+### Repo Mode (GNU Stow)
+
+For symlink-based installation (easier `git pull` updates):
+
+```bash
+./packages/@aiengineeringharness/setup.sh claude             # Claude Code → ~/.claude/
+./packages/@aiengineeringharness/setup.sh opencode           # OpenCode → ~/.config/opencode/
+./packages/@aiengineeringharness/setup.sh gemini             # Gemini CLI → ~/.gemini/
+./packages/@aiengineeringharness/setup.sh pi                 # Pi → ~/.pi/agent/
+./packages/@aiengineeringharness/setup.sh wocoder            # Wo Coder → ~/.wocoder/
+./packages/@aiengineeringharness/setup.sh all                # All five
+
+./packages/@aiengineeringharness/setup.sh <tool> --dry-run   # Preview
+./packages/@aiengineeringharness/setup.sh <tool> --restow    # Update after git pull
+./packages/@aiengineeringharness/setup.sh <tool> --delete    # Remove symlinks
+```
 
 ### External Integrations
 | Project | Description | Integration |
