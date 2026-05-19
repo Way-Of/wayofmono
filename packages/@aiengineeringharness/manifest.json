@@ -150,6 +150,66 @@
           "files": [
             { "src": "claude/skills/write-a-prd/SKILL.md", "dest": "skills/write-a-prd/SKILL.md" }
           ]
+        },
+        "skill/build-pi-agent": {
+          "description": "Build Pi agent definitions with frontmatter format",
+          "files": [
+            { "src": "claude/skills/build-pi-agent/SKILL.md", "dest": "skills/build-pi-agent/SKILL.md" }
+          ]
+        },
+        "skill/pi-cli": {
+          "description": "Pi CLI expert — CLI flags, subcommands, output modes, non-interactive usage",
+          "files": [
+            { "src": "claude/skills/pi-cli/SKILL.md", "dest": "skills/pi-cli/SKILL.md" }
+          ]
+        },
+        "skill/pi-config": {
+          "description": "Pi configuration expert — settings, providers, models, packages, keybindings",
+          "files": [
+            { "src": "claude/skills/pi-config/SKILL.md", "dest": "skills/pi-config/SKILL.md" }
+          ]
+        },
+        "skill/build-pi-extension": {
+          "description": "Build Pi extensions — custom tools, events, commands, shortcuts, providers",
+          "files": [
+            { "src": "claude/skills/build-pi-extension/SKILL.md", "dest": "skills/build-pi-extension/SKILL.md" }
+          ]
+        },
+        "skill/pi-keybindings": {
+          "description": "Pi keyboard shortcuts — registerShortcut, key IDs, modifiers, reserved keys",
+          "files": [
+            { "src": "claude/skills/pi-keybindings/SKILL.md", "dest": "skills/pi-keybindings/SKILL.md" }
+          ]
+        },
+        "skill/pi-orchestrate": {
+          "description": "Orchestrate Pi domain experts to research and build Pi components",
+          "files": [
+            { "src": "claude/skills/pi-orchestrate/SKILL.md", "dest": "skills/pi-orchestrate/SKILL.md" }
+          ]
+        },
+        "skill/pi-prompts": {
+          "description": "Pi prompt templates — single-file .md format, arguments, /template invocation",
+          "files": [
+            { "src": "claude/skills/pi-prompts/SKILL.md", "dest": "skills/pi-prompts/SKILL.md" }
+          ]
+        },
+        "skill/build-pi-skill": {
+          "description": "Build Pi skills — SKILL.md format, frontmatter, validation, directory structure",
+          "files": [
+            { "src": "claude/skills/build-pi-skill/SKILL.md", "dest": "skills/build-pi-skill/SKILL.md" }
+          ]
+        },
+        "skill/pi-themes": {
+          "description": "Pi themes — JSON format, 51 color tokens, vars system, hex/256-color values",
+          "files": [
+            { "src": "claude/skills/pi-themes/SKILL.md", "dest": "skills/pi-themes/SKILL.md" }
+          ]
+        },
+        "skill/pi-tui": {
+          "description": "Pi TUI — built-in components, custom components, keyboard input, widgets, overlays",
+          "files": [
+            { "src": "claude/skills/pi-tui/SKILL.md", "dest": "skills/pi-tui/SKILL.md" }
+          ]
         }
       }
     },
@@ -300,6 +360,66 @@
           "description": "Generate a PRD from a client brief skill",
           "files": [
             { "src": "opencode/skills/write-a-prd/SKILL.md", "dest": "skills/write-a-prd/SKILL.md" }
+          ]
+        },
+        "skill/build-pi-agent": {
+          "description": "Build Pi agent definitions with frontmatter format",
+          "files": [
+            { "src": "opencode/skills/build-pi-agent/SKILL.md", "dest": "skills/build-pi-agent/SKILL.md" }
+          ]
+        },
+        "skill/pi-cli": {
+          "description": "Pi CLI expert — CLI flags, subcommands, output modes, non-interactive usage",
+          "files": [
+            { "src": "opencode/skills/pi-cli/SKILL.md", "dest": "skills/pi-cli/SKILL.md" }
+          ]
+        },
+        "skill/pi-config": {
+          "description": "Pi configuration expert — settings, providers, models, packages, keybindings",
+          "files": [
+            { "src": "opencode/skills/pi-config/SKILL.md", "dest": "skills/pi-config/SKILL.md" }
+          ]
+        },
+        "skill/build-pi-extension": {
+          "description": "Build Pi extensions — custom tools, events, commands, shortcuts, providers",
+          "files": [
+            { "src": "opencode/skills/build-pi-extension/SKILL.md", "dest": "skills/build-pi-extension/SKILL.md" }
+          ]
+        },
+        "skill/pi-keybindings": {
+          "description": "Pi keyboard shortcuts — registerShortcut, key IDs, modifiers, reserved keys",
+          "files": [
+            { "src": "opencode/skills/pi-keybindings/SKILL.md", "dest": "skills/pi-keybindings/SKILL.md" }
+          ]
+        },
+        "skill/pi-orchestrate": {
+          "description": "Orchestrate Pi domain experts to research and build Pi components",
+          "files": [
+            { "src": "opencode/skills/pi-orchestrate/SKILL.md", "dest": "skills/pi-orchestrate/SKILL.md" }
+          ]
+        },
+        "skill/pi-prompts": {
+          "description": "Pi prompt templates — single-file .md format, arguments, /template invocation",
+          "files": [
+            { "src": "opencode/skills/pi-prompts/SKILL.md", "dest": "skills/pi-prompts/SKILL.md" }
+          ]
+        },
+        "skill/build-pi-skill": {
+          "description": "Build Pi skills — SKILL.md format, frontmatter, validation, directory structure",
+          "files": [
+            { "src": "opencode/skills/build-pi-skill/SKILL.md", "dest": "skills/build-pi-skill/SKILL.md" }
+          ]
+        },
+        "skill/pi-themes": {
+          "description": "Pi themes — JSON format, 51 color tokens, vars system, hex/256-color values",
+          "files": [
+            { "src": "opencode/skills/pi-themes/SKILL.md", "dest": "skills/pi-themes/SKILL.md" }
+          ]
+        },
+        "skill/pi-tui": {
+          "description": "Pi TUI — built-in components, custom components, keyboard input, widgets, overlays",
+          "files": [
+            { "src": "opencode/skills/pi-tui/SKILL.md", "dest": "skills/pi-tui/SKILL.md" }
           ]
         }
       }
@@ -511,6 +631,66 @@
           "description": "Generate a PRD from a client brief skill",
           "files": [
             { "src": "gemini/skills/write_a_prd/SKILL.md", "dest": "skills/write_a_prd/SKILL.md" }
+          ]
+        },
+        "skill/build_pi_agent": {
+          "description": "Build Pi agent definitions with frontmatter format",
+          "files": [
+            { "src": "gemini/skills/build_pi_agent/SKILL.md", "dest": "skills/build_pi_agent/SKILL.md" }
+          ]
+        },
+        "skill/pi_cli": {
+          "description": "Pi CLI expert — CLI flags, subcommands, output modes, non-interactive usage",
+          "files": [
+            { "src": "gemini/skills/pi_cli/SKILL.md", "dest": "skills/pi_cli/SKILL.md" }
+          ]
+        },
+        "skill/pi_config": {
+          "description": "Pi configuration expert — settings, providers, models, packages, keybindings",
+          "files": [
+            { "src": "gemini/skills/pi_config/SKILL.md", "dest": "skills/pi_config/SKILL.md" }
+          ]
+        },
+        "skill/build_pi_extension": {
+          "description": "Build Pi extensions — custom tools, events, commands, shortcuts, providers",
+          "files": [
+            { "src": "gemini/skills/build_pi_extension/SKILL.md", "dest": "skills/build_pi_extension/SKILL.md" }
+          ]
+        },
+        "skill/pi_keybindings": {
+          "description": "Pi keyboard shortcuts — registerShortcut, key IDs, modifiers, reserved keys",
+          "files": [
+            { "src": "gemini/skills/pi_keybindings/SKILL.md", "dest": "skills/pi_keybindings/SKILL.md" }
+          ]
+        },
+        "skill/pi_orchestrate": {
+          "description": "Orchestrate Pi domain experts to research and build Pi components",
+          "files": [
+            { "src": "gemini/skills/pi_orchestrate/SKILL.md", "dest": "skills/pi_orchestrate/SKILL.md" }
+          ]
+        },
+        "skill/pi_prompts": {
+          "description": "Pi prompt templates — single-file .md format, arguments, /template invocation",
+          "files": [
+            { "src": "gemini/skills/pi_prompts/SKILL.md", "dest": "skills/pi_prompts/SKILL.md" }
+          ]
+        },
+        "skill/build_pi_skill": {
+          "description": "Build Pi skills — SKILL.md format, frontmatter, validation, directory structure",
+          "files": [
+            { "src": "gemini/skills/build_pi_skill/SKILL.md", "dest": "skills/build_pi_skill/SKILL.md" }
+          ]
+        },
+        "skill/pi_themes": {
+          "description": "Pi themes — JSON format, 51 color tokens, vars system, hex/256-color values",
+          "files": [
+            { "src": "gemini/skills/pi_themes/SKILL.md", "dest": "skills/pi_themes/SKILL.md" }
+          ]
+        },
+        "skill/pi_tui": {
+          "description": "Pi TUI — built-in components, custom components, keyboard input, widgets, overlays",
+          "files": [
+            { "src": "gemini/skills/pi_tui/SKILL.md", "dest": "skills/pi_tui/SKILL.md" }
           ]
         }
       }
@@ -749,6 +929,66 @@
           "files": [
             { "src": "pi/skills/write-a-prd/SKILL.md", "dest": "skills/write-a-prd/SKILL.md" }
           ]
+        },
+        "skill/build-pi-agent": {
+          "description": "Build Pi agent definitions with frontmatter format",
+          "files": [
+            { "src": "pi/skills/build-pi-agent/SKILL.md", "dest": "skills/build-pi-agent/SKILL.md" }
+          ]
+        },
+        "skill/pi-cli": {
+          "description": "Pi CLI expert — CLI flags, subcommands, output modes, non-interactive usage",
+          "files": [
+            { "src": "pi/skills/pi-cli/SKILL.md", "dest": "skills/pi-cli/SKILL.md" }
+          ]
+        },
+        "skill/pi-config": {
+          "description": "Pi configuration expert — settings, providers, models, packages, keybindings",
+          "files": [
+            { "src": "pi/skills/pi-config/SKILL.md", "dest": "skills/pi-config/SKILL.md" }
+          ]
+        },
+        "skill/build-pi-extension": {
+          "description": "Build Pi extensions — custom tools, events, commands, shortcuts, providers",
+          "files": [
+            { "src": "pi/skills/build-pi-extension/SKILL.md", "dest": "skills/build-pi-extension/SKILL.md" }
+          ]
+        },
+        "skill/pi-keybindings": {
+          "description": "Pi keyboard shortcuts — registerShortcut, key IDs, modifiers, reserved keys",
+          "files": [
+            { "src": "pi/skills/pi-keybindings/SKILL.md", "dest": "skills/pi-keybindings/SKILL.md" }
+          ]
+        },
+        "skill/pi-orchestrate": {
+          "description": "Orchestrate Pi domain experts to research and build Pi components",
+          "files": [
+            { "src": "pi/skills/pi-orchestrate/SKILL.md", "dest": "skills/pi-orchestrate/SKILL.md" }
+          ]
+        },
+        "skill/pi-prompts": {
+          "description": "Pi prompt templates — single-file .md format, arguments, /template invocation",
+          "files": [
+            { "src": "pi/skills/pi-prompts/SKILL.md", "dest": "skills/pi-prompts/SKILL.md" }
+          ]
+        },
+        "skill/build-pi-skill": {
+          "description": "Build Pi skills — SKILL.md format, frontmatter, validation, directory structure",
+          "files": [
+            { "src": "pi/skills/build-pi-skill/SKILL.md", "dest": "skills/build-pi-skill/SKILL.md" }
+          ]
+        },
+        "skill/pi-themes": {
+          "description": "Pi themes — JSON format, 51 color tokens, vars system, hex/256-color values",
+          "files": [
+            { "src": "pi/skills/pi-themes/SKILL.md", "dest": "skills/pi-themes/SKILL.md" }
+          ]
+        },
+        "skill/pi-tui": {
+          "description": "Pi TUI — built-in components, custom components, keyboard input, widgets, overlays",
+          "files": [
+            { "src": "pi/skills/pi-tui/SKILL.md", "dest": "skills/pi-tui/SKILL.md" }
+          ]
         }
       }
     },
@@ -925,6 +1165,66 @@
           "description": "Generate a PRD from a client brief skill",
           "files": [
             { "src": "wocoder/skills/write-a-prd/SKILL.md", "dest": "skills/write-a-prd/SKILL.md" }
+          ]
+        },
+        "skill/build-pi-agent": {
+          "description": "Build Pi agent definitions with frontmatter format",
+          "files": [
+            { "src": "wocoder/skills/build-pi-agent/SKILL.md", "dest": "skills/build-pi-agent/SKILL.md" }
+          ]
+        },
+        "skill/pi-cli": {
+          "description": "Pi CLI expert — CLI flags, subcommands, output modes, non-interactive usage",
+          "files": [
+            { "src": "wocoder/skills/pi-cli/SKILL.md", "dest": "skills/pi-cli/SKILL.md" }
+          ]
+        },
+        "skill/pi-config": {
+          "description": "Pi configuration expert — settings, providers, models, packages, keybindings",
+          "files": [
+            { "src": "wocoder/skills/pi-config/SKILL.md", "dest": "skills/pi-config/SKILL.md" }
+          ]
+        },
+        "skill/build-pi-extension": {
+          "description": "Build Pi extensions — custom tools, events, commands, shortcuts, providers",
+          "files": [
+            { "src": "wocoder/skills/build-pi-extension/SKILL.md", "dest": "skills/build-pi-extension/SKILL.md" }
+          ]
+        },
+        "skill/pi-keybindings": {
+          "description": "Pi keyboard shortcuts — registerShortcut, key IDs, modifiers, reserved keys",
+          "files": [
+            { "src": "wocoder/skills/pi-keybindings/SKILL.md", "dest": "skills/pi-keybindings/SKILL.md" }
+          ]
+        },
+        "skill/pi-orchestrate": {
+          "description": "Orchestrate Pi domain experts to research and build Pi components",
+          "files": [
+            { "src": "wocoder/skills/pi-orchestrate/SKILL.md", "dest": "skills/pi-orchestrate/SKILL.md" }
+          ]
+        },
+        "skill/pi-prompts": {
+          "description": "Pi prompt templates — single-file .md format, arguments, /template invocation",
+          "files": [
+            { "src": "wocoder/skills/pi-prompts/SKILL.md", "dest": "skills/pi-prompts/SKILL.md" }
+          ]
+        },
+        "skill/build-pi-skill": {
+          "description": "Build Pi skills — SKILL.md format, frontmatter, validation, directory structure",
+          "files": [
+            { "src": "wocoder/skills/build-pi-skill/SKILL.md", "dest": "skills/build-pi-skill/SKILL.md" }
+          ]
+        },
+        "skill/pi-themes": {
+          "description": "Pi themes — JSON format, 51 color tokens, vars system, hex/256-color values",
+          "files": [
+            { "src": "wocoder/skills/pi-themes/SKILL.md", "dest": "skills/pi-themes/SKILL.md" }
+          ]
+        },
+        "skill/pi-tui": {
+          "description": "Pi TUI — built-in components, custom components, keyboard input, widgets, overlays",
+          "files": [
+            { "src": "wocoder/skills/pi-tui/SKILL.md", "dest": "skills/pi-tui/SKILL.md" }
           ]
         }
       }

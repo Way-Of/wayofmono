@@ -17,26 +17,26 @@ ai-engineering-harness/
 ├── opencode/           → ~/.config/opencode/
 │   ├── agents/         # 6 agents (snake_case)
 │   ├── commands/       # 11 slash commands
-│   ├── skills/         # 15 skills (auto-triggered)
+│   ├── skills/         # 25 skills (auto-triggered)
 │   └── opencode.json   # MCP configuration
 ├── claude/             → ~/.claude/
 │   ├── agents/         # 6 agents (snake_case)
-│   ├── skills/         # 26 skills (13 manual + 13 auto)
+│   ├── skills/         # 35 skills (13 manual + 22 auto)
 │   ├── .mcp.json       # MCP configuration
 │   └── settings.json   # Settings schema
 ├── gemini/             → ~/.gemini/
 │   ├── agents/         # 6 agents (snake_case)
 │   ├── commands/       # 14 commands (TOML format)
-│   └── skills/         # 23 skills (auto-triggered)
+│   └── skills/         # 33 skills (auto-triggered)
 ├── pi/                 → ~/.pi/agent/
 │   ├── agents/         # 6 agents (kebab-case)
 │   ├── prompts/        # 11 prompt templates (Pi's commands)
-│   ├── skills/         # 21 skills (auto-triggered)
+│   ├── skills/         # 31 skills (auto-triggered)
 │   └── extensions/     # subagent extension (multi-agent workflows)
 ├── wocoder/            → ~/.wocoder/
 │   ├── agents/         # 6 agents (snake_case)
 │   ├── commands/       # 11 slash commands
-│   ├── skills/         # 15 skills (auto-triggered)
+│   ├── skills/         # 25 skills (auto-triggered)
 │   ├── extensions/     # subagent extension (multi-agent workflows)
 │   └── wocoder.json    # MCP configuration
 └── thoughts/           # Context engineering artifacts
@@ -68,6 +68,16 @@ ai-engineering-harness/
 | `prd_to_issues` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Break a PRD into vertical-slice issue files |
 | `tdd` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Red-green-refactor TDD discipline |
 | `write_a_prd` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Generate a PRD from a client brief |
+| `build_pi_agent` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Build Pi agent definitions with frontmatter format |
+| `pi_cli` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi CLI expert — CLI flags, subcommands, output modes |
+| `pi_config` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi configuration — settings, providers, models, packages |
+| `build_pi_extension` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Build Pi extensions — tools, events, commands, providers |
+| `pi_keybindings` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi keyboard shortcuts — registerShortcut, key IDs |
+| `pi_orchestrate` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Orchestrate Pi domain experts to build Pi components |
+| `pi_prompts` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi prompt templates — .md format, arguments, /template |
+| `build_pi_skill` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Build Pi skills — SKILL.md format, frontmatter, validation |
+| `pi_themes` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi themes — JSON, 51 color tokens, vars, hex/256-color |
+| `pi_tui` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi TUI — built-in & custom components, keyboard, widgets |
 
 **Naming**: OpenCode, Claude, Gemini, and Wo Coder use snake_case. Pi uses kebab-case (its native convention).
 
