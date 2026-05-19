@@ -23,7 +23,11 @@
       "import": "./dist/utils/oauth/index.js"
     }
   },
-  "files": ["src", "README.md"],
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "vitest --run",

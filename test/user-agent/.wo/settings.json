@@ -1,5 +1,0 @@
-{
-  "lastChangelogVersion": "1.0.0",
-  "defaultProvider": "ollama",
-  "defaultModel": "qwen3.5:9b-32k"
-}

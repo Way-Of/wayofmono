@@ -1,6 +1,32 @@
 # Changelog
 
+## Status
+
+### ✅ Done
+- 10 Pi expert skills created → `packages/@aiengineeringharness/*/skills/`
+- `install.ts --check` — version tracking and update detection
+- `packages/@wayofmono/*` — all 10 packages implemented, built, ready to publish
+- GitHub Release v1.0.0 (tarballs for manual install)
+- README + AGENTS.md + CHANGELOG updated
+- Local install from cloned repo works: `pnpm add /path/to/packages/@wayofmono/wo-agent`
+- Test verified: `test/coding-agent`, `test/user-agent` install correctly with pnpm
+
+### ✅ Done — published to npm
+- `@wayofmono/lens` `@wayofmono/wo-ai` `@wayofmono/wo-tui` `@wayofmono/wo-agent-core`
+- `@wayofmono/wo-agent` `@wayofmono/wo-coding-agent` `@wayofmono/wo-skill-docs`
+- `@wayofmono/wo-mermaid` `@wayofmono/wo-web-ui`
+- All 9 packages live at https://www.npmjs.com/settings/wayofmono/packages
+- `npm install @wayofmono/wo-agent` works from any project
+- `@wayofmono/telemetry` skipped (custom registry at npm.wayofmono.dev)
+
+---
+
 ## [Unreleased]
+
+### Infrastructure
+- GitHub Release v1.0.0 created with packed tarballs of all 10 `@wayofmono/*` packages
+- `pnpm pack` resolves `workspace:*` → real version numbers in tarballs
+- README updated with working `pnpm add /local/clone/packages/@wayofmono/wo-agent` install instructions
 
 ### Added
 

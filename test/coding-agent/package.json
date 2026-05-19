@@ -4,14 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "wocode": "wocode",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.29.3",
-  "dependencies": {
-    "@wayofmono/wo-coding-agent": "link:../../packages/@wayofmono/wo-coding-agent"
+  "devDependencies": {
+    "@wayofmono/wo-coding-agent": "link:/home/zerwiz/wayofmono/packages/@wayofmono/wo-coding-agent"
   }
 }
