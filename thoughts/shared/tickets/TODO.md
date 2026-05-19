@@ -53,3 +53,7 @@ wo-coding-agent (CLI BINARY) — ~141 files from pi/coding-agent/src/ (keeps eve
 ## Remaining
 
 - **Tests**: pi reference did not include test files in src/ — none to run
+
+## Active Tickets
+
+- [ ] [PROJ-011](./PROJ-011-fix-npm-packages-republish.md): Fix NPM package contents and republish

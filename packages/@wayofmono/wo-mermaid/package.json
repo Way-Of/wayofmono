@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/wo-mermaid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "🧜‍♀️ WayOfMono extension that renders Mermaid diagrams as ASCII in the TUI",
   "author": "WayOfMono",
   "license": "MIT",
