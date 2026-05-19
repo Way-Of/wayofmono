@@ -22,6 +22,11 @@ WayOfMono is built on an **Interface-Agnostic Philosophy**. Our core logic and t
 
 ---
 
+## 📂 The Wo Agent creates:
+
+1. ~/.wo/agent/ — global config directory for the agent
+2. .wo/ — project-local config directory 
+
 ## 📂 Repository Structure
 
 ```
