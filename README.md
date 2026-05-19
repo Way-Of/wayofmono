@@ -15,20 +15,6 @@ WayOfMono is built on an **Interface-Agnostic Philosophy**. Our core logic and t
 
 ---
 
-## 🏗️ Core Philosophies
-
-- **Custom Synthesis:** We don't just collect tools; we synthesize them. Every agent, skill, and template is custom-crafted to leverage the best features of Claude, Pi, Gemini, and OpenCode.
-- **Context Engineering:** We use the `thoughts/` directory as a structured project memory, ensuring agents have deep, durable context across sessions.
-- **Agent Orchestration:** A specialized squad (Architect, Auditor, Recon, Coder) handles complex, vertical-slice engineering tasks with surgical precision.
-- **Observability-Driven:** Telemetry, traces, and narrative specs are first-class design artifacts (ODD).
-
----
-
-## 📂 The Wo Agent creates:
-
-1. ~/.wo/agent/ — global config directory for the agent
-2. .wo/ — project-local config directory 
-
 ## 📂 Repository Structure
 
 ```
@@ -128,37 +114,6 @@ To change the agent's persona, instructions, or behavior for a project, simply c
 - The agent automatically discovers this file on startup.
 - You can use it to tell the agent it is a "Senior React Developer," a "Security Auditor," or any other specialized role.
 
----
-
-## 🏗️ Core Philosophies
-
-- **Folder Isolation:** Agents prioritize a local `.wo` directory for all state and configuration.
-- **Custom Synthesis:** Every tool and template is custom-crafted for high-performance engineering.
-- **Context Engineering:** Structured project memory via `thoughts/` and local `.wo/` state.
-- **Observability-Driven:** Narrative-first telemetry and design (ODD).
-
----
-## 📂 Repository Structure
-
-```
-/home/zerwiz/wayofmono/
-├── packages/
-│   ├── @aiengineeringharness/   # Agent harness configs (5 frontends)
-│   │   ├── opencode/     → ~/.config/opencode/
-│   │   ├── claude/       → ~/.claude/
-│   │   ├── gemini/       → ~/.gemini/
-│   │   ├── pi/           → ~/.pi/agent/
-│   │   └── wocoder/      → ~/.wocoder/
-│   └── @wayofmono/*            # Wo npm packages
-├── thoughts/          # Project memory, tickets, plans, research
-├── docs/              # Monorepo documentation
-├── scripts/           # Utility scripts
-├── test/              # Integration tests
-├── ref/               # Historical reference & legacy artifacts
-├── planning/          # Planning documents
-└── pnpm-workspace.yaml
-```
-
 ## 📦 Wo Packages
 
 All Wo packages are published under the `@wayofmono` scope. Install any package with your preferred package manager.
@@ -216,6 +171,14 @@ ai-harness --tool=gemini          # Gemini CLI
 ai-harness --tool=pi              # Pi
 ai-harness --tool=wocoder         # Wo Coder
 ai-harness --tool=all             # All five
+```
+
+Check for updates:
+
+```bash
+ai-harness --check                         # Compare vs installed version
+# → wocoder: UPDATE AVAILABLE v1.1.0 → v1.2.0
+ai-harness --tool=all --yes                # Pull latest
 ```
 
 Advanced options:

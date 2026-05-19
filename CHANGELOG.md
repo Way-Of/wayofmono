@@ -4,6 +4,30 @@
 
 ### Added
 
+#### AI Engineering Harness — 10 Pi Expert Skills
+- `build-pi-agent` — Build Pi agent definitions with .md frontmatter format, teams.yaml, orchestration patterns
+- `pi-cli` — Pi CLI expert: all flags, subcommands, output modes, env vars, non-interactive usage
+- `pi-config` — Pi configuration: settings.json, providers, models, packages, keybindings
+- `build-pi-extension` — Build Pi extensions: custom tools, event handlers, commands, shortcuts, providers
+- `pi-keybindings` — Pi keyboard shortcuts: registerShortcut(), key IDs, modifiers, reserved keys, macOS compat
+- `pi-orchestrate` — Orchestrate Pi domain experts to research documentation and build Pi components
+- `pi-prompts` — Pi prompt templates: single-file .md, positional args, /template invocation
+- `build-pi-skill` — Build Pi skills: SKILL.md format, frontmatter, validation, directory structure
+- `pi-themes` — Pi themes: JSON format, 51 color tokens, vars system, hex/256-color values
+- `pi-tui` — Pi TUI: built-in components, custom components, keyboard input, widgets, overlays
+
+All 10 skills deployed across all 5 frontends (opencode, claude, gemini, pi, wocoder) with correct naming:
+- opencode/claude/wocoder: kebab-case directory names
+- gemini: snake_case directory names
+- pi: kebab-case (native format)
+
+#### AI Engineering Harness — Update Detection
+- `install.ts --check` — compares local `.harness-version` vs remote manifest version
+- `.harness-version` file written after each install in the target directory
+- Shows "UPDATE AVAILABLE vX → vY" when new skills/commands/configs are available
+- Works from both local file and remote GitHub URL
+- Manifest bumped to v1.1.0
+
 #### `@wayofmono/wo-agent` — Embeddable Agent SDK (NEW)
 - `createAgent()` factory with `prompt()`, `task()`, `runLoop()`, `registerTool()`, lifecycle events
 - ReAct tool loop (`runReActLoop`): send → stream → accumulate tool calls → execute → loop (max 18 steps, nudge logic)

@@ -26,9 +26,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@wayofmono/wo-agent-core": "^1.0.0",
-    "@wayofmono/wo-ai": "^1.0.0",
-    "@wayofmono/wo-tui": "^1.0.0",
+    "@wayofmono/wo-agent-core": "workspace:*",
+    "@wayofmono/wo-ai": "workspace:*",
+    "@wayofmono/wo-tui": "workspace:*",
     "chalk": "^5.5.0",
     "diff": "^8.0.2",
     "glob": "^11.0.2",
