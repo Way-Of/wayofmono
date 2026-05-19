@@ -27,8 +27,8 @@
     "mermaid": "^11.0.0"
   },
   "peerDependencies": {
-    "@wayofmono/wo-coding-agent": "workspace:*",
-    "@wayofmono/wo-tui": "workspace:*"
+    "@wayofmono/wo-coding-agent": "^1.0.0",
+    "@wayofmono/wo-tui": "^1.0.0"
   },
   "pi": {
     "extensions": [
