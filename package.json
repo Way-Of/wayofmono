@@ -4,7 +4,8 @@
   "scripts": {
     "build": "pnpm -r build",
     "test": "pnpm -r test",
-    "typecheck": "pnpm -r --parallel typecheck"
+    "typecheck": "pnpm -r --parallel typecheck",
+    "publish": "pnpm -r publish --access public --no-git-checks"
   },
   "engines": {
     "node": ">=22"

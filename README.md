@@ -1,21 +1,23 @@
 # WayOfMono (Wo)
 
-The ultimate monorepo consolidation for high-performance coding agents. WayOfMono provides a shared **Intelligence Backend** (Packages, Tools, Memory) that serves four distinct **Agent Frontends**, with **Wo (Way of Coding)** as our primary synthesized interface.
+The ultimate monorepo consolidation for high-performance coding agents. WayOfMono provides a shared **Intelligence Backend** (Packages, Tools, Memory) that serves five distinct **Agent Frontends**, with **Wo (Way of Coding)** as our primary synthesized interface.
 
 ## 🎛️ Multi-Interface Architecture
 
 WayOfMono is built on an **Interface-Agnostic Philosophy**. Our core logic and tools are shared across all major coding agent platforms, allowing you to work with your codebase using your preferred interaction model:
 
-1.  **Wo (Way of Coding):** The primary, highly-tuned synthesized interface. Native to this monorepo.
-2.  **Pi:** Full compatibility with the official Pi Agent standards from [earendil-works](https://github.com/earendil-works/pi).
-3.  **OpenCode:** Privacy-first, TUI-driven interaction following the [OpenCode](https://opencode.ai/) standard.
-4.  **Gemini CLI:** Multimodal, high-velocity automation using the [Gemini CLI](https://geminicli.com/) standard.
+1.  **wocode:** High-performance coding assistant for automated engineering and refactoring (`@wayofmono/wo-coding-agent`). Native to this monorepo.
+2.  **wouser:** General-purpose user agent SDK and CLI (`@wayofmono/wo-agent`). Native to this monorepo.
+3.  **Claude Code:** Agentic AI coding from [Anthropic](https://code.claude.com) in your terminal.
+4.  **Pi:** Full compatibility with the official Pi Agent standards from [earendil-works](https://github.com/earendil-works/pi).
+5.  **OpenCode:** Open-source, TUI-driven coding agent following the [OpenCode](https://opencode.ai/) standard.
+6.  **Gemini CLI:** Multimodal, high-velocity automation using the [Gemini CLI](https://geminicli.com/) standard.
 
 ---
 
 ## 🏗️ Core Philosophies
 
-- **Custom Synthesis:** We don't just collect tools; we synthesize them. Every agent, skill, and template is custom-crafted to leverage the best features of Pi, Gemini, and OpenCode.
+- **Custom Synthesis:** We don't just collect tools; we synthesize them. Every agent, skill, and template is custom-crafted to leverage the best features of Claude, Pi, Gemini, and OpenCode.
 - **Context Engineering:** We use the `thoughts/` directory as a structured project memory, ensuring agents have deep, durable context across sessions.
 - **Agent Orchestration:** A specialized squad (Architect, Auditor, Recon, Coder) handles complex, vertical-slice engineering tasks with surgical precision.
 - **Observability-Driven:** Telemetry, traces, and narrative specs are first-class design artifacts (ODD).
@@ -159,7 +161,15 @@ To change the agent's persona, instructions, or behavior for a project, simply c
 
 ## 📦 Wo Packages
 
-All Wo packages are published under the `@wayofmono` scope.
+All Wo packages are published under the `@wayofmono` scope. Install any package with your preferred package manager.
+
+### Publish (from monorepo root)
+
+```bash
+pnpm publish   # Publishes all packages to npm in dependency order
+```
+
+### Install in your project
 
 | Package | Description | Install |
 |---------|-------------|---------|
@@ -182,9 +192,15 @@ Shared agents, commands, skills, and extensions for all agent frontends. Install
 - [Deno](https://deno.com/) — `curl -fsSL https://deno.land/install.sh | sh`
 - [GNU Stow](https://www.gnu.org/software/stow/) — `sudo apt install stow` (or `brew install stow`)
 
-### Install
+### Quick Install (for agents — one command)
 
-Register the CLI (one-time):
+```bash
+deno run -A https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=all --yes
+```
+
+### CLI Install (one-time setup)
+
+Register the CLI:
 
 ```bash
 deno install -Agf -n ai-harness \
@@ -202,7 +218,7 @@ ai-harness --tool=wocoder         # Wo Coder
 ai-harness --tool=all             # All five
 ```
 
-More options:
+Advanced options:
 
 ```bash
 ai-harness --tool=claude --dry-run        # Preview
