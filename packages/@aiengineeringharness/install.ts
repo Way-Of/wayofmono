@@ -207,24 +207,26 @@ function printHelp(): void {
   console.log(`
 AI Engineering Harness Installer
 
-INSTALL AS CLI (recommended, one-time):
+SINGLE COMMAND (easiest for agents):
+  deno run -A \\
+    https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts \\
+    --tool=all --yes
+
+INSTALL AS CLI (one-time):
   deno install -Agf -n ai-harness \\
-    https://raw.githubusercontent.com/adrielp/ai-engineering-harness/main/install.ts
+    https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts
 
   Then run:
     ai-harness --tool=claude
     ai-harness --tool=all --interactive
 
-PRIVATE / ENTERPRISE REPOS (clone and run):
-  gh repo clone <org>/ai-engineering-harness /tmp/aih -- --depth=1 -q
-  GITHUB_TOKEN=$(gh auth token) deno run -A /tmp/aih/install.ts --tool=claude
-  rm -rf /tmp/aih
-
-  GITHUB_TOKEN authenticates manifest/file fetches for private content.
-  gh handles all git auth automatically.
+CLONE AND RUN (for private repos):
+  gh repo clone zerwiz/wayofmono /tmp/wo -- --depth=1 -q
+  GITHUB_TOKEN=$(gh auth token) deno run -A /tmp/wo/packages/@aiengineeringharness/install.ts --tool=claude
+  rm -rf /tmp/wo
 
 DIRECT RUN (no install step):
-  deno run --allow-read --allow-write --allow-net --allow-env install.ts [options]
+  deno run -A install.ts [options]
 
 OPTIONS:
   --tool=<claude|opencode|gemini|pi|wocoder|all> Which tool configs to install (required)
@@ -237,11 +239,11 @@ OPTIONS:
   --help, -h                            Show this help
 
 EXAMPLES:
+  ai-harness --tool=all --yes                     # Install all configs non-interactively
   ai-harness --tool=claude                        # Install Claude Code configs
   ai-harness --tool=claude --dry-run              # Preview changes
   ai-harness --tool=claude --skill=agents         # Install only agents
   ai-harness --tool=claude --interactive          # Pick components
-  ai-harness --tool=all                           # Install all tools
   ai-harness --mode=repo                          # Clone + stow instructions
 `.trim());
 }
@@ -260,11 +262,11 @@ The repo must remain at a stable path on your system.
        Fedora:         sudo dnf install stow
        Arch:           sudo pacman -S stow
 
-  2. Clone the repository:
-       git clone https://github.com/adrielp/ai-engineering-harness.git ${expanded}
-       cd ${expanded}
+   2. Clone the repository:
+       git clone https://github.com/zerwiz/wayofmono.git ${expanded}
+       cd ${expanded}/packages/@aiengineeringharness
 
-  3. Install symlinks:
+   3. Install symlinks:
        ./setup.sh claude             # Claude Code
        ./setup.sh opencode           # OpenCode
        ./setup.sh gemini             # Gemini CLI
