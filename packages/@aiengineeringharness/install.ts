@@ -65,6 +65,66 @@ function fetchWithAuth(url: string, token: string | null): Promise<Response> {
   return fetch(url, { headers });
 }
 
+const HARNESS_VERSION_FILENAME = ".harness-version";
+
+// ---------------------------------------------------------------------------
+// Version / update tracking
+// ---------------------------------------------------------------------------
+
+function versionFileFor(targetDir: string): string {
+  return `${targetDir}/${HARNESS_VERSION_FILENAME}`;
+}
+
+async function readInstalledVersion(targetDir: string): Promise<string | null> {
+  try {
+    return (await Deno.readTextFile(versionFileFor(targetDir))).trim();
+  } catch {
+    return null;
+  }
+}
+
+async function writeInstalledVersion(targetDir: string, version: string): Promise<void> {
+  await ensureDir(targetDir);
+  await Deno.writeTextFile(versionFileFor(targetDir), version + "\n");
+}
+
+function parseVersion(v: string): number[] {
+  return v.split(/[.\-]/).map((s) => {
+    const n = parseInt(s, 10);
+    return isNaN(n) ? 0 : n;
+  });
+}
+
+function isNewerVersion(current: string, latest: string): boolean {
+  const a = parseVersion(current);
+  const b = parseVersion(latest);
+  for (let i = 0; i < Math.max(a.length, b.length); i++) {
+    const va = a[i] ?? 0;
+    const vb = b[i] ?? 0;
+    if (vb > va) return true;
+    if (vb < va) return false;
+  }
+  return false;
+}
+
+async function checkForUpdates(manifest: Manifest, targetDir: string, toolName: string): Promise<void> {
+  const installed = await readInstalledVersion(targetDir);
+  const current = manifest.version;
+  if (installed === null) {
+    console.log(`  ${toolName}: first install (v${current})`);
+    return;
+  }
+  if (installed === current) {
+    console.log(`  ${toolName}: up to date (v${current})`);
+    return;
+  }
+  if (isNewerVersion(installed, current)) {
+    console.log(`  ${toolName}: UPDATE AVAILABLE v${installed} → v${current}`);
+  } else {
+    console.log(`  ${toolName}: v${current} (local v${installed})`);
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -234,6 +294,7 @@ OPTIONS:
   --interactive, -i                     Interactive checkbox picker
   --dry-run, -n                         Preview without writing files
   --yes, -y                             Skip confirmation prompts
+  --check                               Check installed version vs manifest
   --mode=repo                           Show clone+stow instructions instead
   --dest=<path>                         Clone destination for --mode=repo
   --help, -h                            Show this help
@@ -324,6 +385,9 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
   }
 
   const targetDir = expandHome(toolConfig.target);
+
+  // Show version info
+  await checkForUpdates(manifest, targetDir, toolName);
   const allComponents = Object.entries(toolConfig.components).map(([name, comp]) => ({
     name,
     description: comp.description,
@@ -439,6 +503,11 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
   }
 
   console.log(`\n  ${toolName}: ${installed} installed/updated, ${unchanged} unchanged, ${skipped} skipped`);
+
+  // Write version marker so --check can detect future updates
+  if (!opts.dryRun) {
+    await writeInstalledVersion(targetDir, manifest.version);
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -447,12 +516,27 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 
 const args = parseArgs(Deno.args, {
   string: ["tool", "skill", "dest", "mode"],
-  boolean: ["interactive", "dry-run", "yes", "help"],
+  boolean: ["interactive", "dry-run", "yes", "help", "check"],
   alias: { h: "help", n: "dry-run", y: "yes", i: "interactive" },
 });
 
 if (args.help) {
   printHelp();
+  Deno.exit(0);
+}
+
+// --check: compare installed versions against manifest
+if (args["check"]) {
+  const sd = scriptDir();
+  const token = resolveToken();
+  const manifest = await loadManifest(sd, token);
+  console.log(`\nUpdate check — latest manifest v${manifest.version}\n`);
+  for (const tool of Object.keys(manifest.tools)) {
+    const targetDir = expandHome(manifest.tools[tool].target);
+    await checkForUpdates(manifest, targetDir, tool);
+  }
+  console.log();
+  console.log("Re-run installer to update: deno run -A ...install.ts --tool=all --yes");
   Deno.exit(0);
 }
 

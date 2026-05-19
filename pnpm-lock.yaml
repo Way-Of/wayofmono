@@ -379,6 +379,18 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
 
+  test/coding-agent:
+    devDependencies:
+      '@wayofmono/wo-coding-agent':
+        specifier: link:/home/zerwiz/wayofmono/packages/@wayofmono/wo-coding-agent
+        version: link:../../packages/@wayofmono/wo-coding-agent
+
+  test/user-agent:
+    dependencies:
+      '@wayofmono/wo-agent':
+        specifier: link:/home/zerwiz/wayofmono/packages/@wayofmono/wo-agent
+        version: link:../../packages/@wayofmono/wo-agent
+
 packages:
 
   '@antfu/install-pkg@1.1.0':

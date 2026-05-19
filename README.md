@@ -15,20 +15,6 @@ WayOfMono is built on an **Interface-Agnostic Philosophy**. Our core logic and t
 
 ---
 
-## 🏗️ Core Philosophies
-
-- **Custom Synthesis:** We don't just collect tools; we synthesize them. Every agent, skill, and template is custom-crafted to leverage the best features of Claude, Pi, Gemini, and OpenCode.
-- **Context Engineering:** We use the `thoughts/` directory as a structured project memory, ensuring agents have deep, durable context across sessions.
-- **Agent Orchestration:** A specialized squad (Architect, Auditor, Recon, Coder) handles complex, vertical-slice engineering tasks with surgical precision.
-- **Observability-Driven:** Telemetry, traces, and narrative specs are first-class design artifacts (ODD).
-
----
-
-## 📂 The Wo Agent creates:
-
-1. ~/.wo/agent/ — global config directory for the agent
-2. .wo/ — project-local config directory 
-
 ## 📂 Repository Structure
 
 ```
@@ -66,7 +52,7 @@ WayOfMono defaults to using **Ollama** for local-first AI. Ensure it is installe
 ### 💻 Coding Assistant (`wocode`)
 *For automated engineering and refactoring.*
 ```bash
-pnpm add -D @wayofmono/wo-coding-agent # Install as dev-dependency
+pnpm add -D /path/to/wayofmono/packages/@wayofmono/wo-coding-agent
 pnpm exec wocode --init
 ./wocode
 ```
@@ -74,7 +60,7 @@ pnpm exec wocode --init
 ### 🤖 User Assistant (`wouser`)
 *For general use and SDK integration.*
 ```bash
-pnpm add @wayofmono/wo-agent
+pnpm add /path/to/wayofmono/packages/@wayofmono/wo-agent
 pnpm exec wouser --init
 ./wouser
 ```
@@ -128,60 +114,39 @@ To change the agent's persona, instructions, or behavior for a project, simply c
 - The agent automatically discovers this file on startup.
 - You can use it to tell the agent it is a "Senior React Developer," a "Security Auditor," or any other specialized role.
 
----
-
-## 🏗️ Core Philosophies
-
-- **Folder Isolation:** Agents prioritize a local `.wo` directory for all state and configuration.
-- **Custom Synthesis:** Every tool and template is custom-crafted for high-performance engineering.
-- **Context Engineering:** Structured project memory via `thoughts/` and local `.wo/` state.
-- **Observability-Driven:** Narrative-first telemetry and design (ODD).
-
----
-## 📂 Repository Structure
-
-```
-/home/zerwiz/wayofmono/
-├── packages/
-│   ├── @aiengineeringharness/   # Agent harness configs (5 frontends)
-│   │   ├── opencode/     → ~/.config/opencode/
-│   │   ├── claude/       → ~/.claude/
-│   │   ├── gemini/       → ~/.gemini/
-│   │   ├── pi/           → ~/.pi/agent/
-│   │   └── wocoder/      → ~/.wocoder/
-│   └── @wayofmono/*            # Wo npm packages
-├── thoughts/          # Project memory, tickets, plans, research
-├── docs/              # Monorepo documentation
-├── scripts/           # Utility scripts
-├── test/              # Integration tests
-├── ref/               # Historical reference & legacy artifacts
-├── planning/          # Planning documents
-└── pnpm-workspace.yaml
-```
-
 ## 📦 Wo Packages
 
-All Wo packages are published under the `@wayofmono` scope. Install any package with your preferred package manager.
+All Wo packages are under the `@wayofmono` scope. Two install methods:
 
-### Publish (from monorepo root)
+### Install from npm (works now)
 
 ```bash
-pnpm publish   # Publishes all packages to npm in dependency order
+npm install @wayofmono/wo-agent          # wouser (SDK)
+npm install @wayofmono/wo-coding-agent   # wocode (CLI)
 ```
 
-### Install in your project
+### Install from cloned repo (alternative — no npm needed)
 
-| Package | Description | Install |
-|---------|-------------|---------|
+```bash
+git clone https://github.com/zerwiz/wayofmono.git ~/wayofmono
+pnpm add ~/wayofmono/packages/@wayofmono/wo-agent
+```
+
+### Packages
+
+All published at https://www.npmjs.com/settings/wayofmono/packages
+
+| Package | Description | npm |
+|---------|-------------|-----|
 | `@wayofmono/wo-ai` | Multi-Provider LLM API (OpenAI, Anthropic, Gemini) | `npm install @wayofmono/wo-ai` |
 | `@wayofmono/wo-tui` | High-Performance Terminal UI Library | `npm install @wayofmono/wo-tui` |
 | `@wayofmono/wo-agent-core` | Central Agent Runtime & Extension API | `npm install @wayofmono/wo-agent-core` |
-| `@wayofmono/wo-coding-agent` | Project-local CLI Coding Agent (`wocode` binary) | `pnpm add -D @wayofmono/wo-coding-agent` |
-| `@wayofmono/wo-agent` | General-Purpose Agent SDK & CLI (`wouser` binary) | `pnpm add @wayofmono/wo-agent` |
-| `@wayofmono/wo-skill-docs` | Multi-format Documentation Expert (Markdown, PDF, Word, TXT) | `pnpm add -D @wayofmono/wo-skill-docs` |
-| `@wayofmono/wo-mermaid` | TUI Mermaid Diagram Renderer (ASCII art) | `pnpm add -D @wayofmono/wo-mermaid` |
-| `@wayofmono/telemetry` | ODD Instrumentation SDK (OpenTelemetry) | `npm install @wayofmono/telemetry` |
+| `@wayofmono/wo-agent` | General-Purpose Agent SDK & CLI (`wouser`) | `npm install @wayofmono/wo-agent` |
+| `@wayofmono/wo-coding-agent` | CLI Coding Agent (`wocode`) | `npm install @wayofmono/wo-coding-agent` |
+| `@wayofmono/wo-skill-docs` | Multi-format Documentation Expert | `npm install @wayofmono/wo-skill-docs` |
+| `@wayofmono/wo-mermaid` | TUI Mermaid Renderer (ASCII art) | `npm install @wayofmono/wo-mermaid` |
 | `@wayofmono/lens` | Codebase Analysis & Safety Engine | `npm install @wayofmono/lens` |
+| `@wayofmono/wo-web-ui` | Web UI Components (React 19) | `npm install @wayofmono/wo-web-ui` |
 
 ## 🎛️ AI Engineering Harness
 
@@ -216,6 +181,14 @@ ai-harness --tool=gemini          # Gemini CLI
 ai-harness --tool=pi              # Pi
 ai-harness --tool=wocoder         # Wo Coder
 ai-harness --tool=all             # All five
+```
+
+Check for updates:
+
+```bash
+ai-harness --check                         # Compare vs installed version
+# → wocoder: UPDATE AVAILABLE v1.1.0 → v1.2.0
+ai-harness --tool=all --yes                # Pull latest
 ```
 
 Advanced options:

@@ -1,8 +1,58 @@
 # Changelog
 
+## Status
+
+### ✅ Done
+- 10 Pi expert skills created → `packages/@aiengineeringharness/*/skills/`
+- `install.ts --check` — version tracking and update detection
+- `packages/@wayofmono/*` — all 10 packages implemented, built, ready to publish
+- GitHub Release v1.0.0 (tarballs for manual install)
+- README + AGENTS.md + CHANGELOG updated
+- Local install from cloned repo works: `pnpm add /path/to/packages/@wayofmono/wo-agent`
+- Test verified: `test/coding-agent`, `test/user-agent` install correctly with pnpm
+
+### ✅ Done — published to npm
+- `@wayofmono/lens` `@wayofmono/wo-ai` `@wayofmono/wo-tui` `@wayofmono/wo-agent-core`
+- `@wayofmono/wo-agent` `@wayofmono/wo-coding-agent` `@wayofmono/wo-skill-docs`
+- `@wayofmono/wo-mermaid` `@wayofmono/wo-web-ui`
+- All 9 packages live at https://www.npmjs.com/settings/wayofmono/packages
+- `npm install @wayofmono/wo-agent` works from any project
+- `@wayofmono/telemetry` skipped (custom registry at npm.wayofmono.dev)
+
+---
+
 ## [Unreleased]
 
+### Infrastructure
+- GitHub Release v1.0.0 created with packed tarballs of all 10 `@wayofmono/*` packages
+- `pnpm pack` resolves `workspace:*` → real version numbers in tarballs
+- README updated with working `pnpm add /local/clone/packages/@wayofmono/wo-agent` install instructions
+
 ### Added
+
+#### AI Engineering Harness — 10 Pi Expert Skills
+- `build-pi-agent` — Build Pi agent definitions with .md frontmatter format, teams.yaml, orchestration patterns
+- `pi-cli` — Pi CLI expert: all flags, subcommands, output modes, env vars, non-interactive usage
+- `pi-config` — Pi configuration: settings.json, providers, models, packages, keybindings
+- `build-pi-extension` — Build Pi extensions: custom tools, event handlers, commands, shortcuts, providers
+- `pi-keybindings` — Pi keyboard shortcuts: registerShortcut(), key IDs, modifiers, reserved keys, macOS compat
+- `pi-orchestrate` — Orchestrate Pi domain experts to research documentation and build Pi components
+- `pi-prompts` — Pi prompt templates: single-file .md, positional args, /template invocation
+- `build-pi-skill` — Build Pi skills: SKILL.md format, frontmatter, validation, directory structure
+- `pi-themes` — Pi themes: JSON format, 51 color tokens, vars system, hex/256-color values
+- `pi-tui` — Pi TUI: built-in components, custom components, keyboard input, widgets, overlays
+
+All 10 skills deployed across all 5 frontends (opencode, claude, gemini, pi, wocoder) with correct naming:
+- opencode/claude/wocoder: kebab-case directory names
+- gemini: snake_case directory names
+- pi: kebab-case (native format)
+
+#### AI Engineering Harness — Update Detection
+- `install.ts --check` — compares local `.harness-version` vs remote manifest version
+- `.harness-version` file written after each install in the target directory
+- Shows "UPDATE AVAILABLE vX → vY" when new skills/commands/configs are available
+- Works from both local file and remote GitHub URL
+- Manifest bumped to v1.1.0
 
 #### `@wayofmono/wo-agent` — Embeddable Agent SDK (NEW)
 - `createAgent()` factory with `prompt()`, `task()`, `runLoop()`, `registerTool()`, lifecycle events

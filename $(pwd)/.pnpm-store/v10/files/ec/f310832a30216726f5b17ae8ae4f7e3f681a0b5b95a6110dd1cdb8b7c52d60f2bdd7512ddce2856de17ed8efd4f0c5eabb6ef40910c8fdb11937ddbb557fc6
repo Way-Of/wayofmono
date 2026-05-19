@@ -14,17 +14,11 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist", "src", "README.md"],
-  "scripts": {
-    "build": "tsc && npm run copy-assets",
-    "copy-assets": "shx mkdir -p dist/modes/interactive/theme && shx cp src/modes/interactive/theme/*.json dist/modes/interactive/theme/ && shx mkdir -p dist/modes/interactive/assets && shx cp src/modes/interactive/assets/*.png dist/modes/interactive/assets/ && shx mkdir -p dist/core/export-html/vendor && shx cp src/core/export-html/template.* dist/core/export-html/ && shx cp src/core/export-html/vendor/*.js dist/core/export-html/vendor/",
-    "test": "vitest --run",
-    "typecheck": "tsc --noEmit"
-  },
+  "files": [
+    "src",
+    "README.md"
+  ],
   "dependencies": {
-    "@wayofmono/wo-agent-core": "workspace:*",
-    "@wayofmono/wo-ai": "workspace:*",
-    "@wayofmono/wo-tui": "workspace:*",
     "chalk": "^5.5.0",
     "diff": "^8.0.2",
     "glob": "^11.0.2",
@@ -36,7 +30,10 @@
     "proper-lockfile": "^4.1.2",
     "typebox": "^1.1.24",
     "undici": "^7.19.1",
-    "yaml": "^2.8.2"
+    "yaml": "^2.8.2",
+    "@wayofmono/wo-agent-core": "1.0.0",
+    "@wayofmono/wo-tui": "1.0.0",
+    "@wayofmono/wo-ai": "1.0.0"
   },
   "optionalDependencies": {
     "@mariozechner/clipboard": "^0.3.5",
@@ -51,5 +48,11 @@
     "typescript": "^6.0.3",
     "shx": "^0.4.0",
     "vitest": "^4.1.1"
+  },
+  "scripts": {
+    "build": "tsc && npm run copy-assets",
+    "copy-assets": "shx mkdir -p dist/modes/interactive/theme && shx cp src/modes/interactive/theme/*.json dist/modes/interactive/theme/ && shx mkdir -p dist/modes/interactive/assets && shx cp src/modes/interactive/assets/*.png dist/modes/interactive/assets/ && shx mkdir -p dist/core/export-html/vendor && shx cp src/core/export-html/template.* dist/core/export-html/ && shx cp src/core/export-html/vendor/*.js dist/core/export-html/vendor/",
+    "test": "vitest --run",
+    "typecheck": "tsc --noEmit"
   }
 }
