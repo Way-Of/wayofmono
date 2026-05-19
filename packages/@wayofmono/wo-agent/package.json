@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/wo-agent",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Agent SDK for building AI-powered applications",
   "type": "module",
   "bin": {

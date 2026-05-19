@@ -52,16 +52,16 @@ WayOfMono defaults to using **Ollama** for local-first AI. Ensure it is installe
 ### 💻 Coding Assistant (`wocode`)
 *For automated engineering and refactoring.*
 ```bash
-pnpm add -D /path/to/wayofmono/packages/@wayofmono/wo-coding-agent
-pnpm exec wocode --init
+npm install --save-dev @wayofmono/wo-coding-agent
+npx wocode --init
 ./wocode
 ```
 
 ### 🤖 User Assistant (`wouser`)
 *For general use and SDK integration.*
 ```bash
-pnpm add /path/to/wayofmono/packages/@wayofmono/wo-agent
-pnpm exec wouser --init
+npm install @wayofmono/wo-agent
+npx wouser --init
 ./wouser
 ```
 

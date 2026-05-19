@@ -17,18 +17,19 @@
 - `@wayofmono/wo-mermaid` `@wayofmono/wo-web-ui`
 - All 9 packages live at https://www.npmjs.com/settings/wayofmono/packages
 - `npm install @wayofmono/wo-agent` works from any project
+- `v1.0.1` fixed incomplete package contents (missing `dist/` in npm tarball)
 - `@wayofmono/telemetry` skipped (custom registry at npm.wayofmono.dev)
 
 ---
 
-## [Unreleased]
+## [1.0.1] - 2026-05-19
 
-### Infrastructure
-- GitHub Release v1.0.0 created with packed tarballs of all 10 `@wayofmono/*` packages
-- `pnpm pack` resolves `workspace:*` → real version numbers in tarballs
-- README updated with working `pnpm add /local/clone/packages/@wayofmono/wo-agent` install instructions
+### Fixed
+- Fixed incomplete npm packages by including `dist/` directory in `files` field in `package.json`.
+- Updated `package.json` exports to point to `dist/` for all packages.
+- Verified CLI binaries (`wouser`, `wocode`) work after npm installation.
 
-### Added
+## [1.0.0] - 2024-05-13
 
 #### AI Engineering Harness — 10 Pi Expert Skills
 - `build-pi-agent` — Build Pi agent definitions with .md frontmatter format, teams.yaml, orchestration patterns
