@@ -535,12 +535,6 @@
             { "src": "pi/extensions/open-editor.ts", "dest": "extensions/open-editor.ts" }
           ]
         },
-        "extension/bifrost": {
-          "description": "Support custom models through the bifrost proxy",
-          "files": [
-            { "src": "pi/extensions/bifrost.ts", "dest": "extensions/bifrost.ts" }
-          ]
-        },
         "extension/subagent": {
           "description": "Subagent tool for multi-agent workflows (single, parallel, chain)",
           "files": [
