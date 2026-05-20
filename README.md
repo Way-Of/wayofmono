@@ -49,32 +49,52 @@ WayOfMono defaults to using **Ollama** for local-first AI. Ensure it is installe
 
 ## 🚀 Getting Started
 
+Packages install to `node_modules/` in your project (not globally). Binaries land in `node_modules/.bin/` and are accessed via `npx`/`pnpm` without any global setup.
+
 ### 💻 Coding Assistant (`wocode`)
 *For automated engineering and refactoring.*
+
+**npm (Node's default package manager):**
 ```bash
 npm install --save-dev @wayofmono/wo-coding-agent
 npx wocode --init
 ./wocode
 ```
 
+**pnpm (faster, disk-efficient alternative):**
+```bash
+pnpm add -D @wayofmono/wo-coding-agent
+pnpm wocode --init
+./wocode
+```
+
 ### 🤖 User Assistant (`wouser`)
 *For general use and SDK integration.*
+
+**npm (Node's default package manager):**
 ```bash
 npm install @wayofmono/wo-agent
 npx wouser --init
 ./wouser
 ```
 
+**pnpm (faster, disk-efficient alternative):**
+```bash
+pnpm add @wayofmono/wo-agent
+pnpm wouser --init
+./wouser
+```
+
 ---
 
-### 💡 Understanding Dev-Dependencies (`-D`)
+### 💡 Understanding Dev-Dependencies (`--save-dev` / `-D`)
 
-When you run `pnpm add -D`, you are telling the package manager to treat the agent as a **Development Dependency**. Here is exactly what that means and what it does:
+When you run `npm install --save-dev` or `pnpm add -D`, you are telling the package manager to treat the package as a **Development Dependency**. Here is exactly what that means and what it does:
 
 #### 1. Conceptual Meaning: "The Hammer vs. The House"
 Think of your application as a house you are building.
 *   **`dependencies`**: These are the **materials** (bricks, glass, wires). They stay in the house forever. Your app cannot "live" without them.
-*   **`devDependencies` (-D)**: These are the **tools** (hammers, saws, blueprints). You need them to build the house, but you don't leave them inside the walls when the owner moves in.
+*   **`devDependencies` (`--save-dev` / `-D`)**: These are the **tools** (hammers, saws, blueprints). You need them to build the house, but you don't leave them inside the walls when the owner moves in.
 
 #### 2. What it does in your project:
 *   **`package.json`**: It places the package under the `"devDependencies"` key instead of `"dependencies"`.
@@ -82,7 +102,7 @@ Think of your application as a house you are building.
 *   **Bundle Size**: If you are building a web application, tools like `wocode` will never be accidentally bundled into the code your users download.
 
 #### 3. Why `wocode` must be a dev-dependency:
-The **Coding Assistant (`wocode`)** is a tool for you, the engineer. It helps you write code, refactor files, and analyze the architecture. Your end-users never interact with it, and your application doesn't need it to function. Installing it with `-D` ensures it stays in your "toolbox" and out of your "finished product."
+The **Coding Assistant (`wocode`)** is a tool for you, the engineer. It helps you write code, refactor files, and analyze the architecture. Your end-users never interact with it, and your application doesn't need it to function. Installing it with `--save-dev` or `-D` ensures it stays in your "toolbox" and out of your "finished product."
 
 #### 4. Why `wouser` is different:
 The **User Assistant (`wouser`)** is an SDK. If you are building an AI chatbot or a feature that uses the agent's logic inside your app, your app needs that code to run in the real world. Therefore, it is installed as a standard dependency so it's always available, even in production.
