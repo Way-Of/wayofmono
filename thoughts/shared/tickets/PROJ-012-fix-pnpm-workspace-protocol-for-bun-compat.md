@@ -2,7 +2,7 @@
 title: "[PROJ-012] Fix pnpm workspace:* protocol for bun compatibility"
 type: "Bug"
 priority: "High"
-status: "Backlog"
+status: "Done"
 assignee: "@zerwiz"
 created: "2026-05-20"
 ---
