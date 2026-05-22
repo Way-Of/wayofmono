@@ -165,6 +165,7 @@ All published at https://www.npmjs.com/settings/wayofmono/packages
 | `@wayofmono/wo-coding-agent` | CLI Coding Agent (`wocode`) | `npm install @wayofmono/wo-coding-agent` |
 | `@wayofmono/wo-skill-docs` | Multi-format Documentation Expert | `npm install @wayofmono/wo-skill-docs` |
 | `@wayofmono/wo-mermaid` | TUI Mermaid Renderer (ASCII art) | `npm install @wayofmono/wo-mermaid` |
+| `@wayofmono/web-access` | Web search, URL fetching, GitHub cloning, PDF/YouTube/video extraction | `npm install @wayofmono/web-access` |
 | `@wayofmono/lens` | Codebase Analysis & Safety Engine | `npm install @wayofmono/lens` |
 | `@wayofmono/wo-web-ui` | Web UI Components (React 19) | `npm install @wayofmono/wo-web-ui` |
 

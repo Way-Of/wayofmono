@@ -1,0 +1,70 @@
+{
+  "name": "@wayofmono/web-access",
+  "version": "0.10.7",
+  "description": "Web search, URL fetching, GitHub repo cloning, PDF extraction, YouTube video understanding, and local video analysis for Wo coding agents",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "skills",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test"
+  },
+  "keywords": [
+    "wo-package",
+    "wo",
+    "wocode",
+    "wouser",
+    "extension",
+    "web-search",
+    "perplexity",
+    "fetch",
+    "scraping"
+  ],
+  "author": "WayOfMono",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zerwiz/wayofmono.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zerwiz/wayofmono/issues"
+  },
+  "homepage": "https://github.com/zerwiz/wayofmono#readme",
+  "dependencies": {
+    "@mozilla/readability": "^0.5.0",
+    "linkedom": "^0.16.0",
+    "p-limit": "^6.1.0",
+    "turndown": "^7.2.0",
+    "typebox": "^0.34.0",
+    "unpdf": "^1.6.2"
+  },
+  "peerDependencies": {
+    "@wayofmono/wo-ai": "workspace:*",
+    "@wayofmono/wo-coding-agent": "workspace:*",
+    "@wayofmono/wo-tui": "workspace:*"
+  },
+  "pi": {
+    "extensions": [
+      "./dist/index.js"
+    ],
+    "skills": [
+      "./skills"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^25.8.0",
+    "typescript": "^6.0.3"
+  }
+}
