@@ -1,0 +1,28 @@
+{
+  "name": "@wayofmono/whatsapp",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "WayOfMono first-party WhatsApp SDK package.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "src", "README.md"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "typescript": "^5.5.3",
+    "vitest": "^1.6.0"
+  }
+}
