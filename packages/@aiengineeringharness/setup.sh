@@ -39,29 +39,57 @@ NC='\033[0m' # No Color
 
 # Function to get target directory for a tool
 get_target_dir() {
-    case "$1" in
-        opencode)
-            echo "$HOME/.config/opencode"
-            ;;
-        claude)
-            echo "$HOME/.claude"
-            ;;
-        gemini)
-            echo "$HOME/.gemini"
-            ;;
-        pi)
-            echo "$HOME/.pi/agent"
-            ;;
-        wocoder)
-            echo "$HOME/.wocoder"
-            ;;
-        antigravity)
-            echo "$HOME/.antigravity"
-            ;;
-        *)
-            echo ""
-            ;;
-    esac
+    local tool="$1"
+    local local_mode="${2:-false}"
+    if [[ "$local_mode" == "true" ]]; then
+        case "$tool" in
+            opencode)
+                echo "./.config/opencode"
+                ;;
+            claude)
+                echo "./.claude"
+                ;;
+            gemini)
+                echo "./.gemini"
+                ;;
+            pi)
+                echo "./.pi/agent"
+                ;;
+            wocoder)
+                echo "./.wocoder"
+                ;;
+            antigravity)
+                echo "./.agents"
+                ;;
+            *)
+                echo "./.$tool"
+                ;;
+        esac
+    else
+        case "$tool" in
+            opencode)
+                echo "$HOME/.config/opencode"
+                ;;
+            claude)
+                echo "$HOME/.claude"
+                ;;
+            gemini)
+                echo "$HOME/.gemini"
+                ;;
+            pi)
+                echo "$HOME/.pi/agent"
+                ;;
+            wocoder)
+                echo "$HOME/.wocoder"
+                ;;
+            antigravity)
+                echo "$HOME/.antigravity"
+                ;;
+            *)
+                echo ""
+                ;;
+        esac
+    fi
 }
 
 print_usage() {
@@ -82,6 +110,7 @@ Options:
   --dry-run, -n    Show what would be done without making changes
   --restow, -R     Restow (update) existing symlinks
   --delete, -D     Remove symlinks (unstow)
+  --local, -l      Symlink to project-local directory (e.g. ./.claude, ./.agents)
   --help, -h       Show this help message
 
 Examples:
@@ -207,8 +236,9 @@ process_tool() {
     local action="$2"
     local restow="$3"
     local dry_run="$4"
+    local local_mode="$5"
     
-    local target_dir=$(get_target_dir "$tool")
+    local target_dir=$(get_target_dir "$tool" "$local_mode")
     
     if [[ -z "$target_dir" ]]; then
         log_error "Unknown tool: $tool"
@@ -237,6 +267,7 @@ main() {
     local dry_run=""
     local action="stow"
     local restow=false
+    local local_mode=false
     local tool=""
     
     # Parse arguments
@@ -252,6 +283,10 @@ main() {
                 ;;
             -D|--delete)
                 action="unstow"
+                shift
+                ;;
+            -l|--local)
+                local_mode=true
                 shift
                 ;;
             -h|--help)
@@ -299,13 +334,13 @@ main() {
         log_info "Installing all tools..."
         echo ""
         for t in opencode claude gemini pi wocoder antigravity; do
-            process_tool "$t" "$action" "$restow" "$dry_run"
+            process_tool "$t" "$action" "$restow" "$dry_run" "$local_mode"
             echo ""
         done
     else
         log_info "Installing: $tool"
         echo ""
-        process_tool "$tool" "$action" "$restow" "$dry_run"
+        process_tool "$tool" "$action" "$restow" "$dry_run" "$local_mode"
         echo ""
     fi
     
@@ -316,11 +351,11 @@ main() {
         echo "Your AI harness configuration is now linked:"
         if [[ "$tool" == "all" ]]; then
         for t in opencode claude gemini pi wocoder antigravity; do
-                local target=$(get_target_dir "$t")
+                local target=$(get_target_dir "$t" "$local_mode")
                 echo "  $target/ -> $STOW_DIR/$t/"
             done
         else
-            local target=$(get_target_dir "$tool")
+            local target=$(get_target_dir "$tool" "$local_mode")
             echo "  $target/ -> $STOW_DIR/$tool/"
         fi
         echo ""

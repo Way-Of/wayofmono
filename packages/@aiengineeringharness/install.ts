@@ -294,6 +294,7 @@ OPTIONS:
   --interactive, -i                     Interactive checkbox picker
   --dry-run, -n                         Preview without writing files
   --yes, -y                             Skip confirmation prompts
+  --local, -l                           Install to project-local directories (.claude, .agents, .gemini, etc.)
   --check                               Check installed version vs manifest
   --mode=repo                           Show clone+stow instructions instead
   --dest=<path>                         Clone destination for --mode=repo
@@ -376,6 +377,26 @@ interface InstallOptions {
   yes: boolean;
   sd: string;
   token: string | null;
+  local: boolean;
+}
+
+function getProjectLocalTarget(tool: string): string {
+  switch (tool) {
+    case "claude":
+      return "./.claude";
+    case "gemini":
+      return "./.gemini";
+    case "pi":
+      return "./.pi/agent";
+    case "opencode":
+      return "./.config/opencode";
+    case "antigravity":
+      return "./.agents";
+    case "wocoder":
+      return "./.wocoder";
+    default:
+      return `./.${tool}`;
+  }
 }
 
 async function installTool(manifest: Manifest, toolName: string, opts: InstallOptions): Promise<void> {
@@ -385,7 +406,7 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
     Deno.exit(1);
   }
 
-  const targetDir = expandHome(toolConfig.target);
+  const targetDir = opts.local ? getProjectLocalTarget(toolName) : expandHome(toolConfig.target);
 
   // Show version info
   await checkForUpdates(manifest, targetDir, toolName);
@@ -517,8 +538,8 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 
 const args = parseArgs(Deno.args, {
   string: ["tool", "skill", "dest", "mode"],
-  boolean: ["interactive", "dry-run", "yes", "help", "check"],
-  alias: { h: "help", n: "dry-run", y: "yes", i: "interactive" },
+  boolean: ["interactive", "dry-run", "yes", "help", "check", "local"],
+  alias: { h: "help", n: "dry-run", y: "yes", i: "interactive", l: "local" },
 });
 
 if (args.help) {
@@ -569,6 +590,7 @@ const installOpts: InstallOptions = {
   yes: Boolean(args.yes),
   sd,
   token,
+  local: Boolean(args.local),
 };
 
 const toolArg = String(args.tool);
