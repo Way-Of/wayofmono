@@ -5,16 +5,8 @@
       "target": "~/.claude",
       "components": {
         "settings": {
-          "description": "Claude Code global settings and MCP configuration",
+          "description": "Claude global configuration",
           "files": [
-            {
-              "src": "claude/settings.json",
-              "dest": "settings.json"
-            },
-            {
-              "src": "claude/.mcp.json",
-              "dest": ".mcp.json"
-            },
             {
               "src": "claude/README.md",
               "dest": "README.md"
@@ -22,7 +14,7 @@
           ]
         },
         "agents": {
-          "description": "Specialized subagents for Claude Code",
+          "description": "Specialized subagents for Claude",
           "files": [
             {
               "src": "claude/agents/codebase_analyzer.md",
@@ -50,8 +42,116 @@
             }
           ]
         },
+        "skills": {
+          "description": "Claude skills reference",
+          "files": [
+            {
+              "src": "claude/skills/README.md",
+              "dest": "skills/README.md"
+            }
+          ]
+        },
+        "skill/build_claude_agent": {
+          "description": "Build Claude Agent skill",
+          "files": [
+            {
+              "src": "claude/skills/build_claude_agent/SKILL.md",
+              "dest": "skills/build_claude_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_extension": {
+          "description": "Build Claude Extension skill",
+          "files": [
+            {
+              "src": "claude/skills/build_claude_extension/SKILL.md",
+              "dest": "skills/build_claude_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_skill": {
+          "description": "Build Claude Skill skill",
+          "files": [
+            {
+              "src": "claude/skills/build_claude_skill/SKILL.md",
+              "dest": "skills/build_claude_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_pi_agent": {
+          "description": "Build Pi Agent skill",
+          "files": [
+            {
+              "src": "claude/skills/build_pi_agent/SKILL.md",
+              "dest": "skills/build_pi_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_cli": {
+          "description": "Claude Cli skill",
+          "files": [
+            {
+              "src": "claude/skills/claude_cli/SKILL.md",
+              "dest": "skills/claude_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_config": {
+          "description": "Claude Config skill",
+          "files": [
+            {
+              "src": "claude/skills/claude_config/SKILL.md",
+              "dest": "skills/claude_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_keybindings": {
+          "description": "Claude Keybindings skill",
+          "files": [
+            {
+              "src": "claude/skills/claude_keybindings/SKILL.md",
+              "dest": "skills/claude_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_orchestrate": {
+          "description": "Claude Orchestrate skill",
+          "files": [
+            {
+              "src": "claude/skills/claude_orchestrate/SKILL.md",
+              "dest": "skills/claude_orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_prompts": {
+          "description": "Claude Prompts skill",
+          "files": [
+            {
+              "src": "claude/skills/claude_prompts/SKILL.md",
+              "dest": "skills/claude_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_themes": {
+          "description": "Claude Themes skill",
+          "files": [
+            {
+              "src": "claude/skills/claude_themes/SKILL.md",
+              "dest": "skills/claude_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_tui": {
+          "description": "Claude Tui skill",
+          "files": [
+            {
+              "src": "claude/skills/claude_tui/SKILL.md",
+              "dest": "skills/claude_tui/SKILL.md"
+            }
+          ]
+        },
         "skill/commit": {
-          "description": "Git commit workflow skill",
+          "description": "Commit skill",
           "files": [
             {
               "src": "claude/skills/commit/SKILL.md",
@@ -60,7 +160,7 @@
           ]
         },
         "skill/create_plan": {
-          "description": "Create detailed implementation plans skill",
+          "description": "Create Plan skill",
           "files": [
             {
               "src": "claude/skills/create_plan/SKILL.md",
@@ -69,7 +169,7 @@
           ]
         },
         "skill/debug": {
-          "description": "Debugging investigation skill",
+          "description": "Debug skill",
           "files": [
             {
               "src": "claude/skills/debug/SKILL.md",
@@ -77,17 +177,17 @@
             }
           ]
         },
-        "skill/debug_k8s": {
-          "description": "Kubernetes cluster debugging skill",
+        "skill/debug-k8s": {
+          "description": "Debug K8s skill",
           "files": [
             {
-              "src": "claude/skills/debug_k8s/SKILL.md",
-              "dest": "skills/debug_k8s/SKILL.md"
+              "src": "claude/skills/debug-k8s/SKILL.md",
+              "dest": "skills/debug-k8s/SKILL.md"
             }
           ]
         },
         "skill/experimental-pr-workflow": {
-          "description": "Experimental PR workflow (no-ticket commits) skill",
+          "description": "Experimental Pr Workflow skill",
           "files": [
             {
               "src": "claude/skills/experimental-pr-workflow/SKILL.md",
@@ -96,7 +196,7 @@
           ]
         },
         "skill/git-commit-helper": {
-          "description": "Auto-triggered git commit helper skill",
+          "description": "Git Commit Helper skill",
           "files": [
             {
               "src": "claude/skills/git-commit-helper/SKILL.md",
@@ -104,92 +204,8 @@
             }
           ]
         },
-        "skill/implement_plan": {
-          "description": "Execute an approved implementation plan skill",
-          "files": [
-            {
-              "src": "claude/skills/implement_plan/SKILL.md",
-              "dest": "skills/implement_plan/SKILL.md"
-            }
-          ]
-        },
-        "skill/init_harness": {
-          "description": "Initialize harness in a new repository skill",
-          "files": [
-            {
-              "src": "claude/skills/init_harness/SKILL.md",
-              "dest": "skills/init_harness/SKILL.md"
-            }
-          ]
-        },
-        "skill/pr-description-generator": {
-          "description": "Automated PR description generator skill",
-          "files": [
-            {
-              "src": "claude/skills/pr-description-generator/SKILL.md",
-              "dest": "skills/pr-description-generator/SKILL.md"
-            }
-          ]
-        },
-        "skill/research_codebase": {
-          "description": "Comprehensive codebase research skill",
-          "files": [
-            {
-              "src": "claude/skills/research_codebase/SKILL.md",
-              "dest": "skills/research_codebase/SKILL.md"
-            }
-          ]
-        },
-        "skill/validate_plan": {
-          "description": "Validate an implementation against its plan skill",
-          "files": [
-            {
-              "src": "claude/skills/validate_plan/SKILL.md",
-              "dest": "skills/validate_plan/SKILL.md"
-            }
-          ]
-        },
-        "skill/validate_telemetry": {
-          "description": "Validate local telemetry against a narrative spec skill",
-          "files": [
-            {
-              "src": "claude/skills/validate_telemetry/SKILL.md",
-              "dest": "skills/validate_telemetry/SKILL.md"
-            }
-          ]
-        },
-        "skill/observability-driven-development": {
-          "description": "Observability Driven Development (ODD) — design the trace before the feature; local OTel feedback loop",
-          "files": [
-            {
-              "src": "claude/skills/observability-driven-development/SKILL.md",
-              "dest": "skills/observability-driven-development/SKILL.md"
-            },
-            {
-              "src": "claude/skills/observability-driven-development/narrative.md",
-              "dest": "skills/observability-driven-development/narrative.md"
-            },
-            {
-              "src": "claude/skills/observability-driven-development/loop.md",
-              "dest": "skills/observability-driven-development/loop.md"
-            },
-            {
-              "src": "claude/skills/observability-driven-development/local-setup.md",
-              "dest": "skills/observability-driven-development/local-setup.md"
-            }
-          ]
-        },
-        "skill/worktree": {
-          "description": "Git worktree manager for parallel development",
-          "files": [
-            {
-              "src": "claude/skills/worktree/SKILL.md",
-              "dest": "skills/worktree/SKILL.md"
-            }
-          ]
-        },
         "skill/github-tracker": {
-          "description": "GitHub activity tracker and PR/issue query skill",
+          "description": "Github Tracker skill",
           "files": [
             {
               "src": "claude/skills/github-tracker/SKILL.md",
@@ -197,8 +213,39 @@
             }
           ]
         },
+        "skill/implement_plan": {
+          "description": "Implement Plan skill",
+          "files": [
+            {
+              "src": "claude/skills/implement_plan/SKILL.md",
+              "dest": "skills/implement_plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/improve-codebase-architecture": {
+          "description": "Improve Codebase Architecture skill",
+          "files": [
+            {
+              "src": "claude/skills/improve-codebase-architecture/REFERENCE.md",
+              "dest": "skills/improve-codebase-architecture/REFERENCE.md"
+            },
+            {
+              "src": "claude/skills/improve-codebase-architecture/SKILL.md",
+              "dest": "skills/improve-codebase-architecture/SKILL.md"
+            }
+          ]
+        },
+        "skill/init_harness": {
+          "description": "Init Harness skill",
+          "files": [
+            {
+              "src": "claude/skills/init_harness/SKILL.md",
+              "dest": "skills/init_harness/SKILL.md"
+            }
+          ]
+        },
         "skill/interview": {
-          "description": "Stress-test plans via relentless user interview skill",
+          "description": "Interview skill",
           "files": [
             {
               "src": "claude/skills/interview/SKILL.md",
@@ -206,20 +253,186 @@
             }
           ]
         },
+        "skill/observability-driven-development": {
+          "description": "Observability Driven Development skill",
+          "files": [
+            {
+              "src": "claude/skills/observability-driven-development/SKILL.md",
+              "dest": "skills/observability-driven-development/SKILL.md"
+            },
+            {
+              "src": "claude/skills/observability-driven-development/local-setup.md",
+              "dest": "skills/observability-driven-development/local-setup.md"
+            },
+            {
+              "src": "claude/skills/observability-driven-development/loop.md",
+              "dest": "skills/observability-driven-development/loop.md"
+            },
+            {
+              "src": "claude/skills/observability-driven-development/narrative.md",
+              "dest": "skills/observability-driven-development/narrative.md"
+            }
+          ]
+        },
+        "skill/otel_collector": {
+          "description": "Otel Collector skill",
+          "files": [
+            {
+              "src": "claude/skills/otel_collector/SKILL.md",
+              "dest": "skills/otel_collector/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_instrument": {
+          "description": "Otel Instrument skill",
+          "files": [
+            {
+              "src": "claude/skills/otel_instrument/SKILL.md",
+              "dest": "skills/otel_instrument/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_instrumentation": {
+          "description": "Otel Instrumentation skill",
+          "files": [
+            {
+              "src": "claude/skills/otel_instrumentation/SKILL.md",
+              "dest": "skills/otel_instrumentation/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_ottl": {
+          "description": "Otel Ottl skill",
+          "files": [
+            {
+              "src": "claude/skills/otel_ottl/SKILL.md",
+              "dest": "skills/otel_ottl/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_semantic_conventions": {
+          "description": "Otel Semantic Conventions skill",
+          "files": [
+            {
+              "src": "claude/skills/otel_semantic_conventions/SKILL.md",
+              "dest": "skills/otel_semantic_conventions/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_cli": {
+          "description": "Pi Cli skill",
+          "files": [
+            {
+              "src": "claude/skills/pi_cli/SKILL.md",
+              "dest": "skills/pi_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_config": {
+          "description": "Pi Config skill",
+          "files": [
+            {
+              "src": "claude/skills/pi_config/SKILL.md",
+              "dest": "skills/pi_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_extension": {
+          "description": "Pi Extension skill",
+          "files": [
+            {
+              "src": "claude/skills/pi_extension/SKILL.md",
+              "dest": "skills/pi_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_keybindings": {
+          "description": "Pi Keybindings skill",
+          "files": [
+            {
+              "src": "claude/skills/pi_keybindings/SKILL.md",
+              "dest": "skills/pi_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_orchestrate": {
+          "description": "Pi Orchestrate skill",
+          "files": [
+            {
+              "src": "claude/skills/pi_orchestrate/SKILL.md",
+              "dest": "skills/pi_orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_prompts": {
+          "description": "Pi Prompts skill",
+          "files": [
+            {
+              "src": "claude/skills/pi_prompts/SKILL.md",
+              "dest": "skills/pi_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_skill": {
+          "description": "Pi Skill skill",
+          "files": [
+            {
+              "src": "claude/skills/pi_skill/SKILL.md",
+              "dest": "skills/pi_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_themes": {
+          "description": "Pi Themes skill",
+          "files": [
+            {
+              "src": "claude/skills/pi_themes/SKILL.md",
+              "dest": "skills/pi_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_tui": {
+          "description": "Pi Tui skill",
+          "files": [
+            {
+              "src": "claude/skills/pi_tui/SKILL.md",
+              "dest": "skills/pi_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/pr-description-generator": {
+          "description": "Pr Description Generator skill",
+          "files": [
+            {
+              "src": "claude/skills/pr-description-generator/SKILL.md",
+              "dest": "skills/pr-description-generator/SKILL.md"
+            }
+          ]
+        },
+        "skill/prd-to-issues": {
+          "description": "Prd To Issues skill",
+          "files": [
+            {
+              "src": "claude/skills/prd-to-issues/SKILL.md",
+              "dest": "skills/prd-to-issues/SKILL.md"
+            }
+          ]
+        },
+        "skill/research_codebase": {
+          "description": "Research Codebase skill",
+          "files": [
+            {
+              "src": "claude/skills/research_codebase/SKILL.md",
+              "dest": "skills/research_codebase/SKILL.md"
+            }
+          ]
+        },
         "skill/tdd": {
-          "description": "Test-driven development with red-green-refactor loop skill",
+          "description": "Tdd skill",
           "files": [
             {
               "src": "claude/skills/tdd/SKILL.md",
               "dest": "skills/tdd/SKILL.md"
-            },
-            {
-              "src": "claude/skills/tdd/tests.md",
-              "dest": "skills/tdd/tests.md"
-            },
-            {
-              "src": "claude/skills/tdd/mocking.md",
-              "dest": "skills/tdd/mocking.md"
             },
             {
               "src": "claude/skills/tdd/deep-modules.md",
@@ -230,129 +443,52 @@
               "dest": "skills/tdd/interface-design.md"
             },
             {
-              "src": "claude/skills/tdd/refactoring.md",
-              "dest": "skills/tdd/refactoring.md"
-            }
-          ]
-        },
-        "skill/improve-codebase-architecture": {
-          "description": "Find architectural friction and propose deep-module refactors skill",
-          "files": [
-            {
-              "src": "claude/skills/improve-codebase-architecture/SKILL.md",
-              "dest": "skills/improve-codebase-architecture/SKILL.md"
+              "src": "claude/skills/tdd/mocking.md",
+              "dest": "skills/tdd/mocking.md"
             },
             {
-              "src": "claude/skills/improve-codebase-architecture/REFERENCE.md",
-              "dest": "skills/improve-codebase-architecture/REFERENCE.md"
+              "src": "claude/skills/tdd/refactoring.md",
+              "dest": "skills/tdd/refactoring.md"
+            },
+            {
+              "src": "claude/skills/tdd/tests.md",
+              "dest": "skills/tdd/tests.md"
             }
           ]
         },
-        "skill/prd-to-issues": {
-          "description": "Break a PRD into vertical-slice issue files skill",
+        "skill/validate_plan": {
+          "description": "Validate Plan skill",
           "files": [
             {
-              "src": "claude/skills/prd-to-issues/SKILL.md",
-              "dest": "skills/prd-to-issues/SKILL.md"
+              "src": "claude/skills/validate_plan/SKILL.md",
+              "dest": "skills/validate_plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/validate_telemetry": {
+          "description": "Validate Telemetry skill",
+          "files": [
+            {
+              "src": "claude/skills/validate_telemetry/SKILL.md",
+              "dest": "skills/validate_telemetry/SKILL.md"
+            }
+          ]
+        },
+        "skill/worktree": {
+          "description": "Worktree skill",
+          "files": [
+            {
+              "src": "claude/skills/worktree/SKILL.md",
+              "dest": "skills/worktree/SKILL.md"
             }
           ]
         },
         "skill/write-a-prd": {
-          "description": "Generate a PRD from a client brief skill",
+          "description": "Write A Prd skill",
           "files": [
             {
               "src": "claude/skills/write-a-prd/SKILL.md",
               "dest": "skills/write-a-prd/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-pi-agent": {
-          "description": "Build Pi agent definitions with frontmatter format",
-          "files": [
-            {
-              "src": "claude/skills/build-pi-agent/SKILL.md",
-              "dest": "skills/build-pi-agent/SKILL.md"
-            }
-          ]
-        },
-        "skill/pi-cli": {
-          "description": "Pi CLI expert — CLI flags, subcommands, output modes, non-interactive usage",
-          "files": [
-            {
-              "src": "claude/skills/pi-cli/SKILL.md",
-              "dest": "skills/pi-cli/SKILL.md"
-            }
-          ]
-        },
-        "skill/pi-config": {
-          "description": "Pi configuration expert — settings, providers, models, packages, keybindings",
-          "files": [
-            {
-              "src": "claude/skills/pi-config/SKILL.md",
-              "dest": "skills/pi-config/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-pi-extension": {
-          "description": "Build Pi extensions — custom tools, events, commands, shortcuts, providers",
-          "files": [
-            {
-              "src": "claude/skills/build-pi-extension/SKILL.md",
-              "dest": "skills/build-pi-extension/SKILL.md"
-            }
-          ]
-        },
-        "skill/pi-keybindings": {
-          "description": "Pi keyboard shortcuts — registerShortcut, key IDs, modifiers, reserved keys",
-          "files": [
-            {
-              "src": "claude/skills/pi-keybindings/SKILL.md",
-              "dest": "skills/pi-keybindings/SKILL.md"
-            }
-          ]
-        },
-        "skill/pi-orchestrate": {
-          "description": "Orchestrate Pi domain experts to research and build Pi components",
-          "files": [
-            {
-              "src": "claude/skills/pi-orchestrate/SKILL.md",
-              "dest": "skills/pi-orchestrate/SKILL.md"
-            }
-          ]
-        },
-        "skill/pi-prompts": {
-          "description": "Pi prompt templates — single-file .md format, arguments, /template invocation",
-          "files": [
-            {
-              "src": "claude/skills/pi-prompts/SKILL.md",
-              "dest": "skills/pi-prompts/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-pi-skill": {
-          "description": "Build Pi skills — SKILL.md format, frontmatter, validation, directory structure",
-          "files": [
-            {
-              "src": "claude/skills/build-pi-skill/SKILL.md",
-              "dest": "skills/build-pi-skill/SKILL.md"
-            }
-          ]
-        },
-        "skill/pi-themes": {
-          "description": "Pi themes — JSON format, 51 color tokens, vars system, hex/256-color values",
-          "files": [
-            {
-              "src": "claude/skills/pi-themes/SKILL.md",
-              "dest": "skills/pi-themes/SKILL.md"
-            }
-          ]
-        },
-        "skill/pi-tui": {
-          "description": "Pi TUI — built-in components, custom components, keyboard input, widgets, overlays",
-          "files": [
-            {
-              "src": "claude/skills/pi-tui/SKILL.md",
-              "dest": "skills/pi-tui/SKILL.md"
             }
           ]
         }
