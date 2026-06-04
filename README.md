@@ -12,6 +12,7 @@ WayOfMono is built on an **Interface-Agnostic Philosophy**. Our core logic and t
 4.  **Pi:** Full compatibility with the official Pi Agent standards from [earendil-works](https://github.com/earendil-works/pi).
 5.  **OpenCode:** Open-source, TUI-driven coding agent following the [OpenCode](https://opencode.ai/) standard.
 6.  **Gemini CLI:** Multimodal, high-velocity automation using the [Gemini CLI](https://geminicli.com/) standard.
+7.  **Antigravity:** Agent-first development platform for autonomous execution and web tasks.
 
 ---
 
@@ -171,7 +172,8 @@ All published at https://www.npmjs.com/settings/wayofmono/packages
 
 ## 🎛️ AI Engineering Harness
 
-Shared agents, commands, skills, and extensions for all agent frontends. Install once and instantly configure any agent with battle-tested prompts and workflows.
+Shared agents, commands, skills, and extensions for all agent frontends. Install once and instantly configure any agent with battle-tested prompts and workflows. See the comprehensive [AI Engineering Harness Tutorial](file:///home/zerwiz/wayofmono/docs/HARNESS_TUTORIAL.md) for step-by-step instructions on utilizing the agents, commands, and skills.
+
 
 ### Prerequisites
 
@@ -201,7 +203,8 @@ ai-harness --tool=opencode        # OpenCode
 ai-harness --tool=gemini          # Gemini CLI
 ai-harness --tool=pi              # Pi
 ai-harness --tool=wocoder         # Wo Coder
-ai-harness --tool=all             # All five
+ai-harness --tool=antigravity     # Antigravity
+ai-harness --tool=all             # All six
 ```
 
 Check for updates:
@@ -231,7 +234,8 @@ For symlink-based installation (easier `git pull` updates):
 ./packages/@aiengineeringharness/setup.sh gemini             # Gemini CLI → ~/.gemini/
 ./packages/@aiengineeringharness/setup.sh pi                 # Pi → ~/.pi/agent/
 ./packages/@aiengineeringharness/setup.sh wocoder            # Wo Coder → ~/.wocoder/
-./packages/@aiengineeringharness/setup.sh all                # All five
+./packages/@aiengineeringharness/setup.sh antigravity        # Antigravity → ~/.antigravity/
+./packages/@aiengineeringharness/setup.sh all                # All six
 
 ./packages/@aiengineeringharness/setup.sh <tool> --dry-run   # Preview
 ./packages/@aiengineeringharness/setup.sh <tool> --restow    # Update after git pull

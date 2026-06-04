@@ -6,7 +6,7 @@
 
 **Purpose**: Configuration harness for AI coding agents with reusable prompts, agents, and workflows.
 
-**Supported Tools**: OpenCode, Claude Code, Gemini CLI, Pi, Wo Coder
+**Supported Tools**: OpenCode, Claude Code, Gemini CLI, Pi, Wo Coder, Antigravity
 
 **Installation**: `./setup.sh <tool>` where tool is `opencode`, `claude`, `gemini`, `pi`, `wocoder`, or `all`
 
@@ -34,6 +34,7 @@ ai-engineering-harness/
 │   ├── skills/         # 31 skills (auto-triggered)
 │   └── extensions/     # subagent extension (multi-agent workflows)
 ├── wocoder/            → ~/.wocoder/
+│   ├── antigravity/        → ~/.antigravity/
 │   ├── agents/         # 6 agents (snake_case)
 │   ├── commands/       # 11 slash commands
 │   ├── skills/         # 25 skills (auto-triggered)
@@ -48,36 +49,36 @@ ai-engineering-harness/
 
 ## Commands & Skills
 
-| Command | OpenCode | Claude | Gemini | Pi | Wo Coder | Type | Description |
-|---------|:--------:|:------:|:------:|:--:|:--------:|------|-------------|
-| `/init_harness` | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Initialize harness (creates AGENTS.md/CLAUDE.md/GEMINI.md + thoughts/) |
-| `/create_plan` | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Generate implementation plan from ticket |
-| `/implement_plan` | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Execute approved plan phase-by-phase |
-| `/validate_plan` | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Verify implementation against plan |
-| `/commit` | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Create well-structured git commits |
-| `/debug` | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Investigate issues during testing |
-| `/debug_k8s` | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Debug Kubernetes (prefers MCP, falls back to kubectl) |
-| `/research_codebase` | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Comprehensive codebase research |
-| `/validate_telemetry` | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Validate local telemetry against a narrative spec |
-| `observability_driven_development` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Design the trace before the feature; local OTel feedback loop |
-| `git_commit_helper` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Triggers on "commit" keywords |
-| `pr_description_generator` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Triggers when creating PRs |
-| `experimental_pr_workflow` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Formalizes experimental work |
-| `interview` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Stress-test plans via relentless user interview |
-| `improve_codebase_architecture` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Find architectural friction, propose deep-module refactors |
-| `prd_to_issues` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Break a PRD into vertical-slice issue files |
-| `tdd` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Red-green-refactor TDD discipline |
-| `write_a_prd` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Generate a PRD from a client brief |
-| `build_pi_agent` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Build Pi agent definitions with frontmatter format |
-| `pi_cli` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi CLI expert — CLI flags, subcommands, output modes |
-| `pi_config` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi configuration — settings, providers, models, packages |
-| `build_pi_extension` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Build Pi extensions — tools, events, commands, providers |
-| `pi_keybindings` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi keyboard shortcuts — registerShortcut, key IDs |
-| `pi_orchestrate` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Orchestrate Pi domain experts to build Pi components |
-| `pi_prompts` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi prompt templates — .md format, arguments, /template |
-| `build_pi_skill` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Build Pi skills — SKILL.md format, frontmatter, validation |
-| `pi_themes` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi themes — JSON, 51 color tokens, vars, hex/256-color |
-| `pi_tui` | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi TUI — built-in & custom components, keyboard, widgets |
+| Command | OpenCode | Claude | Gemini | Pi | Wo Coder | Antigravity | Type | Description |
+|---------|:--------:|:------:|:------:|:--:|:--------:|:-----------:|------|-------------|
+| `/init_harness` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Initialize harness (creates AGENTS.md/CLAUDE.md/GEMINI.md + thoughts/) |
+| `/create_plan` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Generate implementation plan from ticket |
+| `/implement_plan` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Execute approved plan phase-by-phase |
+| `/validate_plan` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Verify implementation against plan |
+| `/commit` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Create well-structured git commits |
+| `/debug` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Investigate issues during testing |
+| `/debug_k8s` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Debug Kubernetes (prefers MCP, falls back to kubectl) |
+| `/research_codebase` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Comprehensive codebase research |
+| `/validate_telemetry` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Validate local telemetry against a narrative spec |
+| `observability_driven_development` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Design the trace before the feature; local OTel feedback loop |
+| `git_commit_helper` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Triggers on "commit" keywords |
+| `pr_description_generator` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Triggers when creating PRs |
+| `experimental_pr_workflow` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Formalizes experimental work |
+| `interview` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Stress-test plans via relentless user interview |
+| `improve_codebase_architecture` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Find architectural friction, propose deep-module refactors |
+| `prd_to_issues` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Break a PRD into vertical-slice issue files |
+| `tdd` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Red-green-refactor TDD discipline |
+| `write_a_prd` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Generate a PRD from a client brief |
+| `build_pi_agent` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Build Pi agent definitions with frontmatter format |
+| `pi_cli` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi CLI expert — CLI flags, subcommands, output modes |
+| `pi_config` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi configuration — settings, providers, models, packages |
+| `build_pi_extension` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Build Pi extensions — tools, events, commands, providers |
+| `pi_keybindings` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi keyboard shortcuts — registerShortcut, key IDs |
+| `pi_orchestrate` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Orchestrate Pi domain experts to research and build Pi components |
+| `pi_prompts` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi prompt templates — .md format, arguments, /template |
+| `build_pi_skill` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Build Pi skills — SKILL.md format, frontmatter, validation |
+| `pi_themes` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi themes — JSON, 51 color tokens, vars, hex/256-color |
+| `pi_tui` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi TUI — built-in & custom components, keyboard, widgets |
 
 **Naming**: OpenCode, Claude, Gemini, and Wo Coder use snake_case. Pi uses kebab-case (its native convention).
 
@@ -85,14 +86,14 @@ ai-engineering-harness/
 
 All agents are shared across all five tools:
 
-| Agent | OpenCode | Claude | Gemini | Pi | Wo Coder | Purpose |
-|-------|:--------:|:------:|:------:|:--:|:--------:|--------|
-| `codebase_analyzer` | ✓ | ✓ | ✓ | ✓ | ✓ | Analyze implementation details, trace data flow |
-| `codebase_locator` | ✓ | ✓ | ✓ | ✓ | ✓ | Find files/directories by feature or task |
-| `codebase_pattern_finder` | ✓ | ✓ | ✓ | ✓ | ✓ | Discover similar implementations and patterns |
-| `thoughts_analyzer` | ✓ | ✓ | ✓ | ✓ | ✓ | Extract insights from research documents |
-| `thoughts_locator` | ✓ | ✓ | ✓ | ✓ | ✓ | Discover documents in thoughts/ directory |
-| `web_search_researcher` | ✓ | ✓ | ✓ | ✓ | ✓ | Research information from web sources |
+| Agent | OpenCode | Claude | Gemini | Pi | Wo Coder | Antigravity | Purpose |
+|-------|:--------:|:------:|:------:|:--:|:--------:|:-----------:|--------|
+| `codebase_analyzer` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Analyze implementation details, trace data flow |
+| `codebase_locator` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Find files/directories by feature or task |
+| `codebase_pattern_finder` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Discover similar implementations and patterns |
+| `thoughts_analyzer` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Extract insights from research documents |
+| `thoughts_locator` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Discover documents in thoughts/ directory |
+| `web_search_researcher` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Research information from web sources |
 
 ## Workflow
 
@@ -154,3 +155,9 @@ Available MCP servers: `kubernetes` (disabled by default), `aspire-dashboard` (d
 - Agent naming: Uses snake_case convention
 - Config location: `~/.wocoder/`
 - Includes `subagent` extension for multi-agent workflows (chain, parallel, single), matching Pi's extension system
+
+### Antigravity
+- Project memory: `ANTIGRAVITY.md` (generated by `/init`)
+- Commands and skills are separate directories
+- Agent naming: Uses snake_case convention
+- Config location: `~/.antigravity/`

@@ -14,6 +14,10 @@
             {
               "src": "claude/.mcp.json",
               "dest": ".mcp.json"
+            },
+            {
+              "src": "claude/README.md",
+              "dest": "README.md"
             }
           ]
         },
@@ -73,12 +77,12 @@
             }
           ]
         },
-        "skill/debug-k8s": {
+        "skill/debug_k8s": {
           "description": "Kubernetes cluster debugging skill",
           "files": [
             {
-              "src": "claude/skills/debug-k8s/SKILL.md",
-              "dest": "skills/debug-k8s/SKILL.md"
+              "src": "claude/skills/debug_k8s/SKILL.md",
+              "dest": "skills/debug_k8s/SKILL.md"
             }
           ]
         },
@@ -155,7 +159,7 @@
           ]
         },
         "skill/observability-driven-development": {
-          "description": "Observability Driven Development (ODD) \u2014 design the trace before the feature; local OTel feedback loop",
+          "description": "Observability Driven Development (ODD) — design the trace before the feature; local OTel feedback loop",
           "files": [
             {
               "src": "claude/skills/observability-driven-development/SKILL.md",
@@ -272,7 +276,7 @@
           ]
         },
         "skill/pi-cli": {
-          "description": "Pi CLI expert \u2014 CLI flags, subcommands, output modes, non-interactive usage",
+          "description": "Pi CLI expert — CLI flags, subcommands, output modes, non-interactive usage",
           "files": [
             {
               "src": "claude/skills/pi-cli/SKILL.md",
@@ -281,7 +285,7 @@
           ]
         },
         "skill/pi-config": {
-          "description": "Pi configuration expert \u2014 settings, providers, models, packages, keybindings",
+          "description": "Pi configuration expert — settings, providers, models, packages, keybindings",
           "files": [
             {
               "src": "claude/skills/pi-config/SKILL.md",
@@ -290,7 +294,7 @@
           ]
         },
         "skill/build-pi-extension": {
-          "description": "Build Pi extensions \u2014 custom tools, events, commands, shortcuts, providers",
+          "description": "Build Pi extensions — custom tools, events, commands, shortcuts, providers",
           "files": [
             {
               "src": "claude/skills/build-pi-extension/SKILL.md",
@@ -299,7 +303,7 @@
           ]
         },
         "skill/pi-keybindings": {
-          "description": "Pi keyboard shortcuts \u2014 registerShortcut, key IDs, modifiers, reserved keys",
+          "description": "Pi keyboard shortcuts — registerShortcut, key IDs, modifiers, reserved keys",
           "files": [
             {
               "src": "claude/skills/pi-keybindings/SKILL.md",
@@ -317,7 +321,7 @@
           ]
         },
         "skill/pi-prompts": {
-          "description": "Pi prompt templates \u2014 single-file .md format, arguments, /template invocation",
+          "description": "Pi prompt templates — single-file .md format, arguments, /template invocation",
           "files": [
             {
               "src": "claude/skills/pi-prompts/SKILL.md",
@@ -326,7 +330,7 @@
           ]
         },
         "skill/build-pi-skill": {
-          "description": "Build Pi skills \u2014 SKILL.md format, frontmatter, validation, directory structure",
+          "description": "Build Pi skills — SKILL.md format, frontmatter, validation, directory structure",
           "files": [
             {
               "src": "claude/skills/build-pi-skill/SKILL.md",
@@ -335,7 +339,7 @@
           ]
         },
         "skill/pi-themes": {
-          "description": "Pi themes \u2014 JSON format, 51 color tokens, vars system, hex/256-color values",
+          "description": "Pi themes — JSON format, 51 color tokens, vars system, hex/256-color values",
           "files": [
             {
               "src": "claude/skills/pi-themes/SKILL.md",
@@ -344,7 +348,7 @@
           ]
         },
         "skill/pi-tui": {
-          "description": "Pi TUI \u2014 built-in components, custom components, keyboard input, widgets, overlays",
+          "description": "Pi TUI — built-in components, custom components, keyboard input, widgets, overlays",
           "files": [
             {
               "src": "claude/skills/pi-tui/SKILL.md",
@@ -392,6 +396,10 @@
             {
               "src": "opencode/agents/web_search_researcher.md",
               "dest": "agents/web_search_researcher.md"
+            },
+            {
+              "src": "opencode/agents/README.md",
+              "dest": "agents/README.md"
             }
           ]
         },
@@ -477,7 +485,7 @@
           ]
         },
         "skill/observability-driven-development": {
-          "description": "Observability Driven Development (ODD) \u2014 design the trace before the feature; local OTel feedback loop",
+          "description": "Observability Driven Development (ODD) — design the trace before the feature; local OTel feedback loop",
           "files": [
             {
               "src": "opencode/skills/observability-driven-development/SKILL.md",
@@ -621,7 +629,7 @@
           ]
         },
         "skill/pi-cli": {
-          "description": "Pi CLI expert \u2014 CLI flags, subcommands, output modes, non-interactive usage",
+          "description": "Pi CLI expert — CLI flags, subcommands, output modes, non-interactive usage",
           "files": [
             {
               "src": "opencode/skills/pi-cli/SKILL.md",
@@ -630,7 +638,7 @@
           ]
         },
         "skill/pi-config": {
-          "description": "Pi configuration expert \u2014 settings, providers, models, packages, keybindings",
+          "description": "Pi configuration expert — settings, providers, models, packages, keybindings",
           "files": [
             {
               "src": "opencode/skills/pi-config/SKILL.md",
@@ -639,7 +647,7 @@
           ]
         },
         "skill/build-pi-extension": {
-          "description": "Build Pi extensions \u2014 custom tools, events, commands, shortcuts, providers",
+          "description": "Build Pi extensions — custom tools, events, commands, shortcuts, providers",
           "files": [
             {
               "src": "opencode/skills/build-pi-extension/SKILL.md",
@@ -648,7 +656,7 @@
           ]
         },
         "skill/pi-keybindings": {
-          "description": "Pi keyboard shortcuts \u2014 registerShortcut, key IDs, modifiers, reserved keys",
+          "description": "Pi keyboard shortcuts — registerShortcut, key IDs, modifiers, reserved keys",
           "files": [
             {
               "src": "opencode/skills/pi-keybindings/SKILL.md",
@@ -666,7 +674,7 @@
           ]
         },
         "skill/pi-prompts": {
-          "description": "Pi prompt templates \u2014 single-file .md format, arguments, /template invocation",
+          "description": "Pi prompt templates — single-file .md format, arguments, /template invocation",
           "files": [
             {
               "src": "opencode/skills/pi-prompts/SKILL.md",
@@ -675,7 +683,7 @@
           ]
         },
         "skill/build-pi-skill": {
-          "description": "Build Pi skills \u2014 SKILL.md format, frontmatter, validation, directory structure",
+          "description": "Build Pi skills — SKILL.md format, frontmatter, validation, directory structure",
           "files": [
             {
               "src": "opencode/skills/build-pi-skill/SKILL.md",
@@ -684,7 +692,7 @@
           ]
         },
         "skill/pi-themes": {
-          "description": "Pi themes \u2014 JSON format, 51 color tokens, vars system, hex/256-color values",
+          "description": "Pi themes — JSON format, 51 color tokens, vars system, hex/256-color values",
           "files": [
             {
               "src": "opencode/skills/pi-themes/SKILL.md",
@@ -693,7 +701,7 @@
           ]
         },
         "skill/pi-tui": {
-          "description": "Pi TUI \u2014 built-in components, custom components, keyboard input, widgets, overlays",
+          "description": "Pi TUI — built-in components, custom components, keyboard input, widgets, overlays",
           "files": [
             {
               "src": "opencode/skills/pi-tui/SKILL.md",
@@ -706,9 +714,22 @@
     "gemini": {
       "target": "~/.gemini",
       "components": {
-        "agents": {
-          "description": "Specialized subagents for Gemini CLI",
+        "settings": {
+          "description": "Gemini global configuration",
           "files": [
+            {
+              "src": "gemini/README.md",
+              "dest": "README.md"
+            }
+          ]
+        },
+        "agents": {
+          "description": "Specialized subagents for Gemini",
+          "files": [
+            {
+              "src": "gemini/agents/README.md",
+              "dest": "agents/README.md"
+            },
             {
               "src": "gemini/agents/codebase_investigator.md",
               "dest": "agents/codebase_investigator.md"
@@ -735,8 +756,96 @@
             }
           ]
         },
+        "sidecars": {
+          "description": "Gemini sidecars",
+          "files": [
+            {
+              "src": "gemini/sidecars/README.md",
+              "dest": "sidecars/README.md"
+            }
+          ]
+        },
+        "hooks": {
+          "description": "Gemini hooks",
+          "files": [
+            {
+              "src": "gemini/hooks/README.md",
+              "dest": "hooks/README.md"
+            }
+          ]
+        },
+        "plugins": {
+          "description": "Gemini plugins",
+          "files": [
+            {
+              "src": "gemini/plugins/README.md",
+              "dest": "plugins/README.md"
+            }
+          ]
+        },
+        "commands": {
+          "description": "Gemini commands",
+          "files": [
+            {
+              "src": "gemini/commands/commit.toml",
+              "dest": "commands/commit.toml"
+            },
+            {
+              "src": "gemini/commands/create_plan.toml",
+              "dest": "commands/create_plan.toml"
+            },
+            {
+              "src": "gemini/commands/debug-k8s.toml",
+              "dest": "commands/debug-k8s.toml"
+            },
+            {
+              "src": "gemini/commands/debug.toml",
+              "dest": "commands/debug.toml"
+            },
+            {
+              "src": "gemini/commands/experimental-pr-workflow.toml",
+              "dest": "commands/experimental-pr-workflow.toml"
+            },
+            {
+              "src": "gemini/commands/git_commit_helper.toml",
+              "dest": "commands/git_commit_helper.toml"
+            },
+            {
+              "src": "gemini/commands/implement_plan.toml",
+              "dest": "commands/implement_plan.toml"
+            },
+            {
+              "src": "gemini/commands/init_harness.toml",
+              "dest": "commands/init_harness.toml"
+            },
+            {
+              "src": "gemini/commands/otel_instrument.toml",
+              "dest": "commands/otel_instrument.toml"
+            },
+            {
+              "src": "gemini/commands/pr_description_generator.toml",
+              "dest": "commands/pr_description_generator.toml"
+            },
+            {
+              "src": "gemini/commands/research_codebase.toml",
+              "dest": "commands/research_codebase.toml"
+            },
+            {
+              "src": "gemini/commands/validate_plan.toml",
+              "dest": "commands/validate_plan.toml"
+            },
+            {
+              "src": "gemini/commands/validate_telemetry.toml",
+              "dest": "commands/validate_telemetry.toml"
+            },
+            {
+              "src": "gemini/commands/worktree.toml",
+              "dest": "commands/worktree.toml"
+            }
+          ]
+        },
         "command/commit": {
-          "description": "Git commit workflow command",
+          "description": "Commit command",
           "files": [
             {
               "src": "gemini/commands/commit.toml",
@@ -745,7 +854,7 @@
           ]
         },
         "command/create_plan": {
-          "description": "Create implementation plans command",
+          "description": "Create Plan command",
           "files": [
             {
               "src": "gemini/commands/create_plan.toml",
@@ -753,17 +862,8 @@
             }
           ]
         },
-        "command/debug": {
-          "description": "Debugging investigation command",
-          "files": [
-            {
-              "src": "gemini/commands/debug.toml",
-              "dest": "commands/debug.toml"
-            }
-          ]
-        },
         "command/debug-k8s": {
-          "description": "Kubernetes cluster debugging command",
+          "description": "Debug K8s command",
           "files": [
             {
               "src": "gemini/commands/debug-k8s.toml",
@@ -771,8 +871,17 @@
             }
           ]
         },
+        "command/debug": {
+          "description": "Debug command",
+          "files": [
+            {
+              "src": "gemini/commands/debug.toml",
+              "dest": "commands/debug.toml"
+            }
+          ]
+        },
         "command/experimental-pr-workflow": {
-          "description": "Experimental PR workflow command",
+          "description": "Experimental Pr Workflow command",
           "files": [
             {
               "src": "gemini/commands/experimental-pr-workflow.toml",
@@ -781,7 +890,7 @@
           ]
         },
         "command/git_commit_helper": {
-          "description": "Auto-triggered git commit helper command",
+          "description": "Git Commit Helper command",
           "files": [
             {
               "src": "gemini/commands/git_commit_helper.toml",
@@ -790,7 +899,7 @@
           ]
         },
         "command/implement_plan": {
-          "description": "Execute an approved plan command",
+          "description": "Implement Plan command",
           "files": [
             {
               "src": "gemini/commands/implement_plan.toml",
@@ -799,7 +908,7 @@
           ]
         },
         "command/init_harness": {
-          "description": "Initialize harness in a new repository command",
+          "description": "Init Harness command",
           "files": [
             {
               "src": "gemini/commands/init_harness.toml",
@@ -807,8 +916,17 @@
             }
           ]
         },
+        "command/otel_instrument": {
+          "description": "Otel Instrument command",
+          "files": [
+            {
+              "src": "gemini/commands/otel_instrument.toml",
+              "dest": "commands/otel_instrument.toml"
+            }
+          ]
+        },
         "command/pr_description_generator": {
-          "description": "Automated PR description generator command",
+          "description": "Pr Description Generator command",
           "files": [
             {
               "src": "gemini/commands/pr_description_generator.toml",
@@ -817,7 +935,7 @@
           ]
         },
         "command/research_codebase": {
-          "description": "Comprehensive codebase research command",
+          "description": "Research Codebase command",
           "files": [
             {
               "src": "gemini/commands/research_codebase.toml",
@@ -826,7 +944,7 @@
           ]
         },
         "command/validate_plan": {
-          "description": "Validate implementation against plan command",
+          "description": "Validate Plan command",
           "files": [
             {
               "src": "gemini/commands/validate_plan.toml",
@@ -835,7 +953,7 @@
           ]
         },
         "command/validate_telemetry": {
-          "description": "Validate local telemetry against a narrative spec command",
+          "description": "Validate Telemetry command",
           "files": [
             {
               "src": "gemini/commands/validate_telemetry.toml",
@@ -843,29 +961,35 @@
             }
           ]
         },
-        "skill/observability_driven_development": {
-          "description": "Observability Driven Development (ODD) \u2014 design the trace before the feature; local OTel feedback loop",
+        "command/worktree": {
+          "description": "Worktree command",
           "files": [
             {
-              "src": "gemini/skills/observability_driven_development/SKILL.md",
-              "dest": "skills/observability_driven_development/SKILL.md"
-            },
+              "src": "gemini/commands/worktree.toml",
+              "dest": "commands/worktree.toml"
+            }
+          ]
+        },
+        "skills": {
+          "description": "Gemini skills reference",
+          "files": [
             {
-              "src": "gemini/skills/observability_driven_development/narrative.md",
-              "dest": "skills/observability_driven_development/narrative.md"
-            },
+              "src": "gemini/skills/README.md",
+              "dest": "skills/README.md"
+            }
+          ]
+        },
+        "skill/build_pi_agent": {
+          "description": "Build Pi Agent skill",
+          "files": [
             {
-              "src": "gemini/skills/observability_driven_development/loop.md",
-              "dest": "skills/observability_driven_development/loop.md"
-            },
-            {
-              "src": "gemini/skills/observability_driven_development/local-setup.md",
-              "dest": "skills/observability_driven_development/local-setup.md"
+              "src": "gemini/skills/build_pi_agent/SKILL.md",
+              "dest": "skills/build_pi_agent/SKILL.md"
             }
           ]
         },
         "skill/commit": {
-          "description": "Git commit workflow skill",
+          "description": "Commit skill",
           "files": [
             {
               "src": "gemini/skills/commit/SKILL.md",
@@ -874,7 +998,7 @@
           ]
         },
         "skill/create_plan": {
-          "description": "Create implementation plans skill",
+          "description": "Create Plan skill",
           "files": [
             {
               "src": "gemini/skills/create_plan/SKILL.md",
@@ -883,7 +1007,7 @@
           ]
         },
         "skill/debug": {
-          "description": "Debugging investigation skill",
+          "description": "Debug skill",
           "files": [
             {
               "src": "gemini/skills/debug/SKILL.md",
@@ -891,17 +1015,17 @@
             }
           ]
         },
-        "skill/debug-k8s": {
-          "description": "Kubernetes cluster debugging skill",
+        "skill/debug_k8s": {
+          "description": "Debug K8s skill",
           "files": [
             {
-              "src": "gemini/skills/debug-k8s/SKILL.md",
-              "dest": "skills/debug-k8s/SKILL.md"
+              "src": "gemini/skills/debug_k8s/SKILL.md",
+              "dest": "skills/debug_k8s/SKILL.md"
             }
           ]
         },
         "skill/experimental_pr_workflow": {
-          "description": "Experimental PR workflow skill",
+          "description": "Experimental Pr Workflow skill",
           "files": [
             {
               "src": "gemini/skills/experimental_pr_workflow/SKILL.md",
@@ -910,7 +1034,7 @@
           ]
         },
         "skill/git_commit_helper": {
-          "description": "Auto-triggered git commit helper skill",
+          "description": "Git Commit Helper skill",
           "files": [
             {
               "src": "gemini/skills/git_commit_helper/SKILL.md",
@@ -919,7 +1043,7 @@
           ]
         },
         "skill/implement_plan": {
-          "description": "Execute an approved plan skill",
+          "description": "Implement Plan skill",
           "files": [
             {
               "src": "gemini/skills/implement_plan/SKILL.md",
@@ -927,8 +1051,21 @@
             }
           ]
         },
+        "skill/improve_codebase_architecture": {
+          "description": "Improve Codebase Architecture skill",
+          "files": [
+            {
+              "src": "gemini/skills/improve_codebase_architecture/REFERENCE.md",
+              "dest": "skills/improve_codebase_architecture/REFERENCE.md"
+            },
+            {
+              "src": "gemini/skills/improve_codebase_architecture/SKILL.md",
+              "dest": "skills/improve_codebase_architecture/SKILL.md"
+            }
+          ]
+        },
         "skill/init_harness": {
-          "description": "Initialize harness skill",
+          "description": "Init Harness skill",
           "files": [
             {
               "src": "gemini/skills/init_harness/SKILL.md",
@@ -936,53 +1073,8 @@
             }
           ]
         },
-        "skill/pr_description_generator": {
-          "description": "Automated PR description generator skill",
-          "files": [
-            {
-              "src": "gemini/skills/pr_description_generator/SKILL.md",
-              "dest": "skills/pr_description_generator/SKILL.md"
-            }
-          ]
-        },
-        "skill/research_codebase": {
-          "description": "Comprehensive codebase research skill",
-          "files": [
-            {
-              "src": "gemini/skills/research_codebase/SKILL.md",
-              "dest": "skills/research_codebase/SKILL.md"
-            }
-          ]
-        },
-        "skill/validate_plan": {
-          "description": "Validate implementation against plan skill",
-          "files": [
-            {
-              "src": "gemini/skills/validate_plan/SKILL.md",
-              "dest": "skills/validate_plan/SKILL.md"
-            }
-          ]
-        },
-        "command/worktree": {
-          "description": "Git worktree manager command",
-          "files": [
-            {
-              "src": "gemini/commands/worktree.toml",
-              "dest": "commands/worktree.toml"
-            }
-          ]
-        },
-        "skill/worktree": {
-          "description": "Git worktree manager for parallel development",
-          "files": [
-            {
-              "src": "gemini/skills/worktree/SKILL.md",
-              "dest": "skills/worktree/SKILL.md"
-            }
-          ]
-        },
         "skill/interview": {
-          "description": "Stress-test plans via relentless user interview skill",
+          "description": "Interview skill",
           "files": [
             {
               "src": "gemini/skills/interview/SKILL.md",
@@ -990,20 +1082,186 @@
             }
           ]
         },
+        "skill/observability_driven_development": {
+          "description": "Observability Driven Development skill",
+          "files": [
+            {
+              "src": "gemini/skills/observability_driven_development/SKILL.md",
+              "dest": "skills/observability_driven_development/SKILL.md"
+            },
+            {
+              "src": "gemini/skills/observability_driven_development/local-setup.md",
+              "dest": "skills/observability_driven_development/local-setup.md"
+            },
+            {
+              "src": "gemini/skills/observability_driven_development/loop.md",
+              "dest": "skills/observability_driven_development/loop.md"
+            },
+            {
+              "src": "gemini/skills/observability_driven_development/narrative.md",
+              "dest": "skills/observability_driven_development/narrative.md"
+            }
+          ]
+        },
+        "skill/otel_collector": {
+          "description": "Otel Collector skill",
+          "files": [
+            {
+              "src": "gemini/skills/otel_collector/SKILL.md",
+              "dest": "skills/otel_collector/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_instrument": {
+          "description": "Otel Instrument skill",
+          "files": [
+            {
+              "src": "gemini/skills/otel_instrument/SKILL.md",
+              "dest": "skills/otel_instrument/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_instrumentation": {
+          "description": "Otel Instrumentation skill",
+          "files": [
+            {
+              "src": "gemini/skills/otel_instrumentation/SKILL.md",
+              "dest": "skills/otel_instrumentation/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_ottl": {
+          "description": "Otel Ottl skill",
+          "files": [
+            {
+              "src": "gemini/skills/otel_ottl/SKILL.md",
+              "dest": "skills/otel_ottl/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_semantic_conventions": {
+          "description": "Otel Semantic Conventions skill",
+          "files": [
+            {
+              "src": "gemini/skills/otel_semantic_conventions/SKILL.md",
+              "dest": "skills/otel_semantic_conventions/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_cli": {
+          "description": "Pi Cli skill",
+          "files": [
+            {
+              "src": "gemini/skills/pi_cli/SKILL.md",
+              "dest": "skills/pi_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_config": {
+          "description": "Pi Config skill",
+          "files": [
+            {
+              "src": "gemini/skills/pi_config/SKILL.md",
+              "dest": "skills/pi_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_extension": {
+          "description": "Pi Extension skill",
+          "files": [
+            {
+              "src": "gemini/skills/pi_extension/SKILL.md",
+              "dest": "skills/pi_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_keybindings": {
+          "description": "Pi Keybindings skill",
+          "files": [
+            {
+              "src": "gemini/skills/pi_keybindings/SKILL.md",
+              "dest": "skills/pi_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_orchestrate": {
+          "description": "Pi Orchestrate skill",
+          "files": [
+            {
+              "src": "gemini/skills/pi_orchestrate/SKILL.md",
+              "dest": "skills/pi_orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_prompts": {
+          "description": "Pi Prompts skill",
+          "files": [
+            {
+              "src": "gemini/skills/pi_prompts/SKILL.md",
+              "dest": "skills/pi_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_skill": {
+          "description": "Pi Skill skill",
+          "files": [
+            {
+              "src": "gemini/skills/pi_skill/SKILL.md",
+              "dest": "skills/pi_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_themes": {
+          "description": "Pi Themes skill",
+          "files": [
+            {
+              "src": "gemini/skills/pi_themes/SKILL.md",
+              "dest": "skills/pi_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_tui": {
+          "description": "Pi Tui skill",
+          "files": [
+            {
+              "src": "gemini/skills/pi_tui/SKILL.md",
+              "dest": "skills/pi_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/pr_description_generator": {
+          "description": "Pr Description Generator skill",
+          "files": [
+            {
+              "src": "gemini/skills/pr_description_generator/SKILL.md",
+              "dest": "skills/pr_description_generator/SKILL.md"
+            }
+          ]
+        },
+        "skill/prd_to_issues": {
+          "description": "Prd To Issues skill",
+          "files": [
+            {
+              "src": "gemini/skills/prd_to_issues/SKILL.md",
+              "dest": "skills/prd_to_issues/SKILL.md"
+            }
+          ]
+        },
+        "skill/research_codebase": {
+          "description": "Research Codebase skill",
+          "files": [
+            {
+              "src": "gemini/skills/research_codebase/SKILL.md",
+              "dest": "skills/research_codebase/SKILL.md"
+            }
+          ]
+        },
         "skill/tdd": {
-          "description": "Test-driven development with red-green-refactor loop skill",
+          "description": "Tdd skill",
           "files": [
             {
               "src": "gemini/skills/tdd/SKILL.md",
               "dest": "skills/tdd/SKILL.md"
-            },
-            {
-              "src": "gemini/skills/tdd/tests.md",
-              "dest": "skills/tdd/tests.md"
-            },
-            {
-              "src": "gemini/skills/tdd/mocking.md",
-              "dest": "skills/tdd/mocking.md"
             },
             {
               "src": "gemini/skills/tdd/deep-modules.md",
@@ -1014,129 +1272,43 @@
               "dest": "skills/tdd/interface-design.md"
             },
             {
-              "src": "gemini/skills/tdd/refactoring.md",
-              "dest": "skills/tdd/refactoring.md"
-            }
-          ]
-        },
-        "skill/improve_codebase_architecture": {
-          "description": "Find architectural friction and propose deep-module refactors skill",
-          "files": [
-            {
-              "src": "gemini/skills/improve_codebase_architecture/SKILL.md",
-              "dest": "skills/improve_codebase_architecture/SKILL.md"
+              "src": "gemini/skills/tdd/mocking.md",
+              "dest": "skills/tdd/mocking.md"
             },
             {
-              "src": "gemini/skills/improve_codebase_architecture/REFERENCE.md",
-              "dest": "skills/improve_codebase_architecture/REFERENCE.md"
+              "src": "gemini/skills/tdd/refactoring.md",
+              "dest": "skills/tdd/refactoring.md"
+            },
+            {
+              "src": "gemini/skills/tdd/tests.md",
+              "dest": "skills/tdd/tests.md"
             }
           ]
         },
-        "skill/prd_to_issues": {
-          "description": "Break a PRD into vertical-slice issue files skill",
+        "skill/validate_plan": {
+          "description": "Validate Plan skill",
           "files": [
             {
-              "src": "gemini/skills/prd_to_issues/SKILL.md",
-              "dest": "skills/prd_to_issues/SKILL.md"
+              "src": "gemini/skills/validate_plan/SKILL.md",
+              "dest": "skills/validate_plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/worktree": {
+          "description": "Worktree skill",
+          "files": [
+            {
+              "src": "gemini/skills/worktree/SKILL.md",
+              "dest": "skills/worktree/SKILL.md"
             }
           ]
         },
         "skill/write_a_prd": {
-          "description": "Generate a PRD from a client brief skill",
+          "description": "Write A Prd skill",
           "files": [
             {
               "src": "gemini/skills/write_a_prd/SKILL.md",
               "dest": "skills/write_a_prd/SKILL.md"
-            }
-          ]
-        },
-        "skill/build_pi_agent": {
-          "description": "Build Pi agent definitions with frontmatter format",
-          "files": [
-            {
-              "src": "gemini/skills/build_pi_agent/SKILL.md",
-              "dest": "skills/build_pi_agent/SKILL.md"
-            }
-          ]
-        },
-        "skill/pi_cli": {
-          "description": "Pi CLI expert \u2014 CLI flags, subcommands, output modes, non-interactive usage",
-          "files": [
-            {
-              "src": "gemini/skills/pi_cli/SKILL.md",
-              "dest": "skills/pi_cli/SKILL.md"
-            }
-          ]
-        },
-        "skill/pi_config": {
-          "description": "Pi configuration expert \u2014 settings, providers, models, packages, keybindings",
-          "files": [
-            {
-              "src": "gemini/skills/pi_config/SKILL.md",
-              "dest": "skills/pi_config/SKILL.md"
-            }
-          ]
-        },
-        "skill/build_pi_extension": {
-          "description": "Build Pi extensions \u2014 custom tools, events, commands, shortcuts, providers",
-          "files": [
-            {
-              "src": "gemini/skills/build_pi_extension/SKILL.md",
-              "dest": "skills/build_pi_extension/SKILL.md"
-            }
-          ]
-        },
-        "skill/pi_keybindings": {
-          "description": "Pi keyboard shortcuts \u2014 registerShortcut, key IDs, modifiers, reserved keys",
-          "files": [
-            {
-              "src": "gemini/skills/pi_keybindings/SKILL.md",
-              "dest": "skills/pi_keybindings/SKILL.md"
-            }
-          ]
-        },
-        "skill/pi_orchestrate": {
-          "description": "Orchestrate Pi domain experts to research and build Pi components",
-          "files": [
-            {
-              "src": "gemini/skills/pi_orchestrate/SKILL.md",
-              "dest": "skills/pi_orchestrate/SKILL.md"
-            }
-          ]
-        },
-        "skill/pi_prompts": {
-          "description": "Pi prompt templates \u2014 single-file .md format, arguments, /template invocation",
-          "files": [
-            {
-              "src": "gemini/skills/pi_prompts/SKILL.md",
-              "dest": "skills/pi_prompts/SKILL.md"
-            }
-          ]
-        },
-        "skill/build_pi_skill": {
-          "description": "Build Pi skills \u2014 SKILL.md format, frontmatter, validation, directory structure",
-          "files": [
-            {
-              "src": "gemini/skills/build_pi_skill/SKILL.md",
-              "dest": "skills/build_pi_skill/SKILL.md"
-            }
-          ]
-        },
-        "skill/pi_themes": {
-          "description": "Pi themes \u2014 JSON format, 51 color tokens, vars system, hex/256-color values",
-          "files": [
-            {
-              "src": "gemini/skills/pi_themes/SKILL.md",
-              "dest": "skills/pi_themes/SKILL.md"
-            }
-          ]
-        },
-        "skill/pi_tui": {
-          "description": "Pi TUI \u2014 built-in components, custom components, keyboard input, widgets, overlays",
-          "files": [
-            {
-              "src": "gemini/skills/pi_tui/SKILL.md",
-              "dest": "skills/pi_tui/SKILL.md"
             }
           ]
         }
@@ -1171,6 +1343,10 @@
             {
               "src": "pi/agents/web-search-researcher.md",
               "dest": "agents/web-search-researcher.md"
+            },
+            {
+              "src": "pi/agents/README.md",
+              "dest": "agents/README.md"
             }
           ]
         },
@@ -1315,7 +1491,7 @@
           ]
         },
         "skill/observability-driven-development": {
-          "description": "Observability Driven Development (ODD) \u2014 design the trace before the feature; local OTel feedback loop",
+          "description": "Observability Driven Development (ODD) — design the trace before the feature; local OTel feedback loop",
           "files": [
             {
               "src": "pi/skills/observability-driven-development/SKILL.md",
@@ -1558,7 +1734,7 @@
           ]
         },
         "skill/pi-cli": {
-          "description": "Pi CLI expert \u2014 CLI flags, subcommands, output modes, non-interactive usage",
+          "description": "Pi CLI expert — CLI flags, subcommands, output modes, non-interactive usage",
           "files": [
             {
               "src": "pi/skills/pi-cli/SKILL.md",
@@ -1567,7 +1743,7 @@
           ]
         },
         "skill/pi-config": {
-          "description": "Pi configuration expert \u2014 settings, providers, models, packages, keybindings",
+          "description": "Pi configuration expert — settings, providers, models, packages, keybindings",
           "files": [
             {
               "src": "pi/skills/pi-config/SKILL.md",
@@ -1576,7 +1752,7 @@
           ]
         },
         "skill/build-pi-extension": {
-          "description": "Build Pi extensions \u2014 custom tools, events, commands, shortcuts, providers",
+          "description": "Build Pi extensions — custom tools, events, commands, shortcuts, providers",
           "files": [
             {
               "src": "pi/skills/build-pi-extension/SKILL.md",
@@ -1585,7 +1761,7 @@
           ]
         },
         "skill/pi-keybindings": {
-          "description": "Pi keyboard shortcuts \u2014 registerShortcut, key IDs, modifiers, reserved keys",
+          "description": "Pi keyboard shortcuts — registerShortcut, key IDs, modifiers, reserved keys",
           "files": [
             {
               "src": "pi/skills/pi-keybindings/SKILL.md",
@@ -1603,7 +1779,7 @@
           ]
         },
         "skill/pi-prompts": {
-          "description": "Pi prompt templates \u2014 single-file .md format, arguments, /template invocation",
+          "description": "Pi prompt templates — single-file .md format, arguments, /template invocation",
           "files": [
             {
               "src": "pi/skills/pi-prompts/SKILL.md",
@@ -1612,7 +1788,7 @@
           ]
         },
         "skill/build-pi-skill": {
-          "description": "Build Pi skills \u2014 SKILL.md format, frontmatter, validation, directory structure",
+          "description": "Build Pi skills — SKILL.md format, frontmatter, validation, directory structure",
           "files": [
             {
               "src": "pi/skills/build-pi-skill/SKILL.md",
@@ -1621,7 +1797,7 @@
           ]
         },
         "skill/pi-themes": {
-          "description": "Pi themes \u2014 JSON format, 51 color tokens, vars system, hex/256-color values",
+          "description": "Pi themes — JSON format, 51 color tokens, vars system, hex/256-color values",
           "files": [
             {
               "src": "pi/skills/pi-themes/SKILL.md",
@@ -1630,7 +1806,7 @@
           ]
         },
         "skill/pi-tui": {
-          "description": "Pi TUI \u2014 built-in components, custom components, keyboard input, widgets, overlays",
+          "description": "Pi TUI — built-in components, custom components, keyboard input, widgets, overlays",
           "files": [
             {
               "src": "pi/skills/pi-tui/SKILL.md",
@@ -1649,6 +1825,10 @@
             {
               "src": "wocoder/wocoder.json",
               "dest": "wocoder.json"
+            },
+            {
+              "src": "wocoder/README.md",
+              "dest": "README.md"
             }
           ]
         },
@@ -1831,7 +2011,7 @@
           ]
         },
         "skill/observability-driven-development": {
-          "description": "Observability Driven Development (ODD) \u2014 design the trace before the feature; local OTel feedback loop",
+          "description": "Observability Driven Development (ODD) — design the trace before the feature; local OTel feedback loop",
           "files": [
             {
               "src": "wocoder/skills/observability-driven-development/SKILL.md",
@@ -1966,7 +2146,7 @@
           ]
         },
         "skill/pi-cli": {
-          "description": "Pi CLI expert \u2014 CLI flags, subcommands, output modes, non-interactive usage",
+          "description": "Pi CLI expert — CLI flags, subcommands, output modes, non-interactive usage",
           "files": [
             {
               "src": "wocoder/skills/pi-cli/SKILL.md",
@@ -1975,7 +2155,7 @@
           ]
         },
         "skill/pi-config": {
-          "description": "Pi configuration expert \u2014 settings, providers, models, packages, keybindings",
+          "description": "Pi configuration expert — settings, providers, models, packages, keybindings",
           "files": [
             {
               "src": "wocoder/skills/pi-config/SKILL.md",
@@ -1984,7 +2164,7 @@
           ]
         },
         "skill/build-pi-extension": {
-          "description": "Build Pi extensions \u2014 custom tools, events, commands, shortcuts, providers",
+          "description": "Build Pi extensions — custom tools, events, commands, shortcuts, providers",
           "files": [
             {
               "src": "wocoder/skills/build-pi-extension/SKILL.md",
@@ -1993,7 +2173,7 @@
           ]
         },
         "skill/pi-keybindings": {
-          "description": "Pi keyboard shortcuts \u2014 registerShortcut, key IDs, modifiers, reserved keys",
+          "description": "Pi keyboard shortcuts — registerShortcut, key IDs, modifiers, reserved keys",
           "files": [
             {
               "src": "wocoder/skills/pi-keybindings/SKILL.md",
@@ -2011,7 +2191,7 @@
           ]
         },
         "skill/pi-prompts": {
-          "description": "Pi prompt templates \u2014 single-file .md format, arguments, /template invocation",
+          "description": "Pi prompt templates — single-file .md format, arguments, /template invocation",
           "files": [
             {
               "src": "wocoder/skills/pi-prompts/SKILL.md",
@@ -2020,7 +2200,7 @@
           ]
         },
         "skill/build-pi-skill": {
-          "description": "Build Pi skills \u2014 SKILL.md format, frontmatter, validation, directory structure",
+          "description": "Build Pi skills — SKILL.md format, frontmatter, validation, directory structure",
           "files": [
             {
               "src": "wocoder/skills/build-pi-skill/SKILL.md",
@@ -2029,7 +2209,7 @@
           ]
         },
         "skill/pi-themes": {
-          "description": "Pi themes \u2014 JSON format, 51 color tokens, vars system, hex/256-color values",
+          "description": "Pi themes — JSON format, 51 color tokens, vars system, hex/256-color values",
           "files": [
             {
               "src": "wocoder/skills/pi-themes/SKILL.md",
@@ -2038,11 +2218,712 @@
           ]
         },
         "skill/pi-tui": {
-          "description": "Pi TUI \u2014 built-in components, custom components, keyboard input, widgets, overlays",
+          "description": "Pi TUI — built-in components, custom components, keyboard input, widgets, overlays",
           "files": [
             {
               "src": "wocoder/skills/pi-tui/SKILL.md",
               "dest": "skills/pi-tui/SKILL.md"
+            }
+          ]
+        }
+      }
+    },
+    "antigravity": {
+      "target": "~/.antigravity",
+      "components": {
+        "settings": {
+          "description": "Antigravity global configuration",
+          "files": [
+            {
+              "src": "antigravity/antigravity.json",
+              "dest": "antigravity.json"
+            },
+            {
+              "src": "antigravity/README.md",
+              "dest": "README.md"
+            }
+          ]
+        },
+        "agents": {
+          "description": "Specialized subagents for Antigravity",
+          "files": [
+            {
+              "src": "antigravity/agents/README.md",
+              "dest": "agents/README.md"
+            },
+            {
+              "src": "antigravity/agents/codebase_investigator.md",
+              "dest": "agents/codebase_investigator.md"
+            },
+            {
+              "src": "antigravity/agents/codebase_locator.md",
+              "dest": "agents/codebase_locator.md"
+            },
+            {
+              "src": "antigravity/agents/codebase_pattern_finder.md",
+              "dest": "agents/codebase_pattern_finder.md"
+            },
+            {
+              "src": "antigravity/agents/thoughts_analyzer.md",
+              "dest": "agents/thoughts_analyzer.md"
+            },
+            {
+              "src": "antigravity/agents/thoughts_locator.md",
+              "dest": "agents/thoughts_locator.md"
+            },
+            {
+              "src": "antigravity/agents/web_search_researcher.md",
+              "dest": "agents/web_search_researcher.md"
+            }
+          ]
+        },
+        "sidecars": {
+          "description": "Antigravity sidecars",
+          "files": [
+            {
+              "src": "antigravity/sidecars/README.md",
+              "dest": "sidecars/README.md"
+            }
+          ]
+        },
+        "hooks": {
+          "description": "Antigravity hooks",
+          "files": [
+            {
+              "src": "antigravity/hooks/README.md",
+              "dest": "hooks/README.md"
+            }
+          ]
+        },
+        "plugins": {
+          "description": "Antigravity plugins",
+          "files": [
+            {
+              "src": "antigravity/plugins/README.md",
+              "dest": "plugins/README.md"
+            }
+          ]
+        },
+        "commands": {
+          "description": "Antigravity commands",
+          "files": [
+            {
+              "src": "antigravity/commands/README.md",
+              "dest": "commands/README.md"
+            },
+            {
+              "src": "antigravity/commands/commit.toml",
+              "dest": "commands/commit.toml"
+            },
+            {
+              "src": "antigravity/commands/create_plan.toml",
+              "dest": "commands/create_plan.toml"
+            },
+            {
+              "src": "antigravity/commands/debug-k8s.toml",
+              "dest": "commands/debug-k8s.toml"
+            },
+            {
+              "src": "antigravity/commands/debug.toml",
+              "dest": "commands/debug.toml"
+            },
+            {
+              "src": "antigravity/commands/experimental-pr-workflow.toml",
+              "dest": "commands/experimental-pr-workflow.toml"
+            },
+            {
+              "src": "antigravity/commands/git_commit_helper.toml",
+              "dest": "commands/git_commit_helper.toml"
+            },
+            {
+              "src": "antigravity/commands/implement_plan.toml",
+              "dest": "commands/implement_plan.toml"
+            },
+            {
+              "src": "antigravity/commands/init_harness.toml",
+              "dest": "commands/init_harness.toml"
+            },
+            {
+              "src": "antigravity/commands/otel_instrument.toml",
+              "dest": "commands/otel_instrument.toml"
+            },
+            {
+              "src": "antigravity/commands/pr_description_generator.toml",
+              "dest": "commands/pr_description_generator.toml"
+            },
+            {
+              "src": "antigravity/commands/research_codebase.toml",
+              "dest": "commands/research_codebase.toml"
+            },
+            {
+              "src": "antigravity/commands/validate_plan.toml",
+              "dest": "commands/validate_plan.toml"
+            },
+            {
+              "src": "antigravity/commands/validate_telemetry.toml",
+              "dest": "commands/validate_telemetry.toml"
+            },
+            {
+              "src": "antigravity/commands/worktree.toml",
+              "dest": "commands/worktree.toml"
+            }
+          ]
+        },
+        "command/commit": {
+          "description": "Commit command",
+          "files": [
+            {
+              "src": "antigravity/commands/commit.toml",
+              "dest": "commands/commit.toml"
+            }
+          ]
+        },
+        "command/create_plan": {
+          "description": "Create Plan command",
+          "files": [
+            {
+              "src": "antigravity/commands/create_plan.toml",
+              "dest": "commands/create_plan.toml"
+            }
+          ]
+        },
+        "command/debug-k8s": {
+          "description": "Debug K8s command",
+          "files": [
+            {
+              "src": "antigravity/commands/debug-k8s.toml",
+              "dest": "commands/debug-k8s.toml"
+            }
+          ]
+        },
+        "command/debug": {
+          "description": "Debug command",
+          "files": [
+            {
+              "src": "antigravity/commands/debug.toml",
+              "dest": "commands/debug.toml"
+            }
+          ]
+        },
+        "command/experimental-pr-workflow": {
+          "description": "Experimental Pr Workflow command",
+          "files": [
+            {
+              "src": "antigravity/commands/experimental-pr-workflow.toml",
+              "dest": "commands/experimental-pr-workflow.toml"
+            }
+          ]
+        },
+        "command/git_commit_helper": {
+          "description": "Git Commit Helper command",
+          "files": [
+            {
+              "src": "antigravity/commands/git_commit_helper.toml",
+              "dest": "commands/git_commit_helper.toml"
+            }
+          ]
+        },
+        "command/implement_plan": {
+          "description": "Implement Plan command",
+          "files": [
+            {
+              "src": "antigravity/commands/implement_plan.toml",
+              "dest": "commands/implement_plan.toml"
+            }
+          ]
+        },
+        "command/init_harness": {
+          "description": "Init Harness command",
+          "files": [
+            {
+              "src": "antigravity/commands/init_harness.toml",
+              "dest": "commands/init_harness.toml"
+            }
+          ]
+        },
+        "command/otel_instrument": {
+          "description": "Otel Instrument command",
+          "files": [
+            {
+              "src": "antigravity/commands/otel_instrument.toml",
+              "dest": "commands/otel_instrument.toml"
+            }
+          ]
+        },
+        "command/pr_description_generator": {
+          "description": "Pr Description Generator command",
+          "files": [
+            {
+              "src": "antigravity/commands/pr_description_generator.toml",
+              "dest": "commands/pr_description_generator.toml"
+            }
+          ]
+        },
+        "command/research_codebase": {
+          "description": "Research Codebase command",
+          "files": [
+            {
+              "src": "antigravity/commands/research_codebase.toml",
+              "dest": "commands/research_codebase.toml"
+            }
+          ]
+        },
+        "command/validate_plan": {
+          "description": "Validate Plan command",
+          "files": [
+            {
+              "src": "antigravity/commands/validate_plan.toml",
+              "dest": "commands/validate_plan.toml"
+            }
+          ]
+        },
+        "command/validate_telemetry": {
+          "description": "Validate Telemetry command",
+          "files": [
+            {
+              "src": "antigravity/commands/validate_telemetry.toml",
+              "dest": "commands/validate_telemetry.toml"
+            }
+          ]
+        },
+        "command/worktree": {
+          "description": "Worktree command",
+          "files": [
+            {
+              "src": "antigravity/commands/worktree.toml",
+              "dest": "commands/worktree.toml"
+            }
+          ]
+        },
+        "skills": {
+          "description": "Antigravity skills reference",
+          "files": [
+            {
+              "src": "antigravity/skills/README.md",
+              "dest": "skills/README.md"
+            }
+          ]
+        },
+        "skill/antigravity_cli": {
+          "description": "Antigravity Cli skill",
+          "files": [
+            {
+              "src": "antigravity/skills/antigravity_cli/SKILL.md",
+              "dest": "skills/antigravity_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_config": {
+          "description": "Antigravity Config skill",
+          "files": [
+            {
+              "src": "antigravity/skills/antigravity_config/SKILL.md",
+              "dest": "skills/antigravity_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_keybindings": {
+          "description": "Antigravity Keybindings skill",
+          "files": [
+            {
+              "src": "antigravity/skills/antigravity_keybindings/SKILL.md",
+              "dest": "skills/antigravity_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_orchestrate": {
+          "description": "Antigravity Orchestrate skill",
+          "files": [
+            {
+              "src": "antigravity/skills/antigravity_orchestrate/SKILL.md",
+              "dest": "skills/antigravity_orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_prompts": {
+          "description": "Antigravity Prompts skill",
+          "files": [
+            {
+              "src": "antigravity/skills/antigravity_prompts/SKILL.md",
+              "dest": "skills/antigravity_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_themes": {
+          "description": "Antigravity Themes skill",
+          "files": [
+            {
+              "src": "antigravity/skills/antigravity_themes/SKILL.md",
+              "dest": "skills/antigravity_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_tui": {
+          "description": "Antigravity Tui skill",
+          "files": [
+            {
+              "src": "antigravity/skills/antigravity_tui/SKILL.md",
+              "dest": "skills/antigravity_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_agent": {
+          "description": "Build Antigravity Agent skill",
+          "files": [
+            {
+              "src": "antigravity/skills/build_antigravity_agent/SKILL.md",
+              "dest": "skills/build_antigravity_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_extension": {
+          "description": "Build Antigravity Extension skill",
+          "files": [
+            {
+              "src": "antigravity/skills/build_antigravity_extension/SKILL.md",
+              "dest": "skills/build_antigravity_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_skill": {
+          "description": "Build Antigravity Skill skill",
+          "files": [
+            {
+              "src": "antigravity/skills/build_antigravity_skill/SKILL.md",
+              "dest": "skills/build_antigravity_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/commit": {
+          "description": "Commit skill",
+          "files": [
+            {
+              "src": "antigravity/skills/commit/SKILL.md",
+              "dest": "skills/commit/SKILL.md"
+            }
+          ]
+        },
+        "skill/create_plan": {
+          "description": "Create Plan skill",
+          "files": [
+            {
+              "src": "antigravity/skills/create_plan/SKILL.md",
+              "dest": "skills/create_plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/debug": {
+          "description": "Debug skill",
+          "files": [
+            {
+              "src": "antigravity/skills/debug/SKILL.md",
+              "dest": "skills/debug/SKILL.md"
+            }
+          ]
+        },
+        "skill/debug_k8s": {
+          "description": "Debug K8s skill",
+          "files": [
+            {
+              "src": "antigravity/skills/debug_k8s/SKILL.md",
+              "dest": "skills/debug_k8s/SKILL.md"
+            }
+          ]
+        },
+        "skill/experimental_pr_workflow": {
+          "description": "Experimental Pr Workflow skill",
+          "files": [
+            {
+              "src": "antigravity/skills/experimental_pr_workflow/SKILL.md",
+              "dest": "skills/experimental_pr_workflow/SKILL.md"
+            }
+          ]
+        },
+        "skill/git_commit_helper": {
+          "description": "Git Commit Helper skill",
+          "files": [
+            {
+              "src": "antigravity/skills/git_commit_helper/SKILL.md",
+              "dest": "skills/git_commit_helper/SKILL.md"
+            }
+          ]
+        },
+        "skill/implement_plan": {
+          "description": "Implement Plan skill",
+          "files": [
+            {
+              "src": "antigravity/skills/implement_plan/SKILL.md",
+              "dest": "skills/implement_plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/improve_codebase_architecture": {
+          "description": "Improve Codebase Architecture skill",
+          "files": [
+            {
+              "src": "antigravity/skills/improve_codebase_architecture/REFERENCE.md",
+              "dest": "skills/improve_codebase_architecture/REFERENCE.md"
+            },
+            {
+              "src": "antigravity/skills/improve_codebase_architecture/SKILL.md",
+              "dest": "skills/improve_codebase_architecture/SKILL.md"
+            }
+          ]
+        },
+        "skill/init_harness": {
+          "description": "Init Harness skill",
+          "files": [
+            {
+              "src": "antigravity/skills/init_harness/SKILL.md",
+              "dest": "skills/init_harness/SKILL.md"
+            }
+          ]
+        },
+        "skill/interview": {
+          "description": "Interview skill",
+          "files": [
+            {
+              "src": "antigravity/skills/interview/SKILL.md",
+              "dest": "skills/interview/SKILL.md"
+            }
+          ]
+        },
+        "skill/observability_driven_development": {
+          "description": "Observability Driven Development skill",
+          "files": [
+            {
+              "src": "antigravity/skills/observability_driven_development/SKILL.md",
+              "dest": "skills/observability_driven_development/SKILL.md"
+            },
+            {
+              "src": "antigravity/skills/observability_driven_development/local-setup.md",
+              "dest": "skills/observability_driven_development/local-setup.md"
+            },
+            {
+              "src": "antigravity/skills/observability_driven_development/loop.md",
+              "dest": "skills/observability_driven_development/loop.md"
+            },
+            {
+              "src": "antigravity/skills/observability_driven_development/narrative.md",
+              "dest": "skills/observability_driven_development/narrative.md"
+            }
+          ]
+        },
+        "skill/otel_collector": {
+          "description": "Otel Collector skill",
+          "files": [
+            {
+              "src": "antigravity/skills/otel_collector/SKILL.md",
+              "dest": "skills/otel_collector/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_instrument": {
+          "description": "Otel Instrument skill",
+          "files": [
+            {
+              "src": "antigravity/skills/otel_instrument/SKILL.md",
+              "dest": "skills/otel_instrument/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_instrumentation": {
+          "description": "Otel Instrumentation skill",
+          "files": [
+            {
+              "src": "antigravity/skills/otel_instrumentation/SKILL.md",
+              "dest": "skills/otel_instrumentation/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_ottl": {
+          "description": "Otel Ottl skill",
+          "files": [
+            {
+              "src": "antigravity/skills/otel_ottl/SKILL.md",
+              "dest": "skills/otel_ottl/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_semantic_conventions": {
+          "description": "Otel Semantic Conventions skill",
+          "files": [
+            {
+              "src": "antigravity/skills/otel_semantic_conventions/SKILL.md",
+              "dest": "skills/otel_semantic_conventions/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_cli": {
+          "description": "Pi Cli skill",
+          "files": [
+            {
+              "src": "antigravity/skills/pi_cli/SKILL.md",
+              "dest": "skills/pi_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_config": {
+          "description": "Pi Config skill",
+          "files": [
+            {
+              "src": "antigravity/skills/pi_config/SKILL.md",
+              "dest": "skills/pi_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_extension": {
+          "description": "Pi Extension skill",
+          "files": [
+            {
+              "src": "antigravity/skills/pi_extension/SKILL.md",
+              "dest": "skills/pi_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_keybindings": {
+          "description": "Pi Keybindings skill",
+          "files": [
+            {
+              "src": "antigravity/skills/pi_keybindings/SKILL.md",
+              "dest": "skills/pi_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_orchestrate": {
+          "description": "Pi Orchestrate skill",
+          "files": [
+            {
+              "src": "antigravity/skills/pi_orchestrate/SKILL.md",
+              "dest": "skills/pi_orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_prompts": {
+          "description": "Pi Prompts skill",
+          "files": [
+            {
+              "src": "antigravity/skills/pi_prompts/SKILL.md",
+              "dest": "skills/pi_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_skill": {
+          "description": "Pi Skill skill",
+          "files": [
+            {
+              "src": "antigravity/skills/pi_skill/SKILL.md",
+              "dest": "skills/pi_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_themes": {
+          "description": "Pi Themes skill",
+          "files": [
+            {
+              "src": "antigravity/skills/pi_themes/SKILL.md",
+              "dest": "skills/pi_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_tui": {
+          "description": "Pi Tui skill",
+          "files": [
+            {
+              "src": "antigravity/skills/pi_tui/SKILL.md",
+              "dest": "skills/pi_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/pr_description_generator": {
+          "description": "Pr Description Generator skill",
+          "files": [
+            {
+              "src": "antigravity/skills/pr_description_generator/SKILL.md",
+              "dest": "skills/pr_description_generator/SKILL.md"
+            }
+          ]
+        },
+        "skill/prd_to_issues": {
+          "description": "Prd To Issues skill",
+          "files": [
+            {
+              "src": "antigravity/skills/prd_to_issues/SKILL.md",
+              "dest": "skills/prd_to_issues/SKILL.md"
+            }
+          ]
+        },
+        "skill/research_codebase": {
+          "description": "Research Codebase skill",
+          "files": [
+            {
+              "src": "antigravity/skills/research_codebase/SKILL.md",
+              "dest": "skills/research_codebase/SKILL.md"
+            }
+          ]
+        },
+        "skill/tdd": {
+          "description": "Tdd skill",
+          "files": [
+            {
+              "src": "antigravity/skills/tdd/SKILL.md",
+              "dest": "skills/tdd/SKILL.md"
+            },
+            {
+              "src": "antigravity/skills/tdd/deep-modules.md",
+              "dest": "skills/tdd/deep-modules.md"
+            },
+            {
+              "src": "antigravity/skills/tdd/interface-design.md",
+              "dest": "skills/tdd/interface-design.md"
+            },
+            {
+              "src": "antigravity/skills/tdd/mocking.md",
+              "dest": "skills/tdd/mocking.md"
+            },
+            {
+              "src": "antigravity/skills/tdd/refactoring.md",
+              "dest": "skills/tdd/refactoring.md"
+            },
+            {
+              "src": "antigravity/skills/tdd/tests.md",
+              "dest": "skills/tdd/tests.md"
+            }
+          ]
+        },
+        "skill/usage_rules": {
+          "description": "Usage Rules skill",
+          "files": [
+            {
+              "src": "antigravity/skills/usage_rules/SKILL.md",
+              "dest": "skills/usage_rules/SKILL.md"
+            }
+          ]
+        },
+        "skill/validate_plan": {
+          "description": "Validate Plan skill",
+          "files": [
+            {
+              "src": "antigravity/skills/validate_plan/SKILL.md",
+              "dest": "skills/validate_plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/worktree": {
+          "description": "Worktree skill",
+          "files": [
+            {
+              "src": "antigravity/skills/worktree/SKILL.md",
+              "dest": "skills/worktree/SKILL.md"
+            }
+          ]
+        },
+        "skill/write_a_prd": {
+          "description": "Write A Prd skill",
+          "files": [
+            {
+              "src": "antigravity/skills/write_a_prd/SKILL.md",
+              "dest": "skills/write_a_prd/SKILL.md"
             }
           ]
         }

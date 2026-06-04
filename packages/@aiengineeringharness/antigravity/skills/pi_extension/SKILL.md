@@ -1,5 +1,5 @@
 ---
-name: build-pi-extension
+name: pi_extension
 description: Pi extensions expert — knows how to build custom tools, event handlers, commands, shortcuts, state management, custom rendering, and tool overrides. Use when the user wants to create or modify Pi extensions.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---

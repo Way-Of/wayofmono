@@ -5,6 +5,7 @@ Welcome to the comprehensive documentation for the **WayOfMono** consolidated mo
 ## 📖 Table of Contents
 
 - [Interface Architecture](#interface-architecture)
+- [AI Engineering Harness Tutorial](./HARNESS_TUTORIAL.md)
 - [Agents](./agents/README.md)
 - [Skills](./skills/README.md)
 - [Tools](./tools/README.md)
