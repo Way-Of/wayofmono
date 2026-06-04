@@ -1115,12 +1115,102 @@
             }
           ]
         },
+        "skill/build_claude_agent": {
+          "description": "Build Claude Agent skill",
+          "files": [
+            {
+              "src": "gemini/skills/build_claude_agent/SKILL.md",
+              "dest": "skills/build_claude_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_extension": {
+          "description": "Build Claude Extension skill",
+          "files": [
+            {
+              "src": "gemini/skills/build_claude_extension/SKILL.md",
+              "dest": "skills/build_claude_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_skill": {
+          "description": "Build Claude Skill skill",
+          "files": [
+            {
+              "src": "gemini/skills/build_claude_skill/SKILL.md",
+              "dest": "skills/build_claude_skill/SKILL.md"
+            }
+          ]
+        },
         "skill/build_pi_agent": {
           "description": "Build Pi Agent skill",
           "files": [
             {
               "src": "gemini/skills/build_pi_agent/SKILL.md",
               "dest": "skills/build_pi_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_cli": {
+          "description": "Claude Cli skill",
+          "files": [
+            {
+              "src": "gemini/skills/claude_cli/SKILL.md",
+              "dest": "skills/claude_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_config": {
+          "description": "Claude Config skill",
+          "files": [
+            {
+              "src": "gemini/skills/claude_config/SKILL.md",
+              "dest": "skills/claude_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_keybindings": {
+          "description": "Claude Keybindings skill",
+          "files": [
+            {
+              "src": "gemini/skills/claude_keybindings/SKILL.md",
+              "dest": "skills/claude_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_orchestrate": {
+          "description": "Claude Orchestrate skill",
+          "files": [
+            {
+              "src": "gemini/skills/claude_orchestrate/SKILL.md",
+              "dest": "skills/claude_orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_prompts": {
+          "description": "Claude Prompts skill",
+          "files": [
+            {
+              "src": "gemini/skills/claude_prompts/SKILL.md",
+              "dest": "skills/claude_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_themes": {
+          "description": "Claude Themes skill",
+          "files": [
+            {
+              "src": "gemini/skills/claude_themes/SKILL.md",
+              "dest": "skills/claude_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_tui": {
+          "description": "Claude Tui skill",
+          "files": [
+            {
+              "src": "gemini/skills/claude_tui/SKILL.md",
+              "dest": "skills/claude_tui/SKILL.md"
             }
           ]
         },
@@ -2727,6 +2817,96 @@
             {
               "src": "antigravity/skills/build_antigravity_skill/SKILL.md",
               "dest": "skills/build_antigravity_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_agent": {
+          "description": "Build Claude Agent skill",
+          "files": [
+            {
+              "src": "antigravity/skills/build_claude_agent/SKILL.md",
+              "dest": "skills/build_claude_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_extension": {
+          "description": "Build Claude Extension skill",
+          "files": [
+            {
+              "src": "antigravity/skills/build_claude_extension/SKILL.md",
+              "dest": "skills/build_claude_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_skill": {
+          "description": "Build Claude Skill skill",
+          "files": [
+            {
+              "src": "antigravity/skills/build_claude_skill/SKILL.md",
+              "dest": "skills/build_claude_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_cli": {
+          "description": "Claude Cli skill",
+          "files": [
+            {
+              "src": "antigravity/skills/claude_cli/SKILL.md",
+              "dest": "skills/claude_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_config": {
+          "description": "Claude Config skill",
+          "files": [
+            {
+              "src": "antigravity/skills/claude_config/SKILL.md",
+              "dest": "skills/claude_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_keybindings": {
+          "description": "Claude Keybindings skill",
+          "files": [
+            {
+              "src": "antigravity/skills/claude_keybindings/SKILL.md",
+              "dest": "skills/claude_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_orchestrate": {
+          "description": "Claude Orchestrate skill",
+          "files": [
+            {
+              "src": "antigravity/skills/claude_orchestrate/SKILL.md",
+              "dest": "skills/claude_orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_prompts": {
+          "description": "Claude Prompts skill",
+          "files": [
+            {
+              "src": "antigravity/skills/claude_prompts/SKILL.md",
+              "dest": "skills/claude_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_themes": {
+          "description": "Claude Themes skill",
+          "files": [
+            {
+              "src": "antigravity/skills/claude_themes/SKILL.md",
+              "dest": "skills/claude_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_tui": {
+          "description": "Claude Tui skill",
+          "files": [
+            {
+              "src": "antigravity/skills/claude_tui/SKILL.md",
+              "dest": "skills/claude_tui/SKILL.md"
             }
           ]
         },
