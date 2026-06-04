@@ -55,6 +55,9 @@ get_target_dir() {
         wocoder)
             echo "$HOME/.wocoder"
             ;;
+        antigravity)
+            echo "$HOME/.antigravity"
+            ;;
         *)
             echo ""
             ;;
@@ -72,6 +75,7 @@ Tools:
   gemini      Install Gemini CLI configuration
   pi          Install Pi configuration
   wocoder     Install Wo Coder configuration
+  antigravity Install Antigravity configuration
   all         Install all configurations
 
 Options:
@@ -254,7 +258,7 @@ main() {
                 print_usage
                 exit 0
                 ;;
-            opencode|claude|gemini|pi|wocoder|all)
+            opencode|claude|gemini|pi|wocoder|antigravity|all)
                 tool="$1"
                 shift
                 ;;
@@ -294,7 +298,7 @@ main() {
     if [[ "$tool" == "all" ]]; then
         log_info "Installing all tools..."
         echo ""
-        for t in opencode claude gemini pi; do
+        for t in opencode claude gemini pi wocoder antigravity; do
             process_tool "$t" "$action" "$restow" "$dry_run"
             echo ""
         done
@@ -311,7 +315,7 @@ main() {
     if [[ "$action" == "stow" ]]; then
         echo "Your AI harness configuration is now linked:"
         if [[ "$tool" == "all" ]]; then
-        for t in opencode claude gemini pi wocoder; do
+        for t in opencode claude gemini pi wocoder antigravity; do
                 local target=$(get_target_dir "$t")
                 echo "  $target/ -> $STOW_DIR/$t/"
             done

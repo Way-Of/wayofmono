@@ -289,7 +289,7 @@ DIRECT RUN (no install step):
   deno run -A install.ts [options]
 
 OPTIONS:
-  --tool=<claude|opencode|gemini|pi|wocoder|all> Which tool configs to install (required)
+  --tool=<claude|opencode|gemini|pi|wocoder|antigravity|all> Which tool configs to install (required)
   --skill=<name>[,<name>]               Specific component names to install
   --interactive, -i                     Interactive checkbox picker
   --dry-run, -n                         Preview without writing files
@@ -333,7 +333,8 @@ The repo must remain at a stable path on your system.
        ./setup.sh gemini             # Gemini CLI
        ./setup.sh pi                 # Pi
        ./setup.sh wocoder            # Wo Coder
-       ./setup.sh all                # All five
+       ./setup.sh antigravity        # Antigravity
+       ./setup.sh all                # All six
 
   4. Update after pulling changes:
        ./setup.sh all --restow
