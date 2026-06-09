@@ -201,24 +201,6 @@ async function syncSkillToPlatform(
   return copied > 0;
 }
 
-async function removeSkillFromPlatform(
-  skillName: string,
-  platform: string,
-  dryRun: boolean,
-): Promise<void> {
-  const dir = join(HARNESS_DIR, platform, "skills", skillName);
-  if (dryRun) {
-    console.log(`  [dry-run] would remove ${skillName} from ${platform}`);
-    return;
-  }
-  try {
-    await Deno.remove(dir, { recursive: true });
-    console.log(`  ✓ removed ${skillName} from ${platform}`);
-  } catch {
-    // already gone
-  }
-}
-
 // --- Status ---
 
 async function showStatus(): Promise<void> {
@@ -351,9 +333,7 @@ for (const platform of targetPlatforms) {
     totalUpdated++;
   }
 
-  // sync-skills only manages system skills (add/update). Never remove.
-  // Non-system skills (ref skills, platform-specific skills) are managed
-  // by import-ref-skills.ts or installed manually.
+  // sync-skills only manages system skills (add/update). Never remove anything.
 }
 
 // Save sync state

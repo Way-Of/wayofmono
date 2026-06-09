@@ -40,13 +40,13 @@ wo-coding-agent (CLI BINARY) — ~141 files from pi/coding-agent/src/ (keeps eve
 
 ### System (Harness, Tools, Team, Templates)
 - [x] [PROJ-013](./system/harness/PROJ-013-implement-ticket-manager-skill.md): Implement Ticket Manager Skill — skill dir, SKILL.md, ticket-schema.json, tools.json, sync.ts, cross-platform wrappers
-- [x] [PROJ-014](./system/skills/PROJ-014-skill-auto-update-sync.md): Skill Auto-Update & Sync — stub skill created (needs full sync logic)
+- [x] [PROJ-014](./system/skills/PROJ-014-skill-auto-update-sync.md): Skill Auto-Update & Sync — sync-skills.ts with --status, --dry-run, --watch, ref-skill guard
 - [x] [PROJ-015](./system/agents/PROJ-015-agent-namespacing-separation.md): Agent Namespacing — agents/ dir created with agent-registry.json, 6 core agents copied, loader precedence documented
-- [ ] [PROJ-016](./system/skills/PROJ-016-import-ref-skills-agents.md): Import Ref Skills/Agents — 58 ref skills and 6 ref agents identified, canonical structure created
-- [x] [PROJ-017](./system/docs-sync/PROJ-017-auto-ticket-creation-skill.md): Auto-Ticket Creation Skill — stub skill created (needs source adapters)
-- [x] [PROJ-018](./system/team/PROJ-018-team-project-setup.md): Team & Project Setup — team-init.ts created with init/list/add/assign commands, cross-platform wrappers
-- [x] [PROJ-019](./system/team/PROJ-019-cto-dashboard-reporting.md): CTO Dashboard & Developer Reporting — stub skill created (needs dashboard TUI logic)
-- [x] [PROJ-020](./system/skills/PROJ-020-platform-specific-skill-loading.md): Platform-Specific Skill Loading — stub skill created (needs platform generators)
+- [x] [PROJ-016](./system/skills/PROJ-016-import-ref-skills-agents.md): Import Ref Skills/Agents — import-ref-skills.ts, 59 ref skills imported to all 6 platforms (354 imports, 0 errors)
+- [x] [PROJ-017](./system/docs-sync/PROJ-017-auto-ticket-creation-skill.md): Auto-Ticket Creation Skill — monitor.ts with git/npm/ref/codebase/platform source adapters
+- [x] [PROJ-018](./system/team/PROJ-018-team-project-setup.md): Team & Project Setup — team-init.ts with init/list/add/assign commands, cross-platform wrappers
+- [x] [PROJ-019](./system/team/PROJ-019-cto-dashboard-reporting.md): CTO Dashboard & Developer Reporting — dashboard.ts with --summary, --review, --dev, --aging, --json, --watch
+- [x] [PROJ-020](./system/skills/PROJ-020-platform-specific-skill-loading.md): Platform-Specific Skill Loading — adapter.ts generate/list/validate CLI, 7 platforms (claude/opencode/gemini/pi/wocoder/antigravity/codex)
 - [x] [PROJ-021](./system/team/PROJ-021-personal-todo-hierarchy.md): Personal TODO Hierarchy — sync_personal_todos() implemented in ticket-manager/sync.ts
 - [x] [PROJ-022](./system/docs-sync/PROJ-022-docs-sync-updater.md): Documentation Sync Updater — docs-sync.ts already existed, stub skill created linking to it
 - [x] [PROJ-023](./system/templates/PROJ-023-ticket-folder-organization.md): Ticket Folder Organization — already done (migrate-tickets.ts exists, tickets in categorized subfolders)
@@ -104,13 +104,13 @@ thoughts/shared/tickets/
 
 ## Next Actions
 
-1. ✅ Run `ai-harness team init` to configure team (PROJ-018) — script created
+1. ✅ Run `ai-harness team init` to configure team (PROJ-018) — team-init.ts created
 2. ✅ Run migration script to reorganize tickets into folders (PROJ-023) — already done
 3. ✅ Implement Ticket Manager Skill (PROJ-013) — SKILL.md, schema, tools, sync.ts, wrappers done
-4. 🔄 Implement full Skill Auto-Update logic (PROJ-014) — sync-skills.ts needed
-5. 🔄 Implement full Skill Adapter platform generators (PROJ-020) — adapter.ts needed
-6. 🔄 Implement full CTO Dashboard TUI (PROJ-019) — dashboard.ts needed
-7. 🔄 Implement full Auto-Ticket Creator adapters (PROJ-017) — source-adapters/ needed
-8. 🔄 Import 58 ref skills from ref/skills/ to harness structure (PROJ-016)
+4. ✅ Implement full Skill Auto-Update logic (PROJ-014) — sync-skills.ts with --status, --dry-run, --watch, ref-skill guard
+5. ✅ Implement full Skill Adapter platform generators (PROJ-020) — adapter.ts generate/list/validate CLI, 7 platforms supported
+6. ✅ Implement full CTO Dashboard TUI (PROJ-019) — dashboard.ts with --summary, --review, --dev, --aging, --json, --watch
+7. ✅ Implement full Auto-Ticket Creator adapters (PROJ-017) — monitor.ts with git/npm/ref/codebase/platform sources
+8. ✅ Import 59 ref skills from ref/skills/ to harness (PROJ-016) — import-ref-skills.ts, 354 total imports, 0 errors
 9. Use `deno run packages/@aiengineeringharness/skills/ticket-manager/sync.ts --sync-todos` to generate personal TODOs
 10. Use `deno run packages/@aiengineeringharness/skills/team-setup/team-init.ts init` to init team config
