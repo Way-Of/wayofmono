@@ -1,5 +1,5 @@
 {
-  "version": "1.2.0",
+  "version": "1.3.0",
   "tools": {
     "claude": {
       "target": "~/.claude",
@@ -554,6 +554,15 @@
               "dest": "skills/skill-adapter/SKILL.md"
             }
           ]
+        },
+        "skill/help-command": {
+          "description": "Help Command - unified /help across all platform frontends",
+          "files": [
+            {
+              "src": "claude/skills/help-command/SKILL.md",
+              "dest": "skills/help-command/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -968,6 +977,15 @@
             {
               "src": "opencode/skills/skill-adapter/SKILL.md",
               "dest": "skills/skill-adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/help-command": {
+          "description": "Help Command - unified /help across all platform frontends",
+          "files": [
+            {
+              "src": "opencode/skills/help-command/SKILL.md",
+              "dest": "skills/help-command/SKILL.md"
             }
           ]
         }
@@ -1724,6 +1742,15 @@
             {
               "src": "gemini/skills/skill-adapter/SKILL.md",
               "dest": "skills/skill-adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/help-command": {
+          "description": "Help Command - unified /help across all platform frontends",
+          "files": [
+            {
+              "src": "gemini/skills/help-command/SKILL.md",
+              "dest": "skills/help-command/SKILL.md"
             }
           ]
         }
