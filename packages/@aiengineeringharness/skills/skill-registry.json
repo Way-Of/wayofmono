@@ -64,6 +64,15 @@
       "dependencies": [],
       "platforms": ["claude", "opencode", "gemini", "pi", "wocoder", "antigravity", "codex"],
       "path": "skills/skill-adapter/"
+    },
+    "help-command": {
+      "name": "help-command",
+      "namespace": "core",
+      "version": "1.0.0",
+      "description": "Unified /help command — lists skills, commands, agents, and workflows across the entire harness",
+      "dependencies": [],
+      "platforms": ["claude", "opencode", "gemini", "pi", "wocoder", "antigravity", "codex"],
+      "path": "skills/help-command/"
     }
   },
   "agent_registries": {

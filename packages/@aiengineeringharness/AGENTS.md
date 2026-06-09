@@ -22,7 +22,8 @@ ai-engineering-harness/
 │   ├── auto-ticket-creator/  # Auto-Ticket Creation (PROJ-017)
 │   ├── docs-sync-updater/    # Docs Sync Updater (PROJ-022)
 │   ├── cto-dashboard/        # CTO Dashboard (PROJ-019)
-│   └── skill-adapter/        # Skill Adapter (PROJ-020)
+│   ├── skill-adapter/        # Skill Adapter (PROJ-020)
+│   └── help-command/         # /help Command (PROJ-024)
 ├── agents/             # CORE AGENTS registry + definitions
 │   ├── agent-registry.json   # Registry of all core agents
 │   ├── codebase_analyzer.md
@@ -80,6 +81,7 @@ ai-engineering-harness/
 | `/work <ticket-id>` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Start working on a ticket (requires ticket-manager) |
 | `/complete <ticket-id>` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Complete a ticket, syncs status (requires ticket-manager) |
 | `/sync team` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Show team dashboard (requires ticket-manager) |
+| `/help` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Unified help system (requires help-command) |
 | `/sync skills` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Sync all skills to all frontends (requires skill-auto-update) |
 | `ticket_manager` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Manage tickets across namespaces with full lifecycle |
 | `team_setup` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Initialize and manage team configuration |
@@ -88,6 +90,7 @@ ai-engineering-harness/
 | `docs_sync_updater` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Fetch latest docs and auto-update skill configs |
 | `cto_dashboard` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | CTO dashboard with review queue and developer progress |
 | `skill_adapter` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Platform-specific skill loading and format adapters |
+| `help_command` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Unified /help across all platform frontends |
 | `observability_driven_development` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Design the trace before the feature; local OTel feedback loop |
 | `git_commit_helper` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Triggers on "commit" keywords |
 | `pr_description_generator` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Triggers when creating PRs |
