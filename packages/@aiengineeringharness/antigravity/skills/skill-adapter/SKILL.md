@@ -1,14 +1,15 @@
 ---
 name: skill-adapter
-description: "Platform-specific skill/agent loading and format adapters for all 7 frontends"
-version: 1.0.0
-namespace: core
-tools: read,write,glob,ls,grep
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
-allowed-tools: [read, write, glob, ls, grep]
+description: ""Platform-specific skill/agent loading and format adapters for all 7 frontends""
+allowed-tools: ["[read", "write", "glob", "ls", "grep]"]
 ---
 
-# Platform-Specific Skill Loading & Format Adapters (PROJ-020)
+> **Platform**: Gemini CLI | **Skill**: skill-adapter | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
+
+# Platform-Specific Skill Loading & Format Adapters
 
 Maintains a single canonical skill format and generates platform-specific configurations for all 7 frontends.
 

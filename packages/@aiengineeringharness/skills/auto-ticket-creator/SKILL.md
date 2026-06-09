@@ -9,7 +9,7 @@ allowed-tools: [read, write, grep, glob, web_search]
 dependencies: [ticket-manager]
 ---
 
-# Auto-Ticket Creation Skill (PROJ-017)
+# Auto-Ticket Creation Skill
 
 Autonomously monitors the codebase, dependencies, and external sources for updates, and automatically creates tickets.
 

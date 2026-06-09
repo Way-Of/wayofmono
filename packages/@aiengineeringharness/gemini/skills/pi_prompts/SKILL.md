@@ -1,8 +1,13 @@
 ---
 name: pi_prompts
-description: Pi prompt templates expert — knows the single-file .md format, frontmatter, positional arguments ($1, $@, ${@:N}), discovery locations, and /template invocation. Use when the user wants to create or modify Pi prompt templates.
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob
+description: "Pi prompt templates expert — knows the single-file .md format, frontmatter, positional arguments ($1, $@, ${@:N}), discovery locations, and /template invocation. Use when the user wants to create or modify Pi prompt templates."
+allowed-tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: pi_prompts | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 Pi prompt templates are single Markdown files that expand into full prompts. Filename becomes the command: `review.md` → `/review`.
 

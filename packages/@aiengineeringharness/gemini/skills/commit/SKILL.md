@@ -1,9 +1,13 @@
 ---
 name: commit
-description: Create well-structured git commits for changes made during the session using Gemini CLI tools.
-disable-model-invocation: true
-allowed-tools: read_file, run_shell_command, glob
+description: "Create well-structured git commits for changes made during the session using Gemini CLI tools."
+allowed-tools: ["read_file", "run_shell_command", "glob"]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: commit | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # Commit Changes
 

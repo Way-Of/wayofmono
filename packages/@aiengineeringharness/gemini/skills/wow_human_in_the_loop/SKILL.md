@@ -1,7 +1,13 @@
 ---
 name: wow_human_in_the_loop
-description: Rules for implementing the WOW-010 Human-in-the-Loop constraint for AI-generated data changes. Use when writing agent prompts or backend tools that modify production data.
+description: "Rules for implementing the WOW-010 Human-in-the-Loop constraint for AI-generated data changes. Use when writing agent prompts or backend tools that modify production data."
+allowed-tools: [""]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: wow_human_in_the_loop | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # wow_human_in_the_loop
 

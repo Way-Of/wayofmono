@@ -1,7 +1,7 @@
 #!/usr/bin/env deno run --allow-read
 
 /**
- * AI Harness /help Command (PROJ-024)
+ * AI Harness /help Command
  *
  * Unified help system: reads skill-registry.json, agent-registry.json,
  * and SKILL.md files to present categorized documentation.
@@ -25,6 +25,16 @@ const HARNESS_DIR = join(ROOT, "packages/@aiengineeringharness");
 const REGISTRY_PATH = join(HARNESS_DIR, "skills", "skill-registry.json");
 const AGENT_REGISTRY_PATH = join(HARNESS_DIR, "agents", "agent-registry.json");
 const CANONICAL_SKILLS_DIR = join(HARNESS_DIR, "skills");
+const HARNESS_CONFIG_PATH = join(ROOT, ".wo", "config", "harness.json");
+
+function getProjectSlug(): string {
+  try {
+    const content = Deno.readTextFileSync(HARNESS_CONFIG_PATH);
+    return JSON.parse(content).project_slug || "wayofmono";
+  } catch {
+    return "wayofmono";
+  }
+}
 
 const BOLD = "\x1b[1m";
 const DIM = "\x1b[2m";
@@ -160,9 +170,9 @@ async function printOverview(): Promise<void> {
   console.log(`  /help commands     List slash commands (12)`);
   console.log(`  /help agents       List core agents (${agentRegistry ? Object.keys(agentRegistry.agents).length : 6})`);
   console.log(`  /help <skill>      Help for a specific skill`);
-  console.log(`  /help ticket       Ticket workflow (PROJ-013)`);
-  console.log(`  /help team         Team setup (PROJ-018)`);
-  console.log(`  /help dashboard    CTO dashboard (PROJ-019)`);
+  console.log(`  /help ticket       Ticket workflow`);
+  console.log(`  /help team         Team setup`);
+  console.log(`  /help dashboard    CTO dashboard`);
   console.log();
 
   console.log(`${BOLD}System Skills by Namespace${RESET}`);
@@ -223,7 +233,7 @@ async function printSkills(filterNamespace?: string): Promise<void> {
 
 async function printCommands(): Promise<void> {
   const cmds: Array<{ cmd: string; desc: string; skill?: string }> = [
-    { cmd: "/init_harness", desc: "Initialize harness in a repo (AGENTS.md + thoughts/)" },
+    { cmd: "/init_harness", desc: `Initialize harness in a repo (AGENTS.md + thoughts/${getProjectSlug()}/)` },
     { cmd: "/create_plan", desc: "Generate implementation plan from a ticket" },
     { cmd: "/implement_plan", desc: "Execute approved plan phase-by-phase" },
     { cmd: "/validate_plan", desc: "Verify implementation against plan" },
@@ -325,14 +335,16 @@ async function printSkillDetail(name: string): Promise<void> {
 async function printWorkflow(name: string): Promise<void> {
   switch (name) {
     case "ticket": {
+      const slug = getProjectSlug();
       console.log(`\n${BOLD}Ticket Workflow${RESET}`);
-      console.log(`${DIM}PROJ-013 — Ticket Manager Skill${RESET}\n`);
-      console.log(`  ${CYAN}1.${RESET} Create a ticket in ${DIM}thoughts/shared/tickets/<category>/<id>-<slug>.md${RESET}`);
+      console.log(`${DIM}Ticket Manager — manage tickets across all namespaces (f-rr-d backed)${RESET}\n`);
+      console.log(`  Project: ${slug}`);
+      console.log(`  ${CYAN}1.${RESET} Create a ticket in ${DIM}thoughts/${slug}/shared/tickets/<category>/<id>-<slug>.md${RESET}`);
       console.log(`     Use the template: thoughts/shared/tickets/ticket-template.md`);
       console.log(`     Namespaces: WOW (platform), OPT (opticat), PROJ (project), TEAM (team)`);
       console.log();
       console.log(`  ${CYAN}2.${RESET} Run ${GREEN}/create_plan <ticket-path>${RESET} to generate an implementation plan`);
-      console.log(`     Stored in: thoughts/shared/plans/`);
+      console.log(`     Stored in: thoughts/${slug}/shared/plans/`);
       console.log();
       console.log(`  ${CYAN}3.${RESET} Run ${GREEN}/implement_plan <plan-path>${RESET} to execute phase-by-phase`);
       console.log();
@@ -350,7 +362,7 @@ async function printWorkflow(name: string): Promise<void> {
     }
     case "team": {
       console.log(`\n${BOLD}Team Setup${RESET}`);
-      console.log(`${DIM}PROJ-018 — Team & Project Setup Skill${RESET}\n`);
+      console.log(`${DIM}Team Setup — initialize and manage team configuration${RESET}\n`);
       console.log(`  Configuration: ${DIM}.wo/config/team-config.json${RESET}`);
       console.log(`  Template:      ${DIM}.wo/config/team-config.template.json${RESET}\n`);
       console.log(`${BOLD}Commands:${RESET}`);
@@ -362,7 +374,7 @@ async function printWorkflow(name: string): Promise<void> {
     }
     case "dashboard": {
       console.log(`\n${BOLD}CTO Dashboard${RESET}`);
-      console.log(`${DIM}PROJ-019 — CTO Dashboard & Developer Reporting${RESET}\n`);
+      console.log(`${DIM}CTO Dashboard — ticket overview, developer progress, review queue${RESET}\n`);
       console.log(`${BOLD}Commands:${RESET}`);
       console.log(`  deno run -A packages/@aiengineeringharness/skills/cto-dashboard/dashboard.ts`);
       console.log(`  deno run -A packages/@aiengineeringharness/skills/cto-dashboard/dashboard.ts --summary`);
@@ -388,7 +400,7 @@ const topic = args._[0] as string | undefined;
 
 if (args.help) {
   console.log(`
-AI Engineering Harness Help System (PROJ-024)
+AI Engineering Harness Help System
 
 Usage:
   deno run -A help.ts                    Top-level overview

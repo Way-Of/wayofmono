@@ -8,7 +8,7 @@ platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
 allowed-tools: [read, write, glob, ls, grep]
 ---
 
-# Platform-Specific Skill Loading & Format Adapters (PROJ-020)
+# Platform-Specific Skill Loading & Format Adapters
 
 Maintains a single canonical skill format and generates platform-specific configurations for all 7 frontends.
 

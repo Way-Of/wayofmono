@@ -1,15 +1,15 @@
 ---
 name: cto-dashboard
-description: "CTO dashboard with ticket overview, developer progress, review queue, and GitHub PR integration"
-version: 1.0.0
-namespace: core
-tools: read,grep,glob,ls,write
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
-allowed-tools: [read, grep, glob, ls, write]
-dependencies: [ticket-manager]
+description: ""CTO dashboard with ticket overview, developer progress, review queue, and GitHub PR integration""
+allowed-tools: ["[read", "grep", "glob", "ls", "write]"]
 ---
 
-# CTO Dashboard & Developer Reporting (PROJ-019)
+> **Platform**: Gemini CLI | **Skill**: cto-dashboard | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
+
+# CTO Dashboard & Developer Reporting
 
 Provides a unified dashboard for CTO to review all tickets, track developer progress, and manage the review queue.
 

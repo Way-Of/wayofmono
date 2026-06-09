@@ -65,7 +65,7 @@ Parameters:
 ### `get_ticket`
 Get full ticket metadata.
 Parameters:
-- `ticket_id` (required): The ticket ID (e.g., "PROJ-013")
+- `ticket_id` (required): The ticket ID (e.g., "TKT-001")
 
 ### `update_ticket`
 Update ticket status and metadata.

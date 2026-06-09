@@ -246,6 +246,7 @@ For symlink-based installation (easier `git pull` updates):
 | Project | Description | Integration |
 |---------|-------------|-------------|
 | [Way of Pi](https://github.com/zerwiz/wayofpi) | AI-augmented engineering platform (Electron/Web IDE) | Uses `@wayofmono/wo-agent` as backend agent SDK |
+| [Way of Work](https://github.com/zerwiz/wayofwork) | AI-powered productivity platform | Uses `@wayofmono/wo-agent` as user agent SDK |
 
 ---
 *Built as a unified toolset for the next generation of AI engineering.*

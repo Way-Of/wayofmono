@@ -1,7 +1,13 @@
 ---
 name: opticat-simulator
-description: "Enables setup, execution, and analysis of OptiCat HVAC simulations. Use this skill for configuring simulation parameters, executing simulation runs, interpreting results, and performing what-if analysis on HVAC systems."
+description: ""Enables setup, execution, and analysis of OptiCat HVAC simulations. Use this skill for configuring simulation parameters, executing simulation runs, interpreting results, and performing what-if analysis on HVAC systems.""
+allowed-tools: [""]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: opticat-simulator | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # OptiCat Simulator
 

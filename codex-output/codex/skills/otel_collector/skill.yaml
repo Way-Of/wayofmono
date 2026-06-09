@@ -1,0 +1,10 @@
+name: otel_collector
+description: ">"
+version: 1.0.0
+tools:
+  - read_file
+  - run_shell_command
+  - search_file_content
+  - glob
+  - replace
+  - write_file

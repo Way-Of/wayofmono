@@ -1,9 +1,13 @@
 ---
 name: debug_k8s
-description: Debug Kubernetes issues by examining pods, logs, events, and cluster state using `kubectl` commands via Antigravity CLI's `command`.
-disable-model-invocation: true
-allowed-tools: read_file, command, search_file_content, glob
+description: "Debug Kubernetes issues by examining pods, logs, events, and cluster state using `kubectl` commands via Gemini CLI's `run_shell_command`."
+allowed-tools: ["read_file", "run_shell_command", "search_file_content", "glob"]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: debug_k8s | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # Debug Kubernetes
 
@@ -137,7 +141,7 @@ Would you like me to investigate something specific further?
 
 ## Useful kubectl Commands
 
-These commands can be executed via `command` for Kubernetes debugging:
+These commands can be executed via `run_shell_command` for Kubernetes debugging:
 
 ```bash
 # Context and namespace

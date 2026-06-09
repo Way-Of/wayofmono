@@ -1,7 +1,13 @@
 ---
 name: wow_access_control
-description: Critical security, access control, and privacy rules defined in WOW-016. Must be followed when modifying data access layers to ensure multi-tenant and role-based isolation.
+description: "Critical security, access control, and privacy rules defined in WOW-016. Must be followed when modifying data access layers to ensure multi-tenant and role-based isolation."
+allowed-tools: [""]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: wow_access_control | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # wow_access_control
 

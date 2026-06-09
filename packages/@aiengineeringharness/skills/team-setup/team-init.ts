@@ -1,6 +1,6 @@
 #!/usr/bin/env deno run --allow-read --allow-write --allow-run --allow-env
 /**
- * Team Setup & Init Script (PROJ-018)
+ * Team Setup & Init Script
  *
  * Manages team configuration: init, add members, list, assign tickets.
  *
@@ -8,7 +8,7 @@
  *   deno run -A team-init.ts init                    # Init from template
  *   deno run -A team-init.ts list                    # List team members
  *   deno run -A team-init.ts add jane --role=senior --projects=WO,PROJ  # Add member
- *   deno run -A team-init.ts assign PROJ-013 zerwiz  # Assign ticket
+ *   deno run -A team-init.ts assign TKT-001 zerwiz   # Assign ticket
  */
 
 import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
@@ -18,6 +18,97 @@ const ROOT = Deno.cwd();
 const CONFIG_DIR = join(ROOT, ".wo", "config");
 const TEAM_CONFIG_PATH = join(CONFIG_DIR, "team-config.json");
 const TEAM_TEMPLATE_PATH = join(CONFIG_DIR, "team-config.template.json");
+const HARNESS_CONFIG_PATH = join(CONFIG_DIR, "harness.json");
+const HARNESS_TEMPLATE_PATH = join(CONFIG_DIR, "harness.template.json");
+
+const DEFAULT_F_RRD_URL = "https://github.com/Way-Of/f-rr-d.git";
+
+function detectProjectSlug(): string {
+  try {
+    const cmd = new Deno.Command("basename", {
+      args: [Deno.cwd()],
+      stdout: "piped",
+    });
+    const { stdout } = cmd.outputSync();
+    return new TextDecoder().decode(stdout).trim();
+  } catch {
+    return "project";
+  }
+}
+
+function loadHarnessConfig(): { slug: string; url: string } {
+  try {
+    const content = Deno.readTextFileSync(HARNESS_CONFIG_PATH);
+    const config = JSON.parse(content);
+    return {
+      slug: config.project_slug || detectProjectSlug(),
+      url: config.f_rrd_url || DEFAULT_F_RRD_URL,
+    };
+  } catch {
+    return { slug: detectProjectSlug(), url: DEFAULT_F_RRD_URL };
+  }
+}
+
+async function cloneThoughts(url: string): Promise<boolean> {
+  try {
+    await Deno.stat(join(ROOT, "thoughts", ".git"));
+    // Already cloned — pull latest
+    console.log("thoughts/ already exists, pulling latest...");
+    const cmd = new Deno.Command("git", {
+      args: ["-C", join(ROOT, "thoughts"), "pull", "--ff-only"],
+      stdout: "piped",
+      stderr: "piped",
+    });
+    const { code, stderr } = await cmd.output();
+    if (code !== 0) {
+      console.warn(`git pull warning: ${new TextDecoder().decode(stderr).trim()}`);
+    }
+    return true;
+  } catch {
+    // Not cloned yet
+    console.log(`Cloning f-rr-d (${url}) into thoughts/...`);
+    const cmd = new Deno.Command("git", {
+      args: ["clone", url, join(ROOT, "thoughts")],
+      stdout: "piped",
+      stderr: "piped",
+    });
+    const { code, stderr } = await cmd.output();
+    if (code !== 0) {
+      console.error(`Failed to clone f-rr-d: ${new TextDecoder().decode(stderr).trim()}`);
+      return false;
+    }
+    console.log("Cloned f-rr-d into thoughts/");
+    return true;
+  }
+}
+
+async function createProjectDirs(slug: string): Promise<void> {
+  const base = join(ROOT, "thoughts", slug);
+  await Deno.mkdir(join(base, "shared", "tickets"), { recursive: true });
+  await Deno.mkdir(join(base, "shared", "plans"), { recursive: true });
+  await Deno.mkdir(join(base, "shared", "research"), { recursive: true });
+  await Deno.mkdir(join(base, "global"), { recursive: true });
+  console.log(`  Created thoughts/${slug}/`);
+}
+
+async function createHarnessConfig(slug: string, url: string): Promise<void> {
+  const config = {
+    $schema: "https://wayofmono.dev/schemas/harness.json",
+    version: "1.0.0",
+    description: `AI Engineering Harness configuration for ${slug}`,
+    f_rrd_url: url,
+    project_slug: slug,
+    settings: {
+      auto_pull_thoughts: true,
+      auto_push_ticket_changes: false,
+      git_user_name: "",
+      git_user_email: "",
+    },
+  };
+  await Deno.mkdir(CONFIG_DIR, { recursive: true });
+  await Deno.writeTextFile(HARNESS_CONFIG_PATH, JSON.stringify(config, null, 2));
+  console.log(`  Created ${HARNESS_CONFIG_PATH}`);
+}
 
 interface Developer {
   id: string;
@@ -71,34 +162,52 @@ async function saveConfig(config: TeamConfig): Promise<void> {
 }
 
 async function cmdInit(): Promise<void> {
-  try {
-    await Deno.stat(TEAM_CONFIG_PATH);
-    console.log("Team config already exists. Use 'add' to modify.");
-    return;
-  } catch {
-    // doesn't exist, proceed
+  const slug = detectProjectSlug();
+
+  // Step 1: Clone / pull f-rr-d
+  const ok = await cloneThoughts(DEFAULT_F_RRD_URL);
+  if (!ok) {
+    console.error("Cannot proceed without thoughts/ repo.");
+    Deno.exit(1);
   }
 
-  try {
-    const template = await Deno.readTextFile(TEAM_TEMPLATE_PATH);
-    await Deno.mkdir(CONFIG_DIR, { recursive: true });
-    await Deno.writeTextFile(TEAM_CONFIG_PATH, template);
-    console.log("Team config initialized from template.");
-    console.log(`Edit ${TEAM_CONFIG_PATH} to customize.`);
+  // Step 2: Create project subfolder in thoughts/
+  await createProjectDirs(slug);
 
-    // Create developer thought directories
-    const config: TeamConfig = JSON.parse(template);
+  // Step 3: Create harness config
+  await createHarnessConfig(slug, DEFAULT_F_RRD_URL);
+
+  // Step 4: Init team config (if not exists)
+  try {
+    await Deno.stat(TEAM_CONFIG_PATH);
+    console.log("Team config already exists.");
+  } catch {
+    try {
+      const template = await Deno.readTextFile(TEAM_TEMPLATE_PATH);
+      await Deno.writeTextFile(TEAM_CONFIG_PATH, template);
+      console.log("Team config initialized from template.");
+      console.log(`  Edit ${TEAM_CONFIG_PATH} to customize.`);
+    } catch (err) {
+      console.warn("No team-config.template.json found. Create one manually.");
+    }
+  }
+
+  // Step 5: Create personal dirs under project slug
+  const config = await loadConfig();
+  if (config) {
     for (const dev of config.developers) {
-      const thoughtsDir = join(ROOT, "thoughts", dev.id);
+      const thoughtsDir = join(ROOT, "thoughts", slug, dev.id);
       await Deno.mkdir(join(thoughtsDir, "tickets"), { recursive: true });
       await Deno.mkdir(join(thoughtsDir, "plans"), { recursive: true });
       await Deno.mkdir(join(thoughtsDir, "research"), { recursive: true });
-      console.log(`  Created thoughts/${dev.id}/`);
+      console.log(`  Created thoughts/${slug}/${dev.id}/`);
     }
-  } catch (err) {
-    console.error("Failed to init team config:", err.message);
-    Deno.exit(1);
   }
+
+  console.log(`\nInitialized harness for project '${slug}'`);
+  console.log(`  Tickets: thoughts/${slug}/shared/tickets/`);
+  console.log(`  Config:  ${CONFIG_DIR}/`);
+  console.log(`  f-rr-d:  ${DEFAULT_F_RRD_URL}`);
 }
 
 async function cmdList(): Promise<void> {
@@ -155,8 +264,9 @@ async function cmdAdd(
 
   await saveConfig(config);
 
-  // Create thought directories
-  const thoughtsDir = join(ROOT, "thoughts", id);
+  // Create thought directories under project slug
+  const hc = loadHarnessConfig();
+  const thoughtsDir = join(ROOT, "thoughts", hc.slug, id);
   await Deno.mkdir(join(thoughtsDir, "tickets"), { recursive: true });
   await Deno.mkdir(join(thoughtsDir, "plans"), { recursive: true });
   await Deno.mkdir(join(thoughtsDir, "research"), { recursive: true });
@@ -177,7 +287,8 @@ async function cmdAssign(ticketId: string, developerId: string): Promise<void> {
   }
 
   // Update ticket frontmatter
-  const ticketsDir = join(ROOT, "thoughts", "shared", "tickets");
+  const hc = loadHarnessConfig();
+  const ticketsDir = join(ROOT, "thoughts", hc.slug, "shared", "tickets");
   const pattern = new RegExp(ticketId.replace("-", "[-]"), "i");
   let found = false;
 
@@ -213,11 +324,15 @@ const args = parse(Deno.args, {
 const command = args._[0] as string | undefined;
 
 if (args.help || !command) {
+  const hc = loadHarnessConfig();
   console.log(`
-Team Setup & Init (PROJ-018)
+Team Setup & Init (f-rr-d backed)
+
+Project: ${hc.slug}
+Tickets: thoughts/${hc.slug}/shared/tickets/
 
 Usage:
-  team-init.ts init                                    Init config from template
+  team-init.ts init                                    Init from template + clone f-rr-d
   team-init.ts list                                    List team members
   team-init.ts add <name> --role=<role> --projects=<p> Add developer
   team-init.ts assign <ticket-id> <developer-id>       Assign ticket
@@ -226,7 +341,7 @@ Examples:
   team-init.ts init
   team-init.ts list
   team-init.ts add Jane --role=senior --projects=WO,PROJ
-  team-init.ts assign PROJ-013 zerwiz
+  team-init.ts assign TKT-001 zerwiz
 `);
   Deno.exit(0);
 }

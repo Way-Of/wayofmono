@@ -1,0 +1,8 @@
+{
+  "name": "wow-backend-dev",
+  "description": "Comprehensive guide for developing backend APIs, database interactions, and security protocols in the Way of Work (WoW) project. Use when working on server routes, database schemas, or API logic.",
+  "version": "1.0.0",
+  "tools": [
+    ""
+  ]
+}

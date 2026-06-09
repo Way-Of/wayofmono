@@ -9,7 +9,7 @@ allowed-tools: [read, grep, glob, ls, write]
 dependencies: [ticket-manager]
 ---
 
-# CTO Dashboard & Developer Reporting (PROJ-019)
+# CTO Dashboard & Developer Reporting
 
 Provides a unified dashboard for CTO to review all tickets, track developer progress, and manage the review queue.
 

@@ -3649,6 +3649,157 @@
           ]
         }
       }
+    },
+    "codex": {
+      "target": "~/.codex",
+      "components": {
+        "settings": {
+          "description": "Codex global configuration",
+          "files": [
+            {
+              "src": "codex/README.md",
+              "dest": "README.md"
+            }
+          ]
+        },
+        "agents": {
+          "description": "Specialized subagents for Codex",
+          "files": [
+            {
+              "src": "codex/agents/codebase_analyzer.md",
+              "dest": "agents/codebase_analyzer.md"
+            },
+            {
+              "src": "codex/agents/codebase_investigator.md",
+              "dest": "agents/codebase_investigator.md"
+            },
+            {
+              "src": "codex/agents/codebase_locator.md",
+              "dest": "agents/codebase_locator.md"
+            },
+            {
+              "src": "codex/agents/codebase_pattern_finder.md",
+              "dest": "agents/codebase_pattern_finder.md"
+            },
+            {
+              "src": "codex/agents/thoughts_analyzer.md",
+              "dest": "agents/thoughts_analyzer.md"
+            },
+            {
+              "src": "codex/agents/thoughts_locator.md",
+              "dest": "agents/thoughts_locator.md"
+            },
+            {
+              "src": "codex/agents/web_search_researcher.md",
+              "dest": "agents/web_search_researcher.md"
+            }
+          ]
+        },
+        "skill/ticket-manager": {
+          "description": "Ticket Manager - manage tickets across all namespaces with full lifecycle",
+          "files": [
+            {
+              "src": "codex/skills/ticket-manager/skill.yaml",
+              "dest": "skills/ticket-manager/skill.yaml"
+            },
+            {
+              "src": "codex/skills/ticket-manager/prompt.md",
+              "dest": "skills/ticket-manager/prompt.md"
+            }
+          ]
+        },
+        "skill/team-setup": {
+          "description": "Team Setup - initialize and manage team configuration",
+          "files": [
+            {
+              "src": "codex/skills/team-setup/skill.yaml",
+              "dest": "skills/team-setup/skill.yaml"
+            },
+            {
+              "src": "codex/skills/team-setup/prompt.md",
+              "dest": "skills/team-setup/prompt.md"
+            }
+          ]
+        },
+        "skill/skill-auto-update": {
+          "description": "Skill Auto-Update - auto-discover and sync skills across all frontends",
+          "files": [
+            {
+              "src": "codex/skills/skill-auto-update/skill.yaml",
+              "dest": "skills/skill-auto-update/skill.yaml"
+            },
+            {
+              "src": "codex/skills/skill-auto-update/prompt.md",
+              "dest": "skills/skill-auto-update/prompt.md"
+            }
+          ]
+        },
+        "skill/auto-ticket-creator": {
+          "description": "Auto-Ticket Creator - monitor and auto-create tickets from changes",
+          "files": [
+            {
+              "src": "codex/skills/auto-ticket-creator/skill.yaml",
+              "dest": "skills/auto-ticket-creator/skill.yaml"
+            },
+            {
+              "src": "codex/skills/auto-ticket-creator/prompt.md",
+              "dest": "skills/auto-ticket-creator/prompt.md"
+            }
+          ]
+        },
+        "skill/docs-sync-updater": {
+          "description": "Docs Sync Updater - fetch latest docs and auto-update skill configs",
+          "files": [
+            {
+              "src": "codex/skills/docs-sync-updater/skill.yaml",
+              "dest": "skills/docs-sync-updater/skill.yaml"
+            },
+            {
+              "src": "codex/skills/docs-sync-updater/prompt.md",
+              "dest": "skills/docs-sync-updater/prompt.md"
+            }
+          ]
+        },
+        "skill/cto-dashboard": {
+          "description": "CTO Dashboard - ticket overview, developer progress, review queue",
+          "files": [
+            {
+              "src": "codex/skills/cto-dashboard/skill.yaml",
+              "dest": "skills/cto-dashboard/skill.yaml"
+            },
+            {
+              "src": "codex/skills/cto-dashboard/prompt.md",
+              "dest": "skills/cto-dashboard/prompt.md"
+            }
+          ]
+        },
+        "skill/skill-adapter": {
+          "description": "Skill Adapter - platform-specific skill loading and format adapters",
+          "files": [
+            {
+              "src": "codex/skills/skill-adapter/skill.yaml",
+              "dest": "skills/skill-adapter/skill.yaml"
+            },
+            {
+              "src": "codex/skills/skill-adapter/prompt.md",
+              "dest": "skills/skill-adapter/prompt.md"
+            }
+          ]
+        },
+        "skill/help-command": {
+          "description": "Help Command - unified /help across all platform frontends",
+          "files": [
+            {
+              "src": "codex/skills/help-command/skill.yaml",
+              "dest": "skills/help-command/skill.yaml"
+            },
+            {
+              "src": "codex/skills/help-command/prompt.md",
+              "dest": "skills/help-command/prompt.md"
+            }
+          ]
+        }
+      }
     }
   }
 }

@@ -1,12 +1,13 @@
 ---
 name: team-setup
-description: "Initialize and manage team configuration: developers, roles, projects, and ticket assignments"
-version: 1.0.0
-namespace: core
-tools: read,write,grep,glob,ls
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
-allowed-tools: [read, write, grep, glob, ls]
+description: ""Initialize and manage team configuration: developers, roles, projects, and ticket assignments""
+allowed-tools: ["[read", "write", "grep", "glob", "ls]"]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: team-setup | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # Team Setup Skill
 

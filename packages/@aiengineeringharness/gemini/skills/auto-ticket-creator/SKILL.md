@@ -1,15 +1,15 @@
 ---
 name: auto-ticket-creator
-description: "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories"
-version: 1.0.0
-namespace: core
-tools: read,write,grep,glob,web_search
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
-allowed-tools: [read, write, grep, glob, web_search]
-dependencies: [ticket-manager]
+description: ""Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories""
+allowed-tools: ["[read", "write", "grep", "glob", "web_search]"]
 ---
 
-# Auto-Ticket Creation Skill (PROJ-017)
+> **Platform**: Gemini CLI | **Skill**: auto-ticket-creator | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
+
+# Auto-Ticket Creation Skill
 
 Autonomously monitors the codebase, dependencies, and external sources for updates, and automatically creates tickets.
 

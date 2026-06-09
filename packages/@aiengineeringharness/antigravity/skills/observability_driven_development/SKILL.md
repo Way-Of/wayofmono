@@ -1,13 +1,13 @@
 ---
 name: observability_driven_development
-description: >
-  Observability Driven Development (ODD) — design the trace before the feature.
-  Auto-activates when the user wants to "drive with observability", "ODD",
-  "instrument first", "narrative-first", "telemetry-driven", or wants to set
-  up a local OTel feedback loop with the Aspire dashboard. Pairs with
-  /validate_telemetry to verify behaviour against a written narrative.
-allowed-tools: read_file, command, glob, write_file, replace
+description: ">"
+allowed-tools: ["read_file", "run_shell_command", "glob", "write_file", "replace"]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: observability_driven_development | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # Observability Driven Development (ODD)
 

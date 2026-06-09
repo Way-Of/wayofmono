@@ -1,0 +1,13 @@
+{
+  "$schema": "https://wayofmono.dev/schemas/harness.json",
+  "version": "1.0.0",
+  "description": "AI Engineering Harness configuration for WayOfMono",
+  "f_rrd_url": "https://github.com/Way-Of/f-rr-d.git",
+  "project_slug": "wayofmono",
+  "settings": {
+    "auto_pull_thoughts": true,
+    "auto_push_ticket_changes": false,
+    "git_user_name": "",
+    "git_user_email": ""
+  }
+}

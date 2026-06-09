@@ -55,8 +55,8 @@ planning/
 # Reference harness (gitignored)
 ref/
 
-# User thoughts (context engineering - personal workspace)
-thoughts/{username}/
+# User thoughts (centralized in Way-Of/f-rr-d repo)
+thoughts/
 
 # Cache files
 .cache/

@@ -290,7 +290,7 @@ DIRECT RUN (no install step):
   deno run -A install.ts [options]
 
 OPTIONS:
-  --tool=<claude|opencode|gemini|pi|wocoder|antigravity|all> Which tool configs to install (required)
+  --tool=<claude|opencode|gemini|pi|wocoder|antigravity|codex|all> Which tool configs to install (required)
   --skill=<name>[,<name>]               Specific component names to install
   --interactive, -i                     Interactive checkbox picker
   --dry-run, -n                         Preview without writing files

@@ -1,0 +1,12 @@
+{
+  "name": "backlog-groomer",
+  "description": "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.",
+  "version": "1.0.0",
+  "tools": [
+    "read",
+    "grep",
+    "find",
+    "ls",
+    "write"
+  ]
+}

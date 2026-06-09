@@ -3,7 +3,7 @@
 > _Auto-generated from canonical format. Do not edit directly._
 
 
-# Help Command Skill (PROJ-024)
+# Help Command Skill
 
 Provides a unified `/help` command across all platforms. Reads skill/agent registries
 and SKILL.md files to present categorized documentation.

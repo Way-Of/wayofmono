@@ -9,7 +9,7 @@ allowed-tools: [read, write, grep, web_search, web_fetch]
 dependencies: [ticket-manager, skill-auto-update]
 ---
 
-# Documentation Sync Updater (PROJ-022)
+# Documentation Sync Updater
 
 Fetches the latest documentation from all supported agent frontends to keep skills and configs up to date.
 

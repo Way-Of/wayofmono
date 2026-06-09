@@ -9,7 +9,7 @@ allowed-tools: [read, write, glob, ls, grep]
 dependencies: [ticket-manager]
 ---
 
-# Skill Auto-Update & Sync (PROJ-014)
+# Skill Auto-Update & Sync
 
 Detects new/updated skills in `packages/@aiengineeringharness/skills/` and automatically propagates them to all configured frontends.
 

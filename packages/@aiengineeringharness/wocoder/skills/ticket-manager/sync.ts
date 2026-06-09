@@ -9,9 +9,9 @@
  *
  * Usage:
  *   deno run -A sync.ts --list                    # List all tickets
- *   deno run -A sync.ts --get=PROJ-013            # Get ticket details
+ *   deno run -A sync.ts --get=TKT-001             # Get ticket details
  *   deno run -A sync.ts --sync-todos              # Regenerate personal TODOs
- *   deno run -A sync.ts --update=PROJ-013 --status="In Progress"  # Update status
+ *   deno run -A sync.ts --update=TKT-001 --status="In Progress"  # Update status
  */
 
 import { join, dirname } from "https://deno.land/std@0.224.0/path/mod.ts";
@@ -301,8 +301,8 @@ Ticket Manager Sync Engine
 Usage:
   deno run -A sync.ts --list                           List all tickets
   deno run -A sync.ts --list --namespace=proj           Filter by namespace
-  deno run -A sync.ts --get=PROJ-013                  Get ticket details
-  deno run -A sync.ts --update=PROJ-013 --status="In Progress"  Update status
+  deno run -A sync.ts --get=TKT-001                   Get ticket details
+  deno run -A sync.ts --update=TKT-001 --status="In Progress"  Update status
   deno run -A sync.ts --sync-todos                    Regenerate personal TODOs
   deno run -A sync.ts --sync-todos --dev=zerwiz       Sync specific dev only
 `);
