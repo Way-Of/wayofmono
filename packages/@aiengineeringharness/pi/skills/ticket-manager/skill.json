@@ -1,0 +1,14 @@
+{
+  "name": "ticket-manager",
+  "description": "\"Manage tickets across all namespaces (WOW, OPT, PROJ, TEAM) with full lifecycle, TODO linking, personal hierarchy, and CTO review workflow\"",
+  "version": "1.0.0",
+  "tools": [
+    "[read",
+    "grep",
+    "glob",
+    "find",
+    "ls",
+    "write",
+    "edit]"
+  ]
+}
