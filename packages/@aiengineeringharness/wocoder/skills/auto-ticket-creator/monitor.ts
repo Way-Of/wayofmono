@@ -22,7 +22,65 @@ import { ensureDir } from "https://deno.land/std@0.224.0/fs/ensure_dir.ts";
 const ROOT = Deno.cwd();
 const STATE_DIR = join(ROOT, ".wo", "state", "monitor");
 const STATE_PATH = join(STATE_DIR, "monitor-state.json");
-const TICKETS_DIR = join(ROOT, "thoughts", "shared", "tickets");
+const HARNESS_CONFIG_PATH = join(ROOT, ".wo", "config", "harness.json");
+const THOUGHTS_DIR = join(ROOT, "thoughts");
+
+function getProjectSlug(): string {
+  try {
+    const content = Deno.readTextFileSync(HARNESS_CONFIG_PATH);
+    return JSON.parse(content).project_slug || "wayofmono";
+  } catch {
+    return "wayofmono";
+  }
+}
+
+function ticketsDir(): string {
+  return join(THOUGHTS_DIR, getProjectSlug(), "shared", "tickets");
+}
+
+async function pullThoughts(): Promise<void> {
+  try {
+    const cmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "pull", "--ff-only"],
+      stdout: "null", stderr: "null",
+    });
+    await cmd.output();
+  } catch {
+    // not a git repo yet
+  }
+}
+
+async function pushThoughts(message: string): Promise<void> {
+  try {
+    const addCmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "add", "-A"],
+      stdout: "null", stderr: "null",
+    });
+    await addCmd.output();
+
+    const diffCmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "diff", "--cached", "--quiet"],
+      stdout: "null", stderr: "null",
+    });
+    const { code } = await diffCmd.output();
+    if (code === 0) return;
+
+    const commitCmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "commit", "-m", message],
+      stdout: "null", stderr: "null",
+    });
+    const { code: cc } = await commitCmd.output();
+    if (cc !== 0) return;
+
+    const pushCmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "push"],
+      stdout: "null", stderr: "null",
+    });
+    await pushCmd.output();
+  } catch {
+    // push may fail without credentials
+  }
+}
 
 interface MonitorState {
   lastRun: string;
@@ -63,9 +121,10 @@ async function saveState(state: MonitorState): Promise<void> {
 // --- Ticket Creator ---
 
 async function createTicket(change: DetectedChange, dryRun: boolean): Promise<void> {
+  await pullThoughts();
   const id = `AUTO-${Date.now()}`;
   const slug = change.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 60);
-  const ticketPath = join(TICKETS_DIR, change.category, `${id}-${slug}.md`);
+  const ticketPath = join(ticketsDir(), change.category, `${id}-${slug}.md`);
 
   const content = `---
 title: "\\[${change.namespace}\\] ${change.title}"
@@ -99,6 +158,7 @@ This ticket was automatically created by the monitor system.
   await ensureDir(dirname(ticketPath));
   await Deno.writeTextFile(ticketPath, content);
   console.log(`  + Created ticket: ${ticketPath}`);
+  await pushThoughts(`monitor: auto-create ticket ${id}`);
 }
 
 // --- Git Adapter ---

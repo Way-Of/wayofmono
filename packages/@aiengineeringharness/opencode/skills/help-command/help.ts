@@ -25,6 +25,16 @@ const HARNESS_DIR = join(ROOT, "packages/@aiengineeringharness");
 const REGISTRY_PATH = join(HARNESS_DIR, "skills", "skill-registry.json");
 const AGENT_REGISTRY_PATH = join(HARNESS_DIR, "agents", "agent-registry.json");
 const CANONICAL_SKILLS_DIR = join(HARNESS_DIR, "skills");
+const HARNESS_CONFIG_PATH = join(ROOT, ".wo", "config", "harness.json");
+
+function getProjectSlug(): string {
+  try {
+    const content = Deno.readTextFileSync(HARNESS_CONFIG_PATH);
+    return JSON.parse(content).project_slug || "wayofmono";
+  } catch {
+    return "wayofmono";
+  }
+}
 
 const BOLD = "\x1b[1m";
 const DIM = "\x1b[2m";
@@ -223,7 +233,7 @@ async function printSkills(filterNamespace?: string): Promise<void> {
 
 async function printCommands(): Promise<void> {
   const cmds: Array<{ cmd: string; desc: string; skill?: string }> = [
-    { cmd: "/init_harness", desc: "Initialize harness in a repo (AGENTS.md + thoughts/)" },
+    { cmd: "/init_harness", desc: `Initialize harness in a repo (AGENTS.md + thoughts/${getProjectSlug()}/)` },
     { cmd: "/create_plan", desc: "Generate implementation plan from a ticket" },
     { cmd: "/implement_plan", desc: "Execute approved plan phase-by-phase" },
     { cmd: "/validate_plan", desc: "Verify implementation against plan" },
@@ -325,14 +335,16 @@ async function printSkillDetail(name: string): Promise<void> {
 async function printWorkflow(name: string): Promise<void> {
   switch (name) {
     case "ticket": {
+      const slug = getProjectSlug();
       console.log(`\n${BOLD}Ticket Workflow${RESET}`);
-      console.log(`${DIM}Ticket Manager — manage tickets across all namespaces${RESET}\n`);
-      console.log(`  ${CYAN}1.${RESET} Create a ticket in ${DIM}thoughts/shared/tickets/<category>/<id>-<slug>.md${RESET}`);
+      console.log(`${DIM}Ticket Manager — manage tickets across all namespaces (f-rr-d backed)${RESET}\n`);
+      console.log(`  Project: ${slug}`);
+      console.log(`  ${CYAN}1.${RESET} Create a ticket in ${DIM}thoughts/${slug}/shared/tickets/<category>/<id>-<slug>.md${RESET}`);
       console.log(`     Use the template: thoughts/shared/tickets/ticket-template.md`);
       console.log(`     Namespaces: WOW (platform), OPT (opticat), PROJ (project), TEAM (team)`);
       console.log();
       console.log(`  ${CYAN}2.${RESET} Run ${GREEN}/create_plan <ticket-path>${RESET} to generate an implementation plan`);
-      console.log(`     Stored in: thoughts/shared/plans/`);
+      console.log(`     Stored in: thoughts/${slug}/shared/plans/`);
       console.log();
       console.log(`  ${CYAN}3.${RESET} Run ${GREEN}/implement_plan <plan-path>${RESET} to execute phase-by-phase`);
       console.log();
