@@ -1,5 +1,60 @@
 # Changelog
 
+## [Unreleased] - 2026-06-10
+
+### WOMONO-001 — Centralized f-rr-d Multi-Project Support (Critical) — **Structure Complete**
+- **Folder structure clarified**: `thoughts/global/` = cross-project global thoughts, `thoughts/<project>/shared/` = shared responsibility tickets per project, `thoughts/shared/` (f-rr-d root) = cross-project templates only
+- **Ticket namespace migration**: All WayOfMono tickets renamed from `PROJ-XXX` → `WOMONO-XXX` (13 tickets migrated)
+- **Tickets reorganized**: Moved 29 tickets from flat `shared/aiharness/` to categorized `shared/tickets/{architecture,frontend,backend,communications,system/}` with `system/{harness,skills,agents,team,templates,docs-sync}`
+- **f-rr-d repository fixed**:
+  - Removed nested `thoughts/thoughts/` structure, flattened to single `thoughts/` root
+  - Updated AGENTS.md to reflect thoughts-only purpose (no skills/agents)
+  - Updated README.md with multi-project structure documentation
+  - Created `thoughts/wow/` and `thoughts/opticat/` with full project structure
+  - Deleted local `thoughts/shared/` (wrong location)
+  - Added f-rr-d root `shared/tickets/ticket-template.md`
+- **AI Engineering Harness fixes**:
+  - Updated `init_harness/SKILL.md` with correct multi-project structure
+  - Updated `team-init.ts` to create correct structure + remove wrong `thoughts/shared/`
+  - Updated `team-setup/SKILL.md` with project structure documentation
+  - Updated `monitor.ts`, `dashboard.ts`, `help.ts`, `cto-dashboard.ts`, `auto-ticket-creator.ts` namespace references (PROJ → WOMONO)
+  - Updated `import-ref-skills.ts` ticket reference (PROJ-016 → WOMONO-016)
+  - Updated `docs-sync-updater` ticket creation (PROJ → WOMONO)
+  - Updated `ticket-manager/SKILL.md` and `skill-registry.json` namespaces
+  - Updated `migrate-tickets.ts` script to handle PROJ→WOMONO rename + categorization
+- **WOMONO-001 ticket** updated as source of truth for all folder structure decisions
+
+### WOMONO-013 through WOMONO-026 — AI Engineering Harness Core Skills — **All Done**
+- **Skill sync across 7 platforms** (claude, opencode, gemini, pi, wocoder, antigravity, codex):
+  - Removed 82 duplicate skills with incorrect naming conventions
+  - Fixed naming: pi uses kebab-case, other 6 platforms use snake_case
+  - Core skills (auto-ticket-creator, cto-dashboard, docs-sync-updater, help-command, skill-adapter, skill-auto-update, ticket-manager) use hyphens on ALL platforms
+  - Fixed `team-setup` → `team_setup` in canonical, updated skill-registry.json
+  - Synced 20 missing skills to codex platform
+  - Verified zero duplicates and zero gaps across all platforms
+- **Ticket status updates** (13 WOMONO tickets marked Done):
+  - WOMONO-013: Ticket Manager Skill
+  - WOMONO-014: Skill Auto-Update Sync
+  - WOMONO-015: Agent Namespacing Separation
+  - WOMONO-016: Import Ref Skills/Agents
+  - WOMONO-017: Auto Ticket Creation Skill
+  - WOMONO-018: Team Project Setup
+  - WOMONO-019: CTO Dashboard Reporting
+  - WOMONO-020: Platform-Specific Skill Loading
+  - WOMONO-022: Docs Sync Updater
+  - WOMONO-023: Ticket Folder Organization
+  - WOMONO-024: AI Harness Help Command
+  - WOMONO-025: Codex First-Class Platform
+  - WOMONO-026: Centralized Ticket Repo
+
+### Codex Platform — First-Class Support Complete
+- Created `packages/@aiengineeringharness/codex/` with agents, rules, README
+- Added codex to manifest.json, install.ts, setup.sh
+- Updated AGENTS.md with Codex column in commands/agents tables
+- Codex skill format: skill.yaml + prompt.md per skill
+
+## Status
+
 ## Status
 
 ### ✅ Done

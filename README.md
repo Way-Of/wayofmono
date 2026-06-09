@@ -174,6 +174,33 @@ All published at https://www.npmjs.com/settings/wayofmono/packages
 
 Shared agents, commands, skills, and extensions for all agent frontends. Install once and instantly configure any agent with battle-tested prompts and workflows. See the comprehensive [AI Engineering Harness Tutorial](file:///home/zerwiz/wayofmono/docs/HARNESS_TUTORIAL.md) for step-by-step instructions on utilizing the agents, commands, and skills.
 
+### 📚 Context Engineering with f-rr-d (förråd)
+
+WayOfMono uses **f-rr-d** (förråd) — a centralized thoughts repository at `github.com/Way-Of/f-rr-d` — for tickets, plans, research, and personal TODOs across all Way-Of projects.
+
+**How it works:**
+1. **Clone on init**: `ai-harness --init` clones f-rr-d into `thoughts/`
+2. **Project-scoped**: WayOfMono tickets live in `thoughts/wayofmono/shared/tickets/` (WOMONO-XXX namespace)
+3. **Multi-project**: WoW (`thoughts/wow/`, WOW-XXX) and Opticat (`thoughts/opticat/`, OPT-XXX) share the same repo
+4. **Pull before read, push after write**: All harness skills auto-sync with f-rr-d
+5. **Branch naming**: `<project-slug>/<namespace>/<ticket-id>-<short-desc>` (e.g., `wayofmono/womono/WOMONO-001-centralized-repo`)
+
+**Local structure after clone:**
+```
+thoughts/
+├── global/                    # Cross-project concerns
+├── wayofmono/                 # WayOfMono (WOMONO-XXX)
+│   ├── global/
+│   ├── shared/tickets/        # WOMONO-XXX tickets
+│   ├── shared/plans/
+│   ├── shared/research/
+│   └── <developer>/
+├── wow/                       # WayOfWork (WOW-XXX)
+└── opticat/                   # Opticat (OPT-XXX)
+```
+
+**Config:** `.wo/config/harness.json` stores `f_rrd_url` and `project_slug` for the harness.
+
 
 ### Prerequisites
 
