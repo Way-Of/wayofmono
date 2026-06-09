@@ -1,0 +1,120 @@
+{
+  "$schema": "https://wayofmono.dev/schemas/docs-sync.json",
+  "version": "1.0.0",
+  "description": "Documentation sync configuration for AI Engineering Harness. Copy to docs-sync.json and customize.",
+  "sources": [
+    {
+      "id": "pi",
+      "name": "Pi Agent",
+      "url": "https://pi.dev/docs/latest",
+      "type": "html",
+      "enabled": true,
+      "check_interval_hours": 24,
+      "selectors": {
+        "version": "meta[name='version']",
+        "changelog": ".changelog, .release-notes",
+        "commands": ".command-reference",
+        "config": ".configuration"
+      },
+      "platforms": ["pi"]
+    },
+    {
+      "id": "gemini",
+      "name": "Gemini CLI",
+      "url": "https://geminicli.com/docs/",
+      "type": "html",
+      "enabled": true,
+      "check_interval_hours": 24,
+      "selectors": {
+        "version": "meta[name='version']",
+        "changelog": ".changelog, .releases",
+        "commands": ".cli-commands",
+        "config": ".configuration"
+      },
+      "platforms": ["gemini"]
+    },
+    {
+      "id": "opencode",
+      "name": "OpenCode",
+      "url": "https://opencode.ai/docs/cli/",
+      "type": "html",
+      "enabled": true,
+      "check_interval_hours": 24,
+      "selectors": {
+        "version": "meta[name='version']",
+        "changelog": ".changelog",
+        "commands": ".cli-reference",
+        "config": ".configuration",
+        "skills": ".skills-api",
+        "agents": ".agents-api"
+      },
+      "platforms": ["opencode"]
+    },
+    {
+      "id": "claude",
+      "name": "Claude Code",
+      "url": "https://code.claude.com/docs/en/overview",
+      "type": "html",
+      "enabled": true,
+      "check_interval_hours": 24,
+      "selectors": {
+        "version": "meta[name='version']",
+        "changelog": ".changelog, .releases",
+        "commands": ".cli-commands",
+        "hooks": ".hooks-reference",
+        "agents": ".agents-reference",
+        "mcp": ".mcp-servers"
+      },
+      "platforms": ["claude"]
+    },
+    {
+      "id": "codex",
+      "name": "Codex CLI",
+      "url": "https://developers.openai.com/codex/cli",
+      "type": "html",
+      "enabled": true,
+      "check_interval_hours": 24,
+      "selectors": {
+        "version": "meta[name='version']",
+        "changelog": ".changelog",
+        "commands": ".cli-reference",
+        "config": ".configuration",
+        "skills": ".skills-api"
+      },
+      "platforms": ["codex"]
+    },
+    {
+      "id": "antigravity",
+      "name": "Antigravity",
+      "url": "https://antigravity.google/docs/cli-overview",
+      "type": "html",
+      "enabled": true,
+      "check_interval_hours": 24,
+      "selectors": {
+        "version": "meta[name='version']",
+        "changelog": ".changelog",
+        "commands": ".cli-reference",
+        "skills": ".skills-api"
+      },
+      "platforms": ["antigravity", "gemini"]
+    }
+  ],
+  "settings": {
+    "auto_update_non_breaking": true,
+    "create_tickets_for_breaking": true,
+    "ticket_prefix": "PROJ",
+    "state_file": ".wo/state/docs-sync-state.json",
+    "notification_on_change": true,
+    "max_concurrent_fetches": 3,
+    "timeout_seconds": 30,
+    "user_agent": "WayOfMono-DocsSync/1.0"
+  },
+  "platform_mapping": {
+    "pi": ["pi"],
+    "gemini": ["gemini", "antigravity"],
+    "opencode": ["opencode"],
+    "claude": ["claude"],
+    "codex": ["codex"],
+    "antigravity": ["antigravity"]
+  }
+}

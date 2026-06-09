@@ -20,6 +20,7 @@
 
 import { parseArgs } from "jsr:@std/cli@1/parse-args";
 import { ensureDir } from "jsr:@std/fs@1/ensure-dir";
+import { join } from "jsr:@std/path@1/join";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -294,7 +295,9 @@ OPTIONS:
   --interactive, -i                     Interactive checkbox picker
   --dry-run, -n                         Preview without writing files
   --yes, -y                             Skip confirmation prompts
+  --local, -l                           Install to project-local directories (.claude, .agents, .gemini, etc.)
   --check                               Check installed version vs manifest
+  --import-ref                          Import ref skills/agents to all platforms (PROJ-016)
   --mode=repo                           Show clone+stow instructions instead
   --dest=<path>                         Clone destination for --mode=repo
   --help, -h                            Show this help
@@ -376,6 +379,26 @@ interface InstallOptions {
   yes: boolean;
   sd: string;
   token: string | null;
+  local: boolean;
+}
+
+function getProjectLocalTarget(tool: string): string {
+  switch (tool) {
+    case "claude":
+      return "./.claude";
+    case "gemini":
+      return "./.gemini";
+    case "pi":
+      return "./.pi/agent";
+    case "opencode":
+      return "./.config/opencode";
+    case "antigravity":
+      return "./.agents";
+    case "wocoder":
+      return "./.wocoder";
+    default:
+      return `./.${tool}`;
+  }
 }
 
 async function installTool(manifest: Manifest, toolName: string, opts: InstallOptions): Promise<void> {
@@ -385,7 +408,7 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
     Deno.exit(1);
   }
 
-  const targetDir = expandHome(toolConfig.target);
+  const targetDir = opts.local ? getProjectLocalTarget(toolName) : expandHome(toolConfig.target);
 
   // Show version info
   await checkForUpdates(manifest, targetDir, toolName);
@@ -517,8 +540,8 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 
 const args = parseArgs(Deno.args, {
   string: ["tool", "skill", "dest", "mode"],
-  boolean: ["interactive", "dry-run", "yes", "help", "check"],
-  alias: { h: "help", n: "dry-run", y: "yes", i: "interactive" },
+  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref"],
+  alias: { h: "help", n: "dry-run", y: "yes", i: "interactive", l: "local" },
 });
 
 if (args.help) {
@@ -538,6 +561,23 @@ if (args["check"]) {
   }
   console.log();
   console.log("Re-run installer to update: deno run -A ...install.ts --tool=all --yes");
+  Deno.exit(0);
+}
+
+if (args["import-ref"]) {
+  const importScript = `${sd}scripts/import-ref-skills.ts`;
+  console.log("Importing ref skills/agents to all platforms...\n");
+  const cmd = new Deno.Command("deno", {
+    args: ["run", "--allow-read", "--allow-write", "--allow-run", "--allow-env", importScript],
+    cwd: join(sd, "..", ".."),
+  });
+  const output = await cmd.output();
+  console.log(new TextDecoder().decode(output.stdout));
+  if (!output.success) {
+    console.error(new TextDecoder().decode(output.stderr));
+    Deno.exit(1);
+  }
+  console.log("Import complete.");
   Deno.exit(0);
 }
 
@@ -569,6 +609,7 @@ const installOpts: InstallOptions = {
   yes: Boolean(args.yes),
   sd,
   token,
+  local: Boolean(args.local),
 };
 
 const toolArg = String(args.tool);
