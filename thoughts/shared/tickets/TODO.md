@@ -50,6 +50,7 @@ wo-coding-agent (CLI BINARY) — ~141 files from pi/coding-agent/src/ (keeps eve
 - [x] [PROJ-021](./system/team/PROJ-021-personal-todo-hierarchy.md): Personal TODO Hierarchy — sync_personal_todos() implemented in ticket-manager/sync.ts
 - [x] [PROJ-022](./system/docs-sync/PROJ-022-docs-sync-updater.md): Documentation Sync Updater — docs-sync.ts already existed, stub skill created linking to it
 - [x] [PROJ-023](./system/templates/PROJ-023-ticket-folder-organization.md): Ticket Folder Organization — already done (migrate-tickets.ts exists, tickets in categorized subfolders)
+- [x] [PROJ-024](./system/commands/PROJ-024-ai-harness-help-command.md): /help Command — help.ts with overview/skills/commands/agents/detail/workflow views, SKILL.md, wrappers, registry
 
 ### Architecture
 - [ ] [PROJ-010](./architecture/PROJ-010-bootstrap-wocoder.md): Bootstrap WoCoder
@@ -104,13 +105,7 @@ thoughts/shared/tickets/
 
 ## Next Actions
 
-1. ✅ Run `ai-harness team init` to configure team (PROJ-018) — team-init.ts created
-2. ✅ Run migration script to reorganize tickets into folders (PROJ-023) — already done
-3. ✅ Implement Ticket Manager Skill (PROJ-013) — SKILL.md, schema, tools, sync.ts, wrappers done
-4. ✅ Implement full Skill Auto-Update logic (PROJ-014) — sync-skills.ts with --status, --dry-run, --watch, ref-skill guard
-5. ✅ Implement full Skill Adapter platform generators (PROJ-020) — adapter.ts generate/list/validate CLI, 7 platforms supported
-6. ✅ Implement full CTO Dashboard TUI (PROJ-019) — dashboard.ts with --summary, --review, --dev, --aging, --json, --watch
-7. ✅ Implement full Auto-Ticket Creator adapters (PROJ-017) — monitor.ts with git/npm/ref/codebase/platform sources
-8. ✅ Import 59 ref skills from ref/skills/ to harness (PROJ-016) — import-ref-skills.ts, 354 total imports, 0 errors
-9. Use `deno run packages/@aiengineeringharness/skills/ticket-manager/sync.ts --sync-todos` to generate personal TODOs
-10. Use `deno run packages/@aiengineeringharness/skills/team-setup/team-init.ts init` to init team config
+1. ✅ All system tickets (PROJ-013 through PROJ-024) implemented — 8 system skills, 59 ref skills, 6 core agents
+2. Use `deno run packages/@aiengineeringharness/skills/ticket-manager/sync.ts --sync-todos` to generate personal TODOs
+3. Use `deno run packages/@aiengineeringharness/skills/team-setup/team-init.ts init` to init team config
+4. Use `deno run packages/@aiengineeringharness/skills/help-command/help.ts` to explore the harness
