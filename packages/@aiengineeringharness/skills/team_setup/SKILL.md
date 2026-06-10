@@ -1,6 +1,7 @@
 ---
 name: team-setup
 description: "Initialize and manage team configuration: developers, roles, projects, and ticket assignments"
+docs-url: 
 version: 1.0.0
 namespace: core
 tools: read,write,grep,glob,ls

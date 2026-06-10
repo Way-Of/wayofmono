@@ -1,6 +1,7 @@
 ---
 name: debug_k8s
 description: Debug Kubernetes issues by examining pods, logs, events, and cluster state using `kubectl` commands via Gemini CLI's `run_shell_command`.
+docs-url: 
 disable-model-invocation: true
 allowed-tools: read_file, run_shell_command, search_file_content, glob
 ---

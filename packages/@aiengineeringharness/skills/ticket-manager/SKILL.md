@@ -1,6 +1,7 @@
 ---
 name: ticket-manager
 description: "Manage tickets across all namespaces (WOW, OPT, WOMONO, TEAM) with full lifecycle, TODO linking, personal hierarchy, and CTO review workflow"
+docs-url: 
 version: 1.0.0
 namespace: core
 tools: read,grep,glob,find,ls,write,edit

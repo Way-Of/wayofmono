@@ -1,6 +1,7 @@
 ---
 name: wow_core_architecture
 description: Fundamental architectural principles and tech stack rules for the Way of Work (WoW) platform. Use as a starting point for understanding the system.
+docs-url: 
 ---
 
 # wow_core_architecture

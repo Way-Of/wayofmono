@@ -1,6 +1,7 @@
 ---
 name: cto-dashboard
 description: "CTO dashboard with ticket overview, developer progress, review queue, and GitHub PR integration"
+docs-url: 
 version: 1.0.0
 namespace: core
 tools: read,grep,glob,ls,write

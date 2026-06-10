@@ -1,6 +1,7 @@
 ---
 name: skill-adapter
 description: "Platform-specific skill/agent loading and format adapters for all 7 frontends"
+docs-url: 
 version: 1.0.0
 namespace: core
 tools: read,write,glob,ls,grep

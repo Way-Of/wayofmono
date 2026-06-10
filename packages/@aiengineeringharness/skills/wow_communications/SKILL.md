@@ -1,6 +1,7 @@
 ---
 name: wow_communications
 description: Architecture for the inbound/outbound communication channels (Telegram, WhatsApp) defined in WOW-015. Use when working on channel routers, bots, or external messaging.
+docs-url: 
 ---
 
 # wow_communications

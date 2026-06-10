@@ -7,6 +7,7 @@ description: >
   and RED metric derivation via signaltometrics.
 disable-model-invocation: true
 allowed-tools: read_file, run_shell_command, search_file_content, glob, replace, write_file
+docs-url: https://opentelemetry.io/docs/
 ---
 
 # OpenTelemetry Collector Configuration
@@ -390,6 +391,7 @@ spec:
           exporters: [otlp]
 ```
 
+docs-url: https://opentelemetry.io/docs/
 ---
 
 ## Cross-References

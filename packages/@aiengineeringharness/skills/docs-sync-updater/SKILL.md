@@ -1,6 +1,7 @@
 ---
 name: docs-sync-updater
 description: "Fetch latest documentation from all agent frontend sources and auto-update skills/agent configs"
+docs-url: 
 version: 1.0.0
 namespace: core
 tools: read,write,grep,web_search,web_fetch

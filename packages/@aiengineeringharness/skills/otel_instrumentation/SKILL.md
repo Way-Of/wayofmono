@@ -7,6 +7,7 @@ description: >
   sensitive data handling, and validation.
 disable-model-invocation: true
 allowed-tools: read_file, run_shell_command, search_file_content, glob, replace, write_file
+docs-url: https://opentelemetry.io/docs/
 ---
 
 # OpenTelemetry Application Instrumentation
@@ -559,6 +560,7 @@ curl -sf http://otel-collector:4318/v1/traces || echo "Collector unreachable (HT
 **Metrics:** bounded cardinality (<1K series/metric), correct units, no duplicate names
 **Logs:** `trace_id`+`span_id` present, structured JSON, correct severity, no sensitive data
 
+docs-url: https://opentelemetry.io/docs/
 ---
 
 ## Cross-References

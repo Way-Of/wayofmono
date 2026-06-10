@@ -1,6 +1,7 @@
 ---
 name: interview
 description: Interview the user relentlessly about a plan or design until reaching shared understanding. Walks down each branch of the decision tree, resolving dependencies one-by-one. Use when the user wants to stress-test a plan, asks to be interviewed, says "drill in", "ask me questions", or wants to validate design decisions before implementation.
+docs-url: 
 allowed-tools: read_file, glob
 ---
 

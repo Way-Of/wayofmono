@@ -6,6 +6,7 @@ description: >
   and registry namespace reference.
 disable-model-invocation: true
 allowed-tools: read_file, run_shell_command, search_file_content, glob
+docs-url: https://opentelemetry.io/docs/
 ---
 
 # OpenTelemetry Semantic Conventions
@@ -176,6 +177,7 @@ acme.order.status  # Org-prefixed for company-specific
 
 Rules: dot-separated namespaces, snake_case segments, org prefix for company-specific, document in team registry.
 
+docs-url: https://opentelemetry.io/docs/
 ---
 
 ## Cross-References

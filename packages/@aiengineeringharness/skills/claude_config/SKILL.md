@@ -1,6 +1,7 @@
 ---
 name: claude_config
 description: Claude Code configuration expert — knows settings.json, .mcp.json, steering rules hierarchy, and all configuration options. Use when the user needs help configuring Claude Code.
+docs-url: https://code.claude.com/docs/en/
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---
 

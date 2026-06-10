@@ -1,6 +1,7 @@
 ---
 name: skill-auto-update
 description: "Auto-discover, sync, and update skills across all 7 frontends (claude, opencode, gemini, pi, wocoder, antigravity, codex)"
+docs-url: 
 version: 1.0.0
 namespace: core
 tools: read,write,glob,ls,grep

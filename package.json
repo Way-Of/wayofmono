@@ -7,7 +7,8 @@
     "typecheck": "pnpm -r --parallel typecheck",
     "publish": "pnpm -r publish --access public --no-git-checks",
     "version": "changeset version",
-    "publish:versioned": "pnpm changeset publish --no-git-checks"
+    "publish:versioned": "pnpm changeset publish --no-git-checks",
+    "dev:dashboard": "bash scripts/dev-dashboard.sh"
   },
   "engines": {
     "node": ">=22"

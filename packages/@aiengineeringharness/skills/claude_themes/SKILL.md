@@ -1,6 +1,7 @@
 ---
 name: claude_themes
 description: Claude Code themes expert — knows all 7 built-in theme presets, RGB true color definitions, ANSI-only fallbacks, daltonized (color-blind friendly) options, and interactive /theme picker usage. Use when the user wants to inspect or switch Claude Code themes.
+docs-url: https://code.claude.com/docs/en/
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---
 

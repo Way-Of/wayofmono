@@ -1,6 +1,7 @@
 ---
 name: build_claude_extension
 description: Build Claude Code plugins/extensions — knows plugin.json manifest structure, relative paths format, custom commands, hook interceptors, and local/marketplace deployment. Use when the user wants to build custom Claude Code plugins.
+docs-url: https://code.claude.com/docs/en/
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---
 

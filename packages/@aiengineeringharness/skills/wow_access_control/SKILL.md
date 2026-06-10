@@ -1,6 +1,7 @@
 ---
 name: wow_access_control
 description: Critical security, access control, and privacy rules defined in WOW-016. Must be followed when modifying data access layers to ensure multi-tenant and role-based isolation.
+docs-url: 
 ---
 
 # wow_access_control

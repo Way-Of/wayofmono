@@ -1,6 +1,7 @@
 ---
 name: auto-ticket-creator
 description: "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories"
+docs-url: 
 version: 1.0.0
 namespace: core
 tools: read,write,grep,glob,web_search

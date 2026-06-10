@@ -1,6 +1,7 @@
 ---
 name: init_harness
 description: Initialize the AI Engineering Harness in a repository by cloning the shared f-rr-d ticket/thoughts repo and setting up the project's directory structure.
+docs-url: 
 disable-model-invocation: true
 allowed-tools: read_file, write_file, run_shell_command
 ---

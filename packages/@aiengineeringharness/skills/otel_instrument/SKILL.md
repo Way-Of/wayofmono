@@ -5,6 +5,7 @@ description: >
   tracing, metrics, logging, OTel SDK, Collector, semantic conventions, or
   OTTL requests. Routes to the correct sub-skill.
 allowed-tools: read_file, run_shell_command, search_file_content, glob
+docs-url: https://opentelemetry.io/docs/
 ---
 
 # OpenTelemetry Orchestrator
