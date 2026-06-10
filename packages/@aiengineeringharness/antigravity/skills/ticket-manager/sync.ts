@@ -16,6 +16,7 @@
 
 import { join, dirname } from "https://deno.land/std@0.224.0/path/mod.ts";
 import { parse } from "https://deno.land/std@0.224.0/flags/mod.ts";
+import { basename } from "https://deno.land/std@0.224.0/path/mod.ts";
 
 const ROOT = Deno.cwd();
 const HARNESS_CONFIG_PATH = join(ROOT, ".wo", "config", "harness.json");
@@ -56,6 +57,18 @@ function ticketsDir(): string {
 
 function todoFile(): string {
   return join(ticketsDir(), "TODO.md");
+}
+
+function personalTodoPath(devId: string): string {
+  return join(ROOT, "thoughts", PROJECT_SLUG, devId, "TODO.md");
+}
+
+function personalTicketsDir(devId: string): string {
+  return join(ROOT, "thoughts", PROJECT_SLUG, devId, "tickets");
+}
+
+function personalTicketTemplatePath(): string {
+  return join(ticketsDir(), "personal-ticket-template.md");
 }
 
 async function pullThoughts(): Promise<void> {
@@ -167,6 +180,13 @@ function parseFrontmatter(content: string): { frontmatter: TicketFrontmatter; bo
 
     if (val.startsWith("[") && val.endsWith("]")) {
       try { val = JSON.parse(val); } catch { /* keep as string */ }
+    }
+    if (typeof val === "string") {
+      // Strip surrounding quotes if present (YAML quoted values)
+      const trimmed = val.trim();
+      if ((trimmed.startsWith('"') && trimmed.endsWith('"')) || (trimmed.startsWith("'") && trimmed.endsWith("'"))) {
+        val = trimmed.slice(1, -1);
+      }
     }
     fm[key] = val as string;
   }
@@ -358,7 +378,7 @@ async function syncPersonalTodos(developerId?: string): Promise<void> {
       if (fileAssignee !== dev.id) continue;
       hasAssigned = true;
 
-      const match = file.match(/(WOW|OPT|PROJ|TEAM)-\d+/);
+      const match = file.match(/(WOW|OPT|WOMONO|TEAM)-\d+/);
       const ticketId = match ? match[0] : "UNKNOWN";
       const title = frontmatter.title ?? ticketId;
       const status = frontmatter.status ?? "Backlog";
@@ -389,6 +409,168 @@ async function syncPersonalTodos(developerId?: string): Promise<void> {
   await pushThoughts("sync: regenerate personal TODOs");
 }
 
+async function showPersonalTodo(developerId: string): Promise<void> {
+  const team = await loadTeamConfig();
+  if (!team) {
+    console.log("No team config found. Run 'ai-harness team init' first.");
+    return;
+  }
+
+  const dev = team.developers.find((d) => d.id === developerId);
+  if (!dev) {
+    console.log(`Developer "${developerId}" not found in team config.`);
+    return;
+  }
+
+  const todoPath = personalTodoPath(dev.id);
+  try {
+    const todo = await Deno.readTextFile(todoPath);
+    console.log(todo);
+  } catch {
+    console.log(`No TODO.md found for ${dev.name}. Run --sync-todos first.`);
+  }
+}
+
+async function addPersonalSubTask(
+  developerId: string,
+  parentTicketId: string,
+  description: string,
+): Promise<void> {
+  const team = await loadTeamConfig();
+  if (!team) {
+    console.log("No team config found. Run 'ai-harness team init' first.");
+    return;
+  }
+
+  const dev = team.developers.find((d) => d.id === developerId);
+  if (!dev) {
+    console.log(`Developer "${developerId}" not found in team config.`);
+    return;
+  }
+
+  // Verify parent ticket exists and is assigned to this developer
+  const files = await findTicketFiles();
+  let parentTicket: { file: string; frontmatter: TicketFrontmatter } | null = null;
+  const pattern = new RegExp(parentTicketId.replace("-", "[-]"), "i");
+
+  for (const file of files) {
+    if (!pattern.test(file)) continue;
+    const content = await Deno.readTextFile(file);
+    const { frontmatter } = parseFrontmatter(content);
+    const fileAssignee = (frontmatter.assignee ?? "").replace("@", "");
+    if (fileAssignee === dev.id) {
+      parentTicket = { file, frontmatter };
+      break;
+    }
+  }
+
+  if (!parentTicket) {
+    console.log(`Parent ticket ${parentTicketId} not found or not assigned to ${dev.name}.`);
+    return;
+  }
+
+  const ticketsDir = personalTicketsDir(dev.id);
+  await Deno.mkdir(ticketsDir, { recursive: true });
+
+  // Generate personal ticket ID: DEVID-XXX
+  let nextNum = 1;
+  try {
+    for await (const entry of Deno.readDir(ticketsDir)) {
+      if (entry.name.endsWith(".md")) {
+        const match = entry.name.match(new RegExp(`${dev.id.toUpperCase()}-(\\d+)`));
+        if (match) {
+          const num = parseInt(match[1], 10);
+          if (num >= nextNum) nextNum = num + 1;
+        }
+      }
+    }
+  } catch {
+    // dir doesn't exist yet
+  }
+
+  const personalTicketId = `${dev.id.toUpperCase()}-${String(nextNum).padStart(3, "0")}`;
+  const personalTicketPath = join(ticketsDir, `${personalTicketId}.md`);
+
+  // Read template
+  let template = "";
+  try {
+    template = await Deno.readTextFile(personalTicketTemplatePath());
+  } catch {
+    template = `---
+title: "[${personalTicketId}] Brief Description"
+type: "Personal Task"
+priority: "Medium"
+status: "Backlog"
+assignee: "@${dev.id}"
+reporter: "@${dev.id}"
+project: "${PROJECT_SLUG}"
+namespace: "PERSONAL"
+category: "personal"
+parent_ticket: "${parentTicketId}"
+blockers: []
+unblocks: []
+created: "${new Date().toISOString().slice(0, 10)}"
+updated: "${new Date().toISOString().slice(0, 10)}"
+---
+
+## Context
+Brief description of this personal sub-task and how it relates to the parent shared ticket.
+
+## Acceptance Criteria
+- [ ] Criterion 1
+- [ ] Criterion 2
+
+## Notes
+Any additional notes, links, or context.
+`;
+  }
+
+  // Replace template placeholders
+  const today = new Date().toISOString().slice(0, 10);
+  const content = template
+    .replace(/PERSONAL-XXX/g, personalTicketId)
+    .replace(/@<dev-id>/g, `@${dev.id}`)
+    .replace(/YYYY-MM-DD/g, today)
+    .replace(/WOMONO-XXX/g, parentTicketId)
+    .replace(/Brief Description/g, description)
+    .replace(/Brief description of this personal sub-task and how it relates to the parent shared ticket\./g, description);
+
+  await Deno.writeTextFile(personalTicketPath, content);
+  console.log(`Created personal ticket: ${personalTicketPath}`);
+  console.log(`ID: ${personalTicketId}`);
+  console.log(`Parent: ${parentTicketId} (${parentTicket.frontmatter.title})`);
+
+  // Regenerate TODO to include the new personal ticket
+  await syncPersonalTodos(dev.id);
+}
+
+async function showCtoTodoAll(): Promise<void> {
+  const team = await loadTeamConfig();
+  if (!team) {
+    console.log("No team config found. Run 'ai-harness team init' first.");
+    return;
+  }
+
+  console.log(`\n${"=".repeat(60)}`);
+  console.log(`CTO AGGREGATED TODO VIEW — All Developers`);
+  console.log(`=${ "=".repeat(58)}`);
+
+  for (const dev of team.developers) {
+    const todoPath = personalTodoPath(dev.id);
+    const roleLabel = dev.role.toUpperCase();
+    console.log(`\n${"─".repeat(60)}`);
+    console.log(`# TODO — ${dev.name} (${roleLabel})`);
+    console.log(`="${ "=".repeat(58)}`);
+
+    try {
+      const todo = await Deno.readTextFile(todoPath);
+      console.log(todo);
+    } catch {
+      console.log(`_No TODO.md found. Run --sync-todos first._`);
+    }
+  }
+}
+
 const STATUS_ICONS: Record<string, string> = {
   "Backlog": "○",
   "Planned": "◷",
@@ -404,8 +586,8 @@ const STATUS_ICONS: Record<string, string> = {
 // CLI entry point
 initPaths();
 const args = parse(Deno.args, {
-  string: ["get", "update", "status", "assignee", "namespace", "status-filter", "assignee-filter", "dev"],
-  boolean: ["list", "sync-todos", "pull", "push", "help"],
+  string: ["get", "update", "status", "assignee", "namespace", "status-filter", "assignee-filter", "dev", "show-todo", "add-todo", "parent"],
+  boolean: ["list", "sync-todos", "pull", "push", "help", "cto-todo-all"],
   alias: { h: "help" },
 });
 
@@ -424,6 +606,9 @@ Usage:
   deno run -A sync.ts --update=TKT-001 --status="In Progress"  Update status
   deno run -A sync.ts --sync-todos                    Regenerate personal TODOs
   deno run -A sync.ts --sync-todos --dev=zerwiz       Sync specific dev only
+  deno run -A sync.ts --show-todo=zerwiz              Show personal TODO for developer
+  deno run -A sync.ts --add-todo="Sub-task desc" --parent=WOMONO-021 --dev=zerwiz  Add personal sub-task
+  deno run -A sync.ts --cto-todo-all                  CTO: Show all developers' TODOs
   deno run -A sync.ts --pull                          Pull latest from f-rr-d
   deno run -A sync.ts --push "<message>"              Push changes to f-rr-d
 `);
@@ -446,6 +631,20 @@ if (args.pull) {
   });
 } else if (args["sync-todos"]) {
   await syncPersonalTodos(args.dev);
+} else if (args["show-todo"]) {
+  await showPersonalTodo(args["show-todo"]);
+} else if (args["add-todo"]) {
+  if (!args.parent) {
+    console.log("Error: --parent=<ticket-id> is required when using --add-todo");
+    Deno.exit(1);
+  }
+  if (!args.dev) {
+    console.log("Error: --dev=<developer-id> is required when using --add-todo");
+    Deno.exit(1);
+  }
+  await addPersonalSubTask(args.dev, args.parent, args["add-todo"]);
+} else if (args["cto-todo-all"]) {
+  await showCtoTodoAll();
 } else {
   console.log("No command specified. Run with --help for usage.");
 }

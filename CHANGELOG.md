@@ -25,7 +25,7 @@
 - **WOMONO-001 ticket** updated as source of truth for all folder structure decisions
 
 ### WOMONO-013 through WOMONO-026 — AI Engineering Harness Core Skills — **All Done**
-- **Ticket status updates** (13 WOMONO tickets marked Done):
+- **Ticket status updates** (14 WOMONO tickets marked Done):
   - WOMONO-013: Ticket Manager Skill
   - WOMONO-014: Skill Auto-Update Sync
   - WOMONO-015: Agent Namespacing Separation
@@ -34,24 +34,26 @@
   - WOMONO-018: Team Project Setup
   - WOMONO-019: CTO Dashboard Reporting
   - WOMONO-020: Platform-Specific Skill Loading
+  - WOMONO-021: Personal TODO Hierarchy
   - WOMONO-022: Docs Sync Updater
   - WOMONO-023: Ticket Folder Organization
   - WOMONO-024: AI Harness Help Command
   - WOMONO-025: Codex First-Class Platform
   - WOMONO-026: Centralized Ticket Repo
 
-### WOMONO-021 — Personal TODO Hierarchy — **In Progress**
-- **ticket-manager skill (WOMONO-013) already supports hierarchy**:
-  - `syncPersonalTodos()` implemented in sync.ts — generates personal TODO.md from assigned shared tickets
-  - `syncTodoCheckboxes()` updates personal TODO checkboxes when ticket status changes
-  - CLI: `deno run -A sync.ts --sync-todos` regenerates all personal TODOs
-  - CLI: `deno run -A sync.ts --sync-todos --dev=zerwiz` syncs specific developer
-  - Cross-platform wrappers: sync.sh, sync.bat, sync.ps1
-- **Remaining**:
-  - Personal ticket template (`thoughts/shared/tickets/personal-ticket-template.md`)
-  - `ai-harness todo show` command
-  - `ai-harness todo add <ticket-id> "sub-task"` command
-  - CTO `todo-all` aggregation (partially via cto-dashboard)
+### WOMONO-021 — Personal TODO Hierarchy — **Done**
+- **Personal ticket template** created: `thoughts/shared/tickets/personal-ticket-template.md` with `parent_ticket` frontmatter linking
+- **New CLI commands added to ticket-manager sync.ts**:
+  - `--show-todo=<dev>` — Show personal TODO for developer
+  - `--add-todo="description" --parent=TKT-001 --dev=<dev>` — Create personal sub-task linked to shared ticket
+  - `--cto-todo-all` — CTO aggregated view of all developers' TODOs
+- **Implementation details**:
+  - `syncPersonalTodos()` generates personal TODO.md from assigned shared tickets with status checkboxes
+  - `syncTodoCheckboxes()` updates personal TODO checkboxes when shared ticket status changes
+  - Personal tickets created in `thoughts/<dev>/tickets/` with DEVID-XXX format (e.g., ZERWIZ-001)
+  - `parent_ticket` frontmatter links personal sub-tasks to parent shared ticket
+  - Cross-platform Deno with sync.sh, sync.bat, sync.ps1 wrappers
+- **Tested**: All commands working, personal ticket ZERWIZ-001 created for WOMONO-021
 
 ### Codex Platform — First-Class Support Complete
 - **Skill sync across 7 platforms** (claude, opencode, gemini, pi, wocoder, antigravity, codex):
@@ -61,7 +63,7 @@
   - Fixed `team-setup` → `team_setup` in canonical, updated skill-registry.json
   - Synced 20 missing skills to codex platform
   - Verified zero duplicates and zero gaps across all platforms
-- **Ticket status updates** (13 WOMONO tickets marked Done):
+- **Ticket status updates** (14 WOMONO tickets marked Done):
   - WOMONO-013: Ticket Manager Skill
   - WOMONO-014: Skill Auto-Update Sync
   - WOMONO-015: Agent Namespacing Separation
@@ -70,6 +72,7 @@
   - WOMONO-018: Team Project Setup
   - WOMONO-019: CTO Dashboard Reporting
   - WOMONO-020: Platform-Specific Skill Loading
+  - WOMONO-021: Personal TODO Hierarchy
   - WOMONO-022: Docs Sync Updater
   - WOMONO-023: Ticket Folder Organization
   - WOMONO-024: AI Harness Help Command

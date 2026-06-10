@@ -358,6 +358,9 @@ async function printWorkflow(name: string): Promise<void> {
       console.log(`  deno run -A packages/@aiengineeringharness/skills/ticket-manager/sync.ts --list`);
       console.log(`  deno run -A packages/@aiengineeringharness/skills/ticket-manager/sync.ts --get=TICKET-123`);
       console.log(`  deno run -A packages/@aiengineeringharness/skills/ticket-manager/sync.ts --sync-todos`);
+      console.log(`  deno run -A packages/@aiengineeringharness/skills/ticket-manager/sync.ts --show-todo=<dev>`);
+      console.log(`  deno run -A packages/@aiengineeringharness/skills/ticket-manager/sync.ts --add-todo="desc" --parent=TKT-001 --dev=<dev>`);
+      console.log(`  deno run -A packages/@aiengineeringharness/skills/ticket-manager/sync.ts --cto-todo-all`);
       break;
     }
     case "team": {

@@ -340,8 +340,8 @@ async function printWorkflow(name: string): Promise<void> {
       console.log(`${DIM}Ticket Manager — manage tickets across all namespaces (f-rr-d backed)${RESET}\n`);
       console.log(`  Project: ${slug}`);
       console.log(`  ${CYAN}1.${RESET} Create a ticket in ${DIM}thoughts/${slug}/shared/tickets/<category>/<id>-<slug>.md${RESET}`);
-      console.log(`     Use the template: thoughts/shared/tickets/ticket-template.md`);
-      console.log(`     Namespaces: WOW (platform), OPT (opticat), PROJ (project), TEAM (team)`);
+      console.log(`     Use the template: thoughts/shared/tickets/ticket-template.md (cross-project template)`);
+      console.log(`     Namespaces: WOW (platform), OPT (opticat), WOMONO (wayofmono), TEAM (team)`);
       console.log();
       console.log(`  ${CYAN}2.${RESET} Run ${GREEN}/create_plan <ticket-path>${RESET} to generate an implementation plan`);
       console.log(`     Stored in: thoughts/${slug}/shared/plans/`);
@@ -358,6 +358,9 @@ async function printWorkflow(name: string): Promise<void> {
       console.log(`  deno run -A packages/@aiengineeringharness/skills/ticket-manager/sync.ts --list`);
       console.log(`  deno run -A packages/@aiengineeringharness/skills/ticket-manager/sync.ts --get=TICKET-123`);
       console.log(`  deno run -A packages/@aiengineeringharness/skills/ticket-manager/sync.ts --sync-todos`);
+      console.log(`  deno run -A packages/@aiengineeringharness/skills/ticket-manager/sync.ts --show-todo=<dev>`);
+      console.log(`  deno run -A packages/@aiengineeringharness/skills/ticket-manager/sync.ts --add-todo="desc" --parent=TKT-001 --dev=<dev>`);
+      console.log(`  deno run -A packages/@aiengineeringharness/skills/ticket-manager/sync.ts --cto-todo-all`);
       break;
     }
     case "team": {
