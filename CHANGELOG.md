@@ -25,6 +25,35 @@
 - **WOMONO-001 ticket** updated as source of truth for all folder structure decisions
 
 ### WOMONO-013 through WOMONO-026 — AI Engineering Harness Core Skills — **All Done**
+- **Ticket status updates** (13 WOMONO tickets marked Done):
+  - WOMONO-013: Ticket Manager Skill
+  - WOMONO-014: Skill Auto-Update Sync
+  - WOMONO-015: Agent Namespacing Separation
+  - WOMONO-016: Import Ref Skills/Agents
+  - WOMONO-017: Auto Ticket Creation Skill
+  - WOMONO-018: Team Project Setup
+  - WOMONO-019: CTO Dashboard Reporting
+  - WOMONO-020: Platform-Specific Skill Loading
+  - WOMONO-022: Docs Sync Updater
+  - WOMONO-023: Ticket Folder Organization
+  - WOMONO-024: AI Harness Help Command
+  - WOMONO-025: Codex First-Class Platform
+  - WOMONO-026: Centralized Ticket Repo
+
+### WOMONO-021 — Personal TODO Hierarchy — **In Progress**
+- **ticket-manager skill (WOMONO-013) already supports hierarchy**:
+  - `syncPersonalTodos()` implemented in sync.ts — generates personal TODO.md from assigned shared tickets
+  - `syncTodoCheckboxes()` updates personal TODO checkboxes when ticket status changes
+  - CLI: `deno run -A sync.ts --sync-todos` regenerates all personal TODOs
+  - CLI: `deno run -A sync.ts --sync-todos --dev=zerwiz` syncs specific developer
+  - Cross-platform wrappers: sync.sh, sync.bat, sync.ps1
+- **Remaining**:
+  - Personal ticket template (`thoughts/shared/tickets/personal-ticket-template.md`)
+  - `ai-harness todo show` command
+  - `ai-harness todo add <ticket-id> "sub-task"` command
+  - CTO `todo-all` aggregation (partially via cto-dashboard)
+
+### Codex Platform — First-Class Support Complete
 - **Skill sync across 7 platforms** (claude, opencode, gemini, pi, wocoder, antigravity, codex):
   - Removed 82 duplicate skills with incorrect naming conventions
   - Fixed naming: pi uses kebab-case, other 6 platforms use snake_case
