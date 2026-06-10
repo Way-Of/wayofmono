@@ -433,7 +433,7 @@ export function startCuratorServer(
 
 				try {
 					const result = await callbacks.onSummarize(parsed.indices, controller.signal, model, feedback);
-					if (requestId !== summarizeRequestSeq || state === "COMPLETED") {
+					if (requestId !== summarizeRequestSeq) {
 						sendJson(res, 409, { ok: false, error: "Summarize request superseded" });
 						return;
 					}

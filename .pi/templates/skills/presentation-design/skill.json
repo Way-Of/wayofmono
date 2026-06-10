@@ -1,0 +1,14 @@
+{
+  "name": "presentation-design",
+  "version": "1.0.0",
+  "description": "Presentation and slide creation skill. Supports PowerPoint, Beamer LaTeX, HTML-to-PPTX, with design systems and data visualization components.",
+  "tags": ["presentation", "slides", "powerpoint", "beamer", "design"],
+  "scripts": {
+    "html2pptx": "node scripts/html2pptx.js",
+    "pdf": "python scripts/pdf.py",
+    "rearrange": "python scripts/rearrange.py",
+    "replace": "python scripts/replace.py",
+    "thumbnail": "python scripts/thumbnail.py",
+    "setup": "bash setup.sh"
+  }
+}

@@ -270,19 +270,19 @@ AI Engineering Harness Installer
 
 SINGLE COMMAND (easiest for agents):
   deno run -A \\
-    https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts \\
+    https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts \\
     --tool=all --yes
 
 INSTALL AS CLI (one-time):
   deno install -Agf -n ai-harness \\
-    https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts
+    https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts
 
   Then run:
     ai-harness --tool=claude
     ai-harness --tool=all --interactive
 
 CLONE AND RUN (for private repos):
-  gh repo clone zerwiz/wayofmono /tmp/wo -- --depth=1 -q
+  gh repo clone Way-Of/wayofmono /tmp/wo -- --depth=1 -q
   GITHUB_TOKEN=$(gh auth token) deno run -A /tmp/wo/packages/@aiengineeringharness/install.ts --tool=claude
   rm -rf /tmp/wo
 
@@ -327,7 +327,7 @@ The repo must remain at a stable path on your system.
        Arch:           sudo pacman -S stow
 
    2. Clone the repository:
-       git clone https://github.com/zerwiz/wayofmono.git ${expanded}
+       git clone https://github.com/Way-Of/wayofmono.git ${expanded}
        cd ${expanded}/packages/@aiengineeringharness
 
    3. Install symlinks:

@@ -1,0 +1,9 @@
+{
+  "name": "web-search",
+  "version": "1.0.0",
+  "description": "Web search engine integration for real-time information retrieval.",
+  "tags": ["web", "search", "retrieval", "information"],
+  "scripts": {
+    "search": "npx ts-node scripts/web_search.ts"
+  }
+}

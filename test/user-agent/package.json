@@ -11,6 +11,6 @@
   "license": "ISC",
   "packageManager": "pnpm@10.29.3",
   "dependencies": {
-    "@wayofmono/wo-agent": "link:/home/zerwiz/wayofmono/packages/@wayofmono/wo-agent"
+    "@wayofmono/wo-agent": "link:../../packages/@wayofmono/wo-agent"
   }
 }

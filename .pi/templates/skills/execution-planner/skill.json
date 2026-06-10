@@ -1,0 +1,6 @@
+{
+  "name": "execution-planner",
+  "version": "1.0.0",
+  "description": "Execution planning and coding agent framework with state management and verification.",
+  "tags": ["planning", "execution", "coding", "agent"]
+}

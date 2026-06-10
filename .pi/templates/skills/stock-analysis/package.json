@@ -1,0 +1,21 @@
+{
+ "name": "stock-analysis-skill",
+ "version": "1.0.0",
+ "description": "A// + + ",
+ "main": "dist/index.js",
+ "scripts": {
+ "build": "tsc",
+ "analyze": "ts-node src/index.ts analyze",
+ "dividend": "ts-node src/index.ts dividend",
+ "rumors": "ts-node src/index.ts rumors",
+ "watch": "ts-node src/index.ts watch"
+ },
+ "dependencies": {
+ "pi-web-dev-sdk": "latest"
+ },
+ "devDependencies": {
+ "@types/node": "^20.0.0",
+ "typescript": "^5.0.0",
+ "ts-node": "^10.0.0"
+ }
+}

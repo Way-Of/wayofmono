@@ -1,7 +1,15 @@
 {
   "name": "@wayofmono/wo-skill-docs",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "WayOfMono Documentation Skill - makes any agent a great documentation expert.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Way-Of/wayofmono.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Way-Of/wayofmono/issues"
+  },
+  "homepage": "https://github.com/Way-Of/wayofmono#readme",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -23,7 +31,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "vitest run"
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "typebox": "^1.1.24"

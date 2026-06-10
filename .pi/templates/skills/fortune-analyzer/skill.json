@@ -1,0 +1,6 @@
+{
+  "name": "fortune-analyzer",
+  "version": "1.0.0",
+  "description": "Fortune analysis skill using lunar calendar calculations.",
+  "tags": ["fortune", "lunar", "calendar", "analysis"]
+}

@@ -1,5 +1,5 @@
 ---
-name: wow_agent_dev
+name: wow-agent-dev
 description: Comprehensive guide for creating, routing, and managing AI agents, skills, and chat workflows within the Way of Work platform. Use when modifying or creating agents in .wo/agents or their skills.
 ---
 

@@ -1,0 +1,6 @@
+{
+  "name": "ffmpeg",
+  "version": "1.0.0",
+  "description": "Media processing and conversion using FFmpeg.",
+  "tags": ["ffmpeg", "media", "video", "audio", "conversion"]
+}

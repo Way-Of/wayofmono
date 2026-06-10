@@ -24,6 +24,7 @@ Follow these steps to initialize the harness:
     ```bash
     mkdir -p thoughts/shared/{tickets,plans,research}
     mkdir -p thoughts/global
+    mkdir -p thoughts/docs/{architecture,decisions,guides,references}
     ```
 
 3. **Add the ticket template** to `thoughts/shared/tickets/ticket-template.md`
@@ -50,7 +51,12 @@ thoughts/
 │   │   └── ticket-template.md      # Template for new tickets
 │   ├── plans/                      # Implementation plans
 │   └── research/                   # Research documents
-└── global/                         # Cross-repository concerns
+├── global/                         # Cross-repository concerns
+└── docs/                           # Project documentation
+    ├── architecture/               # Architecture docs
+    ├── decisions/                  # ADRs
+    ├── guides/                     # How-to guides
+    └── references/                 # Reference materials
 ```
 
 ## Workflow After Initialization

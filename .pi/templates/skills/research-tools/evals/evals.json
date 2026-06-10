@@ -1,0 +1,46 @@
+{
+  "skill_name": "aminer-data-search",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to understand Andrew Ng's complete academic profile, including his research directions, important publications, patents, and research projects. Help me look this up using the AMiner API. My token is <YOUR_TOKEN>",
+      "expected_output": "Run the scholar_profile workflow, sequentially calling scholar search -> scholar detail -> scholar figure -> scholar papers -> scholar patents -> scholar projects, output JSON results containing research interests, paper lists, patent lists, etc.",
+      "files": [],
+      "expectations": [
+        "Called scholar search API (person_search) to find Andrew Ng",
+        "Called scholar detail API (person_detail) to get personal profile",
+        "Called scholar figure API (person_figure) to get research interests and domains",
+        "Called scholar papers API (person_paper_relation) to get paper list",
+        "Output contains selected.name field with value Andrew Ng",
+        "Output contains figure or detail field"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Help me deeply analyze the paper 'Attention Is All You Need' -- first find it, then get the full paper details (abstract, authors, year), and see which papers it cites. My AMiner token is <YOUR_TOKEN>",
+      "expected_output": "Run the paper_deep_dive workflow, search paper -> get details -> get citation relationships, output paper abstract, author list, DOI, and cited paper list",
+      "files": [],
+      "expectations": [
+        "Called paper search API to find the target paper",
+        "Called paper detail API (paper_detail) to get abstract",
+        "Called paper citation API (paper_relation) to get citation list",
+        "Output contains detail field with abstract field inside",
+        "Output contains citations_count or citations_preview field"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I need to analyze the research strength of MIT -- I want to know which notable scholars are under their institution, what papers they published, and what patents they hold. Please use the AMiner API to compile a report. Token: <YOUR_TOKEN>",
+      "expected_output": "Run the org_analysis workflow, first use org disambiguate pro to find MIT's org ID, then in parallel get org details, scholar list, paper list, and compile into a report",
+      "files": [],
+      "expectations": [
+        "Called org disambiguate pro API (org_disambiguate_pro) to get org ID",
+        "Called org detail API (org_detail) to get MIT profile",
+        "Called org scholars API (org_person_relation) to get scholar list",
+        "Called org papers API (org_paper_relation) to get paper list",
+        "Output contains org_id field",
+        "Output contains scholars or papers field"
+      ]
+    }
+  ]
+}

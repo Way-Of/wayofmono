@@ -1,0 +1,10 @@
+{
+  "name": "spreadsheet-processing",
+  "version": "1.0.0",
+  "description": "Spreadsheet processing skill for XLSX files. Includes analysis, chart generation, and data manipulation.",
+  "tags": ["spreadsheet", "xlsx", "excel", "data", "analysis"],
+  "scripts": {
+    "process": "python scripts/xlsx.py",
+    "setup": "bash setup.sh"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "image-edit",
+  "version": "1.0.0",
+  "description": "AI image editing and manipulation skill.",
+  "tags": ["image", "editing", "manipulation", "ai"],
+  "scripts": {
+    "edit": "npx ts-node scripts/image-edit.ts"
+  }
+}

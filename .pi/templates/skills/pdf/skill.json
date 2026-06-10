@@ -1,0 +1,16 @@
+{
+  "name": "pdf",
+  "version": "1.0.0",
+  "description": "PDF processing skill. Extraction, manipulation, typesetting, and conversion.",
+  "tags": ["pdf", "extraction", "typesetting", "conversion"],
+  "scripts": {
+    "process": "python scripts/pdf.py",
+    "qa": "python scripts/pdf_qa.py",
+    "design": "python scripts/design_engine.py",
+    "html2pdf": "node scripts/html2pdf-next.js",
+    "html2poster": "node scripts/html2poster.js",
+    "toc_validate": "python scripts/toc_validate.py",
+    "poster_validate": "python scripts/poster_validate.py",
+    "cover_validate": "node scripts/cover_validate.js"
+  }
+}

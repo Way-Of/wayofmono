@@ -1,0 +1,9 @@
+{
+  "name": "market-research",
+  "version": "1.0.0",
+  "description": "Market research report generation with visual analysis and competitive intelligence.",
+  "tags": ["market", "research", "analysis", "report"],
+  "scripts": {
+    "generate": "python scripts/generate_market_visuals.py"
+  }
+}

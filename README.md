@@ -19,7 +19,7 @@ WayOfMono is built on an **Interface-Agnostic Philosophy**. Our core logic and t
 ## 📂 Repository Structure
 
 ```
-/home/zerwiz/wayofmono/
+./
 ├── packages/
 │   ├── @aiengineeringharness/   # Agent harness (agents, commands, skills, extensions)
 │   │   ├── opencode/           → ~/.config/opencode/
@@ -149,7 +149,7 @@ npm install @wayofmono/wo-coding-agent   # wocode (CLI)
 ### Install from cloned repo (alternative — no npm needed)
 
 ```bash
-git clone https://github.com/zerwiz/wayofmono.git ~/wayofmono
+git clone https://github.com/Way-Of/wayofmono.git ~/wayofmono
 pnpm add ~/wayofmono/packages/@wayofmono/wo-agent
 ```
 
@@ -172,7 +172,7 @@ All published at https://www.npmjs.com/settings/wayofmono/packages
 
 ## 🎛️ AI Engineering Harness
 
-Shared agents, commands, skills, and extensions for all agent frontends. Install once and instantly configure any agent with battle-tested prompts and workflows. See the comprehensive [AI Engineering Harness Tutorial](file:///home/zerwiz/wayofmono/docs/HARNESS_TUTORIAL.md) for step-by-step instructions on utilizing the agents, commands, and skills.
+Shared agents, commands, skills, and extensions for all agent frontends. Install once and instantly configure any agent with battle-tested prompts and workflows. See the comprehensive [AI Engineering Harness Tutorial](docs/HARNESS_TUTORIAL.md) for step-by-step instructions on utilizing the agents, commands, and skills.
 
 ### 📚 Context Engineering with f-rr-d (förråd)
 
@@ -210,7 +210,7 @@ thoughts/
 ### Quick Install (for agents — one command)
 
 ```bash
-deno run -A https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=all --yes
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=all --yes
 ```
 
 ### CLI Install (one-time setup)
@@ -219,7 +219,7 @@ Register the CLI:
 
 ```bash
 deno install -Agf -n ai-harness \
-  https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts
+  https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts
 ```
 
 Then install configs:
@@ -272,8 +272,8 @@ For symlink-based installation (easier `git pull` updates):
 ### External Integrations
 | Project | Description | Integration |
 |---------|-------------|-------------|
-| [Way of Pi](https://github.com/zerwiz/wayofpi) | AI-augmented engineering platform (Electron/Web IDE) | Uses `@wayofmono/wo-agent` as backend agent SDK |
-| [Way of Work](https://github.com/zerwiz/wayofwork) | AI-powered productivity platform | Uses `@wayofmono/wo-agent` as user agent SDK |
+| [Way of Pi](https://github.com/Way-Of/wayofpi) | AI-augmented engineering platform (Electron/Web IDE) | Uses `@wayofmono/wo-agent` as backend agent SDK |
+| [Way of Work](https://github.com/Way-Of/wayofwork) | AI-powered productivity platform | Uses `@wayofmono/wo-agent` as user agent SDK |
 
 ---
 *Built as a unified toolset for the next generation of AI engineering.*

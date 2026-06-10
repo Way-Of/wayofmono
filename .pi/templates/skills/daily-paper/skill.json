@@ -1,0 +1,9 @@
+{
+  "name": "daily-paper",
+  "version": "1.0.0",
+  "description": "Daily paper recommendation system using academic APIs.",
+  "tags": ["papers", "daily", "recommendation", "academic"],
+  "scripts": {
+    "recommend": "python scripts/recommend.py"
+  }
+}

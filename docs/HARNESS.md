@@ -29,7 +29,7 @@ Register the CLI (one-time):
 
 ```bash
 deno install -Agf -n ai-harness \
-  https://raw.githubusercontent.com/zerwiz/wayofmono/main/pi/install.ts
+  https://raw.githubusercontent.com/Way-Of/wayofmono/main/pi/install.ts
 ```
 
 Then install configs:
@@ -75,7 +75,7 @@ Skip the CLI registration and run directly:
 
 ```bash
 deno run -A \
-  https://raw.githubusercontent.com/zerwiz/wayofmono/main/pi/install.ts \
+  https://raw.githubusercontent.com/Way-Of/wayofmono/main/pi/install.ts \
   --tool=claude
 ```
 
@@ -85,7 +85,7 @@ For users who want the repo on their system with symlinks (easier `git pull` upd
 
 ```bash
 # Prerequisites: GNU Stow (brew install stow / apt install stow)
-git clone https://github.com/zerwiz/wayofmono
+git clone https://github.com/Way-Of/wayofmono
 cd wayofmono
 
 ./setup.sh claude             # Install Claude Code → ~/.claude/

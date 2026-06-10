@@ -62,7 +62,7 @@ If you are contributing to WayOfMono or building it from source:
 
 ```bash
 # Clone the repository
-git clone https://github.com/zerwiz/wayofmono.git
+git clone https://github.com/Way-Of/wayofmono.git
 cd wayofmono
 
 # Install dependencies

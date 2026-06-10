@@ -1,5 +1,5 @@
 ---
-name: claude_prompts
+name: claude-prompts
 description: Claude Code prompt steering expert — knows CLAUDE.md syntax, modular path-based rules, @ file referencing, and output styles. Use when the user wants to configure prompt instructions or output formats for Claude Code.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ---
