@@ -1,0 +1,13 @@
+{
+  "name": "document-processing",
+  "version": "1.0.0",
+  "description": "Document processing skill for DOCX, PDF, and text documents. Includes creation, editing, extraction, and formatting.",
+  "tags": ["document", "docx", "pdf", "text", "processing"],
+  "scripts": {
+    "process": "python scripts/document.py",
+    "utilities": "python scripts/utilities.py",
+    "postcheck": "python scripts/postcheck.py",
+    "add_toc": "python scripts/add_toc_placeholders.py",
+    "setup": "bash setup.sh"
+  }
+}

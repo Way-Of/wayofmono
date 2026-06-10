@@ -1,7 +1,15 @@
 {
   "name": "@wayofmono/wo-coding-agent",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Coding agent CLI with read, bash, edit, write tools and session management",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Way-Of/wayofmono.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Way-Of/wayofmono/issues"
+  },
+  "homepage": "https://github.com/Way-Of/wayofmono#readme",
   "type": "module",
   "bin": {
     "wocode": "dist/cli.js"

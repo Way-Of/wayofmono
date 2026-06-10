@@ -37,6 +37,7 @@ Follow these steps to initialize the harness:
     ```bash
     mkdir -p thoughts/${PROJECT_SLUG}/shared/{tickets,plans,research}
     mkdir -p thoughts/${PROJECT_SLUG}/global
+    mkdir -p thoughts/${PROJECT_SLUG}/docs/{architecture,decisions,guides,references}
     ```
 
 4. **Create a personal thoughts directory** for the current developer:
@@ -56,6 +57,11 @@ Follow these steps to initialize the harness:
     │   └── research/
     ├── ${PROJECT_SLUG}/                 # This project's thoughts
     │   ├── global/                      # Project-specific global thoughts
+    │   ├── docs/                        # Project documentation
+    │   │   ├── architecture/
+    │   │   ├── decisions/               # ADRs
+    │   │   ├── guides/
+    │   │   └── references/
     │   ├── shared/                      # SHARED RESPONSIBILITY tickets (all devs in this project)
     │   │   ├── tickets/                 # Tickets for this project (WOMONO-XXX, WOW-XXX, OPT-XXX)
     │   │   │   └── TODO.md

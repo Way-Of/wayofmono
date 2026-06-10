@@ -64,6 +64,7 @@ Create the context engineering directory structure:
 # Create the main structure
 mkdir -p thoughts/shared/{tickets,plans,research}
 mkdir -p thoughts/global
+mkdir -p thoughts/docs/{architecture,decisions,guides,references}
 ```
 
 **Directory purposes**:
@@ -235,6 +236,7 @@ test -d thoughts/shared/tickets || mkdir -p thoughts/shared/tickets
 test -d thoughts/shared/plans || mkdir -p thoughts/shared/plans
 test -d thoughts/shared/research || mkdir -p thoughts/shared/research
 test -d thoughts/global || mkdir -p thoughts/global
+test -d thoughts/docs/architecture || mkdir -p thoughts/docs/{architecture,decisions,guides,references}
 ```
 
 ### Not a Git Repository
@@ -259,7 +261,7 @@ I couldn't create the thoughts/ directory. Please check:
 - The directory isn't on a read-only filesystem
 
 You can create the structure manually:
-mkdir -p thoughts/shared/{tickets,plans,research} thoughts/global
+mkdir -p thoughts/shared/{tickets,plans,research} thoughts/global thoughts/docs/{architecture,decisions,guides,references}
 ```
 
 ## What Gets Created

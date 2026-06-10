@@ -35,6 +35,7 @@ Follow these steps to initialize the harness:
     ```bash
     mkdir -p thoughts/shared/{tickets,plans,research}
     mkdir -p thoughts/global
+    mkdir -p thoughts/docs/{architecture,decisions,guides,references}
     ```
 
 5. **Add the ticket template** to `thoughts/global/ticket-template.md`

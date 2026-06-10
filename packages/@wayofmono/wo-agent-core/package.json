@@ -1,7 +1,15 @@
 {
   "name": "@wayofmono/wo-agent-core",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "General-purpose agent with transport abstraction, state management, and attachment support",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Way-Of/wayofmono.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Way-Of/wayofmono/issues"
+  },
+  "homepage": "https://github.com/Way-Of/wayofmono#readme",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,0 +1,12 @@
+{
+  "name": "stock-analysis",
+  "version": "1.0.0",
+  "description": "Stock analysis skill with technical analysis, dividend tracking, and rumor scanning capabilities.",
+  "tags": ["stock", "finance", "analysis", "trading"],
+  "scripts": {
+    "analyze": "npx ts-node scripts/analyzer.ts",
+    "scan": "npx ts-node scripts/rumorScanner.ts",
+    "dividend": "npx ts-node scripts/dividend.ts",
+    "watchlist": "npx ts-node scripts/watchlist.ts"
+  }
+}

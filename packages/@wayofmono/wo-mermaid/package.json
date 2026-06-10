@@ -1,7 +1,15 @@
 {
   "name": "@wayofmono/wo-mermaid",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "🧜‍♀️ WayOfMono extension that renders Mermaid diagrams as ASCII in the TUI",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Way-Of/wayofmono.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Way-Of/wayofmono/issues"
+  },
+  "homepage": "https://github.com/Way-Of/wayofmono#readme",
   "author": "WayOfMono",
   "license": "MIT",
   "type": "module",
@@ -20,7 +28,8 @@
     "package.json"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "beautiful-mermaid": "^1.0.0",

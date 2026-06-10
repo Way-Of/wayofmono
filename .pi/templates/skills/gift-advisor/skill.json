@@ -1,0 +1,9 @@
+{
+  "name": "gift-advisor",
+  "version": "1.0.0",
+  "description": "Gift recommendation and evaluation skill.",
+  "tags": ["gift", "recommendation", "evaluation"],
+  "scripts": {
+    "evaluate": "python html_tools.py"
+  }
+}

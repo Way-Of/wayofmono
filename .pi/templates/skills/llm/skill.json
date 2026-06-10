@@ -1,0 +1,9 @@
+{
+  "name": "llm",
+  "version": "1.0.0",
+  "description": "Core LLM integration and chat capabilities.",
+  "tags": ["llm", "chat", "ai", "inference"],
+  "scripts": {
+    "chat": "npx ts-node scripts/chat.ts"
+  }
+}

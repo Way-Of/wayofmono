@@ -15,7 +15,7 @@ Each coding tool has its own dedicated directory in this harness containing spec
 | **Claude Code** | [claude/README.md](./claude/README.md) | [code.claude.com](https://code.claude.com) | `~/.claude` |
 | **OpenCode** | [opencode/README.md](./opencode/README.md) | [opencode.ai/docs](https://opencode.ai/docs) | `~/.config/opencode` |
 | **Pi** | [pi/README.md](./pi/README.md) | [pi.dev/docs/latest](https://pi.dev/docs/latest) | `~/.pi/agent` |
-| **Wo Coder** | [wocoder/README.md](./wocoder/README.md) | [Monorepo Wo Guide](file:///home/zerwiz/wayofmono/docs/wo/README.md) | `~/.wocoder` |
+| **Wo Coder** | [wocoder/README.md](./wocoder/README.md) | [Monorepo Wo Guide](../../docs/wo/README.md) | `~/.wocoder` |
 | **Codex** | [codex/README.md](./codex/README.md) | [openai.com/codex](https://openai.com/codex) | `~/.codex` |
 
 ---
@@ -87,7 +87,7 @@ Despite different configuration folder structures and syntax formats, all integr
 Register the CLI globally:
 ```bash
 deno install -Agf -n ai-harness \
-  https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts
+  https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts
 ```
 
 Then install the target platform configuration:

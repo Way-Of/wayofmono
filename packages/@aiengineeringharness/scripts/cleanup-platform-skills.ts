@@ -15,7 +15,7 @@
 import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
 import { ensureDir } from "https://deno.land/std@0.224.0/fs/ensure_dir.ts";
 
-const HARNESS_DIR = "/home/zerwiz/wayofmono/packages/@aiengineeringharness";
+const HARNESS_DIR = new URL("../..", import.meta.url).pathname;
 
 // Core skills that use hyphens on ALL platforms
 const CORE_SKILLS_HYPHENS = new Set([

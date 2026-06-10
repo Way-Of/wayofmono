@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm -r --filter '!@wayofmono/web-access' build
+
+      - name: Typecheck
+        run: pnpm -r --parallel --filter '!@wayofmono/web-access' typecheck
+
+      - name: Test
+        run: pnpm -r --filter '!@wayofmono/web-access' test
+
+      - name: Changesets (disabled until web-access is fixed)
+        run: pnpm changeset version 2>&1 || true

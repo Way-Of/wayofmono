@@ -88,6 +88,10 @@ async function createProjectDirs(slug: string): Promise<void> {
   await Deno.mkdir(join(base, "shared", "plans"), { recursive: true });
   await Deno.mkdir(join(base, "shared", "research"), { recursive: true });
   await Deno.mkdir(join(base, "global"), { recursive: true });
+  await Deno.mkdir(join(base, "docs", "architecture"), { recursive: true });
+  await Deno.mkdir(join(base, "docs", "decisions"), { recursive: true });
+  await Deno.mkdir(join(base, "docs", "guides"), { recursive: true });
+  await Deno.mkdir(join(base, "docs", "references"), { recursive: true });
   console.log(`  Created thoughts/${slug}/`);
 }
 
@@ -206,6 +210,7 @@ async function cmdInit(): Promise<void> {
 
   console.log(`\nInitialized harness for project '${slug}'`);
   console.log(`  Tickets: thoughts/${slug}/shared/tickets/`);
+  console.log(`  Docs:    thoughts/${slug}/docs/{architecture,decisions,guides,references}`);
   console.log(`  Config:  ${CONFIG_DIR}/`);
   console.log(`  f-rr-d:  ${DEFAULT_F_RRD_URL}`);
 }

@@ -1,0 +1,6 @@
+{
+  "name": "ai-news",
+  "version": "1.0.0",
+  "description": "AI news collection and aggregation from multiple sources.",
+  "tags": ["ai", "news", "aggregation", "monitoring"]
+}

@@ -1,5 +1,5 @@
 ---
-name: pi_skill
+name: pi-skill
 description: Pi skills expert — knows SKILL.md format, frontmatter fields, directory structure, validation rules, and skill command registration. Use when the user wants to create or modify Pi skills.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---
@@ -10,7 +10,7 @@ Create Pi skills using the SKILL.md format.
 
 ```markdown
 ---
-name: my-skill
+name: pi-skill
 description: What this skill does
 allowed-tools: read grep find ls
 ---

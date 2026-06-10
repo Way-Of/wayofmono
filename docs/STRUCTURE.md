@@ -5,7 +5,7 @@ This document defines the authoritative file structure for the WayOfMono monorep
 ## Repository Layout
 
 ```
-/home/zerwiz/wayofmono/
+./
 ├── packages/                      # Core and feature-specific npm packages
 │   ├── @wayofmono/wo-ai/          # Unified multi-provider LLM API
 │   ├── @wayofmono/wo-agent-core/  # Core agent runtime

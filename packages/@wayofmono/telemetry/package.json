@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/telemetry",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "type": "module",
   "description": "WayOfMono ODD-first instrumentation and telemetry SDK — OpenTelemetry-based tracing for agent operations",
   "main": "dist/index.js",
@@ -11,14 +11,18 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist", "src", "README.md"],
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
   "publishConfig": {
-    "access": "public",
-    "registry": "https://npm.wayofmono.dev"
+    "access": "public"
   },
   "scripts": {
     "build": "tsc",
-    "test": "vitest run"
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@opentelemetry/api": "^1.9.0",
@@ -32,9 +36,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zerwiz/wayofmono",
+    "url": "https://github.com/Way-Of/wayofmono",
     "directory": "packages/@wayofmono/telemetry"
   },
   "homepage": "https://wayofmono.dev",
-  "keywords": ["opentelemetry", "observability", "telemetry", "odd", "wayofmono"]
+  "keywords": [
+    "opentelemetry",
+    "observability",
+    "telemetry",
+    "odd",
+    "wayofmono"
+  ]
 }

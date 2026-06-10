@@ -1,5 +1,5 @@
 ---
-name: claude_tui
+name: claude-tui
 description: Claude Code TUI expert — knows React Ink framework, design system components, hooks (useInput, useTerminalFocus, etc.), and custom terminal rendering. Use when the user wants to build or modify Claude Code TUI components.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---

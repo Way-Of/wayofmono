@@ -37,5 +37,5 @@ Unlike the Gemini CLI and Antigravity, Wo Coder **does not** natively support:
 ---
 
 ## 🔗 Related References
-*   [Monorepo Wo Documentation](file:///home/zerwiz/wayofmono/docs/wo/README.md)
-*   [Harness Tutorial & Developer Guide](file:///home/zerwiz/wayofmono/docs/HARNESS_TUTORIAL.md)
+*   [Monorepo Wo Documentation](../../../docs/wo/README.md)
+*   [Harness Tutorial & Developer Guide](../../../docs/HARNESS_TUTORIAL.md)

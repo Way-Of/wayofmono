@@ -1,7 +1,15 @@
 {
   "name": "@wayofmono/wo-web-ui",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Web UI components for WayOfMono — chat interface, session management, and tool call visualization",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Way-Of/wayofmono.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Way-Of/wayofmono/issues"
+  },
+  "homepage": "https://github.com/Way-Of/wayofmono#readme",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,7 +19,11 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist", "src", "README.md"],
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit"

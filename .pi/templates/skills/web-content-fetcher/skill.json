@@ -1,0 +1,9 @@
+{
+  "name": "web-content-fetcher",
+  "version": "1.0.0",
+  "description": "Web page content extraction and cleaning for downstream processing.",
+  "tags": ["web", "fetch", "extraction", "scraping"],
+  "scripts": {
+    "fetch": "npx ts-node scripts/web-reader.ts"
+  }
+}
