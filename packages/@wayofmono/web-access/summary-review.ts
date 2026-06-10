@@ -180,7 +180,7 @@ export function buildDeterministicSummary(results: QueryResultData[]): { summary
 async function resolveSummaryModel(
 	ctx: SummaryGenerationContext,
 	modelOverride?: string,
-): Promise<{ model: Model; apiKey: string; headers?: Record<string, string> }> {
+): Promise<{ model: Model<any>; apiKey: string; headers?: Record<string, string> }> {
 	const normalizedOverride = typeof modelOverride === "string" ? modelOverride.trim() : "";
 	if (normalizedOverride.length > 0) {
 		const slashIndex = normalizedOverride.indexOf("/");
@@ -201,7 +201,7 @@ async function resolveSummaryModel(
 	}
 
 	for (const { provider, id } of PREFERRED_SUMMARY_MODELS) {
-		const model = getModel(provider, id);
+		const model = getModel(provider as any, id as any);
 		if (!model) continue;
 		const auth = await ctx.modelRegistry.getApiKeyAndHeaders(model);
 		if (auth.ok && auth.apiKey) return { model, apiKey: auth.apiKey, headers: auth.headers };

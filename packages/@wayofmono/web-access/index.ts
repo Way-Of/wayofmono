@@ -1,5 +1,5 @@
 import type { ExtensionAPI, ExtensionContext } from "@wayofmono/wo-coding-agent";
-import { Box, Text, truncateToWidth } from "@wayofmono/wo-tui";
+import { Box, Text, truncateToWidth, type KeyId } from "@wayofmono/wo-tui";
 import { Type } from "typebox";
 import { StringEnum, complete, getModel, type Model } from "@wayofmono/wo-ai";
 import { fetchAllContent, type ExtractedContent } from "./extract.js";
@@ -398,7 +398,7 @@ function updateWidget(ctx: ExtensionContext): void {
 		lines.push(theme.fg("muted", "  No activity yet"));
 	} else {
 		for (const e of entries) {
-			lines.push("  " + formatEntryLine(e, theme));
+			lines.push("  " + formatEntryLine(e, theme as any));
 		}
 	}
 
@@ -412,7 +412,7 @@ function updateWidget(ctx: ExtensionContext): void {
 			(resetMs > 0 ? theme.fg("dim", ` (resets in ${resetSec}s)`) : ""),
 	);
 
-	ctx.ui.setWidget("web-activity", new Text(lines.join("\n"), 0, 0));
+	ctx.ui.setWidget("web-activity", new Text(lines.join("\n"), 0, 0) as any);
 }
 
 function formatEntryLine(
@@ -577,9 +577,9 @@ export default function (pi: ExtensionAPI) {
 	async function resolveFirstAvailableModel(
 		ctx: SummaryGenerationContext,
 		candidates: Array<{ provider: string; id: string }>,
-	): Promise<{ model: Model; apiKey: string; headers?: Record<string, string> }> {
+	): Promise<{ model: Model<any>; apiKey: string; headers?: Record<string, string> }> {
 		for (const { provider, id } of candidates) {
-			const model = getModel(provider, id);
+			const model = getModel(provider as any, id as any);
 			if (!model) continue;
 			const auth = await ctx.modelRegistry.getApiKeyAndHeaders(model);
 			if (auth.ok && auth.apiKey) return { model, apiKey: auth.apiKey, headers: auth.headers };
@@ -609,7 +609,7 @@ export default function (pi: ExtensionAPI) {
 		const text = contentParts
 			.map(p => {
 				if (!p || typeof p !== "object") return "";
-				const part = p as Record<string, unknown>;
+				const part = p as unknown as Record<string, unknown>;
 				return typeof part.text === "string" ? part.text : "";
 			})
 			.join("")
@@ -1041,7 +1041,7 @@ export default function (pi: ExtensionAPI) {
 		}
 	}
 
-	pi.registerShortcut(curateKey, {
+	pi.registerShortcut(curateKey as KeyId, {
 		description: "Review search results",
 		handler: async (ctx) => {
 			if (!pendingCurate) return;
@@ -1054,7 +1054,7 @@ export default function (pi: ExtensionAPI) {
 		},
 	});
 
-	pi.registerShortcut(activityKey, {
+	pi.registerShortcut(activityKey as KeyId, {
 		description: "Toggle web search activity",
 		handler: async (ctx) => {
 			widgetVisible = !widgetVisible;
@@ -1064,7 +1064,7 @@ export default function (pi: ExtensionAPI) {
 			} else {
 				widgetUnsubscribe?.();
 				widgetUnsubscribe = null;
-				ctx.ui.setWidget("web-activity", null);
+				ctx.ui.setWidget("web-activity", undefined);
 			}
 		},
 	});
@@ -1111,7 +1111,7 @@ export default function (pi: ExtensionAPI) {
 			),
 		}),
 
-		async execute(_toolCallId, params, signal, onUpdate, ctx) {
+		execute: (async (_toolCallId: any, params: any, signal: any, onUpdate: any, ctx: any) => {
 			const rawQueryList: unknown[] = Array.isArray(params.queries)
 				? params.queries
 				: (params.query !== undefined ? [params.query] : []);
@@ -1171,12 +1171,12 @@ export default function (pi: ExtensionAPI) {
 					queryList,
 					includeContent,
 					numResults: params.numResults,
-					recencyFilter: params.recencyFilter,
-					domainFilter: params.domainFilter,
-					availableProviders,
-					defaultProvider,
-					summaryModels: summaryModelChoices.summaryModels,
-					defaultSummaryModel: summaryModelChoices.defaultSummaryModel,
+				recencyFilter: params.recencyFilter as "day" | "week" | "month" | "year" | undefined,
+				domainFilter: params.domainFilter,
+				availableProviders,
+				defaultProvider,
+				summaryModels: summaryModelChoices.summaryModels,
+				defaultSummaryModel: summaryModelChoices.defaultSummaryModel,
 					timeoutSeconds: curatorTimeoutSeconds,
 					onUpdate: onUpdate as PendingCurate["onUpdate"],
 					signal,
@@ -1220,7 +1220,7 @@ export default function (pi: ExtensionAPI) {
 						const { answer, results, inlineContent, provider } = await search(queryList[qi], {
 							provider: requestedProvider,
 							numResults: params.numResults,
-							recencyFilter: params.recencyFilter,
+							recencyFilter: params.recencyFilter as "day" | "week" | "month" | "year" | undefined,
 							domainFilter: params.domainFilter,
 							includeContent: params.includeContent,
 							signal: searchSignal,
@@ -1279,7 +1279,7 @@ export default function (pi: ExtensionAPI) {
 					const { answer, results, inlineContent, provider } = await search(query, {
 						provider: resolvedProvider,
 						numResults: params.numResults,
-						recencyFilter: params.recencyFilter,
+						recencyFilter: params.recencyFilter as "day" | "week" | "month" | "year" | undefined,
 						domainFilter: params.domainFilter,
 						includeContent: params.includeContent,
 						signal,
@@ -1308,7 +1308,7 @@ export default function (pi: ExtensionAPI) {
 				includeContent: params.includeContent ?? false,
 				inlineContent: allInlineContent.length > 0 ? allInlineContent : undefined,
 			});
-		},
+		}) as any,
 
 		renderCall(args, theme) {
 			const input = args as { query?: unknown; queries?: unknown };
@@ -1599,7 +1599,7 @@ export default function (pi: ExtensionAPI) {
 			})),
 		}),
 
-		async execute(_toolCallId, params, signal, onUpdate) {
+		execute: (async (_toolCallId: any, params: any, signal: any, onUpdate: any) => {
 			const urlList = params.urls ?? (params.url ? [params.url] : []);
 			if (urlList.length === 0) {
 				return {
@@ -1702,7 +1702,7 @@ export default function (pi: ExtensionAPI) {
 				content: [{ type: "text", text: output }],
 				details: { urls: urlList, urlCount: urlList.length, successful, totalChars, responseId },
 			};
-		},
+		}) as any,
 
 		renderCall(args, theme) {
 			const { url, urls, prompt, timestamp, frames, model } = args as { url?: string; urls?: string[]; prompt?: string; timestamp?: string; frames?: number; model?: string };
@@ -1830,7 +1830,7 @@ export default function (pi: ExtensionAPI) {
 			urlIndex: Type.Optional(Type.Number({ description: "Get content for URL at index" })),
 		}),
 
-		async execute(_toolCallId, params) {
+		execute: (async (_toolCallId: any, params: any) => {
 			const data = getResult(params.responseId);
 			if (!data) {
 				return {
@@ -1925,7 +1925,7 @@ export default function (pi: ExtensionAPI) {
 				content: [{ type: "text", text: "Invalid stored data format" }],
 				details: { error: "Invalid data" },
 			};
-		},
+		}) as any,
 
 		renderCall(args, theme) {
 			const { responseId, query, queryIndex, url, urlIndex } = args as {
@@ -2013,8 +2013,8 @@ export default function (pi: ExtensionAPI) {
 			function sendFollowUpFromReturn(payload: ReturnType<typeof buildSearchReturn>) {
 				pi.sendMessage({
 					customType: "web-search-results",
-					content: payload.content,
-					display: "tool",
+					content: payload.content as any,
+					display: true,
 					details: payload.details,
 				}, { triggerTurn: true, deliverAs: "followUp" });
 			}
@@ -2234,7 +2234,7 @@ export default function (pi: ExtensionAPI) {
 			pi.sendMessage({
 				customType: "curator-config",
 				content: [{ type: "text", text: label }],
-				display: "tool",
+				display: true,
 				details: { workflow: newWorkflow },
 			}, { triggerTurn: false, deliverAs: "followUp" });
 		},
@@ -2247,7 +2247,7 @@ export default function (pi: ExtensionAPI) {
 				pi.sendMessage({
 					customType: "google-account",
 					content: [{ type: "text", text: "Gemini Web browser cookie access is disabled. Set allowBrowserCookies: true in ~/.wo/agent/web-search.json to enable it." }],
-					display: "tool",
+					display: true,
 					details: { available: false, cookieAccessAllowed: false },
 				}, { triggerTurn: true, deliverAs: "followUp" });
 				return;
@@ -2258,7 +2258,7 @@ export default function (pi: ExtensionAPI) {
 				pi.sendMessage({
 					customType: "google-account",
 					content: [{ type: "text", text: "Gemini Web is unavailable. Sign into gemini.google.com in a supported Chromium-based browser." }],
-					display: "tool",
+					display: true,
 					details: { available: false, cookieAccessAllowed: true },
 				}, { triggerTurn: true, deliverAs: "followUp" });
 				return;
@@ -2272,7 +2272,7 @@ export default function (pi: ExtensionAPI) {
 			pi.sendMessage({
 				customType: "google-account",
 				content: [{ type: "text", text }],
-				display: "tool",
+				display: true,
 				details: { available: true, email: email ?? null },
 			}, { triggerTurn: true, deliverAs: "followUp" });
 		},

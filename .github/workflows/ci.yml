@@ -28,13 +28,10 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm -r --filter '!@wayofmono/web-access' build
+        run: pnpm -r build
 
       - name: Typecheck
-        run: pnpm -r --parallel --filter '!@wayofmono/web-access' typecheck
+        run: pnpm -r --parallel typecheck
 
       - name: Test
-        run: pnpm -r --filter '!@wayofmono/web-access' test
-
-      - name: Changesets (disabled until web-access is fixed)
-        run: pnpm changeset version 2>&1 || true
+        run: pnpm -r test
