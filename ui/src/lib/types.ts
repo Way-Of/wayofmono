@@ -73,4 +73,4 @@ export interface DashboardStats {
   reviewQueue: number;
 }
 
-export type ViewMode = 'overview' | 'tickets' | 'developers' | 'review' | 'docs' | 'my-view';
+export type ViewMode = 'overview' | 'tickets' | 'developers' | 'review' | 'docs' | 'my-view' | 'skills';

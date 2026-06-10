@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuthStore, useDashboardStore } from '@/store/dashboard-store';
 import { LoginPage } from '@/components/dashboard/login-page';
 import { Sidebar } from '@/components/dashboard/sidebar';
@@ -10,6 +10,7 @@ import { DevelopersView } from '@/components/dashboard/developers-view';
 import { ReviewQueueView } from '@/components/dashboard/review-queue-view';
 import { DocsView } from '@/components/dashboard/docs-view';
 import { MyView } from '@/components/dashboard/my-view';
+import { SkillsView } from '@/components/dashboard/skills-view';
 import { Badge } from '@/components/ui/badge';
 import { Bell, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -21,14 +22,35 @@ const viewLabels: Record<string, string> = {
   review: 'Review Queue',
   docs: 'Documentation',
   'my-view': 'My View',
+  skills: 'AI Harness Skills',
 };
 
 export default function DashboardPage() {
-  const { currentUser, isCTO } = useAuthStore();
+  const { currentUser, canReview } = useAuthStore();
   const { currentView, tickets, viewHistory, goBack, fetchData } = useDashboardStore();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const fromPop = useRef(false);
 
   useEffect(() => { fetchData(); }, [fetchData]);
+
+  useEffect(() => {
+    if (!currentUser) return;
+    const handler = () => {
+      fromPop.current = true;
+      const history = useDashboardStore.getState().viewHistory;
+      if (history.length > 0) useDashboardStore.getState().goBack();
+    };
+    window.addEventListener('popstate', handler);
+    return () => window.removeEventListener('popstate', handler);
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (!currentUser || fromPop.current) {
+      fromPop.current = false;
+      return;
+    }
+    window.history.pushState(null, '');
+  }, [currentView, currentUser]);
 
   if (!currentUser) return <LoginPage />;
 
@@ -38,10 +60,11 @@ export default function DashboardPage() {
     switch (currentView) {
       case 'overview': return <OverviewView />;
       case 'tickets': return <TicketsView />;
-      case 'developers': return isCTO ? <DevelopersView /> : <OverviewView />;
-      case 'review': return isCTO ? <ReviewQueueView /> : <OverviewView />;
+      case 'developers': return canReview ? <DevelopersView /> : <OverviewView />;
+      case 'review': return canReview ? <ReviewQueueView /> : <OverviewView />;
       case 'docs': return <DocsView />;
       case 'my-view': return <MyView />;
+      case 'skills': return canReview ? <SkillsView /> : <OverviewView />;
       default: return <OverviewView />;
     }
   };
@@ -64,7 +87,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="icon" className="relative h-8 w-8 text-text-muted hover:text-foreground">
               <Bell className="w-4 h-4" />
-              {reviewCount > 0 && isCTO && <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-primary" />}
+              {reviewCount > 0 && canReview && <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-primary" />}
             </Button>
             <div className="flex items-center gap-1.5 text-text-muted">
               <div className="w-1.5 h-1.5 rounded-full bg-status-done" />

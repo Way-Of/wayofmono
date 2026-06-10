@@ -138,9 +138,9 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   fetchData: async () => {
     try {
       const [ticketsRes, devsRes, docsRes] = await Promise.all([
-        fetch('/api/thoughts?type=tickets'),
-        fetch('/api/thoughts?type=developers'),
-        fetch('/api/thoughts?type=docs'),
+        fetch('/api?type=tickets'),
+        fetch('/api?type=developers'),
+        fetch('/api?type=docs'),
       ]);
       const [tickets, developers, docs] = await Promise.all([
         ticketsRes.json(),

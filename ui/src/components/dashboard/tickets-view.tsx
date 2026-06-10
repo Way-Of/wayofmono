@@ -289,7 +289,7 @@ export function TicketsView() {
 
   // Get unique categories from tickets
   const allTickets = useDashboardStore(s => s.tickets);
-  const categories = [...new Set(allTickets.map(t => t.category))].sort();
+  const categories = [...new Set(allTickets.map(t => t.category).filter(Boolean))].sort();
 
   return (
     <div className="space-y-4">

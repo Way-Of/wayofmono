@@ -37,7 +37,7 @@ const typeConfig: Record<string, { icon: React.ElementType; label: string; color
 function DocCard({ doc }: { doc: ProjectDoc }) {
   const cfg = typeConfig[doc.type];
   const Icon = cfg.icon;
-  const author = developers.find(d => d.id === doc.author);
+  const author = useDashboardStore.getState().developers.find(d => d.id === doc.author);
   const tickets = useDashboardStore.getState().tickets.filter(t =>
     t.linkedDocs.includes(doc.id)
   );
@@ -79,6 +79,7 @@ function DocCard({ doc }: { doc: ProjectDoc }) {
 }
 
 export function DocsView() {
+  const docs = useDashboardStore(s => s.docs);
   const [search, setSearch] = useState('');
   const [filterProject, setFilterProject] = useState('all');
   const [filterType, setFilterType] = useState('all');

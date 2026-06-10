@@ -101,7 +101,8 @@ function KanbanColumn({ status, label, icon: Icon, color, tickets, onTicketClick
 }
 
 function DeveloperProfile({ devId }: { devId: string }) {
-  const dev = developers.find(d => d.id === devId);
+  const allDevs = useDashboardStore.getState().developers;
+  const dev = allDevs.find(d => d.id === devId);
   if (!dev) return null;
 
   const devTickets = useDashboardStore.getState().tickets.filter(t => t.assignee === devId);
@@ -144,7 +145,7 @@ function DeveloperProfile({ devId }: { devId: string }) {
 
         <div className="mt-3 flex flex-wrap gap-1.5">
           {dev.projects.map(p => {
-            const proj = projects.find(pr => pr.slug === p);
+            const proj = undefined;
             return (
               <Badge key={p} variant="outline" className="text-[10px] border-border text-text-muted">
                 {proj?.name || p}
@@ -162,7 +163,8 @@ export function DevelopersView() {
   const { isCTO } = useAuthStore();
   const [selectedProject, setSelectedProject] = useState('all');
 
-  const activeDev = selectedDeveloper || developers[0].id;
+  const allDevs2 = useDashboardStore.getState().developers;
+  const activeDev = selectedDeveloper || (allDevs2[0]?.id || '');
   const devTickets = tickets.filter(t => {
     if (t.assignee !== activeDev) return false;
     if (selectedProject !== 'all' && t.project !== selectedProject) return false;
@@ -187,7 +189,7 @@ export function DevelopersView() {
             </SelectTrigger>
             <SelectContent className="bg-card border-border">
               <SelectItem value="all">All Projects</SelectItem>
-              {projects.map(p => (
+              {[{ slug: 'wayofmono', name: 'WayOfMono' }, { slug: 'wow', name: 'WoW' }, { slug: 'opticat', name: 'OptiCat' }].map(p => (
                 <SelectItem key={p.slug} value={p.slug}>{p.name}</SelectItem>
               ))}
             </SelectContent>
@@ -197,7 +199,7 @@ export function DevelopersView() {
 
       {/* Developer selector */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {developers.map(dev => (
+        {useDashboardStore.getState().developers.map(dev => (
           <button
             key={dev.id}
             onClick={() => setSelectedDeveloper(dev.id)}

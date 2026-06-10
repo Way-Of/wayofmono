@@ -9,6 +9,7 @@ import {
   ClipboardCheck,
   FileText,
   User,
+  Cpu,
   LogOut,
   ChevronLeft,
   RefreshCw,
@@ -28,25 +29,29 @@ interface SidebarProps {
   onToggle: () => void;
 }
 
-const navItems: { id: ViewMode; label: string; icon: React.ElementType; ctoOnly?: boolean }[] = [
+const navItems: { id: ViewMode; label: string; icon: React.ElementType; ctoOnly?: boolean; reviewOnly?: boolean }[] = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
   { id: 'tickets', label: 'Tickets', icon: Ticket },
-  { id: 'developers', label: 'Developers', icon: Users, ctoOnly: true },
-  { id: 'review', label: 'Review Queue', icon: ClipboardCheck, ctoOnly: true },
+  { id: 'developers', label: 'Developers', icon: Users, reviewOnly: true },
+  { id: 'review', label: 'Review Queue', icon: ClipboardCheck, reviewOnly: true },
   { id: 'docs', label: 'Docs', icon: FileText },
   { id: 'my-view', label: 'My View', icon: User },
+  { id: 'skills', label: 'Skills', icon: Cpu, reviewOnly: true },
 ];
 
 export function Sidebar({ collapsed, onToggle }: SidebarProps) {
-  const { currentUser, isCTO, logout } = useAuthStore();
-  const { currentView, setCurrentView, reviewQueue: _rq } = useDashboardStore();
+  const { currentUser, canReview, logout } = useAuthStore();
+  const { currentView, setCurrentView } = useDashboardStore();
   const tickets = useDashboardStore((s) => s.tickets);
   const reviewCount = tickets.filter(t => t.status === 'In Review' && t.reviewStatus === 'Pending').length;
 
   const developers = useDashboardStore(s => s.developers);
   const dev = developers.find(d => d.id === currentUser);
 
-  const visibleItems = navItems.filter(item => !item.ctoOnly || isCTO);
+  const visibleItems = navItems.filter(item => {
+    if (item.reviewOnly && !canReview) return false;
+    return true;
+  });
 
   return (
     <TooltipProvider delayDuration={0}>

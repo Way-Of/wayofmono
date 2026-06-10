@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDevelopers, getTickets, getDocs, getDashboardStats } from "@/lib/thoughts";
+import { getDevelopers, getTickets, getDocs, getDashboardStats, getSkills } from "@/lib/thoughts";
 
 export async function GET(request: NextRequest) {
   const type = request.nextUrl.searchParams.get('type') || 'dashboard';
@@ -21,6 +21,10 @@ export async function GET(request: NextRequest) {
       case 'dashboard': {
         const [stats, tickets] = await Promise.all([getDashboardStats(), getTickets()]);
         return NextResponse.json({ stats, tickets });
+      }
+      case 'skills': {
+        const skills = await getSkills();
+        return NextResponse.json(skills);
       }
       default:
         return NextResponse.json({ error: 'Unknown type' }, { status: 400 });

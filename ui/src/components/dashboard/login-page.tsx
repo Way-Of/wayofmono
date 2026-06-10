@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuthStore, useDashboardStore } from '@/store/dashboard-store';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,7 +14,6 @@ export function LoginPage() {
   const [username, setUsername] = useState('');
   const [pincode, setPincode] = useState('');
   const [error, setError] = useState('');
-  const pincodeRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
@@ -50,7 +49,7 @@ export function LoginPage() {
                 <Input
                   value={username}
                   onChange={(e) => { setUsername(e.target.value); setError(''); }}
-                  placeholder="e.g. craigmartin"
+                  placeholder="GitHub username"
                   className="bg-surface border-border-strong text-foreground placeholder:text-text-muted focus:border-primary focus:ring-primary"
                   autoFocus
                   disabled={isDisabled}
@@ -59,7 +58,6 @@ export function LoginPage() {
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1.5">Pincode</label>
                 <Input
-                  ref={pincodeRef}
                   type="password"
                   value={pincode}
                   onChange={(e) => { setPincode(e.target.value); setError(''); }}
@@ -82,28 +80,7 @@ export function LoginPage() {
             )}
           </form>
 
-          {developers.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-border">
-              <p className="text-xs text-text-muted mb-2">Team members:</p>
-              <div className="flex flex-wrap gap-1.5">
-                {developers.map((dev) => (
-                  <button
-                    key={dev.id}
-                    type="button"
-                    onClick={() => {
-                      setUsername(dev.githubUsername);
-                      setError('');
-                      pincodeRef.current?.focus();
-                    }}
-                    className="text-xs px-2 py-1 rounded-md bg-surface hover:bg-surface-elevated border border-border hover:border-border-strong text-text-secondary hover:text-foreground transition-all"
-                  >
-                    @{dev.githubUsername}
-                    {dev.role === 'CTO' && <span className="ml-1 text-primary">★</span>}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+
         </div>
 
         <p className="text-center text-text-muted text-xs mt-6">

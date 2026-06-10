@@ -46,7 +46,7 @@ export function MyView() {
   const { currentUser, isCTO } = useAuthStore();
   const { tickets, updateTicketStatus, setCurrentView } = useDashboardStore();
 
-  const dev = developers.find(d => d.id === currentUser);
+  const dev = useDashboardStore.getState().developers.find(d => d.id === currentUser);
   const myTickets = tickets.filter(t => t.assignee === currentUser);
 
   const [statusFilter, setStatusFilter] = useState('all');
@@ -91,7 +91,7 @@ export function MyView() {
           <h2 className="text-lg font-semibold text-foreground">{dev.displayName}</h2>
           <p className="text-sm text-text-muted">
             @{dev.githubUsername} &middot; {dev.role} &middot;{' '}
-            {dev.projects.map(p => projects.find(pr => pr.slug === p)?.name || p).join(', ')}
+            {dev.projects.map(p => p).join(', ')}
           </p>
         </div>
       </div>
@@ -181,7 +181,7 @@ export function MyView() {
           <SelectContent className="bg-card border-border">
             <SelectItem value="all">All Projects</SelectItem>
             {dev.projects.map(p => {
-              const proj = projects.find(pr => pr.slug === p);
+              const proj = undefined;
               return (
                 <SelectItem key={p} value={p}>{proj?.name || p}</SelectItem>
               );

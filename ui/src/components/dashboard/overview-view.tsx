@@ -146,7 +146,7 @@ function RecentActivity({ tickets }: { tickets: Ticket[] }) {
         <div className="space-y-2">
           {recent.map((t) => {
             const cfg = statusConfig[t.status];
-            const StatusIcon = cfg?.icon || Ticket;
+            const StatusIcon = cfg?.icon || TicketIcon;
             return (
               <div
                 key={t.id}

@@ -207,6 +207,66 @@ async function walkDocsDir(dir: string, result: Record<string, unknown>[], proje
   }
 }
 
+export async function getSkills() {
+  const homedir = (await import('os')).homedir();
+  const dirs = [
+    { name: 'Pi', path: path.join(homedir, '.pi', 'agent', 'skills') },
+    { name: 'OpenCode', path: path.join(homedir, '.config', 'opencode', 'skills') },
+    { name: 'Gemini CLI', path: path.join(homedir, '.gemini', 'skills') },
+    { name: 'Codex', path: path.join(homedir, '.codex', 'skills') },
+    { name: 'Claude Code', path: path.join(homedir, '.claude', 'skills') },
+    { name: 'Antigravity', path: path.join(homedir, '.antigravity', 'skills') },
+  ];
+
+  const results = [];
+
+  for (const tool of dirs) {
+    let exists = false;
+    let skills: Record<string, unknown>[] = [];
+    try {
+      const entries = await fs.readdir(tool.path, { withFileTypes: true });
+      exists = true;
+      for (const entry of entries) {
+        if (!entry.isDirectory()) continue;
+        const skillPath = path.join(tool.path, entry.name);
+        const files = await fs.readdir(skillPath);
+        const skillMd = files.find(f => f.toLowerCase() === 'skill.md');
+        let description = '';
+        let allowedTools = '';
+        if (skillMd) {
+          const content = await fs.readFile(path.join(skillPath, skillMd), 'utf8');
+          const { frontmatter } = parseFrontmatter(content);
+          description = String(frontmatter['description'] || '');
+          allowedTools = String(frontmatter['allowed-tools'] || '');
+        }
+        let lastModified = '';
+        try {
+          const stat = await fs.stat(skillPath);
+          lastModified = stat.mtime.toISOString().slice(0, 10);
+        } catch { /* ignore */ }
+        skills.push({
+          name: entry.name,
+          description,
+          allowedTools,
+          fileCount: files.length,
+          lastModified,
+          hasFrontmatter: !!skillMd,
+        });
+      }
+    } catch { /* dir not found */ }
+    results.push({
+      name: tool.name,
+      path: tool.path,
+      exists,
+      skillCount: skills.length,
+      skills,
+      health: !exists ? 'missing' : skills.length === 0 ? 'empty' : skills.every(s => s.description) ? 'healthy' : 'partial',
+    });
+  }
+
+  return results;
+}
+
 export async function getDashboardStats() {
   const tickets = await getTickets();
   const weekAgo = new Date();
