@@ -2,15 +2,16 @@
 
 /**
  * Ticket Migration Script
- * Migrates tickets from flat structure to categorized folder structure.
+ * Migrates tickets from aiharnes subfolders to categorized structure at thoughts/wayofmono/shared/tickets/
+ * Renames PROJ-XXX to WOMONO-XXX
  * Run with: deno run --allow-read --allow-write --allow-run migrate-tickets.ts
- * Or: ./migrate-tickets.sh (Unix) / migrate-tickets.bat (Windows)
  */
 
 import { join, basename, dirname } from "https://deno.land/std@0.224.0/path/mod.ts";
 import { existsSync } from "https://deno.land/std@0.224.0/fs/exists.ts";
 
-const TICKETS_ROOT = join(Deno.cwd(), "thoughts", "shared", "tickets");
+const SOURCE_ROOT = join(Deno.cwd(), "thoughts", "wayofmono", "shared", "aiharness");
+const TARGET_ROOT = join(Deno.cwd(), "thoughts", "wayofmono", "shared", "tickets");
 
 const CATEGORY_MAP: Record<string, string> = {
   // Architecture
@@ -58,6 +59,11 @@ const CATEGORY_MAP: Record<string, string> = {
   // System/Templates
   "PROJ-023-ticket-folder-organization.md": "system/templates",
   "PROJ-update.md": "system/templates",
+
+  // Additional tickets found
+  "PROJ-024-ai-harness-help-command.md": "system/harness",
+  "PROJ-025-codex-first-class-platform.md": "system/harness",
+  "PROJ-026-centralized-ticket-repo.md": "system/harness",
 };
 
 async function ensureDir(path: string): Promise<void> {
@@ -68,27 +74,55 @@ async function ensureDir(path: string): Promise<void> {
   }
 }
 
+async function findAllTickets(): Promise<string[]> {
+  const tickets: string[] = [];
+  async function walk(dir: string) {
+    try {
+      for await (const entry of Deno.readDir(dir)) {
+        const fullPath = join(dir, entry.name);
+        if (entry.isDirectory && !entry.name.startsWith(".")) {
+          await walk(fullPath);
+        } else if (entry.name.endsWith(".md") && entry.name !== "TODO.md" && entry.name !== "ticket-template.md") {
+          tickets.push(fullPath);
+        }
+      }
+    } catch {
+      // skip unreadable dirs
+    }
+  }
+  await walk(SOURCE_ROOT);
+  return tickets;
+}
+
 async function migrate(): Promise<void> {
-  console.log("🔄 Starting ticket migration...");
-  console.log(`📁 Source: ${TICKETS_ROOT}`);
+  console.log("🔄 Starting ticket migration (PROJ-XXX → WOMONO-XXX + categorize)...");
+  console.log(`📁 Source: ${SOURCE_ROOT}`);
+  console.log(`📁 Target: ${TARGET_ROOT}`);
 
   let migrated = 0;
   let skipped = 0;
   let errors = 0;
 
-  for (const [filename, category] of Object.entries(CATEGORY_MAP)) {
-    const sourcePath = join(TICKETS_ROOT, filename);
-    const targetDir = join(TICKETS_ROOT, category);
-    const targetPath = join(targetDir, filename);
+  const allTickets = await findAllTickets();
+  console.log(`📋 Found ${allTickets.length} ticket files to process\n`);
 
-    if (!existsSync(sourcePath)) {
-      console.log(`  ⏭️  Skipping ${filename} (not found in root)`);
+  for (const sourcePath of allTickets) {
+    const filename = basename(sourcePath);
+    const category = CATEGORY_MAP[filename];
+    
+    if (!category) {
+      console.log(`  ⚠️  No category mapping for ${filename}, skipping`);
       skipped++;
       continue;
     }
 
+    // Rename PROJ-XXX to WOMONO-XXX
+    const newFilename = filename.replace(/^PROJ-/, "WOMONO-");
+    const targetDir = join(TARGET_ROOT, category);
+    const targetPath = join(targetDir, newFilename);
+
     if (existsSync(targetPath)) {
-      console.log(`  ⏭️  Skipping ${filename} (already in ${category})`);
+      console.log(`  ⏭️  Skipping ${filename} (already in ${category} as ${newFilename})`);
       skipped++;
       continue;
     }
@@ -96,12 +130,25 @@ async function migrate(): Promise<void> {
     try {
       await ensureDir(targetDir);
       await Deno.rename(sourcePath, targetPath);
-      console.log(`  ✅ Moved ${filename} → ${category}/`);
+      if (filename !== newFilename) {
+        console.log(`  ✅ Moved & renamed ${filename} → ${category}/${newFilename}`);
+      } else {
+        console.log(`  ✅ Moved ${filename} → ${category}/`);
+      }
       migrated++;
     } catch (e) {
       console.error(`  ❌ Failed to move ${filename}: ${e}`);
       errors++;
     }
+  }
+
+  // Also copy ticket-template.md to target if it exists
+  const templateSource = join(SOURCE_ROOT, "templates", "ticket-template.md");
+  const templateTarget = join(TARGET_ROOT, "ticket-template.md");
+  if (existsSync(templateSource) && !existsSync(templateTarget)) {
+    await ensureDir(TARGET_ROOT);
+    await Deno.copyFile(templateSource, templateTarget);
+    console.log(`  📋 Copied ticket-template.md to target root`);
   }
 
   console.log(`\n📊 Migration complete:`);
@@ -111,12 +158,14 @@ async function migrate(): Promise<void> {
 
   // Verify structure
   console.log("\n📂 Final structure:");
-  for (const entry of Deno.readDirSync(TICKETS_ROOT)) {
+  for (const entry of Deno.readDirSync(TARGET_ROOT)) {
     if (entry.isDirectory) {
-      const files = Array.from(Deno.readDirSync(join(TICKETS_ROOT, entry.name)))
+      const files = Array.from(Deno.readDirSync(join(TARGET_ROOT, entry.name)))
         .filter(f => f.isFile && f.name.endsWith(".md"))
         .length;
       console.log(`   ${entry.name}/: ${files} tickets`);
+    } else if (entry.name.endsWith(".md")) {
+      console.log(`   ${entry.name} (root)`);
     }
   }
 }

@@ -186,7 +186,7 @@ async function scanGit(): Promise<DetectedChange[]> {
         title: "Breaking changes detected in recent commits",
         description: `Recent commits contain breaking changes:\n\n${commits.slice(0, 500)}`,
         priority: "High",
-        namespace: "PROJ",
+        namespace: "WOMONO",
         category: "system",
       });
     }
@@ -198,7 +198,7 @@ async function scanGit(): Promise<DetectedChange[]> {
         title: "Security-related commits detected",
         description: `Security-related commits found:\n\n${commits.slice(0, 500)}`,
         priority: "Critical",
-        namespace: "PROJ",
+        namespace: "WOMONO",
         category: "security",
       });
     }
@@ -246,7 +246,7 @@ async function scanNpm(): Promise<DetectedChange[]> {
             title: `Dependency ${pkg} uses semver range ${ver}`,
             description: `Package ${pkg} is specified with range ${ver} in root package.json. Consider pinning for reproducible builds.`,
             priority: "Low",
-            namespace: "PROJ",
+            namespace: "WOMONO",
             category: "infrastructure",
           });
         }
@@ -286,7 +286,7 @@ async function scanRef(): Promise<DetectedChange[]> {
             title: `New ref skill available: ${entry.name}`,
             description: `Reference skill '${entry.name}' exists in ref/skills/ but hasn't been imported to the AI Engineering Harness yet.`,
             priority: "Medium",
-            namespace: "PROJ",
+            namespace: "WOMONO",
             category: "ai-agents",
           });
         }
@@ -308,7 +308,7 @@ async function scanRef(): Promise<DetectedChange[]> {
             title: `New ref agent available: ${entry.name}`,
             description: `Reference agent '${entry.name}' exists in ref/agents/ but hasn't been imported yet.`,
             priority: "Medium",
-            namespace: "PROJ",
+            namespace: "WOMONO",
             category: "ai-agents",
           });
         }
@@ -349,7 +349,7 @@ async function scanCodebase(): Promise<DetectedChange[]> {
                   title: `${prefix}: ${msg.slice(0, 80)}`,
                   description: `Found in ${relPath} at line ${content.slice(0, match.index).split("\n").length}:\n\n${msg}`,
                   priority: "Medium",
-                  namespace: "PROJ",
+                  namespace: "WOMONO",
                   category: "system",
                 });
               }
@@ -383,7 +383,7 @@ async function scanPlatforms(): Promise<DetectedChange[]> {
           title: `Platform ${platform} has no imported skills`,
           description: `The ${platform} platform directory exists but has no skills imported. Run import-ref-skills.ts.`,
           priority: "High",
-          namespace: "PROJ",
+          namespace: "WOMONO",
           category: "ai-agents",
         });
       }

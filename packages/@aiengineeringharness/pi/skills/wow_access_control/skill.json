@@ -1,8 +1,0 @@
-{
-  "name": "wow-access-control",
-  "description": "Critical security, access control, and privacy rules defined in WOW-016. Must be followed when modifying data access layers to ensure multi-tenant and role-based isolation.",
-  "version": "1.0.0",
-  "tools": [
-    ""
-  ]
-}

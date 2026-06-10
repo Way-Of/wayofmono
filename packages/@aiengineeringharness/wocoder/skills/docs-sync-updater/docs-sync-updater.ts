@@ -36,6 +36,6 @@ Fetches the latest documentation from all supported agent frontends to keep skil
 ## Behavior
 
 - Non-breaking changes → auto-update skill configs
-- Breaking changes → create PROJ tickets via Ticket Manager
+- Breaking changes → create WOMONO tickets via Ticket Manager
 `,
 };

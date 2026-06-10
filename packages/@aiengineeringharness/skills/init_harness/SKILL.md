@@ -46,21 +46,28 @@ Follow these steps to initialize the harness:
 
 5. **Ensure the project's TODO.md exists** at `thoughts/${PROJECT_SLUG}/shared/tickets/TODO.md`
 
-6. **Verify the structure**:
+6. **Verify the structure** (per WOMONO-001):
     ```
     thoughts/
-    ├── global/                          # Cross-project global thoughts
-    ├── shared/                          # Cross-project templates
+    ├── global/                          # Cross-project global thoughts (architecture, standards, conventions)
+    ├── shared/                          # Cross-project templates ONLY (ticket-template.md)
     │   ├── tickets/ticket-template.md
     │   ├── plans/
     │   └── research/
-    └── ${PROJECT_SLUG}/                 # This project's thoughts
-        ├── global/
-        └── shared/
-            ├── tickets/                 # Tickets for this project
-            │   └── TODO.md
-            ├── plans/
-            └── research/
+    ├── ${PROJECT_SLUG}/                 # This project's thoughts
+    │   ├── global/                      # Project-specific global thoughts
+    │   ├── shared/                      # SHARED RESPONSIBILITY tickets (all devs in this project)
+    │   │   ├── tickets/                 # Tickets for this project (WOMONO-XXX, WOW-XXX, OPT-XXX)
+    │   │   │   └── TODO.md
+    │   │   ├── plans/
+    │   │   └── research/
+    │   ├── craig/                       # Personal dirs (all developers)
+    │   ├── josef/
+    │   ├── andre/
+    │   ├── tomas/
+    │   └── zerwiz/
+    ├── wow/                             # When cloned for WoW work
+    └── opticat/                         # When cloned for Opticat work
     ```
 
 7. **Add `thoughts/` to `.gitignore`** (if not already present):
@@ -69,7 +76,9 @@ Follow these steps to initialize the harness:
     thoughts/
     ```
 
-8. **Present next steps to the user**
+8. **Delete local `thoughts/shared/` if it exists** — WRONG location for global thoughts. Global thoughts go in `thoughts/global/`.
+
+9. **Present next steps to the user**
 
 ## Quick Reference
 

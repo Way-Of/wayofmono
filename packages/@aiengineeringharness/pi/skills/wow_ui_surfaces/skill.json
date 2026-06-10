@@ -1,8 +1,0 @@
-{
-  "name": "wow-ui-surfaces",
-  "description": "Frontend architecture, isolated chat sessions, and multi-surface routing based on WOW-012. Use when adding new UI views or debugging chat session isolation.",
-  "version": "1.0.0",
-  "tools": [
-    ""
-  ]
-}

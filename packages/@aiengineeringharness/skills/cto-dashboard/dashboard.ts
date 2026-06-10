@@ -157,7 +157,7 @@ async function loadTickets(): Promise<Ticket[]> {
         } else if (entry.name.endsWith(".md") && entry.name !== "TODO.md" && entry.name !== "ticket-template.md") {
           const content = await Deno.readTextFile(fullPath);
           const { frontmatter, body } = parseFrontmatter(content);
-          const match = fullPath.match(/(WOW|OPT|PROJ|TEAM)-(\d+)/);
+          const match = fullPath.match(/(WOW|OPT|WOMONO|TEAM)-(\d+)/);
           const id = match ? `${match[1]}-${match[2]}` : entry.name.replace(".md", "");
           tickets.push({ id, file: fullPath.replace(ROOT + "/", ""), frontmatter, body: body.slice(0, 200) });
         }
@@ -176,7 +176,7 @@ function colorStatus(status: string): string {
 }
 
 function shortId(file: string): string {
-  const match = file.match(/(WOW|OPT|PROJ|TEAM)-\d+/);
+  const match = file.match(/(WOW|OPT|WOMONO|TEAM)-\d+/);
   return match?.[0] ?? file.split("/").pop()?.replace(".md", "") ?? file;
 }
 

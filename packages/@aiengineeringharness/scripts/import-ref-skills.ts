@@ -1,7 +1,7 @@
 #!/usr/bin/env deno run --allow-read --allow-write --allow-run --allow-env
 
 /**
- * Import & Adapt Ref Skills/Agents (PROJ-016)
+ * Import & Adapt Ref Skills/Agents (WOMONO-016)
  *
  * Reads skills from ref/skills/ and ref/agents/ and imports them into
  * the harness canonical structure and all platform-specific directories.

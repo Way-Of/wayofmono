@@ -358,7 +358,7 @@ async function syncPersonalTodos(developerId?: string): Promise<void> {
       if (fileAssignee !== dev.id) continue;
       hasAssigned = true;
 
-      const match = file.match(/(WOW|OPT|PROJ|TEAM)-\d+/);
+      const match = file.match(/(WOW|OPT|WOMONO|TEAM)-\d+/);
       const ticketId = match ? match[0] : "UNKNOWN";
       const title = frontmatter.title ?? ticketId;
       const status = frontmatter.status ?? "Backlog";
