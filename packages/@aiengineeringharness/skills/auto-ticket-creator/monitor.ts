@@ -1,7 +1,7 @@
 #!/usr/bin/env deno run --allow-read --allow-write --allow-run --allow-env --allow-net
 
 /**
- * Auto-Ticket Creator Monitor (PROJ-017)
+ * Auto-Ticket Creator Monitor
  *
  * Monitors codebase, dependencies, and external sources for changes
  * and auto-creates tickets via the ticket-manager.
@@ -22,7 +22,65 @@ import { ensureDir } from "https://deno.land/std@0.224.0/fs/ensure_dir.ts";
 const ROOT = Deno.cwd();
 const STATE_DIR = join(ROOT, ".wo", "state", "monitor");
 const STATE_PATH = join(STATE_DIR, "monitor-state.json");
-const TICKETS_DIR = join(ROOT, "thoughts", "shared", "tickets");
+const HARNESS_CONFIG_PATH = join(ROOT, ".wo", "config", "harness.json");
+const THOUGHTS_DIR = join(ROOT, "thoughts");
+
+function getProjectSlug(): string {
+  try {
+    const content = Deno.readTextFileSync(HARNESS_CONFIG_PATH);
+    return JSON.parse(content).project_slug || "wayofmono";
+  } catch {
+    return "wayofmono";
+  }
+}
+
+function ticketsDir(): string {
+  return join(THOUGHTS_DIR, getProjectSlug(), "shared", "tickets");
+}
+
+async function pullThoughts(): Promise<void> {
+  try {
+    const cmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "pull", "--ff-only"],
+      stdout: "null", stderr: "null",
+    });
+    await cmd.output();
+  } catch {
+    // not a git repo yet
+  }
+}
+
+async function pushThoughts(message: string): Promise<void> {
+  try {
+    const addCmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "add", "-A"],
+      stdout: "null", stderr: "null",
+    });
+    await addCmd.output();
+
+    const diffCmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "diff", "--cached", "--quiet"],
+      stdout: "null", stderr: "null",
+    });
+    const { code } = await diffCmd.output();
+    if (code === 0) return;
+
+    const commitCmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "commit", "-m", message],
+      stdout: "null", stderr: "null",
+    });
+    const { code: cc } = await commitCmd.output();
+    if (cc !== 0) return;
+
+    const pushCmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "push"],
+      stdout: "null", stderr: "null",
+    });
+    await pushCmd.output();
+  } catch {
+    // push may fail without credentials
+  }
+}
 
 interface MonitorState {
   lastRun: string;
@@ -63,9 +121,10 @@ async function saveState(state: MonitorState): Promise<void> {
 // --- Ticket Creator ---
 
 async function createTicket(change: DetectedChange, dryRun: boolean): Promise<void> {
+  await pullThoughts();
   const id = `AUTO-${Date.now()}`;
   const slug = change.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 60);
-  const ticketPath = join(TICKETS_DIR, change.category, `${id}-${slug}.md`);
+  const ticketPath = join(ticketsDir(), change.category, `${id}-${slug}.md`);
 
   const content = `---
 title: "\\[${change.namespace}\\] ${change.title}"
@@ -99,6 +158,7 @@ This ticket was automatically created by the monitor system.
   await ensureDir(dirname(ticketPath));
   await Deno.writeTextFile(ticketPath, content);
   console.log(`  + Created ticket: ${ticketPath}`);
+  await pushThoughts(`monitor: auto-create ticket ${id}`);
 }
 
 // --- Git Adapter ---
@@ -126,7 +186,7 @@ async function scanGit(): Promise<DetectedChange[]> {
         title: "Breaking changes detected in recent commits",
         description: `Recent commits contain breaking changes:\n\n${commits.slice(0, 500)}`,
         priority: "High",
-        namespace: "PROJ",
+        namespace: "WOMONO",
         category: "system",
       });
     }
@@ -138,7 +198,7 @@ async function scanGit(): Promise<DetectedChange[]> {
         title: "Security-related commits detected",
         description: `Security-related commits found:\n\n${commits.slice(0, 500)}`,
         priority: "Critical",
-        namespace: "PROJ",
+        namespace: "WOMONO",
         category: "security",
       });
     }
@@ -186,7 +246,7 @@ async function scanNpm(): Promise<DetectedChange[]> {
             title: `Dependency ${pkg} uses semver range ${ver}`,
             description: `Package ${pkg} is specified with range ${ver} in root package.json. Consider pinning for reproducible builds.`,
             priority: "Low",
-            namespace: "PROJ",
+            namespace: "WOMONO",
             category: "infrastructure",
           });
         }
@@ -226,7 +286,7 @@ async function scanRef(): Promise<DetectedChange[]> {
             title: `New ref skill available: ${entry.name}`,
             description: `Reference skill '${entry.name}' exists in ref/skills/ but hasn't been imported to the AI Engineering Harness yet.`,
             priority: "Medium",
-            namespace: "PROJ",
+            namespace: "WOMONO",
             category: "ai-agents",
           });
         }
@@ -248,7 +308,7 @@ async function scanRef(): Promise<DetectedChange[]> {
             title: `New ref agent available: ${entry.name}`,
             description: `Reference agent '${entry.name}' exists in ref/agents/ but hasn't been imported yet.`,
             priority: "Medium",
-            namespace: "PROJ",
+            namespace: "WOMONO",
             category: "ai-agents",
           });
         }
@@ -289,7 +349,7 @@ async function scanCodebase(): Promise<DetectedChange[]> {
                   title: `${prefix}: ${msg.slice(0, 80)}`,
                   description: `Found in ${relPath} at line ${content.slice(0, match.index).split("\n").length}:\n\n${msg}`,
                   priority: "Medium",
-                  namespace: "PROJ",
+                  namespace: "WOMONO",
                   category: "system",
                 });
               }
@@ -323,7 +383,7 @@ async function scanPlatforms(): Promise<DetectedChange[]> {
           title: `Platform ${platform} has no imported skills`,
           description: `The ${platform} platform directory exists but has no skills imported. Run import-ref-skills.ts.`,
           priority: "High",
-          namespace: "PROJ",
+          namespace: "WOMONO",
           category: "ai-agents",
         });
       }
@@ -345,7 +405,7 @@ const args = parse(Deno.args, {
 
 if (args.help) {
   console.log(`
-Auto-Ticket Creator Monitor (PROJ-017)
+Auto-Ticket Creator Monitor
 
 Usage:
   monitor.ts                          Single scan (all sources)

@@ -46,7 +46,7 @@
           "ticket_id": {
             "type": "string",
             "pattern": "^(WOW|OPT|PROJ|TEAM)-\\d+$",
-            "description": "The ticket ID (e.g., PROJ-013)"
+            "description": "The ticket ID (e.g., TKT-001)"
           }
         }
       }

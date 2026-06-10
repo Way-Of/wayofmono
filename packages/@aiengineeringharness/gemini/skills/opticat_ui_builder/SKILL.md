@@ -1,7 +1,13 @@
 ---
 name: opticat-ui-builder
-description: "Facilitates the generation and enhancement of OptiCat-related UI components and dashboards. Use this skill when building new OptiCat data visualizations, extending existing dashboards with more detailed information from OptiCat APIs, or creating interactive UI elements based on HVAC project data."
+description: ""Facilitates the generation and enhancement of OptiCat-related UI components and dashboards. Use this skill when building new OptiCat data visualizations, extending existing dashboards with more detailed information from OptiCat APIs, or creating interactive UI elements based on HVAC project data.""
+allowed-tools: [""]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: opticat-ui-builder | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # OptiCat UI Builder
 

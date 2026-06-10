@@ -16,6 +16,7 @@ Each coding tool has its own dedicated directory in this harness containing spec
 | **OpenCode** | [opencode/README.md](./opencode/README.md) | [opencode.ai/docs](https://opencode.ai/docs) | `~/.config/opencode` |
 | **Pi** | [pi/README.md](./pi/README.md) | [pi.dev/docs/latest](https://pi.dev/docs/latest) | `~/.pi/agent` |
 | **Wo Coder** | [wocoder/README.md](./wocoder/README.md) | [Monorepo Wo Guide](file:///home/zerwiz/wayofmono/docs/wo/README.md) | `~/.wocoder` |
+| **Codex** | [codex/README.md](./codex/README.md) | [openai.com/codex](https://openai.com/codex) | `~/.codex` |
 
 ---
 
@@ -23,19 +24,19 @@ Each coding tool has its own dedicated directory in this harness containing spec
 
 While the harness provides a shared logic layer, each agent platform operates differently under the hood. The table below outlines the core architectural similarities and differences:
 
-| Feature Dimension | Antigravity | Gemini CLI | Claude Code | OpenCode | Pi | Wo Coder |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Target Directory** | `~/.antigravity/` | `~/.gemini/` | `~/.claude/` | `~/.config/opencode/` | `~/.pi/agent/` | `~/.wocoder/` |
-| **Workspace Target** | `.agents/` | `.agents/` | `.claude/rules/` | `.agents/` | `.agents/` | `.wo/` |
-| **Naming Convention** | `snake_case` | `snake_case` | `snake_case` | `snake_case` | `kebab-case` | `snake_case` |
-| **Primary Config File**| `antigravity.json` | `config.json` | `settings.json`, `.mcp.json` | `opencode.json` | `config.json` | `wocoder.json` |
-| **Memory / Rules File**| `ANTIGRAVITY.md` | `GEMINI.md` | `CLAUDE.md` | `AGENTS.md` | `AGENTS.md` | `AGENTS.md` |
-| **Custom Commands** | Yes (TOML files) | Yes (TOML files) | Yes (Skills schema) | Yes (Markdown commands) | Yes (Prompts folder) | Yes (Markdown files) |
-| **Command Format** | Slash commands | Slash commands | Slash commands | Slash commands | Slash / `@` context | Slash commands |
-| **Modular Skills** | Yes (`skills/` fold) | Yes (`skills/` fold) | Yes (`skills/` fold) | Yes (`skills/` fold) | Yes (`skills/` fold) | Yes (`skills/` fold) |
-| **Extension Model** | Folder-based Plugins | Folder-based Plugins | Modular Rules | Direct MCP Servers | TS/JS Modules | TS/JS Modules |
-| **Lifecycle Hooks** | Yes (`hooks.json`) | Yes (`hooks.json`) | No | No | No | No |
-| **Background Sidecars**| Yes (`sidecar.json`)| Yes (`sidecar.json`)| No | No | No | No |
+| Feature Dimension | Antigravity | Gemini CLI | Claude Code | OpenCode | Pi | Wo Coder | Codex |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Target Directory** | `~/.antigravity/` | `~/.gemini/` | `~/.claude/` | `~/.config/opencode/` | `~/.pi/agent/` | `~/.wocoder/` | `~/.codex/` |
+| **Workspace Target** | `.agents/` | `.agents/` | `.claude/rules/` | `.agents/` | `.agents/` | `.wo/` | `.codex/rules/` |
+| **Naming Convention** | `snake_case` | `snake_case` | `snake_case` | `snake_case` | `kebab-case` | `snake_case` | `snake_case` |
+| **Primary Config File**| `antigravity.json` | `config.json` | `settings.json`, `.mcp.json` | `opencode.json` | `config.json` | `wocoder.json` | `README.md` |
+| **Memory / Rules File**| `ANTIGRAVITY.md` | `GEMINI.md` | `CLAUDE.md` | `AGENTS.md` | `AGENTS.md` | `AGENTS.md` | `RULES.md` |
+| **Custom Commands** | Yes (TOML files) | Yes (TOML files) | Yes (Skills schema) | Yes (Markdown commands) | Yes (Prompts folder) | Yes (Markdown files) | No |
+| **Command Format** | Slash commands | Slash commands | Slash commands | Slash commands | Slash / `@` context | Slash commands | N/A |
+| **Modular Skills** | Yes (`skills/` fold) | Yes (`skills/` fold) | Yes (`skills/` fold) | Yes (`skills/` fold) | Yes (`skills/` fold) | Yes (`skills/` fold) | Yes (`skills/` fold) |
+| **Extension Model** | Folder-based Plugins | Folder-based Plugins | Modular Rules | Direct MCP Servers | TS/JS Modules | TS/JS Modules | Rules-based |
+| **Lifecycle Hooks** | Yes (`hooks.json`) | Yes (`hooks.json`) | No | No | No | No | No |
+| **Background Sidecars**| Yes (`sidecar.json`)| Yes (`sidecar.json`)| No | No | No | No | No |
 
 ---
 
@@ -51,7 +52,7 @@ Despite different configuration folder structures and syntax formats, all integr
    This ensures a unified handoff loop: **Ticket → Plan → Implementation → Validation → Commit**.
 
 2. **Common Specialist Personas (Agents)**: 
-   The harness defines six distinct subagents (e.g. `codebase_analyzer`, `codebase_locator`, `web_search_researcher`) across all six platforms to distribute complex research and coding tasks.
+   The harness defines six distinct subagents (e.g. `codebase_analyzer`, `codebase_locator`, `web_search_researcher`) across all seven platforms to distribute complex research and coding tasks.
 
 3. **Aligned Capabilities (Skills)**:
    Shared logic structures like TDD (Red-Green-Refactor) and Observability-Driven Development (ODD) operate on the same functional instructions across all platforms.
@@ -91,13 +92,14 @@ deno install -Agf -n ai-harness \
 
 Then install the target platform configuration:
 ```bash
-ai-harness --tool=all             # Install all six
+ai-harness --tool=all             # Install all seven
 ai-harness --tool=claude          # Claude Code only
 ai-harness --tool=opencode        # OpenCode only
 ai-harness --tool=gemini          # Gemini CLI only
 ai-harness --tool=pi              # Pi only
 ai-harness --tool=wocoder         # Wo Coder only
 ai-harness --tool=antigravity     # Antigravity only
+ai-harness --tool=codex           # Codex only
 ```
 
 ### Repo Mode (GNU Stow symlinks)
@@ -110,7 +112,8 @@ For symlink-based installation directly from your cloned directory:
 ./packages/@aiengineeringharness/setup.sh pi                 # Pi -> ~/.pi/agent/
 ./packages/@aiengineeringharness/setup.sh wocoder            # Wo Coder -> ~/.wocoder/
 ./packages/@aiengineeringharness/setup.sh antigravity        # Antigravity -> ~/.antigravity/
-./packages/@aiengineeringharness/setup.sh all                # Symlink all six
+./packages/@aiengineeringharness/setup.sh codex             # Codex -> ~/.codex/
+./packages/@aiengineeringharness/setup.sh all                # Symlink all seven
 ```
 Use `--restow` to update links after checking out git changes:
 ```bash

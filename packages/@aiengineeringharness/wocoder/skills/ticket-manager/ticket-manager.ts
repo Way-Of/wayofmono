@@ -21,7 +21,7 @@ You are the Ticket Manager for the AI Engineering Harness. Your job is to manage
 |--------|-----------|-------------|
 | WOW-XXX | \`wow\` | Way of Work platform specifications |
 | OPT-XXX | \`opticat\` | Opticat platform specifications |
-| PROJ-XXX | \`proj\` | Project-level tickets |
+| WOMONO-XXX | \`womono\` | WayOfMono monorepo tickets |
 | TEAM-XXX | \`team\` | Team-specific tickets |
 
 ## Ticket Status Flow
@@ -67,7 +67,7 @@ Parameters:
 ### \`get_ticket\`
 Get full ticket metadata.
 Parameters:
-- \`ticket_id\` (required): The ticket ID (e.g., "PROJ-013")
+- \`ticket_id\` (required): The ticket ID (e.g., "TKT-001")
 
 ### \`update_ticket\`
 Update ticket status and metadata.

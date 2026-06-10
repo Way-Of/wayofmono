@@ -1,15 +1,15 @@
 ---
 name: docs-sync-updater
-description: "Fetch latest documentation from all agent frontend sources and auto-update skills/agent configs"
-version: 1.0.0
-namespace: core
-tools: read,write,grep,web_search,web_fetch
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
-allowed-tools: [read, write, grep, web_search, web_fetch]
-dependencies: [ticket-manager, skill-auto-update]
+description: ""Fetch latest documentation from all agent frontend sources and auto-update skills/agent configs""
+allowed-tools: ["[read", "write", "grep", "web_search", "web_fetch]"]
 ---
 
-# Documentation Sync Updater (PROJ-022)
+> **Platform**: Gemini CLI | **Skill**: docs-sync-updater | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
+
+# Documentation Sync Updater
 
 Fetches the latest documentation from all supported agent frontends to keep skills and configs up to date.
 

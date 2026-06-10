@@ -1,8 +1,13 @@
 ---
 name: pr_description_generator
-description: Generates comprehensive pull request descriptions following repository templates. Utilizes Antigravity CLI tools including `command` for `git` and `gh` commands.
-allowed-tools: read_file, command, search_file_content, glob, replace, write_file
+description: "Generates comprehensive pull request descriptions following repository templates. Utilizes Gemini CLI tools including `run_shell_command` for `git` and `gh` commands."
+allowed-tools: ["read_file", "run_shell_command", "search_file_content", "glob", "replace", "write_file"]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: pr_description_generator | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # PR Description Generator
 

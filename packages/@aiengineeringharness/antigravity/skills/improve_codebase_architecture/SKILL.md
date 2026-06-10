@@ -1,8 +1,13 @@
 ---
 name: improve_codebase_architecture
-description: Explore a codebase to find architectural friction, propose deep-module refactors as RFC issues. Use when the user wants to improve architecture, find refactoring opportunities, deepen shallow modules, or make a codebase more AI-navigable and testable.
-allowed-tools: read_file, command, glob, write_file
+description: "Explore a codebase to find architectural friction, propose deep-module refactors as RFC issues. Use when the user wants to improve architecture, find refactoring opportunities, deepen shallow modules, or make a codebase more AI-navigable and testable."
+allowed-tools: ["read_file", "run_shell_command", "glob", "write_file"]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: improve_codebase_architecture | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # Improve Codebase Architecture
 
@@ -49,7 +54,7 @@ Show this to the user, then immediately proceed to Step 5. The user reads and th
 
 ### 5. Design multiple interfaces
 
-Spawn 3+ sub-agents in parallel using the invoke_subagent tool. Each must produce a **radically different** interface for the deepened module.
+Spawn 3+ sub-agents in parallel using the Agent tool. Each must produce a **radically different** interface for the deepened module.
 
 Prompt each sub-agent with a separate technical brief (file paths, coupling details, dependency category, what's being hidden). This brief is independent of the user-facing explanation in Step 4. Give each agent a different design constraint:
 

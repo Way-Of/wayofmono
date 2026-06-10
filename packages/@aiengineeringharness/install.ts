@@ -290,14 +290,14 @@ DIRECT RUN (no install step):
   deno run -A install.ts [options]
 
 OPTIONS:
-  --tool=<claude|opencode|gemini|pi|wocoder|antigravity|all> Which tool configs to install (required)
+  --tool=<claude|opencode|gemini|pi|wocoder|antigravity|codex|all> Which tool configs to install (required)
   --skill=<name>[,<name>]               Specific component names to install
   --interactive, -i                     Interactive checkbox picker
   --dry-run, -n                         Preview without writing files
   --yes, -y                             Skip confirmation prompts
   --local, -l                           Install to project-local directories (.claude, .agents, .gemini, etc.)
   --check                               Check installed version vs manifest
-  --import-ref                          Import ref skills/agents to all platforms (PROJ-016)
+  --import-ref                          Import ref skills/agents to all platforms (WOMONO-016)
   --mode=repo                           Show clone+stow instructions instead
   --dest=<path>                         Clone destination for --mode=repo
   --help, -h                            Show this help

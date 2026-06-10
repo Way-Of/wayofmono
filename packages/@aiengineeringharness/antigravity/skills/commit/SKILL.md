@@ -1,9 +1,13 @@
 ---
 name: commit
-description: Create well-structured git commits for changes made during the session using Antigravity CLI tools.
-disable-model-invocation: true
-allowed-tools: read_file, command, glob
+description: "Create well-structured git commits for changes made during the session using Gemini CLI tools."
+allowed-tools: ["read_file", "run_shell_command", "glob"]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: commit | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # Commit Changes
 
@@ -36,7 +40,7 @@ You are tasked with creating git commits for the changes made during this sessio
 ## Important:
 - **NEVER add co-author information or AI attribution**
 - Commits should be authored solely by the user
-- Do not include any "Generated with Antigravity" messages
+- Do not include any "Generated with Gemini" messages
 - Do not add "Co-Authored-By" lines
 - Write commit messages as if the user wrote them
 

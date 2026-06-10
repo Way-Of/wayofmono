@@ -1,7 +1,7 @@
 # Writing a Telemetry Narrative
 
 A narrative spec is a short markdown document that describes the trace your
-feature **should** produce, written before you edit the feature. It's the
+feature **should** produce, written before you write the feature. It's the
 contract `/validate_telemetry` checks against.
 
 Specs live in `thoughts/shared/telemetry/<feature>.md`. The template lives at
@@ -9,7 +9,7 @@ Specs live in `thoughts/shared/telemetry/<feature>.md`. The template lives at
 
 ## Why Prose First, Tree Second
 
-If you can't edit the prose paragraph, you don't understand the feature well
+If you can't write the prose paragraph, you don't understand the feature well
 enough to instrument it. The trace tree falls out of the prose: each verb that
 crosses a boundary (network, process, async) becomes a span; each noun that
 matters in production becomes an attribute.
@@ -20,7 +20,7 @@ matters in production becomes an attribute.
 
 One paragraph, present tense, end-to-end. Cover the request entering the
 system, every external dependency it touches, and the response leaving the
-system. If the feature is async, edit the prose for the full causal chain,
+system. If the feature is async, write the prose for the full causal chain,
 not just the synchronous part.
 
 ### 2. Target Trace Shape
@@ -74,9 +74,9 @@ A good narrative:
 
 ## What to Skip
 
-- Don't edit a narrative for trivial CRUD endpoints unless the
+- Don't write a narrative for trivial CRUD endpoints unless the
   business logic inside them is non-trivial.
-- Don't edit a narrative for code that's about to be deleted.
+- Don't write a narrative for code that's about to be deleted.
 - Don't list every internal helper as a span. The cap is a real cap.
 
 ## After You Write It

@@ -1,6 +1,6 @@
 ---
 name: init_harness
-description: Initialize the AI Engineering Harness in a repository by creating the `thoughts/` directory structure for Gemini CLI.
+description: Initialize the AI Engineering Harness in a repository by cloning the shared f-rr-d ticket/thoughts repo and setting up the project's directory structure.
 disable-model-invocation: true
 allowed-tools: read_file, write_file, run_shell_command
 ---
@@ -11,49 +11,81 @@ Initialize the AI Engineering Harness in this repository.
 
 ## What This Command Does
 
-1. Creates the `thoughts/` directory structure for context engineering.
-2. Adds a ticket template for consistent ticket creation.
-3. Provides guidance on next steps.
+1. Clones the shared `f-rr-d` repo (`github.com/Way-Of/f-rr-d`) into `thoughts/` — the centralized hub for tickets, plans, research, and personal TODOs across all projects.
+2. Creates the project's subfolder inside `thoughts/` (e.g., `thoughts/<project-slug>/`) with the standard structure.
+3. Creates a personal thoughts directory for the current developer.
+4. Provides guidance on next steps.
 
 ## Instructions
 
 Follow these steps to initialize the harness:
 
-1. **Check the current state of the repository**
-    - Verify if thoughts/ directory exists
+1. **Determine the project slug**
+    - Use the repository name (from `git remote -v` or the directory name)
+    - Examples: `wayofmono`, `wo`, `opticat`, `healthoptimizing`
+    - If uncertain, ask the user for the project slug.
+    - Store in a variable: `PROJECT_SLUG=<dirname>`
 
-2. **Create the thoughts/ directory structure**:
+2. **Clone the shared f-rr-d repo** (if thoughts/ does not already exist):
     ```bash
-    mkdir -p thoughts/shared/{tickets,plans,research}
-    mkdir -p thoughts/global
+    # Clone the centralized ticket/thoughts repository
+    git clone https://github.com/Way-Of/f-rr-d.git thoughts/
+    ```
+    - If `thoughts/` already exists, verify it is a clone of f-rr-d by checking the remote origin. If not, warn the user.
+
+3. **Create the project subfolder** inside the shared repo:
+    ```bash
+    mkdir -p thoughts/${PROJECT_SLUG}/shared/{tickets,plans,research}
+    mkdir -p thoughts/${PROJECT_SLUG}/global
     ```
 
-3. **Add the ticket template** to `thoughts/shared/tickets/ticket-template.md`
-
-4. **Optionally create a personal thoughts directory**:
-    - Check if personal directory exists
-    - Check if all directories within personal exist (tickets, plans, research)
+4. **Create a personal thoughts directory** for the current developer:
     ```bash
-    mkdir -p thoughts/$(whoami)/{tickets,plans,research}
+    mkdir -p thoughts/${PROJECT_SLUG}/$(whoami)/{tickets,plans,research}
     ```
 
-5. **Present next steps to the user**
+5. **Ensure the project's TODO.md exists** at `thoughts/${PROJECT_SLUG}/shared/tickets/TODO.md`
 
+6. **Verify the structure** (per WOMONO-001):
+    ```
+    thoughts/
+    ├── global/                          # Cross-project global thoughts (architecture, standards, conventions)
+    ├── shared/                          # Cross-project templates ONLY (ticket-template.md)
+    │   ├── tickets/ticket-template.md
+    │   ├── plans/
+    │   └── research/
+    ├── ${PROJECT_SLUG}/                 # This project's thoughts
+    │   ├── global/                      # Project-specific global thoughts
+    │   ├── shared/                      # SHARED RESPONSIBILITY tickets (all devs in this project)
+    │   │   ├── tickets/                 # Tickets for this project (WOMONO-XXX, WOW-XXX, OPT-XXX)
+    │   │   │   └── TODO.md
+    │   │   ├── plans/
+    │   │   └── research/
+    │   ├── craig/                       # Personal dirs (all developers)
+    │   ├── josef/
+    │   ├── andre/
+    │   ├── tomas/
+    │   └── zerwiz/
+    ├── wow/                             # When cloned for WoW work
+    └── opticat/                         # When cloned for Opticat work
+    ```
 
+7. **Add `thoughts/` to `.gitignore`** (if not already present):
+    ```
+    # Centralized in Way-Of/f-rr-d
+    thoughts/
+    ```
+
+8. **Delete local `thoughts/shared/` if it exists** — WRONG location for global thoughts. Global thoughts go in `thoughts/global/`.
+
+9. **Present next steps to the user**
 
 ## Quick Reference
 
-After running this command, the repository will have:
-
-```
-thoughts/
-├── shared/
-│   ├── tickets/                    # Feature requests, bugs, tasks
-│   │   └── ticket-template.md      # Template for new tickets
-│   ├── plans/                      # Implementation plans
-│   └── research/                   # Research documents
-└── global/                         # Cross-repository concerns
-```
+After initialization, tickets live in the shared f-rr-d repo:
+- `thoughts/shared/tickets/ticket-template.md` — cross-project template
+- `thoughts/${PROJECT_SLUG}/shared/tickets/` — this project's tickets
+- All skills sync via `git pull` from `github.com/Way-Of/f-rr-d`
 
 ## Workflow After Initialization
 

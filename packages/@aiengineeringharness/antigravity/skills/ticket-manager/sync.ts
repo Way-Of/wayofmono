@@ -9,19 +9,138 @@
  *
  * Usage:
  *   deno run -A sync.ts --list                    # List all tickets
- *   deno run -A sync.ts --get=PROJ-013            # Get ticket details
+ *   deno run -A sync.ts --get=TKT-001             # Get ticket details
  *   deno run -A sync.ts --sync-todos              # Regenerate personal TODOs
- *   deno run -A sync.ts --update=PROJ-013 --status="In Progress"  # Update status
+ *   deno run -A sync.ts --update=TKT-001 --status="In Progress"  # Update status
  */
 
 import { join, dirname } from "https://deno.land/std@0.224.0/path/mod.ts";
 import { parse } from "https://deno.land/std@0.224.0/flags/mod.ts";
+import { basename } from "https://deno.land/std@0.224.0/path/mod.ts";
 
 const ROOT = Deno.cwd();
-const TICKETS_DIR = join(ROOT, "thoughts", "shared", "tickets");
-const TODO_FILE = join(TICKETS_DIR, "TODO.md");
+const HARNESS_CONFIG_PATH = join(ROOT, ".wo", "config", "harness.json");
+const HARNESS_CONFIG_TEMPLATE = join(ROOT, ".wo", "config", "harness.template.json");
 const TEAM_CONFIG_PATH = join(ROOT, ".wo", "config", "team-config.json");
 const TEAM_CONFIG_TEMPLATE = join(ROOT, ".wo", "config", "team-config.template.json");
+
+// Default values (overridden by harness.json)
+let PROJECT_SLUG = "wayofmono";
+let F_RRD_URL = "https://github.com/Way-Of/f-rr-d.git";
+let THOUGHTS_DIR = join(ROOT, "thoughts");
+
+function loadHarnessConfig(): { slug: string; url: string } {
+  try {
+    const content = Deno.readTextFileSync(HARNESS_CONFIG_PATH);
+    const config = JSON.parse(content);
+    return {
+      slug: config.project_slug || PROJECT_SLUG,
+      url: config.f_rrd_url || F_RRD_URL,
+    };
+  } catch {
+    // Fall back to defaults
+    return { slug: PROJECT_SLUG, url: F_RRD_URL };
+  }
+}
+
+function initPaths() {
+  const cfg = loadHarnessConfig();
+  PROJECT_SLUG = cfg.slug;
+  F_RRD_URL = cfg.url;
+  THOUGHTS_DIR = join(ROOT, "thoughts");
+}
+
+function ticketsDir(): string {
+  initPaths();
+  return join(ROOT, "thoughts", PROJECT_SLUG, "shared", "tickets");
+}
+
+function todoFile(): string {
+  return join(ticketsDir(), "TODO.md");
+}
+
+function personalTodoPath(devId: string): string {
+  return join(ROOT, "thoughts", PROJECT_SLUG, devId, "TODO.md");
+}
+
+function personalTicketsDir(devId: string): string {
+  return join(ROOT, "thoughts", PROJECT_SLUG, devId, "tickets");
+}
+
+function personalTicketTemplatePath(): string {
+  return join(ticketsDir(), "personal-ticket-template.md");
+}
+
+async function pullThoughts(): Promise<void> {
+  try {
+    const cmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "pull", "--ff-only"],
+      stdout: "piped",
+      stderr: "piped",
+    });
+    const { code, stdout, stderr } = await cmd.output();
+    if (code === 0) {
+      const out = new TextDecoder().decode(stdout).trim();
+      if (out) console.log(`f-rr-d: ${out}`);
+    } else {
+      const err = new TextDecoder().decode(stderr).trim();
+      console.error(`f-rr-d pull failed (${code}): ${err}`);
+    }
+  } catch (e) {
+    // thoughts/ might not be a git repo yet (fresh init)
+    if (!(e instanceof Deno.errors.NotFound)) {
+      console.error(`f-rr-d pull error: ${e}`);
+    }
+  }
+}
+
+async function pushThoughts(message: string): Promise<void> {
+  try {
+    // Stage all changes in thoughts/
+    const addCmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "add", "-A"],
+      stdout: "piped",
+      stderr: "piped",
+    });
+    await addCmd.output();
+
+    // Check if there's anything to commit
+    const diffCmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "diff", "--cached", "--quiet"],
+      stdout: "piped",
+      stderr: "piped",
+    });
+    const { code: diffCode } = await diffCmd.output();
+    if (diffCode === 0) return; // nothing to commit
+
+    const commitCmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "commit", "-m", message],
+      stdout: "piped",
+      stderr: "piped",
+    });
+    const { code: commitCode, stdout: commitOut, stderr: commitErr } = await commitCmd.output();
+    if (commitCode !== 0) {
+      const err = new TextDecoder().decode(commitErr).trim();
+      console.error(`f-rr-d commit failed: ${err}`);
+      return;
+    }
+
+    const pushCmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "push"],
+      stdout: "piped",
+      stderr: "piped",
+    });
+    const { code: pushCode, stderr: pushErr } = await pushCmd.output();
+    if (pushCode !== 0) {
+      const err = new TextDecoder().decode(pushErr).trim();
+      console.warn(`f-rr-d push failed (set GIT_CREDENTIALS or auto_push_ticket_changes): ${err}`);
+    } else {
+      console.log("f-rr-d: changes pushed");
+    }
+  } catch (e) {
+    console.error(`f-rr-d push error: ${e}`);
+  }
+}
 
 interface TicketFrontmatter {
   title?: string;
@@ -62,6 +181,13 @@ function parseFrontmatter(content: string): { frontmatter: TicketFrontmatter; bo
     if (val.startsWith("[") && val.endsWith("]")) {
       try { val = JSON.parse(val); } catch { /* keep as string */ }
     }
+    if (typeof val === "string") {
+      // Strip surrounding quotes if present (YAML quoted values)
+      const trimmed = val.trim();
+      if ((trimmed.startsWith('"') && trimmed.endsWith('"')) || (trimmed.startsWith("'") && trimmed.endsWith("'"))) {
+        val = trimmed.slice(1, -1);
+      }
+    }
     fm[key] = val as string;
   }
 
@@ -84,6 +210,7 @@ function formatFrontmatter(fm: Record<string, unknown>): string {
 
 async function findTicketFiles(): Promise<string[]> {
   const tickets: string[] = [];
+  const dir = ticketsDir();
   async function walk(dir: string) {
     try {
       for await (const entry of Deno.readDir(dir)) {
@@ -98,7 +225,7 @@ async function findTicketFiles(): Promise<string[]> {
       // skip unreadable dirs
     }
   }
-  await walk(TICKETS_DIR);
+  await walk(dir);
   return tickets.sort();
 }
 
@@ -117,6 +244,7 @@ async function loadTeamConfig(): Promise<TeamConfig | null> {
 }
 
 async function listTickets(namespace?: string, status?: string, assignee?: string): Promise<void> {
+  await pullThoughts();
   const files = await findTicketFiles();
   console.log(`Found ${files.length} ticket files\n`);
 
@@ -139,6 +267,7 @@ async function listTickets(namespace?: string, status?: string, assignee?: strin
 }
 
 async function getTicket(ticketId: string): Promise<void> {
+  await pullThoughts();
   const files = await findTicketFiles();
   const pattern = new RegExp(ticketId.replace("-", "[-]"), "i");
 
@@ -167,6 +296,7 @@ async function updateTicket(
   ticketId: string,
   updates: { status?: string; assignee?: string; pr_url?: string },
 ): Promise<void> {
+  await pullThoughts();
   const files = await findTicketFiles();
   const pattern = new RegExp(ticketId.replace("-", "[-]"), "i");
 
@@ -186,6 +316,7 @@ ${body}`;
     await Deno.writeTextFile(file, newContent);
     console.log(`Updated ${ticketId} in ${file.replace(ROOT + "/", "")}`);
     await syncTodoCheckboxes(ticketId, updates.status);
+    await pushThoughts(`sync: update ${ticketId} — ${updates.status ?? "modified"}`);
     return;
   }
   console.log(`Ticket ${ticketId} not found.`);
@@ -193,7 +324,8 @@ ${body}`;
 
 async function syncTodoCheckboxes(ticketId: string, newStatus?: string): Promise<void> {
   try {
-    let todo = await Deno.readTextFile(TODO_FILE);
+    const todoPath = todoFile();
+    let todo = await Deno.readTextFile(todoPath);
     if (!newStatus) return;
 
     const checked = newStatus === "Done" || newStatus === "Approved";
@@ -204,7 +336,7 @@ async function syncTodoCheckboxes(ticketId: string, newStatus?: string): Promise
       }
       return match;
     });
-    await Deno.writeTextFile(TODO_FILE, todo);
+    await Deno.writeTextFile(todoPath, todo);
     console.log(`Synced TODO.md checkboxes for ${ticketId}`);
   } catch {
     // TODO.md might not exist
@@ -212,6 +344,7 @@ async function syncTodoCheckboxes(ticketId: string, newStatus?: string): Promise
 }
 
 async function syncPersonalTodos(developerId?: string): Promise<void> {
+  await pullThoughts();
   const team = await loadTeamConfig();
   if (!team) {
     console.log("No team config found. Run 'ai-harness team init' first.");
@@ -223,9 +356,9 @@ async function syncPersonalTodos(developerId?: string): Promise<void> {
     : team.developers;
 
   for (const dev of devs) {
-    const ticketsDir = join(ROOT, "thoughts", dev.id, "tickets");
-    const todoPath = join(ROOT, "thoughts", dev.id, "TODO.md");
-    await Deno.mkdir(ticketsDir, { recursive: true });
+    const devTicketsDir = join(ROOT, "thoughts", PROJECT_SLUG, dev.id, "tickets");
+    const todoPath = join(ROOT, "thoughts", PROJECT_SLUG, dev.id, "TODO.md");
+    await Deno.mkdir(devTicketsDir, { recursive: true });
 
     const lines: string[] = [];
     const roleLabel = dev.role.toUpperCase();
@@ -245,7 +378,7 @@ async function syncPersonalTodos(developerId?: string): Promise<void> {
       if (fileAssignee !== dev.id) continue;
       hasAssigned = true;
 
-      const match = file.match(/(WOW|OPT|PROJ|TEAM)-\d+/);
+      const match = file.match(/(WOW|OPT|WOMONO|TEAM)-\d+/);
       const ticketId = match ? match[0] : "UNKNOWN";
       const title = frontmatter.title ?? ticketId;
       const status = frontmatter.status ?? "Backlog";
@@ -264,7 +397,7 @@ async function syncPersonalTodos(developerId?: string): Promise<void> {
 
     lines.push("## Personal Tickets");
     lines.push("");
-    lines.push(`_See thoughts/${dev.id}/tickets/ for personal breakdowns._`);
+    lines.push(`_See thoughts/${PROJECT_SLUG}/${dev.id}/tickets/ for personal breakdowns._`);
     lines.push("");
     lines.push("## Blocked / Waiting");
     lines.push("");
@@ -272,6 +405,169 @@ async function syncPersonalTodos(developerId?: string): Promise<void> {
 
     await Deno.writeTextFile(todoPath, lines.join("\n"));
     console.log(`Generated ${todoPath}`);
+  }
+  await pushThoughts("sync: regenerate personal TODOs");
+}
+
+async function showPersonalTodo(developerId: string): Promise<void> {
+  const team = await loadTeamConfig();
+  if (!team) {
+    console.log("No team config found. Run 'ai-harness team init' first.");
+    return;
+  }
+
+  const dev = team.developers.find((d) => d.id === developerId);
+  if (!dev) {
+    console.log(`Developer "${developerId}" not found in team config.`);
+    return;
+  }
+
+  const todoPath = personalTodoPath(dev.id);
+  try {
+    const todo = await Deno.readTextFile(todoPath);
+    console.log(todo);
+  } catch {
+    console.log(`No TODO.md found for ${dev.name}. Run --sync-todos first.`);
+  }
+}
+
+async function addPersonalSubTask(
+  developerId: string,
+  parentTicketId: string,
+  description: string,
+): Promise<void> {
+  const team = await loadTeamConfig();
+  if (!team) {
+    console.log("No team config found. Run 'ai-harness team init' first.");
+    return;
+  }
+
+  const dev = team.developers.find((d) => d.id === developerId);
+  if (!dev) {
+    console.log(`Developer "${developerId}" not found in team config.`);
+    return;
+  }
+
+  // Verify parent ticket exists and is assigned to this developer
+  const files = await findTicketFiles();
+  let parentTicket: { file: string; frontmatter: TicketFrontmatter } | null = null;
+  const pattern = new RegExp(parentTicketId.replace("-", "[-]"), "i");
+
+  for (const file of files) {
+    if (!pattern.test(file)) continue;
+    const content = await Deno.readTextFile(file);
+    const { frontmatter } = parseFrontmatter(content);
+    const fileAssignee = (frontmatter.assignee ?? "").replace("@", "");
+    if (fileAssignee === dev.id) {
+      parentTicket = { file, frontmatter };
+      break;
+    }
+  }
+
+  if (!parentTicket) {
+    console.log(`Parent ticket ${parentTicketId} not found or not assigned to ${dev.name}.`);
+    return;
+  }
+
+  const ticketsDir = personalTicketsDir(dev.id);
+  await Deno.mkdir(ticketsDir, { recursive: true });
+
+  // Generate personal ticket ID: DEVID-XXX
+  let nextNum = 1;
+  try {
+    for await (const entry of Deno.readDir(ticketsDir)) {
+      if (entry.name.endsWith(".md")) {
+        const match = entry.name.match(new RegExp(`${dev.id.toUpperCase()}-(\\d+)`));
+        if (match) {
+          const num = parseInt(match[1], 10);
+          if (num >= nextNum) nextNum = num + 1;
+        }
+      }
+    }
+  } catch {
+    // dir doesn't exist yet
+  }
+
+  const personalTicketId = `${dev.id.toUpperCase()}-${String(nextNum).padStart(3, "0")}`;
+  const personalTicketPath = join(ticketsDir, `${personalTicketId}.md`);
+
+  // Read template
+  let template = "";
+  try {
+    template = await Deno.readTextFile(personalTicketTemplatePath());
+  } catch {
+    template = `---
+title: "[${personalTicketId}] Brief Description"
+type: "Personal Task"
+priority: "Medium"
+status: "Backlog"
+assignee: "@${dev.id}"
+reporter: "@${dev.id}"
+project: "${PROJECT_SLUG}"
+namespace: "PERSONAL"
+category: "personal"
+parent_ticket: "${parentTicketId}"
+blockers: []
+unblocks: []
+created: "${new Date().toISOString().slice(0, 10)}"
+updated: "${new Date().toISOString().slice(0, 10)}"
+---
+
+## Context
+Brief description of this personal sub-task and how it relates to the parent shared ticket.
+
+## Acceptance Criteria
+- [ ] Criterion 1
+- [ ] Criterion 2
+
+## Notes
+Any additional notes, links, or context.
+`;
+  }
+
+  // Replace template placeholders
+  const today = new Date().toISOString().slice(0, 10);
+  const content = template
+    .replace(/PERSONAL-XXX/g, personalTicketId)
+    .replace(/@<dev-id>/g, `@${dev.id}`)
+    .replace(/YYYY-MM-DD/g, today)
+    .replace(/WOMONO-XXX/g, parentTicketId)
+    .replace(/Brief Description/g, description)
+    .replace(/Brief description of this personal sub-task and how it relates to the parent shared ticket\./g, description);
+
+  await Deno.writeTextFile(personalTicketPath, content);
+  console.log(`Created personal ticket: ${personalTicketPath}`);
+  console.log(`ID: ${personalTicketId}`);
+  console.log(`Parent: ${parentTicketId} (${parentTicket.frontmatter.title})`);
+
+  // Regenerate TODO to include the new personal ticket
+  await syncPersonalTodos(dev.id);
+}
+
+async function showCtoTodoAll(): Promise<void> {
+  const team = await loadTeamConfig();
+  if (!team) {
+    console.log("No team config found. Run 'ai-harness team init' first.");
+    return;
+  }
+
+  console.log(`\n${"=".repeat(60)}`);
+  console.log(`CTO AGGREGATED TODO VIEW — All Developers`);
+  console.log(`=${ "=".repeat(58)}`);
+
+  for (const dev of team.developers) {
+    const todoPath = personalTodoPath(dev.id);
+    const roleLabel = dev.role.toUpperCase();
+    console.log(`\n${"─".repeat(60)}`);
+    console.log(`# TODO — ${dev.name} (${roleLabel})`);
+    console.log(`="${ "=".repeat(58)}`);
+
+    try {
+      const todo = await Deno.readTextFile(todoPath);
+      console.log(todo);
+    } catch {
+      console.log(`_No TODO.md found. Run --sync-todos first._`);
+    }
   }
 }
 
@@ -288,28 +584,43 @@ const STATUS_ICONS: Record<string, string> = {
 };
 
 // CLI entry point
+initPaths();
 const args = parse(Deno.args, {
-  string: ["get", "update", "status", "assignee", "namespace", "status-filter", "assignee-filter", "dev"],
-  boolean: ["list", "sync-todos", "help"],
+  string: ["get", "update", "status", "assignee", "namespace", "status-filter", "assignee-filter", "dev", "show-todo", "add-todo", "parent"],
+  boolean: ["list", "sync-todos", "pull", "push", "help", "cto-todo-all"],
   alias: { h: "help" },
 });
 
 if (args.help) {
   console.log(`
-Ticket Manager Sync Engine
+Ticket Manager Sync Engine (f-rr-d backed)
+
+Reads/writes tickets from the shared f-rr-d repo (github.com/Way-Of/f-rr-d).
+Project slug: ${PROJECT_SLUG}
+Tickets:      thoughts/${PROJECT_SLUG}/shared/tickets/
 
 Usage:
   deno run -A sync.ts --list                           List all tickets
   deno run -A sync.ts --list --namespace=proj           Filter by namespace
-  deno run -A sync.ts --get=PROJ-013                  Get ticket details
-  deno run -A sync.ts --update=PROJ-013 --status="In Progress"  Update status
+  deno run -A sync.ts --get=TKT-001                   Get ticket details
+  deno run -A sync.ts --update=TKT-001 --status="In Progress"  Update status
   deno run -A sync.ts --sync-todos                    Regenerate personal TODOs
   deno run -A sync.ts --sync-todos --dev=zerwiz       Sync specific dev only
+  deno run -A sync.ts --show-todo=zerwiz              Show personal TODO for developer
+  deno run -A sync.ts --add-todo="Sub-task desc" --parent=WOMONO-021 --dev=zerwiz  Add personal sub-task
+  deno run -A sync.ts --cto-todo-all                  CTO: Show all developers' TODOs
+  deno run -A sync.ts --pull                          Pull latest from f-rr-d
+  deno run -A sync.ts --push "<message>"              Push changes to f-rr-d
 `);
   Deno.exit(0);
 }
 
-if (args.list) {
+if (args.pull) {
+  await pullThoughts();
+} else if (args.push) {
+  const msg = typeof args.push === "string" ? args.push : "sync: manual push";
+  await pushThoughts(msg);
+} else if (args.list) {
   await listTickets(args.namespace, args["status-filter"], args["assignee-filter"]);
 } else if (args.get) {
   await getTicket(args.get);
@@ -320,6 +631,20 @@ if (args.list) {
   });
 } else if (args["sync-todos"]) {
   await syncPersonalTodos(args.dev);
+} else if (args["show-todo"]) {
+  await showPersonalTodo(args["show-todo"]);
+} else if (args["add-todo"]) {
+  if (!args.parent) {
+    console.log("Error: --parent=<ticket-id> is required when using --add-todo");
+    Deno.exit(1);
+  }
+  if (!args.dev) {
+    console.log("Error: --dev=<developer-id> is required when using --add-todo");
+    Deno.exit(1);
+  }
+  await addPersonalSubTask(args.dev, args.parent, args["add-todo"]);
+} else if (args["cto-todo-all"]) {
+  await showCtoTodoAll();
 } else {
   console.log("No command specified. Run with --help for usage.");
 }

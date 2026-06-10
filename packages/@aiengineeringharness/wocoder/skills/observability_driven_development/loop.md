@@ -11,8 +11,8 @@ Write Code → Instrument (OTel spans) → Run Locally → OTel Collector → As
 
 ### 1. Write Code
 
-Implement the smallest unit that moves the narrative forward. Don't edit the
-whole feature; edit the next span.
+Implement the smallest unit that moves the narrative forward. Don't write the
+whole feature; write the next span.
 
 ### 2. Instrument
 

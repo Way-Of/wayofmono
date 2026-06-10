@@ -1,13 +1,13 @@
 ---
 name: otel_instrumentation
-description: >
-  Application-side OpenTelemetry SDK setup — traces, metrics, structured
-  logging across Node.js, Go, Python, Java, .NET, Ruby. Prescriptive
-  guidance for resource attributes, span design, metric instrument selection,
-  sensitive data handling, and validation.
-disable-model-invocation: true
-allowed-tools: read_file, command, search_file_content, glob, replace, write_file
+description: ">"
+allowed-tools: ["read_file", "run_shell_command", "search_file_content", "glob", "replace", "write_file"]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: otel_instrumentation | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # OpenTelemetry Application Instrumentation
 
@@ -98,7 +98,7 @@ Set attributes at SDK level — do NOT rely solely on the Collector's `k8sattrib
 | Protocol | Pattern | Example |
 |---|---|---|
 | HTTP server | `{METHOD} {route}` | `GET /api/users/{id}` |
-| HTTP client | `{METHOD} {host}` | `GET aantigravity.stripe.com` |
+| HTTP client | `{METHOD} {host}` | `GET api.stripe.com` |
 | Database | `{OPERATION} {table}` | `SELECT orders` |
 | Messaging producer | `{destination} publish` | `orders.created publish` |
 | Messaging consumer | `{destination} process` | `orders.created process` |

@@ -1,7 +1,13 @@
 ---
 name: wow_ui_surfaces
-description: Frontend architecture, isolated chat sessions, and multi-surface routing based on WOW-012. Use when adding new UI views or debugging chat session isolation.
+description: "Frontend architecture, isolated chat sessions, and multi-surface routing based on WOW-012. Use when adding new UI views or debugging chat session isolation."
+allowed-tools: [""]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: wow_ui_surfaces | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # wow_ui_surfaces
 

@@ -1,6 +1,6 @@
 ---
 name: ticket-manager
-description: "Manage tickets across all namespaces (WOW, OPT, PROJ, TEAM) with full lifecycle, TODO linking, personal hierarchy, and CTO review workflow"
+description: "Manage tickets across all namespaces (WOW, OPT, WOMONO, TEAM) with full lifecycle, TODO linking, personal hierarchy, and CTO review workflow"
 version: 1.0.0
 namespace: core
 tools: read,grep,glob,find,ls,write,edit
@@ -18,7 +18,7 @@ You are the Ticket Manager for the AI Engineering Harness. Your job is to manage
 |--------|-----------|-------------|
 | WOW-XXX | `wow` | Way of Work platform specifications |
 | OPT-XXX | `opticat` | Opticat platform specifications |
-| PROJ-XXX | `proj` | Project-level tickets |
+| WOMONO-XXX | `womono` | WayOfMono monorepo tickets |
 | TEAM-XXX | `team` | Team-specific tickets |
 
 ## Ticket Status Flow
@@ -35,7 +35,7 @@ Start working on a ticket. Updates status to "In Progress", creates a work sessi
 
 ### `/complete <ticket-id>`
 Mark a ticket as done. If review is required (CTO/Lead), moves to "Submitted for Review" instead.
-Checks off linked TODO checkboxes in `thoughts/shared/tickets/TODO.md`.
+Checks off linked TODO checkboxes in `thoughts/<project-slug>/shared/tickets/TODO.md`.
 
 ### `/sync team`
 Show team dashboard: all tickets grouped by owner, status, blockers, dependencies.
@@ -54,7 +54,7 @@ Interactive ticket creation wizard. Prompts for:
 ### `list_tickets`
 List tickets with filtering.
 Parameters:
-- `namespace` (optional): Filter by "wow" | "opticat" | "proj" | "team"
+- `namespace` (optional): Filter by "wow" | "opticat" | "womono" | "team"
 - `status` (optional): Filter by status
 - `assignee` (optional): Filter by assignee
 - `project` (optional): Filter by project
@@ -64,7 +64,7 @@ Parameters:
 ### `get_ticket`
 Get full ticket metadata.
 Parameters:
-- `ticket_id` (required): The ticket ID (e.g., "PROJ-013")
+- `ticket_id` (required): The ticket ID (e.g., "TKT-001")
 
 ### `update_ticket`
 Update ticket status and metadata.
@@ -99,13 +99,13 @@ Parameters:
 ### `sync_personal_todos`
 Regenerate personal TODO.md for all developers from shared ticket assignments.
 
-## Ticket Storage
+## Ticket Storage (per project, from harness.json project_slug)
 
 Tickets are stored as markdown files in:
-- `thoughts/shared/tickets/<category>/<ID>-<description>.md` (shared tickets)
-- `thoughts/<dev>/tickets/<DEV>-<XXX>-<description>.md` (personal tickets)
+- `thoughts/<project-slug>/shared/tickets/<category>/<ID>-<description>.md` (shared tickets)
+- `thoughts/<project-slug>/<dev>/tickets/<DEV>-<XXX>-<description>.md` (personal tickets)
 
-Each ticket follows the template in `thoughts/shared/tickets/ticket-template.md`.
+Each ticket follows the template in `thoughts/shared/tickets/ticket-template.md` (cross-project template at f-rr-d root).
 
 ## Hierarchical Linking
 

@@ -1,8 +1,13 @@
 ---
 name: experimental_pr_workflow
-description: Handles experimental features that lack proper ticketing by retroactively creating Linear tickets and PRs from commits. Utilizes `git` and `gh` commands via Antigravity CLI's `command` to formalize experimental work.
-allowed-tools: read_file, command, search_file_content, glob, write_file
+description: "Handles experimental features that lack proper ticketing by retroactively creating Linear tickets and PRs from commits. Utilizes `git` and `gh` commands via Gemini CLI's `run_shell_command` to formalize experimental work."
+allowed-tools: ["read_file", "run_shell_command", "search_file_content", "glob", "write_file"]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: experimental_pr_workflow | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # Experimental PR Workflow
 

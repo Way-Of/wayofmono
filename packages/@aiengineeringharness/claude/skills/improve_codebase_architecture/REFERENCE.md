@@ -24,7 +24,7 @@ Third-party services (Stripe, Twilio, etc.) you don't control. Mock at the bound
 
 ## Testing Strategy
 
-The core principle: **Edit, don't layer.**
+The core principle: **replace, don't layer.**
 
 - Old unit tests on shallow modules are waste once boundary tests exist — delete them
 - Write new tests at the deepened module's interface boundary
@@ -62,7 +62,7 @@ Which category applies and how dependencies are handled:
 
 ## Testing Strategy
 
-- **New boundary tests to Edit**: describe the behaviors to verify at the interface
+- **New boundary tests to write**: describe the behaviors to verify at the interface
 - **Old tests to delete**: list the shallow module tests that become redundant
 - **Test environment needs**: any local stand-ins or adapters required
 

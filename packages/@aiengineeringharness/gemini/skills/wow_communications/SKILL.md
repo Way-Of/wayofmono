@@ -1,7 +1,13 @@
 ---
 name: wow_communications
-description: Architecture for the inbound/outbound communication channels (Telegram, WhatsApp) defined in WOW-015. Use when working on channel routers, bots, or external messaging.
+description: "Architecture for the inbound/outbound communication channels (Telegram, WhatsApp) defined in WOW-015. Use when working on channel routers, bots, or external messaging."
+allowed-tools: [""]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: wow_communications | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # wow_communications
 

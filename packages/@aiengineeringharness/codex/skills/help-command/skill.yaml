@@ -1,0 +1,7 @@
+name: help-command
+description: ""Unified /help command for the AI Engineering Harness — lists skills, commands, agents, workflows""
+version: 1.0.0
+tools:
+  - [read
+  - grep
+  - glob]

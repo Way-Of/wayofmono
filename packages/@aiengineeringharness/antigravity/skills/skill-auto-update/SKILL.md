@@ -1,15 +1,15 @@
 ---
 name: skill-auto-update
-description: "Auto-discover, sync, and update skills across all 7 frontends (claude, opencode, gemini, pi, wocoder, antigravity, codex)"
-version: 1.0.0
-namespace: core
-tools: read,write,glob,ls,grep
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
-allowed-tools: [read, write, glob, ls, grep]
-dependencies: [ticket-manager]
+description: ""Auto-discover, sync, and update skills across all 7 frontends (claude, opencode, gemini, pi, wocoder, antigravity, codex)""
+allowed-tools: ["[read", "write", "glob", "ls", "grep]"]
 ---
 
-# Skill Auto-Update & Sync (PROJ-014)
+> **Platform**: Gemini CLI | **Skill**: skill-auto-update | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
+
+# Skill Auto-Update & Sync
 
 Detects new/updated skills in `packages/@aiengineeringharness/skills/` and automatically propagates them to all configured frontends.
 

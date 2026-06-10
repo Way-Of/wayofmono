@@ -1,7 +1,13 @@
 ---
 name: wow-skill-creator
-description: "Facilitates the creation of new Gemini CLI skills specifically for the Way of Work platform, ensuring adherence to WoW architectural mandates and best practices. Use this skill when generating new WoW-specific skills, defining their structure, or incorporating WoW's unique requirements like multi-tenancy, access control, and HITL."
+description: ""Facilitates the creation of new Gemini CLI skills specifically for the Way of Work platform, ensuring adherence to WoW architectural mandates and best practices. Use this skill when generating new WoW-specific skills, defining their structure, or incorporating WoW's unique requirements like multi-tenancy, access control, and HITL.""
+allowed-tools: [""]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: wow-skill-creator | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # Way of Work Skill Creator
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env deno run --allow-read --allow-write --allow-run --allow-env
 
 /**
- * CTO Dashboard (PROJ-019)
+ * CTO Dashboard
  *
  * Terminal-based dashboard for ticket oversight, developer progress,
  * review queue, and blocked tickets.
@@ -20,9 +20,35 @@ import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
 import { parse } from "https://deno.land/std@0.224.0/flags/mod.ts";
 
 const ROOT = Deno.cwd();
-const TICKETS_DIR = join(ROOT, "thoughts", "shared", "tickets");
+const HARNESS_CONFIG_PATH = join(ROOT, ".wo", "config", "harness.json");
 const TEAM_CONFIG_PATH = join(ROOT, ".wo", "config", "team-config.json");
 const TEAM_CONFIG_TEMPLATE = join(ROOT, ".wo", "config", "team-config.template.json");
+const THOUGHTS_DIR = join(ROOT, "thoughts");
+
+function getProjectSlug(): string {
+  try {
+    const content = Deno.readTextFileSync(HARNESS_CONFIG_PATH);
+    return JSON.parse(content).project_slug || "wayofmono";
+  } catch {
+    return "wayofmono";
+  }
+}
+
+function ticketsDir(): string {
+  return join(THOUGHTS_DIR, getProjectSlug(), "shared", "tickets");
+}
+
+async function pullThoughts(): Promise<void> {
+  try {
+    const cmd = new Deno.Command("git", {
+      args: ["-C", THOUGHTS_DIR, "pull", "--ff-only"],
+      stdout: "null", stderr: "null",
+    });
+    await cmd.output();
+  } catch {
+    // not a git repo yet
+  }
+}
 
 interface TicketFrontmatter {
   title?: string;
@@ -120,6 +146,7 @@ async function loadTeamConfig(): Promise<TeamConfig | null> {
 }
 
 async function loadTickets(): Promise<Ticket[]> {
+  await pullThoughts();
   const tickets: Ticket[] = [];
   async function walk(dir: string) {
     try {
@@ -130,14 +157,14 @@ async function loadTickets(): Promise<Ticket[]> {
         } else if (entry.name.endsWith(".md") && entry.name !== "TODO.md" && entry.name !== "ticket-template.md") {
           const content = await Deno.readTextFile(fullPath);
           const { frontmatter, body } = parseFrontmatter(content);
-          const match = fullPath.match(/(WOW|OPT|PROJ|TEAM)-(\d+)/);
+          const match = fullPath.match(/(WOW|OPT|WOMONO|TEAM)-(\d+)/);
           const id = match ? `${match[1]}-${match[2]}` : entry.name.replace(".md", "");
           tickets.push({ id, file: fullPath.replace(ROOT + "/", ""), frontmatter, body: body.slice(0, 200) });
         }
       }
     } catch {}
   }
-  await walk(TICKETS_DIR);
+  await walk(ticketsDir());
   return tickets.sort((a, b) => a.id.localeCompare(b.id));
 }
 
@@ -149,7 +176,7 @@ function colorStatus(status: string): string {
 }
 
 function shortId(file: string): string {
-  const match = file.match(/(WOW|OPT|PROJ|TEAM)-\d+/);
+  const match = file.match(/(WOW|OPT|WOMONO|TEAM)-\d+/);
   return match?.[0] ?? file.split("/").pop()?.replace(".md", "") ?? file;
 }
 
@@ -419,9 +446,13 @@ const args = parse(Deno.args, {
   alias: { h: "help" },
 });
 
+const slug = getProjectSlug();
 if (args.help) {
   console.log(`
-CTO Dashboard (PROJ-019)
+CTO Dashboard (f-rr-d backed)
+
+Project: ${slug}
+Tickets: thoughts/${slug}/shared/tickets/
 
 Usage:
   dashboard.ts                        Full dashboard
@@ -446,12 +477,12 @@ if (args.json) {
 
 if (args.watch) {
   console.log(`${DIM}Watching for changes. Press Ctrl+C to stop.${RESET}`);
-  const watcher = Deno.watchFs(TICKETS_DIR);
+  const watcher = Deno.watchFs(ticketsDir());
   const refresh = async () => {
     console.clear();
     const updatedTickets = await loadTickets();
     showSummary(updatedTickets, team);
-    console.log(`${DIM}\n--- Watching ${TICKETS_DIR} ---${RESET}`);
+    console.log(`${DIM}\n--- Watching ${ticketsDir()} ---${RESET}`);
   };
   await refresh();
   for await (const _event of watcher) {

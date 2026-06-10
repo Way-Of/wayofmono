@@ -1,9 +1,13 @@
 ---
 name: init_harness
-description: Initialize the AI Engineering Harness in a repository by creating the `thoughts/` directory structure for Antigravity CLI.
-disable-model-invocation: true
-allowed-tools: read_file, write_file, command
+description: "Initialize the AI Engineering Harness in a repository by creating the `thoughts/` directory structure for Gemini CLI."
+allowed-tools: ["read_file", "write_file", "run_shell_command"]
 ---
+
+> **Platform**: Gemini CLI | **Skill**: init_harness | **Version**: 1.0.0
+>
+> _Auto-generated from canonical format. Do not edit directly._
+
 
 # Initialize Harness
 
