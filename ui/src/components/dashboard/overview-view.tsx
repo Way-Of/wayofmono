@@ -1,7 +1,7 @@
 'use client';
 
 import { useDashboardStore } from '@/store/dashboard-store';
-import { Project, Ticket } from '@/lib/types';
+import { Project } from '@/lib/types';
 import {
   Card,
   CardContent,

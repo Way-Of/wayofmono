@@ -1,7 +1,6 @@
 'use client';
 
 import { useDashboardStore, useAuthStore } from '@/store/dashboard-store';
-import { developers, docs } from '@/lib/mock-data';
 import { ProjectDoc } from '@/lib/types';
 import {
   Card,

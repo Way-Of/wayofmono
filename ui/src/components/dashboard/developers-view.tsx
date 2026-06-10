@@ -1,8 +1,7 @@
 'use client';
 
 import { useDashboardStore, useAuthStore } from '@/store/dashboard-store';
-import { developers, projects } from '@/lib/mock-data';
-import { Ticket, TicketStatus } from '@/lib/types';
+import { Ticket, TicketStatus, ProjectSlug } from '@/lib/types';
 import {
   Card,
   CardContent,

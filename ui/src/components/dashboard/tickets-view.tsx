@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useDashboardStore } from '@/store/dashboard-store';
 import { useAuthStore } from '@/store/dashboard-store';
 import { Ticket, TicketStatus, TicketPriority, TicketType } from '@/lib/types';
-import { developers, projects } from '@/lib/mock-data';
 import {
   Card,
   CardContent,
@@ -68,7 +67,7 @@ const typeIcons: Record<TicketType, string> = {
 
 function TicketRow({ ticket, onClick }: { ticket: Ticket; onClick: () => void }) {
   const pCfg = priorityConfig[ticket.priority];
-  const dev = developers.find(d => d.id === ticket.assignee);
+  const dev = useDashboardStore.getState().developers.find(d => d.id === ticket.assignee);
 
   return (
     <div
@@ -131,8 +130,8 @@ function TicketDetailDialog({ ticket, open, onClose }: { ticket: Ticket | null; 
   const [expanded, setExpanded] = useState(false);
   if (!ticket) return null;
   const pCfg = priorityConfig[ticket.priority];
-  const reporter = developers.find(d => d.id === ticket.reporter);
-  const assignee = developers.find(d => d.id === ticket.assignee);
+  const reporter = useDashboardStore.getState().developers.find(d => d.id === ticket.reporter);
+  const assignee = useDashboardStore.getState().developers.find(d => d.id === ticket.assignee);
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -332,7 +331,7 @@ export function TicketsView() {
                 </SelectTrigger>
                 <SelectContent className="bg-card border-border">
                   <SelectItem value="all">All Projects</SelectItem>
-                  {projects.map(p => (
+                  {[{ slug: 'wayofmono', name: 'WayOfMono' }, { slug: 'wow', name: 'WoW' }, { slug: 'opticat', name: 'OptiCat' }].map(p => (
                     <SelectItem key={p.slug} value={p.slug}>{p.name}</SelectItem>
                   ))}
                 </SelectContent>

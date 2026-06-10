@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useDashboardStore, useAuthStore } from '@/store/dashboard-store';
-import { developers } from '@/lib/mock-data';
 import { ReviewStatus } from '@/lib/types';
 import {
   Card,
@@ -92,7 +91,7 @@ export function ReviewQueueView() {
         <ScrollArea className="max-h-[calc(100vh-200px)]">
           <div className="space-y-3">
             {reviewTickets.map(ticket => {
-              const assignee = developers.find(d => d.id === ticket.assignee);
+              const assignee = useDashboardStore.getState().developers.find(d => d.id === ticket.assignee);
               const daysSinceUpdate = formatDate(ticket.updated);
               const isStale = new Date(ticket.updated).getTime() < new Date('2026-06-08').getTime();
 
