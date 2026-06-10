@@ -1,6 +1,7 @@
 ---
 name: git_commit_helper
 description: Creates well-structured git commits by analyzing changes, drafting messages, and executing commits using Gemini CLI's `run_shell_command` for git operations.
+docs-url: https://docs.github.com/
 allowed-tools: read_file, run_shell_command, search_file_content, glob
 ---
 

@@ -1,6 +1,7 @@
 ---
 name: pi_tui
 description: Pi TUI expert — knows all built-in components (Text, Box, Container, Markdown, Image, SelectList, SettingsList, BorderedLoader), custom components, overlays, keyboard input, widgets, footers, and custom editors. Use when the user wants to build Pi TUI components.
+docs-url: https://pi.dev/
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---
 

@@ -7,6 +7,7 @@ description: >
   up a local OTel feedback loop with the Aspire dashboard. Pairs with
   /validate_telemetry to verify behaviour against a written narrative.
 allowed-tools: read_file, run_shell_command, glob, write_file, replace
+docs-url: 
 ---
 
 # Observability Driven Development (ODD)

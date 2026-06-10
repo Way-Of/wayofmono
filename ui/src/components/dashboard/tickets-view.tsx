@@ -18,15 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
-import { ScrollArea } from '@/components/ui/scroll-area';
+
 import {
   Search,
   Filter,
@@ -36,9 +29,9 @@ import {
   Calendar,
   User,
   Tag,
-  X,
   ChevronDown,
   ChevronUp,
+  ArrowLeft,
 } from 'lucide-react';
 
 const statusColors: Record<TicketStatus, string> = {
@@ -68,6 +61,7 @@ const typeIcons: Record<TicketType, string> = {
 function TicketRow({ ticket, onClick }: { ticket: Ticket; onClick: () => void }) {
   const pCfg = priorityConfig[ticket.priority];
   const dev = useDashboardStore.getState().developers.find(d => d.id === ticket.assignee);
+  const desc = ticket.description?.replace(/^#.*$/m, '').trim().slice(0, 120);
 
   return (
     <div
@@ -90,6 +84,9 @@ function TicketRow({ ticket, onClick }: { ticket: Ticket; onClick: () => void })
         <p className="text-sm font-medium text-foreground truncate group-hover:text-primary transition-colors">
           {ticket.title}
         </p>
+        {desc && (
+          <p className="text-xs text-text-muted mt-0.5 line-clamp-1 leading-relaxed">{desc}{ticket.description?.length > 120 ? '...' : ''}</p>
+        )}
       </div>
 
       {/* Assignee */}
@@ -126,142 +123,156 @@ function TicketRow({ ticket, onClick }: { ticket: Ticket; onClick: () => void })
   );
 }
 
-function TicketDetailDialog({ ticket, open, onClose }: { ticket: Ticket | null; open: boolean; onClose: () => void }) {
+export function TicketDetailView() {
+  const ticket = useDashboardStore(s => s.selectedTicket);
+  const developers = useDashboardStore(s => s.developers);
+  const goBack = useDashboardStore(s => s.goBack);
   const [expanded, setExpanded] = useState(false);
-  if (!ticket) return null;
+  if (!ticket) return <div className="text-center py-16 text-text-muted">No ticket selected</div>;
   const pCfg = priorityConfig[ticket.priority];
-  const reporter = useDashboardStore.getState().developers.find(d => d.id === ticket.reporter);
-  const assignee = useDashboardStore.getState().developers.find(d => d.id === ticket.assignee);
+  const reporter = developers.find(d => d.id === ticket.reporter);
+  const assignee = developers.find(d => d.id === ticket.assignee);
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="bg-card border-border max-w-2xl max-h-[85vh] overflow-y-auto">
-        <DialogHeader>
-          <div className="flex items-center gap-2 mb-2">
-            <Badge variant="outline" className="font-mono text-xs border-border-strong text-text-muted">
-              {ticket.id}
+    <div className="max-w-3xl mx-auto space-y-6">
+      <button
+        onClick={goBack}
+        className="flex items-center gap-1.5 text-xs text-text-muted hover:text-foreground transition-colors"
+      >
+        <ArrowLeft className="w-3.5 h-3.5" />
+        Back to tickets
+      </button>
+
+      <div>
+        <div className="flex items-center gap-2 mb-2">
+          <Badge variant="outline" className="font-mono text-xs border-border-strong text-text-muted">
+            {ticket.id}
+          </Badge>
+          <Badge className={`${statusColors[ticket.status]} text-[10px]`}>{ticket.status}</Badge>
+          <Badge variant="outline" className="text-[10px] border-border-strong text-text-muted">{ticket.type}</Badge>
+        </div>
+        <h1 className="text-xl font-bold text-foreground">{ticket.title}</h1>
+      </div>
+
+      <Separator className="bg-border" />
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="space-y-1">
+          <p className="text-[10px] text-text-muted uppercase tracking-wider flex items-center gap-1"><User className="w-3 h-3" /> Assignee</p>
+          <p className="text-sm text-foreground">@{ticket.assignee} {assignee ? `(${assignee.displayName})` : ''}</p>
+        </div>
+        <div className="space-y-1">
+          <p className="text-[10px] text-text-muted uppercase tracking-wider flex items-center gap-1"><User className="w-3 h-3" /> Reporter</p>
+          <p className="text-sm text-foreground">@{ticket.reporter}</p>
+        </div>
+        <div className="space-y-1">
+          <p className="text-[10px] text-text-muted uppercase tracking-wider flex items-center gap-1"><Tag className="w-3 h-3" /> Priority</p>
+          <p className={`text-sm font-medium ${pCfg.color}`}>{ticket.priority}</p>
+        </div>
+        <div className="space-y-1">
+          <p className="text-[10px] text-text-muted uppercase tracking-wider flex items-center gap-1"><Calendar className="w-3 h-3" /> Updated</p>
+          <p className="text-sm text-foreground">{ticket.updated}</p>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        <Badge variant="outline" className="border-border text-text-muted text-xs">{ticket.namespace}/{ticket.category}</Badge>
+        <Badge variant="outline" className="border-border text-text-muted text-xs">{ticket.project}</Badge>
+        {ticket.prUrl && (
+          <a href={ticket.prUrl} target="_blank" rel="noopener noreferrer">
+            <Badge variant="outline" className="border-primary/50 text-primary text-xs hover:bg-primary/10 cursor-pointer">
+              <GitPullRequest className="w-3 h-3 mr-1" /> View PR
             </Badge>
-            <Badge className={`${statusColors[ticket.status]} text-[10px]`}>{ticket.status}</Badge>
-            <Badge variant="outline" className="text-[10px] border-border-strong text-text-muted">{ticket.type}</Badge>
-          </div>
-          <DialogTitle className="text-lg text-foreground">{ticket.title}</DialogTitle>
-          <DialogDescription className="text-sm text-text-secondary">{ticket.description}</DialogDescription>
-        </DialogHeader>
+          </a>
+        )}
+        {ticket.githubIssue && (
+          <a href={ticket.githubIssue} target="_blank" rel="noopener noreferrer">
+            <Badge variant="outline" className="border-border text-text-muted text-xs hover:bg-accent cursor-pointer">
+              <ExternalLink className="w-3 h-3 mr-1" /> GitHub Issue
+            </Badge>
+          </a>
+        )}
+      </div>
 
-        <Separator className="bg-border" />
+      <Separator className="bg-border" />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="space-y-1">
-            <p className="text-[10px] text-text-muted uppercase tracking-wider flex items-center gap-1"><User className="w-3 h-3" /> Assignee</p>
-            <p className="text-sm text-foreground">@{ticket.assignee} {assignee ? `(${assignee.displayName})` : ''}</p>
-          </div>
-          <div className="space-y-1">
-            <p className="text-[10px] text-text-muted uppercase tracking-wider flex items-center gap-1"><User className="w-3 h-3" /> Reporter</p>
-            <p className="text-sm text-foreground">@{ticket.reporter}</p>
-          </div>
-          <div className="space-y-1">
-            <p className="text-[10px] text-text-muted uppercase tracking-wider flex items-center gap-1"><Tag className="w-3 h-3" /> Priority</p>
-            <p className={`text-sm font-medium ${pCfg.color}`}>{ticket.priority}</p>
-          </div>
-          <div className="space-y-1">
-            <p className="text-[10px] text-text-muted uppercase tracking-wider flex items-center gap-1"><Calendar className="w-3 h-3" /> Updated</p>
-            <p className="text-sm text-foreground">{ticket.updated}</p>
-          </div>
+      <div>
+        <h3 className="text-sm font-semibold text-foreground mb-2">Description</h3>
+        <div className="text-sm text-text-secondary leading-relaxed whitespace-pre-wrap bg-surface p-4 rounded-lg border border-border">
+          {ticket.description}
         </div>
+      </div>
 
-        <div className="flex flex-wrap gap-2">
-          <Badge variant="outline" className="border-border text-text-muted text-xs">{ticket.namespace}/{ticket.category}</Badge>
-          <Badge variant="outline" className="border-border text-text-muted text-xs">{ticket.project}</Badge>
-          {ticket.prUrl && (
-            <a href={ticket.prUrl} target="_blank" rel="noopener noreferrer">
-              <Badge variant="outline" className="border-primary/50 text-primary text-xs hover:bg-primary/10 cursor-pointer">
-                <GitPullRequest className="w-3 h-3 mr-1" /> View PR
+      {ticket.status === 'In Review' && (
+        <>
+          <Separator className="bg-border" />
+          <div className="space-y-2">
+            <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wider">Review</h4>
+            <div className="flex items-center gap-3">
+              <Badge className={
+                ticket.reviewStatus === 'Approved' ? 'bg-status-done text-white text-xs' :
+                ticket.reviewStatus === 'Changes Requested' ? 'bg-destructive text-white text-xs' :
+                'bg-status-review text-black text-xs'
+              }>
+                {ticket.reviewStatus}
               </Badge>
-            </a>
-          )}
-          {ticket.githubIssue && (
-            <a href={ticket.githubIssue} target="_blank" rel="noopener noreferrer">
-              <Badge variant="outline" className="border-border text-text-muted text-xs hover:bg-accent cursor-pointer">
-                <ExternalLink className="w-3 h-3 mr-1" /> GitHub Issue
-              </Badge>
-            </a>
-          )}
-        </div>
-
-        {/* Review info */}
-        {ticket.status === 'In Review' && (
-          <>
-            <Separator className="bg-border" />
-            <div className="space-y-2">
-              <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wider">Review</h4>
-              <div className="flex items-center gap-3">
-                <Badge className={
-                  ticket.reviewStatus === 'Approved' ? 'bg-status-done text-white text-xs' :
-                  ticket.reviewStatus === 'Changes Requested' ? 'bg-destructive text-white text-xs' :
-                  'bg-status-review text-black text-xs'
-                }>
-                  {ticket.reviewStatus}
-                </Badge>
-                {ticket.reviewedBy && (
-                  <span className="text-xs text-text-muted">Reviewed by @{ticket.reviewedBy} on {ticket.reviewedAt}</span>
-                )}
-              </div>
-              {ticket.reviewComments && (
-                <p className="text-sm text-text-secondary bg-surface p-3 rounded-lg border border-border">
-                  &ldquo;{ticket.reviewComments}&rdquo;
-                </p>
+              {ticket.reviewedBy && (
+                <span className="text-xs text-text-muted">Reviewed by @{ticket.reviewedBy} on {ticket.reviewedAt}</span>
               )}
             </div>
-          </>
-        )}
+            {ticket.reviewComments && (
+              <p className="text-sm text-text-secondary bg-surface p-3 rounded-lg border border-border">
+                &ldquo;{ticket.reviewComments}&rdquo;
+              </p>
+            )}
+          </div>
+        </>
+      )}
 
-        {/* Personal TODO */}
-        {ticket.personalBreakdown.length > 0 && (
-          <>
-            <Separator className="bg-border" />
-            <div className="space-y-2">
-              <button
-                onClick={() => setExpanded(!expanded)}
-                className="flex items-center gap-2 text-xs font-semibold text-text-muted uppercase tracking-wider hover:text-foreground transition-colors"
-              >
-                <FileText className="w-3 h-3" />
-                Task Breakdown ({ticket.personalBreakdown.length} items)
-                {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-              </button>
-              {expanded && (
-                <ul className="space-y-1.5">
-                  {ticket.personalBreakdown.map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
-                      <div className="w-1.5 h-1.5 rounded-full bg-text-muted mt-1.5 flex-shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </>
-        )}
-
-        {/* Linked docs */}
-        {ticket.linkedDocs.length > 0 && (
-          <>
-            <Separator className="bg-border" />
-            <div className="space-y-2">
-              <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wider flex items-center gap-1">
-                <FileText className="w-3 h-3" /> Linked Docs
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {ticket.linkedDocs.map(docId => (
-                  <Badge key={docId} variant="outline" className="border-border text-text-muted text-xs cursor-pointer hover:bg-accent">
-                    {docId}
-                  </Badge>
+      {ticket.personalBreakdown.length > 0 && (
+        <>
+          <Separator className="bg-border" />
+          <div className="space-y-2">
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="flex items-center gap-2 text-xs font-semibold text-text-muted uppercase tracking-wider hover:text-foreground transition-colors"
+            >
+              <FileText className="w-3 h-3" />
+              Task Breakdown ({ticket.personalBreakdown.length} items)
+              {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+            </button>
+            {expanded && (
+              <ul className="space-y-1.5">
+                {ticket.personalBreakdown.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
+                    <div className="w-1.5 h-1.5 rounded-full bg-text-muted mt-1.5 flex-shrink-0" />
+                    {item}
+                  </li>
                 ))}
-              </div>
+              </ul>
+            )}
+          </div>
+        </>
+      )}
+
+      {ticket.linkedDocs.length > 0 && (
+        <>
+          <Separator className="bg-border" />
+          <div className="space-y-2">
+            <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wider flex items-center gap-1">
+              <FileText className="w-3 h-3" /> Linked Docs
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {ticket.linkedDocs.map(docId => (
+                <Badge key={docId} variant="outline" className="border-border text-text-muted text-xs cursor-pointer hover:bg-accent">
+                  {docId}
+                </Badge>
+              ))}
             </div>
-          </>
-        )}
-      </DialogContent>
-    </Dialog>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -274,17 +285,16 @@ export function TicketsView() {
     filterCategory, setFilterCategory,
     getFilteredTickets,
     setSelectedTicket,
+    setCurrentView,
   } = useDashboardStore();
-  const { currentUser, isCTO } = useAuthStore();
-
-  const [selectedTicket, setSelectedTicketState] = useState<Ticket | null>(null);
+  const { currentUser } = useAuthStore();
 
   const filteredTickets = getFilteredTickets()
     .sort((a, b) => priorityConfig[a.priority].order - priorityConfig[b.priority].order);
 
   const handleTicketClick = (ticket: Ticket) => {
     setSelectedTicket(ticket);
-    setSelectedTicketState(ticket);
+    setCurrentView('ticket-detail');
   };
 
   // Get unique categories from tickets
@@ -378,26 +388,18 @@ export function TicketsView() {
       </Card>
 
       {/* Ticket list */}
-      <ScrollArea className="max-h-[calc(100vh-320px)]">
-        <div className="space-y-2">
-          {filteredTickets.length === 0 ? (
-            <div className="text-center py-12 text-text-muted">
-              <Filter className="w-8 h-8 mx-auto mb-2 opacity-50" />
-              <p className="text-sm">No tickets match your filters</p>
-            </div>
-          ) : (
-            filteredTickets.map(ticket => (
-              <TicketRow key={ticket.id} ticket={ticket} onClick={() => handleTicketClick(ticket)} />
-            ))
-          )}
-        </div>
-      </ScrollArea>
-
-      <TicketDetailDialog
-        ticket={selectedTicket}
-        open={!!selectedTicket}
-        onClose={() => setSelectedTicketState(null)}
-      />
+      <div className="space-y-2 max-h-[calc(100vh-220px)] overflow-y-auto">
+        {filteredTickets.length === 0 ? (
+          <div className="text-center py-12 text-text-muted">
+            <Filter className="w-8 h-8 mx-auto mb-2 opacity-50" />
+            <p className="text-sm">No tickets match your filters</p>
+          </div>
+        ) : (
+          filteredTickets.map(ticket => (
+            <TicketRow key={ticket.id} ticket={ticket} onClick={() => handleTicketClick(ticket)} />
+          ))
+        )}
+      </div>
     </div>
   );
 }

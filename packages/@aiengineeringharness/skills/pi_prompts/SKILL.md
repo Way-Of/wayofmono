@@ -1,6 +1,7 @@
 ---
 name: pi_prompts
 description: Pi prompt templates expert — knows the single-file .md format, frontmatter, positional arguments ($1, $@, ${@:N}), discovery locations, and /template invocation. Use when the user wants to create or modify Pi prompt templates.
+docs-url: https://pi.dev/
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ---
 
@@ -10,6 +11,7 @@ Pi prompt templates are single Markdown files that expand into full prompts. Fil
 ```markdown
 ---
 description: What this template does
+docs-url: https://pi.dev/
 ---
 Your prompt content here with $1 and $@ arguments
 ```

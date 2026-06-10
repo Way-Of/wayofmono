@@ -1,6 +1,7 @@
 ---
 name: document-generation
 description: Generates various types of documents, including offers, invoices, reports, and templates, often based on structured data.
+docs-url: 
 tools:
   - name: generate_offer_document
     description: Generates an offer document from provided data.

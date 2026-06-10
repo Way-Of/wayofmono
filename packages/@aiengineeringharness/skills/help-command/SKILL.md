@@ -1,6 +1,7 @@
 ---
 name: help-command
 description: "Unified /help command for the AI Engineering Harness — lists skills, commands, agents, workflows"
+docs-url: 
 version: 1.0.0
 namespace: core
 tools: read,grep,glob

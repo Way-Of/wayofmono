@@ -1,6 +1,7 @@
 ---
 name: commit
 description: Create well-structured git commits for changes made during the session using Gemini CLI tools.
+docs-url: 
 disable-model-invocation: true
 allowed-tools: read_file, run_shell_command, glob
 ---

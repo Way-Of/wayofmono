@@ -1,6 +1,7 @@
 ---
 name: create_plan
 description: Create detailed, actionable implementation plans through an interactive, iterative process, leveraging Gemini CLI tools for research and documentation.
+docs-url: 
 disable-model-invocation: true
 allowed-tools: read_file, write_file, run_shell_command, glob, search_file_content, write_todos, delegate_to_agent
 argument-hint: "[ticket-file-path]"

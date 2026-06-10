@@ -25,6 +25,7 @@ interface SkillInfo {
   name: string;
   description: string;
   allowedTools: string;
+  docsUrl: string;
   fileCount: number;
   lastModified: string;
   hasFrontmatter: boolean;
@@ -142,7 +143,7 @@ export function SkillsView() {
                           {!tool.exists && <Badge variant="outline" className="ml-2 text-[10px] border-destructive/30 text-destructive">Not found</Badge>}
                         </CardTitle>
                         <p className="text-[10px] text-text-muted mt-0.5 font-mono truncate max-w-[200px]">
-                          {tool.path.replace('/home/' + (typeof window !== 'undefined' ? '' : ''), '~')}
+                          {tool.path.replace('/home/', '~')}
                         </p>
                       </div>
                     </div>
@@ -178,7 +179,7 @@ export function SkillsView() {
                                 className="flex items-center gap-2 p-2 rounded-md hover:bg-surface transition-colors"
                               >
                                 <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                                  skill.hasFrontmatter && skill.description ? 'bg-status-done' :
+                                  skill.hasFrontmatter && skill.description && skill.description !== '>' ? 'bg-status-done' :
                                   skill.hasFrontmatter ? 'bg-yellow-500' : 'bg-status-backlog'
                                 }`} />
                                 <div className="flex-1 min-w-0">
@@ -188,6 +189,17 @@ export function SkillsView() {
                                   )}
                                 </div>
                                 <div className="flex items-center gap-1.5 text-[10px] text-text-muted flex-shrink-0">
+                                  {skill.docsUrl && (
+                                    <a
+                                      href={skill.docsUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      onClick={e => e.stopPropagation()}
+                                      className="underline hover:text-foreground"
+                                    >
+                                      docs
+                                    </a>
+                                  )}
                                   <span>{skill.fileCount}f</span>
                                   {skill.lastModified && <span>{skill.lastModified}</span>}
                                 </div>

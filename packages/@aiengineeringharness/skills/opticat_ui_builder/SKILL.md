@@ -1,6 +1,7 @@
 ---
 name: opticat-ui-builder
 description: "Facilitates the generation and enhancement of OptiCat-related UI components and dashboards. Use this skill when building new OptiCat data visualizations, extending existing dashboards with more detailed information from OptiCat APIs, or creating interactive UI elements based on HVAC project data."
+docs-url: 
 ---
 
 # OptiCat UI Builder

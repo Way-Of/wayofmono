@@ -156,7 +156,7 @@ async function walkDir(dir: string, result: Record<string, unknown>[], seenIds: 
         reviewedAt: frontmatter['reviewed_at'] || '',
         reviewStatus: frontmatter['review_status'] || 'Pending',
         reviewComments: frontmatter['review_comments'] || '',
-        description: body.slice(0, 300),
+        description: body,
         personalBreakdown: [],
         linkedDocs: [],
       });
@@ -233,11 +233,13 @@ export async function getSkills() {
         const skillMd = files.find(f => f.toLowerCase() === 'skill.md');
         let description = '';
         let allowedTools = '';
+        let docsUrl = '';
         if (skillMd) {
           const content = await fs.readFile(path.join(skillPath, skillMd), 'utf8');
           const { frontmatter } = parseFrontmatter(content);
           description = String(frontmatter['description'] || '');
           allowedTools = String(frontmatter['allowed-tools'] || '');
+          docsUrl = String(frontmatter['docs-url'] || '');
         }
         let lastModified = '';
         try {
@@ -248,6 +250,7 @@ export async function getSkills() {
           name: entry.name,
           description,
           allowedTools,
+          docsUrl,
           fileCount: files.length,
           lastModified,
           hasFrontmatter: !!skillMd,
@@ -260,7 +263,7 @@ export async function getSkills() {
       exists,
       skillCount: skills.length,
       skills,
-      health: !exists ? 'missing' : skills.length === 0 ? 'empty' : skills.every(s => s.description) ? 'healthy' : 'partial',
+      health: !exists ? 'missing' : skills.length === 0 ? 'empty' : skills.every(s => s.description && s.description !== '>') ? 'healthy' : 'partial',
     });
   }
 

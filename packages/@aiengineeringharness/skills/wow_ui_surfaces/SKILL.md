@@ -1,6 +1,7 @@
 ---
 name: wow_ui_surfaces
 description: Frontend architecture, isolated chat sessions, and multi-surface routing based on WOW-012. Use when adding new UI views or debugging chat session isolation.
+docs-url: 
 ---
 
 # wow_ui_surfaces

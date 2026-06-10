@@ -1,6 +1,7 @@
 ---
 name: pi_keybindings
 description: Pi keyboard shortcut expert — knows registerShortcut(), Key IDs, modifier combos, reserved keys, terminal compatibility (macOS/Kitty/legacy), and keybindings.json customization. Use when the user needs help with Pi keybindings or shortcuts.
+docs-url: https://pi.dev/
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---
 

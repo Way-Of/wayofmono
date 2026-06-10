@@ -6,6 +6,7 @@ description: >
   handling, and complete function reference for Collector processors.
 disable-model-invocation: true
 allowed-tools: read_file, run_shell_command, search_file_content, glob, replace, write_file
+docs-url: https://opentelemetry.io/docs/
 ---
 
 # OpenTelemetry Transformation Language (OTTL)
@@ -240,6 +241,7 @@ Always use `where` guards to prevent nil access:
 
 `Len(value)`, `append(target, values...)`, `Slice(target, start, end)`
 
+docs-url: https://opentelemetry.io/docs/
 ---
 
 ## Cross-References

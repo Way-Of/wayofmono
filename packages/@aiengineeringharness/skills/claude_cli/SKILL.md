@@ -1,6 +1,7 @@
 ---
 name: claude_cli
 description: Claude Code CLI expert — knows all command line arguments, flags, environment variables, subcommands, and non-interactive usage. Use when the user needs help running Claude Code from the command line.
+docs-url: https://code.claude.com/docs/en/
 allowed-tools: Read, Bash, Grep, Glob, WebSearch
 ---
 

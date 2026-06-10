@@ -1,6 +1,7 @@
 ---
 name: wow_frontend_dev
 description: Comprehensive guide for developing React frontend components, routing, UI layouts, and localization for the Way of Work project. Use when modifying or creating frontend code in src/.
+docs-url: 
 ---
 
 # wow_frontend_dev
