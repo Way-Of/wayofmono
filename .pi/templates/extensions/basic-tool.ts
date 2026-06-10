@@ -9,7 +9,6 @@ import type {
   ExtensionContext,
 } from '@mariozechner/pi-coding-agent';
 import { Type } from '@sinclair/typebox';
-import type { Static } from '@sinclair/typebox';
 import { Text } from '@mariozechner/pi-tui';
 
 export default function (pi: ExtensionAPI) {
@@ -24,12 +23,12 @@ export default function (pi: ExtensionAPI) {
       option: Type.Optional(Type.String({ description: 'Optional parameter' })),
     }),
     async execute(
-      toolCallId: string,
+      _toolCallId: string,
       params: {
         action: string;
         option?: string;
       },
-      signal: AbortSignal,
+      _signal: AbortSignal,
       onUpdate: AgentToolUpdateCallback,
       ctx: ExtensionContext,
     ) {
