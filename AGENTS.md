@@ -4,6 +4,8 @@ This is the **AGENTS.md for förråd (f-rr-d)** — the centralized thoughts rep
 
 ## Project Overview
 
+**ALLWAYS USE CHANGELOG.md**
+
 **WayOfMono (Wo)** — Ultimate monorepo consolidation for high-performance coding agents.
 - **AI Engineering Harness**: 81 battle-tested skills, 6 subagents, workflows across 7 tools
 - **CTO Dashboard**: Telemetry, standups, tickets, review queues, skills health
