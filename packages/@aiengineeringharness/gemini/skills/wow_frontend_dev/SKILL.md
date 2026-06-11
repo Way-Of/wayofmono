@@ -1,13 +1,7 @@
 ---
 name: wow_frontend_dev
-description: "Comprehensive guide for developing React frontend components, routing, UI layouts, and localization for the Way of Work project. Use when modifying or creating frontend code in src/."
-allowed-tools: [""]
+description: Comprehensive guide for developing React frontend components, routing, UI layouts, and localization for the Way of Work project. Use when modifying or creating frontend code in src/.
 ---
-
-> **Platform**: Gemini CLI | **Skill**: wow_frontend_dev | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 # wow_frontend_dev
 

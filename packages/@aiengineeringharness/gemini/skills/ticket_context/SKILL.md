@@ -1,13 +1,7 @@
 ---
 name: ticket-context
-description: "Guides agents and developers to associate work with a specific ticket ID before proceeding with tasks. Use this skill when initiating new work or making changes to ensure compliance with the ticketing system, following the WOW-XXX-description.md format."
-allowed-tools: [""]
+description: Guides agents and developers to associate work with a specific ticket ID before proceeding with tasks. Use this skill when initiating new work or making changes to ensure compliance with the ticketing system, following the WOW-XXX-description.md format.
 ---
-
-> **Platform**: Gemini CLI | **Skill**: ticket-context | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 # Ticket Context Guide
 

@@ -1,5 +1,5 @@
 ---
-name: claude-keybindings
+name: claude_keybindings
 description: Claude Code keyboard shortcut expert — knows all default keybindings, context scopes, rebindable vs non-rebindable keys, terminal/OS reserved conflicts, and keybindings.json customization. Use when the user needs help with Claude Code keybindings or shortcuts.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---

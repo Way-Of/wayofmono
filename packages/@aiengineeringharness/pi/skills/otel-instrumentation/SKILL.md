@@ -1,12 +1,12 @@
 ---
-name: otel-instrumentation
+name: otel_instrumentation
 description: >
   Application-side OpenTelemetry SDK setup — traces, metrics, structured
   logging across Node.js, Go, Python, Java, .NET, Ruby. Prescriptive
   guidance for resource attributes, span design, metric instrument selection,
   sensitive data handling, and validation.
 disable-model-invocation: true
-allowed-tools: Read, Bash, Grep, Glob, Edit, Write
+allowed-tools: Read, Bash, Grep, glob, replace, Write
 ---
 
 # OpenTelemetry Application Instrumentation
@@ -559,6 +559,7 @@ curl -sf http://otel-collector:4318/v1/traces || echo "Collector unreachable (HT
 **Metrics:** bounded cardinality (<1K series/metric), correct units, no duplicate names
 **Logs:** `trace_id`+`span_id` present, structured JSON, correct severity, no sensitive data
 
+docs-url: https://opentelemetry.io/docs/
 ---
 
 ## Cross-References

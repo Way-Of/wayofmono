@@ -1,13 +1,8 @@
 ---
 name: tdd
-description: "Test-driven development with red-green-refactor loop. Use when user wants to build features or fix bugs using TDD, mentions "red-green-refactor", asks for test-first development, or wants integration-style tests that survive refactors."
-allowed-tools: ["read_file", "run_shell_command", "glob", "write_file", "replace"]
+description: Test-driven development with red-green-refactor loop. Use when user wants to build features or fix bugs using TDD, mentions "red-green-refactor", asks for test-first development, or wants integration-style tests that survive refactors.
+allowed-tools: read, bash, glob, write, replace
 ---
-
-> **Platform**: Gemini CLI | **Skill**: tdd | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 # Test-Driven Development
 

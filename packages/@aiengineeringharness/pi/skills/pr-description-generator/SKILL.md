@@ -1,7 +1,7 @@
 ---
-name: pr-description-generator
-description: Generates comprehensive pull request descriptions following repository templates. Use when creating or updating PR descriptions, when user mentions pull requests, or when asked to describe changes for review.
-allowed-tools: Read, Bash, Grep, Glob, Edit, Write
+name: pr_description_generator
+description: Generates comprehensive pull request descriptions following repository templates. Utilizes Gemini CLI tools including `run_shell_command` for `git` and `gh` commands.
+allowed-tools: Read, Bash, Grep, glob, replace, Write
 ---
 
 # PR Description Generator
@@ -187,7 +187,7 @@ Adds social authentication (Google, GitHub) to user login flow.
 Users requested faster login without creating new accounts.
 
 ## Solution
-Implements OAuth 2.0 integration with Google and GitHub.
+Implement's OAuth 2.0 integration with Google and GitHub.
 
 ## How to Verify
 - [x] Tests pass: `npm test`

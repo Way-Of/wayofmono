@@ -1,13 +1,12 @@
 ---
 name: otel_semantic_conventions
-description: ">"
-allowed-tools: ["read_file", "run_shell_command", "search_file_content", "glob"]
+description: >
+  OpenTelemetry semantic conventions — attribute naming, placement across
+  telemetry levels, stability/versioning, legacy→current migration,
+  and registry namespace reference.
+disable-model-invocation: true
+allowed-tools: read, bash, grep, glob
 ---
-
-> **Platform**: Gemini CLI | **Skill**: otel_semantic_conventions | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 # OpenTelemetry Semantic Conventions
 
@@ -177,6 +176,7 @@ acme.order.status  # Org-prefixed for company-specific
 
 Rules: dot-separated namespaces, snake_case segments, org prefix for company-specific, document in team registry.
 
+docs-url: https://opentelemetry.io/docs/
 ---
 
 ## Cross-References

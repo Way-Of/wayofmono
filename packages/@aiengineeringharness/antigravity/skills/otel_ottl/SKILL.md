@@ -1,13 +1,12 @@
 ---
 name: otel_ottl
-description: ">"
-allowed-tools: ["read_file", "run_shell_command", "search_file_content", "glob", "replace", "write_file"]
+description: >
+  OTTL (OpenTelemetry Transformation Language) reference — syntax, contexts,
+  common patterns (redaction, normalization, enrichment, filtering), error
+  handling, and complete function reference for Collector processors.
+disable-model-invocation: true
+allowed-tools: read, bash, grep, glob, replace, write
 ---
-
-> **Platform**: Gemini CLI | **Skill**: otel_ottl | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 # OpenTelemetry Transformation Language (OTTL)
 
@@ -241,6 +240,7 @@ Always use `where` guards to prevent nil access:
 
 `Len(value)`, `append(target, values...)`, `Slice(target, start, end)`
 
+docs-url: https://opentelemetry.io/docs/
 ---
 
 ## Cross-References

@@ -45,6 +45,7 @@ Modular rules allow targeting specific style guides to specific folders or file 
 ---
 globs: ["src/api/**/*.ts"]
 description: Rules for API development
+docs-url: https://code.claude.com/docs/en/
 ---
 Always validate request payloads before processing.
 Do not use console.log in API handlers.
@@ -73,6 +74,7 @@ Example style (`concise.md`):
 ---
 name: Concise Output Style
 description: Be extremely direct and skip friendly summaries.
+docs-url: https://code.claude.com/docs/en/
 keep-coding-instructions: true
 ---
 Answer the user's coding query directly, showing only code diffs and 1-2 sentence explanations.

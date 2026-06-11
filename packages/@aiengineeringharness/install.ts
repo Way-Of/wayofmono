@@ -298,6 +298,8 @@ OPTIONS:
   --local, -l                           Install to project-local directories (.claude, .agents, .gemini, etc.)
   --check                               Check installed version vs manifest
   --import-ref                          Import ref skills/agents to all platforms (WOMONO-016)
+  --sync-docs                           Sync canonical skills to all tool skill directories
+  --sync-docs --check                   Preview skill sync without making changes
   --mode=repo                           Show clone+stow instructions instead
   --dest=<path>                         Clone destination for --mode=repo
   --help, -h                            Show this help
@@ -540,12 +542,29 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 
 const args = parseArgs(Deno.args, {
   string: ["tool", "skill", "dest", "mode"],
-  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref"],
+  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs"],
   alias: { h: "help", n: "dry-run", y: "yes", i: "interactive", l: "local" },
 });
 
 if (args.help) {
   printHelp();
+  Deno.exit(0);
+}
+
+// --sync-docs: sync canonical skills to all tool skill directories
+if (args["sync-docs"]) {
+  const docsSyncScript = `${scriptDir()}scripts/docs-sync.ts`;
+  const syncArgs = ["run", "-A", docsSyncScript];
+  if (args["check"]) syncArgs.push("--check");
+  console.log("Syncing canonical skills to all tool skill directories...\n");
+  const cmd = new Deno.Command("deno", { args: syncArgs });
+  const output = await cmd.output();
+  console.log(new TextDecoder().decode(output.stdout));
+  if (!output.success) {
+    console.error(new TextDecoder().decode(output.stderr));
+    Deno.exit(1);
+  }
+  console.log("Docs sync complete.");
   Deno.exit(0);
 }
 

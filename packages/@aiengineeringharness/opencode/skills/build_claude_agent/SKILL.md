@@ -22,6 +22,7 @@ Custom subagents are defined as Markdown files with YAML frontmatter and a syste
 ---
 name: codebase_locator
 description: Specialist agent for locating files and code patterns.
+docs-url: https://code.claude.com/docs/en/
 ---
 You are a specialist at finding WHERE code lives in a codebase.
 Your core responsibilities are...

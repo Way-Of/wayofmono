@@ -1,7 +1,8 @@
 ---
 name: create_plan
-description: Create detailed, actionable implementation plans through an interactive, iterative process
+description: Create detailed, actionable implementation plans through an interactive, iterative process, leveraging Gemini CLI tools for research and documentation.
 disable-model-invocation: true
+allowed-tools: Read, Write, Bash, glob, Grep, TodoWrite, Task
 argument-hint: "[ticket-file-path]"
 ---
 
@@ -46,10 +47,7 @@ Tip: You can also invoke this command with a ticket file directly: `/create_plan
 ### Step 1: Context Gathering & Initial Analysis
 
 1. **Read all mentioned files immediately and FULLY**
-2. **Spawn research tasks** to gather context using:
-   - **codebase-locator**: Find all files related to the task
-   - **codebase-analyzer**: Understand current implementation
-   - **codebase-pattern-finder**: Find similar implementations to model after
+2. **Delegate to research agents** (e.g., `codebase_investigator`, `codebase_locator`, `codebase_pattern_finder`) to gather context.
 3. **Read all files identified by research tasks**
 4. **Present informed understanding with focused questions**
 
@@ -69,7 +67,7 @@ When the user's requirements are vague or you need to walk down decision branche
 
 ### Telemetry-bearing features
 
-When the plan touches a request lifecycle, an AI agent/MCP, or any work where the trace is the spec, delegate to the `observability-driven-development` skill. The plan should include:
+When the plan touches a request lifecycle, an AI agent/MCP, or any work where the trace is the spec, delegate to the `observability_driven_development` skill. The plan should include:
 
 - A reference to the narrative spec at `thoughts/shared/telemetry/<feature>.md` (to be written before implementation).
 - A `/validate_telemetry` step in Phase verification, parallel to `/validate_plan`.
@@ -140,4 +138,4 @@ Continue refining until the user is satisfied.
 3. **Be Thorough** - Read all context files COMPLETELY
 4. **Be Practical** - Focus on incremental, testable changes
 5. **Track Progress** - Use TodoWrite
-6. **No Open Questions in Final Plan** - All decisions must be made before finalizing
+

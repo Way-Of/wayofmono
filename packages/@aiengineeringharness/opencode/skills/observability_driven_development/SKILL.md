@@ -6,7 +6,7 @@ description: >
   "instrument first", "narrative-first", "telemetry-driven", or wants to set
   up a local OTel feedback loop with the Aspire dashboard. Pairs with
   /validate_telemetry to verify behaviour against a written narrative.
-allowed-tools: read, bash, glob, write, edit
+allowed-tools: read, bash, glob, write, replace
 ---
 
 # Observability Driven Development (ODD)

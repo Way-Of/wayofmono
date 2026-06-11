@@ -3,7 +3,7 @@ name: team-setup
 description: "Initialize and manage team configuration: developers, roles, projects, and ticket assignments"
 version: 1.0.0
 namespace: core
-tools: read,write,grep,glob,ls
+tools: read, write, grep, glob, ls
 platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
 allowed-tools: [read, write, grep, glob, ls]
 ---
@@ -41,8 +41,26 @@ Assign a ticket to a developer.
 
 ## Developer Structure
 
-Each developer has:
-- `thoughts/<id>/TODO.md` - Auto-generated personal TODO
-- `thoughts/<id>/tickets/` - Personal ticket breakdowns
-- `thoughts/<id>/plans/` - Personal plans
-- `thoughts/<id>/research/` - Personal research
+Each developer has (per project):
+- `thoughts/<project-slug>/<id>/TODO.md` - Auto-generated personal TODO
+- `thoughts/<project-slug>/<id>/tickets/` - Personal ticket breakdowns
+- `thoughts/<project-slug>/<id>/plans/` - Personal plans
+- `thoughts/<project-slug>/<id>/research/` - Personal research
+
+## Project Structure (per WOMONO-001)
+
+```
+thoughts/
+├── global/                          # Cross-project global thoughts (architecture, standards, conventions)
+├── shared/                          # Cross-project templates ONLY (ticket-template.md)
+├── <project-slug>/                  # Project-specific (WOMONO-XXX, WOW-XXX, OPT-XXX tickets)
+│   ├── global/                      # Project-specific global thoughts
+│   ├── shared/                      # SHARED RESPONSIBILITY tickets (all devs in project)
+│   │   ├── tickets/                 # Project tickets
+│   │   ├── plans/
+│   │   └── research/
+│   ├── <dev-id>/                    # Personal dirs (all developers)
+│   │   ├── tickets/
+│   │   ├── plans/
+│   │   └── research/
+```

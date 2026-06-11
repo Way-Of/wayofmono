@@ -1,8 +1,8 @@
 ---
 name: validate_plan
-description: Validate that an implementation plan was correctly executed, verifying all success criteria using Antigravity CLI tools and delegating to research agents.
+description: Validate that an implementation plan was correctly executed, verifying all success criteria using Gemini CLI tools and delegating to research agents.
 disable-model-invocation: true
-allowed-tools: read_file, write_file, command, search_file_content, glob, invoke_subagent
+allowed-tools: read, write, bash, grep, glob, task
 argument-hint: "[plan-file-path]"
 ---
 

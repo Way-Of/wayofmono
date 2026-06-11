@@ -1,13 +1,9 @@
 ---
 name: debug
-description: "Debug issues during manual testing or implementation by examining logs, state, and git history using Gemini CLI tools."
-allowed-tools: ["read_file", "run_shell_command", "search_file_content", "glob"]
+description: Debug issues during manual testing or implementation by examining logs, state, and git history using Gemini CLI tools.
+disable-model-invocation: true
+allowed-tools: read, bash, grep, glob
 ---
-
-> **Platform**: Gemini CLI | **Skill**: debug | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 # Debug
 

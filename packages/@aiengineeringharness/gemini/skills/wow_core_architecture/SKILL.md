@@ -1,13 +1,7 @@
 ---
 name: wow_core_architecture
-description: "Fundamental architectural principles and tech stack rules for the Way of Work (WoW) platform. Use as a starting point for understanding the system."
-allowed-tools: [""]
+description: Fundamental architectural principles and tech stack rules for the Way of Work (WoW) platform. Use as a starting point for understanding the system.
 ---
-
-> **Platform**: Gemini CLI | **Skill**: wow_core_architecture | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 # wow_core_architecture
 

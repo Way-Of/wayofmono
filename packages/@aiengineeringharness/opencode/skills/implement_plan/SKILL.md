@@ -2,7 +2,7 @@
 name: implement_plan
 description: Implement an approved technical plan from thoughts/plans/ with phase-by-phase execution, leveraging Gemini CLI tools for file interaction, command execution, and task management.
 disable-model-invocation: true
-allowed-tools: read, write, bash, grep, glob, write_todos, delegate_to_agent
+allowed-tools: read, write, bash, grep, glob, todowrite, task
 argument-hint: "[plan-file-path]"
 ---
 

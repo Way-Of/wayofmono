@@ -12,6 +12,7 @@ Create Pi agent definitions using the Markdown frontmatter format. Agent definit
 ---
 name: my-agent
 description: What this agent does
+docs-url: https://pi.dev/
 tools: read,grep,find,ls
 ---
 System prompt body here.

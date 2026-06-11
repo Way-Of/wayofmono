@@ -1,11 +1,12 @@
 ---
 name: worktree
-description: Manage git worktrees for parallel development workflows integrated with the harness ticket system. Use when the user mentions worktrees, wants to work on multiple branches simultaneously, asks about parallel development, or wants to create an isolated workspace for a ticket or feature.
-allowed-tools: Read, Bash, Grep, Glob
-argument-hint: "[create|list|remove|status] [name-or-ticket-path]"
+description: Manage git worktrees for parallel development workflows integrated with the harness ticket system. Use when the user mentions worktrees, wants to work on multiple branches simultaneously, asks about parallel development, or wants to create an isolated workspace for a ticket or feature. Uses run_shell_command for git operations.
+allowed-tools: Read, Bash, glob, Grep
 ---
 
 # Git Worktree Manager
+
+All git operations use `run_shell_command`. File reads use `read_file`.
 
 ## When to Use This Skill
 
@@ -54,9 +55,9 @@ When auto-triggered (no explicit subcommand), infer intent from context. If ambi
 
 ## `create`
 
-1. **Resolve branch name** using naming conventions above. If argument is a ticket path, read the ticket for context.
+1. **Resolve branch name** using naming conventions above. If argument is a ticket path, use `read_file` to read the ticket for context.
 
-2. **Check conflicts** — run in parallel:
+2. **Check conflicts**:
    ```bash
    git branch --list "<branch-name>"
    git worktree list
@@ -80,10 +81,6 @@ When auto-triggered (no explicit subcommand), infer intent from context. If ambi
 ## `list`
 
 Quick overview of all worktrees.
-
-```bash
-git worktree list --porcelain
-```
 
 **Porcelain format** — each worktree is a block separated by blank lines:
 ```
@@ -111,7 +108,7 @@ Present per-worktree blocks with all fields.
 
 ## `remove`
 
-1. **Match worktree** by name — fuzzy match against branch names (strip `feature/`, `fix/`, etc. prefixes when matching user input).
+1. **Match worktree** by name — fuzzy match against branch names (strip prefixes when matching user input).
 
 2. **Check dirty state**: `git -C <path> status --porcelain`
    - If dirty → show the file list, warn changes will be LOST, require explicit confirmation.

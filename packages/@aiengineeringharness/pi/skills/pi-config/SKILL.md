@@ -1,5 +1,5 @@
 ---
-name: pi-config
+name: pi_config
 description: Pi configuration expert — knows settings.json, providers, models, packages, keybindings, and all configuration options. Use when the user needs help configuring Pi.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---

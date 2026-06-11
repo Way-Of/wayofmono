@@ -1,7 +1,8 @@
 ---
 name: research_codebase
-description: Conduct comprehensive codebase research by spawning parallel sub-agents and synthesizing findings
+description: Conduct comprehensive codebase research by delegating to parallel sub-agents and synthesizing findings using Gemini CLI tools.
 disable-model-invocation: true
+allowed-tools: Read, Write, Bash, Grep, glob, TodoWrite, Task, google_web_search, WebFetch
 ---
 
 # Research Codebase
@@ -28,16 +29,16 @@ I'm ready to research the codebase. Please provide your research question or are
 3. **Spawn parallel sub-agent tasks:**
    
    **For codebase research:**
-   - Use **codebase-locator** to find WHERE files and components live
-   - Use **codebase-analyzer** to understand HOW specific code works
-   - Use **codebase-pattern-finder** for examples of similar implementations
+   - Use `codebase_locator` to find WHERE files and components live
+   - Use `codebase_investigator` to understand HOW specific code works
+   - Use `codebase_pattern_finder` for examples of similar implementations
 
    **For thoughts directory:**
-   - Use **thoughts-locator** to discover what documents exist
-   - Use **thoughts-analyzer** to extract key insights from documents
+   - Use `thoughts_locator` to discover what documents exist
+   - Use `thoughts_analyzer` to extract key insights from documents
 
    **For web research (only if explicitly asked):**
-   - Use **web-search-researcher** for external documentation
+   - Use `web_search_researcher` for external documentation
 
 4. **Wait for all sub-agents to complete and synthesize findings**
 
@@ -82,7 +83,7 @@ status: complete
 6. **Present findings to the user**
 
 ## Important notes:
-- Always use parallel Task agents for efficiency
+- Always delegate to parallel sub-agents for efficiency
 - Always run fresh codebase research
 - Focus on finding concrete file paths and line numbers
 - Read files FULLY before spawning sub-tasks
