@@ -4,6 +4,117 @@ The ultimate monorepo consolidation for high-performance coding agents. WayOfMon
 
 ---
 
+---
+
+## 🎛️ AI Engineering Harness
+
+The **AI Engineering Harness** is a shared backend that serves all agent frontends. It provides:
+
+- **Shared agents, commands, skills, and extensions** for all agent frontends
+- **Install once, configure anywhere** – deploy to Claude Code, Pi, OpenCode, Gemini CLI, Antigravity, or Wo Coder with the same prompt library
+- **Battle-tested prompts and workflows** ready to use from day one
+- **Telemetry and reporting** to the CTO Dashboard
+
+### Shared Resources
+
+The harness bundles:
+
+- **88 skills** (81 canonical + 7 new skills) shared across all tools
+- **6 subagents** for specialized tasks
+- **Workflow packages** (CI/CD, review, quality checks)
+- **Ticket templates** (WOW, OPT, WOMONO, GLOBAL)
+- **TUI dashboard components** for terminal UI
+- **Multi-format documentation** (MDX, HTML, PDF, JSON)
+- **Mermaid TUI renderer** (ASCII art diagrams)
+
+### Why Use the Harness
+
+- **Interface-agnostic**: Core logic works everywhere
+- **Zero duplication**: One codebase, infinite frontends
+- **Easy updates**: `ai-harness --update` pulls the latest from upstream
+- **GNU Stow ready**: Symlink-based installation for clean git updates
+
+See [AI Engineering Harness Tutorial](docs/packages/@aiengineeringharness/README-HARNESS.md) for step-by-step instructions on utilizing the agents, commands, and skills.
+
+---
+
+## 🚀 Quick Start
+
+### 1. Install the Harness CLI
+
+```bash
+deno install -Agf -n ai-harness \
+  https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts
+```
+
+### 2. Install Per Tool (pick what you use)
+
+```bash
+ai-harness --tool=opencode        # OpenCode
+ai-harness --tool=claude          # Claude Code
+ai-harness --tool=pi              # Pi
+ai-harness --tool=gemini          # Gemini CLI
+ai-harness --tool=codex           # Codex
+ai-harness --tool=antigravity     # Antigravity
+ai-harness --tool=wocoder         # Wo Coder
+ai-harness --tool=all --yes       # All seven
+```
+
+### 3. Update All Installed Skills
+
+```bash
+ai-harness --update
+```
+
+Re-runs the installer for all seven tools non-interactively, applying upstream changes to existing files.
+
+### 4. Uninstall
+
+```bash
+ai-harness --uninstall=claude      # Remove a single tool
+ai-harness --uninstall=all         # Remove all tools
+```
+
+Removes installed files from `~/.claude/`, `~/.config/opencode/`, etc. Leaves user config (settings.json, .mcp.json) untouched.
+
+### 5. Report Skills to Dashboard
+
+```bash
+ai-harness --report-skills
+```
+
+This scans your installed skills and POSTs to the CTO Dashboard at https://cto.wayof.work
+
+### 6. Sync Canonical Skills (after upstream changes)
+
+```bash
+ai-harness --sync-docs            # Sync canonical → tool copies
+ai-harness --sync-docs --check    # Preview changes first
+```
+
+---
+
+## 📊 CTO Dashboard
+
+The dashboard at https://cto.wayof.work provides:
+
+- **Overview** — Ticket stats, velocity, blockers
+- **Tickets** — Full ticket management with filters and review queue
+- **Standup** — Daily team standup check-ins (yesterday/today/blockers)
+- **Skills** — Real-time skill health across all reported machines
+- **Ideas** — Prioritized idea board with voting
+- **Developers** — Developer workflow and assignment tracking
+- **Docs** — Architecture docs and decision records
+
+### Run Locally
+
+```bash
+cd ui
+pnpm dev
+```
+
+---
+
 ## 🎛️ Supported Tools
 
 | Tool | Install | Config Dir | Naming | Location |
@@ -102,7 +213,7 @@ ai-harness --report-skills
 ### 📋 Installation Commands Reference
 
 | Command | Description |
-|---------|-------------|
+|---------|-----|
 | `ai-harness` | Initialize harness on current machine |
 | `--tool=<tool>` | Install specific tool (opencode, claude, gemini, pi, codex, antigravity, wocoder) |
 | `--tool=all` | Install all tools |
@@ -117,166 +228,142 @@ ai-harness --report-skills
 
 ---
 
-## 📦 @wayofmono NPM Packages (Complete List)
+## 📦 Getting Started
 
-### Published at npmjs.com
+### Zero-Pollution Installation
 
-#### 1. @wayofmono/wo-ai
+WayOfMono agents are project-local and folder-contained. We believe your coding assistant should live where your code lives.
 
-**Multi-Provider LLM API**
+#### Project-Local Agents
 
-- **Description**: Unified interface for OpenAI, Anthropic (Claude), and Google Gemini APIs
-- **Features**:
-  - Multi-provider switching
-  - Context management
-  - Token counting
-  - Rate limiting
-  - Error handling
-- **Usage**:
-  ```bash
-  npm install @wayofmono/wo-ai
-  
-  // Use in code
-  const ai = require('@wayofmono/wo-ai');
-  const response = await ai.ask('Explain this code', { model: 'gpt-4' });
-  ```
+- **wocode**: High-performance coding assistant for engineering tasks.
+- **wouser**: General-purpose agent CLI and SDK for app integration.
 
-#### 2. @wayofmono/wo-tui
+#### Contained Environment (.wo/)
 
-**High-Performance Terminal UI Library**
+Everything the agent needs is stored in a project-local `.wo/` folder:
 
-- **Description**: TUI components for command-line applications
-- **Features**:
-  - ASCII art rendering
-  - Real-time updates
-  - Keyboard navigation
-  - Color themes
-- **Usage**:
-  ```bash
-  npm install @wayofmono/wo-tui
-  ```
+- Zero Global Pollution: No messy files in your home directory or global PATH.
+- Isolated Context: Each project gets its own sessions, tools, and configurations.
+- Portable Setup: Your agent configuration stays with the project.
+- Flawless Resolution: Internal dependencies are resolved locally within the package dist/ folders.
 
-#### 3. @wayofmono/wo-agent-core
+The `--init` command sets up the following local files:
 
-**Central Agent Runtime & Extension API**
+- **models.json**: Configure your LLM providers (Ollama, OpenAI, Gemini, etc.). Defaults to Ollama with qwen3.5:9b. Customize this file to add your own API keys and local models.
+- **settings.json**: Customize agent behavior and set your default provider/model. Edit this to change themes, quiet mode, or default model cycling.
+- **Launcher Script**: A local `./wouser` or `./wocode` script for one-tap agent startup.
 
-- **Description**: Core runtime for WayOfMono agents
-- **Features**:
-  - Agent state machine
-  - Extension points
-  - Plugin API
-  - Configuration management
-- **Architecture**:
-  ```typescript
-  @wayofmono/wo-agent-core/
-  ├── runtime/
-  ├── agent/
-  ├── extension/
-  └── config/
-  ```
+#### 🎭 Custom Personas (AGENTS.md)
 
-#### 4. @wayofmono/wo-agent
+To change the agent's persona, instructions, or behavior for a project, simply create an AGENTS.md file in your project root.
 
-**General-Purpose Agent SDK & CLI**
+- The agent automatically discovers this file on startup.
+- You can use it to tell the agent it is a "Senior React Developer," a "Security Auditor," or any other specialized role.
 
-- **Description**: Universal agent SDK for multi-provider AI
-- **Features**:
-  - CLI tool `wouser`
-  - SDK for embedding in projects
-  - Skill loading
-  - Telemetry reporting
-- **Usage**:
-  ```bash
-  npm install -g @wayofmono/wo-agent
-  
-  // Use wouser CLI
-  wouser --help
-  wouser run --skill=backlog-groomer
-  ```
+---
 
-#### 5. @wayofmono/wo-coding-agent
+## 💻 Coding Assistant (wocode)
 
-**CLI Coding Agent**
+For automated engineering and refactoring.
 
-- **Description**: Specialized coding agent CLI
-- **Features**:
-  - Code understanding
-  - File operations
-  - Git integration
-  - Context loading
-- **Usage**:
-  ```bash
-  npm install -g @wayofmono/wo-coding-agent
-  wocode --help
-  ```
+### npm (Node's default package manager)
 
-#### 6. @wayofmono/wo-skill-docs
+```bash
+npm install --save-dev @wayofmono/wo-coding-agent
+npx wocode --init
+./wocode
+```
 
-**Multi-format Documentation Expert**
+### pnpm (faster, disk-efficient alternative)
 
-- **Description**: Documentation across multiple formats
-- **Features**:
-  - MDX export
-  - HTML generation
-  - PDF export
-  - JSON API
-- **Formats Supported**: MDX, HTML, PDF, JSON, Markdown
+```bash
+pnpm add -D @wayofmono/wo-coding-agent
+pnpm wocode --init
+./wocode
+```
 
-#### 7. @wayofmono/wo-mermaid
+### 🤖 User Assistant (wouser)
 
-**TUI Mermaid Renderer**
+For general use and SDK integration.
 
-- **Description**: Ascii art diagrams from Mermaid syntax
-- **Features**:
-  - Graph rendering
-  - Sequence diagrams
-  - Gantt charts
-  - Class diagrams
-- **Output**: ASCII art / SVG / PNG
+### npm (Node's default package manager)
 
-#### 8. @wayofmono/web-access
+```bash
+npm install @wayofmono/wo-agent
+npx wouser --init
+./wouser
+```
 
-**Web Search & URL Fetching**
+### pnpm (faster, disk-efficient alternative)
 
-- **Description**: Web access utilities
-- **Features**:
-  - Search API integration
-  - URL fetching
-  - GitHub cloning
-  - Markdown preview
-- **Capabilities**:
-  - Google/Bing search
-  - GitHub/GitLab APIs
-  - URL scraping
-  - Markdown rendering
+```bash
+pnpm add @wayofmono/wo-agent
+pnpm wouser --init
+./wouser
+```
 
-#### 9. @wayofmono/lens
+---
 
-**Codebase Analysis & Safety Engine**
+## 💡 Understanding Dev-Dependencies (`--save-dev` / `-D`)
 
-- **Description**: Comprehensive codebase analysis
-- **Features**:
-  - Dependency scanning
-  - Vulnerability detection
-  - Code quality metrics
-  - Security audits
-- **Integration**: CI/CD pipelines
+When you run `npm install --save-dev` or `pnpm add -D`, you are telling the package manager to treat the package as a Development Dependency. Here is exactly what that means and what it does:
 
-#### 10. @wayofmono/wo-web-ui
+### 1. Conceptual Meaning: "The Hammer vs. The House"
 
-**Web UI Components (React 19)**
+Think of your application as a house you are building.
 
-- **Description**: React 19 components for web interfaces
-- **Features**:
-  - Dashboard widgets
-  - Ticket cards
-  - Skill metrics
-  - Phase trackers
-- **Usage**:
-  ```jsx
-  import { TicketCard } from '@wayofmono/wo-web-ui';
-  <TicketCard ticket={ticket} />
-  ```
+- **dependencies**: These are the materials (bricks, glass, wires). They stay in the house forever. Your app cannot "live" without them.
+- **devDependencies (`--save-dev` / `-D`)**: These are the tools (hammers, saws, blueprints). You need them to build the house, but you don't leave them inside the walls when the owner moves in.
+
+### 2. What it does in your project:
+
+- **package.json**: It places the package under the "devDependencies" key instead of "dependencies".
+- **Production Deployment**: When you deploy your app to a server and run `pnpm install --prod`, none of the dev-dependencies are installed. This makes your deployment faster and keeps your production environment much smaller and more secure.
+- **Bundle Size**: If you are building a web application, tools like wocode will never be accidentally bundled into the code your users download.
+
+### 3. Why wocode must be a dev-dependency:
+
+The Coding Assistant (wocode) is a tool for you, the engineer. It helps you write code, refactor files, and analyze the architecture. Your end-users never interact with it, and your application doesn't need it to function. Installing it with `--save-dev` or `-D` ensures it stays in your "toolbox" and out of your "finished product."
+
+### 4. Why wouser is different:
+
+The User Assistant (wouser) is an SDK. If you are building an AI chatbot or a feature that uses the agent's logic inside your app, your app needs that code to run in the real world. Therefore, it is installed as a standard dependency so it's always available, even in production.
+
+---
+
+## 📦 Wo Packages
+
+All Wo packages are under the `@wayofmono` scope. Two install methods:
+
+### 1. Install from npm (works now)
+
+```bash
+npm install @wayofmono/wo-agent          # wouser (SDK)
+npm install @wayofmono/wo-coding-agent   # wocode (CLI)
+```
+
+### 2. Install from cloned repo (alternative — no npm needed)
+
+```bash
+git clone https://github.com/Way-Of/wayofmono.git ~/wayofmono
+pnpm add ~/wayofmono/packages/@wayofmono/wo-agent
+```
+
+#### Published at https://www.npmjs.com/settings/wayofmono/packages
+
+| Package | Description | Install Command |
+|---------|-------------|-----------------|
+| `@wayofmono/wo-ai` | Multi-Provider LLM API (OpenAI, Anthropic, Gemini) | `npm install @wayofmono/wo-ai` |
+| `@wayofmono/wo-tui` | High-Performance Terminal UI Library | `npm install @wayofmono/wo-tui` |
+| `@wayofmono/wo-agent-core` | Central Agent Runtime & Extension API | `npm install @wayofmono/wo-agent-core` |
+| `@wayofmono/wo-agent` | General-Purpose Agent SDK & CLI (wouser) | `npm install @wayofmono/wo-agent` |
+| `@wayofmono/wo-coding-agent` | CLI Coding Agent (wocode) | `npm install @wayofmono/wo-coding-agent` |
+| `@wayofmono/wo-skill-docs` | Multi-format Documentation Expert | `npm install @wayofmono/wo-skill-docs` |
+| `@wayofmono/wo-mermaid` | TUI Mermaid Renderer (ASCII art) | `npm install @wayofmono/wo-mermaid` |
+| `@wayofmono/web-access` | Web search, URL fetching, GitHub cloning, PDF/YouTube/video extraction | `npm install @wayofmono/web-access` |
+| `@wayofmono/lens` | Codebase Analysis & Safety Engine | `npm install @wayofmono/lens` |
+| `@wayofmono/wo-web-ui` | Web UI Components (React 19) | `npm install @wayofmono/wo-web-ui` |
 
 ---
 
@@ -311,7 +398,7 @@ thoughts/
 ### Built-in Slash Commands
 
 | Command | Description |
-|---------|-------------|
+|---------|-----|
 | `/init_harness` | Initialize harness (creates project memory + `thoughts/`) |
 | `/create_plan` | Generate implementation plan from ticket |
 | `/implement_plan` | Execute approved plan phase-by-phase |
@@ -348,7 +435,7 @@ pnpm dev
 ### API Endpoints
 
 | Endpoint | Method | Description |
-|----------|--------|-------------|
+|------|------|-------|
 | `/api/health` | GET | Health check |
 | `/api/tickets` | GET | List all tickets |
 | `/api/tickets/:id` | GET | Get ticket by ID |
@@ -364,7 +451,7 @@ pnpm dev
 ## 🔧 Pipeline Tools
 
 | Tool | Location | Purpose |
-|------|----------|---------|
+|------|------|-------|
 | `docs-sync.ts` | `packages/@aiengineeringharness/scripts/` | Sync canonical skills → per-tool copies with naming/tool-name translation |
 | `compliance-check.ts` | `packages/@aiengineeringharness/scripts/` | Validate frontmatter, tool name casing, naming conventions across 553+ files |
 | `migrate-tickets.ts` | `packages/@aiengineeringharness/scripts/` | Migrate ticket namespaces (PROJ → WOMONO) |
@@ -449,7 +536,7 @@ podman-compose logs -f
 ### Workflows
 
 | Workflow | Trigger | Checks |
-|----------|---------|--------|
+|------|------|-------|
 | **CI** | Push/PR to main | Build, typecheck, test, canonical skill sync check |
 | **CD** | Tag push `v*` | Publish npm packages |
 
@@ -474,7 +561,7 @@ ai-harness --sync-docs
 ## 🔗 External Integrations
 
 | Project | Description | Integration |
-|---------|-------------|-------------|
+|---------|-----|-----------|
 | **Way of Pi** | AI-augmented engineering platform | Uses `@wayofmono/wo-agent` as backend SDK |
 | **Way of Work** | AI-powered productivity platform | Uses `@wayofmono/wo-agent` as user agent SDK |
 
@@ -592,7 +679,7 @@ ai-harness --sync-docs --check
 ## 🌐 Multi-Platform Support
 
 | Platform | Deno Required | Install Command | Support Level |
-|----------|--------------|-----------------|---------------|
+|------|------|------|------|
 | **Windows** | Yes (`irm` + `iex`) | `deno install -Agf -n ai-harness ...` | Full |
 | **Linux** | Yes | `deno install -Agf -n ai-harness ...` | Full |
 | **macOS** | Yes | `deno install -Agf -n ai-harness ...` | Full |
@@ -634,122 +721,6 @@ MIT License - See [LICENSE](./LICENSE) for details.
 - **6** subagents
 - **553+** files validated
 - **10** NPM packages published
-
----
-🚀 Getting Started
-
-Packages install to node_modules/ in your project (not globally). Binaries land in node_modules/.bin/ and are accessed via npx/pnpm without any global setup.
-💻 Coding Assistant (wocode)
-
-For automated engineering and refactoring.
-
-npm (Node's default package manager):
-
-npm install --save-dev @wayofmono/wo-coding-agent
-npx wocode --init
-./wocode
-
-pnpm (faster, disk-efficient alternative):
-
-pnpm add -D @wayofmono/wo-coding-agent
-pnpm wocode --init
-./wocode
-
-🤖 User Assistant (wouser)
-
-For general use and SDK integration.
-
-npm (Node's default package manager):
-
-npm install @wayofmono/wo-agent
-npx wouser --init
-./wouser
-
-pnpm (faster, disk-efficient alternative):
-
-pnpm add @wayofmono/wo-agent
-pnpm wouser --init
-./wouser
-
-💡 Understanding Dev-Dependencies (--save-dev / -D)
-
-When you run npm install --save-dev or pnpm add -D, you are telling the package manager to treat the package as a Development Dependency. Here is exactly what that means and what it does:
-1. Conceptual Meaning: "The Hammer vs. The House"
-
-Think of your application as a house you are building.
-
-    dependencies: These are the materials (bricks, glass, wires). They stay in the house forever. Your app cannot "live" without them.
-    devDependencies (--save-dev / -D): These are the tools (hammers, saws, blueprints). You need them to build the house, but you don't leave them inside the walls when the owner moves in.
-
-2. What it does in your project:
-
-    package.json: It places the package under the "devDependencies" key instead of "dependencies".
-    Production Deployment: When you deploy your app to a server and run pnpm install --prod, none of the dev-dependencies are installed. This makes your deployment faster and keeps your production environment much smaller and more secure.
-    Bundle Size: If you are building a web application, tools like wocode will never be accidentally bundled into the code your users download.
-
-3. Why wocode must be a dev-dependency:
-
-The Coding Assistant (wocode) is a tool for you, the engineer. It helps you write code, refactor files, and analyze the architecture. Your end-users never interact with it, and your application doesn't need it to function. Installing it with --save-dev or -D ensures it stays in your "toolbox" and out of your "finished product."
-4. Why wouser is different:
-
-The User Assistant (wouser) is an SDK. If you are building an AI chatbot or a feature that uses the agent's logic inside your app, your app needs that code to run in the real world. Therefore, it is installed as a standard dependency so it's always available, even in production.
-📦 Zero-Pollution Installation
-
-WayOfMono agents are project-local and folder-contained. We believe your coding assistant should live where your code lives.
-Project-Local Agents
-
-    wocode: High-performance coding assistant for engineering tasks.
-    wouser: General-purpose agent CLI and SDK for app integration.
-
-Contained Environment (.wo/)
-
-Everything the agent needs is stored in a project-local .wo/ folder:
-
-    Zero Global Pollution: No messy files in your home directory or global PATH.
-    Isolated Context: Each project gets its own sessions, tools, and configurations.
-    Portable Setup: Your agent configuration stays with the project.
-    Flawless Resolution: Internal dependencies are resolved locally within the package dist/ folders.
-
-The --init command sets up the following local files:
-
-    models.json: Configure your LLM providers (Ollama, OpenAI, Gemini, etc.). Defaults to Ollama with qwen3.5:9b. Customize this file to add your own API keys and local models.
-    settings.json: Customize agent behavior and set your default provider/model. Edit this to change themes, quiet mode, or default model cycling.
-    Launcher Script: A local ./wouser or ./wocode script for one-tap agent startup.
-
-🎭 Custom Personas (AGENTS.md)
-
-To change the agent's persona, instructions, or behavior for a project, simply create an AGENTS.md file in your project root.
-
-    The agent automatically discovers this file on startup.
-    You can use it to tell the agent it is a "Senior React Developer," a "Security Auditor," or any other specialized role.
-
-📦 Wo Packages
-
-All Wo packages are under the @wayofmono scope. Two install methods:
-Install from npm (works now)
-
-npm install @wayofmono/wo-agent          # wouser (SDK)
-npm install @wayofmono/wo-coding-agent   # wocode (CLI)
-
-Install from cloned repo (alternative — no npm needed)
-
-git clone https://github.com/Way-Of/wayofmono.git ~/wayofmono
-pnpm add ~/wayofmono/packages/@wayofmono/wo-agent
-
-Packages
-
-All published at https://www.npmjs.com/settings/wayofmono/packages
-Package 	Description 	npm
-@wayofmono/wo-ai 	Multi-Provider LLM API (OpenAI, Anthropic, Gemini) 	npm install @wayofmono/wo-ai
-@wayofmono/wo-tui 	High-Performance Terminal UI Library 	npm install @wayofmono/wo-tui
-@wayofmono/wo-agent-core 	Central Agent Runtime & Extension API 	npm install @wayofmono/wo-agent-core
-@wayofmono/wo-agent 	General-Purpose Agent SDK & CLI (wouser) 	npm install @wayofmono/wo-agent
-@wayofmono/wo-coding-agent 	CLI Coding Agent (wocode) 	npm install @wayofmono/wo-coding-agent
-@wayofmono/wo-skill-docs 	Multi-format Documentation Expert 	npm install @wayofmono/wo-skill-docs
-@wayofmono/wo-mermaid 	TUI Mermaid Renderer (ASCII art) 	npm install @wayofmono/wo-mermaid
-@wayofmono/web-access 	Web search, URL fetching, GitHub cloning, PDF/YouTube/video extraction 	npm install @wayofmono/web-access
-@wayofmono/lens 	Codebase Analysis & Safety Engine 	npm install @wayofmono/lens
-@wayofmono/wo-web-ui 	Web UI Components (React 19) 	npm install @wayofmono/wo-web-ui
 
 ---
 
