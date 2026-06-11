@@ -41,16 +41,20 @@ export interface Ticket {
   linkedDocs: string[];
 }
 
+export type DocType = 'architecture' | 'decision' | 'guide' | 'reference' | 'readme';
+export type DocTypeLabel = 'Architecture' | 'ADR' | 'Guide' | 'Reference' | 'README';
+
 export interface ProjectDoc {
   id: string;
   title: string;
-  type: 'architecture' | 'decision' | 'guide' | 'reference';
+  type: DocType;
   project: ProjectSlug;
   path: string;
   updated: string;
   author: string;
-  summary: string;
-  body: string;
+  summary?: string;
+  body?: string;
+  icon?: React.ElementType | null; // Optional icon for direct access, typeConfig takes precedence
 }
 
 export interface Project {
