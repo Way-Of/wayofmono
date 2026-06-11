@@ -2,30 +2,38 @@
 >
 > _Auto-generated from canonical format. Do not edit directly._
 
-
 # Ticket Context Guide
 
 ## Overview
 
-This skill helps ensure that all work performed is explicitly linked to an approved ticket within the project's ticketing system. By requiring a ticket association, it reinforces the mandatory project workflow and prevents the creation of untracked or "random" work.
+This skill ensures all work is linked to an approved ticket from the correct namespace, following WoM naming conventions and production-ready standards.
+
+## Ticket Namespaces
+
+| Prefix | Project | Storage |
+|--------|---------|---------|
+| WOMONO-XXX | WayOfMono | `thoughts/wayofmono/shared/tickets/` |
+| WOW-XXX | WayOfWork | `thoughts/wow/shared/tickets/` |
+| OPT-XXX | Opticat | `thoughts/opticat/shared/tickets/` |
 
 ## Workflow
 
-1.  **Activation**: This skill should be activated by the agent when starting any new task, feature implementation, or bug fix.
-2.  **Ticket ID Prompt**: Upon activation, the skill will prompt the user (or the agent itself, if in an autonomous context) to provide the relevant ticket ID in the `WOW-XXX-description.md` format.
-3.  **Context Storage**: The provided ticket ID will be stored as a session-specific context. All subsequent actions within that session are implicitly associated with this ticket.
-4.  **Compliance Reminder**: The agent is reminded that all work must align with the objectives and acceptance criteria defined in the referenced ticket.
+1. **Activation**: Activate when starting any new task, feature, or bug fix.
+2. **Ticket ID Prompt**: Ask the user for the ticket ID in `<PREFIX>-<NNN>` format (e.g., `WOMONO-051`, `WOW-001`, `OPT-003`).
+3. **Load Context**: Read the ticket from `thoughts/<project>/shared/tickets/<PREFIX>-<NNN>-*.md`.
+4. **Production-Ready Standard**: Every ticket's acceptance criteria must include no mock data in application code, proper error handling, observability, security, edge case coverage, and tests for failure modes. If missing, flag it.
+5. **Compliance Reminder**: All work must align with the ticket's AC and WoM best practices. If any AC would be violated, stop and clarify.
 
 ## Usage
 
-To use this skill:
 *   When beginning a new task, activate this skill.
-*   The skill will prompt you to enter the ticket ID.
-*   Enter the ticket ID (e.g., `WOW-001-fix-routing-imports`) corresponding to the task you are working on.
+*   Provide a ticket ID like `WOMONO-051`, `WOW-001`, or `OPT-003`.
+*   The skill loads the full ticket context from `thoughts/<project>/shared/tickets/`.
 
 ## Rules
 
 *   All code changes, feature implementations, and bug fixes **must** be associated with an existing ticket.
-*   Refer to the `thoughts/shared/tickets/WOW-*.md` files for detailed ticket information and requirements.
-*   The `backlog-groomer` skill is responsible for creating and maintaining these tickets. This skill helps ensure adherence to that process.
+*   Tickets are stored at `thoughts/<project-slug>/shared/tickets/<PREFIX>-<NNN>-<DESCRIPTION>.md`.
+*   New tickets follow the naming convention and template in `thoughts/shared/tickets/ticket-template.md`.
+*   The `ticket_manager` skill has full lifecycle management. This skill ensures adherence to the process.
 

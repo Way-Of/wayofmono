@@ -21,7 +21,18 @@ ls thoughts/wayofmono/docs/best-practices/
 
 If you're working on databases, read `database-conventions.md`. If you're deploying, read `hosting-standards.md`. Apply the rules in each doc to your implementation.
 
-### 2. Apply During Implementation
+### 2. Production-Ready Mandate
+
+All code written must be **production-ready, enterprise grade**:
+
+- **No mock data** — every endpoint, query, and component must work against real data sources. Stubs/mocks are only allowed in test suites, never in application code.
+- **Error handling** — every external call, DB query, and user input must be validated and handled. No `unwrap()`, no bare `catch`, no silent failures.
+- **Observability** — add structured logging, metrics, or traces for all non-trivial operations.
+- **Security** — follow `wow_access_control` rules: RBAC, Economics Shield, audit logging.
+- **Edge cases** — handle empty states, timeouts, rate limits, and malformed input.
+- **Testing** — include tests that cover failure modes, not just the happy path.
+
+### 3. Apply During Implementation
 
 Keep the practices open in context as you code. For each decision point:
 - Database schema? Check database conventions

@@ -27,6 +27,7 @@ For each practice doc, systematically check the codebase for compliance:
 - **Hosting standards**: Check Dockerfiles, compose files, deployment scripts
 - **Architecture decisions**: Check module structure, dependency injection patterns
 - **Code style**: Check lint rules, formatting, naming conventions
+- **Production readiness**: Flag any mock data in application code, missing error handling, missing observability, insecure patterns, or untested failure modes
 
 Use `grep`, `glob`, and codebase reading tools to search for violations.
 
