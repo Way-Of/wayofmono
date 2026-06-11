@@ -181,7 +181,7 @@
           "description": "Debug K8s skill",
           "files": [
             {
-              "src": "claude/skills/debug-k8s/SKILL.md",
+              "src": "claude/skills/debug_k8s/SKILL.md",
               "dest": "skills/debug-k8s/SKILL.md"
             }
           ]
