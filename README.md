@@ -1,6 +1,6 @@
 # WayOfMono (Wo)
 
-The ultimate monorepo consolidation for high-performance coding agents. WayOfMono provides a shared **AI Engineering Harness** — 88 battle-tested skills (81 canonical + 7 new skills), 6 subagents, and workflows spanning 7 AI coding tools — plus a **CTO Dashboard** with telemetry, standups, tickets, and review queues.
+The ultimate monorepo consolidation for high-performance coding agents. WayOfMono provides a shared Intelligence Backend (Packages, Tools, Memory) that serves five distinct Agent Frontends, with Wo (Way of Coding) as our primary synthesized interface.
 
 ---
 
@@ -134,6 +134,25 @@ pnpm dev
 ```
 ./
 ├── packages/
+│   ├── @aiengineeringharness/   # Agent harness (agents, commands, skills, extensions)
+│   │   ├── opencode/            → ~/.config/opencode/
+│   │   ├── claude/              → ~/.claude/
+│   │   ├── gemini/              → ~/.gemini/
+│   │   ├── pi/                  → ~/.pi/agent/
+│   │   └── wocoder/             → ~/.wocoder/
+│   └── @wayofmono/*             # Wo npm packages
+├── thoughts/                     # Context engineering artifacts
+├── docs/                         # Monorepo documentation
+├── scripts/                      # Utility scripts
+├── test/                         # Integration tests
+├── ref/                          # Historical reference & legacy artifacts
+├── planning/                     # Planning documents
+└── pnpm-workspace.yaml
+```
+
+---
+./
+├── packages/
 │   ├── @aiengineeringharness/   # AI Engineering Harness (Core Package)
 │   │   ├── scripts/             # Pipeline tools (docs-sync, compliance, migrate)
 │   │   ├── opencode/            → ~/.config/opencode/
@@ -169,6 +188,15 @@ pnpm dev
 ├── CONTRIBUTING.md              # Contribution guidelines
 └── README.md                    # This file
 ```
+
+---
+
+🦙 Prerequisites: Ollama
+
+WayOfMono defaults to using Ollama for local-first AI. Ensure it is installed and running:
+
+    Install: curl -fsSL https://ollama.com/install.sh | sh (or download from ollama.com).
+    Pull Model: ollama pull qwen3.5:9b
 
 ---
 
@@ -625,6 +653,94 @@ Regular scanning with:
 - Dependency check
 - Vulnerability scanner
 - Code quality tools
+
+---
+
+📚 Context Engineering with f-rr-d (förråd)
+
+WayOfMono uses f-rr-d (förråd) — a centralized thoughts repository at github.com/Way-Of/f-rr-d — for tickets, plans, research, and personal TODOs across all Way-Of projects.
+
+How it works:
+
+    Clone on init: ai-harness --init clones f-rr-d into thoughts/
+    Project-scoped: WayOfMono tickets live in thoughts/wayofmono/shared/tickets/ (WOMONO-XXX namespace)
+    Multi-project: WoW (thoughts/wow/, WOW-XXX) and Opticat (thoughts/opticat/, OPT-XXX) share the same repo
+    Pull before read, push after write: All harness skills auto-sync with f-rr-d
+    Branch naming: <project-slug>/<namespace>/<ticket-id>-<short-desc> (e.g., wayofmono/womono/WOMONO-001-centralized-repo)
+
+Local structure after clone:
+
+thoughts/
+├── global/                    # Cross-project concerns
+├── wayofmono/                 # WayOfMono (WOMONO-XXX)
+│   ├── global/
+│   ├── shared/tickets/        # WOMONO-XXX tickets
+│   ├── shared/plans/
+│   ├── shared/research/
+│   └── <developer>/
+├── wow/                       # WayOfWork (WOW-XXX)
+└── opticat/                   # Opticat (OPT-XXX)
+
+Config: .wo/config/harness.json stores f_rrd_url and project_slug for the harness.
+
+---
+
+### Prerequisites
+
+    Deno — curl -fsSL https://deno.land/install.sh | sh
+    GNU Stow — sudo apt install stow (or brew install stow)
+
+---
+
+### Quick Install (for agents — one command)
+
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=all --yes
+
+---
+
+### CLI Install (one-time setup)
+
+Register the CLI:
+
+deno install -Agf -n ai-harness \
+  https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts
+
+Then install configs:
+
+ai-harness --tool=claude          # Claude Code
+ai-harness --tool=opencode        # OpenCode
+ai-harness --tool=gemini          # Gemini CLI
+ai-harness --tool=pi              # Pi
+ai-harness --tool=wocoder         # Wo Coder
+ai-harness --tool=antigravity     # Antigravity
+ai-harness --tool=all             # All six
+
+---
+
+### Advanced options:
+
+ai-harness --tool=claude --dry-run        # Preview
+ai-harness --tool=claude --interactive    # Pick components
+ai-harness --tool=claude --skill=agents   # Specific component
+ai-harness --help                         # Full usage
+
+---
+
+### Repo Mode (GNU Stow)
+
+For symlink-based installation (easier git pull updates):
+
+./packages/@aiengineeringharness/setup.sh claude             # Claude Code → ~/.claude/
+./packages/@aiengineeringharness/setup.sh opencode           # OpenCode → ~/.config/opencode/
+./packages/@aiengineeringharness/setup.sh gemini              # Gemini CLI → ~/.gemini/
+./packages/@aiengineeringharness/setup.sh pi                  # Pi → ~/.pi/agent/
+./packages/@aiengineeringharness/setup.sh wocoder             # Wo Coder → ~/.wocoder/
+./packages/@aiengineeringharness/setup.sh antigravity         # Antigravity → ~/.antigravity/
+./packages/@aiengineeringharness/setup.sh all                  # All six
+
+./packages/@aiengineeringharness/setup.sh <tool> --dry-run   # Preview
+./packages/@aiengineeringharness/setup.sh <tool> --restow    # Update after git pull
+./packages/@aiengineeringharness/setup.sh <tool> --delete     # Remove symlinks
 
 ---
 
