@@ -190,7 +190,7 @@
           "description": "Experimental Pr Workflow skill",
           "files": [
             {
-              "src": "claude/skills/experimental-pr-workflow/SKILL.md",
+              "src": "claude/skills/experimental_pr_workflow/SKILL.md",
               "dest": "skills/experimental-pr-workflow/SKILL.md"
             }
           ]
@@ -199,17 +199,8 @@
           "description": "Git Commit Helper skill",
           "files": [
             {
-              "src": "claude/skills/git-commit-helper/SKILL.md",
+              "src": "claude/skills/git_commit_helper/SKILL.md",
               "dest": "skills/git-commit-helper/SKILL.md"
-            }
-          ]
-        },
-        "skill/github-tracker": {
-          "description": "Github Tracker skill",
-          "files": [
-            {
-              "src": "claude/skills/github-tracker/SKILL.md",
-              "dest": "skills/github-tracker/SKILL.md"
             }
           ]
         },
@@ -226,11 +217,11 @@
           "description": "Improve Codebase Architecture skill",
           "files": [
             {
-              "src": "claude/skills/improve-codebase-architecture/REFERENCE.md",
+              "src": "claude/skills/improve_codebase_architecture/REFERENCE.md",
               "dest": "skills/improve-codebase-architecture/REFERENCE.md"
             },
             {
-              "src": "claude/skills/improve-codebase-architecture/SKILL.md",
+              "src": "claude/skills/improve_codebase_architecture/SKILL.md",
               "dest": "skills/improve-codebase-architecture/SKILL.md"
             }
           ]
@@ -257,19 +248,19 @@
           "description": "Observability Driven Development skill",
           "files": [
             {
-              "src": "claude/skills/observability-driven-development/SKILL.md",
+              "src": "claude/skills/observability_driven_development/SKILL.md",
               "dest": "skills/observability-driven-development/SKILL.md"
             },
             {
-              "src": "claude/skills/observability-driven-development/local-setup.md",
+              "src": "claude/skills/observability_driven_development/local-setup.md",
               "dest": "skills/observability-driven-development/local-setup.md"
             },
             {
-              "src": "claude/skills/observability-driven-development/loop.md",
+              "src": "claude/skills/observability_driven_development/loop.md",
               "dest": "skills/observability-driven-development/loop.md"
             },
             {
-              "src": "claude/skills/observability-driven-development/narrative.md",
+              "src": "claude/skills/observability_driven_development/narrative.md",
               "dest": "skills/observability-driven-development/narrative.md"
             }
           ]
@@ -404,7 +395,7 @@
           "description": "Pr Description Generator skill",
           "files": [
             {
-              "src": "claude/skills/pr-description-generator/SKILL.md",
+              "src": "claude/skills/pr_description_generator/SKILL.md",
               "dest": "skills/pr-description-generator/SKILL.md"
             }
           ]
@@ -413,7 +404,7 @@
           "description": "Prd To Issues skill",
           "files": [
             {
-              "src": "claude/skills/prd-to-issues/SKILL.md",
+              "src": "claude/skills/prd_to_issues/SKILL.md",
               "dest": "skills/prd-to-issues/SKILL.md"
             }
           ]
@@ -487,7 +478,7 @@
           "description": "Write A Prd skill",
           "files": [
             {
-              "src": "claude/skills/write-a-prd/SKILL.md",
+              "src": "claude/skills/write_a_prd/SKILL.md",
               "dest": "skills/write-a-prd/SKILL.md"
             }
           ]
@@ -496,7 +487,7 @@
           "description": "Ticket Manager - manage tickets across all namespaces with full lifecycle",
           "files": [
             {
-              "src": "claude/skills/ticket-manager/SKILL.md",
+              "src": "claude/skills/ticket_manager/SKILL.md",
               "dest": "skills/ticket-manager/SKILL.md"
             }
           ]
@@ -505,7 +496,7 @@
           "description": "Team Setup - initialize and manage team configuration",
           "files": [
             {
-              "src": "claude/skills/team-setup/SKILL.md",
+              "src": "claude/skills/team_setup/SKILL.md",
               "dest": "skills/team-setup/SKILL.md"
             }
           ]
@@ -514,7 +505,7 @@
           "description": "Skill Auto-Update - auto-discover and sync skills across all frontends",
           "files": [
             {
-              "src": "claude/skills/skill-auto-update/SKILL.md",
+              "src": "claude/skills/skill_auto_update/SKILL.md",
               "dest": "skills/skill-auto-update/SKILL.md"
             }
           ]
@@ -523,7 +514,7 @@
           "description": "Auto-Ticket Creator - monitor and auto-create tickets from changes",
           "files": [
             {
-              "src": "claude/skills/auto-ticket-creator/SKILL.md",
+              "src": "claude/skills/auto_ticket_creator/SKILL.md",
               "dest": "skills/auto-ticket-creator/SKILL.md"
             }
           ]
@@ -532,7 +523,7 @@
           "description": "Docs Sync Updater - fetch latest docs and auto-update skill configs",
           "files": [
             {
-              "src": "claude/skills/docs-sync-updater/SKILL.md",
+              "src": "claude/skills/docs_sync_updater/SKILL.md",
               "dest": "skills/docs-sync-updater/SKILL.md"
             }
           ]
@@ -541,7 +532,7 @@
           "description": "CTO Dashboard - ticket overview, developer progress, review queue",
           "files": [
             {
-              "src": "claude/skills/cto-dashboard/SKILL.md",
+              "src": "claude/skills/cto_dashboard/SKILL.md",
               "dest": "skills/cto-dashboard/SKILL.md"
             }
           ]
@@ -550,7 +541,7 @@
           "description": "Skill Adapter - platform-specific skill loading and format adapters",
           "files": [
             {
-              "src": "claude/skills/skill-adapter/SKILL.md",
+              "src": "claude/skills/skill_adapter/SKILL.md",
               "dest": "skills/skill-adapter/SKILL.md"
             }
           ]
@@ -559,7 +550,7 @@
           "description": "Help Command - unified /help across all platform frontends",
           "files": [
             {
-              "src": "claude/skills/help-command/SKILL.md",
+              "src": "claude/skills/help_command/SKILL.md",
               "dest": "skills/help-command/SKILL.md"
             }
           ]
