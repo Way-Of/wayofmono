@@ -1,5 +1,5 @@
 ---
-name: experimental_pr_workflow
+name: experimental-pr-workflow
 description: Handles experimental features that lack proper ticketing by retroactively creating Linear tickets and PRs from commits. Utilizes `git` and `gh` commands via Gemini CLI's `run_shell_command` to formalize experimental work.
 allowed-tools: Read, Bash, Grep, glob, Write
 ---

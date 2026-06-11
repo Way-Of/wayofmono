@@ -1,5 +1,5 @@
 ---
-name: antigravity_tui
+name: antigravity-tui
 description: Antigravity TUI expert — knows all built-in components (Text, Box, Container, Markdown, Image, SelectList, SettingsList, BorderedLoader), custom components, overlays, keyboard input, widgets, footers, and custom editors. Use when the user wants to build Antigravity TUI components.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---

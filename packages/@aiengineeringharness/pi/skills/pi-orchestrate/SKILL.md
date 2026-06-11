@@ -1,5 +1,5 @@
 ---
-name: pi_orchestrate
+name: pi-orchestrate
 description: Pi build orchestrator — coordinates domain experts to research Pi documentation and build extensions, themes, skills, settings, prompt templates, and TUI components. Use when the user wants to build or modify Pi components.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch, Task
 ---

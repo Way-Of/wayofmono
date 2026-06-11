@@ -1,5 +1,5 @@
 ---
-name: pi_cli
+name: pi-cli
 description: Pi CLI expert — knows all command line arguments, flags, environment variables, subcommands, output modes, and non-interactive usage. Use when the user needs help running Pi from the command line.
 allowed-tools: Read, Bash, Grep, Glob, WebSearch
 ---

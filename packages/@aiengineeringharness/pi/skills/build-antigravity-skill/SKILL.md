@@ -1,5 +1,5 @@
 ---
-name: build_antigravity_skill
+name: build-antigravity-skill
 description: Antigravity skills expert — knows SKILL.md format, frontmatter fields, directory structure, validation rules, and skill command registration. Use when the user wants to create or modify Antigravity skills.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---

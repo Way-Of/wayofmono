@@ -1,5 +1,5 @@
 ---
-name: pi_prompts
+name: pi-prompts
 description: Pi prompt templates expert — knows the single-file .md format, frontmatter, positional arguments ($1, $@, ${@:N}), discovery locations, and /template invocation. Use when the user wants to create or modify Pi prompt templates.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ---

@@ -1,5 +1,5 @@
 ---
-name: otel_ottl
+name: otel-ottl
 description: >
   OTTL (OpenTelemetry Transformation Language) reference — syntax, contexts,
   common patterns (redaction, normalization, enrichment, filtering), error

@@ -1,5 +1,5 @@
 ---
-name: build_antigravity_extension
+name: build-antigravity-extension
 description: Antigravity extensions expert — knows how to build custom tools, event handlers, commands, shortcuts, state management, custom rendering, and tool overrides. Use when the user wants to create or modify Antigravity extensions.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---

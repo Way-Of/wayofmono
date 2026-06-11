@@ -1,5 +1,5 @@
 ---
-name: validate_telemetry
+name: validate-telemetry
 description: >
   Validate locally-emitted OpenTelemetry telemetry against a written narrative
   spec, or run a generic health check on the local OTel stack. Delegates to

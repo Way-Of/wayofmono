@@ -1,5 +1,5 @@
 ---
-name: antigravity_prompts
+name: antigravity-prompts
 description: Antigravity prompt templates expert — knows the single-file .md format, frontmatter, positional arguments ($1, $@, ${@:N}), discovery locations, and /template invocation. Use when the user wants to create or modify Antigravity prompt templates.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ---

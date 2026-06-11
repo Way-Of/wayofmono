@@ -1,5 +1,5 @@
 ---
-name: otel_instrument
+name: otel-instrument
 description: >
   OpenTelemetry orchestrator — auto-activates on observability, telemetry,
   tracing, metrics, logging, OTel SDK, Collector, semantic conventions, or

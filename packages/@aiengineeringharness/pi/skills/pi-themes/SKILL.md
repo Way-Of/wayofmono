@@ -1,5 +1,5 @@
 ---
-name: pi_themes
+name: pi-themes
 description: Pi themes expert — knows the JSON format, all 51 color tokens, vars system, hex/256-color values, hot reload, and theme distribution. Use when the user wants to create or modify Pi themes.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---

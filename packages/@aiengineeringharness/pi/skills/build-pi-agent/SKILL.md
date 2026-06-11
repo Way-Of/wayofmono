@@ -1,5 +1,5 @@
 ---
-name: build_pi_agent
+name: build-pi-agent
 description: Build Pi agent definitions — knows the .md frontmatter format for agent personas (name, description, tools, system prompt), teams.yaml structure, agent-team orchestration, and session management. Use when the user wants to create or modify Pi agent definitions.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ---

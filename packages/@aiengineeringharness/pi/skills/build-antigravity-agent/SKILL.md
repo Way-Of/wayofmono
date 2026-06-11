@@ -1,5 +1,5 @@
 ---
-name: build_antigravity_agent
+name: build-antigravity-agent
 description: Build Antigravity agent definitions — knows the .md frontmatter format for agent personas, dashboard soul.md presets, teams.yaml structure, CLI agent creation, and agent-team orchestration. Use when the user wants to create or modify Antigravity agent definitions.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ---

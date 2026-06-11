@@ -1,5 +1,5 @@
 ---
-name: build_claude_agent
+name: build-claude-agent
 description: Build Claude Code agent definitions — knows the Markdown (.md) frontmatter format for agent personas, subagent configuration, directory locations, and subagent invocation. Use when the user wants to create or modify Claude Code agent definitions.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ---

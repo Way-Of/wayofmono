@@ -1,5 +1,5 @@
 ---
-name: observability_driven_development
+name: observability-driven-development
 description: >
   Observability Driven Development (ODD) — design the trace before the feature.
   Auto-activates when the user wants to "drive with observability", "ODD",

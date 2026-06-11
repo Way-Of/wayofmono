@@ -1,5 +1,5 @@
 ---
-name: antigravity_themes
+name: antigravity-themes
 description: Antigravity themes expert — knows the JSON format, all 51 color tokens, vars system, hex/256-color values, hot reload, and theme distribution. Use when the user wants to create or modify Antigravity themes.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---

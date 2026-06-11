@@ -1,5 +1,5 @@
 ---
-name: build_claude_skill
+name: build-claude-skill
 description: Build Claude Code skills — knows SKILL.md format, frontmatter config flags, folder structure, validation parameters, and manual vs automatic invocation settings. Use when the user wants to create or modify Claude Code skills.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---

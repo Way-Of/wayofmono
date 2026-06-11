@@ -1,5 +1,5 @@
 ---
-name: otel_semantic_conventions
+name: otel-semantic-conventions
 description: >
   OpenTelemetry semantic conventions — attribute naming, placement across
   telemetry levels, stability/versioning, legacy→current migration,

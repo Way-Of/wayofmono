@@ -1,5 +1,5 @@
 ---
-name: wow_human_in_the_loop
+name: wow-human-in-the-loop
 description: Rules for implementing the WOW-010 Human-in-the-Loop constraint for AI-generated data changes. Use when writing agent prompts or backend tools that modify production data.
 ---
 
