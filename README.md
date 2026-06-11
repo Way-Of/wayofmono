@@ -67,7 +67,24 @@ ai-harness --tool=wocoder         # Wo Coder
 ai-harness --tool=all --yes       # All seven
 ```
 
-### 3. Report Skills to Dashboard
+### 3. Update All Installed Skills
+
+```bash
+ai-harness --update
+```
+
+Re-runs the installer for all seven tools non-interactively, applying upstream changes to existing files.
+
+### 4. Uninstall
+
+```bash
+ai-harness --uninstall=claude      # Remove a single tool
+ai-harness --uninstall=all         # Remove all tools
+```
+
+Removes installed files from `~/.claude/`, `~/.config/opencode/`, etc. Leaves user config (settings.json, .mcp.json) untouched.
+
+### 5. Report Skills to Dashboard
 
 ```bash
 ai-harness --report-skills
@@ -75,7 +92,7 @@ ai-harness --report-skills
 
 This scans your installed skills and POSTs to the CTO Dashboard at `https://cto.wayof.work`.
 
-### 4. Sync Canonical Skills (after upstream updates)
+### 6. Sync Canonical Skills (after upstream changes)
 
 ```bash
 ai-harness --sync-docs            # Sync canonical → tool copies
