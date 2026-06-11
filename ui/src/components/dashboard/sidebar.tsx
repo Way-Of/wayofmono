@@ -14,6 +14,7 @@ import {
   LogOut,
   ChevronLeft,
   RefreshCw,
+  MessageSquareText,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -38,6 +39,7 @@ const navItems: { id: ViewMode; label: string; icon: React.ElementType; ctoOnly?
   { id: 'docs', label: 'Docs', icon: FileText },
   { id: 'my-view', label: 'My View', icon: User },
   { id: 'ideas', label: 'Ideas', icon: Lightbulb },
+  { id: 'standup', label: 'Standup', icon: MessageSquareText },
   { id: 'skills', label: 'Skills', icon: Cpu, reviewOnly: true },
 ];
 

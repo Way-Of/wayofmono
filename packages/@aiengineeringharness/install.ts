@@ -300,6 +300,8 @@ OPTIONS:
   --import-ref                          Import ref skills/agents to all platforms (WOMONO-016)
   --sync-docs                           Sync canonical skills to all tool skill directories
   --sync-docs --check                   Preview skill sync without making changes
+  --report-skills                       Report local skills to dashboard telemetry API
+  --report-url=<url>                    Dashboard URL for skill reporting (default: https://cto.wayof.work)
   --mode=repo                           Show clone+stow instructions instead
   --dest=<path>                         Clone destination for --mode=repo
   --help, -h                            Show this help
@@ -541,13 +543,83 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 // ---------------------------------------------------------------------------
 
 const args = parseArgs(Deno.args, {
-  string: ["tool", "skill", "dest", "mode"],
-  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs"],
+  string: ["tool", "skill", "dest", "mode", "report-url"],
+  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs", "report-skills"],
   alias: { h: "help", n: "dry-run", y: "yes", i: "interactive", l: "local" },
 });
 
 if (args.help) {
   printHelp();
+  Deno.exit(0);
+}
+
+// --report-skills: scan local skills and report to dashboard telemetry API
+if (args["report-skills"]) {
+  const reportUrl = (args["report-url"] as string) ?? "https://cto.wayof.work";
+  const homedir = Deno.env.get("HOME") ?? "";
+  const dirs = [
+    { name: "Pi", path: join(homedir, ".pi", "agent", "skills") },
+    { name: "OpenCode", path: join(homedir, ".config", "opencode", "skills") },
+    { name: "Gemini CLI", path: join(homedir, ".gemini", "skills") },
+    { name: "Codex", path: join(homedir, ".codex", "skills") },
+    { name: "Claude Code", path: join(homedir, ".claude", "skills") },
+    { name: "Antigravity", path: join(homedir, ".antigravity", "skills") },
+    { name: "Wo Coder", path: join(homedir, ".wocoder", "skills") },
+  ];
+
+  const clientId = new TextDecoder().decode(
+    await new Deno.Command("hostname", { args: [] }).output().then((r) => r.stdout),
+  ).trim() || "unknown";
+
+  console.log(`Reporting skills to ${reportUrl}/api/skills/report ...\n`);
+
+  for (const tool of dirs) {
+    const skills: Array<Record<string, unknown>> = [];
+    try {
+      for await (const entry of Deno.readDir(tool.path)) {
+        if (!entry.isDirectory) continue;
+        const skillPath = join(tool.path, entry.name);
+        const skillMdPath = join(skillPath, "SKILL.md");
+        let description = "";
+        let allowedTools = "";
+        let fileCount = 0;
+        try {
+          const content = Deno.readTextFileSync(skillMdPath);
+          const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
+          if (fmMatch) {
+            const fmLines = fmMatch[1].split("\n");
+            for (const line of fmLines) {
+              if (line.startsWith("description:")) description = line.slice("description:".length).trim().replace(/^["']|["']$/g, "");
+              if (line.startsWith("allowed-tools:")) allowedTools = line.slice("allowed-tools:".length).trim().replace(/^["']|["']$/g, "");
+            }
+          }
+          fileCount = Array.from(Deno.readDirSync(skillPath)).length;
+        } catch { /* no SKILL.md */ }
+        skills.push({ name: entry.name, description, allowedTools, fileCount, hasFrontmatter: true });
+      }
+    } catch { /* dir not found */ }
+
+    console.log(`  ${tool.name}: ${skills.length} skills`);
+
+    try {
+      const resp = await fetch(`${reportUrl}/api/skills/report`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ clientId, tool: tool.name, skills }),
+      });
+      if (!resp.ok) {
+        const err = await resp.text();
+        console.error(`    ✗ Failed: ${resp.status} ${err}`);
+      } else {
+        const result = await resp.json();
+        console.log(`    ✓ reported (id: ${result.id})`);
+      }
+    } catch (e) {
+      console.error(`    ✗ Connection failed: ${e}`);
+    }
+  }
+
+  console.log("\nReport complete.");
   Deno.exit(0);
 }
 

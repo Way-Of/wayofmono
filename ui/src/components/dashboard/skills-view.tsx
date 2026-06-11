@@ -67,9 +67,28 @@ export function SkillsView() {
   const fetchSkills = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api?type=skills');
-      const data = await res.json();
-      setTools(data);
+      const res = await fetch('/api/skills/report');
+      const reports = await res.json();
+
+      // Group reports by tool, take latest per tool per client
+      const latest: Record<string, { tool: ToolInfo; createdAt: string }> = {};
+      for (const report of reports) {
+        const key = `${report.clientId}:${report.tool}`;
+        if (!latest[key] || new Date(report.createdAt) > new Date(latest[key].createdAt)) {
+          latest[key] = {
+            tool: {
+              name: report.tool,
+              path: `reported by ${report.clientId}`,
+              exists: true,
+              skillCount: report.count,
+              skills: report.skills,
+              health: report.skills.length === 0 ? 'empty' : report.skills.every((s: any) => s.description && s.description !== '>') ? 'healthy' : 'partial',
+            },
+            createdAt: report.createdAt,
+          };
+        }
+      }
+      setTools(Object.values(latest).map(v => v.tool));
     } catch (err) {
       console.error('Failed to fetch skills:', err);
     }
@@ -117,7 +136,60 @@ export function SkillsView() {
       {loading && tools.length === 0 ? (
         <div className="flex items-center justify-center py-16 text-text-muted">
           <Loader2 className="w-5 h-5 animate-spin mr-2" />
-          Scanning skill directories...
+          Loading skill reports...
+        </div>
+      ) : tools.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-16 text-text-muted">
+          <Terminal className="w-10 h-10 mb-3 opacity-40" />
+          <p className="text-sm font-medium text-foreground mb-1">No skills reported yet</p>
+          <p className="text-xs mb-4 max-w-md text-center">
+            Install the AI Engineering Harness on your machine and report your skills.
+          </p>
+          <div className="bg-surface border border-border rounded-lg p-4 max-w-lg w-full text-xs font-mono space-y-1.5">
+            <p className="text-text-secondary mb-2"># Pick your tools and install:</p>
+            <p className="text-foreground">
+              <span className="text-text-muted"># Register the CLI (one-time)</span>
+            </p>
+            <p className="text-foreground text-[11px]">
+              deno install -Agf -n ai-harness https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts
+            </p>
+            <p className="text-foreground mt-2">
+              <span className="text-text-muted"># Install per tool (run what you use):</span>
+            </p>
+            <p className="text-foreground text-[11px]">
+              ai-harness <span className="text-blue-400">--tool=opencode</span> <span className="text-text-muted"># OpenCode</span>
+            </p>
+            <p className="text-foreground text-[11px]">
+              ai-harness <span className="text-blue-400">--tool=claude</span> <span className="text-text-muted"># Claude Code</span>
+            </p>
+            <p className="text-foreground text-[11px]">
+              ai-harness <span className="text-blue-400">--tool=pi</span> <span className="text-text-muted"># Pi</span>
+            </p>
+            <p className="text-foreground text-[11px]">
+              ai-harness <span className="text-blue-400">--tool=gemini</span> <span className="text-text-muted"># Gemini CLI</span>
+            </p>
+            <p className="text-foreground text-[11px]">
+              ai-harness <span className="text-blue-400">--tool=codex</span> <span className="text-text-muted"># Codex</span>
+            </p>
+            <p className="text-foreground text-[11px]">
+              ai-harness <span className="text-blue-400">--tool=antigravity</span> <span className="text-text-muted"># Antigravity</span>
+            </p>
+            <p className="text-foreground text-[11px]">
+              ai-harness <span className="text-blue-400">--tool=wocoder</span> <span className="text-text-muted"># Wo Coder</span>
+            </p>
+            <p className="text-foreground mt-2">
+              <span className="text-text-muted"># Or install all at once</span>
+            </p>
+            <p className="text-foreground text-[11px]">
+              ai-harness <span className="text-blue-400">--tool=all --yes</span>
+            </p>
+            <p className="text-foreground mt-2">
+              <span className="text-text-muted"># Report skills to dashboard</span>
+            </p>
+            <p className="text-foreground text-[11px]">
+              ai-harness <span className="text-green-400">--report-skills</span>
+            </p>
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

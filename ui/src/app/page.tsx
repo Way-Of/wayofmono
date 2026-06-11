@@ -12,6 +12,7 @@ import { DocsView } from '@/components/dashboard/docs-view';
 import { MyView } from '@/components/dashboard/my-view';
 import { SkillsView } from '@/components/dashboard/skills-view';
 import { IdeasView } from '@/components/dashboard/ideas-view';
+import { StandupView } from '@/components/dashboard/standup-view';
 import { Badge } from '@/components/ui/badge';
 import { Bell, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -26,6 +27,7 @@ const viewLabels: Record<string, string> = {
   skills: 'AI Harness Skills',
   'ticket-detail': 'Ticket Details',
   ideas: 'Ideas & Prioritization',
+  standup: 'Daily Standup',
 };
 
 export default function DashboardPage() {
@@ -100,6 +102,7 @@ export default function DashboardPage() {
       case 'my-view': return <MyView />;
       case 'skills': return canReview ? <SkillsView /> : <OverviewView />;
       case 'ideas': return <IdeasView />;
+      case 'standup': return <StandupView />;
       case 'ticket-detail': return <TicketDetailView />;
       default: return <OverviewView />;
     }
