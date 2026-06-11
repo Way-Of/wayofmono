@@ -1,5 +1,5 @@
 ---
-name: build-claude-agent
+name: build_claude_agent
 description: Build Claude Code agent definitions — knows the Markdown (.md) frontmatter format for agent personas, subagent configuration, directory locations, and subagent invocation. Use when the user wants to create or modify Claude Code agent definitions.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ---
@@ -22,6 +22,7 @@ Custom subagents are defined as Markdown files with YAML frontmatter and a syste
 ---
 name: codebase_locator
 description: Specialist agent for locating files and code patterns.
+docs-url: https://code.claude.com/docs/en/
 ---
 You are a specialist at finding WHERE code lives in a codebase.
 Your core responsibilities are...

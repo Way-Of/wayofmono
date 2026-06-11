@@ -4,7 +4,7 @@ description: >
   OpenTelemetry orchestrator — auto-activates on observability, telemetry,
   tracing, metrics, logging, OTel SDK, Collector, semantic conventions, or
   OTTL requests. Routes to the correct sub-skill.
-allowed-tools: Read, Bash, Grep, Glob
+allowed-tools: Read, Bash, Grep, glob
 ---
 
 # OpenTelemetry Orchestrator
@@ -31,7 +31,7 @@ Match the user's intent to exactly one sub-skill. Use the **first match**:
 
 | If the request involves… | Route to |
 |---|---|
-| Local instrumentation feedback loop, "drive with observability", trace-as-design-artifact, narrative-first, ODD | `observability-driven-development` |
+| Local instrumentation feedback loop, "drive with observability", trace-as-design-artifact, narrative-first, ODD | `observability_driven_development` |
 | Collector YAML, receivers, processors, exporters, pipelines, deployment, sampling policies | `otel_collector` |
 | OTTL expressions, transform processor, filter expressions, Collector-side redaction/normalization | `otel_ottl` |
 | Attribute naming, placement rules, legacy→current migration, semantic convention lookup | `otel_semantic_conventions` |
@@ -46,7 +46,7 @@ Some tasks span skills. Execute in this order:
 
 | Compound Task | Sequence |
 |---|---|
-| ODD on a new feature | `observability-driven-development` (write narrative) → `otel_instrumentation` (instrument) → `observability-driven-development` (validate) |
+| ODD on a new feature | `observability_driven_development` (write narrative) → `otel_instrumentation` (instrument) → `observability_driven_development` (validate) |
 | Full observability setup | `otel_instrumentation` → `otel_collector` → `otel_ottl` (if sensitive data) |
 | Instrument + sampling | `otel_instrumentation` → `otel_collector` |
 | Fix naming + add redaction | `otel_semantic_conventions` → `otel_ottl` |

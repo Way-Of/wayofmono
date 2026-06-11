@@ -1,13 +1,7 @@
 ---
 name: opticat-backend-integrator
-description: ""Facilitates interaction with OptiCat backend systems, including C/C++ interfaces or low-level APIs. Use this skill for tasks involving OptiCat backend integration, data manipulation, system configuration, direct service calls, or when dealing with C/C++ specific aspects of the OptiCat platform.""
-allowed-tools: [""]
+description: "Facilitates interaction with OptiCat backend systems, including C/C++ interfaces or low-level APIs. Use this skill for tasks involving OptiCat backend integration, data manipulation, system configuration, direct service calls, or when dealing with C/C++ specific aspects of the OptiCat platform."
 ---
-
-> **Platform**: Gemini CLI | **Skill**: opticat-backend-integrator | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 # OptiCat Backend Integrator
 

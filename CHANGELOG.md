@@ -1,5 +1,61 @@
 # Changelog
 
+## [Unreleased] - 2026-06-11
+
+### WOMONO-045 — Comprehensive Skills for All Tools — **Phase 1-4 Complete**
+- **Architecture correction**: Dashboard UI is server-hosted, skills live on users' machines → telemetry reporting model (`POST /api/skills/report`)
+- **CLI naming fix**: All `womono` references corrected to `ai-harness` (the actual CLI binary)
+- **Tool count**: Expanded from 6 to 7 tools (added Wo Coder)
+
+### Phase 1: Audit & Inventory
+- Audited 79 canonical skills across all 7 tools (553 SKILL.md files)
+- Identified and ranked 10 issues by severity
+- **Fixed #1** Codex degraded: Generated 44 missing SKILL.md files (Codex now 67/67)
+- **Fixed #2** help-command: Added SKILL.md to all 7 tools
+- **Fixed #3** init_harness divergent: Standardized all 7 tool copies on f-rr-d workflow
+- **Fixed #5** disable-model-invocation: Added back to 14 files in gemini/antigravity
+- **Fixed #7** Platform-specific text errors: 3 canonical skills cleansed of hardcoded "Gemini" references
+- **Fixed #8** Antigravity orphans: Created canonical source for 11 antigravity-* skills + propagated to all tools
+- **Fixed #9** Claude orphan: Created canonical validate_telemetry skill + propagated to all tools
+- **Fixed #10** Pi agents mis-located: Removed 6 stale agent copies from pi/skills/
+
+### Phase 3: Skill Updater Pipeline
+- Built `packages/@aiengineeringharness/scripts/docs-sync.ts` — canonical-to-tool sync with:
+  - Per-tool naming convention (snake_case for 6 tools, kebab-case for Pi)
+  - Tool name translation table (e.g., `read_file` → `Read` for Pi)
+  - docs-url frontmatter stripping for tool copies
+  - Dry-run mode (`--check`) for preview
+- Integrated as `ai-harness --sync-docs` and `ai-harness --sync-docs --check`
+- Cleaned up 12 stale Pi snake_case skill directories
+- All 553 SKILL.md files now in sync (0 differences)
+
+### Phase 4: Compliance Checker
+- Built `packages/@aiengineeringharness/scripts/compliance-check.ts` — validates:
+  - Frontmatter field validity per tool spec
+  - Tool name casing (PascalCase vs lowercase) in allowed-tools and body
+  - Directory naming conventions vs frontmatter name
+  - Deprecated pattern detection
+  - YAML frontmatter parse errors
+- Available as standalone: `deno run -A scripts/compliance-check.ts`
+
+### Standup View
+- Added `Daily Standup` view to the CTO Dashboard with submit form and feed
+- Created `POST /api/standup` and `GET /api/standup` endpoints (JSON file persistence)
+- Created `StandupView` component with yesterday/today/blockers form
+- Shows per-author check-ins grouped by date with avatars
+- Prevents duplicate submissions per author per day
+- Shows "No skills reported" empty state with install instructions in Skills View
+
+### Telemetry & Dashboard
+- Added `SkillReport` model to Prisma schema
+- Created `POST /api/skills/report` and `GET /api/skills/report` endpoints
+- Updated Skills View to fetch from telemetry API (with empty state install instructions)
+- Added `ai-harness --report-skills` CLI subcommand for local→dashboard reporting
+- Fixed SQLite DATABASE_URL in .env
+
+### CI
+- Added canonical sync check to CI workflow: verifies `docs-sync.ts --check` reports 0 differences
+
 ## [Unreleased] - 2026-06-10
 
 ### WOMONO-001 — Centralized f-rr-d Multi-Project Support (Critical) — **Structure Complete**

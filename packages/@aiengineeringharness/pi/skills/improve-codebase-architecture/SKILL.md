@@ -1,7 +1,7 @@
 ---
-name: improve-codebase-architecture
+name: improve_codebase_architecture
 description: Explore a codebase to find architectural friction, propose deep-module refactors as RFC issues. Use when the user wants to improve architecture, find refactoring opportunities, deepen shallow modules, or make a codebase more AI-navigable and testable.
-allowed-tools: Read, Bash, Grep, Glob, Write
+allowed-tools: Read, Bash, glob, Write
 ---
 
 # Improve Codebase Architecture

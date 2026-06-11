@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useDashboardStore, useAuthStore } from '@/store/dashboard-store';
 import { TicketStatus } from '@/lib/types';
+import { MarkdownPreview } from './markdown-preview';
 import {
   Card,
   CardContent,
@@ -51,6 +52,7 @@ export function MyView() {
 
   const [statusFilter, setStatusFilter] = useState('all');
   const [projectFilter, setProjectFilter] = useState('all');
+  const [selectedTicket, setSelectedTicket] = useState<typeof tickets[0] | null>(null);
 
   const filtered = myTickets.filter(t => {
     if (statusFilter !== 'all' && t.status !== statusFilter) return false;
@@ -211,8 +213,17 @@ export function MyView() {
                         {ticket.priority}
                       </Badge>
                     </div>
-                    <h4 className="text-sm font-medium text-foreground">{ticket.title}</h4>
-                    <p className="text-xs text-text-muted mt-1">{ticket.description}</p>
+                    <button
+                      className="text-left w-full"
+                      onClick={() => setSelectedTicket(ticket)}
+                    >
+                      <h4 className="text-sm font-medium text-foreground hover:text-primary transition-colors">{ticket.title}</h4>
+                      <div className="text-xs text-text-muted mt-1 overflow-x-auto max-w-full">
+                        <div className="line-clamp-3" style={{ wordBreak: 'break-word' }}>
+                          {ticket.description}
+                        </div>
+                      </div>
+                    </button>
                   </div>
                 </div>
 
@@ -267,6 +278,19 @@ export function MyView() {
           ))}
         </div>
       </ScrollArea>
+      {/* Markdown preview dialog */}
+      {selectedTicket && (
+        <MarkdownPreview
+          title={`${selectedTicket.id} - ${selectedTicket.title}`}
+          body={selectedTicket.description}
+          type={selectedTicket.type}
+          project={selectedTicket.project}
+          author={selectedTicket.assignee}
+          updated={selectedTicket.updated}
+          open={!!selectedTicket}
+          onClose={() => setSelectedTicket(null)}
+        />
+      )}
     </div>
   );
 }

@@ -11,6 +11,9 @@ import { ReviewQueueView } from '@/components/dashboard/review-queue-view';
 import { DocsView } from '@/components/dashboard/docs-view';
 import { MyView } from '@/components/dashboard/my-view';
 import { SkillsView } from '@/components/dashboard/skills-view';
+import { IdeasView } from '@/components/dashboard/ideas-view';
+import { StandupView } from '@/components/dashboard/standup-view';
+import { NewsView } from '@/components/dashboard/news-view';
 import { Badge } from '@/components/ui/badge';
 import { Bell, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -24,6 +27,9 @@ const viewLabels: Record<string, string> = {
   'my-view': 'My View',
   skills: 'AI Harness Skills',
   'ticket-detail': 'Ticket Details',
+  ideas: 'Ideas & Prioritization',
+  standup: 'Daily Standup',
+  news: 'News',
 };
 
 export default function DashboardPage() {
@@ -97,6 +103,9 @@ export default function DashboardPage() {
       case 'docs': return <DocsView />;
       case 'my-view': return <MyView />;
       case 'skills': return canReview ? <SkillsView /> : <OverviewView />;
+      case 'ideas': return <IdeasView />;
+      case 'standup': return <StandupView />;
+      case 'news': return <NewsView />;
       case 'ticket-detail': return <TicketDetailView />;
       default: return <OverviewView />;
     }

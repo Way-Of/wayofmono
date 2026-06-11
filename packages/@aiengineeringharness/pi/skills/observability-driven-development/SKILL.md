@@ -1,12 +1,12 @@
 ---
-name: observability-driven-development
+name: observability_driven_development
 description: >
   Observability Driven Development (ODD) — design the trace before the feature.
   Auto-activates when the user wants to "drive with observability", "ODD",
   "instrument first", "narrative-first", "telemetry-driven", or wants to set
   up a local OTel feedback loop with the Aspire dashboard. Pairs with
   /validate_telemetry to verify behaviour against a written narrative.
-allowed-tools: Read, Bash, Grep, Glob, Write, Edit
+allowed-tools: Read, Bash, glob, Write, replace
 ---
 
 # Observability Driven Development (ODD)

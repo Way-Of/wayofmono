@@ -120,7 +120,7 @@ When the "what" isn't obvious from the code, explain the "why":
 
 ### Attribution
 - **NEVER add co-author information**
-- **NEVER add "Generated with Gemini" or similar messages**
+- **NEVER add "Generated with AI" or similar messages**
 - **NEVER add "Co-Authored-By" lines**
 - **Write commit messages as if the user wrote them**
 

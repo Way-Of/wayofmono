@@ -1,19 +1,13 @@
 ---
 name: wow-skill-creator
-description: ""Facilitates the creation of new Gemini CLI skills specifically for the Way of Work platform, ensuring adherence to WoW architectural mandates and best practices. Use this skill when generating new WoW-specific skills, defining their structure, or incorporating WoW's unique requirements like multi-tenancy, access control, and HITL.""
-allowed-tools: [""]
+description: "Facilitates the creation of new AI tool skills specifically for the Way of Work platform, ensuring adherence to WoW architectural mandates and best practices. Use this skill when generating new WoW-specific skills, defining their structure, or incorporating WoW's unique requirements like multi-tenancy, access control, and HITL."
 ---
-
-> **Platform**: Gemini CLI | **Skill**: wow-skill-creator | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 # Way of Work Skill Creator
 
 ## Overview
 
-This skill guides the creation of new Gemini CLI skills tailored for the Way of Work (WoW) platform. It provides specialized knowledge, templates, and best practices to ensure that newly developed skills align with WoW's architectural mandates, such as multi-tenancy, access control, and Human-in-the-Loop (HITL) requirements.
+This skill guides the creation of new AI tool skills tailored for the Way of Work (WoW) platform. It provides specialized knowledge, templates, and best practices to ensure that newly developed skills align with WoW's architectural mandates, such as multi-tenancy, access control, and Human-in-the-Loop (HITL) requirements.
 
 <h2>Core Capabilities</h2>
 
@@ -39,7 +33,7 @@ Provides examples and placeholder files for `scripts/`, `references/`, and `asse
 Includes checklists or automated steps to ensure new skills comply with WoW's critical mandates and coding standards.
 
 <h3>5. Skill Packaging and Installation Workflow</h3>
-Instructions on how to correctly package and install new WoW skills within the Gemini CLI environment, ensuring they are discoverable and usable by the agent.
+Instructions on how to correctly package and install new WoW skills within the AI tool's environment, ensuring they are discoverable and usable by the agent.
 
 <h2>Resources</h2>
 

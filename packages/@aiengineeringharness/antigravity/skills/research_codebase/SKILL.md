@@ -1,8 +1,8 @@
 ---
 name: research_codebase
-description: Conduct comprehensive codebase research by delegating to parallel sub-agents and synthesizing findings using Antigravity CLI tools.
+description: Conduct comprehensive codebase research by delegating to parallel sub-agents and synthesizing findings using Gemini CLI tools.
 disable-model-invocation: true
-allowed-tools: read_file, write_file, command, search_file_content, glob, write_todos, invoke_subagent, google_web_search, read_url_content
+allowed-tools: read, write, bash, grep, glob, todowrite, task, google_web_search, web_fetch
 ---
 
 # Research Codebase

@@ -1,13 +1,8 @@
 ---
 name: git_commit_helper
-description: "Creates well-structured git commits by analyzing changes, drafting messages, and executing commits using Gemini CLI's `run_shell_command` for git operations."
-allowed-tools: ["read_file", "run_shell_command", "search_file_content", "glob"]
+description: Creates well-structured git commits by analyzing changes, drafting messages, and executing commits using Gemini CLI's `run_shell_command` for git operations.
+allowed-tools: read, bash, grep, glob
 ---
-
-> **Platform**: Gemini CLI | **Skill**: git_commit_helper | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 # Git Commit Helper
 
@@ -125,7 +120,7 @@ When the "what" isn't obvious from the code, explain the "why":
 
 ### Attribution
 - **NEVER add co-author information**
-- **NEVER add "Generated with Gemini" or similar messages**
+- **NEVER add "Generated with AI" or similar messages**
 - **NEVER add "Co-Authored-By" lines**
 - **Write commit messages as if the user wrote them**
 

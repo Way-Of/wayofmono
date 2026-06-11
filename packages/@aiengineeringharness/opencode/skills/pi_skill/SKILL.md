@@ -12,6 +12,7 @@ Create Pi skills using the SKILL.md format.
 ---
 name: my-skill
 description: What this skill does
+docs-url: https://pi.dev/
 allowed-tools: read grep find ls
 ---
 Skill instructions and system prompt body here.

@@ -1,8 +1,8 @@
 ---
 name: debug
-description: Debug issues during manual testing or implementation by examining logs, state, and git history
+description: Debug issues during manual testing or implementation by examining logs, state, and git history using Gemini CLI tools.
 disable-model-invocation: true
-allowed-tools: Read, Bash, Grep, Glob
+allowed-tools: Read, Bash, Grep, glob
 ---
 
 # Debug
@@ -46,25 +46,19 @@ I can investigate logs, state, and recent changes to help identify the issue.
 
 ### Step 2: Investigate the Issue
 
-Spawn parallel Task agents:
+Perform parallel investigation tasks:
 
-```
-Task 1 - Check Recent Logs:
-Find and analyze logs for errors
-Return: Key errors/warnings with timestamps
-```
+- Check Recent Logs:
+  Find and analyze logs for errors
+  Return: Key errors/warnings with timestamps
 
-```
-Task 2 - Application State:
-Check the current application state
-Return: Relevant state findings
-```
+- Application State:
+  Check the current application state
+  Return: Relevant state findings
 
-```
-Task 3 - Git and File State:
-Understand what changed recently
-Return: Git state and any file issues
-```
+- Git and File State:
+  Understand what changed recently
+  Return: Git state and any file issues
 
 ### Step 3: Present Findings
 
@@ -113,4 +107,4 @@ Would you like me to investigate something specific further?
 - **Always require problem description**
 - **Read files completely**
 - **Guide back to user** for things outside reach
-- **No file editing** - Pure investigation only
+

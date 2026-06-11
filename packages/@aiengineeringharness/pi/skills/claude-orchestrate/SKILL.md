@@ -1,5 +1,5 @@
 ---
-name: claude-orchestrate
+name: claude_orchestrate
 description: Claude Code build orchestrator — coordinates domain experts to research Claude Code documentation and build skills, settings, project steering rules, output styles, and plugins. Use when the user wants to build or modify Claude Code components.
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch, Task
 ---

@@ -6,7 +6,7 @@ description: >
   hostmetrics; processor ordering; pipeline design; head/tail sampling;
   and RED metric derivation via signaltometrics.
 disable-model-invocation: true
-allowed-tools: Read, Bash, Grep, Glob, Edit, Write
+allowed-tools: read, bash, grep, glob, replace, write
 ---
 
 # OpenTelemetry Collector Configuration
@@ -390,6 +390,7 @@ spec:
           exporters: [otlp]
 ```
 
+docs-url: https://opentelemetry.io/docs/
 ---
 
 ## Cross-References

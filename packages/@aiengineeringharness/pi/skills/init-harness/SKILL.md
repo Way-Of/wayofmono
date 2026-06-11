@@ -1,311 +1,173 @@
 ---
-name: init-harness
-description: Initializes the AI Engineering Harness in a repository by running /init to create AGENTS.md and setting up the thoughts/ directory structure for context engineering. Use when user runs /init_harness or asks to set up the harness in a new repo.
-allowed-tools: Read, Bash, Grep, Glob, Write
+name: init_harness
+description: Initialize the AI Engineering Harness in a repository by running the tool's project memory init, then cloning the shared f-rr-d thoughts repo and setting up the standard directory structure.
+disable-model-invocation: true
+allowed-tools: Read, Write, Bash
+argument-hint: "[project-slug]"
 ---
 
-# Initialize AI Engineering Harness
+# Initialize Harness
 
-## When to Use This Skill
+Initialize the AI Engineering Harness in this repository.
 
-Activate this skill when the user:
-- Runs `/init_harness` command
-- Asks to "initialize the harness" or "set up the harness"
-- Asks to "set up context engineering" in a repository
-- Wants to prepare a repository for AI-assisted development workflows
+## What This Command Does
 
-## What This Skill Does
+1. **Runs the tool's project memory init** (e.g., `/init` for OpenCode/Claude) to generate the project memory file (`AGENTS.md`, `CLAUDE.md`, etc.)
+2. **Clones the shared `f-rr-d` repo** into `thoughts/` — the centralized hub for tickets, plans, research, and personal TODOs across all projects
+3. **Creates the project's subfolder** inside `thoughts/` with the standard structure
+4. **Creates personal thoughts directories** for developers
+5. **Provides guidance on next steps**
 
-1. Runs the built-in `/init` command to generate `AGENTS.md`
-2. Creates the `thoughts/` directory structure for context engineering
-3. Adds a ticket template for consistent ticket creation
-4. Provides guidance on next steps
+## Prerequisites
 
-## Core Process
+- Git installed and configured
+- [Deno](https://deno.com/) installed (`curl -fsSL https://deno.land/install.sh | sh`)
+- Access to `github.com/Way-Of/f-rr-d` (public repo — no auth required for clone)
 
-### Step 1: Check Current State
+## Instructions
 
-First, check what already exists:
+### Step 1: Determine the Project Slug
+
+- Use the repository name (from `git remote -v` or the directory name)
+- Examples: `wayofmono`, `wo`, `opticat`, `healthoptimizing`
+- If uncertain, ask the user for the project slug
+- Store in a variable: `PROJECT_SLUG=<dirname>`
+
+### Step 2: Generate Project Memory
+
+Run the tool's built-in project memory command:
+
+**OpenCode / Wo Coder:**
+```
+Run /init — generates AGENTS.md with codebase analysis
+```
+
+**Claude Code:**
+```
+Run /init — generates CLAUDE.md with codebase analysis
+```
+
+**Other tools (Pi, Gemini, Codex, Antigravity):**
+```
+Create the project memory file manually or via the tool's equivalent command.
+Reference: docs/HARNESS_TUTORIAL.md for the specific format per tool.
+```
+
+If the project memory file already exists, ask the user whether to keep or regenerate it.
+
+### Step 3: Clone the Shared f-rr-d Repo
+
+If `thoughts/` does not already exist:
 
 ```bash
-# Check if AGENTS.md exists
-test -f AGENTS.md && echo "AGENTS.md exists" || echo "AGENTS.md not found"
-
-# Check if thoughts/ structure exists
-test -d thoughts && echo "thoughts/ exists" || echo "thoughts/ not found"
-
-# Check if this is a git repository
-test -d .git && echo "Git repo" || echo "Not a git repo"
+git clone https://github.com/Way-Of/f-rr-d.git thoughts/
 ```
 
-### Step 2: Run /init Command
+If `thoughts/` already exists, verify it's a clone of f-rr-d by checking the remote origin. If it's a different repo, warn the user.
 
-If `AGENTS.md` doesn't exist or user wants to regenerate:
-
-```
-I'll now run the /init command to analyze this codebase and generate AGENTS.md...
-```
-
-**Invoke the /init command** - This is OpenCode's built-in command that:
-- Analyzes the codebase structure
-- Identifies key components and patterns
-- Generates an `AGENTS.md` file with codebase context
-
-After /init completes, confirm the file was created:
-```bash
-test -f AGENTS.md && echo "AGENTS.md created successfully"
-```
-
-### Step 3: Create Thoughts Directory Structure
-
-Create the context engineering directory structure:
+### Step 4: Create the Project Subfolder
 
 ```bash
-# Create the main structure
-mkdir -p thoughts/shared/{tickets,plans,research}
-mkdir -p thoughts/global
-mkdir -p thoughts/docs/{architecture,decisions,guides,references}
+mkdir -p thoughts/${PROJECT_SLUG}/shared/{tickets,plans,research}
+mkdir -p thoughts/${PROJECT_SLUG}/global
+mkdir -p thoughts/${PROJECT_SLUG}/docs/{architecture,decisions,guides,references}
 ```
 
-**Directory purposes**:
-- `thoughts/shared/tickets/` - Feature requests, bug reports, task definitions
-- `thoughts/shared/plans/` - Implementation plans created via /create_plan
-- `thoughts/shared/research/` - Research documents and investigations
-- `thoughts/global/` - Cross-repository concerns and documentation
-- `thoughts/docs/` - Project documentation (architecture, decisions, guides, references)
+### Step 5: Create Personal Thoughts Directories
 
-### Step 4: Add Ticket Template
-
-Create a ticket template if one doesn't exist:
+For each developer working on the project:
 
 ```bash
-test -f thoughts/shared/tickets/ticket-template.md || echo "Creating ticket template..."
+mkdir -p thoughts/${PROJECT_SLUG}/$(whoami)/{tickets,plans,research}
 ```
 
-**Ticket Template Content**:
+Optionally, pre-create directories for known team members if applicable.
 
-```markdown
-# [PROJECT-XXXX] [Brief Title]
-
-## Problem Statement
-
-[Describe the current problem or need]
-
-## Desired Outcome
-
-[What should the end state look like?]
-
-## Context & Background
-
-### Current State
-[How things work now]
-
-### Why This Matters
-[User/developer value]
-
-## Requirements
-
-### Functional Requirements
-- [ ] [Required behavior]
-
-### Out of Scope
-- [What we're NOT doing]
-
-## Acceptance Criteria
-
-### Automated Verification
-- [ ] Tests pass: `[test command]`
-- [ ] Build completes: `[build command]`
-
-### Manual Verification
-- [ ] [Behavior to verify]
-
-## Technical Notes
-
-### Affected Components
-- `path/to/component/` - [what changes]
-
----
-
-## Meta
-
-**Created**: [YYYY-MM-DD]
-**Priority**: [High/Medium/Low]
-**Estimated Effort**: [S/M/L/XL]
-```
-
-### Step 5: Add .gitkeep Files
-
-Ensure empty directories are tracked by git:
+### Step 6: Add thoughts/ to .gitignore
 
 ```bash
-touch thoughts/shared/plans/.gitkeep
-touch thoughts/shared/research/.gitkeep
-touch thoughts/global/.gitkeep
+# Check if thoughts/ is already in .gitignore
+grep -q '^thoughts/' .gitignore 2>/dev/null || echo '# Centralized in Way-Of/f-rr-d' >> .gitignore
+grep -q '^thoughts/' .gitignore 2>/dev/null || echo 'thoughts/' >> .gitignore
 ```
 
-### Step 6: Create Personal Directory (Optional)
-
-Ask the user if they want a personal thoughts directory:
+### Step 7: Verify the Structure
 
 ```
-Would you like me to create a personal thoughts directory for your notes?
-This would be at thoughts/[username]/ with tickets/ and plans/ subdirectories.
-
-Your git username is: [result of git config user.name or whoami]
+thoughts/
+├── global/                          # Cross-project global thoughts
+├── shared/                          # Cross-project templates only
+│   └── tickets/ticket-template.md
+├── ${PROJECT_SLUG}/                 # This project's thoughts
+│   ├── global/
+│   ├── docs/
+│   │   ├── architecture/
+│   │   ├── decisions/
+│   │   ├── guides/
+│   │   └── references/
+│   ├── shared/
+│   │   ├── tickets/
+│   │   ├── plans/
+│   │   └── research/
+│   └── $(whoami)/
+│       ├── tickets/
+│       ├── plans/
+│       └── research/
+├── wow/                             # When applicable
+└── opticat/                         # When applicable
 ```
 
-If yes:
-```bash
-USERNAME=$(git config user.name 2>/dev/null | tr ' ' '-' | tr '[:upper:]' '[:lower:]' || whoami)
-mkdir -p "thoughts/$USERNAME"/{tickets,plans}
-```
-
-### Step 7: Summary and Next Steps
-
-Present a summary of what was created:
+### Step 8: Present Next Steps
 
 ```markdown
 ## Harness Initialized Successfully
 
-### Created Files
-- `AGENTS.md` - Codebase context for AI agents
-- `thoughts/shared/tickets/ticket-template.md` - Template for new tickets
-
-### Created Directories
-```
-thoughts/
-├── shared/
-│   ├── tickets/      # Feature requests, bugs, tasks
-│   ├── plans/        # Implementation plans
-│   └── research/     # Research and investigations
-├── global/           # Cross-repo documentation
-└── [username]/       # Your personal notes (if created)
-```
+### Created
+- `<project-memory-file>` — Project memory for AI agents
+- `thoughts/` — Centralized f-rr-d repository for tickets, plans, research
+- `thoughts/${PROJECT_SLUG}/` — This project's workspace
 
 ### Next Steps
 
 1. **Create your first ticket**:
-   ```
-   Copy thoughts/shared/tickets/ticket-template.md to a new file like:
-   thoughts/shared/tickets/PROJ-001-my-feature.md
-   ```
+   Copy the template: `cp thoughts/shared/tickets/ticket-template.md thoughts/${PROJECT_SLUG}/shared/tickets/PROJ-001-my-feature.md`
 
-2. **Generate an implementation plan**:
-   ```
-   /create_plan thoughts/shared/tickets/PROJ-001-my-feature.md
-   ```
+2. **Generate a plan**: `/create_plan thoughts/${PROJECT_SLUG}/shared/tickets/PROJ-001-my-feature.md`
 
-3. **Implement the plan**:
-   ```
-   /implement_plan thoughts/shared/plans/my-feature.md
-   ```
+3. **Implement**: `/implement_plan thoughts/${PROJECT_SLUG}/shared/plans/my-plan.md`
 
-4. **Commit your changes**:
-   ```
-   /commit
-   ```
+4. **Commit**: `/commit`
 
-### Context Engineering Workflow
-
-```
+### Workflow
 Ticket → /create_plan → /implement_plan → /validate_plan → /commit
 ```
 
-The harness is ready! Start by creating a ticket for your next task.
+## Edge Cases
+
+### thoughts/ Already Exists (Not f-rr-d)
+
+If `thoughts/` exists but is not the f-rr-d repo, warn the user:
+```
+thoughts/ already exists and is not the f-rr-d repository.
+Options:
+1. Back up existing thoughts/ and clone f-rr-d
+2. Keep existing thoughts/ and skip cloning
+3. Merge: clone f-rr-d elsewhere, manually merge content
 ```
 
-## Handling Edge Cases
+### thoughts/ Already Exists (Is f-rr-d)
 
-### AGENTS.md Already Exists
+Run `git -C thoughts/ pull --ff-only` to update.
 
+### No Git Repository
+
+If the current directory is not a git repo, suggest `git init` first.
+
+### Project Memory File Already Exists
+
+Ask the user:
 ```
-AGENTS.md already exists. Would you like me to:
-1. Keep the existing file (recommended if it's been customized)
-2. Regenerate it with /init (will overwrite current content)
+<project-memory-file> already exists. Options:
+1. Keep existing (recommended if customized)
+2. Regenerate with /init (will overwrite)
 ```
-
-### thoughts/ Directory Already Exists
-
-```
-The thoughts/ directory already exists. I'll preserve existing content and only create missing subdirectories.
-```
-
-Check and create only what's missing:
-```bash
-test -d thoughts/shared/tickets || mkdir -p thoughts/shared/tickets
-test -d thoughts/shared/plans || mkdir -p thoughts/shared/plans
-test -d thoughts/shared/research || mkdir -p thoughts/shared/research
-test -d thoughts/global || mkdir -p thoughts/global
-test -d thoughts/docs/architecture || mkdir -p thoughts/docs/{architecture,decisions,guides,references}
-```
-
-### Not a Git Repository
-
-```
-This directory is not a git repository. The harness works best with git for:
-- Tracking changes to tickets and plans
-- Versioning AGENTS.md as the codebase evolves
-- Collaboration on shared thoughts
-
-Would you like me to:
-1. Initialize a git repository first (git init)
-2. Continue without git (not recommended)
-```
-
-### No Write Permissions
-
-If directory creation fails:
-```
-I couldn't create the thoughts/ directory. Please check:
-- You have write permissions in this directory
-- The directory isn't on a read-only filesystem
-
-You can create the structure manually:
-mkdir -p thoughts/shared/{tickets,plans,research} thoughts/global thoughts/docs/{architecture,decisions,guides,references}
-```
-
-## What Gets Created
-
-### File: AGENTS.md
-Generated by `/init` - Contains:
-- Codebase overview and structure
-- Key components and their purposes
-- Technology stack information
-- Important patterns and conventions
-
-### File: thoughts/shared/tickets/ticket-template.md
-Template for creating consistent tickets with:
-- Problem statement
-- Requirements and acceptance criteria
-- Technical notes
-- Metadata
-
-### Directories
-```
-thoughts/
-├── shared/           # Team-shared documents
-│   ├── tickets/      # Task definitions
-│   ├── plans/        # Implementation plans
-│   └── research/     # Research docs
-├── global/           # Cross-repo concerns
-└── {username}/       # Personal notes (optional)
-```
-
-## Integration Notes
-
-This skill works with:
-- `/init` - OpenCode's built-in codebase analysis
-- `/create_plan` - Creates plans from tickets
-- `/implement_plan` - Executes implementation plans
-- `/validate_plan` - Verifies implementations
-- `/commit` - Creates well-structured commits
-- `git-commit-helper` skill - Auto-triggered commits
-- `pr-description-generator` skill - PR documentation
-
-## Notes
-
-- Run this once per repository to set up the harness
-- The thoughts/ structure can be committed to share with your team
-- AGENTS.md should be regenerated periodically as the codebase evolves
-- Personal directories (thoughts/username/) can be gitignored if preferred

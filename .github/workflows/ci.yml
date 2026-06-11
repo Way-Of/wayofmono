@@ -27,6 +27,13 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Check canonical skills are in sync
+        run: deno run -A packages/@aiengineeringharness/scripts/docs-sync.ts --check | grep -q "Would sync: 0" || (echo "Canonical skills out of sync. Run: deno run -A packages/@aiengineeringharness/scripts/docs-sync.ts" && exit 1)
+
       - name: Build
         run: pnpm -r build
 

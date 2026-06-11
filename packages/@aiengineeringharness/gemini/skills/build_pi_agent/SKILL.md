@@ -1,13 +1,8 @@
 ---
 name: build_pi_agent
-description: "Build Pi agent definitions — knows the .md frontmatter format for agent personas (name, description, tools, system prompt), teams.yaml structure, agent-team orchestration, and session management. Use when the user wants to create or modify Pi agent definitions."
-allowed-tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
+description: Build Pi agent definitions — knows the .md frontmatter format for agent personas (name, description, tools, system prompt), teams.yaml structure, agent-team orchestration, and session management. Use when the user wants to create or modify Pi agent definitions.
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ---
-
-> **Platform**: Gemini CLI | **Skill**: build_pi_agent | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 Create Pi agent definitions using the Markdown frontmatter format. Agent definitions have YAML frontmatter (name, description, tools) + system prompt body.
 
@@ -17,6 +12,7 @@ Create Pi agent definitions using the Markdown frontmatter format. Agent definit
 ---
 name: my-agent
 description: What this agent does
+docs-url: https://pi.dev/
 tools: read,grep,find,ls
 ---
 System prompt body here.

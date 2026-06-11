@@ -1,13 +1,8 @@
 ---
 name: claude_prompts
-description: "Claude Code prompt steering expert — knows CLAUDE.md syntax, modular path-based rules, @ file referencing, and output styles. Use when the user wants to configure prompt instructions or output formats for Claude Code."
-allowed-tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
+description: Claude Code prompt steering expert — knows CLAUDE.md syntax, modular path-based rules, @ file referencing, and output styles. Use when the user wants to configure prompt instructions or output formats for Claude Code.
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 ---
-
-> **Platform**: Gemini CLI | **Skill**: claude_prompts | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 # Claude Code Prompt Steering Reference
 
@@ -50,6 +45,7 @@ Modular rules allow targeting specific style guides to specific folders or file 
 ---
 globs: ["src/api/**/*.ts"]
 description: Rules for API development
+docs-url: https://code.claude.com/docs/en/
 ---
 Always validate request payloads before processing.
 Do not use console.log in API handlers.
@@ -78,6 +74,7 @@ Example style (`concise.md`):
 ---
 name: Concise Output Style
 description: Be extremely direct and skip friendly summaries.
+docs-url: https://code.claude.com/docs/en/
 keep-coding-instructions: true
 ---
 Answer the user's coding query directly, showing only code diffs and 1-2 sentence explanations.

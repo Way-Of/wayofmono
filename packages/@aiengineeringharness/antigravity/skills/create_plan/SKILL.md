@@ -1,8 +1,8 @@
 ---
 name: create_plan
-description: Create detailed, actionable implementation plans through an interactive, iterative process, leveraging Antigravity CLI tools for research and documentation.
+description: Create detailed, actionable implementation plans through an interactive, iterative process, leveraging Gemini CLI tools for research and documentation.
 disable-model-invocation: true
-allowed-tools: read_file, write_file, command, glob, search_file_content, write_todos, invoke_subagent
+allowed-tools: read, write, bash, glob, grep, todowrite, task
 argument-hint: "[ticket-file-path]"
 ---
 

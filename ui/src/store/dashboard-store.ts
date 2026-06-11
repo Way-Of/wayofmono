@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ViewMode, Ticket, ReviewStatus, Developer, ProjectDoc } from '@/lib/types';
+import { ViewMode, Ticket, ReviewStatus, Developer, ProjectDoc, Idea, IdeaStatus, NewsItem } from '@/lib/types';
 
 type LoginResult = { success: true } | { success: false; reason: 'loading' | 'unrecognized' | 'wrong_pincode' };
 
@@ -36,6 +36,13 @@ interface DashboardState {
   setFilterStatus: (s: string) => void;
   setFilterPriority: (p: string) => void;
   setFilterCategory: (c: string) => void;
+  ideas: Idea[];
+  addIdea: (idea: { title: string; description: string; author: string }) => void;
+  updateIdeaPriority: (id: string, priority: number) => void;
+  updateIdeaStatus: (id: string, status: IdeaStatus) => void;
+  voteIdea: (id: string, user: string) => void;
+  newsItems: NewsItem[];
+  addNewsItem: (item: { title: string; body: string; author: string; pinned?: boolean }) => void;
   getFilteredTickets: () => Ticket[];
   fetchData: () => Promise<void>;
 }
@@ -66,6 +73,8 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   tickets: [],
   developers: [],
   docs: [],
+  ideas: [],
+  newsItems: [],
   loading: true,
   searchQuery: '',
   filterProject: 'all',
@@ -86,6 +95,67 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   },
   setSelectedDeveloper: (id) => set({ selectedDeveloper: id }),
   setSelectedTicket: (ticket) => set({ selectedTicket: ticket }),
+  addIdea: (idea) => {
+    const id = `IDEA-${Date.now()}`;
+    const newIdea: Idea = {
+      id,
+      title: idea.title,
+      description: idea.description,
+      author: idea.author,
+      created: new Date().toISOString().slice(0, 10),
+      priority: 5,
+      status: 'proposed',
+      votes: 0,
+      voters: [],
+    };
+    set(state => ({ ideas: [newIdea, ...state.ideas] }));
+    fetch('/api/ideas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newIdea),
+    }).catch(() => {});
+  },
+  updateIdeaPriority: (id, priority) => {
+    set(state => ({
+      ideas: state.ideas.map(i => i.id === id ? { ...i, priority } : i),
+    }));
+  },
+  updateIdeaStatus: (id, status) => {
+    set(state => ({
+      ideas: state.ideas.map(i => i.id === id ? { ...i, status } : i),
+    }));
+  },
+  voteIdea: (id, user) => {
+    set(state => ({
+      ideas: state.ideas.map(i => {
+        if (i.id !== id) return i;
+        const alreadyVoted = i.voters.includes(user);
+        return {
+          ...i,
+          votes: alreadyVoted ? i.votes - 1 : i.votes + 1,
+          voters: alreadyVoted
+            ? i.voters.filter(v => v !== user)
+            : [...i.voters, user],
+        };
+      }),
+    }));
+  },
+  addNewsItem: (item) => {
+    const newItem: NewsItem = {
+      id: `NEWS-${Date.now()}`,
+      title: item.title,
+      body: item.body,
+      author: item.author,
+      createdAt: new Date().toISOString(),
+      pinned: item.pinned || false,
+    };
+    set(state => ({ newsItems: [newItem, ...state.newsItems] }));
+    fetch('/api/news', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newItem),
+    }).catch(() => {});
+  },
   updateTicketStatus: (ticketId, status) => {
     set(state => ({
       tickets: state.tickets.map(t =>
@@ -137,17 +207,21 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   },
   fetchData: async () => {
     try {
-      const [ticketsRes, devsRes, docsRes] = await Promise.all([
+      const [ticketsRes, devsRes, docsRes, ideasRes, newsRes] = await Promise.all([
         fetch('/api?type=tickets'),
         fetch('/api?type=developers'),
         fetch('/api?type=docs'),
+        fetch('/api?type=ideas').catch(() => new Response('[]')),
+        fetch('/api/news').catch(() => new Response('[]')),
       ]);
-      const [tickets, developers, docs] = await Promise.all([
+      const [tickets, developers, docs, ideas, newsItems] = await Promise.all([
         ticketsRes.json(),
         devsRes.json(),
         docsRes.json(),
+        ideasRes.json().catch(() => []),
+        newsRes.json().catch(() => []),
       ]);
-      set({ tickets, developers, docs, loading: false });
+      set({ tickets, developers, docs, ideas, newsItems, loading: false });
     } catch (err) {
       console.error('Failed to fetch data:', err);
       set({ loading: false });

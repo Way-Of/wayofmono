@@ -1,13 +1,7 @@
 ---
 name: wow_backend_dev
-description: "Comprehensive guide for developing backend APIs, database interactions, and security protocols in the Way of Work (WoW) project. Use when working on server routes, database schemas, or API logic."
-allowed-tools: [""]
+description: Comprehensive guide for developing backend APIs, database interactions, and security protocols in the Way of Work (WoW) project. Use when working on server routes, database schemas, or API logic.
 ---
-
-> **Platform**: Gemini CLI | **Skill**: wow_backend_dev | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 # wow_backend_dev
 

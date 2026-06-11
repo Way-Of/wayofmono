@@ -10,6 +10,7 @@ Pi prompt templates are single Markdown files that expand into full prompts. Fil
 ```markdown
 ---
 description: What this template does
+docs-url: https://pi.dev/
 ---
 Your prompt content here with $1 and $@ arguments
 ```

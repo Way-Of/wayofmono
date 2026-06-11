@@ -17,6 +17,7 @@ The core behavior of a skill is defined in a Markdown file with YAML frontmatter
 ---
 name: my_skill
 description: Performs custom validation of API routes.
+docs-url: https://code.claude.com/docs/en/
 allowed-tools: read grep find
 disable-model-invocation: true
 ---

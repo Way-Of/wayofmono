@@ -1,13 +1,7 @@
 ---
 name: wow_agent_dev
-description: "Comprehensive guide for creating, routing, and managing AI agents, skills, and chat workflows within the Way of Work platform. Use when modifying or creating agents in .wo/agents or their skills."
-allowed-tools: [""]
+description: Comprehensive guide for creating, routing, and managing AI agents, skills, and chat workflows within the Way of Work platform. Use when modifying or creating agents in .wo/agents or their skills.
 ---
-
-> **Platform**: Gemini CLI | **Skill**: wow_agent_dev | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 # wow_agent_dev
 

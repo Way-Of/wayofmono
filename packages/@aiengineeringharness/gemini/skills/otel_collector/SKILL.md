@@ -1,13 +1,13 @@
 ---
 name: otel_collector
-description: ">"
-allowed-tools: ["read_file", "run_shell_command", "search_file_content", "glob", "replace", "write_file"]
+description: >
+  OpenTelemetry Collector configuration — receivers, processors, exporters,
+  pipelines, sampling, deployment. Covers OTLP, Prometheus, filelog,
+  hostmetrics; processor ordering; pipeline design; head/tail sampling;
+  and RED metric derivation via signaltometrics.
+disable-model-invocation: true
+allowed-tools: read, bash, grep, glob, replace, write
 ---
-
-> **Platform**: Gemini CLI | **Skill**: otel_collector | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 # OpenTelemetry Collector Configuration
 
@@ -390,6 +390,7 @@ spec:
           exporters: [otlp]
 ```
 
+docs-url: https://opentelemetry.io/docs/
 ---
 
 ## Cross-References

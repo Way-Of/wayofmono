@@ -1,13 +1,11 @@
 ---
 name: otel_instrument
-description: ">"
-allowed-tools: ["read_file", "run_shell_command", "search_file_content", "glob"]
+description: >
+  OpenTelemetry orchestrator — auto-activates on observability, telemetry,
+  tracing, metrics, logging, OTel SDK, Collector, semantic conventions, or
+  OTTL requests. Routes to the correct sub-skill.
+allowed-tools: read, bash, grep, glob
 ---
-
-> **Platform**: Gemini CLI | **Skill**: otel_instrument | **Version**: 1.0.0
->
-> _Auto-generated from canonical format. Do not edit directly._
-
 
 # OpenTelemetry Orchestrator
 

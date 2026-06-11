@@ -1,7 +1,8 @@
 ---
 name: implement_plan
-description: Implement an approved technical plan from thoughts/plans/ with phase-by-phase execution
+description: Implement an approved technical plan from thoughts/plans/ with phase-by-phase execution, leveraging Gemini CLI tools for file interaction, command execution, and task management.
 disable-model-invocation: true
+allowed-tools: Read, Write, Bash, Grep, glob, TodoWrite, Task
 argument-hint: "[plan-file-path]"
 ---
 
@@ -20,7 +21,7 @@ When given a plan path:
 - Read the plan completely and check for any existing checkmarks (- [x])
 - Read the original ticket and all files mentioned in the plan
 - **Read files fully** - never use limit/offset parameters
-- Create a todo list to track your progress
+- Use `write_todos` to track your progress
 - Start implementing if you understand what needs to be done
 
 If no plan path provided, ask for one.
@@ -67,10 +68,7 @@ Use technology-appropriate commands:
 ## If You Get Stuck
 
 1. **Investigate First** - Read all relevant code completely
-2. **Use Sub-tasks** for targeted help:
-   - **codebase-locator**: Find specific files
-   - **codebase-analyzer**: Understand how code works
-   - **codebase-pattern-finder**: Find similar implementations
+2. **Delegate to research agents** (e.g., `codebase_investigator`, `codebase_locator`, `codebase_pattern_finder`) for targeted help
 3. **Present Issues Clearly** - Don't guess, ask for clarification
 
 ## Resuming Work
