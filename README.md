@@ -1,6 +1,6 @@
 # WayOfMono (Wo)
 
-The ultimate monorepo consolidation for high-performance coding agents. WayOfMono provides a shared **AI Engineering Harness** — 81 battle-tested skills, 6 subagents, and workflows spanning 7 AI coding tools — plus a **CTO Dashboard** with telemetry, standups, tickets, and review queues.
+The ultimate monorepo consolidation for high-performance coding agents. WayOfMono provides a shared **AI Engineering Harness** — 88 battle-tested skills (81 canonical + 7 new skills), 6 subagents, and workflows spanning 7 AI coding tools — plus a **CTO Dashboard** with telemetry, standups, tickets, and review queues.
 
 ## 🎛️ Supported Tools
 
@@ -37,7 +37,7 @@ The ultimate monorepo consolidation for high-performance coding agents. WayOfMon
 │   ├── src/app/api/       # API routes (tickets, skills, standup, ideas)
 │   └── src/components/    # Dashboard views
 ├── docs/
-│   ├── skills/            # 81 canonical SKILL.md files (source of truth)
+│   ├── skills/            # 88 canonical SKILL.md files (81 base + 7 new skills) (source of truth)
 │   └── tools/             # Tool reference docs for compliance checking
 ├── thoughts/              # Context engineering (f-rr-d)
 └── .github/workflows/     # CI/CD (incl. canonical sync check)
