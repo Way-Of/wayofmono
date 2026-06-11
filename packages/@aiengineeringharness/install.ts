@@ -355,22 +355,111 @@ The repo must remain at a stable path on your system.
 // ---------------------------------------------------------------------------
 
 async function interactivePicker(components: Array<{ name: string; description: string }>): Promise<string[]> {
-  // Minimal TTY-based checkbox: render options, user types space-separated indices
-  console.log("\nAvailable components (enter numbers separated by spaces, or 'all'):\n");
-  components.forEach((c, i) => {
-    console.log(`  ${String(i + 1).padStart(2)}. [${c.name}] ${c.description}`);
-  });
-  console.log();
-
-  Deno.stdout.writeSync(new TextEncoder().encode("Select (e.g. 1 3 5, or 'all'): "));
-  const input = await readLine();
-
-  if (input.toLowerCase() === "all") {
-    return components.map((c) => c.name);
+  // Fall back to text prompt when stdin is not a TTY (piped)
+  if (!Deno.stdin.isTerminal()) {
+    console.log("\nAvailable components (enter numbers separated by spaces, or 'all'):\n");
+    components.forEach((c, i) => {
+      console.log(`  ${String(i + 1).padStart(2)}. [${c.name}] ${c.description}`);
+    });
+    console.log();
+    Deno.stdout.writeSync(new TextEncoder().encode("Select (e.g. 1 3 5, or 'all'): "));
+    const input = (await readLine()).toLowerCase();
+    if (input === "all") return components.map((c) => c.name);
+    const indices = input.split(/\s+/).map(Number).filter((n) => !isNaN(n) && n >= 1 && n <= components.length);
+    return indices.map((i) => components[i - 1].name);
   }
 
-  const indices = input.split(/\s+/).map(Number).filter((n) => !isNaN(n) && n >= 1 && n <= components.length);
-  return indices.map((i) => components[i - 1].name);
+  const selected = new Set<number>();
+  let cursor = 0;
+
+  console.log("\nUse ↑/↓ to move, Space to toggle, Enter to confirm, 'a' for all:\n");
+
+  function render() {
+    const moveUp = `\x1b[${components.length + 1}A`;
+    Deno.stdout.writeSync(new TextEncoder().encode(moveUp));
+    for (let i = 0; i < components.length; i++) {
+      const check = selected.has(i) ? "✓" : " ";
+      const pointer = i === cursor ? "▸" : " ";
+      const desc = components[i].description.length > 60
+        ? components[i].description.slice(0, 57) + "..."
+        : components[i].description;
+      Deno.stdout.writeSync(
+        new TextEncoder().encode(` ${pointer} [${check}] ${components[i].name}  ${desc}\x1b[K\n`),
+      );
+    }
+  }
+
+  for (let i = 0; i < components.length; i++) {
+    const check = selected.has(i) ? "✓" : " ";
+    const pointer = i === cursor ? "▸" : " ";
+    const desc = components[i].description.length > 60
+      ? components[i].description.slice(0, 57) + "..."
+      : components[i].description;
+    console.log(` ${pointer} [${check}] ${components[i].name}  ${desc}`);
+  }
+
+  Deno.stdin.setRaw(true);
+  try {
+    const buf = new Uint8Array(8);
+    while (true) {
+      const n = await Deno.stdin.read(buf);
+      if (n === null) break;
+      const byte = buf[0];
+
+      if (byte === 0x03) {
+        Deno.stdout.writeSync(new TextEncoder().encode("\n"));
+        Deno.exit(0);
+      }
+
+      if (byte === 0x0d || byte === 0x0a) break;
+
+      if (byte === 0x61 || byte === 0x41) {
+        if (selected.size === components.length) {
+          selected.clear();
+        } else {
+          for (let i = 0; i < components.length; i++) selected.add(i);
+        }
+        render();
+        continue;
+      }
+
+      if (byte === 0x1b && n >= 3) {
+        const seq = new TextDecoder().decode(buf.slice(0, 3));
+        if (seq === "\x1b[A") {
+          cursor = cursor > 0 ? cursor - 1 : components.length - 1;
+          render();
+        } else if (seq === "\x1b[B") {
+          cursor = cursor < components.length - 1 ? cursor + 1 : 0;
+          render();
+        }
+        continue;
+      }
+
+      if (byte === 0x20) {
+        if (selected.has(cursor)) selected.delete(cursor);
+        else selected.add(cursor);
+        render();
+        continue;
+      }
+    }
+  } finally {
+    Deno.stdin.setRaw(false);
+  }
+
+  Deno.stdout.writeSync(new TextEncoder().encode(`\x1b[${components.length + 1}A\x1b[J`));
+
+  if (selected.size === 0) {
+    console.log("No components selected.");
+    return [];
+  }
+
+  console.log(`Selected ${selected.size} component(s):`);
+  for (const i of selected) {
+    console.log(`  ✓ ${components[i].name}`);
+  }
+  console.log();
+
+  return Array.from(selected).sort((a, b) => a - b).map((i) => components[i].name);
 }
 
 // ---------------------------------------------------------------------------
@@ -691,23 +780,88 @@ if (args.uninstall) {
   const sd = scriptDir();
   const token = resolveToken();
   const manifest = await loadManifest(sd, token);
-  const toolsToRemove = String(args.uninstall) === "all"
-    ? Object.keys(manifest.tools)
-    : [String(args.uninstall)];
+
+  const allTools = Object.keys(manifest.tools);
+  let toolsToRemove: string[];
+  let selectedComponents: Record<string, string[]> | null = null;
+
+  if (String(args.uninstall) === "all") {
+    if (args.interactive) {
+      const toolChoices = allTools.map((t) => ({
+        name: t,
+        description: `Remove all ${t} files from ${manifest.tools[t].target}`,
+      }));
+      const chosen = await interactivePicker(toolChoices);
+      toolsToRemove = chosen;
+      selectedComponents = {};
+      for (const t of toolsToRemove) {
+        const comps = Object.entries(manifest.tools[t].components).map(([name, comp]) => ({
+          name,
+          description: comp.description,
+        }));
+        const chosenComps = await interactivePicker(comps);
+        selectedComponents[t] = chosenComps;
+      }
+    } else {
+      toolsToRemove = allTools;
+    }
+  } else {
+    const toolName = String(args.uninstall);
+    if (!manifest.tools[toolName]) {
+      console.error(`Unknown tool: "${toolName}". Available: ${allTools.join(", ")}`);
+      Deno.exit(1);
+    }
+    if (args.interactive) {
+      const comps = Object.entries(manifest.tools[toolName].components).map(([name, comp]) => ({
+        name,
+        description: comp.description,
+      }));
+      const chosen = await interactivePicker(comps);
+      toolsToRemove = [toolName];
+      selectedComponents = { [toolName]: chosen };
+    } else {
+      toolsToRemove = [toolName];
+    }
+  }
+
+  if (toolsToRemove.length === 0) {
+    console.log("No tools selected. Nothing to uninstall.");
+    Deno.exit(0);
+  }
+
+  // Confirm unless --yes
+  if (!args.yes) {
+    const summary = toolsToRemove.map((t) => {
+      const comps = selectedComponents?.[t];
+      if (comps && comps.length > 0) return `  ${t}: ${comps.length} component(s)`;
+      if (comps) return null;
+      return `  ${t}: all components`;
+    }).filter(Boolean).join("\n");
+    console.log(`\nWill uninstall:\n${summary}\n`);
+    const ok = await promptConfirm("Continue?");
+    if (!ok) {
+      console.log("Cancelled.");
+      Deno.exit(0);
+    }
+  }
 
   for (const tool of toolsToRemove) {
     const toolConfig = manifest.tools[tool];
-    if (!toolConfig) {
-      console.error(`Unknown tool: "${tool}". Available: ${Object.keys(manifest.tools).join(", ")}`);
-      Deno.exit(1);
-    }
     const targetDir = expandHome(toolConfig.target);
     let removed = 0;
     let failed = 0;
 
-    for (const comp of Object.values(toolConfig.components)) {
+    const compsToRemove = selectedComponents?.[tool]
+      ? selectedComponents[tool].map((n) => toolConfig.components[n]).filter(Boolean)
+      : Object.values(toolConfig.components);
+
+    for (const comp of compsToRemove) {
       for (const fileEntry of comp.files) {
         const destPath = `${targetDir}/${fileEntry.dest}`;
+        if (args["dry-run"]) {
+          console.log(`  would remove  ${fileEntry.dest}`);
+          continue;
+        }
         try {
           await Deno.remove(destPath);
           console.log(`  ✓ removed  ${fileEntry.dest}`);
@@ -723,28 +877,23 @@ if (args.uninstall) {
       }
     }
 
-    // Remove empty parent directories
-    for (const subdir of ["agents", "skills", "commands", "prompts", "extensions"]) {
-      const dir = `${targetDir}/${subdir}`;
-      try {
-        await Deno.remove(dir);
-      } catch {
-        // not empty or not found — skip
+    if (!args["dry-run"]) {
+      for (const subdir of ["agents", "skills", "commands", "prompts", "extensions"]) {
+        const dir = `${targetDir}/${subdir}`;
+        try { await Deno.remove(dir); } catch { /* not empty or not found */ }
       }
+      const versionFile = `${targetDir}/.ai-harness-version`;
+      try { await Deno.remove(versionFile); } catch { /* not found */ }
     }
 
-    // Remove version marker
-    const versionFile = `${targetDir}/.ai-harness-version`;
-    try {
-      await Deno.remove(versionFile);
-    } catch {
-      // not found — skip
+    if (args["dry-run"]) {
+      console.log(`\n  ${tool}: ${compsToRemove.length} component(s) would be removed`);
+    } else {
+      console.log(`\n  ${tool}: ${removed} removed, ${failed} failed`);
     }
-
-    console.log(`\n  ${tool}: ${removed} removed, ${failed} failed`);
   }
 
-  console.log("\nUninstall complete.");
+  if (!args["dry-run"]) console.log("\nUninstall complete.");
   Deno.exit(0);
 }
 
