@@ -128,7 +128,7 @@ export function SkillsView() {
             return (
               <Card
                 key={tool.name}
-                className={`bg-card border-border cursor-pointer transition-all hover:border-border-strong ${isExpanded ? 'md:col-span-2' : ''}`}
+                className={`bg-card border-border cursor-pointer transition-all hover:border-border-strong overflow-hidden ${isExpanded ? 'md:col-span-2' : ''}`}
                 onClick={() => setExpanded(isExpanded ? null : tool.name)}
               >
                 <CardHeader className="p-4 pb-3">
@@ -155,7 +155,7 @@ export function SkillsView() {
                 </CardHeader>
 
                 {isExpanded && (
-                  <CardContent className="px-4 pb-4 pt-0">
+                  <CardContent className="px-4 pb-4 pt-0 overflow-hidden">
                     <div className="border-t border-border pt-3 mt-1">
                       <div className="flex items-center gap-2 mb-2">
                         <Badge variant="outline" className={`text-[10px] ${
@@ -171,37 +171,37 @@ export function SkillsView() {
                       {tool.skills.length === 0 ? (
                         <p className="text-xs text-text-muted py-4 text-center">No skills found in this directory.</p>
                       ) : (
-                        <ScrollArea className="max-h-[300px]">
-                          <div className="space-y-1">
+                        <ScrollArea className="max-h-[300px] w-full">
+                          <div className="space-y-1 w-full">
                             {tool.skills.map((skill) => (
                               <div
                                 key={skill.name}
-                                className="flex items-center gap-2 p-2 rounded-md hover:bg-surface transition-colors"
+                                className="flex items-center gap-2 p-2 rounded-md hover:bg-surface transition-colors w-full"
                               >
                                 <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
                                   skill.hasFrontmatter && skill.description && skill.description !== '>' ? 'bg-status-done' :
                                   skill.hasFrontmatter ? 'bg-yellow-500' : 'bg-status-backlog'
                                 }`} />
-                                <div className="flex-1 min-w-0">
+                                <div className="flex-1 min-w-0 w-full">
                                   <p className="text-xs font-medium text-foreground truncate">{skill.name}</p>
                                   {skill.description && (
-                                    <p className="text-[10px] text-text-muted truncate">{skill.description}</p>
+                                    <p className="text-[10px] text-text-muted truncate max-w-full">{skill.description}</p>
                                   )}
                                 </div>
-                                <div className="flex items-center gap-1.5 text-[10px] text-text-muted flex-shrink-0">
+                                <div className="flex items-center gap-1.5 text-[10px] text-text-muted flex-shrink-0 ml-auto">
                                   {skill.docsUrl && (
                                     <a
                                       href={skill.docsUrl}
                                       target="_blank"
                                       rel="noopener noreferrer"
                                       onClick={e => e.stopPropagation()}
-                                      className="underline hover:text-foreground"
+                                      className="underline hover:text-foreground whitespace-nowrap"
                                     >
                                       docs
                                     </a>
                                   )}
-                                  <span>{skill.fileCount}f</span>
-                                  {skill.lastModified && <span>{skill.lastModified}</span>}
+                                  <span className="whitespace-nowrap">{skill.fileCount}f</span>
+                                  {skill.lastModified && <span className="whitespace-nowrap">{skill.lastModified}</span>}
                                 </div>
                               </div>
                             ))}
