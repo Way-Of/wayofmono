@@ -297,6 +297,8 @@ OPTIONS:
   --yes, -y                             Skip confirmation prompts
   --local, -l                           Install to project-local directories (.claude, .agents, .gemini, etc.)
   --check                               Check installed version vs manifest
+  --update                              Update all installed tools (re-runs installer non-interactively)
+  --uninstall=<claude|opencode|all>     Remove all installed files for the given tool(s)
   --import-ref                          Import ref skills/agents to all platforms (WOMONO-016)
   --sync-docs                           Sync canonical skills to all tool skill directories
   --sync-docs --check                   Preview skill sync without making changes
@@ -543,8 +545,8 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 // ---------------------------------------------------------------------------
 
 const args = parseArgs(Deno.args, {
-  string: ["tool", "skill", "dest", "mode", "report-url"],
-  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs", "report-skills"],
+  string: ["tool", "skill", "dest", "mode", "report-url", "uninstall"],
+  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs", "report-skills", "update"],
   alias: { h: "help", n: "dry-run", y: "yes", i: "interactive", l: "local" },
 });
 
@@ -678,7 +680,75 @@ if (args.mode === "repo") {
   Deno.exit(0);
 }
 
-if (!args.tool) {
+// --update: re-run installer for all installed tools non-interactively
+if (args.update) {
+  args.tool = "all";
+  args.yes = true;
+}
+
+// --uninstall: remove installed files
+if (args.uninstall) {
+  const sd = scriptDir();
+  const token = resolveToken();
+  const manifest = await loadManifest(sd, token);
+  const toolsToRemove = String(args.uninstall) === "all"
+    ? Object.keys(manifest.tools)
+    : [String(args.uninstall)];
+
+  for (const tool of toolsToRemove) {
+    const toolConfig = manifest.tools[tool];
+    if (!toolConfig) {
+      console.error(`Unknown tool: "${tool}". Available: ${Object.keys(manifest.tools).join(", ")}`);
+      Deno.exit(1);
+    }
+    const targetDir = expandHome(toolConfig.target);
+    let removed = 0;
+    let failed = 0;
+
+    for (const comp of Object.values(toolConfig.components)) {
+      for (const fileEntry of comp.files) {
+        const destPath = `${targetDir}/${fileEntry.dest}`;
+        try {
+          await Deno.remove(destPath);
+          console.log(`  ✓ removed  ${fileEntry.dest}`);
+          removed++;
+        } catch (err) {
+          if (err instanceof Deno.errors.NotFound) {
+            console.log(`  - skipped  ${fileEntry.dest} (not found)`);
+          } else {
+            console.error(`  ✗ failed   ${fileEntry.dest}: ${err}`);
+            failed++;
+          }
+        }
+      }
+    }
+
+    // Remove empty parent directories
+    for (const subdir of ["agents", "skills", "commands", "prompts", "extensions"]) {
+      const dir = `${targetDir}/${subdir}`;
+      try {
+        await Deno.remove(dir);
+      } catch {
+        // not empty or not found — skip
+      }
+    }
+
+    // Remove version marker
+    const versionFile = `${targetDir}/.ai-harness-version`;
+    try {
+      await Deno.remove(versionFile);
+    } catch {
+      // not found — skip
+    }
+
+    console.log(`\n  ${tool}: ${removed} removed, ${failed} failed`);
+  }
+
+  console.log("\nUninstall complete.");
+  Deno.exit(0);
+}
+
+if (!args.tool && !args.uninstall) {
   console.error("Error: --tool is required.\n");
   printHelp();
   Deno.exit(1);
