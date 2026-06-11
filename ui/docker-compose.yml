@@ -1,0 +1,76 @@
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wayofmono-nextjs
+    restart: unless-stopped
+    expose:
+      - "3000"
+    env_file:
+      - .env
+    environment:
+      - THOUGHTS_ROOT=/thoughts
+      - DATABASE_URL=file:/app/db/custom.db
+    volumes:
+      - ../thoughts:/thoughts:rw
+      - db_data:/app/db
+    networks:
+      - internal
+    logging: *default-logging
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', r => { process.exit(r.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: wayofmono-caddy
+    restart: unless-stopped
+    ports:
+      - "81:81"
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - internal
+    depends_on:
+      nextjs:
+        condition: service_started
+    logging: *default-logging
+
+  # cloudflared:
+  #   image: cloudflare/cloudflared:latest
+  #   container_name: wayofmono-cloudflared
+  #   restart: unless-stopped
+  #   # Option A: authenticate with config file
+  #   command: tunnel --config /etc/cloudflared/config.yml run
+  #   volumes:
+  #     - ${CLOUDFLARED_HOME:-~/.cloudflared}:/etc/cloudflared:ro
+  #   # Option B: authenticate with token (uncomment and set TUNNEL_TOKEN in .env)
+  #   # command: tunnel run
+  #   # environment:
+  #   #   - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+  #   networks:
+  #     - internal
+  #   depends_on:
+  #     - caddy
+  #   logging: *default-logging
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  db_data:
+  caddy_data:
+  caddy_config:

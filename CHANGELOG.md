@@ -2,6 +2,23 @@
 
 ## [Unreleased] - 2026-06-11
 
+### WOMONO-046 — Production Hosting for CTO Dashboard — **Phases 1-3 Complete**
+- Health endpoint `GET /api/health` — validates app + Prisma/SQLite are responding
+- Systemd service file `ui/docker/wayofmono-dashboard.service`
+- Deploy script `scripts/deploy-dashboard.sh` — git pull → podman-compose rebuild → health check loop
+- cloudflared sidecar in compose (commented out, documented both config + token auth)
+- Logging driver config (json-file, 10m/3 files) on all services
+- Full deployment docs added to README.md
+- Docker runtime hardening: Prisma build integration, entrypoint with auto-migrate, Alpine deps
+- Fixed `DATABASE_URL` for Docker (absolute path override in compose)
+- Added `THOUGHTS_ROOT` env var to `thoughts.ts` for configurable data path in Docker
+- Created `Dockerfile` — multi-stage build with bun install, Next.js standalone output
+- Created `docker-compose.yml` — Next.js + Caddy services with volumes for thoughts/ and SQLite
+- Created `ui/docker/Caddyfile` — Caddy config for container env (proxies to `nextjs:3000`)
+- Created `.dockerignore` for lean build context
+- Updated WOMONO-043, WOMONO-044, WOMONO-045 → Done (all features implemented in prior sessions)
+- Updated WOMONO-046 → In Progress
+
 ### WOMONO-045 — Comprehensive Skills for All Tools — **Phase 1-4 Complete**
 - **Architecture correction**: Dashboard UI is server-hosted, skills live on users' machines → telemetry reporting model (`POST /api/skills/report`)
 - **CLI naming fix**: All `womono` references corrected to `ai-harness` (the actual CLI binary)

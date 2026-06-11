@@ -169,6 +169,56 @@ Published at [npmjs.com/settings/wayofmono/packages](https://www.npmjs.com/setti
 
 ---
 
+## 🚢 Deployment
+
+The CTO Dashboard runs on a local server behind Cloudflare Tunnel.
+
+### Stack
+
+```
+Internet → Cloudflare Tunnel (cloudflared) [host]
+              → Podman:
+                  → Caddy container (:81)
+                      → Next.js container (:3000, production)
+```
+
+### Prerequisites
+
+- Podman + podman-compose on the server
+- Devbox (for the reproducible shell environment)
+- cloudflared tunnel authenticated for `cto.wayof.work`
+
+### Deploy
+
+```bash
+# First time: start the stack
+cd ui
+podman-compose up --build -d
+
+# Optionally register as a systemd service
+sudo cp docker/wayofmono-dashboard.service /etc/systemd/system/
+sudo systemctl enable --now wayofmono-dashboard
+```
+
+### Update
+
+```bash
+# Pull latest code and redeploy
+./scripts/deploy-dashboard.sh
+```
+
+### Health
+
+The dashboard exposes `GET /api/health` — returns `{"status":"ok"}` when the app and database are responding.
+
+### Logs
+
+```bash
+podman-compose logs -f
+```
+
+---
+
 ## 🔄 CI/CD
 
 | Workflow | Trigger | Checks |

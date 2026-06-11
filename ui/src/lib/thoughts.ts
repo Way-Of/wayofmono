@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-const THOUGHTS_ROOT = path.join(process.cwd(), '..', 'thoughts');
+const THOUGHTS_ROOT = process.env.THOUGHTS_ROOT || path.join(process.cwd(), '..', 'thoughts');
 const PROJECTS = ['wayofmono', 'wow', 'opticat'] as const;
 type ProjectSlug = (typeof PROJECTS)[number];
 
