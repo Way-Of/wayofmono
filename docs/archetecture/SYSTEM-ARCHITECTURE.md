@@ -1,106 +1,119 @@
 # System Architecture — WayOfMono
 
-This document provides a comprehensive view of the WayOfMono system architecture, covering data flow, component interactions, architectural patterns, and design decisions.
+This document describes the WayOfMono system architecture for the AI Engineering Monorepo.
 
-## Executive Summary
+## What Is WayOfMono?
 
-WayOfMono is an **AI Engineering Monorepo** that consolidates:
-- 7 AI coding tool frontends (OpenCode, Claude Code, Gemini CLI, Pi, Codex, Antigravity, Wo Coder)
+WayOfMono is a monorepo that consolidates:
+- 7 AI coding tools: OpenCode, Claude Code, Gemini CLI, Pi, Codex, Antigravity, Wo Coder
 - A unified skill/agent orchestration layer (`packages/@aiengineeringharness`)
-- A production-ready CTO Dashboard for team management and monitoring
+- A production CTO Dashboard (`ui/`)
+- A centralized context repository (`thoughts/`)
 
-**Architecture Philosophy:**
-1. **File-based first** — Human-readable, git-trackable data (Markdown/JSON)
-2. **Container-native** — Podman/Docker rootless, multi-stage builds
-3. **Observability-driven** — Trace before implementation (ODD pattern)
-4. **Multi-tool abstraction** — Single source of truth deployed to 7 platforms
-
----
-
-## High-Level Architecture Diagram
+## High-Level Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                         WAYOFMONO SYSTEM                              │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                       │
-│  ┌──────────────────┐    ┌──────────────────┐    ┌────────────────┐ │
-│  │   User Interface │    │   AI Tools       │    │   Data Layer   │ │
-│  │  (CTO Dashboard) │◄──►│  (7 Frontends)   │◄──►│  (SQLite +     │ │
-│  │                  │    │  - OpenCode      │    │   File-based)  │ │
-│  └────────┬─────────┘    │  - Claude Code   │    │                 │ │
-│           │              │  - Gemini CLI    │    │  thoughts/     │ │
-│           ▼              │  - Pi            │    │  db_data/      │ │
-│  ┌──────────────────┐    │  - Codex        │    │                 │ │
-│  │   Orchestrator   │    │  - Antigravity  │    │  cache/        │ │
-│  │ (skill-adapter)  │    │  - Wo Coder     │    │                 │ │
-│  └────────┬─────────┘    └──────────────────┘    └────────────────┘ │
-│           │                                                          │
-│           ▼                                                          │
-│  ┌──────────────────────────────────────────────────────────────┐   │
-│  │                    Edge Layer                                 │   │
-│  │  Cloudflare Tunnel (TLS) → Caddy Reverse Proxy                │   │
-│  └──────────────────────────────────────────────────────────────┘   │
-│                                                                       │
-└─────────────────────────────────────────────────────────────────────┘
+wayofmono/
+├── packages/@aiengineeringharness/   # Core orchestration
+│   ├── install.ts                     # CLI installer
+│   ├── manifest.json                  # Skills source of truth
+│   ├── skills/                        # Skill definitions
+│   └── scripts/                       # Pipeline tools (docs-sync, compliance)
+├── ui/                                # CTO Dashboard (Next.js 16)
+│   ├── app/                           # Next.js app router
+│   ├── prisma/                        # Database schema
+│   └── db_data/                       # SQLite storage
+├── thoughts/                          # Context engineering
+│   ├── global/                        # Cross-project docs
+│   ├── wayofmono/                     # WOMONO-XXX tickets
+│   └── shared/                        # Templates
+├── pi/                                # Pi compatibility
+├── gemini/                            # Gemini compatibility
+├── opencode/                          # OpenCode compatibility
+├── claude/                            # Claude compatibility
+├── memory/                            # Session storage
+├── test/                              # Integration tests
+└── docs/                              # Documentation
+    └── archetecture/                   # These docs
 ```
 
----
+## Component Architecture
+
+### 1. AI Engineering Harness (`packages/@aiengineeringharness/`)
+
+The harness manages skills and agents across all 7 AI tool platforms.
+
+**Key Files:**
+- `install.ts` — Deno-based CLI installer
+- `setup.sh` — GNU Stow shell script
+- `manifest.json` — Single source of truth for all skills
+
+**Installation:**
+```bash
+deno run -A packages/@aiengineeringharness/install.ts --tool=all --yes
+```
+
+**Supported Platforms:**
+| Platform | Config Directory |
+|----------|---------------|
+| OpenCode | `~/.config/opencode/` |
+| Claude Code | `~/.claude/` |
+| Gemini CLI | `~/.gemini/` |
+| Pi | `~/.pi/agent/` |
+| Codex | `~/.codex/` |
+| Antigravity | `~/.antigravity/` |
+| Wo Coder | `~/.wocoder/` |
+
+### 2. CTO Dashboard (`ui/`)
+
+Next.js 16 application for team management and monitoring.
+
+**Features:**
+- Ticket overview (Kanban, lists, filters)
+- Skills health monitoring
+- Developer progress tracking
+- Standups, ideas, news feeds
+
+**Technology Stack:**
+- Framework: Next.js App Router (React 19, TypeScript)
+- Styling: Tailwind CSS
+- Database: SQLite with Prisma ORM
+- Container: Docker/Podman
+
+**Deployment:**
+```bash
+./scripts/deploy-dashboard.sh
+```
+
+### 3. Context Engineering (`thoughts/`)
+
+Centralized markdown repository acting as a "f-rr-d" (förråd = Swedish for "store"):
+
+**Structure:**
+- `thoughts/global/` — Cross-project documentation
+- `thoughts/wayofmono/` — WOMONO-XXX tickets
+- `thoughts/wo/` — WO-related content
+- `thoughts/opticat/` — OPT-XXX tickets
+
+**Git Workflow:**
+- Feature branches for major changes
+- Pull requests for reviews
+- Semantic commit messages
 
 ## Data Architecture
 
-### Storage Patterns
+### File-Based Storage
 
-| Layer | Technology | Purpose | Persistence |
-|-------|------------|---------|-------------|
-| **Application Data** | SQLite (Prisma) | Skills reports, user progress | `db_data/custom.db` |
-| **Document Store** | File System | Tickets, plans, research | `thoughts/` (Git-backed) |
-| **Cache Layer** | Redis / Memory | Session state, API responses | Volatile/Redis |
-| **Edge Cache** | Cloudflare CDN | Static assets, edge functions | Distributed |
+| Directory | Purpose |
+|--|--|
+| `thoughts/` | Tickets, plans, research, documentation (Git-backed) |
+| `db_data/custom.db` | SQLite for skills reports and user progress |
+| `thoughts/shared/*` | JSON files for ideas, standups, news |
 
-### Data Flow Architecture
+### Database Schema
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   User      │────▶│  Caddy/CF   │────▶│  Next.js     │
-│   Request   │◀────│  Reverse    │◀────│  App Router  │
-└─────────────┘     │  Proxy      │     └──────┬───────┘
-                    └─────────────┘            │
-                            │                  │
-                    ┌───────▼────────┐         │
-                    │   thoughts/    │◀────────┤ (bind mount, RW)
-                    │  (Git-backed)  │         │
-                    └────────────────┘         │
-                            │                  │
-                    ┌───────▼────────┐         │
-                    │   db_data/     │◀────────┤ (volume)
-                    │  (SQLite)      │         │
-                    └────────────────┘         │
-                            │                  │
-                    ┌───────▼────────┐         │
-                    │    cache/      │◀────────┤ (Redis/Memory)
-                    └────────────────┘         │
-```
-
-### Data Models
-
-**Ticket Model** (`thoughts/<project>/shared/tickets/*.md`)
-```yaml
----
-prefix: WOMONO  # or WOW, OPT
-number: "001"
-title: "INITIAL-SETUP"
-status: in-progress
-priority: high
-assignee: developer
-tags: [setup, initial]
----
-
-# Content...
-```
-
-**Skills Report Model** (`db_data/custom.db`)
 ```prisma
+// prisma/schema.prisma
 model SkillReport {
   id          String   @id @default(cuid())
   platform    String   // opencode, claude, gemini, pi, codex, antigravity, wocoder
@@ -120,567 +133,226 @@ model UserProgress {
 }
 ```
 
----
-
 ## API Architecture
 
-### RESTful Design Principles
+### REST API (Next.js App Router)
 
-1. **Resource-oriented** — Nouns for resources, verbs for actions
-2. **Versioned endpoints** — `/api/v1/...` with clear versioning strategy
-3. **Consistent responses** — Standardized error codes, pagination, filtering
-4. **HATEOAS-ready** — Hypermedia controls where applicable
+| Route | Method | Purpose |
+|--|--|--|
+| `/api/health` | GET | Health check |
+| `/api/tickets` | GET | List tickets |
+| `/api/tickets/:id` | GET | Single ticket |
+| `/api/ideas` | GET/POST | Ideas submission |
+| `/api/news` | GET | News feed |
 
-### API Structure
+### Data Flow
+
+```
+User Request
+    ↓
+Cloudflare Tunnel (TLS termination)
+    ↓
+Caddy Reverse Proxy (:81)
+    ↓
+Next.js Application (:3000)
+    ├── thoughts/ (bind mount, RW)
+    └── db_data/ (SQLite volume)
+```
+
+## Observability
+
+### Health Checks
 
 ```typescript
-// Base structure
-interface ApiResponse<T> {
-  data?: T | null;
-  meta?: {
-    page: number;
-    perPage: number;
-    total: number;
+// app/api/health/route.ts
+export async function GET(request: NextRequest) {
+  const checks = {
+    database: await checkDatabase(),
+    cache: await checkCache(),
+    storage: await checkStorage(),
+    external: await checkExternalServices()
   };
-  error?: ApiError;
-}
-
-interface ApiError {
-  code: string;        // e.g., "VALIDATION_ERROR"
-  message: string;     // Human-readable
-  details?: any[];    // Optional field-level errors
+  
+  return {
+    status: 'ok',
+    checks,
+    responseTime: Date.now() - startTime
+  };
 }
 ```
 
-### Key Endpoints
+### Logging
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/health` | GET | Health check (database, cache, storage) |
-| `/api/tickets` | GET | List tickets with filters |
-| `/api/tickets/:id` | GET | Single ticket details |
-| `/api/skills/report` | POST | Generate skills analytics |
-| `/api/ideas` | GET/POST | Ideas submission and voting |
-| `/api/news` | GET | News feed aggregation |
-
-### API Versioning Strategy
-
+Structured JSON logs with correlation IDs:
 ```typescript
-// URL-based versioning (recommended)
-GET /api/v1/tickets
-GET /api/v2/tickets  // Breaking changes go here
-
-// Header-based versioning (alternative)
-GET /api/tickets
-Header: X-API-Version: 2.0
-```
-
----
-
-## Event-Driven Architecture
-
-### Pub/Sub Pattern for Real-time Updates
-
-WayOfMono uses an **event-driven architecture** for real-time collaboration features.
-
-### Event Schema
-
-```typescript
-interface Event {
-  id: string;              // UUID
-  type: EventType;         // e.g., "TICKET_CREATED", "SKILL_UPDATED"
-  timestamp: Date;
-  payload: Record<string, any>;
-  correlationId?: string;  // For request tracing
+{
+  timestamp: "2026-06-11T...",
+  level: "info" | "warn" | "error",
+  message: "...",
+  correlationId: "uuid-1234"
 }
-
-type EventType = 
-  | 'TICKET_CREATED'
-  | 'TICKET_UPDATED'
-  | 'SKILL_INSTALLED'
-  | 'SKILL_UNINSTALLED'
-  | 'USER_PROGRESS_CHANGED';
 ```
 
-### Event Bus Implementation
+## Deployment Architecture
 
-**Current**: In-memory event bus (for single-instance deployment)
+### Local Development
 
-```typescript
-// lib/event-bus.ts
-class EventBus {
-  private subscribers: Map<string, Set<Function>> = new Map();
+```bash
+# Dev environment
+./scripts/dev-dashboard.sh
 
-  subscribe(eventType: EventType, handler: Function): () => void {
-    if (!this.subscribers.has(eventType)) {
-      this.subscribers.set(eventType, new Set());
-    }
-    this.subscribers.get(eventType)!.add(handler);
-    
-    // Return unsubscribe function
-    return () => {
-      this.subscribers.get(eventType)?.delete(handler);
-    };
-  }
+# Manual deployment
+./scripts/deploy-dashboard.sh
+```
 
-  publish(event: Event): void {
-    const handlers = this.subscribers.get(event.type);
-    if (handlers) {
-      for (const handler of handlers) {
-        try {
-          handler(event.payload);
-        } catch (error) {
-          console.error('Event handler error:', error);
-        }
-      }
-    }
+### CI/CD Pipeline (GitHub Actions)
+
+**Stages:**
+1. Validate (lint, typecheck)
+2. Test (unit tests)
+3. Build (Next.js prod build)
+4. Deploy (podman-compose rebuild)
+
+**Workflow:**
+```yaml
+# .github/workflows/ci.yml
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run lint
+      - run: pnpm run test
+      - run: pnpm run build
+```
+
+## Container Architecture
+
+### Production Compose
+
+```yaml
+# ui/podman-compose.yml
+services:
+  nextjs:
+    build: .
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    volumes:
+      - ./thoughts:/thoughts:rw
+      - db_data:/app/db_data
+    ports:
+      - "3000:3000"
+```
+
+### Caddy Configuration
+
+```
+:81 {
+  reverse_proxy localhost:3000 {
+    header_up Host {host}
+    header_up X-Forwarded-For {remote_host}
   }
 }
-
-export const eventBus = new EventBus();
 ```
-
-**Future**: Redis Pub/Sub or NATS for distributed deployments.
-
----
 
 ## Security Architecture
 
-### Authentication & Authorization Flow
+### Layers
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   User      │────▶│  Cloudflare │────▶│  Caddy/Next │
-│   Browser   │     │  WAF        │     │  Auth       │
-└─────────────┘     └─────────────┘     └──────┬───────┘
-                    │                          │
-                    ▼                          ▼
-            ┌─────────────┐          ┌─────────────┐
-            │ JWT Token   │◀────────▶│ Session Mgr │
-            │ (Secure)    │          │             │
-            └─────────────┘          └─────────────┘
-```
+| Layer | Protection |
+|--|--|
+| **Edge** | Cloudflare WAF, rate limiting |
+| **Transport** | TLS 1.3 (automatic via Cloudflare) |
+| **Application** | JWT sessions, input validation |
+| **Data** | SQLite at-rest encryption |
 
-### Security Layers
+### Authentication
 
-| Layer | Technology | Purpose |
-|-------|------------|---------|
-| **Edge** | Cloudflare WAF | DDoS protection, rate limiting, bot detection |
-| **Transport** | TLS 1.3 (Cloudflare) | Encrypted in-transit communication |
-| **Application** | JWT + Session Cookies | User authentication and session management |
-| **Data** | SQLite encryption | At-rest data encryption for sensitive fields |
+Session-based with secure cookies:
+- JWT verification for API routes
+- Rate limiting per user/IP
+- Role-based access control (admin, user, viewer)
 
-### Role-Based Access Control (RBAC)
-
-```typescript
-type Role = 'admin' | 'user' | 'viewer';
-
-interface Permission {
-  resource: string;      // e.g., "tickets", "skills"
-  action: string;        // e.g., "create", "read", "update"
-}
-
-const rolePermissions: Record<Role, Permission[]> = {
-  admin: [
-    { resource: 'tickets', action: '*' },
-    { resource: 'skills', action: '*' },
-    { resource: 'users', action: '*' }
-  ],
-  user: [
-    { resource: 'tickets', action: ['read', 'update'] },
-    { resource: 'ideas', action: ['create', 'vote'] }
-  ],
-  viewer: [
-    { resource: 'tickets', action: 'read' },
-    { resource: 'skills', action: 'read' }
-  ]
-};
-
-function checkPermission(role: Role, resource: string, action: string): boolean {
-  const permissions = rolePermissions[role];
-  return permissions.some(
-    p => (p.action === '*' || p.action === action) && 
-         (p.resource === '*' || p.resource === resource)
-  );
-}
-```
-
-### Secrets Management
-
-| Secret Type | Storage | Rotation |
-|-------------|---------|----------|
-| **Database** | `.env` file, mounted volume | Manual/CI |
-| **JWT Keys** | Environment variable | Quarterly |
-| **API Keys** | Platform-specific (e.g., OpenAI) | Per-tool rotation |
-| **Cloudflare Tunnel** | `tunnel.yml` config | On credential change |
-
----
-
-## Observability Architecture
-
-### Three Pillars of Observability
-
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Tracing   │     │    Metrics  │     │   Logging    │
-│  (Distributed)│    │  (Performance)│    │  (Structured)│
-└─────────────┘     └─────────────┘     └─────────────┘
-```
-
-### Tracing Architecture
-
-**OpenTelemetry-based tracing** with correlation IDs:
-
-```typescript
-// lib/tracing.ts
-import { trace, Span } from '@opentelemetry/api';
-
-class TraceContext {
-  private span?: Span;
-  
-  static createContext(): string {
-    return crypto.randomUUID();  // Correlation ID
-  }
-  
-  static withSpan<T>(correlationId: string, fn: () => T): T {
-    const span = trace.getSpan();
-    if (span) {
-      span.setAttribute('correlation.id', correlationId);
-    }
-    return fn();
-  }
-}
-
-// Usage in middleware
-export async function tracingMiddleware(request: NextRequest) {
-  const correlationId = TraceContext.createContext();
-  request.headers.set('X-Correlation-ID', correlationId);
-  
-  return eventBus.publish({
-    type: 'REQUEST_STARTED',
-    payload: { correlationId, method: request.method, url: request.url }
-  });
-}
-```
-
-### Metrics Collection
-
-**Prometheus-compatible metrics**:
-
-```typescript
-// lib/metrics.ts
-import { Registry, Counter, Histogram, Gauge } from 'prom-client';
-
-const httpRequestDuration = new Histogram({
-  name: 'http_request_duration_seconds',
-  help: 'Duration of HTTP requests in seconds',
-  labelNames: ['method', 'route', 'status_code'],
-  buckets: [0.1, 0.5, 1, 2, 5, 10]
-});
-
-const activeRequests = new Gauge({
-  name: 'http_requests_active',
-  help: 'Number of active HTTP requests'
-});
-
-// Export endpoint
-export async function getMetrics() {
-  return registry.metrics();
-}
-```
-
-### Structured Logging
-
-**JSON-formatted logs with correlation IDs**:
-
-```typescript
-// lib/logger.ts
-interface LogEntry {
-  timestamp: string;
-  level: 'error' | 'warn' | 'info' | 'debug';
-  message: string;
-  correlationId?: string;
-  userId?: string;
-  requestId?: string;
-  metadata?: Record<string, any>;
-}
-
-class Logger {
-  info(message: string, metadata?: Record<string, any>) {
-    this.log('info', message, metadata);
-  }
-
-  error(message: string, error?: Error, metadata?: Record<string, any>) {
-    this.log('error', message, { ...metadata, error: error?.message });
-  }
-
-  private log(level: LogEntry['level'], message: string, metadata?: Record<string, any>) {
-    const entry: LogEntry = {
-      timestamp: new Date().toISOString(),
-      level,
-      message,
-      correlationId: this.correlationId,
-      userId: this.userId,
-      ...metadata
-    };
-
-    console.log(JSON.stringify(entry));  // Or send to ELK/Fluentd
-  }
-}
-```
-
----
-
-## Component Architecture
-
-### Application Layer
-
-**Root Layout** (`app/layout.tsx`)
-- Global providers (theme, toast, query)
-- Navigation sidebar
-- Auth context
-- Error boundaries
-
-**Dashboard Layout** (`components/dashboard/layout.tsx`)
-- Main content area with ticket navigation
-- Search and filter controls
-- Quick actions toolbar
-
-### Views (Pages)
-
-| View | Component | Purpose |
-|------|-----------|---------|
-| **Tickets View** | `tickets-view.tsx` | Kanban board, filtering, quick creation |
-| **Skills View** | `skills-view.tsx` | Skills grid, platform filtering, health monitoring |
-| **Developers View** | `developers-view.tsx` | Team profiles, progress tracking, assignments |
-| **Ideas View** | `ideas-view.tsx` | Idea submission, voting, categorization |
-
-### API Routes Layer
-
-```typescript
-// app/api/ideas/route.ts
-export async function GET(request: NextRequest) {
-  // Parse query params (filters, pagination)
-  // Load from thoughts/ideas/*.md
-  // Apply filters and pagination
-  // Return JSON
-}
-
-// app/api/skills/report/route.ts
-export async function POST(request: NextRequest) {
-  // Generate comprehensive skills analytics
-  // Read from platform configs
-  // Calculate health metrics
-  // Cache results for performance
-}
-```
-
-### Database Layer
-
-**SQLite with Prisma ORM**:
-
-```prisma
-// prisma/schema.prisma
-model SkillReport {
-  id          String   @id @default(cuid())
-  platform    String
-  skillName   String
-  description String
-  version     String
-  healthScore Int      // 0-100
-  lastUpdated DateTime @default(now())
-}
-
-model UserProgress {
-  id          String   @id @default(cuid())
-  userId      String
-  skillName   String
-  completedAt DateTime
-  progress    Int      // 0-100
-}
-```
-
----
-
-## Performance Architecture
+## Performance Optimization
 
 ### Caching Strategy
 
-| Cache Type | TTL | Storage | Purpose |
-|------------|-----|---------|---------|
-| **Skills Reports** | 5 min | Redis/Memory | Heavy analytics queries |
-| **API Responses** | 1-60s | Edge (Cloudflare) | Static content, simple queries |
-| **Static Assets** | 1h+ | CDN | Images, fonts, JS/CSS bundles |
+| Cache Type | TTL | Location |
+|--|--|--|
+| Skills reports | 5 min | Redis/Memory |
+| API responses | Edge | Cloudflare CDN |
+| Static assets | 1h+ | CDN |
 
-### Database Optimization
+### Database Indexing
 
-**Indexing Strategy**:
 ```prisma
 model SkillReport {
   id          String   @id @default(cuid())
   platform    String
-  skillName   String
   
-  // Composite indexes for common query patterns
-  @@index([platform, lastUpdated])  // Platform-specific queries
-  @@index([healthScore])             // Health score filtering
+  // Composite index for platform queries
+  @@index([platform, lastUpdated])
 }
 ```
 
-**Caching**:
-- Skills reports: Redis (5-minute TTL)
-- API responses: Edge cache + in-memory
-- Static assets: CDN with long TTLs
-
-### Bundle Optimization
-
-- **Tree shaking** for unused components
-- **Code splitting** by route
-- **Dynamic imports** for heavy components
-- **Next.js optimizations**: ISR, SSG, SSR as appropriate
-
----
-
-## Scalability Architecture
-
-### Horizontal Scaling
-
-```yaml
-# Multi-instance deployment
-services:
-  nextjs-blue:
-    build: .
-    ports: ["3001:3000"]
-  
-  nextjs-green:
-    build: .
-    ports: ["3002:3000"]
-
-caddy:
-  volumes:
-    - ./Caddyfile:/etc/caddy/Caddyfile
-```
-
-**Load Balancing**:
-- Caddy reverse proxy with health checks
-- Sticky sessions for WebSocket connections (if used)
-- Database connection pooling
-
-### Vertical Scaling
-
-**Database Sharding** (future):
-- Partition by `platform` or `userId`
-- Read replicas for analytics queries
-
-**Redis Clustering** (future):
-- Horizontal scaling of cache layer
-- Session affinity for user sessions
-
----
-
-## Disaster Recovery Architecture
+## Disaster Recovery
 
 ### RTO/RPO Objectives
 
-| Metric | Target | Implementation |
-|--------|--------|----------------|
-| **RTO** (Recovery Time) | 4 hours | Container restart + data restore |
-| **RPO** (Recovery Point) | 15 minutes | Frequent backups + replication |
+- **RTO** (Recovery Time): 4 hours
+- **RPO** (Recovery Point): 15 minutes
 
 ### Backup Strategy
 
 ```bash
-# scripts/backup.sh
-#!/bin/bash
-set -euo pipefail
-
-BACKUP_TYPES=("thoughts" "database" "configuration")
-
-for backup_type in "${BACKUP_TYPES[@]}"; do
-  case $backup_type in
-    thoughts)
-      tar -czf /backups/thoughts/${TIMESTAMP}.tar.gz \
-        -C /home/zerwiz/wayofmono thoughts/
-      ;;
-    database)
-      sqlite3 /path/to/custom.db ".backup '/backups/database/${TIMESTAMP}/custom.db'"
-      ;;
-    configuration)
-      cp -r /home/zerwiz/wayofmono/ui/.env* /backups/config/${TIMESTAMP}/
-      ;;
-  esac
-done
-
-# Cleanup old backups (7-day retention for daily, 30-day for weekly)
-find /backups/thoughts -name "*.tar.gz" -mtime +7 -delete
+# Daily backups
+./scripts/backup.sh all
 ```
 
-### Recovery Procedures
+**Retained:**
+- Daily: 7 days
+- Weekly: 4 weeks
+- Monthly: 12 months
 
-**Phase 1: Detection & Isolation**
-1. Automated health check failures trigger alert
-2. Container stops affected services gracefully
-3. Load balancer removes unhealthy nodes
+## Future Roadmap
 
-**Phase 2: Recovery**
-1. Restore from latest backup (within 15 minutes)
-2. Podman compose brings services back
-3. Health checks verify system is operational
-
-**Phase 3: Verification**
-1. Load tests validate system performance
-2. Data consistency checks
-3. User acceptance testing
-
----
-
-## Future Architecture Evolution
-
-### Phase 1 (Q4 2026) — Real-time Collaboration
-- WebSocket-based real-time ticket updates
+### Q4 2026
+- Real-time collaboration (WebSocket)
 - Advanced filtering and search
 - Mobile-responsive design
 
-### Phase 2 (Q1 2027) — Multi-region Deployment
-- Geo-distributed databases
-- Edge caching at Cloudflare
-- Multi-active replication for HA
-
-### Phase 3 (Q2 2027) — AI-Powered Features
-- AI-powered ticket prioritization
-- Automated skill recommendations
-- Predictive analytics dashboards
-
----
-
-## Architecture Decision Records (ADRs)
-
-See `thoughts/wayofmono/docs/architecture/adrs/` for detailed ADRs covering:
-- **ADR-001**: File-based data storage pattern
-- **ADR-002**: Container-native deployment strategy
-- **ADR-003**: Observability-driven development (ODD)
-- **ADR-004**: Multi-tool abstraction layer
-
----
+### Q1 2027
+- Multi-region deployment
+- Serverless functions
+- AI-powered recommendations
 
 ## Glossary
 
 | Term | Definition |
-|------|------------|
-| **ODD** | Observability Driven Development — design the trace before implementation |
-| **f-rr-d** | förråd (Swedish for "store") — centralized context engineering repository |
-| **skill-adapter** | Platform-specific skill/agent loading and format adapter |
-| **manifest.json** | Source of truth for skills/components across all platforms |
+|--|--|
+| **f-rr-d** | förråd (Swedish for "store") — centralized context repository |
+| **skill-adapter** | Harness layer that loads skills for each platform |
+| **manifest.json** | Canonical skills list deployed to all 7 platforms |
+| **thoughts/** | Centralized markdown for tickets, plans, research |
+| **db_data/** | SQLite directory for skills reports |
 
----
+## Related Documentation
 
-## References
-
-- [OVERVIEW.md](./OVERVIEW.md) — High-level system overview
+- [OVERVIEW.md](./OVERVIEW.md) — High-level overview
 - [HARNESS.md](./HARNESS.md) — AI Engineering Harness details
-- [STRUCTURE.md](./STRUCTURE.md) — File structure and agent interfaces
-- [cto-dashboard-architecture.md](./cto-dashboard-architecture.md) — CTO Dashboard specifics
-- [deployment-architecture.md](./deployment-architecture.md) — Deployment/CI/CD strategies
+- [STRUCTURE.md](./STRUCTURE.md) — File structure guide
+- [cto-dashboard-architecture.md](./cto-dashboard-architecture.md) — Dashboard specifics
+- [deployment-architecture.md](./deployment-architecture.md) — Deployment strategies
 
 ---
 
