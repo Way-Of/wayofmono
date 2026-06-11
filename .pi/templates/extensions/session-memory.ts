@@ -253,9 +253,9 @@ const readCurrentSessionHistoryTool: ToolDefinition<
     params: { limit?: number },
     _signal: AbortSignal,
     _onUpdate: AgentToolUpdateCallback<string>,
-    ctx: ExtensionContext,
+    _ctx: ExtensionContext,
   ): Promise<AgentToolResult<string>> => {
-    const filePath = getSessionFilePath(ctx);
+    const filePath = getSessionFilePath(_ctx);
     if (!filePath) {
       return {
         content: [{ type: 'text', text: 'Session file path not found.' }],
