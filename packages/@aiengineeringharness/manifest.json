@@ -177,52 +177,12 @@
             }
           ]
         },
-        "skill/debug-k8s": {
-          "description": "Debug K8s skill",
-          "files": [
-            {
-              "src": "claude/skills/debug_k8s/SKILL.md",
-              "dest": "skills/debug-k8s/SKILL.md"
-            }
-          ]
-        },
-        "skill/experimental-pr-workflow": {
-          "description": "Experimental Pr Workflow skill",
-          "files": [
-            {
-              "src": "claude/skills/experimental_pr_workflow/SKILL.md",
-              "dest": "skills/experimental-pr-workflow/SKILL.md"
-            }
-          ]
-        },
-        "skill/git-commit-helper": {
-          "description": "Git Commit Helper skill",
-          "files": [
-            {
-              "src": "claude/skills/git_commit_helper/SKILL.md",
-              "dest": "skills/git-commit-helper/SKILL.md"
-            }
-          ]
-        },
         "skill/implement_plan": {
           "description": "Implement Plan skill",
           "files": [
             {
               "src": "claude/skills/implement_plan/SKILL.md",
               "dest": "skills/implement_plan/SKILL.md"
-            }
-          ]
-        },
-        "skill/improve-codebase-architecture": {
-          "description": "Improve Codebase Architecture skill",
-          "files": [
-            {
-              "src": "claude/skills/improve_codebase_architecture/REFERENCE.md",
-              "dest": "skills/improve-codebase-architecture/REFERENCE.md"
-            },
-            {
-              "src": "claude/skills/improve_codebase_architecture/SKILL.md",
-              "dest": "skills/improve-codebase-architecture/SKILL.md"
             }
           ]
         },
@@ -241,27 +201,6 @@
             {
               "src": "claude/skills/interview/SKILL.md",
               "dest": "skills/interview/SKILL.md"
-            }
-          ]
-        },
-        "skill/observability-driven-development": {
-          "description": "Observability Driven Development skill",
-          "files": [
-            {
-              "src": "claude/skills/observability_driven_development/SKILL.md",
-              "dest": "skills/observability-driven-development/SKILL.md"
-            },
-            {
-              "src": "claude/skills/observability_driven_development/local-setup.md",
-              "dest": "skills/observability-driven-development/local-setup.md"
-            },
-            {
-              "src": "claude/skills/observability_driven_development/loop.md",
-              "dest": "skills/observability-driven-development/loop.md"
-            },
-            {
-              "src": "claude/skills/observability_driven_development/narrative.md",
-              "dest": "skills/observability-driven-development/narrative.md"
             }
           ]
         },
@@ -391,24 +330,6 @@
             }
           ]
         },
-        "skill/pr-description-generator": {
-          "description": "Pr Description Generator skill",
-          "files": [
-            {
-              "src": "claude/skills/pr_description_generator/SKILL.md",
-              "dest": "skills/pr-description-generator/SKILL.md"
-            }
-          ]
-        },
-        "skill/prd-to-issues": {
-          "description": "Prd To Issues skill",
-          "files": [
-            {
-              "src": "claude/skills/prd_to_issues/SKILL.md",
-              "dest": "skills/prd-to-issues/SKILL.md"
-            }
-          ]
-        },
         "skill/research_codebase": {
           "description": "Research Codebase skill",
           "files": [
@@ -474,84 +395,408 @@
             }
           ]
         },
-        "skill/write-a-prd": {
+        "skill/antigravity_cli": {
+          "description": "Antigravity Cli skill",
+          "files": [
+            {
+              "src": "claude/skills/antigravity_cli/SKILL.md",
+              "dest": "skills/antigravity_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_config": {
+          "description": "Antigravity Config skill",
+          "files": [
+            {
+              "src": "claude/skills/antigravity_config/SKILL.md",
+              "dest": "skills/antigravity_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_keybindings": {
+          "description": "Antigravity Keybindings skill",
+          "files": [
+            {
+              "src": "claude/skills/antigravity_keybindings/SKILL.md",
+              "dest": "skills/antigravity_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_orchestrate": {
+          "description": "Antigravity Orchestrate skill",
+          "files": [
+            {
+              "src": "claude/skills/antigravity_orchestrate/SKILL.md",
+              "dest": "skills/antigravity_orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_prompts": {
+          "description": "Antigravity Prompts skill",
+          "files": [
+            {
+              "src": "claude/skills/antigravity_prompts/SKILL.md",
+              "dest": "skills/antigravity_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_themes": {
+          "description": "Antigravity Themes skill",
+          "files": [
+            {
+              "src": "claude/skills/antigravity_themes/SKILL.md",
+              "dest": "skills/antigravity_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_tui": {
+          "description": "Antigravity Tui skill",
+          "files": [
+            {
+              "src": "claude/skills/antigravity_tui/SKILL.md",
+              "dest": "skills/antigravity_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/auto_ticket_creator": {
+          "description": "Auto Ticket Creator skill",
+          "files": [
+            {
+              "src": "claude/skills/auto_ticket_creator/SKILL.md",
+              "dest": "skills/auto_ticket_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/backlog_groomer": {
+          "description": "Backlog Groomer skill",
+          "files": [
+            {
+              "src": "claude/skills/backlog_groomer/SKILL.md",
+              "dest": "skills/backlog_groomer/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_agent": {
+          "description": "Build Antigravity Agent skill",
+          "files": [
+            {
+              "src": "claude/skills/build_antigravity_agent/SKILL.md",
+              "dest": "skills/build_antigravity_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_extension": {
+          "description": "Build Antigravity Extension skill",
+          "files": [
+            {
+              "src": "claude/skills/build_antigravity_extension/SKILL.md",
+              "dest": "skills/build_antigravity_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_skill": {
+          "description": "Build Antigravity Skill skill",
+          "files": [
+            {
+              "src": "claude/skills/build_antigravity_skill/SKILL.md",
+              "dest": "skills/build_antigravity_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_pi_extension": {
+          "description": "Build Pi Extension skill",
+          "files": [
+            {
+              "src": "claude/skills/build_pi_extension/SKILL.md",
+              "dest": "skills/build_pi_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_pi_skill": {
+          "description": "Build Pi Skill skill",
+          "files": [
+            {
+              "src": "claude/skills/build_pi_skill/SKILL.md",
+              "dest": "skills/build_pi_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/cto_dashboard": {
+          "description": "Cto Dashboard skill",
+          "files": [
+            {
+              "src": "claude/skills/cto_dashboard/SKILL.md",
+              "dest": "skills/cto_dashboard/SKILL.md"
+            }
+          ]
+        },
+        "skill/debug_k8s": {
+          "description": "Debug K8S skill",
+          "files": [
+            {
+              "src": "claude/skills/debug_k8s/SKILL.md",
+              "dest": "skills/debug_k8s/SKILL.md"
+            }
+          ]
+        },
+        "skill/docs_sync_updater": {
+          "description": "Docs Sync Updater skill",
+          "files": [
+            {
+              "src": "claude/skills/docs_sync_updater/SKILL.md",
+              "dest": "skills/docs_sync_updater/SKILL.md"
+            }
+          ]
+        },
+        "skill/document_generation": {
+          "description": "Document Generation skill",
+          "files": [
+            {
+              "src": "claude/skills/document_generation/SKILL.md",
+              "dest": "skills/document_generation/SKILL.md"
+            }
+          ]
+        },
+        "skill/experimental_pr_workflow": {
+          "description": "Experimental Pr Workflow skill",
+          "files": [
+            {
+              "src": "claude/skills/experimental_pr_workflow/SKILL.md",
+              "dest": "skills/experimental_pr_workflow/SKILL.md"
+            }
+          ]
+        },
+        "skill/git_commit_helper": {
+          "description": "Git Commit Helper skill",
+          "files": [
+            {
+              "src": "claude/skills/git_commit_helper/SKILL.md",
+              "dest": "skills/git_commit_helper/SKILL.md"
+            }
+          ]
+        },
+        "skill/help_command": {
+          "description": "Help Command skill",
+          "files": [
+            {
+              "src": "claude/skills/help_command/SKILL.md",
+              "dest": "skills/help_command/SKILL.md"
+            }
+          ]
+        },
+        "skill/improve_codebase_architecture": {
+          "description": "Improve Codebase Architecture skill",
+          "files": [
+            {
+              "src": "claude/skills/improve_codebase_architecture/SKILL.md",
+              "dest": "skills/improve_codebase_architecture/SKILL.md"
+            }
+          ]
+        },
+        "skill/observability_driven_development": {
+          "description": "Observability Driven Development skill",
+          "files": [
+            {
+              "src": "claude/skills/observability_driven_development/SKILL.md",
+              "dest": "skills/observability_driven_development/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_backend_integrator": {
+          "description": "Opticat Backend Integrator skill",
+          "files": [
+            {
+              "src": "claude/skills/opticat_backend_integrator/SKILL.md",
+              "dest": "skills/opticat_backend_integrator/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_simulator": {
+          "description": "Opticat Simulator skill",
+          "files": [
+            {
+              "src": "claude/skills/opticat_simulator/SKILL.md",
+              "dest": "skills/opticat_simulator/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_ui_builder": {
+          "description": "Opticat Ui Builder skill",
+          "files": [
+            {
+              "src": "claude/skills/opticat_ui_builder/SKILL.md",
+              "dest": "skills/opticat_ui_builder/SKILL.md"
+            }
+          ]
+        },
+        "skill/pr_description_generator": {
+          "description": "Pr Description Generator skill",
+          "files": [
+            {
+              "src": "claude/skills/pr_description_generator/SKILL.md",
+              "dest": "skills/pr_description_generator/SKILL.md"
+            }
+          ]
+        },
+        "skill/prd_to_issues": {
+          "description": "Prd To Issues skill",
+          "files": [
+            {
+              "src": "claude/skills/prd_to_issues/SKILL.md",
+              "dest": "skills/prd_to_issues/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_adapter": {
+          "description": "Skill Adapter skill",
+          "files": [
+            {
+              "src": "claude/skills/skill_adapter/SKILL.md",
+              "dest": "skills/skill_adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_auto_update": {
+          "description": "Skill Auto Update skill",
+          "files": [
+            {
+              "src": "claude/skills/skill_auto_update/SKILL.md",
+              "dest": "skills/skill_auto_update/SKILL.md"
+            }
+          ]
+        },
+        "skill/team_setup": {
+          "description": "Team Setup skill",
+          "files": [
+            {
+              "src": "claude/skills/team_setup/SKILL.md",
+              "dest": "skills/team_setup/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket_context": {
+          "description": "Ticket Context skill",
+          "files": [
+            {
+              "src": "claude/skills/ticket_context/SKILL.md",
+              "dest": "skills/ticket_context/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket_manager": {
+          "description": "Ticket Manager skill",
+          "files": [
+            {
+              "src": "claude/skills/ticket_manager/SKILL.md",
+              "dest": "skills/ticket_manager/SKILL.md"
+            }
+          ]
+        },
+        "skill/usage_rules": {
+          "description": "Usage Rules skill",
+          "files": [
+            {
+              "src": "claude/skills/usage_rules/SKILL.md",
+              "dest": "skills/usage_rules/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_access_control": {
+          "description": "Wow Access Control skill",
+          "files": [
+            {
+              "src": "claude/skills/wow_access_control/SKILL.md",
+              "dest": "skills/wow_access_control/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_agent_dev": {
+          "description": "Wow Agent Dev skill",
+          "files": [
+            {
+              "src": "claude/skills/wow_agent_dev/SKILL.md",
+              "dest": "skills/wow_agent_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_backend_dev": {
+          "description": "Wow Backend Dev skill",
+          "files": [
+            {
+              "src": "claude/skills/wow_backend_dev/SKILL.md",
+              "dest": "skills/wow_backend_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_communications": {
+          "description": "Wow Communications skill",
+          "files": [
+            {
+              "src": "claude/skills/wow_communications/SKILL.md",
+              "dest": "skills/wow_communications/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_core_architecture": {
+          "description": "Wow Core Architecture skill",
+          "files": [
+            {
+              "src": "claude/skills/wow_core_architecture/SKILL.md",
+              "dest": "skills/wow_core_architecture/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_frontend_dev": {
+          "description": "Wow Frontend Dev skill",
+          "files": [
+            {
+              "src": "claude/skills/wow_frontend_dev/SKILL.md",
+              "dest": "skills/wow_frontend_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_human_in_the_loop": {
+          "description": "Wow Human In The Loop skill",
+          "files": [
+            {
+              "src": "claude/skills/wow_human_in_the_loop/SKILL.md",
+              "dest": "skills/wow_human_in_the_loop/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_skill_creator": {
+          "description": "Wow Skill Creator skill",
+          "files": [
+            {
+              "src": "claude/skills/wow_skill_creator/SKILL.md",
+              "dest": "skills/wow_skill_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_tickets": {
+          "description": "Wow Tickets skill",
+          "files": [
+            {
+              "src": "claude/skills/wow_tickets/SKILL.md",
+              "dest": "skills/wow_tickets/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_ui_surfaces": {
+          "description": "Wow Ui Surfaces skill",
+          "files": [
+            {
+              "src": "claude/skills/wow_ui_surfaces/SKILL.md",
+              "dest": "skills/wow_ui_surfaces/SKILL.md"
+            }
+          ]
+        },
+        "skill/write_a_prd": {
           "description": "Write A Prd skill",
           "files": [
             {
               "src": "claude/skills/write_a_prd/SKILL.md",
-              "dest": "skills/write-a-prd/SKILL.md"
-            }
-          ]
-        },
-        "skill/ticket-manager": {
-          "description": "Ticket Manager - manage tickets across all namespaces with full lifecycle",
-          "files": [
-            {
-              "src": "claude/skills/ticket_manager/SKILL.md",
-              "dest": "skills/ticket-manager/SKILL.md"
-            }
-          ]
-        },
-        "skill/team-setup": {
-          "description": "Team Setup - initialize and manage team configuration",
-          "files": [
-            {
-              "src": "claude/skills/team_setup/SKILL.md",
-              "dest": "skills/team-setup/SKILL.md"
-            }
-          ]
-        },
-        "skill/skill-auto-update": {
-          "description": "Skill Auto-Update - auto-discover and sync skills across all frontends",
-          "files": [
-            {
-              "src": "claude/skills/skill_auto_update/SKILL.md",
-              "dest": "skills/skill-auto-update/SKILL.md"
-            }
-          ]
-        },
-        "skill/auto-ticket-creator": {
-          "description": "Auto-Ticket Creator - monitor and auto-create tickets from changes",
-          "files": [
-            {
-              "src": "claude/skills/auto_ticket_creator/SKILL.md",
-              "dest": "skills/auto-ticket-creator/SKILL.md"
-            }
-          ]
-        },
-        "skill/docs-sync-updater": {
-          "description": "Docs Sync Updater - fetch latest docs and auto-update skill configs",
-          "files": [
-            {
-              "src": "claude/skills/docs_sync_updater/SKILL.md",
-              "dest": "skills/docs-sync-updater/SKILL.md"
-            }
-          ]
-        },
-        "skill/cto-dashboard": {
-          "description": "CTO Dashboard - ticket overview, developer progress, review queue",
-          "files": [
-            {
-              "src": "claude/skills/cto_dashboard/SKILL.md",
-              "dest": "skills/cto-dashboard/SKILL.md"
-            }
-          ]
-        },
-        "skill/skill-adapter": {
-          "description": "Skill Adapter - platform-specific skill loading and format adapters",
-          "files": [
-            {
-              "src": "claude/skills/skill_adapter/SKILL.md",
-              "dest": "skills/skill-adapter/SKILL.md"
-            }
-          ]
-        },
-        "skill/help-command": {
-          "description": "Help Command - unified /help across all platform frontends",
-          "files": [
-            {
-              "src": "claude/skills/help_command/SKILL.md",
-              "dest": "skills/help-command/SKILL.md"
+              "dest": "skills/write_a_prd/SKILL.md"
             }
           ]
         }
@@ -683,60 +928,12 @@
             }
           ]
         },
-        "skill/observability-driven-development": {
-          "description": "Observability Driven Development (ODD) \u2014 design the trace before the feature; local OTel feedback loop",
-          "files": [
-            {
-              "src": "opencode/skills/observability_driven_development/SKILL.md",
-              "dest": "skills/observability-driven-development/SKILL.md"
-            },
-            {
-              "src": "opencode/skills/observability_driven_development/narrative.md",
-              "dest": "skills/observability-driven-development/narrative.md"
-            },
-            {
-              "src": "opencode/skills/observability_driven_development/loop.md",
-              "dest": "skills/observability-driven-development/loop.md"
-            },
-            {
-              "src": "opencode/skills/observability_driven_development/local-setup.md",
-              "dest": "skills/observability-driven-development/local-setup.md"
-            }
-          ]
-        },
-        "skill/experimental-pr-workflow": {
-          "description": "Experimental PR workflow skill",
-          "files": [
-            {
-              "src": "opencode/skills/experimental_pr_workflow/SKILL.md",
-              "dest": "skills/experimental-pr-workflow/SKILL.md"
-            }
-          ]
-        },
-        "skill/git-commit-helper": {
-          "description": "Auto-triggered git commit helper skill",
-          "files": [
-            {
-              "src": "opencode/skills/git_commit_helper/SKILL.md",
-              "dest": "skills/git-commit-helper/SKILL.md"
-            }
-          ]
-        },
         "skill/init_harness": {
           "description": "Initialize harness skill",
           "files": [
             {
               "src": "opencode/skills/init_harness/SKILL.md",
               "dest": "skills/init_harness/SKILL.md"
-            }
-          ]
-        },
-        "skill/pr-description-generator": {
-          "description": "Automated PR description generator skill",
-          "files": [
-            {
-              "src": "opencode/skills/pr_description_generator/SKILL.md",
-              "dest": "skills/pr-description-generator/SKILL.md"
             }
           ]
         },
@@ -787,178 +984,705 @@
             }
           ]
         },
-        "skill/improve-codebase-architecture": {
-          "description": "Find architectural friction and propose deep-module refactors skill",
+        "skill/antigravity_cli": {
+          "description": "Antigravity Cli skill",
           "files": [
             {
-              "src": "opencode/skills/improve_codebase_architecture/SKILL.md",
-              "dest": "skills/improve-codebase-architecture/SKILL.md"
-            },
-            {
-              "src": "opencode/skills/improve_codebase_architecture/REFERENCE.md",
-              "dest": "skills/improve-codebase-architecture/REFERENCE.md"
+              "src": "opencode/skills/antigravity_cli/SKILL.md",
+              "dest": "skills/antigravity_cli/SKILL.md"
             }
           ]
         },
-        "skill/prd-to-issues": {
-          "description": "Break a PRD into vertical-slice issue files skill",
+        "skill/antigravity_config": {
+          "description": "Antigravity Config skill",
           "files": [
             {
-              "src": "opencode/skills/prd_to_issues/SKILL.md",
-              "dest": "skills/prd-to-issues/SKILL.md"
+              "src": "opencode/skills/antigravity_config/SKILL.md",
+              "dest": "skills/antigravity_config/SKILL.md"
             }
           ]
         },
-        "skill/write-a-prd": {
-          "description": "Generate a PRD from a client brief skill",
+        "skill/antigravity_keybindings": {
+          "description": "Antigravity Keybindings skill",
           "files": [
             {
-              "src": "opencode/skills/write_a_prd/SKILL.md",
-              "dest": "skills/write-a-prd/SKILL.md"
+              "src": "opencode/skills/antigravity_keybindings/SKILL.md",
+              "dest": "skills/antigravity_keybindings/SKILL.md"
             }
           ]
         },
-        "skill/build-pi-agent": {
-          "description": "Build Pi agent definitions with frontmatter format",
+        "skill/antigravity_orchestrate": {
+          "description": "Antigravity Orchestrate skill",
+          "files": [
+            {
+              "src": "opencode/skills/antigravity_orchestrate/SKILL.md",
+              "dest": "skills/antigravity_orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_prompts": {
+          "description": "Antigravity Prompts skill",
+          "files": [
+            {
+              "src": "opencode/skills/antigravity_prompts/SKILL.md",
+              "dest": "skills/antigravity_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_themes": {
+          "description": "Antigravity Themes skill",
+          "files": [
+            {
+              "src": "opencode/skills/antigravity_themes/SKILL.md",
+              "dest": "skills/antigravity_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_tui": {
+          "description": "Antigravity Tui skill",
+          "files": [
+            {
+              "src": "opencode/skills/antigravity_tui/SKILL.md",
+              "dest": "skills/antigravity_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/auto_ticket_creator": {
+          "description": "Auto Ticket Creator skill",
+          "files": [
+            {
+              "src": "opencode/skills/auto_ticket_creator/SKILL.md",
+              "dest": "skills/auto_ticket_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/backlog_groomer": {
+          "description": "Backlog Groomer skill",
+          "files": [
+            {
+              "src": "opencode/skills/backlog_groomer/SKILL.md",
+              "dest": "skills/backlog_groomer/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_agent": {
+          "description": "Build Antigravity Agent skill",
+          "files": [
+            {
+              "src": "opencode/skills/build_antigravity_agent/SKILL.md",
+              "dest": "skills/build_antigravity_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_extension": {
+          "description": "Build Antigravity Extension skill",
+          "files": [
+            {
+              "src": "opencode/skills/build_antigravity_extension/SKILL.md",
+              "dest": "skills/build_antigravity_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_skill": {
+          "description": "Build Antigravity Skill skill",
+          "files": [
+            {
+              "src": "opencode/skills/build_antigravity_skill/SKILL.md",
+              "dest": "skills/build_antigravity_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_agent": {
+          "description": "Build Claude Agent skill",
+          "files": [
+            {
+              "src": "opencode/skills/build_claude_agent/SKILL.md",
+              "dest": "skills/build_claude_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_extension": {
+          "description": "Build Claude Extension skill",
+          "files": [
+            {
+              "src": "opencode/skills/build_claude_extension/SKILL.md",
+              "dest": "skills/build_claude_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_skill": {
+          "description": "Build Claude Skill skill",
+          "files": [
+            {
+              "src": "opencode/skills/build_claude_skill/SKILL.md",
+              "dest": "skills/build_claude_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_pi_agent": {
+          "description": "Build Pi Agent skill",
           "files": [
             {
               "src": "opencode/skills/build_pi_agent/SKILL.md",
-              "dest": "skills/build-pi-agent/SKILL.md"
+              "dest": "skills/build_pi_agent/SKILL.md"
             }
           ]
         },
-        "skill/pi-cli": {
-          "description": "Pi CLI expert \u2014 CLI flags, subcommands, output modes, non-interactive usage",
+        "skill/build_pi_extension": {
+          "description": "Build Pi Extension skill",
+          "files": [
+            {
+              "src": "opencode/skills/build_pi_extension/SKILL.md",
+              "dest": "skills/build_pi_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_pi_skill": {
+          "description": "Build Pi Skill skill",
+          "files": [
+            {
+              "src": "opencode/skills/build_pi_skill/SKILL.md",
+              "dest": "skills/build_pi_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_cli": {
+          "description": "Claude Cli skill",
+          "files": [
+            {
+              "src": "opencode/skills/claude_cli/SKILL.md",
+              "dest": "skills/claude_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_config": {
+          "description": "Claude Config skill",
+          "files": [
+            {
+              "src": "opencode/skills/claude_config/SKILL.md",
+              "dest": "skills/claude_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_keybindings": {
+          "description": "Claude Keybindings skill",
+          "files": [
+            {
+              "src": "opencode/skills/claude_keybindings/SKILL.md",
+              "dest": "skills/claude_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_orchestrate": {
+          "description": "Claude Orchestrate skill",
+          "files": [
+            {
+              "src": "opencode/skills/claude_orchestrate/SKILL.md",
+              "dest": "skills/claude_orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_prompts": {
+          "description": "Claude Prompts skill",
+          "files": [
+            {
+              "src": "opencode/skills/claude_prompts/SKILL.md",
+              "dest": "skills/claude_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_themes": {
+          "description": "Claude Themes skill",
+          "files": [
+            {
+              "src": "opencode/skills/claude_themes/SKILL.md",
+              "dest": "skills/claude_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_tui": {
+          "description": "Claude Tui skill",
+          "files": [
+            {
+              "src": "opencode/skills/claude_tui/SKILL.md",
+              "dest": "skills/claude_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/commit": {
+          "description": "Commit skill",
+          "files": [
+            {
+              "src": "opencode/skills/commit/SKILL.md",
+              "dest": "skills/commit/SKILL.md"
+            }
+          ]
+        },
+        "skill/create_plan": {
+          "description": "Create Plan skill",
+          "files": [
+            {
+              "src": "opencode/skills/create_plan/SKILL.md",
+              "dest": "skills/create_plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/cto_dashboard": {
+          "description": "Cto Dashboard skill",
+          "files": [
+            {
+              "src": "opencode/skills/cto_dashboard/SKILL.md",
+              "dest": "skills/cto_dashboard/SKILL.md"
+            }
+          ]
+        },
+        "skill/debug": {
+          "description": "Debug skill",
+          "files": [
+            {
+              "src": "opencode/skills/debug/SKILL.md",
+              "dest": "skills/debug/SKILL.md"
+            }
+          ]
+        },
+        "skill/debug_k8s": {
+          "description": "Debug K8S skill",
+          "files": [
+            {
+              "src": "opencode/skills/debug_k8s/SKILL.md",
+              "dest": "skills/debug_k8s/SKILL.md"
+            }
+          ]
+        },
+        "skill/docs_sync_updater": {
+          "description": "Docs Sync Updater skill",
+          "files": [
+            {
+              "src": "opencode/skills/docs_sync_updater/SKILL.md",
+              "dest": "skills/docs_sync_updater/SKILL.md"
+            }
+          ]
+        },
+        "skill/document_generation": {
+          "description": "Document Generation skill",
+          "files": [
+            {
+              "src": "opencode/skills/document_generation/SKILL.md",
+              "dest": "skills/document_generation/SKILL.md"
+            }
+          ]
+        },
+        "skill/experimental_pr_workflow": {
+          "description": "Experimental Pr Workflow skill",
+          "files": [
+            {
+              "src": "opencode/skills/experimental_pr_workflow/SKILL.md",
+              "dest": "skills/experimental_pr_workflow/SKILL.md"
+            }
+          ]
+        },
+        "skill/git_commit_helper": {
+          "description": "Git Commit Helper skill",
+          "files": [
+            {
+              "src": "opencode/skills/git_commit_helper/SKILL.md",
+              "dest": "skills/git_commit_helper/SKILL.md"
+            }
+          ]
+        },
+        "skill/help_command": {
+          "description": "Help Command skill",
+          "files": [
+            {
+              "src": "opencode/skills/help_command/SKILL.md",
+              "dest": "skills/help_command/SKILL.md"
+            }
+          ]
+        },
+        "skill/implement_plan": {
+          "description": "Implement Plan skill",
+          "files": [
+            {
+              "src": "opencode/skills/implement_plan/SKILL.md",
+              "dest": "skills/implement_plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/improve_codebase_architecture": {
+          "description": "Improve Codebase Architecture skill",
+          "files": [
+            {
+              "src": "opencode/skills/improve_codebase_architecture/SKILL.md",
+              "dest": "skills/improve_codebase_architecture/SKILL.md"
+            }
+          ]
+        },
+        "skill/observability_driven_development": {
+          "description": "Observability Driven Development skill",
+          "files": [
+            {
+              "src": "opencode/skills/observability_driven_development/SKILL.md",
+              "dest": "skills/observability_driven_development/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_backend_integrator": {
+          "description": "Opticat Backend Integrator skill",
+          "files": [
+            {
+              "src": "opencode/skills/opticat_backend_integrator/SKILL.md",
+              "dest": "skills/opticat_backend_integrator/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_simulator": {
+          "description": "Opticat Simulator skill",
+          "files": [
+            {
+              "src": "opencode/skills/opticat_simulator/SKILL.md",
+              "dest": "skills/opticat_simulator/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_ui_builder": {
+          "description": "Opticat Ui Builder skill",
+          "files": [
+            {
+              "src": "opencode/skills/opticat_ui_builder/SKILL.md",
+              "dest": "skills/opticat_ui_builder/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_collector": {
+          "description": "Otel Collector skill",
+          "files": [
+            {
+              "src": "opencode/skills/otel_collector/SKILL.md",
+              "dest": "skills/otel_collector/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_instrument": {
+          "description": "Otel Instrument skill",
+          "files": [
+            {
+              "src": "opencode/skills/otel_instrument/SKILL.md",
+              "dest": "skills/otel_instrument/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_instrumentation": {
+          "description": "Otel Instrumentation skill",
+          "files": [
+            {
+              "src": "opencode/skills/otel_instrumentation/SKILL.md",
+              "dest": "skills/otel_instrumentation/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_ottl": {
+          "description": "Otel Ottl skill",
+          "files": [
+            {
+              "src": "opencode/skills/otel_ottl/SKILL.md",
+              "dest": "skills/otel_ottl/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_semantic_conventions": {
+          "description": "Otel Semantic Conventions skill",
+          "files": [
+            {
+              "src": "opencode/skills/otel_semantic_conventions/SKILL.md",
+              "dest": "skills/otel_semantic_conventions/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_cli": {
+          "description": "Pi Cli skill",
           "files": [
             {
               "src": "opencode/skills/pi_cli/SKILL.md",
-              "dest": "skills/pi-cli/SKILL.md"
+              "dest": "skills/pi_cli/SKILL.md"
             }
           ]
         },
-        "skill/pi-config": {
-          "description": "Pi configuration expert \u2014 settings, providers, models, packages, keybindings",
+        "skill/pi_config": {
+          "description": "Pi Config skill",
           "files": [
             {
               "src": "opencode/skills/pi_config/SKILL.md",
-              "dest": "skills/pi-config/SKILL.md"
+              "dest": "skills/pi_config/SKILL.md"
             }
           ]
         },
-        "skill/pi-keybindings": {
-          "description": "Pi keyboard shortcuts \u2014 registerShortcut, key IDs, modifiers, reserved keys",
+        "skill/pi_extension": {
+          "description": "Pi Extension skill",
+          "files": [
+            {
+              "src": "opencode/skills/pi_extension/SKILL.md",
+              "dest": "skills/pi_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_keybindings": {
+          "description": "Pi Keybindings skill",
           "files": [
             {
               "src": "opencode/skills/pi_keybindings/SKILL.md",
-              "dest": "skills/pi-keybindings/SKILL.md"
+              "dest": "skills/pi_keybindings/SKILL.md"
             }
           ]
         },
-        "skill/pi-orchestrate": {
-          "description": "Orchestrate Pi domain experts to research and build Pi components",
+        "skill/pi_orchestrate": {
+          "description": "Pi Orchestrate skill",
           "files": [
             {
               "src": "opencode/skills/pi_orchestrate/SKILL.md",
-              "dest": "skills/pi-orchestrate/SKILL.md"
+              "dest": "skills/pi_orchestrate/SKILL.md"
             }
           ]
         },
-        "skill/pi-prompts": {
-          "description": "Pi prompt templates \u2014 single-file .md format, arguments, /template invocation",
+        "skill/pi_prompts": {
+          "description": "Pi Prompts skill",
           "files": [
             {
               "src": "opencode/skills/pi_prompts/SKILL.md",
-              "dest": "skills/pi-prompts/SKILL.md"
+              "dest": "skills/pi_prompts/SKILL.md"
             }
           ]
         },
-        "skill/pi-themes": {
-          "description": "Pi themes \u2014 JSON format, 51 color tokens, vars system, hex/256-color values",
+        "skill/pi_skill": {
+          "description": "Pi Skill skill",
+          "files": [
+            {
+              "src": "opencode/skills/pi_skill/SKILL.md",
+              "dest": "skills/pi_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_themes": {
+          "description": "Pi Themes skill",
           "files": [
             {
               "src": "opencode/skills/pi_themes/SKILL.md",
-              "dest": "skills/pi-themes/SKILL.md"
+              "dest": "skills/pi_themes/SKILL.md"
             }
           ]
         },
-        "skill/pi-tui": {
-          "description": "Pi TUI \u2014 built-in components, custom components, keyboard input, widgets, overlays",
+        "skill/pi_tui": {
+          "description": "Pi Tui skill",
           "files": [
             {
               "src": "opencode/skills/pi_tui/SKILL.md",
-              "dest": "skills/pi-tui/SKILL.md"
+              "dest": "skills/pi_tui/SKILL.md"
             }
           ]
         },
-        "skill/ticket-manager": {
-          "description": "Ticket Manager - manage tickets across all namespaces with full lifecycle",
+        "skill/pr_description_generator": {
+          "description": "Pr Description Generator skill",
           "files": [
             {
-              "src": "opencode/skills/ticket-manager/SKILL.md",
-              "dest": "skills/ticket-manager/SKILL.md"
+              "src": "opencode/skills/pr_description_generator/SKILL.md",
+              "dest": "skills/pr_description_generator/SKILL.md"
             }
           ]
         },
-        "skill/team-setup": {
-          "description": "Team Setup - initialize and manage team configuration",
+        "skill/prd_to_issues": {
+          "description": "Prd To Issues skill",
+          "files": [
+            {
+              "src": "opencode/skills/prd_to_issues/SKILL.md",
+              "dest": "skills/prd_to_issues/SKILL.md"
+            }
+          ]
+        },
+        "skill/research_codebase": {
+          "description": "Research Codebase skill",
+          "files": [
+            {
+              "src": "opencode/skills/research_codebase/SKILL.md",
+              "dest": "skills/research_codebase/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_adapter": {
+          "description": "Skill Adapter skill",
+          "files": [
+            {
+              "src": "opencode/skills/skill_adapter/SKILL.md",
+              "dest": "skills/skill_adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_auto_update": {
+          "description": "Skill Auto Update skill",
+          "files": [
+            {
+              "src": "opencode/skills/skill_auto_update/SKILL.md",
+              "dest": "skills/skill_auto_update/SKILL.md"
+            }
+          ]
+        },
+        "skill/team_setup": {
+          "description": "Team Setup skill",
           "files": [
             {
               "src": "opencode/skills/team_setup/SKILL.md",
-              "dest": "skills/team-setup/SKILL.md"
+              "dest": "skills/team_setup/SKILL.md"
             }
           ]
         },
-        "skill/skill-auto-update": {
-          "description": "Skill Auto-Update - auto-discover and sync skills across all frontends",
+        "skill/ticket_context": {
+          "description": "Ticket Context skill",
           "files": [
             {
-              "src": "opencode/skills/skill-auto-update/SKILL.md",
-              "dest": "skills/skill-auto-update/SKILL.md"
+              "src": "opencode/skills/ticket_context/SKILL.md",
+              "dest": "skills/ticket_context/SKILL.md"
             }
           ]
         },
-        "skill/auto-ticket-creator": {
-          "description": "Auto-Ticket Creator - monitor and auto-create tickets from changes",
+        "skill/ticket_manager": {
+          "description": "Ticket Manager skill",
           "files": [
             {
-              "src": "opencode/skills/auto-ticket-creator/SKILL.md",
-              "dest": "skills/auto-ticket-creator/SKILL.md"
+              "src": "opencode/skills/ticket_manager/SKILL.md",
+              "dest": "skills/ticket_manager/SKILL.md"
             }
           ]
         },
-        "skill/docs-sync-updater": {
-          "description": "Docs Sync Updater - fetch latest docs and auto-update skill configs",
+        "skill/usage_rules": {
+          "description": "Usage Rules skill",
           "files": [
             {
-              "src": "opencode/skills/docs-sync-updater/SKILL.md",
-              "dest": "skills/docs-sync-updater/SKILL.md"
+              "src": "opencode/skills/usage_rules/SKILL.md",
+              "dest": "skills/usage_rules/SKILL.md"
             }
           ]
         },
-        "skill/cto-dashboard": {
-          "description": "CTO Dashboard - ticket overview, developer progress, review queue",
+        "skill/validate_plan": {
+          "description": "Validate Plan skill",
           "files": [
             {
-              "src": "opencode/skills/cto-dashboard/SKILL.md",
-              "dest": "skills/cto-dashboard/SKILL.md"
+              "src": "opencode/skills/validate_plan/SKILL.md",
+              "dest": "skills/validate_plan/SKILL.md"
             }
           ]
         },
-        "skill/skill-adapter": {
-          "description": "Skill Adapter - platform-specific skill loading and format adapters",
+        "skill/validate_telemetry": {
+          "description": "Validate Telemetry skill",
           "files": [
             {
-              "src": "opencode/skills/skill-adapter/SKILL.md",
-              "dest": "skills/skill-adapter/SKILL.md"
+              "src": "opencode/skills/validate_telemetry/SKILL.md",
+              "dest": "skills/validate_telemetry/SKILL.md"
             }
           ]
         },
-        "skill/help-command": {
-          "description": "Help Command - unified /help across all platform frontends",
+        "skill/worktree": {
+          "description": "Worktree skill",
           "files": [
             {
-              "src": "opencode/skills/help-command/SKILL.md",
-              "dest": "skills/help-command/SKILL.md"
+              "src": "opencode/skills/worktree/SKILL.md",
+              "dest": "skills/worktree/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_access_control": {
+          "description": "Wow Access Control skill",
+          "files": [
+            {
+              "src": "opencode/skills/wow_access_control/SKILL.md",
+              "dest": "skills/wow_access_control/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_agent_dev": {
+          "description": "Wow Agent Dev skill",
+          "files": [
+            {
+              "src": "opencode/skills/wow_agent_dev/SKILL.md",
+              "dest": "skills/wow_agent_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_backend_dev": {
+          "description": "Wow Backend Dev skill",
+          "files": [
+            {
+              "src": "opencode/skills/wow_backend_dev/SKILL.md",
+              "dest": "skills/wow_backend_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_communications": {
+          "description": "Wow Communications skill",
+          "files": [
+            {
+              "src": "opencode/skills/wow_communications/SKILL.md",
+              "dest": "skills/wow_communications/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_core_architecture": {
+          "description": "Wow Core Architecture skill",
+          "files": [
+            {
+              "src": "opencode/skills/wow_core_architecture/SKILL.md",
+              "dest": "skills/wow_core_architecture/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_frontend_dev": {
+          "description": "Wow Frontend Dev skill",
+          "files": [
+            {
+              "src": "opencode/skills/wow_frontend_dev/SKILL.md",
+              "dest": "skills/wow_frontend_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_human_in_the_loop": {
+          "description": "Wow Human In The Loop skill",
+          "files": [
+            {
+              "src": "opencode/skills/wow_human_in_the_loop/SKILL.md",
+              "dest": "skills/wow_human_in_the_loop/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_skill_creator": {
+          "description": "Wow Skill Creator skill",
+          "files": [
+            {
+              "src": "opencode/skills/wow_skill_creator/SKILL.md",
+              "dest": "skills/wow_skill_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_tickets": {
+          "description": "Wow Tickets skill",
+          "files": [
+            {
+              "src": "opencode/skills/wow_tickets/SKILL.md",
+              "dest": "skills/wow_tickets/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_ui_surfaces": {
+          "description": "Wow Ui Surfaces skill",
+          "files": [
+            {
+              "src": "opencode/skills/wow_ui_surfaces/SKILL.md",
+              "dest": "skills/wow_ui_surfaces/SKILL.md"
+            }
+          ]
+        },
+        "skill/write_a_prd": {
+          "description": "Write A Prd skill",
+          "files": [
+            {
+              "src": "opencode/skills/write_a_prd/SKILL.md",
+              "dest": "skills/write_a_prd/SKILL.md"
             }
           ]
         }
@@ -1655,75 +2379,345 @@
             }
           ]
         },
-        "skill/ticket-manager": {
-          "description": "Ticket Manager - manage tickets across all namespaces with full lifecycle",
+        "skill/antigravity_cli": {
+          "description": "Antigravity Cli skill",
           "files": [
             {
-              "src": "gemini/skills/ticket-manager/SKILL.md",
-              "dest": "skills/ticket-manager/SKILL.md"
+              "src": "gemini/skills/antigravity_cli/SKILL.md",
+              "dest": "skills/antigravity_cli/SKILL.md"
             }
           ]
         },
-        "skill/team-setup": {
-          "description": "Team Setup - initialize and manage team configuration",
+        "skill/antigravity_config": {
+          "description": "Antigravity Config skill",
+          "files": [
+            {
+              "src": "gemini/skills/antigravity_config/SKILL.md",
+              "dest": "skills/antigravity_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_keybindings": {
+          "description": "Antigravity Keybindings skill",
+          "files": [
+            {
+              "src": "gemini/skills/antigravity_keybindings/SKILL.md",
+              "dest": "skills/antigravity_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_orchestrate": {
+          "description": "Antigravity Orchestrate skill",
+          "files": [
+            {
+              "src": "gemini/skills/antigravity_orchestrate/SKILL.md",
+              "dest": "skills/antigravity_orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_prompts": {
+          "description": "Antigravity Prompts skill",
+          "files": [
+            {
+              "src": "gemini/skills/antigravity_prompts/SKILL.md",
+              "dest": "skills/antigravity_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_themes": {
+          "description": "Antigravity Themes skill",
+          "files": [
+            {
+              "src": "gemini/skills/antigravity_themes/SKILL.md",
+              "dest": "skills/antigravity_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_tui": {
+          "description": "Antigravity Tui skill",
+          "files": [
+            {
+              "src": "gemini/skills/antigravity_tui/SKILL.md",
+              "dest": "skills/antigravity_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/auto_ticket_creator": {
+          "description": "Auto Ticket Creator skill",
+          "files": [
+            {
+              "src": "gemini/skills/auto_ticket_creator/SKILL.md",
+              "dest": "skills/auto_ticket_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/backlog_groomer": {
+          "description": "Backlog Groomer skill",
+          "files": [
+            {
+              "src": "gemini/skills/backlog_groomer/SKILL.md",
+              "dest": "skills/backlog_groomer/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_agent": {
+          "description": "Build Antigravity Agent skill",
+          "files": [
+            {
+              "src": "gemini/skills/build_antigravity_agent/SKILL.md",
+              "dest": "skills/build_antigravity_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_extension": {
+          "description": "Build Antigravity Extension skill",
+          "files": [
+            {
+              "src": "gemini/skills/build_antigravity_extension/SKILL.md",
+              "dest": "skills/build_antigravity_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_skill": {
+          "description": "Build Antigravity Skill skill",
+          "files": [
+            {
+              "src": "gemini/skills/build_antigravity_skill/SKILL.md",
+              "dest": "skills/build_antigravity_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_pi_extension": {
+          "description": "Build Pi Extension skill",
+          "files": [
+            {
+              "src": "gemini/skills/build_pi_extension/SKILL.md",
+              "dest": "skills/build_pi_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_pi_skill": {
+          "description": "Build Pi Skill skill",
+          "files": [
+            {
+              "src": "gemini/skills/build_pi_skill/SKILL.md",
+              "dest": "skills/build_pi_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/cto_dashboard": {
+          "description": "Cto Dashboard skill",
+          "files": [
+            {
+              "src": "gemini/skills/cto_dashboard/SKILL.md",
+              "dest": "skills/cto_dashboard/SKILL.md"
+            }
+          ]
+        },
+        "skill/docs_sync_updater": {
+          "description": "Docs Sync Updater skill",
+          "files": [
+            {
+              "src": "gemini/skills/docs_sync_updater/SKILL.md",
+              "dest": "skills/docs_sync_updater/SKILL.md"
+            }
+          ]
+        },
+        "skill/document_generation": {
+          "description": "Document Generation skill",
+          "files": [
+            {
+              "src": "gemini/skills/document_generation/SKILL.md",
+              "dest": "skills/document_generation/SKILL.md"
+            }
+          ]
+        },
+        "skill/help_command": {
+          "description": "Help Command skill",
+          "files": [
+            {
+              "src": "gemini/skills/help_command/SKILL.md",
+              "dest": "skills/help_command/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_backend_integrator": {
+          "description": "Opticat Backend Integrator skill",
+          "files": [
+            {
+              "src": "gemini/skills/opticat_backend_integrator/SKILL.md",
+              "dest": "skills/opticat_backend_integrator/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_simulator": {
+          "description": "Opticat Simulator skill",
+          "files": [
+            {
+              "src": "gemini/skills/opticat_simulator/SKILL.md",
+              "dest": "skills/opticat_simulator/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_ui_builder": {
+          "description": "Opticat Ui Builder skill",
+          "files": [
+            {
+              "src": "gemini/skills/opticat_ui_builder/SKILL.md",
+              "dest": "skills/opticat_ui_builder/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_adapter": {
+          "description": "Skill Adapter skill",
+          "files": [
+            {
+              "src": "gemini/skills/skill_adapter/SKILL.md",
+              "dest": "skills/skill_adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_auto_update": {
+          "description": "Skill Auto Update skill",
+          "files": [
+            {
+              "src": "gemini/skills/skill_auto_update/SKILL.md",
+              "dest": "skills/skill_auto_update/SKILL.md"
+            }
+          ]
+        },
+        "skill/team_setup": {
+          "description": "Team Setup skill",
           "files": [
             {
               "src": "gemini/skills/team_setup/SKILL.md",
-              "dest": "skills/team-setup/SKILL.md"
+              "dest": "skills/team_setup/SKILL.md"
             }
           ]
         },
-        "skill/skill-auto-update": {
-          "description": "Skill Auto-Update - auto-discover and sync skills across all frontends",
+        "skill/ticket_context": {
+          "description": "Ticket Context skill",
           "files": [
             {
-              "src": "gemini/skills/skill-auto-update/SKILL.md",
-              "dest": "skills/skill-auto-update/SKILL.md"
+              "src": "gemini/skills/ticket_context/SKILL.md",
+              "dest": "skills/ticket_context/SKILL.md"
             }
           ]
         },
-        "skill/auto-ticket-creator": {
-          "description": "Auto-Ticket Creator - monitor and auto-create tickets from changes",
+        "skill/ticket_manager": {
+          "description": "Ticket Manager skill",
           "files": [
             {
-              "src": "gemini/skills/auto-ticket-creator/SKILL.md",
-              "dest": "skills/auto-ticket-creator/SKILL.md"
+              "src": "gemini/skills/ticket_manager/SKILL.md",
+              "dest": "skills/ticket_manager/SKILL.md"
             }
           ]
         },
-        "skill/docs-sync-updater": {
-          "description": "Docs Sync Updater - fetch latest docs and auto-update skill configs",
+        "skill/usage_rules": {
+          "description": "Usage Rules skill",
           "files": [
             {
-              "src": "gemini/skills/docs-sync-updater/SKILL.md",
-              "dest": "skills/docs-sync-updater/SKILL.md"
+              "src": "gemini/skills/usage_rules/SKILL.md",
+              "dest": "skills/usage_rules/SKILL.md"
             }
           ]
         },
-        "skill/cto-dashboard": {
-          "description": "CTO Dashboard - ticket overview, developer progress, review queue",
+        "skill/validate_telemetry": {
+          "description": "Validate Telemetry skill",
           "files": [
             {
-              "src": "gemini/skills/cto-dashboard/SKILL.md",
-              "dest": "skills/cto-dashboard/SKILL.md"
+              "src": "gemini/skills/validate_telemetry/SKILL.md",
+              "dest": "skills/validate_telemetry/SKILL.md"
             }
           ]
         },
-        "skill/skill-adapter": {
-          "description": "Skill Adapter - platform-specific skill loading and format adapters",
+        "skill/wow_access_control": {
+          "description": "Wow Access Control skill",
           "files": [
             {
-              "src": "gemini/skills/skill-adapter/SKILL.md",
-              "dest": "skills/skill-adapter/SKILL.md"
+              "src": "gemini/skills/wow_access_control/SKILL.md",
+              "dest": "skills/wow_access_control/SKILL.md"
             }
           ]
         },
-        "skill/help-command": {
-          "description": "Help Command - unified /help across all platform frontends",
+        "skill/wow_agent_dev": {
+          "description": "Wow Agent Dev skill",
           "files": [
             {
-              "src": "gemini/skills/help-command/SKILL.md",
-              "dest": "skills/help-command/SKILL.md"
+              "src": "gemini/skills/wow_agent_dev/SKILL.md",
+              "dest": "skills/wow_agent_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_backend_dev": {
+          "description": "Wow Backend Dev skill",
+          "files": [
+            {
+              "src": "gemini/skills/wow_backend_dev/SKILL.md",
+              "dest": "skills/wow_backend_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_communications": {
+          "description": "Wow Communications skill",
+          "files": [
+            {
+              "src": "gemini/skills/wow_communications/SKILL.md",
+              "dest": "skills/wow_communications/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_core_architecture": {
+          "description": "Wow Core Architecture skill",
+          "files": [
+            {
+              "src": "gemini/skills/wow_core_architecture/SKILL.md",
+              "dest": "skills/wow_core_architecture/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_frontend_dev": {
+          "description": "Wow Frontend Dev skill",
+          "files": [
+            {
+              "src": "gemini/skills/wow_frontend_dev/SKILL.md",
+              "dest": "skills/wow_frontend_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_human_in_the_loop": {
+          "description": "Wow Human In The Loop skill",
+          "files": [
+            {
+              "src": "gemini/skills/wow_human_in_the_loop/SKILL.md",
+              "dest": "skills/wow_human_in_the_loop/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_skill_creator": {
+          "description": "Wow Skill Creator skill",
+          "files": [
+            {
+              "src": "gemini/skills/wow_skill_creator/SKILL.md",
+              "dest": "skills/wow_skill_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_tickets": {
+          "description": "Wow Tickets skill",
+          "files": [
+            {
+              "src": "gemini/skills/wow_tickets/SKILL.md",
+              "dest": "skills/wow_tickets/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_ui_surfaces": {
+          "description": "Wow Ui Surfaces skill",
+          "files": [
+            {
+              "src": "gemini/skills/wow_ui_surfaces/SKILL.md",
+              "dest": "skills/wow_ui_surfaces/SKILL.md"
             }
           ]
         }
@@ -2237,6 +3231,447 @@
               "dest": "skills/skill-adapter/SKILL.md"
             }
           ]
+        },
+        "skill/antigravity_cli": {
+          "description": "Antigravity Cli skill",
+          "files": [
+            {
+              "src": "pi/skills/antigravity-cli/SKILL.md",
+              "dest": "skills/antigravity-cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_config": {
+          "description": "Antigravity Config skill",
+          "files": [
+            {
+              "src": "pi/skills/antigravity-config/SKILL.md",
+              "dest": "skills/antigravity-config/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_keybindings": {
+          "description": "Antigravity Keybindings skill",
+          "files": [
+            {
+              "src": "pi/skills/antigravity-keybindings/SKILL.md",
+              "dest": "skills/antigravity-keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_orchestrate": {
+          "description": "Antigravity Orchestrate skill",
+          "files": [
+            {
+              "src": "pi/skills/antigravity-orchestrate/SKILL.md",
+              "dest": "skills/antigravity-orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_prompts": {
+          "description": "Antigravity Prompts skill",
+          "files": [
+            {
+              "src": "pi/skills/antigravity-prompts/SKILL.md",
+              "dest": "skills/antigravity-prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_themes": {
+          "description": "Antigravity Themes skill",
+          "files": [
+            {
+              "src": "pi/skills/antigravity-themes/SKILL.md",
+              "dest": "skills/antigravity-themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_tui": {
+          "description": "Antigravity Tui skill",
+          "files": [
+            {
+              "src": "pi/skills/antigravity-tui/SKILL.md",
+              "dest": "skills/antigravity-tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/backlog_groomer": {
+          "description": "Backlog Groomer skill",
+          "files": [
+            {
+              "src": "pi/skills/backlog-groomer/SKILL.md",
+              "dest": "skills/backlog-groomer/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_agent": {
+          "description": "Build Antigravity Agent skill",
+          "files": [
+            {
+              "src": "pi/skills/build-antigravity-agent/SKILL.md",
+              "dest": "skills/build-antigravity-agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_extension": {
+          "description": "Build Antigravity Extension skill",
+          "files": [
+            {
+              "src": "pi/skills/build-antigravity-extension/SKILL.md",
+              "dest": "skills/build-antigravity-extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_skill": {
+          "description": "Build Antigravity Skill skill",
+          "files": [
+            {
+              "src": "pi/skills/build-antigravity-skill/SKILL.md",
+              "dest": "skills/build-antigravity-skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_agent": {
+          "description": "Build Claude Agent skill",
+          "files": [
+            {
+              "src": "pi/skills/build-claude-agent/SKILL.md",
+              "dest": "skills/build-claude-agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_extension": {
+          "description": "Build Claude Extension skill",
+          "files": [
+            {
+              "src": "pi/skills/build-claude-extension/SKILL.md",
+              "dest": "skills/build-claude-extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_skill": {
+          "description": "Build Claude Skill skill",
+          "files": [
+            {
+              "src": "pi/skills/build-claude-skill/SKILL.md",
+              "dest": "skills/build-claude-skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_cli": {
+          "description": "Claude Cli skill",
+          "files": [
+            {
+              "src": "pi/skills/claude-cli/SKILL.md",
+              "dest": "skills/claude-cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_config": {
+          "description": "Claude Config skill",
+          "files": [
+            {
+              "src": "pi/skills/claude-config/SKILL.md",
+              "dest": "skills/claude-config/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_keybindings": {
+          "description": "Claude Keybindings skill",
+          "files": [
+            {
+              "src": "pi/skills/claude-keybindings/SKILL.md",
+              "dest": "skills/claude-keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_orchestrate": {
+          "description": "Claude Orchestrate skill",
+          "files": [
+            {
+              "src": "pi/skills/claude-orchestrate/SKILL.md",
+              "dest": "skills/claude-orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_prompts": {
+          "description": "Claude Prompts skill",
+          "files": [
+            {
+              "src": "pi/skills/claude-prompts/SKILL.md",
+              "dest": "skills/claude-prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_themes": {
+          "description": "Claude Themes skill",
+          "files": [
+            {
+              "src": "pi/skills/claude-themes/SKILL.md",
+              "dest": "skills/claude-themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_tui": {
+          "description": "Claude Tui skill",
+          "files": [
+            {
+              "src": "pi/skills/claude-tui/SKILL.md",
+              "dest": "skills/claude-tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/commit": {
+          "description": "Commit skill",
+          "files": [
+            {
+              "src": "pi/skills/commit/SKILL.md",
+              "dest": "skills/commit/SKILL.md"
+            }
+          ]
+        },
+        "skill/create_plan": {
+          "description": "Create Plan skill",
+          "files": [
+            {
+              "src": "pi/skills/create-plan/SKILL.md",
+              "dest": "skills/create-plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/debug": {
+          "description": "Debug skill",
+          "files": [
+            {
+              "src": "pi/skills/debug/SKILL.md",
+              "dest": "skills/debug/SKILL.md"
+            }
+          ]
+        },
+        "skill/debug_k8s": {
+          "description": "Debug K8S skill",
+          "files": [
+            {
+              "src": "pi/skills/debug-k8s/SKILL.md",
+              "dest": "skills/debug-k8s/SKILL.md"
+            }
+          ]
+        },
+        "skill/document_generation": {
+          "description": "Document Generation skill",
+          "files": [
+            {
+              "src": "pi/skills/document-generation/SKILL.md",
+              "dest": "skills/document-generation/SKILL.md"
+            }
+          ]
+        },
+        "skill/help_command": {
+          "description": "Help Command skill",
+          "files": [
+            {
+              "src": "pi/skills/help-command/SKILL.md",
+              "dest": "skills/help-command/SKILL.md"
+            }
+          ]
+        },
+        "skill/implement_plan": {
+          "description": "Implement Plan skill",
+          "files": [
+            {
+              "src": "pi/skills/implement-plan/SKILL.md",
+              "dest": "skills/implement-plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_backend_integrator": {
+          "description": "Opticat Backend Integrator skill",
+          "files": [
+            {
+              "src": "pi/skills/opticat-backend-integrator/SKILL.md",
+              "dest": "skills/opticat-backend-integrator/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_simulator": {
+          "description": "Opticat Simulator skill",
+          "files": [
+            {
+              "src": "pi/skills/opticat-simulator/SKILL.md",
+              "dest": "skills/opticat-simulator/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_ui_builder": {
+          "description": "Opticat Ui Builder skill",
+          "files": [
+            {
+              "src": "pi/skills/opticat-ui-builder/SKILL.md",
+              "dest": "skills/opticat-ui-builder/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_extension": {
+          "description": "Pi Extension skill",
+          "files": [
+            {
+              "src": "pi/skills/pi-extension/SKILL.md",
+              "dest": "skills/pi-extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_skill": {
+          "description": "Pi Skill skill",
+          "files": [
+            {
+              "src": "pi/skills/pi-skill/SKILL.md",
+              "dest": "skills/pi-skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/research_codebase": {
+          "description": "Research Codebase skill",
+          "files": [
+            {
+              "src": "pi/skills/research-codebase/SKILL.md",
+              "dest": "skills/research-codebase/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket_context": {
+          "description": "Ticket Context skill",
+          "files": [
+            {
+              "src": "pi/skills/ticket-context/SKILL.md",
+              "dest": "skills/ticket-context/SKILL.md"
+            }
+          ]
+        },
+        "skill/usage_rules": {
+          "description": "Usage Rules skill",
+          "files": [
+            {
+              "src": "pi/skills/usage-rules/SKILL.md",
+              "dest": "skills/usage-rules/SKILL.md"
+            }
+          ]
+        },
+        "skill/validate_plan": {
+          "description": "Validate Plan skill",
+          "files": [
+            {
+              "src": "pi/skills/validate-plan/SKILL.md",
+              "dest": "skills/validate-plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/validate_telemetry": {
+          "description": "Validate Telemetry skill",
+          "files": [
+            {
+              "src": "pi/skills/validate-telemetry/SKILL.md",
+              "dest": "skills/validate-telemetry/SKILL.md"
+            }
+          ]
+        },
+        "skill/worktree": {
+          "description": "Worktree skill",
+          "files": [
+            {
+              "src": "pi/skills/worktree/SKILL.md",
+              "dest": "skills/worktree/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_access_control": {
+          "description": "Wow Access Control skill",
+          "files": [
+            {
+              "src": "pi/skills/wow-access-control/SKILL.md",
+              "dest": "skills/wow-access-control/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_agent_dev": {
+          "description": "Wow Agent Dev skill",
+          "files": [
+            {
+              "src": "pi/skills/wow-agent-dev/SKILL.md",
+              "dest": "skills/wow-agent-dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_backend_dev": {
+          "description": "Wow Backend Dev skill",
+          "files": [
+            {
+              "src": "pi/skills/wow-backend-dev/SKILL.md",
+              "dest": "skills/wow-backend-dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_communications": {
+          "description": "Wow Communications skill",
+          "files": [
+            {
+              "src": "pi/skills/wow-communications/SKILL.md",
+              "dest": "skills/wow-communications/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_core_architecture": {
+          "description": "Wow Core Architecture skill",
+          "files": [
+            {
+              "src": "pi/skills/wow-core-architecture/SKILL.md",
+              "dest": "skills/wow-core-architecture/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_frontend_dev": {
+          "description": "Wow Frontend Dev skill",
+          "files": [
+            {
+              "src": "pi/skills/wow-frontend-dev/SKILL.md",
+              "dest": "skills/wow-frontend-dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_human_in_the_loop": {
+          "description": "Wow Human In The Loop skill",
+          "files": [
+            {
+              "src": "pi/skills/wow-human-in-the-loop/SKILL.md",
+              "dest": "skills/wow-human-in-the-loop/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_skill_creator": {
+          "description": "Wow Skill Creator skill",
+          "files": [
+            {
+              "src": "pi/skills/wow-skill-creator/SKILL.md",
+              "dest": "skills/wow-skill-creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_tickets": {
+          "description": "Wow Tickets skill",
+          "files": [
+            {
+              "src": "pi/skills/wow-tickets/SKILL.md",
+              "dest": "skills/wow-tickets/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_ui_surfaces": {
+          "description": "Wow Ui Surfaces skill",
+          "files": [
+            {
+              "src": "pi/skills/wow-ui-surfaces/SKILL.md",
+              "dest": "skills/wow-ui-surfaces/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -2434,60 +3869,12 @@
             }
           ]
         },
-        "skill/observability-driven-development": {
-          "description": "Observability Driven Development (ODD) \u2014 design the trace before the feature; local OTel feedback loop",
-          "files": [
-            {
-              "src": "wocoder/skills/observability_driven_development/SKILL.md",
-              "dest": "skills/observability-driven-development/SKILL.md"
-            },
-            {
-              "src": "wocoder/skills/observability_driven_development/narrative.md",
-              "dest": "skills/observability-driven-development/narrative.md"
-            },
-            {
-              "src": "wocoder/skills/observability_driven_development/loop.md",
-              "dest": "skills/observability-driven-development/loop.md"
-            },
-            {
-              "src": "wocoder/skills/observability_driven_development/local-setup.md",
-              "dest": "skills/observability-driven-development/local-setup.md"
-            }
-          ]
-        },
-        "skill/experimental-pr-workflow": {
-          "description": "Experimental PR workflow skill",
-          "files": [
-            {
-              "src": "wocoder/skills/experimental_pr_workflow/SKILL.md",
-              "dest": "skills/experimental-pr-workflow/SKILL.md"
-            }
-          ]
-        },
-        "skill/git-commit-helper": {
-          "description": "Auto-triggered git commit helper skill",
-          "files": [
-            {
-              "src": "wocoder/skills/git_commit_helper/SKILL.md",
-              "dest": "skills/git-commit-helper/SKILL.md"
-            }
-          ]
-        },
         "skill/init_harness": {
           "description": "Initialize harness skill",
           "files": [
             {
               "src": "wocoder/skills/init_harness/SKILL.md",
               "dest": "skills/init_harness/SKILL.md"
-            }
-          ]
-        },
-        "skill/pr-description-generator": {
-          "description": "Automated PR description generator skill",
-          "files": [
-            {
-              "src": "wocoder/skills/pr_description_generator/SKILL.md",
-              "dest": "skills/pr-description-generator/SKILL.md"
             }
           ]
         },
@@ -2529,169 +3916,705 @@
             }
           ]
         },
-        "skill/improve-codebase-architecture": {
-          "description": "Find architectural friction and propose deep-module refactors skill",
+        "skill/antigravity_cli": {
+          "description": "Antigravity Cli skill",
           "files": [
             {
-              "src": "wocoder/skills/improve_codebase_architecture/SKILL.md",
-              "dest": "skills/improve-codebase-architecture/SKILL.md"
-            },
-            {
-              "src": "wocoder/skills/improve_codebase_architecture/REFERENCE.md",
-              "dest": "skills/improve-codebase-architecture/REFERENCE.md"
+              "src": "wocoder/skills/antigravity_cli/SKILL.md",
+              "dest": "skills/antigravity_cli/SKILL.md"
             }
           ]
         },
-        "skill/prd-to-issues": {
-          "description": "Break a PRD into vertical-slice issue files skill",
+        "skill/antigravity_config": {
+          "description": "Antigravity Config skill",
           "files": [
             {
-              "src": "wocoder/skills/prd_to_issues/SKILL.md",
-              "dest": "skills/prd-to-issues/SKILL.md"
+              "src": "wocoder/skills/antigravity_config/SKILL.md",
+              "dest": "skills/antigravity_config/SKILL.md"
             }
           ]
         },
-        "skill/write-a-prd": {
-          "description": "Generate a PRD from a client brief skill",
+        "skill/antigravity_keybindings": {
+          "description": "Antigravity Keybindings skill",
           "files": [
             {
-              "src": "wocoder/skills/write_a_prd/SKILL.md",
-              "dest": "skills/write-a-prd/SKILL.md"
+              "src": "wocoder/skills/antigravity_keybindings/SKILL.md",
+              "dest": "skills/antigravity_keybindings/SKILL.md"
             }
           ]
         },
-        "skill/build-pi-agent": {
-          "description": "Build Pi agent definitions with frontmatter format",
+        "skill/antigravity_orchestrate": {
+          "description": "Antigravity Orchestrate skill",
+          "files": [
+            {
+              "src": "wocoder/skills/antigravity_orchestrate/SKILL.md",
+              "dest": "skills/antigravity_orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_prompts": {
+          "description": "Antigravity Prompts skill",
+          "files": [
+            {
+              "src": "wocoder/skills/antigravity_prompts/SKILL.md",
+              "dest": "skills/antigravity_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_themes": {
+          "description": "Antigravity Themes skill",
+          "files": [
+            {
+              "src": "wocoder/skills/antigravity_themes/SKILL.md",
+              "dest": "skills/antigravity_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/antigravity_tui": {
+          "description": "Antigravity Tui skill",
+          "files": [
+            {
+              "src": "wocoder/skills/antigravity_tui/SKILL.md",
+              "dest": "skills/antigravity_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/auto_ticket_creator": {
+          "description": "Auto Ticket Creator skill",
+          "files": [
+            {
+              "src": "wocoder/skills/auto_ticket_creator/SKILL.md",
+              "dest": "skills/auto_ticket_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/backlog_groomer": {
+          "description": "Backlog Groomer skill",
+          "files": [
+            {
+              "src": "wocoder/skills/backlog_groomer/SKILL.md",
+              "dest": "skills/backlog_groomer/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_agent": {
+          "description": "Build Antigravity Agent skill",
+          "files": [
+            {
+              "src": "wocoder/skills/build_antigravity_agent/SKILL.md",
+              "dest": "skills/build_antigravity_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_extension": {
+          "description": "Build Antigravity Extension skill",
+          "files": [
+            {
+              "src": "wocoder/skills/build_antigravity_extension/SKILL.md",
+              "dest": "skills/build_antigravity_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_skill": {
+          "description": "Build Antigravity Skill skill",
+          "files": [
+            {
+              "src": "wocoder/skills/build_antigravity_skill/SKILL.md",
+              "dest": "skills/build_antigravity_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_agent": {
+          "description": "Build Claude Agent skill",
+          "files": [
+            {
+              "src": "wocoder/skills/build_claude_agent/SKILL.md",
+              "dest": "skills/build_claude_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_extension": {
+          "description": "Build Claude Extension skill",
+          "files": [
+            {
+              "src": "wocoder/skills/build_claude_extension/SKILL.md",
+              "dest": "skills/build_claude_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_skill": {
+          "description": "Build Claude Skill skill",
+          "files": [
+            {
+              "src": "wocoder/skills/build_claude_skill/SKILL.md",
+              "dest": "skills/build_claude_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_pi_agent": {
+          "description": "Build Pi Agent skill",
           "files": [
             {
               "src": "wocoder/skills/build_pi_agent/SKILL.md",
-              "dest": "skills/build-pi-agent/SKILL.md"
+              "dest": "skills/build_pi_agent/SKILL.md"
             }
           ]
         },
-        "skill/pi-cli": {
-          "description": "Pi CLI expert \u2014 CLI flags, subcommands, output modes, non-interactive usage",
+        "skill/build_pi_extension": {
+          "description": "Build Pi Extension skill",
+          "files": [
+            {
+              "src": "wocoder/skills/build_pi_extension/SKILL.md",
+              "dest": "skills/build_pi_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_pi_skill": {
+          "description": "Build Pi Skill skill",
+          "files": [
+            {
+              "src": "wocoder/skills/build_pi_skill/SKILL.md",
+              "dest": "skills/build_pi_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_cli": {
+          "description": "Claude Cli skill",
+          "files": [
+            {
+              "src": "wocoder/skills/claude_cli/SKILL.md",
+              "dest": "skills/claude_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_config": {
+          "description": "Claude Config skill",
+          "files": [
+            {
+              "src": "wocoder/skills/claude_config/SKILL.md",
+              "dest": "skills/claude_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_keybindings": {
+          "description": "Claude Keybindings skill",
+          "files": [
+            {
+              "src": "wocoder/skills/claude_keybindings/SKILL.md",
+              "dest": "skills/claude_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_orchestrate": {
+          "description": "Claude Orchestrate skill",
+          "files": [
+            {
+              "src": "wocoder/skills/claude_orchestrate/SKILL.md",
+              "dest": "skills/claude_orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_prompts": {
+          "description": "Claude Prompts skill",
+          "files": [
+            {
+              "src": "wocoder/skills/claude_prompts/SKILL.md",
+              "dest": "skills/claude_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_themes": {
+          "description": "Claude Themes skill",
+          "files": [
+            {
+              "src": "wocoder/skills/claude_themes/SKILL.md",
+              "dest": "skills/claude_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_tui": {
+          "description": "Claude Tui skill",
+          "files": [
+            {
+              "src": "wocoder/skills/claude_tui/SKILL.md",
+              "dest": "skills/claude_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/commit": {
+          "description": "Commit skill",
+          "files": [
+            {
+              "src": "wocoder/skills/commit/SKILL.md",
+              "dest": "skills/commit/SKILL.md"
+            }
+          ]
+        },
+        "skill/create_plan": {
+          "description": "Create Plan skill",
+          "files": [
+            {
+              "src": "wocoder/skills/create_plan/SKILL.md",
+              "dest": "skills/create_plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/cto_dashboard": {
+          "description": "Cto Dashboard skill",
+          "files": [
+            {
+              "src": "wocoder/skills/cto_dashboard/SKILL.md",
+              "dest": "skills/cto_dashboard/SKILL.md"
+            }
+          ]
+        },
+        "skill/debug": {
+          "description": "Debug skill",
+          "files": [
+            {
+              "src": "wocoder/skills/debug/SKILL.md",
+              "dest": "skills/debug/SKILL.md"
+            }
+          ]
+        },
+        "skill/debug_k8s": {
+          "description": "Debug K8S skill",
+          "files": [
+            {
+              "src": "wocoder/skills/debug_k8s/SKILL.md",
+              "dest": "skills/debug_k8s/SKILL.md"
+            }
+          ]
+        },
+        "skill/docs_sync_updater": {
+          "description": "Docs Sync Updater skill",
+          "files": [
+            {
+              "src": "wocoder/skills/docs_sync_updater/SKILL.md",
+              "dest": "skills/docs_sync_updater/SKILL.md"
+            }
+          ]
+        },
+        "skill/document_generation": {
+          "description": "Document Generation skill",
+          "files": [
+            {
+              "src": "wocoder/skills/document_generation/SKILL.md",
+              "dest": "skills/document_generation/SKILL.md"
+            }
+          ]
+        },
+        "skill/experimental_pr_workflow": {
+          "description": "Experimental Pr Workflow skill",
+          "files": [
+            {
+              "src": "wocoder/skills/experimental_pr_workflow/SKILL.md",
+              "dest": "skills/experimental_pr_workflow/SKILL.md"
+            }
+          ]
+        },
+        "skill/git_commit_helper": {
+          "description": "Git Commit Helper skill",
+          "files": [
+            {
+              "src": "wocoder/skills/git_commit_helper/SKILL.md",
+              "dest": "skills/git_commit_helper/SKILL.md"
+            }
+          ]
+        },
+        "skill/help_command": {
+          "description": "Help Command skill",
+          "files": [
+            {
+              "src": "wocoder/skills/help_command/SKILL.md",
+              "dest": "skills/help_command/SKILL.md"
+            }
+          ]
+        },
+        "skill/implement_plan": {
+          "description": "Implement Plan skill",
+          "files": [
+            {
+              "src": "wocoder/skills/implement_plan/SKILL.md",
+              "dest": "skills/implement_plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/improve_codebase_architecture": {
+          "description": "Improve Codebase Architecture skill",
+          "files": [
+            {
+              "src": "wocoder/skills/improve_codebase_architecture/SKILL.md",
+              "dest": "skills/improve_codebase_architecture/SKILL.md"
+            }
+          ]
+        },
+        "skill/observability_driven_development": {
+          "description": "Observability Driven Development skill",
+          "files": [
+            {
+              "src": "wocoder/skills/observability_driven_development/SKILL.md",
+              "dest": "skills/observability_driven_development/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_backend_integrator": {
+          "description": "Opticat Backend Integrator skill",
+          "files": [
+            {
+              "src": "wocoder/skills/opticat_backend_integrator/SKILL.md",
+              "dest": "skills/opticat_backend_integrator/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_simulator": {
+          "description": "Opticat Simulator skill",
+          "files": [
+            {
+              "src": "wocoder/skills/opticat_simulator/SKILL.md",
+              "dest": "skills/opticat_simulator/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_ui_builder": {
+          "description": "Opticat Ui Builder skill",
+          "files": [
+            {
+              "src": "wocoder/skills/opticat_ui_builder/SKILL.md",
+              "dest": "skills/opticat_ui_builder/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_collector": {
+          "description": "Otel Collector skill",
+          "files": [
+            {
+              "src": "wocoder/skills/otel_collector/SKILL.md",
+              "dest": "skills/otel_collector/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_instrument": {
+          "description": "Otel Instrument skill",
+          "files": [
+            {
+              "src": "wocoder/skills/otel_instrument/SKILL.md",
+              "dest": "skills/otel_instrument/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_instrumentation": {
+          "description": "Otel Instrumentation skill",
+          "files": [
+            {
+              "src": "wocoder/skills/otel_instrumentation/SKILL.md",
+              "dest": "skills/otel_instrumentation/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_ottl": {
+          "description": "Otel Ottl skill",
+          "files": [
+            {
+              "src": "wocoder/skills/otel_ottl/SKILL.md",
+              "dest": "skills/otel_ottl/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_semantic_conventions": {
+          "description": "Otel Semantic Conventions skill",
+          "files": [
+            {
+              "src": "wocoder/skills/otel_semantic_conventions/SKILL.md",
+              "dest": "skills/otel_semantic_conventions/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_cli": {
+          "description": "Pi Cli skill",
           "files": [
             {
               "src": "wocoder/skills/pi_cli/SKILL.md",
-              "dest": "skills/pi-cli/SKILL.md"
+              "dest": "skills/pi_cli/SKILL.md"
             }
           ]
         },
-        "skill/pi-config": {
-          "description": "Pi configuration expert \u2014 settings, providers, models, packages, keybindings",
+        "skill/pi_config": {
+          "description": "Pi Config skill",
           "files": [
             {
               "src": "wocoder/skills/pi_config/SKILL.md",
-              "dest": "skills/pi-config/SKILL.md"
+              "dest": "skills/pi_config/SKILL.md"
             }
           ]
         },
-        "skill/pi-keybindings": {
-          "description": "Pi keyboard shortcuts \u2014 registerShortcut, key IDs, modifiers, reserved keys",
+        "skill/pi_extension": {
+          "description": "Pi Extension skill",
+          "files": [
+            {
+              "src": "wocoder/skills/pi_extension/SKILL.md",
+              "dest": "skills/pi_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_keybindings": {
+          "description": "Pi Keybindings skill",
           "files": [
             {
               "src": "wocoder/skills/pi_keybindings/SKILL.md",
-              "dest": "skills/pi-keybindings/SKILL.md"
+              "dest": "skills/pi_keybindings/SKILL.md"
             }
           ]
         },
-        "skill/pi-orchestrate": {
-          "description": "Orchestrate Pi domain experts to research and build Pi components",
+        "skill/pi_orchestrate": {
+          "description": "Pi Orchestrate skill",
           "files": [
             {
               "src": "wocoder/skills/pi_orchestrate/SKILL.md",
-              "dest": "skills/pi-orchestrate/SKILL.md"
+              "dest": "skills/pi_orchestrate/SKILL.md"
             }
           ]
         },
-        "skill/pi-prompts": {
-          "description": "Pi prompt templates \u2014 single-file .md format, arguments, /template invocation",
+        "skill/pi_prompts": {
+          "description": "Pi Prompts skill",
           "files": [
             {
               "src": "wocoder/skills/pi_prompts/SKILL.md",
-              "dest": "skills/pi-prompts/SKILL.md"
+              "dest": "skills/pi_prompts/SKILL.md"
             }
           ]
         },
-        "skill/pi-themes": {
-          "description": "Pi themes \u2014 JSON format, 51 color tokens, vars system, hex/256-color values",
+        "skill/pi_skill": {
+          "description": "Pi Skill skill",
+          "files": [
+            {
+              "src": "wocoder/skills/pi_skill/SKILL.md",
+              "dest": "skills/pi_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_themes": {
+          "description": "Pi Themes skill",
           "files": [
             {
               "src": "wocoder/skills/pi_themes/SKILL.md",
-              "dest": "skills/pi-themes/SKILL.md"
+              "dest": "skills/pi_themes/SKILL.md"
             }
           ]
         },
-        "skill/pi-tui": {
-          "description": "Pi TUI \u2014 built-in components, custom components, keyboard input, widgets, overlays",
+        "skill/pi_tui": {
+          "description": "Pi Tui skill",
           "files": [
             {
               "src": "wocoder/skills/pi_tui/SKILL.md",
-              "dest": "skills/pi-tui/SKILL.md"
+              "dest": "skills/pi_tui/SKILL.md"
             }
           ]
         },
-        "skill/ticket-manager": {
-          "description": "Ticket Manager - manage tickets across all namespaces with full lifecycle",
+        "skill/pr_description_generator": {
+          "description": "Pr Description Generator skill",
           "files": [
             {
-              "src": "wocoder/skills/ticket-manager/SKILL.md",
-              "dest": "skills/ticket-manager/SKILL.md"
+              "src": "wocoder/skills/pr_description_generator/SKILL.md",
+              "dest": "skills/pr_description_generator/SKILL.md"
             }
           ]
         },
-        "skill/team-setup": {
-          "description": "Team Setup - initialize and manage team configuration",
+        "skill/prd_to_issues": {
+          "description": "Prd To Issues skill",
+          "files": [
+            {
+              "src": "wocoder/skills/prd_to_issues/SKILL.md",
+              "dest": "skills/prd_to_issues/SKILL.md"
+            }
+          ]
+        },
+        "skill/research_codebase": {
+          "description": "Research Codebase skill",
+          "files": [
+            {
+              "src": "wocoder/skills/research_codebase/SKILL.md",
+              "dest": "skills/research_codebase/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_adapter": {
+          "description": "Skill Adapter skill",
+          "files": [
+            {
+              "src": "wocoder/skills/skill_adapter/SKILL.md",
+              "dest": "skills/skill_adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_auto_update": {
+          "description": "Skill Auto Update skill",
+          "files": [
+            {
+              "src": "wocoder/skills/skill_auto_update/SKILL.md",
+              "dest": "skills/skill_auto_update/SKILL.md"
+            }
+          ]
+        },
+        "skill/team_setup": {
+          "description": "Team Setup skill",
           "files": [
             {
               "src": "wocoder/skills/team_setup/SKILL.md",
-              "dest": "skills/team-setup/SKILL.md"
+              "dest": "skills/team_setup/SKILL.md"
             }
           ]
         },
-        "skill/skill-auto-update": {
-          "description": "Skill Auto-Update - auto-discover and sync skills across all frontends",
+        "skill/ticket_context": {
+          "description": "Ticket Context skill",
           "files": [
             {
-              "src": "wocoder/skills/skill-auto-update/SKILL.md",
-              "dest": "skills/skill-auto-update/SKILL.md"
+              "src": "wocoder/skills/ticket_context/SKILL.md",
+              "dest": "skills/ticket_context/SKILL.md"
             }
           ]
         },
-        "skill/auto-ticket-creator": {
-          "description": "Auto-Ticket Creator - monitor and auto-create tickets from changes",
+        "skill/ticket_manager": {
+          "description": "Ticket Manager skill",
           "files": [
             {
-              "src": "wocoder/skills/auto-ticket-creator/SKILL.md",
-              "dest": "skills/auto-ticket-creator/SKILL.md"
+              "src": "wocoder/skills/ticket_manager/SKILL.md",
+              "dest": "skills/ticket_manager/SKILL.md"
             }
           ]
         },
-        "skill/docs-sync-updater": {
-          "description": "Docs Sync Updater - fetch latest docs and auto-update skill configs",
+        "skill/usage_rules": {
+          "description": "Usage Rules skill",
           "files": [
             {
-              "src": "wocoder/skills/docs-sync-updater/SKILL.md",
-              "dest": "skills/docs-sync-updater/SKILL.md"
+              "src": "wocoder/skills/usage_rules/SKILL.md",
+              "dest": "skills/usage_rules/SKILL.md"
             }
           ]
         },
-        "skill/cto-dashboard": {
-          "description": "CTO Dashboard - ticket overview, developer progress, review queue",
+        "skill/validate_plan": {
+          "description": "Validate Plan skill",
           "files": [
             {
-              "src": "wocoder/skills/cto-dashboard/SKILL.md",
-              "dest": "skills/cto-dashboard/SKILL.md"
+              "src": "wocoder/skills/validate_plan/SKILL.md",
+              "dest": "skills/validate_plan/SKILL.md"
             }
           ]
         },
-        "skill/skill-adapter": {
-          "description": "Skill Adapter - platform-specific skill loading and format adapters",
+        "skill/validate_telemetry": {
+          "description": "Validate Telemetry skill",
           "files": [
             {
-              "src": "wocoder/skills/skill-adapter/SKILL.md",
-              "dest": "skills/skill-adapter/SKILL.md"
+              "src": "wocoder/skills/validate_telemetry/SKILL.md",
+              "dest": "skills/validate_telemetry/SKILL.md"
+            }
+          ]
+        },
+        "skill/worktree": {
+          "description": "Worktree skill",
+          "files": [
+            {
+              "src": "wocoder/skills/worktree/SKILL.md",
+              "dest": "skills/worktree/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_access_control": {
+          "description": "Wow Access Control skill",
+          "files": [
+            {
+              "src": "wocoder/skills/wow_access_control/SKILL.md",
+              "dest": "skills/wow_access_control/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_agent_dev": {
+          "description": "Wow Agent Dev skill",
+          "files": [
+            {
+              "src": "wocoder/skills/wow_agent_dev/SKILL.md",
+              "dest": "skills/wow_agent_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_backend_dev": {
+          "description": "Wow Backend Dev skill",
+          "files": [
+            {
+              "src": "wocoder/skills/wow_backend_dev/SKILL.md",
+              "dest": "skills/wow_backend_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_communications": {
+          "description": "Wow Communications skill",
+          "files": [
+            {
+              "src": "wocoder/skills/wow_communications/SKILL.md",
+              "dest": "skills/wow_communications/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_core_architecture": {
+          "description": "Wow Core Architecture skill",
+          "files": [
+            {
+              "src": "wocoder/skills/wow_core_architecture/SKILL.md",
+              "dest": "skills/wow_core_architecture/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_frontend_dev": {
+          "description": "Wow Frontend Dev skill",
+          "files": [
+            {
+              "src": "wocoder/skills/wow_frontend_dev/SKILL.md",
+              "dest": "skills/wow_frontend_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_human_in_the_loop": {
+          "description": "Wow Human In The Loop skill",
+          "files": [
+            {
+              "src": "wocoder/skills/wow_human_in_the_loop/SKILL.md",
+              "dest": "skills/wow_human_in_the_loop/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_skill_creator": {
+          "description": "Wow Skill Creator skill",
+          "files": [
+            {
+              "src": "wocoder/skills/wow_skill_creator/SKILL.md",
+              "dest": "skills/wow_skill_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_tickets": {
+          "description": "Wow Tickets skill",
+          "files": [
+            {
+              "src": "wocoder/skills/wow_tickets/SKILL.md",
+              "dest": "skills/wow_tickets/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_ui_surfaces": {
+          "description": "Wow Ui Surfaces skill",
+          "files": [
+            {
+              "src": "wocoder/skills/wow_ui_surfaces/SKILL.md",
+              "dest": "skills/wow_ui_surfaces/SKILL.md"
+            }
+          ]
+        },
+        "skill/write_a_prd": {
+          "description": "Write A Prd skill",
+          "files": [
+            {
+              "src": "wocoder/skills/write_a_prd/SKILL.md",
+              "dest": "skills/write_a_prd/SKILL.md"
             }
           ]
         }
@@ -3486,66 +5409,255 @@
             }
           ]
         },
-        "skill/ticket-manager": {
-          "description": "Ticket Manager - manage tickets across all namespaces with full lifecycle",
+        "skill/auto_ticket_creator": {
+          "description": "Auto Ticket Creator skill",
           "files": [
             {
-              "src": "antigravity/skills/ticket-manager/SKILL.md",
-              "dest": "skills/ticket-manager/SKILL.md"
+              "src": "antigravity/skills/auto_ticket_creator/SKILL.md",
+              "dest": "skills/auto_ticket_creator/SKILL.md"
             }
           ]
         },
-        "skill/team-setup": {
-          "description": "Team Setup - initialize and manage team configuration",
+        "skill/backlog_groomer": {
+          "description": "Backlog Groomer skill",
+          "files": [
+            {
+              "src": "antigravity/skills/backlog_groomer/SKILL.md",
+              "dest": "skills/backlog_groomer/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_pi_agent": {
+          "description": "Build Pi Agent skill",
+          "files": [
+            {
+              "src": "antigravity/skills/build_pi_agent/SKILL.md",
+              "dest": "skills/build_pi_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_pi_extension": {
+          "description": "Build Pi Extension skill",
+          "files": [
+            {
+              "src": "antigravity/skills/build_pi_extension/SKILL.md",
+              "dest": "skills/build_pi_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_pi_skill": {
+          "description": "Build Pi Skill skill",
+          "files": [
+            {
+              "src": "antigravity/skills/build_pi_skill/SKILL.md",
+              "dest": "skills/build_pi_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/cto_dashboard": {
+          "description": "Cto Dashboard skill",
+          "files": [
+            {
+              "src": "antigravity/skills/cto_dashboard/SKILL.md",
+              "dest": "skills/cto_dashboard/SKILL.md"
+            }
+          ]
+        },
+        "skill/docs_sync_updater": {
+          "description": "Docs Sync Updater skill",
+          "files": [
+            {
+              "src": "antigravity/skills/docs_sync_updater/SKILL.md",
+              "dest": "skills/docs_sync_updater/SKILL.md"
+            }
+          ]
+        },
+        "skill/document_generation": {
+          "description": "Document Generation skill",
+          "files": [
+            {
+              "src": "antigravity/skills/document_generation/SKILL.md",
+              "dest": "skills/document_generation/SKILL.md"
+            }
+          ]
+        },
+        "skill/help_command": {
+          "description": "Help Command skill",
+          "files": [
+            {
+              "src": "antigravity/skills/help_command/SKILL.md",
+              "dest": "skills/help_command/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_backend_integrator": {
+          "description": "Opticat Backend Integrator skill",
+          "files": [
+            {
+              "src": "antigravity/skills/opticat_backend_integrator/SKILL.md",
+              "dest": "skills/opticat_backend_integrator/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_simulator": {
+          "description": "Opticat Simulator skill",
+          "files": [
+            {
+              "src": "antigravity/skills/opticat_simulator/SKILL.md",
+              "dest": "skills/opticat_simulator/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_ui_builder": {
+          "description": "Opticat Ui Builder skill",
+          "files": [
+            {
+              "src": "antigravity/skills/opticat_ui_builder/SKILL.md",
+              "dest": "skills/opticat_ui_builder/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_adapter": {
+          "description": "Skill Adapter skill",
+          "files": [
+            {
+              "src": "antigravity/skills/skill_adapter/SKILL.md",
+              "dest": "skills/skill_adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_auto_update": {
+          "description": "Skill Auto Update skill",
+          "files": [
+            {
+              "src": "antigravity/skills/skill_auto_update/SKILL.md",
+              "dest": "skills/skill_auto_update/SKILL.md"
+            }
+          ]
+        },
+        "skill/team_setup": {
+          "description": "Team Setup skill",
           "files": [
             {
               "src": "antigravity/skills/team_setup/SKILL.md",
-              "dest": "skills/team-setup/SKILL.md"
+              "dest": "skills/team_setup/SKILL.md"
             }
           ]
         },
-        "skill/skill-auto-update": {
-          "description": "Skill Auto-Update - auto-discover and sync skills across all frontends",
+        "skill/ticket_context": {
+          "description": "Ticket Context skill",
           "files": [
             {
-              "src": "antigravity/skills/skill-auto-update/SKILL.md",
-              "dest": "skills/skill-auto-update/SKILL.md"
+              "src": "antigravity/skills/ticket_context/SKILL.md",
+              "dest": "skills/ticket_context/SKILL.md"
             }
           ]
         },
-        "skill/auto-ticket-creator": {
-          "description": "Auto-Ticket Creator - monitor and auto-create tickets from changes",
+        "skill/ticket_manager": {
+          "description": "Ticket Manager skill",
           "files": [
             {
-              "src": "antigravity/skills/auto-ticket-creator/SKILL.md",
-              "dest": "skills/auto-ticket-creator/SKILL.md"
+              "src": "antigravity/skills/ticket_manager/SKILL.md",
+              "dest": "skills/ticket_manager/SKILL.md"
             }
           ]
         },
-        "skill/docs-sync-updater": {
-          "description": "Docs Sync Updater - fetch latest docs and auto-update skill configs",
+        "skill/validate_telemetry": {
+          "description": "Validate Telemetry skill",
           "files": [
             {
-              "src": "antigravity/skills/docs-sync-updater/SKILL.md",
-              "dest": "skills/docs-sync-updater/SKILL.md"
+              "src": "antigravity/skills/validate_telemetry/SKILL.md",
+              "dest": "skills/validate_telemetry/SKILL.md"
             }
           ]
         },
-        "skill/cto-dashboard": {
-          "description": "CTO Dashboard - ticket overview, developer progress, review queue",
+        "skill/wow_access_control": {
+          "description": "Wow Access Control skill",
           "files": [
             {
-              "src": "antigravity/skills/cto-dashboard/SKILL.md",
-              "dest": "skills/cto-dashboard/SKILL.md"
+              "src": "antigravity/skills/wow_access_control/SKILL.md",
+              "dest": "skills/wow_access_control/SKILL.md"
             }
           ]
         },
-        "skill/skill-adapter": {
-          "description": "Skill Adapter - platform-specific skill loading and format adapters",
+        "skill/wow_agent_dev": {
+          "description": "Wow Agent Dev skill",
           "files": [
             {
-              "src": "antigravity/skills/skill-adapter/SKILL.md",
-              "dest": "skills/skill-adapter/SKILL.md"
+              "src": "antigravity/skills/wow_agent_dev/SKILL.md",
+              "dest": "skills/wow_agent_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_backend_dev": {
+          "description": "Wow Backend Dev skill",
+          "files": [
+            {
+              "src": "antigravity/skills/wow_backend_dev/SKILL.md",
+              "dest": "skills/wow_backend_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_communications": {
+          "description": "Wow Communications skill",
+          "files": [
+            {
+              "src": "antigravity/skills/wow_communications/SKILL.md",
+              "dest": "skills/wow_communications/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_core_architecture": {
+          "description": "Wow Core Architecture skill",
+          "files": [
+            {
+              "src": "antigravity/skills/wow_core_architecture/SKILL.md",
+              "dest": "skills/wow_core_architecture/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_frontend_dev": {
+          "description": "Wow Frontend Dev skill",
+          "files": [
+            {
+              "src": "antigravity/skills/wow_frontend_dev/SKILL.md",
+              "dest": "skills/wow_frontend_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_human_in_the_loop": {
+          "description": "Wow Human In The Loop skill",
+          "files": [
+            {
+              "src": "antigravity/skills/wow_human_in_the_loop/SKILL.md",
+              "dest": "skills/wow_human_in_the_loop/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_skill_creator": {
+          "description": "Wow Skill Creator skill",
+          "files": [
+            {
+              "src": "antigravity/skills/wow_skill_creator/SKILL.md",
+              "dest": "skills/wow_skill_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_tickets": {
+          "description": "Wow Tickets skill",
+          "files": [
+            {
+              "src": "antigravity/skills/wow_tickets/SKILL.md",
+              "dest": "skills/wow_tickets/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_ui_surfaces": {
+          "description": "Wow Ui Surfaces skill",
+          "files": [
+            {
+              "src": "antigravity/skills/wow_ui_surfaces/SKILL.md",
+              "dest": "skills/wow_ui_surfaces/SKILL.md"
             }
           ]
         }
@@ -3596,95 +5708,732 @@
             }
           ]
         },
-        "skill/ticket-manager": {
-          "description": "Ticket Manager - manage tickets across all namespaces with full lifecycle",
+        "skill/antigravity_cli": {
+          "description": "Antigravity Cli skill",
           "files": [
             {
-              "src": "codex/skills/ticket-manager/skill.yaml",
-              "dest": "skills/ticket-manager/skill.yaml"
-            },
-            {
-              "src": "codex/skills/ticket-manager/prompt.md",
-              "dest": "skills/ticket-manager/prompt.md"
+              "src": "codex/skills/antigravity_cli/SKILL.md",
+              "dest": "skills/antigravity_cli/SKILL.md"
             }
           ]
         },
-
-        "skill/skill-auto-update": {
-          "description": "Skill Auto-Update - auto-discover and sync skills across all frontends",
+        "skill/antigravity_config": {
+          "description": "Antigravity Config skill",
           "files": [
             {
-              "src": "codex/skills/skill-auto-update/skill.yaml",
-              "dest": "skills/skill-auto-update/skill.yaml"
-            },
-            {
-              "src": "codex/skills/skill-auto-update/prompt.md",
-              "dest": "skills/skill-auto-update/prompt.md"
+              "src": "codex/skills/antigravity_config/SKILL.md",
+              "dest": "skills/antigravity_config/SKILL.md"
             }
           ]
         },
-        "skill/auto-ticket-creator": {
-          "description": "Auto-Ticket Creator - monitor and auto-create tickets from changes",
+        "skill/antigravity_keybindings": {
+          "description": "Antigravity Keybindings skill",
           "files": [
             {
-              "src": "codex/skills/auto-ticket-creator/skill.yaml",
-              "dest": "skills/auto-ticket-creator/skill.yaml"
-            },
-            {
-              "src": "codex/skills/auto-ticket-creator/prompt.md",
-              "dest": "skills/auto-ticket-creator/prompt.md"
+              "src": "codex/skills/antigravity_keybindings/SKILL.md",
+              "dest": "skills/antigravity_keybindings/SKILL.md"
             }
           ]
         },
-        "skill/docs-sync-updater": {
-          "description": "Docs Sync Updater - fetch latest docs and auto-update skill configs",
+        "skill/antigravity_orchestrate": {
+          "description": "Antigravity Orchestrate skill",
           "files": [
             {
-              "src": "codex/skills/docs-sync-updater/skill.yaml",
-              "dest": "skills/docs-sync-updater/skill.yaml"
-            },
-            {
-              "src": "codex/skills/docs-sync-updater/prompt.md",
-              "dest": "skills/docs-sync-updater/prompt.md"
+              "src": "codex/skills/antigravity_orchestrate/SKILL.md",
+              "dest": "skills/antigravity_orchestrate/SKILL.md"
             }
           ]
         },
-        "skill/cto-dashboard": {
-          "description": "CTO Dashboard - ticket overview, developer progress, review queue",
+        "skill/antigravity_prompts": {
+          "description": "Antigravity Prompts skill",
           "files": [
             {
-              "src": "codex/skills/cto-dashboard/skill.yaml",
-              "dest": "skills/cto-dashboard/skill.yaml"
-            },
-            {
-              "src": "codex/skills/cto-dashboard/prompt.md",
-              "dest": "skills/cto-dashboard/prompt.md"
+              "src": "codex/skills/antigravity_prompts/SKILL.md",
+              "dest": "skills/antigravity_prompts/SKILL.md"
             }
           ]
         },
-        "skill/skill-adapter": {
-          "description": "Skill Adapter - platform-specific skill loading and format adapters",
+        "skill/antigravity_themes": {
+          "description": "Antigravity Themes skill",
           "files": [
             {
-              "src": "codex/skills/skill-adapter/skill.yaml",
-              "dest": "skills/skill-adapter/skill.yaml"
-            },
-            {
-              "src": "codex/skills/skill-adapter/prompt.md",
-              "dest": "skills/skill-adapter/prompt.md"
+              "src": "codex/skills/antigravity_themes/SKILL.md",
+              "dest": "skills/antigravity_themes/SKILL.md"
             }
           ]
         },
-        "skill/help-command": {
-          "description": "Help Command - unified /help across all platform frontends",
+        "skill/antigravity_tui": {
+          "description": "Antigravity Tui skill",
           "files": [
             {
-              "src": "codex/skills/help-command/skill.yaml",
-              "dest": "skills/help-command/skill.yaml"
-            },
+              "src": "codex/skills/antigravity_tui/SKILL.md",
+              "dest": "skills/antigravity_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/auto_ticket_creator": {
+          "description": "Auto Ticket Creator skill",
+          "files": [
             {
-              "src": "codex/skills/help-command/prompt.md",
-              "dest": "skills/help-command/prompt.md"
+              "src": "codex/skills/auto_ticket_creator/SKILL.md",
+              "dest": "skills/auto_ticket_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/backlog_groomer": {
+          "description": "Backlog Groomer skill",
+          "files": [
+            {
+              "src": "codex/skills/backlog_groomer/SKILL.md",
+              "dest": "skills/backlog_groomer/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_agent": {
+          "description": "Build Antigravity Agent skill",
+          "files": [
+            {
+              "src": "codex/skills/build_antigravity_agent/SKILL.md",
+              "dest": "skills/build_antigravity_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_extension": {
+          "description": "Build Antigravity Extension skill",
+          "files": [
+            {
+              "src": "codex/skills/build_antigravity_extension/SKILL.md",
+              "dest": "skills/build_antigravity_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_antigravity_skill": {
+          "description": "Build Antigravity Skill skill",
+          "files": [
+            {
+              "src": "codex/skills/build_antigravity_skill/SKILL.md",
+              "dest": "skills/build_antigravity_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_agent": {
+          "description": "Build Claude Agent skill",
+          "files": [
+            {
+              "src": "codex/skills/build_claude_agent/SKILL.md",
+              "dest": "skills/build_claude_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_extension": {
+          "description": "Build Claude Extension skill",
+          "files": [
+            {
+              "src": "codex/skills/build_claude_extension/SKILL.md",
+              "dest": "skills/build_claude_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_claude_skill": {
+          "description": "Build Claude Skill skill",
+          "files": [
+            {
+              "src": "codex/skills/build_claude_skill/SKILL.md",
+              "dest": "skills/build_claude_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_pi_agent": {
+          "description": "Build Pi Agent skill",
+          "files": [
+            {
+              "src": "codex/skills/build_pi_agent/SKILL.md",
+              "dest": "skills/build_pi_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_pi_extension": {
+          "description": "Build Pi Extension skill",
+          "files": [
+            {
+              "src": "codex/skills/build_pi_extension/SKILL.md",
+              "dest": "skills/build_pi_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_pi_skill": {
+          "description": "Build Pi Skill skill",
+          "files": [
+            {
+              "src": "codex/skills/build_pi_skill/SKILL.md",
+              "dest": "skills/build_pi_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_cli": {
+          "description": "Claude Cli skill",
+          "files": [
+            {
+              "src": "codex/skills/claude_cli/SKILL.md",
+              "dest": "skills/claude_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_config": {
+          "description": "Claude Config skill",
+          "files": [
+            {
+              "src": "codex/skills/claude_config/SKILL.md",
+              "dest": "skills/claude_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_keybindings": {
+          "description": "Claude Keybindings skill",
+          "files": [
+            {
+              "src": "codex/skills/claude_keybindings/SKILL.md",
+              "dest": "skills/claude_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_orchestrate": {
+          "description": "Claude Orchestrate skill",
+          "files": [
+            {
+              "src": "codex/skills/claude_orchestrate/SKILL.md",
+              "dest": "skills/claude_orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_prompts": {
+          "description": "Claude Prompts skill",
+          "files": [
+            {
+              "src": "codex/skills/claude_prompts/SKILL.md",
+              "dest": "skills/claude_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_themes": {
+          "description": "Claude Themes skill",
+          "files": [
+            {
+              "src": "codex/skills/claude_themes/SKILL.md",
+              "dest": "skills/claude_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/claude_tui": {
+          "description": "Claude Tui skill",
+          "files": [
+            {
+              "src": "codex/skills/claude_tui/SKILL.md",
+              "dest": "skills/claude_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/commit": {
+          "description": "Commit skill",
+          "files": [
+            {
+              "src": "codex/skills/commit/SKILL.md",
+              "dest": "skills/commit/SKILL.md"
+            }
+          ]
+        },
+        "skill/create_plan": {
+          "description": "Create Plan skill",
+          "files": [
+            {
+              "src": "codex/skills/create_plan/SKILL.md",
+              "dest": "skills/create_plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/cto_dashboard": {
+          "description": "Cto Dashboard skill",
+          "files": [
+            {
+              "src": "codex/skills/cto_dashboard/SKILL.md",
+              "dest": "skills/cto_dashboard/SKILL.md"
+            }
+          ]
+        },
+        "skill/debug": {
+          "description": "Debug skill",
+          "files": [
+            {
+              "src": "codex/skills/debug/SKILL.md",
+              "dest": "skills/debug/SKILL.md"
+            }
+          ]
+        },
+        "skill/debug_k8s": {
+          "description": "Debug K8S skill",
+          "files": [
+            {
+              "src": "codex/skills/debug_k8s/SKILL.md",
+              "dest": "skills/debug_k8s/SKILL.md"
+            }
+          ]
+        },
+        "skill/docs_sync_updater": {
+          "description": "Docs Sync Updater skill",
+          "files": [
+            {
+              "src": "codex/skills/docs_sync_updater/SKILL.md",
+              "dest": "skills/docs_sync_updater/SKILL.md"
+            }
+          ]
+        },
+        "skill/document_generation": {
+          "description": "Document Generation skill",
+          "files": [
+            {
+              "src": "codex/skills/document_generation/SKILL.md",
+              "dest": "skills/document_generation/SKILL.md"
+            }
+          ]
+        },
+        "skill/experimental_pr_workflow": {
+          "description": "Experimental Pr Workflow skill",
+          "files": [
+            {
+              "src": "codex/skills/experimental_pr_workflow/SKILL.md",
+              "dest": "skills/experimental_pr_workflow/SKILL.md"
+            }
+          ]
+        },
+        "skill/git_commit_helper": {
+          "description": "Git Commit Helper skill",
+          "files": [
+            {
+              "src": "codex/skills/git_commit_helper/SKILL.md",
+              "dest": "skills/git_commit_helper/SKILL.md"
+            }
+          ]
+        },
+        "skill/help_command": {
+          "description": "Help Command skill",
+          "files": [
+            {
+              "src": "codex/skills/help_command/SKILL.md",
+              "dest": "skills/help_command/SKILL.md"
+            }
+          ]
+        },
+        "skill/implement_plan": {
+          "description": "Implement Plan skill",
+          "files": [
+            {
+              "src": "codex/skills/implement_plan/SKILL.md",
+              "dest": "skills/implement_plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/improve_codebase_architecture": {
+          "description": "Improve Codebase Architecture skill",
+          "files": [
+            {
+              "src": "codex/skills/improve_codebase_architecture/SKILL.md",
+              "dest": "skills/improve_codebase_architecture/SKILL.md"
+            }
+          ]
+        },
+        "skill/init_harness": {
+          "description": "Init Harness skill",
+          "files": [
+            {
+              "src": "codex/skills/init_harness/SKILL.md",
+              "dest": "skills/init_harness/SKILL.md"
+            }
+          ]
+        },
+        "skill/interview": {
+          "description": "Interview skill",
+          "files": [
+            {
+              "src": "codex/skills/interview/SKILL.md",
+              "dest": "skills/interview/SKILL.md"
+            }
+          ]
+        },
+        "skill/observability_driven_development": {
+          "description": "Observability Driven Development skill",
+          "files": [
+            {
+              "src": "codex/skills/observability_driven_development/SKILL.md",
+              "dest": "skills/observability_driven_development/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_backend_integrator": {
+          "description": "Opticat Backend Integrator skill",
+          "files": [
+            {
+              "src": "codex/skills/opticat_backend_integrator/SKILL.md",
+              "dest": "skills/opticat_backend_integrator/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_simulator": {
+          "description": "Opticat Simulator skill",
+          "files": [
+            {
+              "src": "codex/skills/opticat_simulator/SKILL.md",
+              "dest": "skills/opticat_simulator/SKILL.md"
+            }
+          ]
+        },
+        "skill/opticat_ui_builder": {
+          "description": "Opticat Ui Builder skill",
+          "files": [
+            {
+              "src": "codex/skills/opticat_ui_builder/SKILL.md",
+              "dest": "skills/opticat_ui_builder/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_collector": {
+          "description": "Otel Collector skill",
+          "files": [
+            {
+              "src": "codex/skills/otel_collector/SKILL.md",
+              "dest": "skills/otel_collector/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_instrument": {
+          "description": "Otel Instrument skill",
+          "files": [
+            {
+              "src": "codex/skills/otel_instrument/SKILL.md",
+              "dest": "skills/otel_instrument/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_instrumentation": {
+          "description": "Otel Instrumentation skill",
+          "files": [
+            {
+              "src": "codex/skills/otel_instrumentation/SKILL.md",
+              "dest": "skills/otel_instrumentation/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_ottl": {
+          "description": "Otel Ottl skill",
+          "files": [
+            {
+              "src": "codex/skills/otel_ottl/SKILL.md",
+              "dest": "skills/otel_ottl/SKILL.md"
+            }
+          ]
+        },
+        "skill/otel_semantic_conventions": {
+          "description": "Otel Semantic Conventions skill",
+          "files": [
+            {
+              "src": "codex/skills/otel_semantic_conventions/SKILL.md",
+              "dest": "skills/otel_semantic_conventions/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_cli": {
+          "description": "Pi Cli skill",
+          "files": [
+            {
+              "src": "codex/skills/pi_cli/SKILL.md",
+              "dest": "skills/pi_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_config": {
+          "description": "Pi Config skill",
+          "files": [
+            {
+              "src": "codex/skills/pi_config/SKILL.md",
+              "dest": "skills/pi_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_extension": {
+          "description": "Pi Extension skill",
+          "files": [
+            {
+              "src": "codex/skills/pi_extension/SKILL.md",
+              "dest": "skills/pi_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_keybindings": {
+          "description": "Pi Keybindings skill",
+          "files": [
+            {
+              "src": "codex/skills/pi_keybindings/SKILL.md",
+              "dest": "skills/pi_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_orchestrate": {
+          "description": "Pi Orchestrate skill",
+          "files": [
+            {
+              "src": "codex/skills/pi_orchestrate/SKILL.md",
+              "dest": "skills/pi_orchestrate/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_prompts": {
+          "description": "Pi Prompts skill",
+          "files": [
+            {
+              "src": "codex/skills/pi_prompts/SKILL.md",
+              "dest": "skills/pi_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_skill": {
+          "description": "Pi Skill skill",
+          "files": [
+            {
+              "src": "codex/skills/pi_skill/SKILL.md",
+              "dest": "skills/pi_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_themes": {
+          "description": "Pi Themes skill",
+          "files": [
+            {
+              "src": "codex/skills/pi_themes/SKILL.md",
+              "dest": "skills/pi_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/pi_tui": {
+          "description": "Pi Tui skill",
+          "files": [
+            {
+              "src": "codex/skills/pi_tui/SKILL.md",
+              "dest": "skills/pi_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/pr_description_generator": {
+          "description": "Pr Description Generator skill",
+          "files": [
+            {
+              "src": "codex/skills/pr_description_generator/SKILL.md",
+              "dest": "skills/pr_description_generator/SKILL.md"
+            }
+          ]
+        },
+        "skill/prd_to_issues": {
+          "description": "Prd To Issues skill",
+          "files": [
+            {
+              "src": "codex/skills/prd_to_issues/SKILL.md",
+              "dest": "skills/prd_to_issues/SKILL.md"
+            }
+          ]
+        },
+        "skill/research_codebase": {
+          "description": "Research Codebase skill",
+          "files": [
+            {
+              "src": "codex/skills/research_codebase/SKILL.md",
+              "dest": "skills/research_codebase/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_adapter": {
+          "description": "Skill Adapter skill",
+          "files": [
+            {
+              "src": "codex/skills/skill_adapter/SKILL.md",
+              "dest": "skills/skill_adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_auto_update": {
+          "description": "Skill Auto Update skill",
+          "files": [
+            {
+              "src": "codex/skills/skill_auto_update/SKILL.md",
+              "dest": "skills/skill_auto_update/SKILL.md"
+            }
+          ]
+        },
+        "skill/tdd": {
+          "description": "Tdd skill",
+          "files": [
+            {
+              "src": "codex/skills/tdd/SKILL.md",
+              "dest": "skills/tdd/SKILL.md"
+            }
+          ]
+        },
+        "skill/team_setup": {
+          "description": "Team Setup skill",
+          "files": [
+            {
+              "src": "codex/skills/team_setup/SKILL.md",
+              "dest": "skills/team_setup/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket_context": {
+          "description": "Ticket Context skill",
+          "files": [
+            {
+              "src": "codex/skills/ticket_context/SKILL.md",
+              "dest": "skills/ticket_context/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket_manager": {
+          "description": "Ticket Manager skill",
+          "files": [
+            {
+              "src": "codex/skills/ticket_manager/SKILL.md",
+              "dest": "skills/ticket_manager/SKILL.md"
+            }
+          ]
+        },
+        "skill/usage_rules": {
+          "description": "Usage Rules skill",
+          "files": [
+            {
+              "src": "codex/skills/usage_rules/SKILL.md",
+              "dest": "skills/usage_rules/SKILL.md"
+            }
+          ]
+        },
+        "skill/validate_plan": {
+          "description": "Validate Plan skill",
+          "files": [
+            {
+              "src": "codex/skills/validate_plan/SKILL.md",
+              "dest": "skills/validate_plan/SKILL.md"
+            }
+          ]
+        },
+        "skill/validate_telemetry": {
+          "description": "Validate Telemetry skill",
+          "files": [
+            {
+              "src": "codex/skills/validate_telemetry/SKILL.md",
+              "dest": "skills/validate_telemetry/SKILL.md"
+            }
+          ]
+        },
+        "skill/worktree": {
+          "description": "Worktree skill",
+          "files": [
+            {
+              "src": "codex/skills/worktree/SKILL.md",
+              "dest": "skills/worktree/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_access_control": {
+          "description": "Wow Access Control skill",
+          "files": [
+            {
+              "src": "codex/skills/wow_access_control/SKILL.md",
+              "dest": "skills/wow_access_control/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_agent_dev": {
+          "description": "Wow Agent Dev skill",
+          "files": [
+            {
+              "src": "codex/skills/wow_agent_dev/SKILL.md",
+              "dest": "skills/wow_agent_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_backend_dev": {
+          "description": "Wow Backend Dev skill",
+          "files": [
+            {
+              "src": "codex/skills/wow_backend_dev/SKILL.md",
+              "dest": "skills/wow_backend_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_communications": {
+          "description": "Wow Communications skill",
+          "files": [
+            {
+              "src": "codex/skills/wow_communications/SKILL.md",
+              "dest": "skills/wow_communications/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_core_architecture": {
+          "description": "Wow Core Architecture skill",
+          "files": [
+            {
+              "src": "codex/skills/wow_core_architecture/SKILL.md",
+              "dest": "skills/wow_core_architecture/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_frontend_dev": {
+          "description": "Wow Frontend Dev skill",
+          "files": [
+            {
+              "src": "codex/skills/wow_frontend_dev/SKILL.md",
+              "dest": "skills/wow_frontend_dev/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_human_in_the_loop": {
+          "description": "Wow Human In The Loop skill",
+          "files": [
+            {
+              "src": "codex/skills/wow_human_in_the_loop/SKILL.md",
+              "dest": "skills/wow_human_in_the_loop/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_skill_creator": {
+          "description": "Wow Skill Creator skill",
+          "files": [
+            {
+              "src": "codex/skills/wow_skill_creator/SKILL.md",
+              "dest": "skills/wow_skill_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_tickets": {
+          "description": "Wow Tickets skill",
+          "files": [
+            {
+              "src": "codex/skills/wow_tickets/SKILL.md",
+              "dest": "skills/wow_tickets/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_ui_surfaces": {
+          "description": "Wow Ui Surfaces skill",
+          "files": [
+            {
+              "src": "codex/skills/wow_ui_surfaces/SKILL.md",
+              "dest": "skills/wow_ui_surfaces/SKILL.md"
+            }
+          ]
+        },
+        "skill/write_a_prd": {
+          "description": "Write A Prd skill",
+          "files": [
+            {
+              "src": "codex/skills/write_a_prd/SKILL.md",
+              "dest": "skills/write_a_prd/SKILL.md"
             }
           ]
         }

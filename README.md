@@ -1,6 +1,6 @@
 # WayOfMono (Wo)
 
-The ultimate monorepo consolidation for high-performance coding agents. WayOfMono provides a shared **AI Engineering Harness** — 79 battle-tested skills, 6 subagents, and workflows spanning 7 AI coding tools — plus a **CTO Dashboard** with telemetry, standups, tickets, and review queues.
+The ultimate monorepo consolidation for high-performance coding agents. WayOfMono provides a shared **AI Engineering Harness** — 81 battle-tested skills, 6 subagents, and workflows spanning 7 AI coding tools — plus a **CTO Dashboard** with telemetry, standups, tickets, and review queues.
 
 ## 🎛️ Supported Tools
 
@@ -37,7 +37,7 @@ The ultimate monorepo consolidation for high-performance coding agents. WayOfMon
 │   ├── src/app/api/       # API routes (tickets, skills, standup, ideas)
 │   └── src/components/    # Dashboard views
 ├── docs/
-│   ├── skills/            # 79 canonical SKILL.md files (source of truth)
+│   ├── skills/            # 81 canonical SKILL.md files (source of truth)
 │   └── tools/             # Tool reference docs for compliance checking
 ├── thoughts/              # Context engineering (f-rr-d)
 └── .github/workflows/     # CI/CD (incl. canonical sync check)
@@ -243,7 +243,7 @@ podman-compose logs -f
 | **CI** | Push/PR to main | Build, typecheck, test, **canonical skill sync check** |
 | **CD** | Tag push `v*` | Publish npm packages |
 
-The CI verifies that all 553 SKILL.md files (79 canonical × 7 tools) are in sync. If not, run:
+The CI verifies that all 567 SKILL.md files (81 canonical × 7 tools) are in sync. If not, run:
 ```bash
 ai-harness --sync-docs
 ```
