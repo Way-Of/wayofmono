@@ -1,9 +1,0 @@
-{
-  "name": "academic-search",
-  "version": "1.0.0",
-  "description": "Academic database search using AMiner API for paper discovery and citation analysis.",
-  "tags": ["academic", "search", "papers", "aminer"],
-  "scripts": {
-    "search": "python scripts/aminer.py"
-  }
-}

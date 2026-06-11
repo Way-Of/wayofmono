@@ -1,9 +1,0 @@
-{
-  "name": "skill-discovery",
-  "version": "1.0.0",
-  "description": "Skill discovery and search functionality.",
-  "tags": ["skill", "discovery", "search"],
-  "scripts": {
-    "search": "bash scripts/search.sh"
-  }
-}

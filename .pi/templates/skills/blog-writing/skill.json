@@ -1,9 +1,0 @@
-{
-  "name": "blog-writing",
-  "version": "1.0.0",
-  "description": "Blog content creation skill with examples and style guidelines.",
-  "tags": ["blog", "writing", "content", "examples"],
-  "scripts": {
-    "manage": "python manage_examples.py"
-  }
-}

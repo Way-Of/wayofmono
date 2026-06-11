@@ -1,9 +1,0 @@
-{
-  "name": "research-tools",
-  "version": "1.0.0",
-  "description": "Open academic research tools using AMiner API.",
-  "tags": ["research", "academic", "aminer", "open-access"],
-  "scripts": {
-    "query": "python scripts/aminer_client.py"
-  }
-}

@@ -1,6 +1,0 @@
-{
-  "name": "browser-automation",
-  "version": "1.0.0",
-  "description": "Browser automation using Playwright and agent-browser.",
-  "tags": ["browser", "automation", "playwright", "scraping"]
-}

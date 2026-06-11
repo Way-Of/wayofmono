@@ -1,3 +1,9 @@
+---
+name: pi-skills-readme
+description: "Reference guide for Pi skills in the AI Engineering Harness. Not an executable skill."
+disable-model-invocation: true
+---
+
 # Pi Skills
 
 > [!NOTE]
@@ -28,7 +34,7 @@ The `SKILL.md` file must start with YAML frontmatter containing metadata about t
 ---
 name: tdd
 description: Test-driven development with red-green-refactor loop.
-allowed-tools: read_file, write_file, run_command
+allowed-tools: read_file write_file run_command
 ---
 
 # Test-Driven Development (TDD)
@@ -39,6 +45,20 @@ Enforce vertical slices (Red -> Green -> Refactor) to prevent speculative code.
 ```
 
 ### Supported Frontmatter Fields
+
 *   **`name`**: Kebab-case identifier of the skill.
 *   **`description`**: A detailed summary explaining when the agent should select and activate this skill.
-*   **`allowed-tools`**: (Optional) A list of tools the agent is permitted to use when executing this skill.
+*   **`allowed-tools`**: (Optional) Space-delimited list of pre-approved tools.
+*   **`disable-model-invocation`**: (Optional) When `true`, skill is hidden from system prompt; users must use `/skill:name`.
+
+---
+
+## 🔧 Key Pi-Specific Notes
+
+- **Name format**: lowercase, numbers, hyphens only (max 64 chars). No leading/trailing/consecutive hyphens.
+- **Description**: Max 1024 chars. Be specific — determines when agent loads the skill.
+- **`allowed-tools`**: Space-delimited (not YAML array), e.g., `read write glob grep`
+- **Directory name ≠ skill name**: Pi does NOT require directory name to match `name` field (unlike Agent Skills standard).
+- **Validation**: Missing `description` = skill NOT loaded. Invalid name = warning but loads.
+
+See [Pi Skills Documentation](https://pi.dev/docs/latest/skills) for full spec.

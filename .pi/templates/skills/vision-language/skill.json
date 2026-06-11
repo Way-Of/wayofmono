@@ -1,9 +1,0 @@
-{
-  "name": "vision-language",
-  "version": "1.0.0",
-  "description": "Vision-language model for multimodal understanding and reasoning.",
-  "tags": ["vision", "language", "multimodal", "vlm"],
-  "scripts": {
-    "query": "npx ts-node scripts/vlm.ts"
-  }
-}

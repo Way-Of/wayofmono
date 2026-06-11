@@ -1,9 +1,0 @@
-{
-  "name": "image-analysis",
-  "version": "1.0.0",
-  "description": "Image understanding and analysis using vision models.",
-  "tags": ["image", "vision", "analysis", "understanding"],
-  "scripts": {
-    "analyze": "npx ts-node scripts/image-understand.ts"
-  }
-}
