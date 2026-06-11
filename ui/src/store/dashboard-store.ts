@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ViewMode, Ticket, ReviewStatus, Developer, ProjectDoc, Idea, IdeaStatus } from '@/lib/types';
+import { ViewMode, Ticket, ReviewStatus, Developer, ProjectDoc, Idea, IdeaStatus, NewsItem } from '@/lib/types';
 
 type LoginResult = { success: true } | { success: false; reason: 'loading' | 'unrecognized' | 'wrong_pincode' };
 
@@ -41,6 +41,8 @@ interface DashboardState {
   updateIdeaPriority: (id: string, priority: number) => void;
   updateIdeaStatus: (id: string, status: IdeaStatus) => void;
   voteIdea: (id: string, user: string) => void;
+  newsItems: NewsItem[];
+  addNewsItem: (item: { title: string; body: string; author: string; pinned?: boolean }) => void;
   getFilteredTickets: () => Ticket[];
   fetchData: () => Promise<void>;
 }
@@ -72,6 +74,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   developers: [],
   docs: [],
   ideas: [],
+  newsItems: [],
   loading: true,
   searchQuery: '',
   filterProject: 'all',
@@ -137,6 +140,22 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
       }),
     }));
   },
+  addNewsItem: (item) => {
+    const newItem: NewsItem = {
+      id: `NEWS-${Date.now()}`,
+      title: item.title,
+      body: item.body,
+      author: item.author,
+      createdAt: new Date().toISOString(),
+      pinned: item.pinned || false,
+    };
+    set(state => ({ newsItems: [newItem, ...state.newsItems] }));
+    fetch('/api/news', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newItem),
+    }).catch(() => {});
+  },
   updateTicketStatus: (ticketId, status) => {
     set(state => ({
       tickets: state.tickets.map(t =>
@@ -188,19 +207,21 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   },
   fetchData: async () => {
     try {
-      const [ticketsRes, devsRes, docsRes, ideasRes] = await Promise.all([
+      const [ticketsRes, devsRes, docsRes, ideasRes, newsRes] = await Promise.all([
         fetch('/api?type=tickets'),
         fetch('/api?type=developers'),
         fetch('/api?type=docs'),
         fetch('/api?type=ideas').catch(() => new Response('[]')),
+        fetch('/api/news').catch(() => new Response('[]')),
       ]);
-      const [tickets, developers, docs, ideas] = await Promise.all([
+      const [tickets, developers, docs, ideas, newsItems] = await Promise.all([
         ticketsRes.json(),
         devsRes.json(),
         docsRes.json(),
         ideasRes.json().catch(() => []),
+        newsRes.json().catch(() => []),
       ]);
-      set({ tickets, developers, docs, ideas, loading: false });
+      set({ tickets, developers, docs, ideas, newsItems, loading: false });
     } catch (err) {
       console.error('Failed to fetch data:', err);
       set({ loading: false });

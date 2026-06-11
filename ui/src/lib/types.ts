@@ -87,7 +87,16 @@ export interface Idea {
 
 export type IdeaStatus = 'proposed' | 'under-review' | 'accepted' | 'implemented' | 'declined';
 
-export type ViewMode = 'overview' | 'tickets' | 'developers' | 'review' | 'docs' | 'my-view' | 'skills' | 'ticket-detail' | 'ideas' | 'standup';
+export type ViewMode = 'overview' | 'tickets' | 'developers' | 'review' | 'docs' | 'my-view' | 'skills' | 'ticket-detail' | 'ideas' | 'standup' | 'news';
+
+export interface NewsItem {
+  id: string;
+  title: string;
+  body: string;
+  author: string;
+  createdAt: string;
+  pinned: boolean;
+}
 
 export interface StandupEntry {
   id: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useDashboardStore, useAuthStore } from '@/store/dashboard-store';
+import { useDashboardStore } from '@/store/dashboard-store';
 import { ProjectDoc } from '@/lib/types';
 import {
   Card,
@@ -8,7 +8,6 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
@@ -23,9 +22,9 @@ import {
   Bookmark,
   Search,
   FolderOpen,
-  ExternalLink,
 } from 'lucide-react';
 import { useState } from 'react';
+import { MarkdownPreview } from './markdown-preview';
 
 const typeConfig: Record<string, { icon: React.ElementType; label: string; color: string }> = {
   architecture: { icon: FileText, label: 'Architecture', color: 'text-status-inprogress' },
@@ -37,44 +36,60 @@ const typeConfig: Record<string, { icon: React.ElementType; label: string; color
 function DocCard({ doc }: { doc: ProjectDoc }) {
   const cfg = typeConfig[doc.type];
   const Icon = cfg.icon;
+  const [open, setOpen] = useState(false);
   const author = useDashboardStore.getState().developers.find(d => d.id === doc.author);
   const tickets = useDashboardStore.getState().tickets.filter(t =>
     t.linkedDocs.includes(doc.id)
   );
 
   return (
-    <div className="kanban-card p-4 rounded-lg bg-card border border-border hover:border-border-strong transition-colors cursor-pointer">
-      <div className="flex items-start gap-3">
-        <div className={`w-9 h-9 rounded-lg bg-accent flex items-center justify-center flex-shrink-0 mt-0.5`}>
-          <Icon className={`w-4.5 h-4.5 ${cfg.color}`} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <Badge variant="outline" className="text-[10px] h-5 border-border-strong text-text-muted px-1.5 font-mono">
-              {doc.project}
-            </Badge>
-            <Badge className={`${cfg.color} bg-accent text-[10px] px-1.5 py-0 h-5 border-0`}>
-              {cfg.label}
-            </Badge>
+    <>
+      <div
+        className="kanban-card p-4 rounded-lg bg-card border border-border hover:border-border-strong transition-colors cursor-pointer"
+        onClick={() => setOpen(true)}
+      >
+        <div className="flex items-start gap-3">
+          <div className={`w-9 h-9 rounded-lg bg-accent flex items-center justify-center flex-shrink-0 mt-0.5`}>
+            <Icon className={`w-4.5 h-4.5 ${cfg.color}`} />
           </div>
-          <h4 className="text-sm font-medium text-foreground mb-1">{doc.title}</h4>
-          <p className="text-xs text-text-secondary leading-relaxed line-clamp-2">
-            {doc.summary}
-          </p>
-          <div className="flex items-center gap-3 mt-2.5 text-[10px] text-text-muted">
-            <span>@{doc.author} {author ? `(${author.displayName})` : ''}</span>
-            <span>&middot;</span>
-            <span>{doc.updated}</span>
-            {tickets.length > 0 && (
-              <>
-                <span>&middot;</span>
-                <span className="text-primary">{tickets.length} linked ticket{tickets.length !== 1 ? 's' : ''}</span>
-              </>
-            )}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <Badge variant="outline" className="text-[10px] h-5 border-border-strong text-text-muted px-1.5 font-mono">
+                {doc.project}
+              </Badge>
+              <Badge className={`${cfg.color} bg-accent text-[10px] px-1.5 py-0 h-5 border-0`}>
+                {cfg.label}
+              </Badge>
+            </div>
+            <h4 className="text-sm font-medium text-foreground mb-1">{doc.title}</h4>
+            <p className="text-xs text-text-secondary leading-relaxed line-clamp-2">
+              {doc.summary}
+            </p>
+            <div className="flex items-center gap-3 mt-2.5 text-[10px] text-text-muted">
+              <span>@{doc.author} {author ? `(${author.displayName})` : ''}</span>
+              <span>&middot;</span>
+              <span>{doc.updated}</span>
+              {tickets.length > 0 && (
+                <>
+                  <span>&middot;</span>
+                  <span className="text-primary">{tickets.length} linked ticket{tickets.length !== 1 ? 's' : ''}</span>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <MarkdownPreview
+        title={doc.title}
+        body={doc.body || doc.summary}
+        type={doc.type}
+        project={doc.project}
+        author={doc.author}
+        updated={doc.updated}
+        open={open}
+        onClose={() => setOpen(false)}
+      />
+    </>
   );
 }
 
