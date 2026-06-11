@@ -687,19 +687,19 @@
           "description": "Observability Driven Development (ODD) \u2014 design the trace before the feature; local OTel feedback loop",
           "files": [
             {
-              "src": "opencode/skills/observability-driven-development/SKILL.md",
+              "src": "opencode/skills/observability_driven_development/SKILL.md",
               "dest": "skills/observability-driven-development/SKILL.md"
             },
             {
-              "src": "opencode/skills/observability-driven-development/narrative.md",
+              "src": "opencode/skills/observability_driven_development/narrative.md",
               "dest": "skills/observability-driven-development/narrative.md"
             },
             {
-              "src": "opencode/skills/observability-driven-development/loop.md",
+              "src": "opencode/skills/observability_driven_development/loop.md",
               "dest": "skills/observability-driven-development/loop.md"
             },
             {
-              "src": "opencode/skills/observability-driven-development/local-setup.md",
+              "src": "opencode/skills/observability_driven_development/local-setup.md",
               "dest": "skills/observability-driven-development/local-setup.md"
             }
           ]
@@ -708,7 +708,7 @@
           "description": "Experimental PR workflow skill",
           "files": [
             {
-              "src": "opencode/skills/experimental-pr-workflow/SKILL.md",
+              "src": "opencode/skills/experimental_pr_workflow/SKILL.md",
               "dest": "skills/experimental-pr-workflow/SKILL.md"
             }
           ]
@@ -717,7 +717,7 @@
           "description": "Auto-triggered git commit helper skill",
           "files": [
             {
-              "src": "opencode/skills/git-commit-helper/SKILL.md",
+              "src": "opencode/skills/git_commit_helper/SKILL.md",
               "dest": "skills/git-commit-helper/SKILL.md"
             }
           ]
@@ -735,7 +735,7 @@
           "description": "Automated PR description generator skill",
           "files": [
             {
-              "src": "opencode/skills/pr-description-generator/SKILL.md",
+              "src": "opencode/skills/pr_description_generator/SKILL.md",
               "dest": "skills/pr-description-generator/SKILL.md"
             }
           ]
@@ -791,11 +791,11 @@
           "description": "Find architectural friction and propose deep-module refactors skill",
           "files": [
             {
-              "src": "opencode/skills/improve-codebase-architecture/SKILL.md",
+              "src": "opencode/skills/improve_codebase_architecture/SKILL.md",
               "dest": "skills/improve-codebase-architecture/SKILL.md"
             },
             {
-              "src": "opencode/skills/improve-codebase-architecture/REFERENCE.md",
+              "src": "opencode/skills/improve_codebase_architecture/REFERENCE.md",
               "dest": "skills/improve-codebase-architecture/REFERENCE.md"
             }
           ]
@@ -804,7 +804,7 @@
           "description": "Break a PRD into vertical-slice issue files skill",
           "files": [
             {
-              "src": "opencode/skills/prd-to-issues/SKILL.md",
+              "src": "opencode/skills/prd_to_issues/SKILL.md",
               "dest": "skills/prd-to-issues/SKILL.md"
             }
           ]
@@ -813,7 +813,7 @@
           "description": "Generate a PRD from a client brief skill",
           "files": [
             {
-              "src": "opencode/skills/write-a-prd/SKILL.md",
+              "src": "opencode/skills/write_a_prd/SKILL.md",
               "dest": "skills/write-a-prd/SKILL.md"
             }
           ]
@@ -822,7 +822,7 @@
           "description": "Build Pi agent definitions with frontmatter format",
           "files": [
             {
-              "src": "opencode/skills/build-pi-agent/SKILL.md",
+              "src": "opencode/skills/build_pi_agent/SKILL.md",
               "dest": "skills/build-pi-agent/SKILL.md"
             }
           ]
@@ -831,7 +831,7 @@
           "description": "Pi CLI expert \u2014 CLI flags, subcommands, output modes, non-interactive usage",
           "files": [
             {
-              "src": "opencode/skills/pi-cli/SKILL.md",
+              "src": "opencode/skills/pi_cli/SKILL.md",
               "dest": "skills/pi-cli/SKILL.md"
             }
           ]
@@ -840,17 +840,8 @@
           "description": "Pi configuration expert \u2014 settings, providers, models, packages, keybindings",
           "files": [
             {
-              "src": "opencode/skills/pi-config/SKILL.md",
+              "src": "opencode/skills/pi_config/SKILL.md",
               "dest": "skills/pi-config/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-pi-extension": {
-          "description": "Build Pi extensions \u2014 custom tools, events, commands, shortcuts, providers",
-          "files": [
-            {
-              "src": "opencode/skills/build-pi-extension/SKILL.md",
-              "dest": "skills/build-pi-extension/SKILL.md"
             }
           ]
         },
@@ -858,7 +849,7 @@
           "description": "Pi keyboard shortcuts \u2014 registerShortcut, key IDs, modifiers, reserved keys",
           "files": [
             {
-              "src": "opencode/skills/pi-keybindings/SKILL.md",
+              "src": "opencode/skills/pi_keybindings/SKILL.md",
               "dest": "skills/pi-keybindings/SKILL.md"
             }
           ]
@@ -867,7 +858,7 @@
           "description": "Orchestrate Pi domain experts to research and build Pi components",
           "files": [
             {
-              "src": "opencode/skills/pi-orchestrate/SKILL.md",
+              "src": "opencode/skills/pi_orchestrate/SKILL.md",
               "dest": "skills/pi-orchestrate/SKILL.md"
             }
           ]
@@ -876,17 +867,8 @@
           "description": "Pi prompt templates \u2014 single-file .md format, arguments, /template invocation",
           "files": [
             {
-              "src": "opencode/skills/pi-prompts/SKILL.md",
+              "src": "opencode/skills/pi_prompts/SKILL.md",
               "dest": "skills/pi-prompts/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-pi-skill": {
-          "description": "Build Pi skills \u2014 SKILL.md format, frontmatter, validation, directory structure",
-          "files": [
-            {
-              "src": "opencode/skills/build-pi-skill/SKILL.md",
-              "dest": "skills/build-pi-skill/SKILL.md"
             }
           ]
         },
@@ -894,7 +876,7 @@
           "description": "Pi themes \u2014 JSON format, 51 color tokens, vars system, hex/256-color values",
           "files": [
             {
-              "src": "opencode/skills/pi-themes/SKILL.md",
+              "src": "opencode/skills/pi_themes/SKILL.md",
               "dest": "skills/pi-themes/SKILL.md"
             }
           ]
@@ -903,7 +885,7 @@
           "description": "Pi TUI \u2014 built-in components, custom components, keyboard input, widgets, overlays",
           "files": [
             {
-              "src": "opencode/skills/pi-tui/SKILL.md",
+              "src": "opencode/skills/pi_tui/SKILL.md",
               "dest": "skills/pi-tui/SKILL.md"
             }
           ]
@@ -921,7 +903,7 @@
           "description": "Team Setup - initialize and manage team configuration",
           "files": [
             {
-              "src": "opencode/skills/team-setup/SKILL.md",
+              "src": "opencode/skills/team_setup/SKILL.md",
               "dest": "skills/team-setup/SKILL.md"
             }
           ]
@@ -1686,7 +1668,7 @@
           "description": "Team Setup - initialize and manage team configuration",
           "files": [
             {
-              "src": "gemini/skills/team-setup/SKILL.md",
+              "src": "gemini/skills/team_setup/SKILL.md",
               "dest": "skills/team-setup/SKILL.md"
             }
           ]
@@ -1953,33 +1935,6 @@
             }
           ]
         },
-        "skill/codebase-analyzer": {
-          "description": "Codebase implementation analysis skill",
-          "files": [
-            {
-              "src": "pi/skills/codebase-analyzer/SKILL.md",
-              "dest": "skills/codebase-analyzer/SKILL.md"
-            }
-          ]
-        },
-        "skill/codebase-locator": {
-          "description": "File and component locator skill",
-          "files": [
-            {
-              "src": "pi/skills/codebase-locator/SKILL.md",
-              "dest": "skills/codebase-locator/SKILL.md"
-            }
-          ]
-        },
-        "skill/codebase-pattern-finder": {
-          "description": "Pattern and implementation discovery skill",
-          "files": [
-            {
-              "src": "pi/skills/codebase-pattern-finder/SKILL.md",
-              "dest": "skills/codebase-pattern-finder/SKILL.md"
-            }
-          ]
-        },
         "skill/experimental-pr-workflow": {
           "description": "Experimental PR workflow skill",
           "files": [
@@ -2058,33 +2013,6 @@
             {
               "src": "pi/skills/pr-description-generator/SKILL.md",
               "dest": "skills/pr-description-generator/SKILL.md"
-            }
-          ]
-        },
-        "skill/thoughts-analyzer": {
-          "description": "Research document analysis skill",
-          "files": [
-            {
-              "src": "pi/skills/thoughts-analyzer/SKILL.md",
-              "dest": "skills/thoughts-analyzer/SKILL.md"
-            }
-          ]
-        },
-        "skill/thoughts-locator": {
-          "description": "Thoughts directory document discovery skill",
-          "files": [
-            {
-              "src": "pi/skills/thoughts-locator/SKILL.md",
-              "dest": "skills/thoughts-locator/SKILL.md"
-            }
-          ]
-        },
-        "skill/web-search-researcher": {
-          "description": "Web research skill",
-          "files": [
-            {
-              "src": "pi/skills/web-search-researcher/SKILL.md",
-              "dest": "skills/web-search-researcher/SKILL.md"
             }
           ]
         },
@@ -2510,19 +2438,19 @@
           "description": "Observability Driven Development (ODD) \u2014 design the trace before the feature; local OTel feedback loop",
           "files": [
             {
-              "src": "wocoder/skills/observability-driven-development/SKILL.md",
+              "src": "wocoder/skills/observability_driven_development/SKILL.md",
               "dest": "skills/observability-driven-development/SKILL.md"
             },
             {
-              "src": "wocoder/skills/observability-driven-development/narrative.md",
+              "src": "wocoder/skills/observability_driven_development/narrative.md",
               "dest": "skills/observability-driven-development/narrative.md"
             },
             {
-              "src": "wocoder/skills/observability-driven-development/loop.md",
+              "src": "wocoder/skills/observability_driven_development/loop.md",
               "dest": "skills/observability-driven-development/loop.md"
             },
             {
-              "src": "wocoder/skills/observability-driven-development/local-setup.md",
+              "src": "wocoder/skills/observability_driven_development/local-setup.md",
               "dest": "skills/observability-driven-development/local-setup.md"
             }
           ]
@@ -2531,7 +2459,7 @@
           "description": "Experimental PR workflow skill",
           "files": [
             {
-              "src": "wocoder/skills/experimental-pr-workflow/SKILL.md",
+              "src": "wocoder/skills/experimental_pr_workflow/SKILL.md",
               "dest": "skills/experimental-pr-workflow/SKILL.md"
             }
           ]
@@ -2540,7 +2468,7 @@
           "description": "Auto-triggered git commit helper skill",
           "files": [
             {
-              "src": "wocoder/skills/git-commit-helper/SKILL.md",
+              "src": "wocoder/skills/git_commit_helper/SKILL.md",
               "dest": "skills/git-commit-helper/SKILL.md"
             }
           ]
@@ -2558,7 +2486,7 @@
           "description": "Automated PR description generator skill",
           "files": [
             {
-              "src": "wocoder/skills/pr-description-generator/SKILL.md",
+              "src": "wocoder/skills/pr_description_generator/SKILL.md",
               "dest": "skills/pr-description-generator/SKILL.md"
             }
           ]
@@ -2605,11 +2533,11 @@
           "description": "Find architectural friction and propose deep-module refactors skill",
           "files": [
             {
-              "src": "wocoder/skills/improve-codebase-architecture/SKILL.md",
+              "src": "wocoder/skills/improve_codebase_architecture/SKILL.md",
               "dest": "skills/improve-codebase-architecture/SKILL.md"
             },
             {
-              "src": "wocoder/skills/improve-codebase-architecture/REFERENCE.md",
+              "src": "wocoder/skills/improve_codebase_architecture/REFERENCE.md",
               "dest": "skills/improve-codebase-architecture/REFERENCE.md"
             }
           ]
@@ -2618,7 +2546,7 @@
           "description": "Break a PRD into vertical-slice issue files skill",
           "files": [
             {
-              "src": "wocoder/skills/prd-to-issues/SKILL.md",
+              "src": "wocoder/skills/prd_to_issues/SKILL.md",
               "dest": "skills/prd-to-issues/SKILL.md"
             }
           ]
@@ -2627,7 +2555,7 @@
           "description": "Generate a PRD from a client brief skill",
           "files": [
             {
-              "src": "wocoder/skills/write-a-prd/SKILL.md",
+              "src": "wocoder/skills/write_a_prd/SKILL.md",
               "dest": "skills/write-a-prd/SKILL.md"
             }
           ]
@@ -2636,7 +2564,7 @@
           "description": "Build Pi agent definitions with frontmatter format",
           "files": [
             {
-              "src": "wocoder/skills/build-pi-agent/SKILL.md",
+              "src": "wocoder/skills/build_pi_agent/SKILL.md",
               "dest": "skills/build-pi-agent/SKILL.md"
             }
           ]
@@ -2645,7 +2573,7 @@
           "description": "Pi CLI expert \u2014 CLI flags, subcommands, output modes, non-interactive usage",
           "files": [
             {
-              "src": "wocoder/skills/pi-cli/SKILL.md",
+              "src": "wocoder/skills/pi_cli/SKILL.md",
               "dest": "skills/pi-cli/SKILL.md"
             }
           ]
@@ -2654,17 +2582,8 @@
           "description": "Pi configuration expert \u2014 settings, providers, models, packages, keybindings",
           "files": [
             {
-              "src": "wocoder/skills/pi-config/SKILL.md",
+              "src": "wocoder/skills/pi_config/SKILL.md",
               "dest": "skills/pi-config/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-pi-extension": {
-          "description": "Build Pi extensions \u2014 custom tools, events, commands, shortcuts, providers",
-          "files": [
-            {
-              "src": "wocoder/skills/build-pi-extension/SKILL.md",
-              "dest": "skills/build-pi-extension/SKILL.md"
             }
           ]
         },
@@ -2672,7 +2591,7 @@
           "description": "Pi keyboard shortcuts \u2014 registerShortcut, key IDs, modifiers, reserved keys",
           "files": [
             {
-              "src": "wocoder/skills/pi-keybindings/SKILL.md",
+              "src": "wocoder/skills/pi_keybindings/SKILL.md",
               "dest": "skills/pi-keybindings/SKILL.md"
             }
           ]
@@ -2681,7 +2600,7 @@
           "description": "Orchestrate Pi domain experts to research and build Pi components",
           "files": [
             {
-              "src": "wocoder/skills/pi-orchestrate/SKILL.md",
+              "src": "wocoder/skills/pi_orchestrate/SKILL.md",
               "dest": "skills/pi-orchestrate/SKILL.md"
             }
           ]
@@ -2690,17 +2609,8 @@
           "description": "Pi prompt templates \u2014 single-file .md format, arguments, /template invocation",
           "files": [
             {
-              "src": "wocoder/skills/pi-prompts/SKILL.md",
+              "src": "wocoder/skills/pi_prompts/SKILL.md",
               "dest": "skills/pi-prompts/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-pi-skill": {
-          "description": "Build Pi skills \u2014 SKILL.md format, frontmatter, validation, directory structure",
-          "files": [
-            {
-              "src": "wocoder/skills/build-pi-skill/SKILL.md",
-              "dest": "skills/build-pi-skill/SKILL.md"
             }
           ]
         },
@@ -2708,7 +2618,7 @@
           "description": "Pi themes \u2014 JSON format, 51 color tokens, vars system, hex/256-color values",
           "files": [
             {
-              "src": "wocoder/skills/pi-themes/SKILL.md",
+              "src": "wocoder/skills/pi_themes/SKILL.md",
               "dest": "skills/pi-themes/SKILL.md"
             }
           ]
@@ -2717,7 +2627,7 @@
           "description": "Pi TUI \u2014 built-in components, custom components, keyboard input, widgets, overlays",
           "files": [
             {
-              "src": "wocoder/skills/pi-tui/SKILL.md",
+              "src": "wocoder/skills/pi_tui/SKILL.md",
               "dest": "skills/pi-tui/SKILL.md"
             }
           ]
@@ -2735,7 +2645,7 @@
           "description": "Team Setup - initialize and manage team configuration",
           "files": [
             {
-              "src": "wocoder/skills/team-setup/SKILL.md",
+              "src": "wocoder/skills/team_setup/SKILL.md",
               "dest": "skills/team-setup/SKILL.md"
             }
           ]
@@ -3589,7 +3499,7 @@
           "description": "Team Setup - initialize and manage team configuration",
           "files": [
             {
-              "src": "antigravity/skills/team-setup/SKILL.md",
+              "src": "antigravity/skills/team_setup/SKILL.md",
               "dest": "skills/team-setup/SKILL.md"
             }
           ]
@@ -3699,19 +3609,7 @@
             }
           ]
         },
-        "skill/team-setup": {
-          "description": "Team Setup - initialize and manage team configuration",
-          "files": [
-            {
-              "src": "codex/skills/team-setup/skill.yaml",
-              "dest": "skills/team-setup/skill.yaml"
-            },
-            {
-              "src": "codex/skills/team-setup/prompt.md",
-              "dest": "skills/team-setup/prompt.md"
-            }
-          ]
-        },
+
         "skill/skill-auto-update": {
           "description": "Skill Auto-Update - auto-discover and sync skills across all frontends",
           "files": [
