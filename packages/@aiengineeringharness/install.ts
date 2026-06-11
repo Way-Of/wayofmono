@@ -280,6 +280,7 @@ INSTALL AS CLI (one-time):
   Then run:
     ai-harness --tool=claude
     ai-harness --tool=all --interactive
+    ai-harness --update             # Re-install CLI + all tools from GitHub
 
 CLONE AND RUN (for private repos):
   gh repo clone Way-Of/wayofmono /tmp/wo -- --depth=1 -q
@@ -297,8 +298,8 @@ OPTIONS:
   --yes, -y                             Skip confirmation prompts
   --local, -l                           Install to project-local directories (.claude, .agents, .gemini, etc.)
   --check                               Check installed version vs manifest
-  --update                              Update all installed tools (re-runs installer non-interactively)
-  --uninstall=<claude|opencode|all>     Remove all installed files for the given tool(s)
+  --update                              Update CLI + all tools from GitHub (self-updates then re-installs)
+  --uninstall=<claude|opencode|all>     Remove installed files for the given tool(s) (manifest from GitHub)
   --import-ref                          Import ref skills/agents to all platforms (WOMONO-016)
   --sync-docs                           Sync canonical skills to all tool skill directories
   --sync-docs --check                   Preview skill sync without making changes
@@ -769,10 +770,29 @@ if (args.mode === "repo") {
   Deno.exit(0);
 }
 
-// --update: re-run installer for all installed tools non-interactively
+// --update: re-install CLI binary from GitHub, then update all tools
 if (args.update) {
-  args.tool = "all";
-  args.yes = true;
+  const installUrl =
+    "https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts";
+  console.log("Updating ai-harness CLI...");
+  const updateCmd = new Deno.Command("deno", {
+    args: ["install", "-Agf", "-n", "ai-harness", installUrl],
+    stdout: "inherit",
+    stderr: "inherit",
+  });
+  const updateResult = await updateCmd.output();
+  if (!updateResult.success) {
+    console.error("Failed to update ai-harness CLI.");
+    Deno.exit(1);
+  }
+  console.log("ai-harness CLI updated. Re-running with --tool=all --yes...\n");
+  const runCmd = new Deno.Command("ai-harness", {
+    args: ["--tool=all", "--yes"],
+    stdout: "inherit",
+    stderr: "inherit",
+  });
+  const runResult = await runCmd.output();
+  Deno.exit(runResult.success ? 0 : 1);
 }
 
 // --uninstall: remove installed files
