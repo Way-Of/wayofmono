@@ -73,4 +73,18 @@ export interface DashboardStats {
   reviewQueue: number;
 }
 
-export type ViewMode = 'overview' | 'tickets' | 'developers' | 'review' | 'docs' | 'my-view' | 'skills' | 'ticket-detail';
+export interface Idea {
+  id: string;
+  title: string;
+  description: string;
+  author: string;
+  created: string;
+  priority: number;
+  status: IdeaStatus;
+  votes: number;
+  voters: string[];
+}
+
+export type IdeaStatus = 'proposed' | 'under-review' | 'accepted' | 'implemented' | 'declined';
+
+export type ViewMode = 'overview' | 'tickets' | 'developers' | 'review' | 'docs' | 'my-view' | 'skills' | 'ticket-detail' | 'ideas';

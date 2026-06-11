@@ -198,8 +198,10 @@ export function TicketDetailView() {
 
       <div>
         <h3 className="text-sm font-semibold text-foreground mb-2">Description</h3>
-        <div className="text-sm text-text-secondary leading-relaxed whitespace-pre-wrap bg-surface p-4 rounded-lg border border-border">
-          {ticket.description}
+        <div className="text-sm text-text-secondary leading-relaxed bg-surface p-4 rounded-lg border border-border overflow-x-auto">
+          <div className="min-w-0" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+            {ticket.description}
+          </div>
         </div>
       </div>
 

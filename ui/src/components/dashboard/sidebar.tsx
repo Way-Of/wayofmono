@@ -10,6 +10,7 @@ import {
   FileText,
   User,
   Cpu,
+  Lightbulb,
   LogOut,
   ChevronLeft,
   RefreshCw,
@@ -36,6 +37,7 @@ const navItems: { id: ViewMode; label: string; icon: React.ElementType; ctoOnly?
   { id: 'review', label: 'Review Queue', icon: ClipboardCheck, reviewOnly: true },
   { id: 'docs', label: 'Docs', icon: FileText },
   { id: 'my-view', label: 'My View', icon: User },
+  { id: 'ideas', label: 'Ideas', icon: Lightbulb },
   { id: 'skills', label: 'Skills', icon: Cpu, reviewOnly: true },
 ];
 

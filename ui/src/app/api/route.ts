@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDevelopers, getTickets, getDocs, getDashboardStats, getSkills } from "@/lib/thoughts";
+import fs from "fs/promises";
+import path from "path";
+
+const IDEAS_FILE = path.join(process.cwd(), "..", "thoughts", "shared", "ideas.json");
 
 export async function GET(request: NextRequest) {
   const type = request.nextUrl.searchParams.get('type') || 'dashboard';
@@ -25,6 +29,14 @@ export async function GET(request: NextRequest) {
       case 'skills': {
         const skills = await getSkills();
         return NextResponse.json(skills);
+      }
+      case 'ideas': {
+        try {
+          const data = await fs.readFile(IDEAS_FILE, "utf8");
+          return NextResponse.json(JSON.parse(data));
+        } catch {
+          return NextResponse.json([]);
+        }
       }
       default:
         return NextResponse.json({ error: 'Unknown type' }, { status: 400 });
