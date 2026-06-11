@@ -150,15 +150,6 @@
             }
           ]
         },
-        "skill/commit": {
-          "description": "Commit skill",
-          "files": [
-            {
-              "src": "claude/skills/commit/SKILL.md",
-              "dest": "skills/commit/SKILL.md"
-            }
-          ]
-        },
         "skill/create_plan": {
           "description": "Create Plan skill",
           "files": [
@@ -1209,15 +1200,6 @@
             }
           ]
         },
-        "skill/commit": {
-          "description": "Commit skill",
-          "files": [
-            {
-              "src": "opencode/skills/commit/SKILL.md",
-              "dest": "skills/commit/SKILL.md"
-            }
-          ]
-        },
         "skill/create_plan": {
           "description": "Create Plan skill",
           "files": [
@@ -2052,15 +2034,6 @@
             {
               "src": "gemini/skills/claude_tui/SKILL.md",
               "dest": "skills/claude_tui/SKILL.md"
-            }
-          ]
-        },
-        "skill/commit": {
-          "description": "Commit skill",
-          "files": [
-            {
-              "src": "gemini/skills/commit/SKILL.md",
-              "dest": "skills/commit/SKILL.md"
             }
           ]
         },
@@ -3421,15 +3394,6 @@
             }
           ]
         },
-        "skill/commit": {
-          "description": "Commit skill",
-          "files": [
-            {
-              "src": "pi/skills/commit/SKILL.md",
-              "dest": "skills/commit/SKILL.md"
-            }
-          ]
-        },
         "skill/create_plan": {
           "description": "Create Plan skill",
           "files": [
@@ -4138,15 +4102,6 @@
             {
               "src": "wocoder/skills/claude_tui/SKILL.md",
               "dest": "skills/claude_tui/SKILL.md"
-            }
-          ]
-        },
-        "skill/commit": {
-          "description": "Commit skill",
-          "files": [
-            {
-              "src": "wocoder/skills/commit/SKILL.md",
-              "dest": "skills/commit/SKILL.md"
             }
           ]
         },
@@ -5076,15 +5031,6 @@
             }
           ]
         },
-        "skill/commit": {
-          "description": "Commit skill",
-          "files": [
-            {
-              "src": "antigravity/skills/commit/SKILL.md",
-              "dest": "skills/commit/SKILL.md"
-            }
-          ]
-        },
         "skill/create_plan": {
           "description": "Create Plan skill",
           "files": [
@@ -5930,15 +5876,6 @@
             {
               "src": "codex/skills/claude_tui/SKILL.md",
               "dest": "skills/claude_tui/SKILL.md"
-            }
-          ]
-        },
-        "skill/commit": {
-          "description": "Commit skill",
-          "files": [
-            {
-              "src": "codex/skills/commit/SKILL.md",
-              "dest": "skills/commit/SKILL.md"
             }
           ]
         },

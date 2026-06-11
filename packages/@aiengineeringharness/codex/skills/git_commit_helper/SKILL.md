@@ -14,6 +14,8 @@ Activate this skill when the user:
 - Says "create a commit" or "make a commit"
 - Asks you to commit after completing implementation work
 - Mentions they want to save progress to git
+- Asks to "push" changes
+- Says "save and push"
 
 ## Core Process
 
@@ -192,9 +194,26 @@ If git operations fail:
 - Suggest remediation steps
 - Don't try to force through errors
 
+### Step 5: Push (if asked)
+
+When the user asks to push:
+
+**Always create a new branch first:**
+
+```bash
+# Create and switch to a new branch
+git checkout -b <type>/<ticket-id>-<short-description>
+
+# Push the new branch
+git push -u origin <branch-name>
+```
+
+Follow the branch naming convention from the repo. If the repo uses ticket-based branches, derive the name from the current ticket context.
+
 ## Notes
 
-- This skill respects the user's git workflow and doesn't push changes
-- It focuses on creating clean, atomic commits with meaningful messages
+- Always create a new branch before pushing — never push to main/master directly
+- When the user says "push" or "save and push", create a branch, commit if needed, and push
+- The skill focuses on creating clean, atomic commits with meaningful messages
 - The user maintains full control and must approve before commits are created
 - All git operations are transparent and shown to the user
