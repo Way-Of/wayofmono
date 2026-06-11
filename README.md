@@ -2,7 +2,17 @@
 
 The ultimate monorepo consolidation for high-performance coding agents. WayOfMono provides a shared Intelligence Backend (Packages, Tools, Memory) that serves five distinct Agent Frontends, with Wo (Way of Coding) as our primary synthesized interface.
 
----
+🎛️ Multi-Interface Architecture
+
+WayOfMono is built on an Interface-Agnostic Philosophy. Our core logic and tools are shared across all major coding agent platforms, allowing you to work with your codebase using your preferred interaction model:
+
+    wocode: High-performance coding assistant for automated engineering and refactoring (@wayofmono/wo-coding-agent). Native to this monorepo.
+    wouser: General-purpose user agent SDK and CLI (@wayofmono/wo-agent). Native to this monorepo.
+    Claude Code: Agentic AI coding from Anthropic in your terminal.
+    Pi: Full compatibility with the official Pi Agent standards from earendil-works.
+    OpenCode: Open-source, TUI-driven coding agent following the OpenCode standard.
+    Gemini CLI: Multimodal, high-velocity automation using the Gemini CLI standard.
+    Antigravity: Agent-first development platform for autonomous execution and web tasks.
 
 ---
 
@@ -38,14 +48,104 @@ See [AI Engineering Harness Tutorial](docs/packages/@aiengineeringharness/README
 
 ---
 
+## 🏆 Stats
+
+- **88** battle-tested skills
+- **81** canonical + **7** new skills
+- **7** AI coding tools supported
+- **6** subagents
+- **553+** files validated
+- **10** NPM packages published
+
+---
+
+---
+
+## 🎒 Prerequisites: Deno
+
+WayOfMono uses **Deno** as the runtime for agent tools. Install it first before running `ai-harness`:
+
+### 🪟 Windows (PowerShell)
+
+```powershell
+irm https://deno.land/install.ps1 | iex
+deno --version
+# Verify: deno eval "console.log('Deno is running')"
+```
+
+### 🐧 macOS (Homebrew)
+
+```bash
+brew install deno
+deno --version
+# Verify: deno eval "console.log('Deno is running')"
+```
+
+### 🐧 Unix/Linux (apt)
+
+```bash
+sudo apt install -y curl
+sudo curl -fsSL https://deno.land/install.sh | sh
+sudo bash -c 'echo "/usr/local/bin/deno" >> /etc/profile.d/deno.sh"
+source /etc/profile.d/deno.sh
+deno --version
+# Verify: deno eval "console.log('Deno is running')"
+```
+
+### 🍎 macOS (manual)
+
+```bash
+curl -fsSL https://deno.land/install.sh | sh
+# Add to PATH in ~/.zshrc or ~/.bashrc
+export DENO_INSTALL="$HOME/.local/share/deno"
+sudo ln -s "$DENO_INSTALL/bin/deno" /usr/local/bin/deno
+```
+
+---
+
 ## 🚀 Quick Start
 
-### 1. Install the Harness CLI
+### 📦 Deno Installation Options
+
+WayOfMono uses **Deno** for agent tooling. Choose your installation method:
+
+**Option 1: Global CLI (recommended for repeated use)**
 
 ```bash
 deno install -Agf -n ai-harness \
   https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts
+
+# Now you can run ai-harness anywhere:
+ai-harness --tool=opencode
+ai-harness --tool=all --yes
 ```
+
+**Option 2: Run-on-run (for CI, scripts, or one-time use)**
+
+```bash
+# Install all tools directly, no CLI needed:
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=all --yes
+
+# Update all installed tools:
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --update
+
+# Sync canonical skills:
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --sync-docs
+```
+
+---
+
+## 🧭 Choosing Your Installation Method
+
+| Method | Best For | Location |
+|---------|----------|----------|
+| `deno install` | Repeated agent use | `~/.local/share/deno/bin/ai-harness` (goes into PATH) |
+| `deno run` | Scripts, CI/CD, one-time | Runs inline, no global installation |
+| `setup.sh` | GNU Stow symlinks | `~/.config/opencode/`, `~/.claude/`, etc. |
+
+---
+
+## 🆔 Install the Harness CLI (Optional — but recommended)
 
 ### 2. Install Per Tool (pick what you use)
 
@@ -288,6 +388,65 @@ To change the agent's persona, instructions, or behavior for a project, simply c
 
 - The agent automatically discovers this file on startup.
 - You can use it to tell the agent it is a "Senior React Developer," a "Security Auditor," or any other specialized role.
+
+---
+
+## 🤖 User Assistant (wouser)
+
+For general use and SDK integration.
+
+npm (Node's default package manager):
+
+```bash
+npm install @wayofmono/wo-agent
+npx wouser --init
+./wouser
+```
+
+pnpm (faster, disk-efficient alternative):
+
+```bash
+pnpm add @wayofmono/wo-agent
+pnpm wouser --init
+./wouser
+```
+
+---
+
+📦 Wo Packages
+
+All Wo packages are under the @wayofmono scope. Two install methods:
+
+Install from npm (works now):
+
+```bash
+npm install @wayofmono/wo-agent          # wouser (SDK)
+npm install @wayofmono/wo-coding-agent   # wocode (CLI)
+```
+
+Install from cloned repo (alternative — no npm needed):
+
+```bash
+git clone https://github.com/Way-Of/wayofmono.git ~/wayofmono
+pnpm add ~/wayofmono/packages/@wayofmono/wo-agent
+```
+
+Packages
+
+All published at https://www.npmjs.com/settings/wayofmono/packages
+
+| Package | Description | Install |
+|---------|-----|------|
+| @wayofmono/wo-ai | Multi-Provider LLM API (OpenAI, Anthropic, Gemini) | `npm install @wayofmono/wo-ai` |
+| @wayofmono/wo-tui | High-Performance Terminal UI Library | `npm install @wayofmono/wo-tui` |
+| @wayofmono/wo-agent-core | Central Agent Runtime & Extension API | `npm install @wayofmono/wo-agent-core` |
+| @wayofmono/wo-agent | General-Purpose Agent SDK & CLI (wouser) | `npm install @wayofmono/wo-agent` |
+| @wayofmono/wo-coding-agent | CLI Coding Agent (wocode) | `npm install @wayofmono/wo-coding-agent` |
+| @wayofmono/wo-skill-docs | Multi-format Documentation Expert | `npm install @wayofmono/wo-skill-docs` |
+| @wayofmono/wo-mermaid | TUI Mermaid Renderer (ASCII art) | `npm install @wayofmono/wo-mermaid` |
+| @wayofmono/web-access | Web search, URL fetching, GitHub cloning, PDF/YouTube/video extraction | `npm install @wayofmono/web-access` |
+| @wayofmono/lens | Codebase Analysis & Safety Engine | `npm install @wayofmono/lens` |
+| @wayofmono/wo-web-ui | Web UI Components (React 19) | `npm install @wayofmono/wo-web-ui` |
 
 ---
 
@@ -556,6 +715,15 @@ curl https://cto.wayof.work/api/health
 ```bash
 podman-compose logs -f
 ```
+
+---
+
+### External Integrations
+
+| Project | Description | Integration |
+|---------|-----|------|
+| **Way of Pi** | AI-augmented engineering platform (Electron/Web IDE) | Uses @wayofmono/wo-agent as backend agent SDK |
+| **Way of Work** | AI-powered productivity platform | Uses @wayofmono/wo-agent as user agent SDK |
 
 ---
 
