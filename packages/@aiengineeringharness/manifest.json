@@ -790,6 +790,33 @@
               "dest": "skills/write_a_prd/SKILL.md"
             }
           ]
+        },
+        "skill/wow_practices_guide": {
+          "description": "Wow Practices Guide",
+          "files": [
+            {
+              "src": "claude/skills/wow_practices_guide/SKILL.md",
+              "dest": "skills/wow_practices_guide/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_audit": {
+          "description": "Wow Practices Audit",
+          "files": [
+            {
+              "src": "claude/skills/wow_practices_audit/SKILL.md",
+              "dest": "skills/wow_practices_audit/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_backlog": {
+          "description": "Wow Practices Backlog",
+          "files": [
+            {
+              "src": "claude/skills/wow_practices_backlog/SKILL.md",
+              "dest": "skills/wow_practices_backlog/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -1665,6 +1692,33 @@
             {
               "src": "opencode/skills/write_a_prd/SKILL.md",
               "dest": "skills/write_a_prd/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_guide": {
+          "description": "Wow Practices Guide",
+          "files": [
+            {
+              "src": "opencode/skills/wow_practices_guide/SKILL.md",
+              "dest": "skills/wow_practices_guide/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_audit": {
+          "description": "Wow Practices Audit",
+          "files": [
+            {
+              "src": "opencode/skills/wow_practices_audit/SKILL.md",
+              "dest": "skills/wow_practices_audit/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_backlog": {
+          "description": "Wow Practices Backlog",
+          "files": [
+            {
+              "src": "opencode/skills/wow_practices_backlog/SKILL.md",
+              "dest": "skills/wow_practices_backlog/SKILL.md"
             }
           ]
         }
@@ -2693,6 +2747,33 @@
               "dest": "skills/wow_ui_surfaces/SKILL.md"
             }
           ]
+        },
+        "skill/wow_practices_guide": {
+          "description": "Wow Practices Guide",
+          "files": [
+            {
+              "src": "gemini/skills/wow_practices_guide/SKILL.md",
+              "dest": "skills/wow_practices_guide/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_audit": {
+          "description": "Wow Practices Audit",
+          "files": [
+            {
+              "src": "gemini/skills/wow_practices_audit/SKILL.md",
+              "dest": "skills/wow_practices_audit/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_backlog": {
+          "description": "Wow Practices Backlog",
+          "files": [
+            {
+              "src": "gemini/skills/wow_practices_backlog/SKILL.md",
+              "dest": "skills/wow_practices_backlog/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -3636,6 +3717,33 @@
               "dest": "skills/wow-ui-surfaces/SKILL.md"
             }
           ]
+        },
+        "skill/wow_practices_guide": {
+          "description": "Wow Practices Guide",
+          "files": [
+            {
+              "src": "pi/skills/wow-practices-guide/SKILL.md",
+              "dest": "skills/wow-practices-guide/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_audit": {
+          "description": "Wow Practices Audit",
+          "files": [
+            {
+              "src": "pi/skills/wow-practices-audit/SKILL.md",
+              "dest": "skills/wow-practices-audit/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_backlog": {
+          "description": "Wow Practices Backlog",
+          "files": [
+            {
+              "src": "pi/skills/wow-practices-backlog/SKILL.md",
+              "dest": "skills/wow-practices-backlog/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -4570,6 +4678,33 @@
             {
               "src": "wocoder/skills/write_a_prd/SKILL.md",
               "dest": "skills/write_a_prd/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_guide": {
+          "description": "Wow Practices Guide",
+          "files": [
+            {
+              "src": "wocoder/skills/wow_practices_guide/SKILL.md",
+              "dest": "skills/wow_practices_guide/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_audit": {
+          "description": "Wow Practices Audit",
+          "files": [
+            {
+              "src": "wocoder/skills/wow_practices_audit/SKILL.md",
+              "dest": "skills/wow_practices_audit/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_backlog": {
+          "description": "Wow Practices Backlog",
+          "files": [
+            {
+              "src": "wocoder/skills/wow_practices_backlog/SKILL.md",
+              "dest": "skills/wow_practices_backlog/SKILL.md"
             }
           ]
         }
@@ -5606,6 +5741,33 @@
               "dest": "skills/wow_ui_surfaces/SKILL.md"
             }
           ]
+        },
+        "skill/wow_practices_guide": {
+          "description": "Wow Practices Guide",
+          "files": [
+            {
+              "src": "antigravity/skills/wow_practices_guide/SKILL.md",
+              "dest": "skills/wow_practices_guide/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_audit": {
+          "description": "Wow Practices Audit",
+          "files": [
+            {
+              "src": "antigravity/skills/wow_practices_audit/SKILL.md",
+              "dest": "skills/wow_practices_audit/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_backlog": {
+          "description": "Wow Practices Backlog",
+          "files": [
+            {
+              "src": "antigravity/skills/wow_practices_backlog/SKILL.md",
+              "dest": "skills/wow_practices_backlog/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -6371,6 +6533,33 @@
             {
               "src": "codex/skills/write_a_prd/SKILL.md",
               "dest": "skills/write_a_prd/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_guide": {
+          "description": "Wow Practices Guide",
+          "files": [
+            {
+              "src": "codex/skills/wow_practices_guide/SKILL.md",
+              "dest": "skills/wow_practices_guide/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_audit": {
+          "description": "Wow Practices Audit",
+          "files": [
+            {
+              "src": "codex/skills/wow_practices_audit/SKILL.md",
+              "dest": "skills/wow_practices_audit/SKILL.md"
+            }
+          ]
+        },
+        "skill/wow_practices_backlog": {
+          "description": "Wow Practices Backlog",
+          "files": [
+            {
+              "src": "codex/skills/wow_practices_backlog/SKILL.md",
+              "dest": "skills/wow_practices_backlog/SKILL.md"
             }
           ]
         }
