@@ -791,30 +791,30 @@
             }
           ]
         },
-        "skill/wow_practices_guide": {
+        "skill/womono_practices_guide": {
           "description": "Wow Practices Guide",
           "files": [
             {
-              "src": "claude/skills/wow_practices_guide/SKILL.md",
-              "dest": "skills/wow_practices_guide/SKILL.md"
+              "src": "claude/skills/womono_practices_guide/SKILL.md",
+              "dest": "skills/womono_practices_guide/SKILL.md"
             }
           ]
         },
-        "skill/wow_practices_audit": {
+        "skill/womono_practices_audit": {
           "description": "Wow Practices Audit",
           "files": [
             {
-              "src": "claude/skills/wow_practices_audit/SKILL.md",
-              "dest": "skills/wow_practices_audit/SKILL.md"
+              "src": "claude/skills/womono_practices_audit/SKILL.md",
+              "dest": "skills/womono_practices_audit/SKILL.md"
             }
           ]
         },
-        "skill/wow_practices_backlog": {
+        "skill/womono_practices_backlog": {
           "description": "Wow Practices Backlog",
           "files": [
             {
-              "src": "claude/skills/wow_practices_backlog/SKILL.md",
-              "dest": "skills/wow_practices_backlog/SKILL.md"
+              "src": "claude/skills/womono_practices_backlog/SKILL.md",
+              "dest": "skills/womono_practices_backlog/SKILL.md"
             }
           ]
         }
@@ -1695,30 +1695,30 @@
             }
           ]
         },
-        "skill/wow_practices_guide": {
+        "skill/womono_practices_guide": {
           "description": "Wow Practices Guide",
           "files": [
             {
-              "src": "opencode/skills/wow_practices_guide/SKILL.md",
-              "dest": "skills/wow_practices_guide/SKILL.md"
+              "src": "opencode/skills/womono_practices_guide/SKILL.md",
+              "dest": "skills/womono_practices_guide/SKILL.md"
             }
           ]
         },
-        "skill/wow_practices_audit": {
+        "skill/womono_practices_audit": {
           "description": "Wow Practices Audit",
           "files": [
             {
-              "src": "opencode/skills/wow_practices_audit/SKILL.md",
-              "dest": "skills/wow_practices_audit/SKILL.md"
+              "src": "opencode/skills/womono_practices_audit/SKILL.md",
+              "dest": "skills/womono_practices_audit/SKILL.md"
             }
           ]
         },
-        "skill/wow_practices_backlog": {
+        "skill/womono_practices_backlog": {
           "description": "Wow Practices Backlog",
           "files": [
             {
-              "src": "opencode/skills/wow_practices_backlog/SKILL.md",
-              "dest": "skills/wow_practices_backlog/SKILL.md"
+              "src": "opencode/skills/womono_practices_backlog/SKILL.md",
+              "dest": "skills/womono_practices_backlog/SKILL.md"
             }
           ]
         }
@@ -2748,30 +2748,30 @@
             }
           ]
         },
-        "skill/wow_practices_guide": {
+        "skill/womono_practices_guide": {
           "description": "Wow Practices Guide",
           "files": [
             {
-              "src": "gemini/skills/wow_practices_guide/SKILL.md",
-              "dest": "skills/wow_practices_guide/SKILL.md"
+              "src": "gemini/skills/womono_practices_guide/SKILL.md",
+              "dest": "skills/womono_practices_guide/SKILL.md"
             }
           ]
         },
-        "skill/wow_practices_audit": {
+        "skill/womono_practices_audit": {
           "description": "Wow Practices Audit",
           "files": [
             {
-              "src": "gemini/skills/wow_practices_audit/SKILL.md",
-              "dest": "skills/wow_practices_audit/SKILL.md"
+              "src": "gemini/skills/womono_practices_audit/SKILL.md",
+              "dest": "skills/womono_practices_audit/SKILL.md"
             }
           ]
         },
-        "skill/wow_practices_backlog": {
+        "skill/womono_practices_backlog": {
           "description": "Wow Practices Backlog",
           "files": [
             {
-              "src": "gemini/skills/wow_practices_backlog/SKILL.md",
-              "dest": "skills/wow_practices_backlog/SKILL.md"
+              "src": "gemini/skills/womono_practices_backlog/SKILL.md",
+              "dest": "skills/womono_practices_backlog/SKILL.md"
             }
           ]
         }
@@ -3718,30 +3718,30 @@
             }
           ]
         },
-        "skill/wow_practices_guide": {
+        "skill/womono_practices_guide": {
           "description": "Wow Practices Guide",
           "files": [
             {
-              "src": "pi/skills/wow-practices-guide/SKILL.md",
-              "dest": "skills/wow-practices-guide/SKILL.md"
+              "src": "pi/skills/womono-practices-guide/SKILL.md",
+              "dest": "skills/womono-practices-guide/SKILL.md"
             }
           ]
         },
-        "skill/wow_practices_audit": {
+        "skill/womono_practices_audit": {
           "description": "Wow Practices Audit",
           "files": [
             {
-              "src": "pi/skills/wow-practices-audit/SKILL.md",
-              "dest": "skills/wow-practices-audit/SKILL.md"
+              "src": "pi/skills/womono-practices-audit/SKILL.md",
+              "dest": "skills/womono-practices-audit/SKILL.md"
             }
           ]
         },
-        "skill/wow_practices_backlog": {
+        "skill/womono_practices_backlog": {
           "description": "Wow Practices Backlog",
           "files": [
             {
-              "src": "pi/skills/wow-practices-backlog/SKILL.md",
-              "dest": "skills/wow-practices-backlog/SKILL.md"
+              "src": "pi/skills/womono-practices-backlog/SKILL.md",
+              "dest": "skills/womono-practices-backlog/SKILL.md"
             }
           ]
         }
@@ -4681,30 +4681,30 @@
             }
           ]
         },
-        "skill/wow_practices_guide": {
+        "skill/womono_practices_guide": {
           "description": "Wow Practices Guide",
           "files": [
             {
-              "src": "wocoder/skills/wow_practices_guide/SKILL.md",
-              "dest": "skills/wow_practices_guide/SKILL.md"
+              "src": "wocoder/skills/womono_practices_guide/SKILL.md",
+              "dest": "skills/womono_practices_guide/SKILL.md"
             }
           ]
         },
-        "skill/wow_practices_audit": {
+        "skill/womono_practices_audit": {
           "description": "Wow Practices Audit",
           "files": [
             {
-              "src": "wocoder/skills/wow_practices_audit/SKILL.md",
-              "dest": "skills/wow_practices_audit/SKILL.md"
+              "src": "wocoder/skills/womono_practices_audit/SKILL.md",
+              "dest": "skills/womono_practices_audit/SKILL.md"
             }
           ]
         },
-        "skill/wow_practices_backlog": {
+        "skill/womono_practices_backlog": {
           "description": "Wow Practices Backlog",
           "files": [
             {
-              "src": "wocoder/skills/wow_practices_backlog/SKILL.md",
-              "dest": "skills/wow_practices_backlog/SKILL.md"
+              "src": "wocoder/skills/womono_practices_backlog/SKILL.md",
+              "dest": "skills/womono_practices_backlog/SKILL.md"
             }
           ]
         }
@@ -5742,30 +5742,30 @@
             }
           ]
         },
-        "skill/wow_practices_guide": {
+        "skill/womono_practices_guide": {
           "description": "Wow Practices Guide",
           "files": [
             {
-              "src": "antigravity/skills/wow_practices_guide/SKILL.md",
-              "dest": "skills/wow_practices_guide/SKILL.md"
+              "src": "antigravity/skills/womono_practices_guide/SKILL.md",
+              "dest": "skills/womono_practices_guide/SKILL.md"
             }
           ]
         },
-        "skill/wow_practices_audit": {
+        "skill/womono_practices_audit": {
           "description": "Wow Practices Audit",
           "files": [
             {
-              "src": "antigravity/skills/wow_practices_audit/SKILL.md",
-              "dest": "skills/wow_practices_audit/SKILL.md"
+              "src": "antigravity/skills/womono_practices_audit/SKILL.md",
+              "dest": "skills/womono_practices_audit/SKILL.md"
             }
           ]
         },
-        "skill/wow_practices_backlog": {
+        "skill/womono_practices_backlog": {
           "description": "Wow Practices Backlog",
           "files": [
             {
-              "src": "antigravity/skills/wow_practices_backlog/SKILL.md",
-              "dest": "skills/wow_practices_backlog/SKILL.md"
+              "src": "antigravity/skills/womono_practices_backlog/SKILL.md",
+              "dest": "skills/womono_practices_backlog/SKILL.md"
             }
           ]
         }
@@ -6536,30 +6536,30 @@
             }
           ]
         },
-        "skill/wow_practices_guide": {
+        "skill/womono_practices_guide": {
           "description": "Wow Practices Guide",
           "files": [
             {
-              "src": "codex/skills/wow_practices_guide/SKILL.md",
-              "dest": "skills/wow_practices_guide/SKILL.md"
+              "src": "codex/skills/womono_practices_guide/SKILL.md",
+              "dest": "skills/womono_practices_guide/SKILL.md"
             }
           ]
         },
-        "skill/wow_practices_audit": {
+        "skill/womono_practices_audit": {
           "description": "Wow Practices Audit",
           "files": [
             {
-              "src": "codex/skills/wow_practices_audit/SKILL.md",
-              "dest": "skills/wow_practices_audit/SKILL.md"
+              "src": "codex/skills/womono_practices_audit/SKILL.md",
+              "dest": "skills/womono_practices_audit/SKILL.md"
             }
           ]
         },
-        "skill/wow_practices_backlog": {
+        "skill/womono_practices_backlog": {
           "description": "Wow Practices Backlog",
           "files": [
             {
-              "src": "codex/skills/wow_practices_backlog/SKILL.md",
-              "dest": "skills/wow_practices_backlog/SKILL.md"
+              "src": "codex/skills/womono_practices_backlog/SKILL.md",
+              "dest": "skills/womono_practices_backlog/SKILL.md"
             }
           ]
         }
