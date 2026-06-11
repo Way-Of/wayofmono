@@ -32,6 +32,7 @@ import {
   ChevronDown,
   ChevronUp,
   ArrowLeft,
+  X,
 } from 'lucide-react';
 
 const statusColors: Record<TicketStatus, string> = {
@@ -49,6 +50,9 @@ const priorityConfig: Record<TicketPriority, { color: string; order: number }> =
   'Low': { color: 'text-text-muted', order: 3 },
 };
 
+// Default priority config for fallback
+const defaultPriorityConfig = { color: 'text-text-muted', order: 999 };
+
 const typeIcons: Record<TicketType, string> = {
   'Feature': 'F',
   'Bug': 'B',
@@ -59,7 +63,7 @@ const typeIcons: Record<TicketType, string> = {
 };
 
 function TicketRow({ ticket, onClick }: { ticket: Ticket; onClick: () => void }) {
-  const pCfg = priorityConfig[ticket.priority];
+  const pCfg = priorityConfig[ticket.priority] || defaultPriorityConfig;
   const dev = useDashboardStore.getState().developers.find(d => d.id === ticket.assignee);
   const desc = ticket.description?.replace(/^#.*$/m, '').trim().slice(0, 120);
 
@@ -92,7 +96,7 @@ function TicketRow({ ticket, onClick }: { ticket: Ticket; onClick: () => void })
       {/* Assignee */}
       <div className="hidden md:flex items-center gap-2 flex-shrink-0">
         <div className="w-6 h-6 rounded-full bg-accent flex items-center justify-center text-[10px] font-semibold text-text-secondary">
-          {dev?.displayName.charAt(0) || '?'}
+          {dev?.displayName?.charAt(0) || '?'}
         </div>
         <span className="text-xs text-text-muted">@{ticket.assignee}</span>
       </div>
@@ -129,7 +133,7 @@ export function TicketDetailView() {
   const goBack = useDashboardStore(s => s.goBack);
   const [expanded, setExpanded] = useState(false);
   if (!ticket) return <div className="text-center py-16 text-text-muted">No ticket selected</div>;
-  const pCfg = priorityConfig[ticket.priority];
+  const pCfg = priorityConfig[ticket.priority] || defaultPriorityConfig;
   const reporter = developers.find(d => d.id === ticket.reporter);
   const assignee = developers.find(d => d.id === ticket.assignee);
 
@@ -167,7 +171,7 @@ export function TicketDetailView() {
         </div>
         <div className="space-y-1">
           <p className="text-[10px] text-text-muted uppercase tracking-wider flex items-center gap-1"><Tag className="w-3 h-3" /> Priority</p>
-          <p className={`text-sm font-medium ${pCfg.color}`}>{ticket.priority}</p>
+          <p className="text-sm font-medium ">{ticket.priority}</p>
         </div>
         <div className="space-y-1">
           <p className="text-[10px] text-text-muted uppercase tracking-wider flex items-center gap-1"><Calendar className="w-3 h-3" /> Updated</p>
@@ -292,7 +296,7 @@ export function TicketsView() {
   const { currentUser } = useAuthStore();
 
   const filteredTickets = getFilteredTickets()
-    .sort((a, b) => priorityConfig[a.priority].order - priorityConfig[b.priority].order);
+    .sort((a, b) => (priorityConfig[a.priority] || defaultPriorityConfig).order - (priorityConfig[b.priority] || defaultPriorityConfig).order);
 
   const handleTicketClick = (ticket: Ticket) => {
     setSelectedTicket(ticket);

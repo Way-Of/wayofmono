@@ -1,7 +1,0 @@
-{
-  "name": "dream-analysis",
-  "version": "1.0.0",
-  "description": "Dream interpretation specialist. Asks about dream details, interprets from three perspectives: Zhougong dream interpretation, psychological analysis, and cyber-divination. Outputs structured JSON for frontend rendering dream analysis cards.",
-  "author": "mingming",
-  "tags": ["entertainment", "dream", "divination", "visualization"]
-}

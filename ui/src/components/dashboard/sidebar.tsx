@@ -26,6 +26,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { SyncFörrådButton } from '@/components/ui/sync-forrad-button';
 
 interface SidebarProps {
   collapsed: boolean;
@@ -135,19 +136,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
         <div className="px-2 mb-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size={collapsed ? 'icon' : 'default'}
-                className={`w-full ${collapsed ? '' : 'justify-start gap-3 text-sidebar-foreground/70 hover:text-sidebar-foreground'}`}
-                onClick={() => {
-                  // Simulate sync
-                  const el = document.activeElement as HTMLElement;
-                  el?.blur();
-                }}
-              >
-                <RefreshCw className="w-4 h-4" />
-                {!collapsed && <span className="text-sm">Sync f-rr-d</span>}
-              </Button>
+              <SyncFörrådButton />
             </TooltipTrigger>
             <TooltipContent side="right" className="bg-surface-elevated text-foreground border-border">
               Pull latest from f-rr-d

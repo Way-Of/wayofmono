@@ -1,9 +1,0 @@
-{
-  "name": "qingyan-research",
-  "version": "1.0.0",
-  "description": "Qingyan research and analysis tool.",
-  "tags": ["research", "analysis", "qingyan"],
-  "scripts": {
-    "generate": "python generate_html.py"
-  }
-}

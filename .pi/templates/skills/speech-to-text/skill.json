@@ -1,9 +1,0 @@
-{
-  "name": "speech-to-text",
-  "version": "1.0.0",
-  "description": "Automatic speech recognition using open-source ASR models.",
-  "tags": ["speech", "asr", "transcription", "audio"],
-  "scripts": {
-    "transcribe": "npx ts-node scripts/asr.ts"
-  }
-}

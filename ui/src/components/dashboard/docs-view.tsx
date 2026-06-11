@@ -22,21 +22,30 @@ import {
   Bookmark,
   Search,
   FolderOpen,
+  FolderTree,
 } from 'lucide-react';
 import { useState } from 'react';
 import { MarkdownPreview } from './markdown-preview';
 
-const typeConfig: Record<string, { icon: React.ElementType; label: string; color: string }> = {
+type DocTypeConfig = {
+  icon: React.ElementType;
+  label: string;
+  color: string;
+};
+
+const typeConfig: Record<string, DocTypeConfig> = {
   architecture: { icon: FileText, label: 'Architecture', color: 'text-status-inprogress' },
   decision: { icon: Scale, label: 'ADR', color: 'text-primary' },
   guide: { icon: BookOpen, label: 'Guide', color: 'text-status-done' },
   reference: { icon: Bookmark, label: 'Reference', color: 'text-status-review' },
+  readme: { icon: FileText, label: 'README', color: 'text-foreground' },
 };
 
-function DocCard({ doc }: { doc: ProjectDoc }) {
-  const cfg = typeConfig[doc.type];
+function DocCard({ doc, excludeReadme = false }: { doc: ProjectDoc; excludeReadme?: boolean }) {
+  const cfg = typeConfig[doc.type] || typeConfig.readme;
   const Icon = cfg.icon;
-  const [open, setOpen] = useState(false);
+  const label = cfg.label;
+  const color = cfg.color;
   const author = useDashboardStore.getState().developers.find(d => d.id === doc.author);
   const tickets = useDashboardStore.getState().tickets.filter(t =>
     t.linkedDocs.includes(doc.id)
@@ -46,26 +55,26 @@ function DocCard({ doc }: { doc: ProjectDoc }) {
     <>
       <div
         className="kanban-card p-4 rounded-lg bg-card border border-border hover:border-border-strong transition-colors cursor-pointer"
-        onClick={() => setOpen(true)}
+        onClick={() => {}}
       >
         <div className="flex items-start gap-3">
           <div className={`w-9 h-9 rounded-lg bg-accent flex items-center justify-center flex-shrink-0 mt-0.5`}>
-            <Icon className={`w-4.5 h-4.5 ${cfg.color}`} />
+            <Icon className={`w-4.5 h-4.5 ${color}`} />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <Badge variant="outline" className="text-[10px] h-5 border-border-strong text-text-muted px-1.5 font-mono">
+              <Badge variant="outline" className="text-[10px] h-5 border-border text-text-muted px-1.5 font-mono">
                 {doc.project}
               </Badge>
-              <Badge className={`${cfg.color} bg-accent text-[10px] px-1.5 py-0 h-5 border-0`}>
-                {cfg.label}
+              <Badge className={`${color} bg-accent text-[10px] px-1.5 py-0 h-5 border-0`}>
+                {label}
               </Badge>
             </div>
             <h4 className="text-sm font-medium text-foreground mb-1">{doc.title}</h4>
             <p className="text-xs text-text-secondary leading-relaxed line-clamp-2">
-              {doc.summary}
+              {doc.summary || doc.body?.slice(0, 100)}
             </p>
-            <div className="flex items-center gap-3 mt-2.5 text-[10px] text-text-muted">
+            <div className="flex items-center gap-3 mt-2 text-[10px] text-text-muted">
               <span>@{doc.author} {author ? `(${author.displayName})` : ''}</span>
               <span>&middot;</span>
               <span>{doc.updated}</span>
@@ -86,8 +95,8 @@ function DocCard({ doc }: { doc: ProjectDoc }) {
         project={doc.project}
         author={doc.author}
         updated={doc.updated}
-        open={open}
-        onClose={() => setOpen(false)}
+        open={false}
+        onClose={() => {}}
       />
     </>
   );
@@ -104,7 +113,7 @@ export function DocsView() {
     if (filterType !== 'all' && d.type !== filterType) return false;
     if (search) {
       const q = search.toLowerCase();
-      return d.title.toLowerCase().includes(q) || d.summary.toLowerCase().includes(q);
+      return d.title.toLowerCase().includes(q) || d.summary?.toLowerCase().includes(q);
     }
     return true;
   });
@@ -116,12 +125,23 @@ export function DocsView() {
     return acc;
   }, {});
 
+  // Check for duplicates and warn
+  const seenDocs = new Set<string>();
+  const groupedWithoutDuplicates = filtered.reduce<Record<string, ProjectDoc[]>>((acc, doc) => {
+    const docKey = `${doc.project}::${doc.id}`;
+    if (seenDocs.has(docKey)) return acc;
+    seenDocs.add(docKey);
+    if (!acc[doc.project]) acc[doc.project] = [];
+    acc[doc.project].push(doc);
+    return acc;
+  }, {});
+
   return (
     <div className="space-y-4">
       <div>
         <h2 className="text-lg font-semibold text-foreground">Documentation</h2>
         <p className="text-sm text-text-muted mt-0.5">
-          f-rr-d docs/ &middot; {docs.length} documents across {new Set(docs.map(d => d.project)).size} projects
+          f-rr-d docs/ &middot; {filtered.length} documents across {new Set(filtered.map(d => d.project)).size} projects
         </p>
       </div>
 
@@ -159,6 +179,7 @@ export function DocsView() {
                 <SelectItem value="decision">ADR</SelectItem>
                 <SelectItem value="guide">Guide</SelectItem>
                 <SelectItem value="reference">Reference</SelectItem>
+                <SelectItem value="readme">README</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -169,7 +190,7 @@ export function DocsView() {
       <Card className="bg-card border-border">
         <CardContent className="p-3">
           <div className="flex items-center gap-2 mb-2">
-            <FolderOpen className="w-4 h-4 text-text-muted" />
+            <FolderTree className="w-4 h-4 text-text-muted" />
             <span className="text-xs font-medium text-text-muted">f-rr-d structure</span>
           </div>
           <pre className="text-xs text-text-secondary font-mono bg-surface p-3 rounded-lg leading-relaxed overflow-x-auto">
@@ -203,13 +224,13 @@ export function DocsView() {
       </Card>
 
       {/* Docs by project */}
-      {Object.entries(grouped).length === 0 ? (
+      {Object.keys(groupedWithoutDuplicates).length === 0 ? (
         <div className="text-center py-12 text-text-muted">
           <FileText className="w-8 h-8 mx-auto mb-2 opacity-50" />
           <p className="text-sm">No documents match your filters</p>
         </div>
       ) : (
-        Object.entries(grouped).map(([project, projectDocs]) => (
+        Object.entries(groupedWithoutDuplicates).map(([project, projectDocs]) => (
           <div key={project}>
             <h3 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wider">{project}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

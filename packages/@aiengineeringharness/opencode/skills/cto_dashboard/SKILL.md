@@ -1,5 +1,5 @@
 ---
-name: cto-dashboard
+name: cto_dashboard
 description: "CTO dashboard with ticket overview, developer progress, review queue, and GitHub PR integration"
 version: 1.0.0
 namespace: core

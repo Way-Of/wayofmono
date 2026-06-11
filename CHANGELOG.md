@@ -2,6 +2,24 @@
 
 ## [Unreleased] - 2026-06-11
 
+### WOMONO-001 — Electron UI + Cross-Platform Starters + Förråd Sync — **In Progress**
+- **Electron wrapper** for Next.js 16 CTO Dashboard (`ui/electron/main.ts`, `ui/electron/preload.ts`)
+  - Secure IPC bridge for git sync (`sync-förråd` handler)
+  - Dev mode: loads Next.js dev server with hot reload
+  - Prod mode: loads Next.js standalone build
+  - Multi-platform config in `package.json` build section (macOS x64/arm64, Linux x64/arm64, Windows x64/arm64)
+- **Cross-platform start scripts** in repository root:
+  - `start.sh` — macOS/Linux bash with dependency checks, colored output, trap cleanup
+  - `start.ps1` — Windows PowerShell with same features
+- **Sync Förråd button** in CTO Dashboard sidebar (`ui/src/components/ui/sync-forrad-button.tsx`)
+  - Calls Electron IPC `sync-förråd` → runs `git -C thoughts pull --ff-only`
+  - Shows toast notifications (success/error/up-to-date) via sonner
+  - Auto-refresh capability after successful sync
+- **Package.json updates** (`ui/package.json`):
+  - Added `electron`, `electron-builder`, `concurrently`, `cross-env`, `wait-on` dependencies
+  - New scripts: `electron:dev`, `electron:build`, `electron:dist`, `postinstall`
+  - electron-builder config for multi-platform distribution with GitHub publishing
+
 ### WOMONO-046 — Production Hosting for CTO Dashboard — **Phases 1-3 Complete**
 - Health endpoint `GET /api/health` — validates app + Prisma/SQLite are responding
 - Systemd service file `ui/docker/wayofmono-dashboard.service`

@@ -1,9 +1,0 @@
-{
-  "name": "podcast-generation",
-  "version": "1.0.0",
-  "description": "Podcast generation skill using TTS synthesis and audio assembly.",
-  "tags": ["podcast", "audio", "tts", "generation"],
-  "scripts": {
-    "generate": "npx ts-node generate.ts"
-  }
-}

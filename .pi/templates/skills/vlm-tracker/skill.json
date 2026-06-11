@@ -1,6 +1,0 @@
-{
-  "name": "vlm-tracker",
-  "version": "1.0.0",
-  "description": "Vision-language model tracking and target monitoring.",
-  "tags": ["vlm", "tracker", "monitoring", "vision"]
-}

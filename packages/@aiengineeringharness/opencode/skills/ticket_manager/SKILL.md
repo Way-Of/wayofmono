@@ -1,5 +1,5 @@
 ---
-name: ticket-manager
+name: ticket_manager
 description: "Manage tickets across all namespaces (WOMONO, WOW, OPT) with proper naming, numbering, and storage. Enforces production-ready standard: no mock data, enterprise grade."
 version: 1.0.0
 namespace: core

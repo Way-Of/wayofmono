@@ -1,9 +1,0 @@
-{
-  "name": "storyboard",
-  "version": "1.0.0",
-  "description": "Storyboard management skill for video and content creation. Includes consistency checking and timeline tracking.",
-  "tags": ["storyboard", "video", "content", "timeline"],
-  "scripts": {
-    "check": "python scripts/consistency_checker.py"
-  }
-}

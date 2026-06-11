@@ -1,5 +1,5 @@
 ---
-name: skill-adapter
+name: skill_adapter
 description: "Platform-specific skill/agent loading and format adapters for all 7 frontends"
 version: 1.0.0
 namespace: core

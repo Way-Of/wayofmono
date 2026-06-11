@@ -1,9 +1,0 @@
-{
-  "name": "video-analysis",
-  "version": "1.0.0",
-  "description": "Video understanding and temporal analysis using vision models.",
-  "tags": ["video", "analysis", "temporal", "understanding"],
-  "scripts": {
-    "analyze": "npx ts-node scripts/video-understand.ts"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "name": "shader-extraction",
-  "version": "1.0.0",
-  "description": "Shader extraction from web applications and WebGL contexts.",
-  "tags": ["shader", "webgl", "extraction", "graphics"],
-  "scripts": {
-    "extract": "node scripts/fetch-rendered-dom.mjs"
-  }
-}
