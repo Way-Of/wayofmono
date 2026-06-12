@@ -1,12 +1,12 @@
 ---
-name: skill-auto-update
-description: "Auto-update harness skills from upstream changes, sync documentation, and apply patches"
-version: 1.0.0
-namespace: core
-tools: read, write, fetch
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
-allowed-tools: [read, write, fetch]
-dependencies: [auto-ticket-creator]
+name: build_skill_auto_update
+description: >-
+  Auto-update harness skills from upstream changes, sync documentation, and
+  apply patches
+allowed-tools:
+  - read
+  - write
+  - fetch
 ---
 
 # Skill Auto-Update Skill

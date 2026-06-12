@@ -1,7 +1,11 @@
 ---
 name: antigravity_orchestrate
-description: Antigravity build orchestrator — coordinates domain experts to research Antigravity documentation and build extensions, themes, skills, settings, prompt templates, and TUI components. Use when the user wants to build or modify Antigravity components.
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch, Task
+description: >-
+  Antigravity build orchestrator — coordinates domain experts to research
+  Antigravity documentation and build extensions, themes, skills, settings,
+  prompt templates, and TUI components. Use when the user wants to build or
+  modify Antigravity components.
+allowed-tools: 'read, write, edit, bash, grep, glob, websearch, task'
 ---
 
 Orchestrate building Antigravity components by coordinating research and implementation.

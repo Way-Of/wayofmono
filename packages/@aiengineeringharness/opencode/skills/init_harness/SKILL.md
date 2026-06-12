@@ -1,9 +1,11 @@
 ---
 name: init_harness
-description: Initialize the AI Engineering Harness in a repository by running the tool's project memory init, then cloning the shared f-rr-d thoughts repo and setting up the standard directory structure.
+description: >-
+  Initialize the AI Engineering Harness in a repository by running the tool's
+  project memory init, then cloning the shared f-rr-d thoughts repo and setting
+  up the standard directory structure.
 disable-model-invocation: true
-allowed-tools: read, write, bash
-argument-hint: "[project-slug]"
+allowed-tools: 'read, write, bash'
 ---
 
 # Initialize Harness
@@ -12,7 +14,7 @@ Initialize the AI Engineering Harness in this repository.
 
 ## What This Command Does
 
-1. Runs the tool's project memory init (`/init`) to generate `AGENTS.md`/`CLAUDE.md`
+1. Runs the tool's project memory init to generate project memory file
 2. Clones the shared `f-rr-d` repo into `thoughts/`
 3. Creates the project's subfolder inside `thoughts/` with standard structure
 4. Creates personal thoughts directories for developers
@@ -27,23 +29,24 @@ Initialize the AI Engineering Harness in this repository.
 
 ### Step 1: Determine the Project Slug
 
-From `git remote -v` or the directory name, determine the project slug (e.g. `wayofmono`, `wo`, `opticat`). Set it as `PROJECT_SLUG`.
+Run `git remote -v` or use the directory name to determine the project slug. Common values: `wayofmono`, `wo`, `opticat`. Set `PROJECT_SLUG` to this value.
 
 ### Step 2: Generate Project Memory
 
-If the project memory file already exists, keep it and skip this step.
-
-Otherwise, run the tool's `/init` command to generate project memory. If this tool has no `/init`, create the project memory file manually with the standard format.
+Check if the project memory file already exists. If it does, keep it and skip this step.
+If not, run the tool's `/init` command. If this tool has no `/init`, create the project memory file manually with the standard format for this tool.
 
 ### Step 3: Clone the Shared f-rr-d Repo
 
-If `thoughts/` does not exist:
+Run these checks in order:
 
-```bash
-git clone https://github.com/Way-Of/f-rr-d.git thoughts/
-```
-
-If `thoughts/` exists, check its remote origin. If it points to `Way-Of/f-rr-d`, run `git -C thoughts/ pull --ff-only`. If it's a different repo, present the user with options: back up and clone, skip, or merge manually.
+1. If `thoughts/` does not exist:
+   ```bash
+   git clone https://github.com/Way-Of/f-rr-d.git thoughts/
+   ```
+2. If `thoughts/` exists, check its remote origin:
+   - If it points to `Way-Of/f-rr-d`: run `git -C thoughts/ pull --ff-only`
+   - If it points to a different repo or is not a repo: ask the user whether to back up and clone, skip, or merge manually, then execute their choice
 
 ### Step 4: Create the Project Subfolder
 
@@ -68,9 +71,9 @@ grep -q '^thoughts/' .gitignore 2>/dev/null || echo '# Centralized in Way-Of/f-r
 grep -q '^thoughts/' .gitignore 2>/dev/null || echo 'thoughts/' >> .gitignore
 ```
 
-### Step 7: Present Success Message
+### Step 7: Output Success Message
 
-Present the following to the user:
+Print the following summary:
 
 ```
 ## Harness Initialized Successfully
@@ -95,11 +98,11 @@ Ticket → /create_plan → /implement_plan → /validate_plan → /commit
 
 ### Not a Git Repository
 
-If `git rev-parse --git-dir` fails, run `git init` first, then proceed.
+Check with `git rev-parse --git-dir`. If it fails, run `git init` first, then proceed.
 
 ### thoughts/ Already Exists (Wrong Repo)
 
-Warn the user that `thoughts/` is not the f-rr-d repo and offer: back up and clone, skip, or merge.
+If `thoughts/` exists and its remote origin is not `Way-Of/f-rr-d`, ask the user: back up and clone, skip, or merge manually. Execute their choice.
 
 ### Project Memory File Already Exists
 

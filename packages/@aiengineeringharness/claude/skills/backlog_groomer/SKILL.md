@@ -1,7 +1,8 @@
 ---
-name: backlog-groomer
-description: "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog."
-tools: read, grep, find, ls, write, write-file, grep-file, find-file, list-repo
+name: backlog_groomer
+description: >-
+  Product & Ticket Manager. Helps transform ideas/plans into structured tickets
+  in thoughts/shared/tickets/ and maintains the project backlog.
 ---
 
 # Backlog Groomer Skill

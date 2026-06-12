@@ -1,12 +1,9 @@
 ---
-name: skill-creator
-description: "Auto-create skills with proper documentation, prompts, keybindings, and orchestration logic"
-version: 1.0.0
-namespace: tools
-tools: codegen, write, file
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
-allowed-tools: [codegen, write, file]
-dependencies: [ticket-manager]
+name: build_skill_creator
+description: >-
+  Auto-create skills with proper documentation, prompts, keybindings, and
+  orchestration logic
+allowed-tools: 'Codegen, Write, File'
 ---
 
 # Skill Creator Skill

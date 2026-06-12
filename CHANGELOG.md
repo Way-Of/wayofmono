@@ -2,6 +2,29 @@
 
 ## [Unreleased] - 2026-06-12
 
+### WOMONO-063 — Phase 2 Complete: Skill Cleanup + Zero Hard Errors
+- **Phase 2: Moved all misplaced skills to `ref/`** — 164 skills moved to `ref/<tool>/` across all 7 harness dirs
+- **Created `scripts/fix-skills.ts`** — auto-fix script handles `allowed-tools` casing, frontmatter cleanup, `name` field fixes
+- **Created `scripts/fix-errors.ts`** — targeted fix script for PARSE_ERROR, MISSING_SKILL, WRONG_NAMING_CONVENTION errors
+- **Zero hard errors achieved** — from 267 errors down to 0 across 433 skills, 7 tools
+- **Fixed at source**: broken YAML in `document_generation`, diff-corrupted `wow_tickets` (`+` prefix + missing `---`), empty dirs (`ticket_executor`, `build_auto_ticket_creator`), renamed `skill-creator` → `skill_creator`/`skill-creator` per tool convention
+
+### WOMONO-063 — Phase 3 Complete: Consolidated build_tool Skill
+- **Created `scripts/deploy-build-tool.ts`** — generates per-tool SKILL.md from canonical template with correct naming, casing, and frontmatter
+- **Deployed `build_tool` to all 7 harness dirs** — opencode, claude, gemini, pi (build-tool), antigravity, codex, wocoder
+- **Comprehensive skill content**: covers all 8 component types (skills, agents, commands, extensions, configs, keybindings, themes, TUI) across all 7 tools with per-tool format tables
+- **Zero compliance errors** on deployment — caught and fixed wocoder casing mismatch during deploy
+
+### WOMONO-063 — Phase 4 Complete: `--update` Comprehensive Sync
+- **Rewrote `--update` flow**: CLI + docs + tool install + stale cleanup + auto-validate in one command
+- **Added changelog awareness**: Reads CHANGELOG.md, shows version diff on bump
+- **Added `--dry-run` support for `--update`**: previews all 4 steps before executing
+- **Added confirmation prompt**: asks before proceeding (skipped with `--yes`)
+- **Added `--no-validate` flag**: skips compliance check step
+- **Added auto-compliance**: runs `compliance-check.ts` after update, reports error count
+- **Added `build_tool` to manifest.json** for all 7 tools
+- **WOMONO-063 Resolved** — All 4 phases complete
+
 ### README Rewrite & Architecture Docs
 - **README.md** fully rewritten with real repository data (51,033 files, 906 SKILL.md, 13 packages, 4 developers, 29+ tickets, per-tool skill counts)
 - Added slogan blockquote to header and footer

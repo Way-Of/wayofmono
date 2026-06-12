@@ -1,13 +1,8 @@
 ---
-name: document-generation
-description: Generates various types of documents, including offers, invoices, reports, and templates, often based on structured data.
-tools: - name: generate_offer_document
-    description: Generates an offer document from provided data.
-  - name: generate_invoice_document
-    description: Generates an invoice document from provided data.
-  - name: generate_report
-    description: Generates a report based on specific criteria or data.
-dependencies: []
+name: document_generation
+description: >-
+  Generates various types of documents, including offers, invoices, reports, and
+  templates, often based on structured data.
 ---
 
 # Document Generation Skill

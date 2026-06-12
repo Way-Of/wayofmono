@@ -1,12 +1,12 @@
 ---
 name: otel_instrumentation
 description: >
-  Application-side OpenTelemetry SDK setup — traces, metrics, structured
-  logging across Node.js, Go, Python, Java, .NET, Ruby. Prescriptive
-  guidance for resource attributes, span design, metric instrument selection,
-  sensitive data handling, and validation.
+  Application-side OpenTelemetry SDK setup — traces, metrics, structured logging
+  across Node.js, Go, Python, Java, .NET, Ruby. Prescriptive guidance for
+  resource attributes, span design, metric instrument selection, sensitive data
+  handling, and validation.
 disable-model-invocation: true
-allowed-tools: Read, Bash, Grep, glob, replace, Write
+allowed-tools: 'Read, Bash, Grep, Glob, Replace, Write'
 ---
 
 # OpenTelemetry Application Instrumentation

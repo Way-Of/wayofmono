@@ -5,7 +5,9 @@ description: >
   common patterns (redaction, normalization, enrichment, filtering), error
   handling, and complete function reference for Collector processors.
 disable-model-invocation: true
-allowed-tools: read_file, run_shell_command, search_file_content, glob, replace, write_file
+allowed-tools: >-
+  read, file, run, shell, command, search, file, content, glob, replace, write,
+  file
 ---
 
 # OpenTelemetry Transformation Language (OTTL)

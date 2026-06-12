@@ -1,13 +1,9 @@
 ---
 name: help_command
-description: "Unified /help system — skills, commands, agents, workflows, practices, search, onboarding"
-version: 1.1.0
-namespace: core
-tools: read, grep, glob
-platforms: [claude, opencode, gemini, wocoder, antigravity, codex]
-allowed-tools: [read, grep, glob]
-dependencies: []
-triggers: ["/help", "help", "what can you do", "what skills do you have"]
+description: >-
+  Unified /help system — skills, commands, agents, workflows, practices, search,
+  onboarding
+allowed-tools: 'Read, Grep, Glob'
 ---
 
 # Help Command Skill

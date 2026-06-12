@@ -1,10 +1,9 @@
 ---
 name: document-generation
-description: "Generates various types of documents, including offers, invoices, reports, and templates, often based on structured data."
-allowed-tools: read write glob grep
-version: 1.0.0
-platforms: [pi]
-dependencies: []
+description: >-
+  Generates various types of documents, including offers, invoices, reports, and
+  templates, often based on structured data.
+allowed-tools: 'Read, Write, Glob, Grep'
 ---
 
 # Document Generation Skill

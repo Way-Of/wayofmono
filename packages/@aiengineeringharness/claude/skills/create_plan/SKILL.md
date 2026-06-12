@@ -1,9 +1,10 @@
 ---
 name: create_plan
-description: Create detailed, actionable implementation plans through an interactive, iterative process, leveraging Gemini CLI tools for research and documentation.
+description: >-
+  Create detailed, actionable implementation plans through an interactive,
+  iterative process, leveraging Gemini CLI tools for research and documentation.
 disable-model-invocation: true
-allowed-tools: Read, Write, Bash, glob, Grep, TodoWrite, Task
-argument-hint: "[ticket-file-path]"
+allowed-tools: 'Read, Write, Bash, Glob, Grep, TodoWrite, Task'
 ---
 
 # Create Plan

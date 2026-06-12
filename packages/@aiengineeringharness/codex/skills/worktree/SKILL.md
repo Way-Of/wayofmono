@@ -1,7 +1,12 @@
 ---
 name: worktree
-description: Manage git worktrees for parallel development workflows integrated with the harness ticket system. Use when the user mentions worktrees, wants to work on multiple branches simultaneously, asks about parallel development, or wants to create an isolated workspace for a ticket or feature. Uses run_shell_command for git operations.
-allowed-tools: read_file, run_shell_command, glob, search_file_content
+description: >-
+  Manage git worktrees for parallel development workflows integrated with the
+  harness ticket system. Use when the user mentions worktrees, wants to work on
+  multiple branches simultaneously, asks about parallel development, or wants to
+  create an isolated workspace for a ticket or feature. Uses run_shell_command
+  for git operations.
+allowed-tools: 'read, file, run, shell, command, glob, search, file, content'
 ---
 
 # Git Worktree Manager

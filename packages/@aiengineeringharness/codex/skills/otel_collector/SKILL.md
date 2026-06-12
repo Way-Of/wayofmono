@@ -3,10 +3,12 @@ name: otel_collector
 description: >
   OpenTelemetry Collector configuration — receivers, processors, exporters,
   pipelines, sampling, deployment. Covers OTLP, Prometheus, filelog,
-  hostmetrics; processor ordering; pipeline design; head/tail sampling;
-  and RED metric derivation via signaltometrics.
+  hostmetrics; processor ordering; pipeline design; head/tail sampling; and RED
+  metric derivation via signaltometrics.
 disable-model-invocation: true
-allowed-tools: read_file, run_shell_command, search_file_content, glob, replace, write_file
+allowed-tools: >-
+  read, file, run, shell, command, search, file, content, glob, replace, write,
+  file
 ---
 
 # OpenTelemetry Collector Configuration

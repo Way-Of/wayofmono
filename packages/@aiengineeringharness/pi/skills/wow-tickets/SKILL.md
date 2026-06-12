@@ -1,10 +1,9 @@
 ---
 name: wow-tickets
-description: "Manage understanding tickets (WOW- prefixed tickets) for tracking system knowledge and refinement requests"
-version: 1.0.0
-platforms: [pi]
-allowed-tools: read, write, glob, grep
-dependencies: []
+description: >-
+  Manage understanding tickets (WOW- prefixed tickets) for tracking system
+  knowledge and refinement requests
+allowed-tools: 'Read, Write, Glob, Grep'
 ---
 
 # Understanding Tickets Management
