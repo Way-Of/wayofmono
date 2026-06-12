@@ -1,9 +1,7 @@
 ---
-name: document-generation
-description: >-
-  Generates various types of documents, including offers, invoices, reports, and
-  templates, often based on structured data.
-allowed-tools: 'Read, Write, Glob, Grep'
+name: document_generation
+description: Generates various types of documents, including offers, invoices, reports, and templates, often based on structured data.
+
 ---
 
 # Document Generation Skill

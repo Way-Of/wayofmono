@@ -5,9 +5,7 @@ description: >-
   execution, leveraging Gemini CLI tools for file interaction, command
   execution, and task management.
 disable-model-invocation: true
-allowed-tools: >-
-  read, file, write, file, run, shell, command, search, file, content, glob,
-  write, todos, delegate, to, agent
+allowed-tools: 'read, write, bash, grep, glob, todowrite, task'
 ---
 
 # Implement Plan

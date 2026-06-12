@@ -1,8 +1,8 @@
 ---
-name: build-tool-skill
+name: build_tool_skill
 description: >-
   Build skills for all 7 AI coding tools — knows SKILL.md format, frontmatter, naming conventions, allowed-tools, directory rules.
-allowed-tools: 'Read, Write, Edit, Bash, Grep, Glob, WebSearch'
+allowed-tools: 'read, write, edit, bash, grep, glob, websearch'
 ---
 
 # build_tool_skill — Unified Skill Builder

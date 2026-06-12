@@ -6,7 +6,7 @@ description: >-
   up the standard directory structure. The f-rr-d repo is append-only — never
   delete, rename, or move anything inside thoughts/.
 disable-model-invocation: true
-allowed-tools: 'read, file, write, file, run, shell, command'
+allowed-tools: 'read, write, bash'
 ---
 
 # Initialize Harness

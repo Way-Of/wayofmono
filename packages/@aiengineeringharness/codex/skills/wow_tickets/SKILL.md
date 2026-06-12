@@ -3,17 +3,8 @@ name: wow_tickets
 description: >-
   Manage understanding tickets (WOW- prefixed tickets) for tracking system
   knowledge and refinement requests
-author: Hermes Agent
-license: MIT
-metadata:
-  hermes:
-    tags:
-      - tickets
-      - backlog
-      - understanding
-      - knowledge-management
+allowed-tools: read, write, glob, grep
 ---
-
 # Understanding Tickets Management
 
 Skills for managing, reviewing, and tracking understanding tickets (WOW- prefixed tickets in Way of Work system). These tickets capture requests to improve system understanding, documentation needs, feature enhancements, and knowledge gaps.

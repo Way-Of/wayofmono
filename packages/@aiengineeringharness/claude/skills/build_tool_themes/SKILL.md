@@ -2,7 +2,7 @@
 name: build_tool_themes
 description: >-
   Build themes for all 7 AI coding tools — knows JSON format, color tokens, vars system, hex/256-color values, hot reload.
-allowed-tools: 'Read, Write, Edit, Bash, Grep, Glob, WebSearch'
+allowed-tools: 'read, write, edit, bash, grep, glob, websearch'
 ---
 
 # build_tool_themes — Unified Theme Builder

@@ -3,7 +3,10 @@ name: build_ticket_manager
 description: >-
   Create, update, merge, and delete tickets with proper namespace validation and
   compliance checking
-allowed-tools: 'Read, Write, Grep, Glob'
+allowed-tools: - read
+  - write
+  - grep
+  - glob
 ---
 
 # Ticket Manager Skill

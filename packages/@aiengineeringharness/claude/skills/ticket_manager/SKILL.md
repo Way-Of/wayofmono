@@ -4,7 +4,13 @@ description: >-
   Manage tickets across all namespaces (WOMONO, WOW, OPT) with proper naming,
   numbering, and storage. Enforces production-ready standard: no mock data,
   enterprise grade.
-allowed-tools: 'Read, Grep, Glob, Find, Ls, Write, Edit'
+allowed-tools: - read
+  - grep
+  - glob
+  - find
+  - ls
+  - write
+  - edit
 ---
 
 # Ticket Manager Skill

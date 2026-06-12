@@ -240,7 +240,6 @@ Always use `where` guards to prevent nil access:
 
 `Len(value)`, `append(target, values...)`, `Slice(target, start, end)`
 
-docs-url: https://opentelemetry.io/docs/
 ---
 
 ## Cross-References

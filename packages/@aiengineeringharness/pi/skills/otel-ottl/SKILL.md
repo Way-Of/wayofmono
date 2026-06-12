@@ -1,11 +1,11 @@
 ---
-name: otel-ottl
+name: otel_ottl
 description: >
   OTTL (OpenTelemetry Transformation Language) reference — syntax, contexts,
   common patterns (redaction, normalization, enrichment, filtering), error
   handling, and complete function reference for Collector processors.
 disable-model-invocation: true
-allowed-tools: 'Read, Bash, Grep, Glob, Replace, Write'
+allowed-tools: read, bash, grep, glob, replace, write
 ---
 
 # OpenTelemetry Transformation Language (OTTL)
@@ -240,7 +240,6 @@ Always use `where` guards to prevent nil access:
 
 `Len(value)`, `append(target, values...)`, `Slice(target, start, end)`
 
-docs-url: https://opentelemetry.io/docs/
 ---
 
 ## Cross-References

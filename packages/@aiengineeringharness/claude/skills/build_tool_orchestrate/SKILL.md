@@ -2,7 +2,7 @@
 name: build_tool_orchestrate
 description: >-
   Orchestrate domain experts to research and build components for all 7 AI coding tools — knows team coordination, domain expert dispatch, research workflows.
-allowed-tools: 'Read, Write, Edit, Bash, Grep, Glob, WebSearch'
+allowed-tools: 'read, write, edit, bash, grep, glob, websearch'
 ---
 
 # build_tool_orchestrate — Unified Orchestration Skill

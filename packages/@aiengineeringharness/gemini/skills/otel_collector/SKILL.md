@@ -390,7 +390,6 @@ spec:
           exporters: [otlp]
 ```
 
-docs-url: https://opentelemetry.io/docs/
 ---
 
 ## Cross-References

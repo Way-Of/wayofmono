@@ -5,8 +5,8 @@ description: >-
   and synthesizing findings using Gemini CLI tools.
 disable-model-invocation: true
 allowed-tools: >-
-  read, file, write, file, run, shell, command, search, file, content, glob,
-  write, todos, delegate, to, agent, google, web, search, web, fetch
+  read, write, bash, grep, glob, todowrite, task, google, web, search, web,
+  fetch
 ---
 
 # Research Codebase

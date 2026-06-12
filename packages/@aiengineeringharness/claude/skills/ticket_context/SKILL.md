@@ -1,9 +1,6 @@
 ---
 name: ticket_context
-description: >-
-  Associates work with a specific ticket ID across all WoM projects (WOMONO,
-  WOW, OPT). Use when initiating new work to ensure compliance and
-  production-ready standards.
+description: Associates work with a specific ticket ID across all WoM projects (WOMONO, WOW, OPT). Use when initiating new work to ensure compliance and production-ready standards.
 ---
 
 # Ticket Context Guide
