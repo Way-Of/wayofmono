@@ -223,7 +223,7 @@ async function main() {
   const toolFilter = args.find((a) => a.startsWith("--tool="))?.split("=")[1];
   const skillFilter = args.find((a) => a.startsWith("--skill="))?.split("=")[1];
 
-  const canonicalDir = join(REPO_ROOT, "docs", "skills");
+  const canonicalDir = join(REPO_ROOT, "packages", "@aiengineeringharness", "opencode", "skills");
 
   // Discover all canonical skills
   const skills: string[] = [];
