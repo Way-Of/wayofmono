@@ -316,62 +316,83 @@ async function promptConfirm(message: string): Promise<boolean> {
 }
 
 function printHelp(): void {
-  console.log(`
-AI Engineering Harness Installer
+  const logo = [
+    "██╗    ██╗ ██████╗     ███╗   ███╗ ██████╗ ███╗   ██╗ ██████╗",
+    "██║    ██║██╔═══██╗    ████╗ ████║██╔═══██╗████╗  ██║██╔═══██╗",
+    "██║ █╗ ██║██║   ██║    ██╔████╔██║██║   ██║██╔██╗ ██║██║   ██║",
+    "██║███╗██║██║   ██║    ██║╚██╔╝██║██║   ██║██║╚██╗██║██║   ██║",
+    "╚███╔███╔╝╚██████╔╝    ██║ ╚═╝ ██║╚██████╔╝██║ ╚████║╚██████╔╝",
+    " ╚══╝╚══╝  ╚═════╝     ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝",
+  ];
+  for (const line of logo) console.log(o(`  ${line}`));
+  console.log();
+  console.log(`  ${ob("⟡ HARNESS CLI")}  ${od("ai-harness — all commands")}  ${od("─".repeat(20))}\n`);
+  console.log(`  ${o("┌")}${od("─".repeat(54))}${o("┐")}`);
+  console.log(`  ${o("│")}  ${C.bold}deno run -A <url> --tool=all --yes${C.reset}          ${o("│")}`);
+  console.log(`  ${o("│")}  ${C.bold}ai-harness --tool=claude${C.reset}                       ${o("│")}`);
+  console.log(`  ${o("│")}  ${C.bold}ai-harness --update${C.reset}                            ${o("│")}`);
+  console.log(`  ${o("│")}  ${C.bold}ai-harness --help${C.reset}                              ${o("│")}`);
+  console.log(`  ${o("└")}${od("─".repeat(54))}${o("┘")}`);
+  console.log();
 
-SINGLE COMMAND (easiest for agents):
-  deno run -A \\
-    https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts \\
-    --tool=all --yes
+  const sections: Array<{ title: string; items: Array<{ cmd: string; desc: string }> }> = [
+    {
+      title: "install & update",
+      items: [
+        { cmd: "--tool=<name>", desc: "Install tool config (claude, opencode, gemini, pi, wocoder, antigravity, codex, all)" },
+        { cmd: "--install-cli", desc: "Install/update CLI binary with Matrix output" },
+        { cmd: "--update", desc: "Full harness sync: CLI + docs + all tools + stale cleanup + validate" },
+        { cmd: "--yes, -y", desc: "Skip confirmation prompts" },
+        { cmd: "--dry-run, -n", desc: "Preview without writing files" },
+        { cmd: "--skill=<name>", desc: "Specific component names to install (comma-separated)" },
+        { cmd: "--interactive, -i", desc: "Interactive checkbox picker" },
+        { cmd: "--local, -l", desc: "Install to project-local directories" },
+      ],
+    },
+    {
+      title: "maintenance",
+      items: [
+        { cmd: "--prune", desc: "Interactive: review & remove non-manifest skills across all tools" },
+        { cmd: "--check", desc: "Check installed version vs manifest" },
+        { cmd: "--uninstall=<name>", desc: "Remove installed files (claude, opencode, all, ...)" },
+        { cmd: "--no-validate", desc: "Skip compliance validation after --update" },
+      ],
+    },
+    {
+      title: "sync & reporting",
+      items: [
+        { cmd: "--sync-docs", desc: "Sync canonical skills to all tool directories" },
+        { cmd: "--sync-docs --check", desc: "Preview skill sync without making changes" },
+        { cmd: "--import-ref", desc: "Import ref skills/agents to all platforms" },
+        { cmd: "--report-skills", desc: "Report local skills to dashboard telemetry API" },
+        { cmd: "--report-url=<url>", desc: "Dashboard URL for skill reporting" },
+      ],
+    },
+    {
+      title: "other",
+      items: [
+        { cmd: "--mode=repo", desc: "Show clone + stow instructions" },
+        { cmd: "--dest=<path>", desc: "Clone destination for --mode=repo" },
+        { cmd: "--help, -h", desc: "Show this help" },
+      ],
+    },
+  ];
 
-INSTALL AS CLI (one-time):
-  deno install -Agf -n ai-harness \\
-    https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts
+  for (const section of sections) {
+    console.log(`  ${ob("▸ " + section.title)}`);
+    console.log(`  ${od("─".repeat(40))}`);
+    for (const item of section.items) {
+      const cmd = `  ${o("·")} ${C.bold}${item.cmd.padEnd(32)}${C.reset} ${od(item.desc)}`;
+      console.log(cmd);
+    }
+    console.log();
+  }
 
-  Then run:
-    ai-harness --tool=claude
-    ai-harness --tool=all --interactive
-    ai-harness --update             # Full sync: CLI + docs + all tools + stale cleanup + validate
-
-CLONE AND RUN (for private repos):
-  gh repo clone Way-Of/wayofmono /tmp/wo -- --depth=1 -q
-  GITHUB_TOKEN=$(gh auth token) deno run -A /tmp/wo/packages/@aiengineeringharness/install.ts --tool=claude
-  rm -rf /tmp/wo
-
-DIRECT RUN (no install step):
-  deno run -A install.ts [options]
-
-OPTIONS:
-  --tool=<claude|opencode|gemini|pi|wocoder|antigravity|codex|all> Which tool configs to install (required)
-  --skill=<name>[,<name>]               Specific component names to install
-  --interactive, -i                     Interactive checkbox picker
-  --dry-run, -n                         Preview without writing files
-  --yes, -y                             Skip confirmation prompts
-  --local, -l                           Install to project-local directories (.claude, .agents, .gemini, etc.)
-  --check                               Check installed version vs manifest
-  --update                              Full harness sync: update CLI, sync docs, install/update all tools, remove stale files
-  --uninstall=<claude|opencode|all>     Remove installed files for the given tool(s) (manifest from GitHub)
-  --no-validate                         Skip compliance validation after --update
-  --prune                               Interactive: review & remove non-manifest skills across all tools
-  --import-ref                          Import ref skills/agents to all platforms (WOMONO-016)
-  --sync-docs                           Sync canonical skills to all tool skill directories
-  --sync-docs --check                   Preview skill sync without making changes
-  --report-skills                       Report local skills to dashboard telemetry API
-  --report-url=<url>                    Dashboard URL for skill reporting (default: https://cto.wayof.work)
-  --mode=repo                           Show clone+stow instructions instead
-  --dest=<path>                         Clone destination for --mode=repo
-   --help, -h                            Show this help
-  --install-cli                         Install/update CLI binary with Matrix-style output
-
-EXAMPLES:
-  ai-harness --tool=all --yes                     # Install all configs non-interactively
-  ai-harness --tool=claude                        # Install Claude Code configs
-  ai-harness --tool=claude --dry-run              # Preview changes
-  ai-harness --tool=claude --skill=agents         # Install only agents
-  ai-harness --tool=claude --interactive          # Pick components
-  ai-harness --prune                              # Review & remove non-manifest skills interactively
-  ai-harness --mode=repo                          # Clone + stow instructions
-`.trim());
+  console.log(`  ${ob("⟡ QUICK START")}\n`);
+  console.log(`  ${o("1.")} ${C.bold}deno run -A <url> --install-cli${C.reset}`);
+  console.log(`  ${o("2.")} ${C.bold}ai-harness --tool=all --yes${C.reset}`);
+  console.log(`  ${o("3.")} ${C.bold}ai-harness --update${C.reset}`);
+  console.log();
 }
 
 function printRepoModeInstructions(dest: string): void {
