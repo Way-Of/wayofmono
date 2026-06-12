@@ -1096,19 +1096,7 @@ if (args.update) {
     // Patch wrapper to embed --reload so future updates bypass Deno cache
     await patchDenoWrapperReload();
 
-    // Re-exec through deno run directly (not shell wrapper) so stdin stays connected
-    const reExecArgs = ["--update", "--skip-binary"];
-    if (yes) reExecArgs.push("--yes");
-    if (dryRun) reExecArgs.push("--dry-run");
-    if (noValidate) reExecArgs.push("--no-validate");
-    const reExecCmd = new Deno.Command("deno", {
-      args: ["run", "--reload", "-A", installUrl, ...reExecArgs],
-      stdin: "inherit",
-      stdout: "inherit",
-      stderr: "inherit",
-    });
-    const reExecResult = await reExecCmd.output();
-    Deno.exit(reExecResult.success ? 0 : 1);
+    // Continue in same process — code is already fresh (--reload was used)
   }
 
   // --- Phase 2: Full Matrix flow (new binary, --skip-binary) ---
