@@ -2719,24 +2719,7 @@
             }
           ]
         },
-        "skill/pi_extension": {
-          "description": "Pi Extension skill",
-          "files": [
-            {
-              "src": "pi/skills/pi-extension/SKILL.md",
-              "dest": "skills/pi-extension/SKILL.md"
-            }
-          ]
-        },
-        "skill/pi_skill": {
-          "description": "Pi Skill skill",
-          "files": [
-            {
-              "src": "pi/skills/pi-skill/SKILL.md",
-              "dest": "skills/pi-skill/SKILL.md"
-            }
-          ]
-        },
+
         "skill/research_codebase": {
           "description": "Research Codebase skill",
           "files": [
