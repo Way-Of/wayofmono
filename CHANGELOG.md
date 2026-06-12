@@ -25,6 +25,12 @@
 - **Added `build_tool` to manifest.json** for all 7 tools
 - **WOMONO-063 Resolved** — All 4 phases complete
 
+### Manifest Cleanup — Removed 192 Stale Entries
+- **Created `scripts/cleanup-manifest.ts`** — removes manifest entries where source files no longer exist
+- **Cleaned 192 stale entries** from `manifest.json` across all 7 tools (skills moved to `ref/` during Phase 2)
+- **Bumped manifest to v1.4.0** — `ai-harness --update` now works without 404 errors
+- **Zero compliance errors** maintained after cleanup
+
 ### README Rewrite & Architecture Docs
 - **README.md** fully rewritten with real repository data (51,033 files, 906 SKILL.md, 13 packages, 4 developers, 29+ tickets, per-tool skill counts)
 - Added slogan blockquote to header and footer
