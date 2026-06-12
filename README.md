@@ -6,47 +6,70 @@ The ultimate monorepo consolidation for high-performance coding agents. WayOfMon
 
 ## 👟 Quick Install
 
-**Step 1: Prerequisites — Deno**
+### Step 1: Prerequisites — Deno
 
-```bash
-# Windows (PowerShell)
+**Windows (PowerShell):**
+```powershell
 irm https://deno.land/install.ps1 | iex
 ```
 
+**macOS (Homebrew):**
 ```bash
-# macOS (Homebrew)
 brew install deno
 ```
 
+**Linux/Unix:**
 ```bash
-# Linux/Unix
 curl -fsSL https://deno.land/install.sh | sh
 ```
 
+**Verify:**
 ```bash
-# Verify
 deno --version
 ```
 
-**Step 2: Install CLI (Matrix-style)**
+### Step 2: Install CLI (Matrix-style)
 
+**macOS / Linux:**
 ```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 ```
 
-**Step 3: Install All Tools & Skills**
+**Windows (PowerShell):**
+```powershell
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+```
 
+Or via the PowerShell wrapper:
+```powershell
+iex (iwr https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ps1 -useb)
+```
+Then inside the session: `install.ps1 -InstallCli`
+
+### Step 3: Install All Tools & Skills
+
+**macOS / Linux:**
 ```bash
 ai-harness --tool=all --yes
 ```
 
-**Update**
+**Windows (PowerShell):**
+```powershell
+ai-harness --tool=all --yes
+```
+
+Or via PowerShell wrapper:
+```powershell
+.\install.ps1 -Tool all -Yes
+```
+
+### Update
 
 ```bash
 ai-harness --update
 ```
 
-**Major Update** (full refresh after a breaking overhaul)
+### Major Update (full refresh after a breaking overhaul)
 
 ```bash
 deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --update
@@ -68,7 +91,17 @@ ai-harness --tool=all --yes
 
 That's it — project-local packages install to `node_modules/`, not globally. Binaries land in `node_modules/.bin/` accessed via `npx`/`pnpm`.
 
-### GNU Stow (Optional — symlink-based updates)
+### Compliance Check
+
+Validate that all installed files match the manifest:
+
+```bash
+ai-harness --compliance
+```
+
+Checks for missing source files, stale files in target directories, and dangling manifest entries. Exit code 0 if compliant.
+
+### GNU Stow (Optional — symlink-based updates, macOS/Linux only)
 
 ```bash
 # Ubuntu/Debian

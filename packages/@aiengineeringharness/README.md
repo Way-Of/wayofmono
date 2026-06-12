@@ -77,77 +77,116 @@ Despite different configuration folder structures and syntax formats, all integr
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Install
 
-### Prerequisites
-*   [Deno](https://deno.com/)
-    *   **macOS/Linux**: `curl -fsSL https://deno.land/install.sh | sh` (or `brew install deno`)
-    *   **Windows (PowerShell)**: `iwr https://deno.land/install.ps1 -useb | iex` (or `winget install DenoLand.Deno`)
-*   **macOS/Linux**: [GNU Stow](https://www.gnu.org/software/stow/) for repo mode — `sudo apt install stow` (or `brew install stow`)
-*   **Windows**: No extra dependencies — PowerShell installer handles everything
+### Step 1: Prerequisites — Deno
 
-### Install via CLI (Deno installer)
-Register the CLI globally:
+```bash
+# Windows (PowerShell)
+irm https://deno.land/install.ps1 | iex
+
+# macOS (Homebrew)
+brew install deno
+
+# Linux/Unix
+curl -fsSL https://deno.land/install.sh | sh
+
+# Verify
+deno --version
+```
+
+### Step 2: Install CLI (Matrix-style)
+
+**macOS / Linux:**
 ```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 ```
 
-Then install the target platform configuration:
+**Windows (PowerShell):**
+```powershell
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+```
+
+Or use the PowerShell wrapper:
+```powershell
+iex (iwr https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ps1 -useb)
+```
+Then inside the session: `install.ps1 -InstallCli`
+
+### Step 3: Install All Tools & Skills
+
+**macOS / Linux:**
 ```bash
-ai-harness --tool=all             # Install all seven
-ai-harness --tool=claude          # Claude Code only
-ai-harness --tool=opencode        # OpenCode only
-ai-harness --tool=gemini          # Gemini CLI only
-ai-harness --tool=pi              # Pi only
-ai-harness --tool=wocoder         # Wo Coder only
-ai-harness --tool=antigravity     # Antigravity only
-ai-harness --tool=codex           # Codex only
+ai-harness --tool=all --yes
+```
+
+**Windows (PowerShell):**
+```powershell
+ai-harness --tool=all --yes
+```
+
+Or via PowerShell wrapper:
+```powershell
+.\install.ps1 -Tool all -Yes
 ```
 
 ### Update
+
 ```bash
 ai-harness --update
 ```
 
-> **First-time bootstrap**: If the update fails with a "Integrity check failed" error (Deno cache mismatch after a push), run once:
-> ```bash
-> deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --update
-> ```
-> After that, the wrapper is patched to always reload — `ai-harness --update` works forever after.
+### Major Update (full refresh after a breaking overhaul)
+
+```bash
+deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --update
+```
+
+Or wipe everything and reinstall from scratch:
+
+```bash
+ai-harness --uninstall=all --yes
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+ai-harness --tool=all --yes
+```
+
+That's it — project-local packages install to `node_modules/`, not globally. Binaries land in `node_modules/.bin/` accessed via `npx`/`pnpm`.
 
 ### Compliance Check
+
 Validate that all installed files match the manifest:
+
 ```bash
 ai-harness --compliance
 ```
+
 Checks for missing source files, stale files in target directories, and dangling manifest entries. Exit code 0 if compliant.
 
-### Windows (PowerShell)
-For Windows users, a PowerShell wrapper is available in the repo:
+### PowerShell Wrapper Reference
+
+When running from a cloned repo:
+
 ```powershell
-# Install CLI + all tool configs
 .\packages\@aiengineeringharness\install.ps1 -InstallCli
 .\packages\@aiengineeringharness\install.ps1 -Tool all -Yes
-
-# Or directly from GitHub (no clone needed):
-iex (iwr https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ps1 -useb)
 ```
+
 Parameters: `-InstallCli`, `-Tool <name>`, `-Update`, `-Compliance`, `-Check`, `-Yes`, `-DryRun`.
 
-### Repo Mode (GNU Stow symlinks) — macOS / Linux only
-For symlink-based installation directly from your cloned directory:
+### GNU Stow (Optional — symlink-based updates, macOS/Linux only)
+
 ```bash
-# Inside ~/wayofmono
-./packages/@aiengineeringharness/setup.sh claude             # Claude Code -> ~/.claude/
-./packages/@aiengineeringharness/setup.sh opencode           # OpenCode -> ~/.config/opencode/
-./packages/@aiengineeringharness/setup.sh gemini             # Gemini CLI -> ~/.gemini/
-./packages/@aiengineeringharness/setup.sh pi                 # Pi -> ~/.pi/agent/
-./packages/@aiengineeringharness/setup.sh wocoder            # Wo Coder -> ~/.wocoder/
-./packages/@aiengineeringharness/setup.sh antigravity        # Antigravity -> ~/.antigravity/
-./packages/@aiengineeringharness/setup.sh codex             # Codex -> ~/.codex/
-./packages/@aiengineeringharness/setup.sh all                # Symlink all seven
+# Ubuntu/Debian
+sudo apt install stow
+
+# macOS
+brew install stow
+
+./packages/@aiengineeringharness/setup.sh all
 ```
+
 Use `--restow` to update links after checking out git changes:
+
 ```bash
 ./packages/@aiengineeringharness/setup.sh all --restow
 ```
