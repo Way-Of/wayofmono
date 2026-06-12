@@ -86,8 +86,7 @@ Despite different configuration folder structures and syntax formats, all integr
 ### Install via CLI (Deno installer)
 Register the CLI globally:
 ```bash
-deno install -Agf --no-lock --reload -n ai-harness \
-  https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 ```
 
 Then install the target platform configuration:
