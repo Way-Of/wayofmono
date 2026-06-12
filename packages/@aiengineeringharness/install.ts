@@ -784,15 +784,8 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
       }
 
       if (existingContent !== null && existingContent !== srcContent) {
-        // Show diff and prompt
-        console.log(`\n  ${o("⟁")} ${fileEntry.dest}  ${yellow("conflict")}`);
+        console.log(`\n  ${o("⟁")} ${fileEntry.dest}  ${yellow("conflict")}  ${od("(incoming differs)")}`);
         if (!opts.yes) {
-          const diff = renderDiff(existingContent, srcContent);
-          console.log(`  ${od("--- existing")}`);
-          console.log(`  ${green("+++ incoming")}`);
-          console.log(diff.split("\n").map((l) => "  " + l).join("\n"));
-          console.log();
-
           if (opts.dryRun) {
             console.log(`  ${od("[dry-run]")} would overwrite`);
             installed++;
