@@ -1452,6 +1452,19 @@ const installOpts: InstallOptions = {
 const toolArg = String(args.tool);
 const toolsToInstall = toolArg === "all" ? Object.keys(manifest.tools) : [toolArg];
 
+// Matrix-style header
+const logo = [
+  "██╗    ██╗ ██████╗     ███╗   ███╗ ██████╗ ███╗   ██╗ ██████╗",
+  "██║    ██║██╔═══██╗    ████╗ ████║██╔═══██╗████╗  ██║██╔═══██╗",
+  "██║ █╗ ██║██║   ██║    ██╔████╔██║██║   ██║██╔██╗ ██║██║   ██║",
+  "██║███╗██║██║   ██║    ██║╚██╔╝██║██║   ██║██║╚██╗██║██║   ██║",
+  "╚███╔███╔╝╚██████╔╝    ██║ ╚═╝ ██║╚██████╔╝██║ ╚████║╚██████╔╝",
+  " ╚══╝╚══╝  ╚═════╝     ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝",
+];
+for (const line of logo) console.log(o(`  ${line}`));
+console.log();
+console.log(`  ${ob("⟡ HARNESS INSTALL")}  ${od("v" + manifest.version)}  ${od("─".repeat(30))}\n`);
+
 for (const tool of toolsToInstall) {
   await installTool(manifest, tool, installOpts);
 }
@@ -1459,4 +1472,4 @@ for (const tool of toolsToInstall) {
 // Patch wrapper to embed --reload so future updates bypass Deno cache
 patchDenoWrapperReload();
 
-console.log("\nDone.");
+console.log(`\n  ${ob("⟡ INSTALL COMPLETE")}  ${check()}\n`);
