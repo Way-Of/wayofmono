@@ -80,8 +80,11 @@ Despite different configuration folder structures and syntax formats, all integr
 ## 🚀 Quick Start
 
 ### Prerequisites
-*   [Deno](https://deno.com/) — `curl -fsSL https://deno.land/install.sh | sh` (or `brew install deno`)
-*   [GNU Stow](https://www.gnu.org/software/stow/) — `sudo apt install stow` (or `brew install stow`)
+*   [Deno](https://deno.com/)
+    *   **macOS/Linux**: `curl -fsSL https://deno.land/install.sh | sh` (or `brew install deno`)
+    *   **Windows (PowerShell)**: `iwr https://deno.land/install.ps1 -useb | iex` (or `winget install DenoLand.Deno`)
+*   **macOS/Linux**: [GNU Stow](https://www.gnu.org/software/stow/) for repo mode — `sudo apt install stow` (or `brew install stow`)
+*   **Windows**: No extra dependencies — PowerShell installer handles everything
 
 ### Install via CLI (Deno installer)
 Register the CLI globally:
@@ -112,7 +115,26 @@ ai-harness --update
 > ```
 > After that, the wrapper is patched to always reload — `ai-harness --update` works forever after.
 
-### Repo Mode (GNU Stow symlinks)
+### Compliance Check
+Validate that all installed files match the manifest:
+```bash
+ai-harness --compliance
+```
+Checks for missing source files, stale files in target directories, and dangling manifest entries. Exit code 0 if compliant.
+
+### Windows (PowerShell)
+For Windows users, a PowerShell wrapper is available in the repo:
+```powershell
+# Install CLI + all tool configs
+.\packages\@aiengineeringharness\install.ps1 -InstallCli
+.\packages\@aiengineeringharness\install.ps1 -Tool all -Yes
+
+# Or directly from GitHub (no clone needed):
+iex (iwr https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ps1 -useb)
+```
+Parameters: `-InstallCli`, `-Tool <name>`, `-Update`, `-Compliance`, `-Check`, `-Yes`, `-DryRun`.
+
+### Repo Mode (GNU Stow symlinks) — macOS / Linux only
 For symlink-based installation directly from your cloned directory:
 ```bash
 # Inside ~/wayofmono

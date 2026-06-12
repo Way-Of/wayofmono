@@ -8,7 +8,7 @@
 
 **Supported Tools**: OpenCode, Claude Code, Gemini CLI, Pi, Wo Coder, Antigravity, Codex
 
-**Installation**: `./setup.sh <tool>` where tool is `opencode`, `claude`, `gemini`, `pi`, `wocoder`, or `all`
+**Installation**: `./setup.sh <tool>` (macOS/Linux) or `.\install.ps1 -Tool all` (Windows/PowerShell)
 
 ## Repository Structure
 
