@@ -108,7 +108,7 @@ ai-harness --update
 
 > **First-time bootstrap**: If the update fails with a "Integrity check failed" error (Deno cache mismatch after a push), run once:
 > ```bash
-> deno run --reload -A https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts --update
+> deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --update
 > ```
 > After that, the wrapper is patched to always reload — `ai-harness --update` works forever after.
 

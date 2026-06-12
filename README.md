@@ -31,7 +31,7 @@ deno --version
 **Step 2: Install CLI (Matrix-style)**
 
 ```bash
-deno run -A https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 ```
 
 **Step 3: Install All Tools & Skills**
@@ -49,7 +49,7 @@ ai-harness --update
 **Major Update** (full refresh after a breaking overhaul)
 
 ```bash
-deno run --reload -A https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts --update
+deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --update
 ```
 
 Or wipe everything and reinstall from scratch:
@@ -59,7 +59,7 @@ ai-harness --uninstall=all --yes
 ```
 
 ```bash
-deno run -A https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 ```
 
 ```bash

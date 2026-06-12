@@ -60,9 +60,8 @@ Ticket → /create_plan → /implement_plan → /validate_plan → /validate_tel
 ## Supported Tools & Install
 
 ```bash
-# Install CLI
-deno install -Agf -n ai-harness \
-  https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts
+# Install CLI (one-liner — works on macOS, Linux, Windows)
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 
 # Per tool
 ai-harness --tool=opencode

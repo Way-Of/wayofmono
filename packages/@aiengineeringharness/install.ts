@@ -3,17 +3,17 @@
  * AI Engineering Harness Installer
  *
  * Install as CLI (recommended):
- *   deno install -Agf -n ai-harness \
- *     https://raw.githubusercontent.com/adrielp/ai-engineering-harness/main/install.ts
+ *   deno install -Agf --no-lock --reload -n ai-harness \
+ *     https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts
+ *
+ * Or using built-in --install-cli (auto-resolves URL):
+ *   deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+ *
+ * Then:
  *   ai-harness --tool=claude
  *
  * Direct run:
  *   deno run -A install.ts --tool=claude
- *
- * Private repos — clone and run:
- *   gh repo clone <org>/ai-engineering-harness /tmp/aih -- --depth=1 -q
- *   GITHUB_TOKEN=$(gh auth token) deno run -A /tmp/aih/install.ts --tool=claude
- *   rm -rf /tmp/aih
  *
  * Run --help for full usage.
  */
@@ -193,7 +193,7 @@ function isRemote(url: string): boolean {
 function deriveBaseUrl(): string | null {
   const url = import.meta.url;
   if (!isRemote(url)) return null;
-  // e.g. https://raw.githubusercontent.com/adrielp/ai-engineering-harness/<SHA>/install.ts
+  // e.g. https://raw.githubusercontent.com/Way-Of/wayofmono/<SHA>/packages/@aiengineeringharness/install.ts
   return url.slice(0, url.lastIndexOf("/") + 1);
 }
 
@@ -215,9 +215,9 @@ async function loadManifest(sd: string, token: string | null): Promise<Manifest>
       if ((resp.status === 403 || resp.status === 404) && !token) {
         throw new Error(
           `Failed to fetch manifest (${resp.status}). If this is a private repository, clone and run locally:\n\n` +
-          `  gh repo clone <org>/ai-engineering-harness /tmp/aih -- --depth=1 -q\n` +
-          `  GITHUB_TOKEN=$(gh auth token) deno run -A /tmp/aih/install.ts --tool=<tool>\n` +
-          `  rm -rf /tmp/aih`
+          `  gh repo clone Way-Of/wayofmono /tmp/wom -- --depth=1 -q\n` +
+          `  GITHUB_TOKEN=$(gh auth token) deno run -A /tmp/wom/packages/@aiengineeringharness/install.ts --tool=claude\n` +
+          `  rm -rf /tmp/wom`
         );
       }
       throw new Error(`Failed to fetch manifest from ${manifestUrl}: ${resp.status} ${resp.statusText}`);
@@ -335,7 +335,15 @@ function printHelp(): void {
   console.log(`  ${o("└")}${od("─".repeat(54))}${o("┘")}`);
   console.log();
 
+  const INSTALL_URL = "https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts";
   const sections: Array<{ title: string; items: Array<{ cmd: string; desc: string }> }> = [
+    {
+      title: "quick start (one-liner)",
+      items: [
+        { cmd: `deno run -A ${INSTALL_URL} --install-cli`, desc: "Install CLI with Matrix output" },
+        { cmd: "ai-harness --tool=all --yes", desc: "Install all tool configs at once" },
+      ],
+    },
     {
       title: "install & update",
       items: [

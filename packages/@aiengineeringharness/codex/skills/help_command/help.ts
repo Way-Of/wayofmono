@@ -658,8 +658,7 @@ async function printOnboarding(format: "text" | "json" | "markdown"): Promise<vo
     console.log("# Onboarding — New Developer Quickstart\n");
     console.log("## 1. Install the Harness\n");
     console.log("```bash");
-    console.log("deno install -Agf -n ai-harness \\");
-    console.log("  https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts");
+    console.log("deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli");
     console.log("```\n");
     console.log("## 2. Pick Your Tools\n");
     console.log("Supported tools: claude, opencode, gemini, pi, wocoder, antigravity, codex\n");
@@ -708,8 +707,7 @@ async function printOnboarding(format: "text" | "json" | "markdown"): Promise<vo
   console.log(`\n${BOLD}Onboarding — New Developer Quickstart${RESET}\n`);
 
   console.log(`${CYAN}1.${RESET} ${BOLD}Install the Harness${RESET}`);
-  console.log(`   deno install -Agf -n ai-harness \\`);
-  console.log(`     https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts`);
+  console.log(`   deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli`);
   console.log();
 
   console.log(`${CYAN}2.${RESET} ${BOLD}Pick Your Tools${RESET}`);
