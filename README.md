@@ -157,6 +157,12 @@ deno install -Agf -n ai-harness https://raw.githubusercontent.com/zerwiz/wayofmo
 ai-harness --tool=all --yes
 ```
 
+### Update
+
+```bash
+ai-harness --update
+```
+
 That's it — project-local packages install to `node_modules/`, not globally. Binaries land in `node_modules/.bin/` accessed via `npx`/`pnpm`.
 
 ### GNU Stow (Optional — symlink-based updates)
