@@ -2,8 +2,9 @@
 /**
  * Add 10 unified build_tool_* skills to manifest.json for all 7 tools.
  */
+import { join } from "jsr:@std/path@1/join";
 
-const manifestPath = `${import.meta.dirname}/../manifest.json`;
+const manifestPath = join(import.meta.dirname!, "..", "manifest.json");
 const manifest = JSON.parse(Deno.readTextFileSync(manifestPath));
 
 interface SkillEntry {

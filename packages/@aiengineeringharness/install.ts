@@ -21,6 +21,13 @@
 import { parseArgs } from "jsr:@std/cli@1/parse-args";
 import { ensureDir } from "jsr:@std/fs@1/ensure-dir";
 import { join } from "jsr:@std/path@1/join";
+import { dirname } from "jsr:@std/path@1/dirname";
+import { relative } from "jsr:@std/path@1/relative";
+
+function normalizeSlashes(p: string): string {
+  if (Deno.build.os === "windows") return p.replace(/\\/g, "/");
+  return p;
+}
 
 // ---------------------------------------------------------------------------
 // Types
@@ -120,7 +127,7 @@ const HARNESS_VERSION_FILENAME = ".harness-version";
 // ---------------------------------------------------------------------------
 
 function versionFileFor(targetDir: string): string {
-  return `${targetDir}/${HARNESS_VERSION_FILENAME}`;
+  return join(targetDir, HARNESS_VERSION_FILENAME);
 }
 
 async function readInstalledVersion(targetDir: string): Promise<string | null> {
@@ -201,7 +208,9 @@ function deriveBaseUrl(): string | null {
 function scriptDir(): string {
   const url = import.meta.url;
   if (url.startsWith("file://")) {
-    return new URL(".", url).pathname;
+    let p = new URL(".", url).pathname;
+    if (Deno.build.os === "windows" && p.startsWith("/")) p = p.slice(1);
+    return p;
   }
   return url.slice(0, url.lastIndexOf("/") + 1);
 }
@@ -213,18 +222,19 @@ async function loadManifest(sd: string, token: string | null): Promise<Manifest>
     const resp = await fetchWithAuth(manifestUrl, token);
     if (!resp.ok) {
       if ((resp.status === 403 || resp.status === 404) && !token) {
+        const cloneDir = Deno.build.os === "windows" ? "%TEMP%\\wom" : "/tmp/wom";
+        const sep = Deno.build.os === "windows" ? "\\" : "/";
         throw new Error(
           `Failed to fetch manifest (${resp.status}). If this is a private repository, clone and run locally:\n\n` +
-          `  gh repo clone Way-Of/wayofmono /tmp/wom -- --depth=1 -q\n` +
-          `  GITHUB_TOKEN=$(gh auth token) deno run -A /tmp/wom/packages/@aiengineeringharness/install.ts --tool=claude\n` +
-          `  rm -rf /tmp/wom`
+          `  git clone https://github.com/Way-Of/wayofmono.git ${cloneDir} --depth=1 -q\n` +
+          `  GITHUB_TOKEN=$(gh auth token) deno run -A ${cloneDir}${sep}packages${sep}@aiengineeringharness${sep}install.ts --tool=claude`
         );
       }
       throw new Error(`Failed to fetch manifest from ${manifestUrl}: ${resp.status} ${resp.statusText}`);
     }
     return resp.json() as Promise<Manifest>;
   }
-  const text = await Deno.readTextFile(`${sd}manifest.json`);
+  const text = await Deno.readTextFile(join(sd, "manifest.json"));
   return JSON.parse(text) as Manifest;
 }
 
@@ -257,9 +267,11 @@ async function fetchRemoteFile(baseUrl: string, src: string, token: string | nul
 function patchDenoWrapperReload(): void {
   // Patches the deno run wrapper to embed --reload, ensuring
   // that ai-harness --update always fetches fresh from the URL.
-  const home = Deno.env.get("HOME") || "/root";
+  const home = Deno.env.get("HOME") ?? Deno.env.get("USERPROFILE");
+  if (!home) return; // can't determine home dir
   const denoBin = Deno.env.get("DENO_INSTALL_ROOT") || join(home, ".deno", "bin");
-  const wrapperPath = join(denoBin, "ai-harness");
+  const wrapperName = Deno.build.os === "windows" ? "ai-harness.cmd" : "ai-harness";
+  const wrapperPath = join(denoBin, wrapperName);
   try {
     let content = Deno.readTextFileSync(wrapperPath);
     // Already wired? Different tools may add flags in different order
@@ -362,6 +374,7 @@ function printHelp(): void {
       items: [
         { cmd: "--prune", desc: "Interactive: review & remove non-manifest skills across all tools" },
         { cmd: "--check", desc: "Check installed version vs manifest" },
+        { cmd: "--compliance", desc: "Validate all tools match manifest — no missing/stale/dangling files" },
         { cmd: "--uninstall=<name>", desc: "Remove installed files (claude, opencode, all, ...)" },
         { cmd: "--no-validate", desc: "Skip compliance validation after --update" },
       ],
@@ -565,8 +578,9 @@ async function collectFilePaths(dir: string, baseDir: string): Promise<string[]>
   const results: string[] = [];
   try {
     for await (const entry of Deno.readDir(dir)) {
-      const fullPath = `${dir}/${entry.name}`;
-      const relPath = fullPath.startsWith(baseDir + "/") ? fullPath.slice(baseDir.length + 1) : entry.name;
+      const fullPath = join(dir, entry.name);
+      let relPath = relative(baseDir, fullPath);
+      if (Deno.build.os === "windows") relPath = relPath.replace(/\\/g, "/");
       if (entry.isDirectory) {
         results.push(...await collectFilePaths(fullPath, baseDir));
       } else if (entry.isFile) {
@@ -592,7 +606,7 @@ async function removeStaleFiles(
 
   const installedFiles: string[] = [];
   for (const subdir of knownSubdirs) {
-    installedFiles.push(...await collectFilePaths(`${targetDir}/${subdir}`, targetDir));
+    installedFiles.push(...await collectFilePaths(join(targetDir, subdir), targetDir));
   }
 
   const stalePaths = installedFiles.filter((f) => !expectedPaths.has(f));
@@ -611,8 +625,8 @@ async function removeStaleFiles(
   let failed = 0;
 
   for (const f of stalePaths) {
-    const fullPath = `${targetDir}/${f}`;
-    parentDirs.add(fullPath.slice(0, fullPath.lastIndexOf("/")));
+    const fullPath = join(targetDir, f);
+    parentDirs.add(dirname(fullPath));
 
     if (opts.dryRun) { console.log(`  ${od("-")} would remove  ${od(f)}`); removed++; continue; }
 
@@ -633,7 +647,7 @@ async function removeStaleFiles(
       try {
         if (Array.from(Deno.readDirSync(dir)).length === 0) {
           await Deno.remove(dir);
-          console.log(`  ${o("✧")} removed empty dir  ${od(dir.slice(targetDir.length + 1))}`);
+          console.log(`  ${o("✧")} removed empty dir  ${od(normalizeSlashes(relative(targetDir, dir)))}`);
         }
       } catch { /* already gone or inaccessible */ }
     }
@@ -750,7 +764,7 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
     }
 
     for (const fileEntry of comp.files) {
-      const destPath = `${targetDir}/${fileEntry.dest}`;
+      const destPath = join(targetDir, fileEntry.dest);
 
       // Get source content
       let srcContent: string;
@@ -801,7 +815,7 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
         continue;
       }
 
-      await ensureDir(destPath.slice(0, destPath.lastIndexOf("/")));
+      await ensureDir(dirname(destPath));
       await Deno.writeTextFile(destPath, srcContent);
       const action = existingContent === null ? "installed" : "updated";
       console.log(`  ${o("✧")} ${action.padEnd(9)}  ${od(fileEntry.dest)}`);
@@ -832,7 +846,7 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 
 const args = parseArgs(Deno.args, {
   string: ["tool", "skill", "dest", "mode", "report-url", "uninstall"],
-  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs", "report-skills", "update", "no-validate", "prune", "install-cli"],
+  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs", "report-skills", "update", "no-validate", "prune", "install-cli", "compliance"],
   alias: { h: "help", n: "dry-run", y: "yes", i: "interactive", l: "local" },
 });
 
@@ -928,6 +942,108 @@ if (args["sync-docs"]) {
   Deno.exit(0);
 }
 
+// --compliance: validate all tools match manifest — no stale files, no missing files, no dangling entries
+if (args.compliance) {
+  const sd = scriptDir();
+  const token = resolveToken();
+  const manifest = await loadManifest(sd, token);
+  const knownSubdirs = ["skills", "agents", "commands", "prompts", "extensions", "themes", "keybindings"];
+  let totalMissing = 0;
+  let totalStale = 0;
+  let totalDangling = 0;
+  let totalOk = 0;
+  let totalTools = 0;
+
+  console.log(`\n  ${ob("⟡ COMPLIANCE CHECK")}  ${od("manifest v" + manifest.version)}\n`);
+
+  for (const [toolName, toolConfig] of Object.entries(manifest.tools)) {
+    totalTools++;
+    const targetDir = expandHome(toolConfig.target);
+    const toolDisplay = `${toolName.padEnd(14)} ${od(targetDir)}`;
+
+    // Verify all manifest source files exist on disk
+    const missing: string[] = [];
+    const srcRoot = sd;
+    for (const comp of Object.values(toolConfig.components)) {
+      for (const f of comp.files) {
+        const srcPath = join(srcRoot, f.src);
+        try {
+          await Deno.stat(srcPath);
+        } catch {
+          missing.push(f.src);
+        }
+      }
+    }
+
+    // Collect installed files & check for stale (non-manifest) files
+    const expectedPaths = new Set<string>();
+    for (const comp of Object.values(toolConfig.components)) {
+      for (const f of comp.files) {
+        expectedPaths.add(f.dest);
+      }
+    }
+
+    const installedFiles: string[] = [];
+    for (const subdir of knownSubdirs) {
+      installedFiles.push(...await collectFilePaths(join(targetDir, subdir), targetDir));
+    }
+
+    const staleFiles = installedFiles.filter((f) => !expectedPaths.has(f));
+
+    // Check for dangling manifest entries (src not matching dest structure)
+    const expectedSrc = new Set<string>();
+    for (const comp of Object.values(toolConfig.components)) {
+      for (const f of comp.files) {
+        expectedSrc.add(f.src);
+      }
+    }
+
+    if (missing.length > 0) {
+      totalMissing += missing.length;
+      console.log(`  ${cross()} ${toolDisplay}: ${missing.length} missing src file(s)`);
+    } else {
+      totalOk++;
+    }
+
+    if (staleFiles.length > 0) {
+      totalStale += staleFiles.length;
+      console.log(`  ${warn()} ${toolName.padEnd(14)} ${staleFiles.length} stale file(s) in target`);
+    }
+
+    if (missing.length === 0 && staleFiles.length === 0) {
+      console.log(`  ${check()} ${od(toolDisplay)}`);
+    }
+  }
+
+  // Check for dangling manifest entries
+  for (const [toolName, toolConfig] of Object.entries(manifest.tools)) {
+    const targetDir = expandHome(toolConfig.target);
+    for (const comp of Object.values(toolConfig.components)) {
+      for (const f of comp.files) {
+        const srcPath = join(sd, f.src);
+        try {
+          await Deno.stat(srcPath);
+        } catch {
+          totalDangling++;
+          console.log(`  ${cross()} ${toolName.padEnd(14)} dangling entry: ${f.src}`);
+        }
+      }
+    }
+  }
+
+  console.log();
+  if (totalMissing === 0 && totalStale === 0 && totalDangling === 0) {
+    console.log(`  ${check()} All ${totalTools} tools compliant — no issues found.\n`);
+    Deno.exit(0);
+  } else {
+    if (totalMissing > 0) console.log(`  ${cross()} ${totalMissing} missing source file(s)`);
+    if (totalStale > 0) console.log(`  ${warn()} ${totalStale} stale file(s) in target dirs`);
+    if (totalDangling > 0) console.log(`  ${cross()} ${totalDangling} dangling manifest entr(ies)`);
+    console.log();
+    Deno.exit(1);
+  }
+}
+
 // --check: compare installed versions against manifest
 if (args["check"]) {
   const sd = scriptDir();
@@ -968,7 +1084,7 @@ if (args["prune"]) {
 
     const allFiles: string[] = [];
     for (const subdir of knownSubdirs) {
-      allFiles.push(...await collectFilePaths(`${targetDir}/${subdir}`, targetDir));
+      allFiles.push(...await collectFilePaths(join(targetDir, subdir), targetDir));
     }
 
     const extraFiles = allFiles.filter((f) => !expectedPaths.has(f));
@@ -976,7 +1092,7 @@ if (args["prune"]) {
       toolExtras.push({
         tool: toolName,
         targetDir,
-        files: extraFiles.map((f) => ({ path: f, fullPath: `${targetDir}/${f}` })),
+        files: extraFiles.map((f) => ({ path: f, fullPath: join(targetDir, f) })),
       });
       console.log(`  ${o("┄")} ${C.bold}${toolName}${C.reset}: ${yellow(String(extraFiles.length))} extra file(s)  ${od(targetDir)}`);
     } else {
@@ -1042,14 +1158,14 @@ if (args["prune"]) {
     // Prune empty dirs
     const parentDirs = new Set(chosenFiles.map((f) => {
       const fe = te.files.find((fe) => fe.path === f)!;
-      return fe.fullPath.slice(0, fe.fullPath.lastIndexOf("/"));
+      return dirname(fe.fullPath);
     }));
     const sorted = [...parentDirs].sort((a, b) => b.length - a.length);
     for (const dir of sorted) {
       try {
         if (Array.from(Deno.readDirSync(dir)).length === 0) {
           await Deno.remove(dir);
-          console.log(`  ${o("✧")} removed empty dir  ${od(dir.slice(te.targetDir.length + 1))}`);
+          console.log(`  ${o("✧")} removed empty dir  ${od(normalizeSlashes(relative(te.targetDir, dir)))}`);
         }
       } catch { /* already gone */ }
     }
@@ -1100,7 +1216,7 @@ if (args["install-cli"]) {
 
   const installCmd = new Deno.Command("deno", {
     args: ["install", "-Agf", "--no-lock", "--reload", "-n", "ai-harness", installUrl],
-    cwd: "/tmp",
+    cwd: Deno.env.get("TMPDIR") || Deno.env.get("TEMP") || Deno.env.get("TMP") || "/tmp",
     stdin: "inherit",
     stdout: "inherit",
     stderr: "inherit",
@@ -1138,7 +1254,7 @@ if (args.update) {
   if (!skipBinary) {
     const updateCmd = new Deno.Command("deno", {
       args: ["install", "-Agf", "--no-lock", "--reload", "-n", "ai-harness", installUrl],
-      cwd: "/tmp",
+      cwd: Deno.env.get("TMPDIR") || Deno.env.get("TEMP") || Deno.env.get("TMP") || "/tmp",
       stdin: "inherit",
       stdout: "inherit",
       stderr: "inherit",
@@ -1405,7 +1521,7 @@ if (args.uninstall) {
 
     for (const comp of compsToRemove) {
       for (const fileEntry of comp.files) {
-        const destPath = `${targetDir}/${fileEntry.dest}`;
+        const destPath = join(targetDir, fileEntry.dest);
         if (args["dry-run"]) {
           console.log(`  would remove  ${fileEntry.dest}`);
           continue;
@@ -1427,10 +1543,10 @@ if (args.uninstall) {
 
     if (!args["dry-run"]) {
       for (const subdir of ["agents", "skills", "commands", "prompts", "extensions"]) {
-        const dir = `${targetDir}/${subdir}`;
+        const dir = join(targetDir, subdir);
         try { await Deno.remove(dir); } catch { /* not empty or not found */ }
       }
-      const versionFile = `${targetDir}/.ai-harness-version`;
+      const versionFile = join(targetDir, ".ai-harness-version");
       try { await Deno.remove(versionFile); } catch { /* not found */ }
     }
 

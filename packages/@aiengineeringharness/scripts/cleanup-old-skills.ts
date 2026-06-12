@@ -3,9 +3,10 @@
  * Remove old per-tool skill entries from manifest.json and delete directories.
  * Run BEFORE deploying with ai-harness --tool=all --yes.
  */
+import { join } from "jsr:@std/path@1/join";
 
-const HARNESS_DIR = `${import.meta.dirname}/..`;
-const manifestPath = `${HARNESS_DIR}/manifest.json`;
+const HARNESS_DIR = join(import.meta.dirname!, "..");
+const manifestPath = join(HARNESS_DIR, "manifest.json");
 const manifest = JSON.parse(Deno.readTextFileSync(manifestPath));
 
 // Tool-specific old skill names to remove
@@ -117,7 +118,7 @@ console.log(`\nRemoved ${removedCount} old skill entries from manifest.`);
 let deletedDirCount = 0;
 for (const [tool, skills] of Object.entries(OLD_SKILLS_BY_TOOL)) {
   for (const skill of skills) {
-    const dir = `${HARNESS_DIR}/${tool}/skills/${skill}`;
+    const dir = join(HARNESS_DIR, tool, "skills", skill);
     try {
       const stat = Deno.statSync(dir);
       if (stat.isDirectory) {
@@ -139,7 +140,7 @@ for (const [tool, skills] of Object.entries(OLD_SKILLS_BY_TOOL)) {
 for (const [tool, extras] of Object.entries(EXTRA_VARIANTS)) {
   for (const extra of extras) {
     if (OLD_SKILLS_BY_TOOL[tool]?.includes(extra)) continue; // already handled above
-    const dir = `${HARNESS_DIR}/${tool}/skills/${extra}`;
+    const dir = join(HARNESS_DIR, tool, "skills", extra);
     try {
       const stat = Deno.statSync(dir);
       if (stat.isDirectory) {

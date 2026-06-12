@@ -5,6 +5,8 @@
  * Each skill gets a SKILL.md with tool-appropriate frontmatter
  * and the same body content (knows all 7 tool formats).
  */
+import { join } from "jsr:@std/path@1/join";
+import { relative } from "jsr:@std/path@1/relative";
 
 const TOOLS = ["opencode", "claude", "gemini", "pi", "antigravity", "codex", "wocoder"] as const;
 
@@ -474,14 +476,14 @@ function generateFile(tool: ToolName, skill: SkillDef): string {
   return frontmatter + skill.body;
 }
 
-const ROOT = `${import.meta.dirname}/..`;
+const ROOT = join(import.meta.dirname!, "..");
 
 for (const skill of SKILLS) {
   console.log(`\nGenerating skill: ${skill.id}`);
   for (const tool of TOOLS) {
     const dirName = tool === "pi" ? skill.piId : skill.id;
-    const targetDir = `${ROOT}/${tool}/skills/${dirName}`;
-    const targetFile = `${targetDir}/SKILL.md`;
+    const targetDir = join(ROOT, tool, "skills", dirName);
+    const targetFile = join(targetDir, "SKILL.md");
     Deno.mkdirSync(targetDir, { recursive: true });
     const content = generateFile(tool, skill);
     Deno.writeTextFileSync(targetFile, content);
