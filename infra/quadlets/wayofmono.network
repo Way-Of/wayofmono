@@ -1,0 +1,7 @@
+[Unit]
+Description=WayOfMono Network Configuration
+
+[Network]
+Label=app=wayofmono
+# If you want to use an existing Podman network, you can comment out the [Network] section 
+# and use Network=<your_existing_network> in the .container files.

@@ -1,0 +1,24 @@
+{
+  "packages": [
+    "nodejs@22",
+    "pnpm@latest",
+    "deno@latest",
+    "bun@latest",
+    "podman@latest",
+    "podman-compose@latest"
+  ],
+  "shell": {
+    "init_hook": [
+      "echo 'WayOfMono Devbox Shell Ready'",
+      "echo 'Node version: '$(node --version)",
+      "echo 'PNPM version: '$(pnpm --version)",
+      "echo 'Deno version: '$(deno --version)",
+      "echo 'Bun version: '$(bun --version)"
+    ],
+    "scripts": {
+      "install-harness": "deno install -Agf -n ai-harness packages/@aiengineeringharness/install.ts",
+      "build-all": "pnpm install && pnpm build",
+      "deploy-ui": "bash scripts/deploy-dashboard.sh"
+    }
+  }
+}
