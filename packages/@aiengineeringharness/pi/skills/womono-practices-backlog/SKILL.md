@@ -1,5 +1,5 @@
 ---
-name: womono-practices-backlog
+name: womono_practices_backlog
 description: Creates tickets across all WoM projects (WOMONO, WOW, OPT) with correct naming, namespace resolution, numbering, and frontmatter. Use after an audit or when discovering something that needs fixing.
 ---
 

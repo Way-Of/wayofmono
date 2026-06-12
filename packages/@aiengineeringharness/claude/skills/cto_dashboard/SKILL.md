@@ -3,7 +3,11 @@ name: cto_dashboard
 description: >-
   CTO dashboard with ticket overview, developer progress, review queue, and
   GitHub PR integration
-allowed-tools: 'Read, Grep, Glob, Ls, Write'
+allowed-tools: - read
+  - grep
+  - glob
+  - ls
+  - write
 ---
 
 # CTO Dashboard & Developer Reporting

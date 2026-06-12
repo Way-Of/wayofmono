@@ -1,9 +1,11 @@
 ---
-name: help-command
+name: help_command
 description: >-
   Unified /help system — skills, commands, agents, workflows, practices, search,
   onboarding
-allowed-tools: 'Read, Grep, Glob'
+allowed-tools: - read
+  - grep
+  - glob
 ---
 
 # Help Command Skill

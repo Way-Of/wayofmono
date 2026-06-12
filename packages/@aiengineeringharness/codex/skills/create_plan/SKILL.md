@@ -4,9 +4,7 @@ description: >-
   Create detailed, actionable implementation plans through an interactive,
   iterative process, leveraging Gemini CLI tools for research and documentation.
 disable-model-invocation: true
-allowed-tools: >-
-  read, file, write, file, run, shell, command, glob, search, file, content,
-  write, todos, delegate, to, agent
+allowed-tools: 'read, write, bash, glob, grep, todowrite, task'
 ---
 
 # Create Plan

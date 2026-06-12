@@ -1,12 +1,12 @@
 ---
-name: init-harness
+name: init_harness
 description: >-
   Initialize the AI Engineering Harness in a repository by running the tool's
   project memory init, then cloning the shared f-rr-d thoughts repo and setting
   up the standard directory structure. The f-rr-d repo is append-only — never
   delete, rename, or move anything inside thoughts/.
 disable-model-invocation: true
-allowed-tools: 'Read, Write, Bash'
+allowed-tools: 'read, write, bash'
 ---
 
 # Initialize Harness

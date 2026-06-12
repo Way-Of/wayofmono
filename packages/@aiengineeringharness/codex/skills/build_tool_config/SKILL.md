@@ -2,7 +2,7 @@
 name: build_tool_config
 description: >-
   Configure all 7 AI coding tools — knows settings.json, providers, models, packages, keybindings, all configuration options.
-allowed-tools: 'read_file, write_file, run_shell_command, glob, grep'
+allowed-tools: 'read, write, edit, bash, grep, glob, websearch'
 ---
 
 # build_tool_config — Unified Configuration Reference

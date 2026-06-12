@@ -21,10 +21,10 @@ deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts
 Check a single tool:
 
 ```bash
-deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts --tool=antigravity
+deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts --tool=opencode
 ```
 
-Replace `antigravity` with: `opencode`, `claude`, `gemini`, `pi`, `codex`, `wocoder`.
+Replace `opencode` with: `claude`, `gemini`, `pi`, `antigravity`, `codex`, `wocoder`.
 
 ## Auto-Fix Mode
 
@@ -33,6 +33,38 @@ Some issues can be auto-fixed:
 ```bash
 deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts --fix
 ```
+
+## Installer Compliance (`--compliance`)
+
+The installer also has a built-in `--compliance` flag that validates manifest integrity:
+
+```bash
+ai-harness --compliance
+```
+
+This checks:
+- All manifest source files exist on disk
+- No stale files in managed tool directories
+- No dangling manifest entries pointing to missing files
+- Reports per-tool summary: ok / missing / stale
+- Exit code 0 if compliant, 1 if issues found
+
+## Platform-Aware Install Paths
+
+The installer detects the OS at runtime (`Deno.build.os`) and resolves per-tool target directories accordingly.
+Canonical install path reference docs for all 7 tools across Linux/macOS/Windows:
+
+| Tool | Linux | macOS | Windows |
+|------|-------|-------|---------|
+| OpenCode | `~/.config/opencode/` | `~/.config/opencode/` | `%USERPROFILE%\.config\opencode\` |
+| Claude Code | `~/.claude/` | `~/.claude/` | `%USERPROFILE%\.claude\` |
+| Gemini CLI | `~/.gemini/` | `~/.gemini/` | `%USERPROFILE%\.gemini\` |
+| Pi | `~/.pi/agent/` | `~/.pi/agent/` | `%USERPROFILE%\.pi\agent\` |
+| Antigravity | `~/.antigravity/` | `~/.antigravity/` | `%USERPROFILE%\.antigravity\` |
+| Codex | `~/.codex/` | `~/.codex/` | `%USERPROFILE%\.codex\` |
+| Wo Coder | `~/.wocoder/` | `~/.wocoder/` | `%USERPROFILE%\.wocoder\` |
+
+Full reference docs at `thoughts/wayofmono/docs/tools/ai-coding-tools/`.
 
 ## What Is Validated
 

@@ -2,7 +2,7 @@
 name: build_ticket_executor
 description: >-
   Execute approved plans in phases, validating telemetry and committing changes
-  for Gemini
+  for OpenCode
 allowed-tools: 'read, write, grep, glob, web, search'
 ---
 

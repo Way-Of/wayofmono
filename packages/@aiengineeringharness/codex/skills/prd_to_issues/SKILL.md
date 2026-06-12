@@ -1,10 +1,7 @@
 ---
 name: prd_to_issues
-description: >-
-  Break a PRD into independently-workable, vertical-slice issues written as
-  local markdown files in issues/. Use when the user wants to turn a PRD into a
-  list of concrete, demoable tasks ordered by dependencies.
-allowed-tools: 'read, file, run, shell, command, glob, write, file'
+description: Break a PRD into independently-workable, vertical-slice issues written as local markdown files in issues/. Use when the user wants to turn a PRD into a list of concrete, demoable tasks ordered by dependencies.
+allowed-tools: read, bash, glob, write
 ---
 
 # PRD to Issues

@@ -5,7 +5,7 @@ description: >
   spec, or run a generic health check on the local OTel stack. Delegates to the
   observability-driven-development skill's Validation section.
 disable-model-invocation: true
-allowed-tools: 'read, file, run, shell, command, grep, glob'
+allowed-tools: 'read, bash, grep, glob'
 ---
 
 # Validate Telemetry

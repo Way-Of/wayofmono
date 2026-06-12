@@ -1,7 +1,7 @@
 ---
 name: build_tool
 description: Universal builder — generates ANY component type (skills, agents, extensions, commands, configs, keybindings, themes, prompts, TUI) for ANY of 7 AI coding tools. Knows ALL per-tool formats, casing rules, naming conventions, and frontmatter specs. Fetches latest online docs before generating.
-allowed-tools: read_file, write_file, run_shell_command
+allowed-tools: read, write, bash, edit, grep, glob, webfetch, websearch, question
 ---
 
 # Build Tool — Universal Component Generator

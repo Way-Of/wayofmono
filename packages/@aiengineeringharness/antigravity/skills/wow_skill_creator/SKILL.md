@@ -1,11 +1,6 @@
 ---
 name: wow_skill_creator
-description: >-
-  Facilitates the creation of new AI tool skills specifically for the Way of
-  Work platform, ensuring adherence to WoW architectural mandates and best
-  practices. Use this skill when generating new WoW-specific skills, defining
-  their structure, or incorporating WoW's unique requirements like
-  multi-tenancy, access control, and HITL.
+description: "Facilitates the creation of new AI tool skills specifically for the Way of Work platform, ensuring adherence to WoW architectural mandates and best practices. Use this skill when generating new WoW-specific skills, defining their structure, or incorporating WoW's unique requirements like multi-tenancy, access control, and HITL."
 ---
 
 # Way of Work Skill Creator
