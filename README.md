@@ -31,7 +31,7 @@ deno --version
 **Step 2: Install the Harness**
 
 ```bash
-deno install -Agf -n ai-harness https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts
+deno install -Agf --no-lock --reload -n ai-harness https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts
 ```
 
 **Step 3: Install All Tools & Skills**
@@ -61,7 +61,7 @@ ai-harness --uninstall=all --yes
 ```
 
 ```bash
-deno install -Agf -n ai-harness https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts
+deno install -Agf --no-lock --reload -n ai-harness https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts
 ```
 
 ```bash
@@ -230,7 +230,7 @@ deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@ai
 ### Global CLI Install (Recommended for repeated use)
 
 ```bash
-deno install -Agf -n ai-harness https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts
+deno install -Agf --no-lock --reload -n ai-harness https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts
 ```
 
 ```bash
