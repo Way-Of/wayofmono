@@ -104,7 +104,10 @@ deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@ai
 
 **Windows (PowerShell):**
 ```powershell
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+# First run (bypass Deno cache for fresh download):
+deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+
+# After install, the CLI is patched — subsequent updates work without --reload
 ```
 
 Or use the PowerShell wrapper:
