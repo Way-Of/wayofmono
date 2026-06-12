@@ -1,0 +1,214 @@
+{
+  "tools": [
+    {
+      "name": "list_tickets",
+      "description": "List tickets with optional filtering by namespace, status, assignee, project, category, or role",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "namespace": {
+            "type": "string",
+            "enum": ["wow", "opticat", "proj", "team"],
+            "description": "Filter by ticket namespace"
+          },
+          "status": {
+            "type": "string",
+            "description": "Filter by status"
+          },
+          "assignee": {
+            "type": "string",
+            "description": "Filter by assignee (without @ prefix)"
+          },
+          "project": {
+            "type": "string",
+            "enum": ["WO", "OPT", "PROJ", "TEAM"],
+            "description": "Filter by project"
+          },
+          "category": {
+            "type": "string",
+            "description": "Filter by category"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["cto", "lead", "senior", "junior"],
+            "description": "Filter by required role"
+          }
+        }
+      }
+    },
+    {
+      "name": "get_ticket",
+      "description": "Get full ticket metadata and content by ticket ID",
+      "inputSchema": {
+        "type": "object",
+        "required": ["ticket_id"],
+        "properties": {
+          "ticket_id": {
+            "type": "string",
+            "pattern": "^(WOW|OPT|PROJ|TEAM)-\\d+$",
+            "description": "The ticket ID (e.g., TKT-001)"
+          }
+        }
+      }
+    },
+    {
+      "name": "update_ticket",
+      "description": "Update ticket status, assignee, blockers, or PR link",
+      "inputSchema": {
+        "type": "object",
+        "required": ["ticket_id"],
+        "properties": {
+          "ticket_id": {
+            "type": "string",
+            "pattern": "^(WOW|OPT|PROJ|TEAM)-\\d+$"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["Backlog", "Planned", "Ready", "In Progress", "Submitted for Review", "Changes Requested", "Approved", "Done", "Blocked"]
+          },
+          "assignee": {
+            "type": "string",
+            "description": "New assignee (e.g., 'zerwiz')"
+          },
+          "blockers": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Array of blocking ticket IDs"
+          },
+          "unblocks": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Array of unblocked ticket IDs"
+          },
+          "pr_url": {
+            "type": "string",
+            "description": "Link to GitHub PR"
+          }
+        }
+      }
+    },
+    {
+      "name": "link_todo_to_ticket",
+      "description": "Bind a TODO.md section to a ticket ID with an owner",
+      "inputSchema": {
+        "type": "object",
+        "required": ["ticket_id", "section", "owner"],
+        "properties": {
+          "ticket_id": {
+            "type": "string",
+            "pattern": "^(WOW|OPT|PROJ|TEAM)-\\d+$"
+          },
+          "section": {
+            "type": "string",
+            "description": "The section header in TODO.md (e.g., '## Active Tickets')"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Developer ID owning the task (e.g., 'zerwiz')"
+          }
+        }
+      }
+    },
+    {
+      "name": "submit_for_review",
+      "description": "Submit completed work for CTO review. Creates GitHub PR link if provided.",
+      "inputSchema": {
+        "type": "object",
+        "required": ["ticket_id"],
+        "properties": {
+          "ticket_id": {
+            "type": "string",
+            "pattern": "^(WOW|OPT|PROJ|TEAM)-\\d+$"
+          },
+          "pr_url": {
+            "type": "string",
+            "description": "Optional GitHub PR URL"
+          }
+        }
+      }
+    },
+    {
+      "name": "cto_review_action",
+      "description": "CTO reviews submitted work — approve, request changes, or reject",
+      "inputSchema": {
+        "type": "object",
+        "required": ["ticket_id", "action"],
+        "properties": {
+          "ticket_id": {
+            "type": "string",
+            "pattern": "^(WOW|OPT|PROJ|TEAM)-\\d+$"
+          },
+          "action": {
+            "type": "string",
+            "enum": ["approve", "request-changes", "reject"]
+          },
+          "comments": {
+            "type": "string",
+            "description": "Optional review comments"
+          }
+        }
+      }
+    },
+    {
+      "name": "sync_personal_todos",
+      "description": "Regenerate personal TODO.md for all developers from assigned shared tickets",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "developer_id": {
+            "type": "string",
+            "description": "Optional: sync only for a specific developer"
+          }
+        }
+      }
+    },
+    {
+      "name": "create_ticket",
+      "description": "Create a new ticket with full metadata and content",
+      "inputSchema": {
+        "type": "object",
+        "required": ["title", "namespace", "priority", "category"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Ticket title"
+          },
+          "namespace": {
+            "type": "string",
+            "enum": ["wow", "opticat", "proj", "team"]
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["Critical", "High", "Medium", "Low"]
+          },
+          "category": {
+            "type": "string",
+            "description": "Technical category"
+          },
+          "assignee": {
+            "type": "string",
+            "description": "Assignee username"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["Feature", "Bug", "Chore"]
+          },
+          "context": {
+            "type": "string",
+            "description": "Context/background"
+          },
+          "requirements": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "List of requirements"
+          },
+          "success_criteria": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "List of success criteria"
+          }
+        }
+      }
+    }
+  ]
+}
