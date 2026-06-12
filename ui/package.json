@@ -4,7 +4,7 @@
   "private": true,
   "main": "electron/main.js",
   "scripts": {
-    "dev": "next dev -p 3000 2>&1 | tee dev.log",
+    "dev": "next dev -p ${PORT:-3000} 2>&1 | tee dev.log",
     "build": "next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
     "start": "NODE_ENV=production bun .next/standalone/server.js 2>&1 | tee server.log",
     "lint": "eslint .",
@@ -12,7 +12,7 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:reset": "prisma migrate reset",
-    "electron:dev": "concurrently -k \"bun dev\" \"wait-on http://localhost:3000 && cross-env NODE_ENV=development electron .\"",
+    "electron:dev": "concurrently -k \"bun dev\" \"wait-on http://localhost:${PORT:-3000} && cross-env NODE_ENV=development electron .\"",
     "electron:build": "bun run build && electron-builder",
     "electron:dist": "bun run build && electron-builder --publish=never",
     "postinstall": "electron-builder install-app-deps"

@@ -12,7 +12,7 @@ bun install --frozen-lockfile 2>/dev/null || bun install
 echo "==> Starting dashboard dev server on http://localhost:$PORT ..."
 
 # Start server in background, wait for it, then open browser
-bun run dev -- -p "$PORT" &
+PORT="$PORT" bun run dev &
 SERVER_PID=$!
 
 # Wait for the server to start accepting connections
