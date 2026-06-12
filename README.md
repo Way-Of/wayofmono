@@ -1,136 +1,38 @@
-# WayOfMono (Wo)
-
-The ultimate monorepo consolidation for high-performance coding agents. WayOfMono provides a shared Intelligence Backend (Packages, Tools, Memory) that serves five distinct Agent Frontends, with Wo (Way of Coding) as our primary synthesized interface.
-
-🎛️ Multi-Interface Architecture
-
-WayOfMono is built on an Interface-Agnostic Philosophy. Our core logic and tools are shared across all major coding agent platforms, allowing you to work with your codebase using your preferred interaction model:
-
-    wocode: High-performance coding assistant for automated engineering and refactoring (@wayofmono/wo-coding-agent). Native to this monorepo.
-    wouser: General-purpose user agent SDK and CLI (@wayofmono/wo-agent). Native to this monorepo.
-    Claude Code: Agentic AI coding from Anthropic in your terminal.
-    Pi: Full compatibility with the official Pi Agent standards from earendil-works.
-    OpenCode: Open-source, TUI-driven coding agent following the OpenCode standard.
-    Gemini CLI: Multimodal, high-velocity automation using the Gemini CLI standard.
-    Antigravity: Agent-first development platform for autonomous execution and web tasks.
-
----
-
-## 🎛️ AI Engineering Harness
-
-The **AI Engineering Harness** is a shared backend that serves all agent frontends. It provides:
-
-- **Shared agents, commands, skills, and extensions** for all agent frontends
-- **Install once, configure anywhere** – deploy to Claude Code, Pi, OpenCode, Gemini CLI, Antigravity, or Wo Coder with the same prompt library
-- **Battle-tested prompts and workflows** ready to use from day one
-- **Telemetry and reporting** to the CTO Dashboard
-
-### Shared Resources
-
-The harness bundles:
-
-- **88 skills** (81 canonical + 7 new skills) shared across all tools
-- **6 subagents** for specialized tasks
-- **Workflow packages** (CI/CD, review, quality checks)
-- **Ticket templates** (WOW, OPT, WOMONO, GLOBAL)
-- **TUI dashboard components** for terminal UI
-- **Multi-format documentation** (MDX, HTML, PDF, JSON)
-- **Mermaid TUI renderer** (ASCII art diagrams)
-
-### Why Use the Harness
-
-- **Interface-agnostic**: Core logic works everywhere
-- **Zero duplication**: One codebase, infinite frontends
-- **Easy updates**: `ai-harness --update` pulls the latest from upstream
-- **GNU Stow ready**: Symlink-based installation for clean git updates
-
-See [AI Engineering Harness Tutorial](docs/packages/@aiengineeringharness/README-HARNESS.md) for step-by-step instructions on utilizing the agents, commands, and skills.
-
----
-
-## 🏆 Stats
-
-- **88** battle-tested skills
-- **81** canonical + **7** new skills
-- **7** AI coding tools supported
-- **6** subagents
-- **553+** files validated
-- **10** NPM packages published
-
----
-
----
-
-## 🎒 Prerequisites: Deno
-
-WayOfMono uses **Deno** as the runtime for agent tools. Install it first before running `ai-harness`:
-
-### 🪟 Windows (PowerShell)
-
-```powershell
-irm https://deno.land/install.ps1 | iex
-deno --version
-# Verify: deno eval "console.log('Deno is running')"
-```
-
-### 🐧 macOS (Homebrew)
-
-```bash
-brew install deno
-deno --version
-# Verify: deno eval "console.log('Deno is running')"
-```
-
-### 🐧 Unix/Linux (apt)
-
-```bash
-sudo apt install -y curl
-sudo curl -fsSL https://deno.land/install.sh | sh
-sudo bash -c 'echo "/usr/local/bin/deno" >> /etc/profile.d/deno.sh"
-source /etc/profile.d/deno.sh
-deno --version
-# Verify: deno eval "console.log('Deno is running')"
-```
-
-### 🍎 macOS (manual)
-
-```bash
-curl -fsSL https://deno.land/install.sh | sh
-# Add to PATH in ~/.zshrc or ~/.bashrc
-export DENO_INSTALL="$HOME/.local/share/deno"
-sudo ln -s "$DENO_INSTALL/bin/deno" /usr/local/bin/deno
-```
-
----
-
-## 🚀 Quick Start
-
-### 📦 Deno Installation Options
-
 WayOfMono uses **Deno** for agent tooling. Choose your installation method:
 
 **Option 1: Global CLI (recommended for repeated use)**
+**Option 1: Global CLI (Recommended for repeated use)**
+
+This installation puts `ai-harness` in your system PATH, making it available globally:
 
 ```bash
 deno install -Agf -n ai-harness \
   https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts
+# Install globally (recommended for personal use)
+deno install -Agf -n ai-harness \  https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts
 
 # Now you can run ai-harness anywhere:
+# Now run anywhere:
 ai-harness --tool=opencode
 ai-harness --tool=all --yes
 ```
 
 **Option 2: Run-on-run (for CI, scripts, or one-time use)**
+---
 
 ```bash
 # Install all tools directly, no CLI needed:
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=all --yes
+# Install without global CLI (for CI/CD or one-time use)
+deno run -A "https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts" \  --tool=all \  --yes
 
 # Update all installed tools:
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --update
 
 # Sync canonical skills:
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --sync-docs
+# Update all tools:
+deno run -A "https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts" \  --update
 ```
 
 ---
@@ -140,6 +42,8 @@ deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@ai
 | Method | Best For | Location |
 |---------|----------|----------|
 | `deno install` | Repeated agent use | `~/.local/share/deno/bin/ai-harness` (goes into PATH) |
+|---------|-----|----------|
+| `deno install` | Repeated agent use | `~/.local/share/deno/bin/` (goes into PATH) |
 | `deno run` | Scripts, CI/CD, one-time | Runs inline, no global installation |
 | `setup.sh` | GNU Stow symlinks | `~/.config/opencode/`, `~/.claude/`, etc. |
 
