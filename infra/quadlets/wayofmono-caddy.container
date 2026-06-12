@@ -5,8 +5,8 @@ After=wayofmono-nextjs.service
 [Container]
 Image=caddy:2-alpine
 ContainerName=wayofmono-caddy
-PublishPort=81:81
-Volume=<REPO_PATH>/infra/podman/Caddyfile:/etc/caddy/Caddyfile:ro
+PublishPort=8090:8090
+Volume=<REPO_PATH>/infra/podman/Caddyfile:/etc/caddy/Caddyfile:ro,Z
 Volume=wayofmono-caddy-data.volume:/data
 Volume=wayofmono-caddy-config.volume:/config
 Network=wayofmono.network

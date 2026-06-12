@@ -18,7 +18,7 @@ Environment=LLM_MODEL=qwen3.5:9b
 Environment=THOUGHTS_ROOT=/thoughts
 
 # Mount the thoughts directory from the host. 
-Volume=<REPO_PATH>/thoughts:/thoughts:rw
+Volume=<REPO_PATH>/thoughts:/thoughts:rw,Z
 Volume=wayofmono-db.volume:/app/db
 Network=wayofmono.network
 HealthCmd=node -e "require('http').get('http://localhost:3000/api/health', r => { process.exit(r.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"

@@ -1,7 +1,8 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
 
-RUN npm install -g bun@latest
+RUN apk add --no-cache python3 make g++ py3-setuptools && \
+    npm install -g bun@latest
 
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile

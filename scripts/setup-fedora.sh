@@ -40,6 +40,6 @@ sleep 5
 podman exec -it wayofmono-ollama ollama pull qwen3.5:9b
 
 echo "✅ Setup complete!"
-echo "Dashboard should be available at http://localhost:81"
+echo "Dashboard should be available at http://localhost:8090"
 echo "Check status with: systemctl --user status wayofmono-nextjs.service"
 echo "Check logs with: journalctl --user -u wayofmono-nextjs.service -f"
