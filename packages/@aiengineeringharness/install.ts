@@ -1056,10 +1056,38 @@ if (args.update) {
   const dryRun = Boolean(args["dry-run"]);
   const yes = Boolean(args.yes);
   const noValidate = Boolean(args["no-validate"]);
-
-  // Load current manifest for version info
+  const skipBinary = Boolean(args["skip-binary"]);
   const sd = scriptDir();
   const token = resolveToken();
+
+  // --- Phase 1: Update binary (unless --skip-binary) ---
+  if (!skipBinary) {
+    const updateCmd = new Deno.Command("deno", {
+      args: ["install", "-Agf", "-n", "ai-harness", installUrl],
+      stdout: "inherit",
+      stderr: "inherit",
+    });
+    const updateResult = await updateCmd.output();
+    if (!updateResult.success) {
+      console.error(`${cross()} Failed to update ai-harness CLI.`);
+      Deno.exit(1);
+    }
+
+    // Re-exec through the NEW binary for the full Matrix flow
+    const reExecArgs = ["--update", "--skip-binary"];
+    if (yes) reExecArgs.push("--yes");
+    if (dryRun) reExecArgs.push("--dry-run");
+    if (noValidate) reExecArgs.push("--no-validate");
+    const reExecCmd = new Deno.Command("ai-harness", {
+      args: reExecArgs,
+      stdout: "inherit",
+      stderr: "inherit",
+    });
+    const reExecResult = await reExecCmd.output();
+    Deno.exit(reExecResult.success ? 0 : 1);
+  }
+
+  // --- Phase 2: Full Matrix flow (new binary, --skip-binary) ---
   const manifest = await loadManifest(sd, token);
   const latestVersion = manifest.version;
 
@@ -1070,7 +1098,7 @@ if (args.update) {
     installedVersions[toolName] = await readInstalledVersion(targetDir);
   }
 
-  // --- Preview ---
+  // Logo
   const logo = [
     "██╗    ██╗ ██████╗     ███╗   ███╗ ██████╗ ███╗   ██╗ ██████╗",
     "██║    ██║██╔═══██╗    ████╗ ████║██╔═══██╗████╗  ██║██╔═══██╗",
@@ -1079,22 +1107,20 @@ if (args.update) {
     "╚███╔███╔╝╚██████╔╝    ██║ ╚═╝ ██║╚██████╔╝██║ ╚████║╚██████╔╝",
     " ╚══╝╚══╝  ╚═════╝     ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝",
   ];
-  for (const line of logo) {
-    console.log(o(`  ${line}`));
-  }
+  for (const line of logo) console.log(o(`  ${line}`));
   console.log();
   console.log(`  ${ob("⟡ HARNESS UPDATE")}  ${od("v" + latestVersion)}  ${od("─".repeat(30))}\n`);
   console.log(`  ${o("►")}  ${C.bold}ai-harness --update${C.reset}  ${od("full sync engine")}`);
   console.log();
   console.log(`  ${o("┌")}${od("─".repeat(50))}${o("┐")}`);
-  console.log(`  ${o("│")}  ${o("1.")} Update CLI binary                         ${o("│")}`);
+  console.log(`  ${o("│")}  ${check()} CLI binary updated                         ${o("│")}`);
   console.log(`  ${o("│")}  ${o("2.")} Sync canonical skills to all tools        ${o("│")}`);
   console.log(`  ${o("│")}  ${o("3.")} Install/update ${String(Object.keys(manifest.tools).length).padEnd(2)} tools + remove stale  ${o("│")}`);
   console.log(`  ${o("│")}  ${noValidate ? o("4.") + " Compliance validation (skipped)" : o("4.") + " Run compliance validation          "}  ${o("│")}`);
   console.log(`  ${o("└")}${od("─".repeat(50))}${o("┘")}`);
   console.log();
 
-  // Show version changes
+  // Version changes
   const anyUpdates = Object.entries(installedVersions).some(([t, v]) => v !== null && v !== latestVersion);
   if (anyUpdates) {
     console.log(`  ${od("version changes")}`);
@@ -1110,7 +1136,6 @@ if (args.update) {
     }
     console.log();
 
-    // Changelog: read between versions
     const changelogPath = `${scriptDir()}../CHANGELOG.md`;
     try {
       const changelog = await Deno.readTextFile(changelogPath);
@@ -1124,67 +1149,40 @@ if (args.update) {
         entries.push({ version: match[1], content: changelog.slice(start, end).trim() });
         sectionRegex.lastIndex = match.index + match[0].length;
       }
-
       const relevant = entries.filter((e) => e.version === "Unreleased" || e.version === latestVersion);
       if (relevant.length > 0) {
         console.log(`  ${od("what's new")}`);
         console.log(`  ${od("─".repeat(40))}`);
         for (const entry of relevant) {
           const lines = entry.content.split("\n").filter((l) => l.startsWith("-") || l.startsWith("###"));
-          for (const line of lines.slice(0, 10)) {
-            console.log(`  ${od("·")} ${line}`);
-          }
+          for (const line of lines.slice(0, 10)) console.log(`  ${od("·")} ${line}`);
           if (lines.length > 10) console.log(`  ${od("·")} ${od("... and " + (lines.length - 10) + " more changes")}`);
         }
         console.log();
       }
-    } catch { /* changelog not available */ }
+    } catch { /* no changelog */ }
   } else {
     console.log(`  ${od("all tools up to date")}\n`);
   }
 
-  // Confirm unless --yes or --dry-run
   if (!yes && !dryRun) {
-    const ok = await promptConfirm(`  ${o("⟫")} Proceed with full harness update?`);
+    const ok = await promptConfirm(`  ${o("⟫")} Proceed with harness update?`);
     if (!ok) { console.log(`  ${yellow("aborted")}`); Deno.exit(0); }
   }
 
-  // --- Step 1: Update CLI binary ---
-  console.log(`\n  ${ob("▸ STEP 1/4")}  ${od("Update CLI binary")}`);
-  console.log(`  ${od("─".repeat(40))}\n`);
-  if (dryRun) {
-    console.log(`  ${od("[dry-run]")} would run: ${C.bold}deno install -Agf -n ai-harness${C.reset}\n`);
-  } else {
-    const updateCmd = new Deno.Command("deno", {
-      args: ["install", "-Agf", "-n", "ai-harness", installUrl],
-      stdout: "inherit",
-      stderr: "inherit",
-    });
-    const updateResult = await updateCmd.output();
-    if (!updateResult.success) {
-      console.log(`  ${cross()} Failed to update ai-harness CLI.`);
-      Deno.exit(1);
-    }
-    console.log(`  ${check()} CLI binary updated\n`);
-  }
-
   // --- Step 2: Sync canonical skills ---
-  console.log(`  ${ob("▸ STEP 2/4")}  ${od("Sync canonical skills")}`);
+  console.log(`\n  ${ob("▸ STEP 2/4")}  ${od("Sync canonical skills")}`);
   console.log(`  ${od("─".repeat(40))}\n`);
   if (dryRun) {
     console.log(`  ${od("[dry-run]")} would run: ${C.bold}deno run -A install.ts --sync-docs${C.reset}\n`);
   } else {
     const syncCmd = new Deno.Command("deno", {
       args: ["run", "-A", `${installBase}install.ts`, "--sync-docs"],
-      stdout: "inherit",
-      stderr: "inherit",
+      stdout: "inherit", stderr: "inherit",
     });
     const syncResult = await syncCmd.output();
-    if (!syncResult.success) {
-      console.log(`  ${warn()} Docs sync had issues, continuing...\n`);
-    } else {
-      console.log(`  ${check()} Docs synced\n`);
-    }
+    if (!syncResult.success) console.log(`  ${warn()} Docs sync had issues, continuing...\n`);
+    else console.log(`  ${check()} Docs synced\n`);
   }
 
   // --- Step 3: Install/update all tools ---
@@ -1196,17 +1194,11 @@ if (args.update) {
   } else {
     const runArgs = ["--tool=all"];
     if (yes) runArgs.push("--yes");
-    if (dryRun) runArgs.push("--dry-run");
     const runCmd = new Deno.Command("ai-harness", {
-      args: runArgs,
-      stdout: "inherit",
-      stderr: "inherit",
+      args: runArgs, stdout: "inherit", stderr: "inherit",
     });
     const runResult = await runCmd.output();
-    if (!runResult.success) {
-      console.log(`  ${cross()} Tool installation had errors.`);
-      Deno.exit(1);
-    }
+    if (!runResult.success) { console.log(`  ${cross()} Tool installation had errors.`); Deno.exit(1); }
     console.log();
   }
 
@@ -1220,21 +1212,14 @@ if (args.update) {
       const complianceScript = `${scriptDir()}scripts/compliance-check.ts`;
       try {
         const compCmd = new Deno.Command("deno", {
-          args: ["run", "-A", complianceScript],
-          stdout: "piped",
-          stderr: "piped",
+          args: ["run", "-A", complianceScript], stdout: "piped", stderr: "piped",
         });
         const compResult = await compCmd.output();
         const stdout = new TextDecoder().decode(compResult.stdout);
-        const stderr = new TextDecoder().decode(compResult.stderr);
-
-        // Show error count
         const errorLines = stdout.split("\n").filter((l) => l.includes("✗ ERROR"));
         const errorCount = errorLines.reduce((sum, l) => {
-          const m = l.match(/(\d+)/);
-          return sum + (m ? parseInt(m[1]) : 0);
+          const m = l.match(/(\d+)/); return sum + (m ? parseInt(m[1]) : 0);
         }, 0);
-
         if (errorCount > 0) {
           console.log(stdout);
           console.log(`  ${warn()} ${errorCount} error(s) found after update. Review above.`);
@@ -1243,7 +1228,6 @@ if (args.update) {
           const passed = passMatch ? parseInt(passMatch[1]) : "?";
           console.log(`  ${check()} Compliance check passed (${passed}+ skills clean across all tools)\n`);
         }
-        if (stderr) console.error(stderr);
       } catch (e) {
         console.log(`  ${warn()} Compliance check skipped: ${e}`);
         console.log(`  Run manually: ${od("deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts")}\n`);
