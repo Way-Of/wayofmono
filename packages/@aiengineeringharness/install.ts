@@ -1346,6 +1346,7 @@ if (args.update) {
   if (!yes && !dryRun) {
     const ok = await promptConfirm(`  ${o("⟫")} Proceed with harness update?`);
     if (!ok) { console.log(`  ${yellow("aborted")}`); Deno.exit(0); }
+    yes = true; // auto-confirm subsequent prompts
   }
 
   // --- Step 2: Sync canonical skills ---
