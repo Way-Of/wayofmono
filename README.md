@@ -4,6 +4,66 @@
 
 The ultimate monorepo consolidation for high-performance coding agents. WayOfMono provides a shared Intelligence Backend (Packages, Tools, Memory) that serves **7** distinct Agent Frontends, with Wo (Way of Coding) as our primary synthesized interface.
 
+## 👟 Quick Install
+
+### Step 1: Prerequisites — Deno
+
+```powershell
+# Windows (PowerShell)
+irm https://deno.land/install.ps1 | iex
+```
+
+```bash
+# macOS (Homebrew)
+brew install deno
+```
+
+```bash
+# Linux/Unix
+curl -fsSL https://deno.land/install.sh | sh
+```
+
+```bash
+# Verify
+deno --version
+```
+
+### Step 2: Install the Harness
+
+```bash
+deno install -Agf -n ai-harness https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts
+```
+
+### Step 3: Install All Tools & Skills
+
+```bash
+ai-harness --tool=all --yes
+```
+
+### Update
+
+```bash
+ai-harness --update
+```
+
+That's it — project-local packages install to `node_modules/`, not globally. Binaries land in `node_modules/.bin/` accessed via `npx`/`pnpm`.
+
+### GNU Stow (Optional — symlink-based updates)
+
+```bash
+# Ubuntu/Debian
+sudo apt install stow
+```
+
+```bash
+# macOS
+brew install stow
+```
+
+```bash
+./packages/@aiengineeringharness/setup.sh all
+```
+
 ## 📊 Real Stats
 
 | Metric | Value |
@@ -119,66 +179,6 @@ The `--init` command creates a `.wo/` folder in your project:
 ├── models.json       # LLM providers (default: Ollama + qwen3.5:9b)
 ├── settings.json     # Agent behavior & themes
 └── launcher          # ./wouser or ./wocode startup script
-```
-
-## 👟 Quick Install
-
-### Step 1: Prerequisites — Deno
-
-```powershell
-# Windows (PowerShell)
-irm https://deno.land/install.ps1 | iex
-```
-
-```bash
-# macOS (Homebrew)
-brew install deno
-```
-
-```bash
-# Linux/Unix
-curl -fsSL https://deno.land/install.sh | sh
-```
-
-```bash
-# Verify
-deno --version
-```
-
-### Step 2: Install the Harness
-
-```bash
-deno install -Agf -n ai-harness https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts
-```
-
-### Step 3: Install All Tools & Skills
-
-```bash
-ai-harness --tool=all --yes
-```
-
-### Update
-
-```bash
-ai-harness --update
-```
-
-That's it — project-local packages install to `node_modules/`, not globally. Binaries land in `node_modules/.bin/` accessed via `npx`/`pnpm`.
-
-### GNU Stow (Optional — symlink-based updates)
-
-```bash
-# Ubuntu/Debian
-sudo apt install stow
-```
-
-```bash
-# macOS
-brew install stow
-```
-
-```bash
-./packages/@aiengineeringharness/setup.sh all
 ```
 
 ## 🚀 Installation
