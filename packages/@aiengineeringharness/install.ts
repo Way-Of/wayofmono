@@ -311,22 +311,8 @@ function renderDiff(oldText: string, newText: string): string {
   return lines.join("\n");
 }
 
-async function readLine(): Promise<string> {
-  const chunks: Uint8Array[] = [];
-  const buf = new Uint8Array(1);
-  while (true) {
-    const n = await Deno.stdin.read(buf);
-    if (n === null) break;
-    if (buf[0] === 10) break; // newline
-    chunks.push(buf.slice());
-  }
-  return new TextDecoder().decode(new Uint8Array(chunks.flatMap((c) => [...c]))).trim();
-}
-
 async function promptConfirm(message: string): Promise<boolean> {
-  Deno.stdout.writeSync(new TextEncoder().encode(`${message} [y/N] `));
-  const input = await readLine();
-  return input === "y" || input === "Y";
+  return confirm(message);
 }
 
 function printHelp(): void {
@@ -1083,6 +1069,7 @@ if (args.update) {
     const updateCmd = new Deno.Command("deno", {
       args: ["install", "-Agf", "--no-lock", "--reload", "-n", "ai-harness", installUrl],
       cwd: "/tmp",
+      stdin: "inherit",
       stdout: "inherit",
       stderr: "inherit",
     });
