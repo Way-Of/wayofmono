@@ -1096,13 +1096,13 @@ if (args.update) {
     // Patch wrapper to embed --reload so future updates bypass Deno cache
     await patchDenoWrapperReload();
 
-    // Re-exec through the NEW binary for the full Matrix flow
+    // Re-exec through deno run directly (not shell wrapper) so stdin stays connected
     const reExecArgs = ["--update", "--skip-binary"];
     if (yes) reExecArgs.push("--yes");
     if (dryRun) reExecArgs.push("--dry-run");
     if (noValidate) reExecArgs.push("--no-validate");
-    const reExecCmd = new Deno.Command("ai-harness", {
-      args: reExecArgs,
+    const reExecCmd = new Deno.Command("deno", {
+      args: ["run", "--reload", "-A", installUrl, ...reExecArgs],
       stdin: "inherit",
       stdout: "inherit",
       stderr: "inherit",
