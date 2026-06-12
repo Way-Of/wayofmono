@@ -82,6 +82,18 @@ packages/@aiengineeringharness/     → 1,226 files
 - **Easy updates**: `ai-harness --update` pulls the latest from upstream
 - **GNU Stow ready**: Symlink-based installation for clean git updates
 
+## 🦙 Prerequisites: Ollama
+
+WayOfMono defaults to using Ollama for local-first AI. Ensure it is installed and running:
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+```bash
+ollama pull qwen3.5:9b
+```
+
 ## 📦 Zero-Pollution Installation
 
 WayOfMono agents are **project-local and folder-contained**. Packages install to `node_modules/` in your project (not globally). Binaries land in `node_modules/.bin/` and are accessed via `npx`/`pnpm` without any global setup.
@@ -144,6 +156,10 @@ sudo apt install stow
 # macOS
 brew install stow
 ```
+
+## 🚀 Getting Started
+
+Packages install to `node_modules/` in your project (not globally). Binaries land in `node_modules/.bin/` and are accessed via `npx`/`pnpm` without any global setup.
 
 ## 🚀 Installation
 
@@ -457,21 +473,21 @@ pnpm add ~/wayofmono/packages/@wayofmono/wo-coding-agent
 
 ### Package Details
 
-| Package | Size | Files | Description |
-|---------|------|-------|-------------|
-| [@wayofmono/wo-ai](https://www.npmjs.com/package/@wayofmono/wo-ai) | 4.0M | 253 | Multi-Provider LLM API (OpenAI, Anthropic, Gemini) |
-| [@wayofmono/wo-tui](https://www.npmjs.com/package/@wayofmono/wo-tui) | 1.5M | 128 | High-Performance Terminal UI Library |
-| [@wayofmono/wo-agent-core](https://www.npmjs.com/package/@wayofmono/wo-agent-core) | 1.1M | 128 | Central Agent Runtime & Extension API |
-| [@wayofmono/wo-agent](https://www.npmjs.com/package/@wayofmono/wo-agent) | 8.2M | 719 | General-Purpose Agent SDK & CLI (**wouser**) |
-| [@wayofmono/wo-coding-agent](https://www.npmjs.com/package/@wayofmono/wo-coding-agent) | 8.2M | 722 | CLI Coding Agent (**wocode**) |
-| [@wayofmono/wo-skill-docs](https://www.npmjs.com/package/@wayofmono/wo-skill-docs) | 148K | 19 | Multi-format Documentation Expert |
-| [@wayofmono/wo-mermaid](https://www.npmjs.com/package/@wayofmono/wo-mermaid) | 3.9M | 13 | TUI Mermaid Renderer (ASCII art) |
-| [@wayofmono/web-access](https://www.npmjs.com/package/@wayofmono/web-access) | 7.7M | 127 | Web search, URL fetching, GitHub cloning, PDF/YouTube extraction |
-| [@wayofmono/lens](https://www.npmjs.com/package/@wayofmono/lens) | 2.1M | 416 | Codebase Analysis & Safety Engine |
-| [@wayofmono/wo-web-ui](https://www.npmjs.com/package/@wayofmono/wo-web-ui) | 224K | 42 | Web UI Components (React 19) |
-| [@wayofmono/telemetry](https://www.npmjs.com/package/@wayofmono/telemetry) | 188K | 28 | Telemetry and metrics |
-| [@wayofmono/telegram](https://www.npmjs.com/package/@wayofmono/telegram) | 88K | 8 | Telegram bot integration |
-| [@wayofmono/whatsapp](https://www.npmjs.com/package/@wayofmono/whatsapp) | 88K | 8 | WhatsApp bot integration |
+| Package | Description | npm |
+|---------|-------------|-----|
+| [@wayofmono/wo-ai](https://www.npmjs.com/package/@wayofmono/wo-ai) | Multi-Provider LLM API (OpenAI, Anthropic, Gemini) | `npm install @wayofmono/wo-ai` |
+| [@wayofmono/wo-tui](https://www.npmjs.com/package/@wayofmono/wo-tui) | High-Performance Terminal UI Library | `npm install @wayofmono/wo-tui` |
+| [@wayofmono/wo-agent-core](https://www.npmjs.com/package/@wayofmono/wo-agent-core) | Central Agent Runtime & Extension API | `npm install @wayofmono/wo-agent-core` |
+| [@wayofmono/wo-agent](https://www.npmjs.com/package/@wayofmono/wo-agent) | General-Purpose Agent SDK & CLI (**wouser**) | `npm install @wayofmono/wo-agent` |
+| [@wayofmono/wo-coding-agent](https://www.npmjs.com/package/@wayofmono/wo-coding-agent) | CLI Coding Agent (**wocode**) | `npm install @wayofmono/wo-coding-agent` |
+| [@wayofmono/wo-skill-docs](https://www.npmjs.com/package/@wayofmono/wo-skill-docs) | Multi-format Documentation Expert | `npm install @wayofmono/wo-skill-docs` |
+| [@wayofmono/wo-mermaid](https://www.npmjs.com/package/@wayofmono/wo-mermaid) | TUI Mermaid Renderer (ASCII art) | `npm install @wayofmono/wo-mermaid` |
+| [@wayofmono/web-access](https://www.npmjs.com/package/@wayofmono/web-access) | Web search, URL fetching, GitHub cloning, PDF/YouTube extraction | `npm install @wayofmono/web-access` |
+| [@wayofmono/lens](https://www.npmjs.com/package/@wayofmono/lens) | Codebase Analysis & Safety Engine | `npm install @wayofmono/lens` |
+| [@wayofmono/wo-web-ui](https://www.npmjs.com/package/@wayofmono/wo-web-ui) | Web UI Components (React 19) | `npm install @wayofmono/wo-web-ui` |
+| [@wayofmono/telemetry](https://www.npmjs.com/package/@wayofmono/telemetry) | Telemetry and metrics | `npm install @wayofmono/telemetry` |
+| [@wayofmono/telegram](https://www.npmjs.com/package/@wayofmono/telegram) | Telegram bot integration | `npm install @wayofmono/telegram` |
+| [@wayofmono/whatsapp](https://www.npmjs.com/package/@wayofmono/whatsapp) | WhatsApp bot integration | `npm install @wayofmono/whatsapp` |
 
 ## 📊 CTO Dashboard
 
@@ -560,6 +576,14 @@ npx tsx scripts/stats.ts
 
 Centralized thoughts repository at [github.com/Way-Of/f-r-r-d](https://github.com/Way-Of/f-r-r-d) — **115 files** across 3 namespaces.
 
+### How it works
+
+- **Clone on init**: `ai-harness --init` clones f-rr-d into `thoughts/`
+- **Project-scoped**: WayOfMono tickets live in `thoughts/wayofmono/shared/tickets/` (WOMONO-XXX namespace)
+- **Multi-project**: WoW (`thoughts/wow/`, WOW-XXX) and Opticat (`thoughts/opticat/`, OPT-XXX) share the same repo
+- **Pull before read, push after write**: All harness skills auto-sync with f-rr-d
+- **Branch naming**: `<project-slug>/<namespace>/<ticket-id>-<short-desc>` (e.g., `wayofmono/womono/WOMONO-001-centralized-repo`)
+
 ### Structure
 
 ```
@@ -581,6 +605,8 @@ thoughts/
     └── andre/, craig/, tomas/, zerwiz/
 ```
 
+Config: `.wo/config/harness.json` stores `f_rrd_url` and `project_slug` for the harness.
+
 ### Workflow Pattern
 
 ```
@@ -598,8 +624,12 @@ Ticket → /create_plan → /implement_plan → /validate_plan → /validate_tel
 | `/validate_telemetry` | Validate local telemetry against narrative spec |
 | `/commit` | Create well-structured git commits |
 | `/debug` | Investigate issues during testing |
-| `/help` | Unified help system |
 | `/sync skills` | Sync all skills to all frontends |
+| `/help` | Unified help system |
+
+## 🎛️ AI Engineering Harness
+
+Shared agents, commands, skills, and extensions for all 7 agent frontends. Install once and instantly configure any agent with battle-tested prompts and workflows. See the comprehensive [AI Engineering Harness Tutorial](https://github.com/Way-Of/wayofmono/tree/main/docs/ai-engineering-harness-tutorial.md) for step-by-step instructions on utilizing the agents, commands, and skills.
 
 ## 🚢 Deployment
 
