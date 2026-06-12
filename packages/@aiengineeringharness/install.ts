@@ -360,7 +360,8 @@ OPTIONS:
   --report-url=<url>                    Dashboard URL for skill reporting (default: https://cto.wayof.work)
   --mode=repo                           Show clone+stow instructions instead
   --dest=<path>                         Clone destination for --mode=repo
-  --help, -h                            Show this help
+   --help, -h                            Show this help
+  --install-cli                         Install/update CLI binary with Matrix-style output
 
 EXAMPLES:
   ai-harness --tool=all --yes                     # Install all configs non-interactively
@@ -802,7 +803,7 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 
 const args = parseArgs(Deno.args, {
   string: ["tool", "skill", "dest", "mode", "report-url", "uninstall"],
-  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs", "report-skills", "update", "no-validate", "prune"],
+  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs", "report-skills", "update", "no-validate", "prune", "install-cli"],
   alias: { h: "help", n: "dry-run", y: "yes", i: "interactive", l: "local" },
 });
 
@@ -1049,6 +1050,46 @@ if (args["import-ref"]) {
 if (args.mode === "repo") {
   const dest = (args.dest as string | undefined) ?? "~/.ai-engineering-harness";
   printRepoModeInstructions(dest);
+  Deno.exit(0);
+}
+
+// --install-cli: install/update CLI binary with Matrix output
+if (args["install-cli"]) {
+  const installUrl =
+    "https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts";
+
+  const logo = [
+    "██╗    ██╗ ██████╗     ███╗   ███╗ ██████╗ ███╗   ██╗ ██████╗",
+    "██║    ██║██╔═══██╗    ████╗ ████║██╔═══██╗████╗  ██║██╔═══██╗",
+    "██║ █╗ ██║██║   ██║    ██╔████╔██║██║   ██║██╔██╗ ██║██║   ██║",
+    "██║███╗██║██║   ██║    ██║╚██╔╝██║██║   ██║██║╚██╗██║██║   ██║",
+    "╚███╔███╔╝╚██████╔╝    ██║ ╚═╝ ██║╚██████╔╝██║ ╚████║╚██████╔╝",
+    " ╚══╝╚══╝  ╚═════╝     ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝",
+  ];
+  for (const line of logo) console.log(o(`  ${line}`));
+  console.log();
+
+  const installCmd = new Deno.Command("deno", {
+    args: ["install", "-Agf", "--no-lock", "--reload", "-n", "ai-harness", installUrl],
+    cwd: "/tmp",
+    stdin: "inherit",
+    stdout: "inherit",
+    stderr: "inherit",
+  });
+  const result = await installCmd.output();
+  if (!result.success) {
+    console.error(`\n  ${cross()} Failed to install CLI binary.`);
+    Deno.exit(1);
+  }
+
+  // Patch wrapper to embed --reload
+  patchDenoWrapperReload();
+
+  const mf = await loadManifest(scriptDir(), resolveToken());
+  console.log(`\n  ${check()} ${C.bold}ai-harness${C.reset} CLI installed  ${od("v" + mf.version)}`);
+  console.log(`  ${o("►")} Next: ${C.bold}ai-harness --tool=all --yes${C.reset}`);
+  console.log(`  ${o("►")} Update: ${C.bold}ai-harness --update${C.reset}`);
+  console.log();
   Deno.exit(0);
 }
 
