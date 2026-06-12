@@ -47,6 +47,53 @@ interface Manifest {
 }
 
 // ---------------------------------------------------------------------------
+// ANSI colors — orange Matrix style
+// ---------------------------------------------------------------------------
+
+const C = {
+  orange: "\x1b[38;5;208m",
+  bold: "\x1b[1m",
+  dim: "\x1b[2m",
+  reset: "\x1b[0m",
+  green: "\x1b[38;5;82m",
+  red: "\x1b[38;5;196m",
+  yellow: "\x1b[38;5;226m",
+  cyan: "\x1b[38;5;51m",
+};
+
+function o(s: string): string {
+  return `${C.orange}${s}${C.reset}`;
+}
+function ob(s: string): string {
+  return `${C.bold}${C.orange}${s}${C.reset}`;
+}
+function od(s: string): string {
+  return `${C.dim}${C.orange}${s}${C.reset}`;
+}
+function green(s: string): string {
+  return `${C.green}${s}${C.reset}`;
+}
+function red(s: string): string {
+  return `${C.red}${s}${C.reset}`;
+}
+function yellow(s: string): string {
+  return `${C.yellow}${s}${C.reset}`;
+}
+function cyan(s: string): string {
+  return `${C.cyan}${s}${C.reset}`;
+}
+
+function check(): string {
+  return green("✓");
+}
+function cross(): string {
+  return red("✗");
+}
+function warn(): string {
+  return yellow("⚠");
+}
+
+// ---------------------------------------------------------------------------
 // Auth
 // ---------------------------------------------------------------------------
 
@@ -112,17 +159,17 @@ async function checkForUpdates(manifest: Manifest, targetDir: string, toolName: 
   const installed = await readInstalledVersion(targetDir);
   const current = manifest.version;
   if (installed === null) {
-    console.log(`  ${toolName}: first install (v${current})`);
+    console.log(`  ${od(toolName.padEnd(12))} ${green("new")}  ${od("v" + current)}`);
     return;
   }
   if (installed === current) {
-    console.log(`  ${toolName}: up to date (v${current})`);
+    console.log(`  ${od(toolName.padEnd(12))} ${od("v" + current)}`);
     return;
   }
   if (isNewerVersion(installed, current)) {
-    console.log(`  ${toolName}: UPDATE AVAILABLE v${installed} → v${current}`);
+    console.log(`  ${od(toolName.padEnd(12))} ${yellow("UPDATE")}  ${od("v" + installed)} ${o("→")} ${o("v" + current)}`);
   } else {
-    console.log(`  ${toolName}: v${current} (local v${installed})`);
+    console.log(`  ${od(toolName.padEnd(12))} ${od("v" + current)}  ${od("(local v" + installed + ")")}`);
   }
 }
 
@@ -301,6 +348,7 @@ OPTIONS:
   --update                              Full harness sync: update CLI, sync docs, install/update all tools, remove stale files
   --uninstall=<claude|opencode|all>     Remove installed files for the given tool(s) (manifest from GitHub)
   --no-validate                         Skip compliance validation after --update
+  --prune                               Interactive: review & remove non-manifest skills across all tools
   --import-ref                          Import ref skills/agents to all platforms (WOMONO-016)
   --sync-docs                           Sync canonical skills to all tool skill directories
   --sync-docs --check                   Preview skill sync without making changes
@@ -316,6 +364,7 @@ EXAMPLES:
   ai-harness --tool=claude --dry-run              # Preview changes
   ai-harness --tool=claude --skill=agents         # Install only agents
   ai-harness --tool=claude --interactive          # Pick components
+  ai-harness --prune                              # Review & remove non-manifest skills interactively
   ai-harness --mode=repo                          # Clone + stow instructions
 `.trim());
 }
@@ -356,48 +405,54 @@ The repo must remain at a stable path on your system.
 // Interactive picker using stdin (no external dependency)
 // ---------------------------------------------------------------------------
 
-async function interactivePicker(components: Array<{ name: string; description: string }>): Promise<string[]> {
+async function interactivePicker(
+  components: Array<{ name: string; description: string }>,
+  preSelected?: Set<number>,
+): Promise<string[]> {
   // Fall back to text prompt when stdin is not a TTY (piped)
   if (!Deno.stdin.isTerminal()) {
-    console.log("\nAvailable components (enter numbers separated by spaces, or 'all'):\n");
+    const allChecked = preSelected && preSelected.size === components.length;
+    console.log(`\nAvailable components (enter numbers separated by spaces, or '${allChecked ? "none" : "all"}'):\n`);
     components.forEach((c, i) => {
-      console.log(`  ${String(i + 1).padStart(2)}. [${c.name}] ${c.description}`);
+      const mark = preSelected?.has(i) ? o("✧") : " ";
+      console.log(`  ${mark} ${String(i + 1).padStart(2)}. [${c.name}] ${od(c.description)}`);
     });
     console.log();
-    Deno.stdout.writeSync(new TextEncoder().encode("Select (e.g. 1 3 5, or 'all'): "));
+    Deno.stdout.writeSync(new TextEncoder().encode(`Select (e.g. 1 3 5, or '${allChecked ? "none" : "all"}'): `));
     const input = (await readLine()).toLowerCase();
-    if (input === "all") return components.map((c) => c.name);
+    if (allChecked && (input === "" || input === "none")) return [];
+    if (input === "all" || input === "") return components.map((c) => c.name);
     const indices = input.split(/\s+/).map(Number).filter((n) => !isNaN(n) && n >= 1 && n <= components.length);
     return indices.map((i) => components[i - 1].name);
   }
 
-  const selected = new Set<number>();
+  const selected = preSelected ? new Set(preSelected) : new Set<number>();
   let cursor = 0;
 
-  console.log("\nUse ↑/↓ to move, Space to toggle, Enter to confirm, 'a' for all:\n");
+  console.log(`\n  ${od("↑/↓ navigate · Space toggle · Enter confirm · a select all/none")}\n`);
 
   function render() {
     const moveUp = `\x1b[${components.length + 1}A`;
     Deno.stdout.writeSync(new TextEncoder().encode(moveUp));
     for (let i = 0; i < components.length; i++) {
-      const check = selected.has(i) ? "✓" : " ";
-      const pointer = i === cursor ? "▸" : " ";
+      const check = selected.has(i) ? `${o("✧")}` : " ";
+      const pointer = i === cursor ? `${o("▸")}` : " ";
       const desc = components[i].description.length > 60
         ? components[i].description.slice(0, 57) + "..."
         : components[i].description;
       Deno.stdout.writeSync(
-        new TextEncoder().encode(` ${pointer} [${check}] ${components[i].name}  ${desc}\x1b[K\n`),
+        new TextEncoder().encode(` ${pointer} ${check}  ${C.bold}${components[i].name}${C.reset}  ${od(desc)}\x1b[K\n`),
       );
     }
   }
 
   for (let i = 0; i < components.length; i++) {
-    const check = selected.has(i) ? "✓" : " ";
-    const pointer = i === cursor ? "▸" : " ";
+    const check = selected.has(i) ? `${o("✧")}` : " ";
+    const pointer = i === cursor ? `${o("▸")}` : " ";
     const desc = components[i].description.length > 60
       ? components[i].description.slice(0, 57) + "..."
       : components[i].description;
-    console.log(` ${pointer} [${check}] ${components[i].name}  ${desc}`);
+    console.log(` ${pointer} ${check}  ${C.bold}${components[i].name}${C.reset}  ${od(desc)}`);
   }
 
   Deno.stdin.setRaw(true);
@@ -451,13 +506,13 @@ async function interactivePicker(components: Array<{ name: string; description: 
   Deno.stdout.writeSync(new TextEncoder().encode(`\x1b[${components.length + 1}A\x1b[J`));
 
   if (selected.size === 0) {
-    console.log("No components selected.");
+    console.log(`  ${od("none selected")}`);
     return [];
   }
 
-  console.log(`Selected ${selected.size} component(s):`);
+  console.log(`\n  ${o("└")} ${green(String(selected.size))} selected:`);
   for (const i of selected) {
-    console.log(`  ✓ ${components[i].name}`);
+    console.log(`     ${o("✧")} ${C.bold}${components[i].name}${C.reset}`);
   }
   console.log();
 
@@ -509,12 +564,12 @@ async function removeStaleFiles(
   const stalePaths = installedFiles.filter((f) => !expectedPaths.has(f));
   if (stalePaths.length === 0) return;
 
-  console.log(`\n  ${opts.toolName}: ${stalePaths.length} stale file(s) not in manifest:`);
-  for (const f of stalePaths) console.log(`    - ${f}`);
+  console.log(`\n  ${od("┄")} ${opts.toolName}: ${yellow(String(stalePaths.length))} stale file(s) not in manifest:`);
+  for (const f of stalePaths) console.log(`    ${od("·")} ${od(f)}`);
 
   if (!opts.yes && !opts.dryRun) {
-    const ok = await promptConfirm(`  Remove ${stalePaths.length} stale file(s) from ${opts.toolName}?`);
-    if (!ok) { console.log("  Skipped stale file removal."); return; }
+    const ok = await promptConfirm(`  ${o("⟫")} Remove ${stalePaths.length} stale file(s) from ${opts.toolName}?`);
+    if (!ok) { console.log(`  ${yellow("skipped")} stale file removal.`); return; }
   }
 
   const parentDirs = new Set<string>();
@@ -525,14 +580,14 @@ async function removeStaleFiles(
     const fullPath = `${targetDir}/${f}`;
     parentDirs.add(fullPath.slice(0, fullPath.lastIndexOf("/")));
 
-    if (opts.dryRun) { console.log(`  - would remove  ${f}`); removed++; continue; }
+    if (opts.dryRun) { console.log(`  ${od("-")} would remove  ${od(f)}`); removed++; continue; }
 
     try {
       await Deno.remove(fullPath);
-      console.log(`  ✓ removed  ${f}`);
+      console.log(`  ${o("✧")} removed  ${od(f)}`);
       removed++;
     } catch (err) {
-      console.error(`  ✗ failed   ${f}: ${err}`);
+      console.log(`  ${cross()} failed   ${f}: ${err}`);
       failed++;
     }
   }
@@ -544,13 +599,13 @@ async function removeStaleFiles(
       try {
         if (Array.from(Deno.readDirSync(dir)).length === 0) {
           await Deno.remove(dir);
-          console.log(`  ✓ removed empty dir  ${dir.slice(targetDir.length + 1)}`);
+          console.log(`  ${o("✧")} removed empty dir  ${od(dir.slice(targetDir.length + 1))}`);
         }
       } catch { /* already gone or inaccessible */ }
     }
   }
 
-  if (failed > 0) console.log(`  ${opts.toolName}: ${removed} removed, ${failed} failed`);
+  if (failed > 0) console.log(`  ${opts.toolName}: ${green(String(removed))} removed, ${red(String(failed))} failed`);
 }
 
 // ---------------------------------------------------------------------------
@@ -634,9 +689,9 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
     }
   }
 
-  console.log(`\nInstalling ${toolName} → ${targetDir}`);
+  console.log(`\n  ${o("⟫")} ${C.bold}${toolName}${C.reset} ${od("→")} ${od(targetDir)}`);
   if (opts.dryRun) {
-    console.log("  (dry run — no files will be written)\n");
+    console.log(`  ${od("(dry run — no files will be written)")}\n`);
   }
 
   let installed = 0;
@@ -675,30 +730,30 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
       const existingContent = await readFileIfExists(destPath);
 
       if (existingContent !== null && existingContent === srcContent) {
-        console.log(`  ✓ unchanged  ${fileEntry.dest}`);
+        console.log(`  ${od("·")} ${fileEntry.dest}  ${od("(ok)")}`);
         unchanged++;
         continue;
       }
 
       if (existingContent !== null && existingContent !== srcContent) {
         // Show diff and prompt
-        console.log(`\n  ~ conflict   ${fileEntry.dest}`);
+        console.log(`\n  ${o("⟁")} ${fileEntry.dest}  ${yellow("conflict")}`);
         if (!opts.yes) {
           const diff = renderDiff(existingContent, srcContent);
-          console.log("  --- existing");
-          console.log("  +++ incoming");
+          console.log(`  ${od("--- existing")}`);
+          console.log(`  ${green("+++ incoming")}`);
           console.log(diff.split("\n").map((l) => "  " + l).join("\n"));
           console.log();
 
           if (opts.dryRun) {
-            console.log("  [dry-run] would overwrite");
+            console.log(`  ${od("[dry-run]")} would overwrite`);
             installed++;
             continue;
           }
 
-          const ok = await promptConfirm(`  Overwrite ${fileEntry.dest}?`);
+          const ok = await promptConfirm(`  ${o("⟫")} Overwrite ${fileEntry.dest}?`);
           if (!ok) {
-            console.log("  Skipped.");
+            console.log(`  ${yellow("skipped")}.`);
             skipped++;
             continue;
           }
@@ -707,7 +762,7 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 
       if (opts.dryRun) {
         const action = existingContent === null ? "create" : "overwrite";
-        console.log(`  + ${action.padEnd(9)}  ${fileEntry.dest}`);
+        console.log(`  ${o("+")} ${action.padEnd(9)}  ${fileEntry.dest}`);
         installed++;
         continue;
       }
@@ -715,12 +770,12 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
       await ensureDir(destPath.slice(0, destPath.lastIndexOf("/")));
       await Deno.writeTextFile(destPath, srcContent);
       const action = existingContent === null ? "installed" : "updated";
-      console.log(`  ✓ ${action.padEnd(9)}  ${fileEntry.dest}`);
+      console.log(`  ${o("✧")} ${action.padEnd(9)}  ${od(fileEntry.dest)}`);
       installed++;
     }
   }
 
-  console.log(`\n  ${toolName}: ${installed} installed/updated, ${unchanged} unchanged, ${skipped} skipped`);
+  console.log(`\n  ${o("└")} ${od(toolName)}: ${green(String(installed))} changed, ${od(String(unchanged) + " ok")}, ${yellow(String(skipped) + " skipped")}`);
 
   // Remove stale files not in manifest (only for full installs)
   if (opts.skills.length === 0 && !opts.interactive) {
@@ -743,7 +798,7 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 
 const args = parseArgs(Deno.args, {
   string: ["tool", "skill", "dest", "mode", "report-url", "uninstall"],
-  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs", "report-skills", "update", "no-validate"],
+  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs", "report-skills", "update", "no-validate", "prune"],
   alias: { h: "help", n: "dry-run", y: "yes", i: "interactive", l: "local" },
 });
 
@@ -844,13 +899,129 @@ if (args["check"]) {
   const sd = scriptDir();
   const token = resolveToken();
   const manifest = await loadManifest(sd, token);
-  console.log(`\nUpdate check — latest manifest v${manifest.version}\n`);
+  console.log(`\n  ${ob("⟡ VERSION CHECK")}  ${od("manifest v" + manifest.version)}\n`);
   for (const tool of Object.keys(manifest.tools)) {
     const targetDir = expandHome(manifest.tools[tool].target);
     await checkForUpdates(manifest, targetDir, tool);
   }
   console.log();
-  console.log("Re-run installer to update: deno run -A ...install.ts --tool=all --yes");
+  console.log(`  ${od("re-run:")} ${C.bold}deno run -A ...install.ts --tool=all --yes${C.reset}`);
+  Deno.exit(0);
+}
+
+// --prune: interactive skill pruning — review and remove non-manifest skills
+if (args["prune"]) {
+  const sd = scriptDir();
+  const token = resolveToken();
+  const manifest = await loadManifest(sd, token);
+  const homedir = Deno.env.get("HOME") ?? "";
+
+  const knownSubdirs = ["skills", "agents", "commands", "prompts", "extensions", "themes", "keybindings"];
+
+  console.log(`\n  ${ob("⟡ PRUNE SKILLS")}  ${od("review non-manifest files across all tools")}\n`);
+
+  // Collect extra files per tool
+  const toolExtras: Array<{ tool: string; targetDir: string; files: Array<{ path: string; fullPath: string }> }> = [];
+
+  for (const [toolName, toolConfig] of Object.entries(manifest.tools)) {
+    const targetDir = expandHome(toolConfig.target);
+    const expectedPaths = new Set<string>();
+    for (const comp of Object.values(toolConfig.components)) {
+      for (const f of comp.files) {
+        expectedPaths.add(f.dest);
+      }
+    }
+
+    const allFiles: string[] = [];
+    for (const subdir of knownSubdirs) {
+      allFiles.push(...await collectFilePaths(`${targetDir}/${subdir}`, targetDir));
+    }
+
+    const extraFiles = allFiles.filter((f) => !expectedPaths.has(f));
+    if (extraFiles.length > 0) {
+      toolExtras.push({
+        tool: toolName,
+        targetDir,
+        files: extraFiles.map((f) => ({ path: f, fullPath: `${targetDir}/${f}` })),
+      });
+      console.log(`  ${o("┄")} ${C.bold}${toolName}${C.reset}: ${yellow(String(extraFiles.length))} extra file(s)  ${od(targetDir)}`);
+    } else {
+      console.log(`  ${od("┄")} ${od(toolName)}: ${green("clean")}  ${od(targetDir)}`);
+    }
+  }
+
+  if (toolExtras.length === 0) {
+    console.log(`\n  ${check()} No extra files found — all tools match the manifest.\n`);
+    Deno.exit(0);
+  }
+
+  console.log(`\n  ${od("tools with extra files: " + toolExtras.length)}\n`);
+
+  // Stage 1: pick tools to prune
+  const toolChoices = toolExtras.map((t) => ({
+    name: t.tool,
+    description: `${t.files.length} extra file(s) in ${t.targetDir}`,
+  }));
+  const chosenTools = await interactivePicker(toolChoices);
+  if (chosenTools.length === 0) {
+    console.log(`  ${yellow("aborted")}\n`);
+    Deno.exit(0);
+  }
+
+  // Stage 2: for each chosen tool, pick files to remove
+  let totalRemoved = 0;
+  let totalFailed = 0;
+
+  for (const toolName of chosenTools) {
+    const te = toolExtras.find((t) => t.tool === toolName)!;
+    console.log(`\n  ${ob("▸ " + toolName)}  ${od("extra files (pre-checked = safe to remove)")}`);
+
+    const fileChoices = te.files.map((f) => ({
+      name: f.path,
+      description: "",
+    }));
+
+    // Pre-select all (they're all non-manifest)
+    const preSelected = new Set(fileChoices.map((_, i) => i));
+    const chosenFiles = await interactivePicker(fileChoices, preSelected);
+    if (chosenFiles.length === 0) {
+      console.log(`  ${od("none selected for " + toolName)}`);
+      continue;
+    }
+
+    if (!args.yes) {
+      console.log(`  ${od("will remove " + chosenFiles.length + " file(s) from " + toolName)}`);
+    }
+
+    for (const f of chosenFiles) {
+      const fullPath = te.files.find((fe) => fe.path === f)!.fullPath;
+      try {
+        await Deno.remove(fullPath);
+        console.log(`  ${o("✧")} removed  ${od(f)}`);
+        totalRemoved++;
+      } catch (err) {
+        console.log(`  ${cross()} failed  ${od(f)}: ${err}`);
+        totalFailed++;
+      }
+    }
+
+    // Prune empty dirs
+    const parentDirs = new Set(chosenFiles.map((f) => {
+      const fe = te.files.find((fe) => fe.path === f)!;
+      return fe.fullPath.slice(0, fe.fullPath.lastIndexOf("/"));
+    }));
+    const sorted = [...parentDirs].sort((a, b) => b.length - a.length);
+    for (const dir of sorted) {
+      try {
+        if (Array.from(Deno.readDirSync(dir)).length === 0) {
+          await Deno.remove(dir);
+          console.log(`  ${o("✧")} removed empty dir  ${od(dir.slice(te.targetDir.length + 1))}`);
+        }
+      } catch { /* already gone */ }
+    }
+  }
+
+  console.log(`\n  ${ob("⟡ PRUNE COMPLETE")}  ${green(String(totalRemoved))} removed, ${totalFailed > 0 ? red(String(totalFailed)) + " failed" : ""}\n`);
   Deno.exit(0);
 }
 
@@ -900,27 +1071,44 @@ if (args.update) {
   }
 
   // --- Preview ---
-  console.log(`\n=== ai-harness --update (v${latestVersion}) ===\n`);
-  console.log("  This will:\n");
-  console.log("    1. Update ai-harness CLI binary");
-  console.log("    2. Sync canonical skills to all tool skill directories");
-  console.log(`    3. Install/update ${Object.keys(manifest.tools).length} tools + remove stale files`);
-  if (!noValidate) console.log("    4. Run compliance validation (use --no-validate to skip)");
+  const logo = [
+    "██╗    ██╗ ██████╗     ███╗   ███╗ ██████╗ ███╗   ██╗ ██████╗",
+    "██║    ██║██╔═══██╗    ████╗ ████║██╔═══██╗████╗  ██║██╔═══██╗",
+    "██║ █╗ ██║██║   ██║    ██╔████╔██║██║   ██║██╔██╗ ██║██║   ██║",
+    "██║███╗██║██║   ██║    ██║╚██╔╝██║██║   ██║██║╚██╗██║██║   ██║",
+    "╚███╔███╔╝╚██████╔╝    ██║ ╚═╝ ██║╚██████╔╝██║ ╚████║╚██████╔╝",
+    " ╚══╝╚══╝  ╚═════╝     ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝",
+  ];
+  for (const line of logo) {
+    console.log(o(`  ${line}`));
+  }
+  console.log();
+  console.log(`  ${ob("⟡ HARNESS UPDATE")}  ${od("v" + latestVersion)}  ${od("─".repeat(30))}\n`);
+  console.log(`  ${o("►")}  ${C.bold}ai-harness --update${C.reset}  ${od("full sync engine")}`);
+  console.log();
+  console.log(`  ${o("┌")}${od("─".repeat(50))}${o("┐")}`);
+  console.log(`  ${o("│")}  ${o("1.")} Update CLI binary                         ${o("│")}`);
+  console.log(`  ${o("│")}  ${o("2.")} Sync canonical skills to all tools        ${o("│")}`);
+  console.log(`  ${o("│")}  ${o("3.")} Install/update ${String(Object.keys(manifest.tools).length).padEnd(2)} tools + remove stale  ${o("│")}`);
+  console.log(`  ${o("│")}  ${noValidate ? o("4.") + " Compliance validation (skipped)" : o("4.") + " Run compliance validation          "}  ${o("│")}`);
+  console.log(`  ${o("└")}${od("─".repeat(50))}${o("┘")}`);
   console.log();
 
   // Show version changes
   const anyUpdates = Object.entries(installedVersions).some(([t, v]) => v !== null && v !== latestVersion);
   if (anyUpdates) {
-    console.log("  Version changes:");
+    console.log(`  ${od("version changes")}`);
+    console.log(`  ${od("─".repeat(40))}`);
     for (const [toolName, installed] of Object.entries(installedVersions)) {
       if (installed === null) {
-        console.log(`    ${toolName}: new install`);
+        console.log(`  ${o("┤")} ${toolName.padEnd(12)} ${green("new install")}`);
       } else if (installed !== latestVersion) {
-        console.log(`    ${toolName}: v${installed} → v${latestVersion}`);
+        console.log(`  ${o("┤")} ${toolName.padEnd(12)} ${od("v" + installed)} ${o("→")} ${o("v" + latestVersion)}`);
       } else {
-        console.log(`    ${toolName}: up to date (v${latestVersion})`);
+        console.log(`  ${o("┤")} ${toolName.padEnd(12)} ${od("v" + latestVersion)}`);
       }
     }
+    console.log();
 
     // Changelog: read between versions
     const changelogPath = `${scriptDir()}../CHANGELOG.md`;
@@ -939,32 +1127,33 @@ if (args.update) {
 
       const relevant = entries.filter((e) => e.version === "Unreleased" || e.version === latestVersion);
       if (relevant.length > 0) {
-        console.log("\n  What's new:");
+        console.log(`  ${od("what's new")}`);
+        console.log(`  ${od("─".repeat(40))}`);
         for (const entry of relevant) {
           const lines = entry.content.split("\n").filter((l) => l.startsWith("-") || l.startsWith("###"));
           for (const line of lines.slice(0, 10)) {
-            console.log(`    ${line}`);
+            console.log(`  ${od("·")} ${line}`);
           }
-          if (lines.length > 10) console.log(`    ... and ${lines.length - 10} more changes`);
+          if (lines.length > 10) console.log(`  ${od("·")} ${od("... and " + (lines.length - 10) + " more changes")}`);
         }
+        console.log();
       }
     } catch { /* changelog not available */ }
   } else {
-    console.log("  All tools up to date.\n");
+    console.log(`  ${od("all tools up to date")}\n`);
   }
-
-  console.log();
 
   // Confirm unless --yes or --dry-run
   if (!yes && !dryRun) {
-    const ok = await promptConfirm("Proceed with full harness update?");
-    if (!ok) { console.log("Cancelled."); Deno.exit(0); }
+    const ok = await promptConfirm(`  ${o("⟫")} Proceed with full harness update?`);
+    if (!ok) { console.log(`  ${yellow("aborted")}`); Deno.exit(0); }
   }
 
   // --- Step 1: Update CLI binary ---
-  console.log("\n=== Step 1/4: Updating CLI binary ===\n");
+  console.log(`\n  ${ob("▸ STEP 1/4")}  ${od("Update CLI binary")}`);
+  console.log(`  ${od("─".repeat(40))}\n`);
   if (dryRun) {
-    console.log("  [dry-run] would run: deno install -Agf -n ai-harness <url>\n");
+    console.log(`  ${od("[dry-run]")} would run: ${C.bold}deno install -Agf -n ai-harness${C.reset}\n`);
   } else {
     const updateCmd = new Deno.Command("deno", {
       args: ["install", "-Agf", "-n", "ai-harness", installUrl],
@@ -973,16 +1162,17 @@ if (args.update) {
     });
     const updateResult = await updateCmd.output();
     if (!updateResult.success) {
-      console.error("  ✗ Failed to update ai-harness CLI.");
+      console.log(`  ${cross()} Failed to update ai-harness CLI.`);
       Deno.exit(1);
     }
-    console.log("  ✓ CLI binary updated\n");
+    console.log(`  ${check()} CLI binary updated\n`);
   }
 
   // --- Step 2: Sync canonical skills ---
-  console.log("\n=== Step 2/4: Syncing canonical skills ===\n");
+  console.log(`  ${ob("▸ STEP 2/4")}  ${od("Sync canonical skills")}`);
+  console.log(`  ${od("─".repeat(40))}\n`);
   if (dryRun) {
-    console.log("  [dry-run] would run: deno run -A install.ts --sync-docs\n");
+    console.log(`  ${od("[dry-run]")} would run: ${C.bold}deno run -A install.ts --sync-docs${C.reset}\n`);
   } else {
     const syncCmd = new Deno.Command("deno", {
       args: ["run", "-A", `${installBase}install.ts`, "--sync-docs"],
@@ -991,17 +1181,18 @@ if (args.update) {
     });
     const syncResult = await syncCmd.output();
     if (!syncResult.success) {
-      console.warn("  ⚠ Docs sync had issues, continuing...\n");
+      console.log(`  ${warn()} Docs sync had issues, continuing...\n`);
     } else {
-      console.log("  ✓ Docs synced\n");
+      console.log(`  ${check()} Docs synced\n`);
     }
   }
 
   // --- Step 3: Install/update all tools ---
-  console.log("\n=== Step 3/4: Installing/updating all tools ===\n");
+  console.log(`  ${ob("▸ STEP 3/4")}  ${od("Install/update " + Object.keys(manifest.tools).length + " tools")}`);
+  console.log(`  ${od("─".repeat(40))}\n`);
   if (dryRun) {
-    console.log(`  [dry-run] would run: ai-harness --tool=all${yes ? " --yes" : ""}\n`);
-    console.log("  [dry-run] would remove stale files in all 7 target dirs\n");
+    console.log(`  ${od("[dry-run]")} would run: ${C.bold}ai-harness --tool=all${yes ? " --yes" : ""}${C.reset}\n`);
+    console.log(`  ${od("[dry-run]")} would remove stale files in all ${Object.keys(manifest.tools).length} target dirs\n`);
   } else {
     const runArgs = ["--tool=all"];
     if (yes) runArgs.push("--yes");
@@ -1013,7 +1204,7 @@ if (args.update) {
     });
     const runResult = await runCmd.output();
     if (!runResult.success) {
-      console.error("  ✗ Tool installation had errors.");
+      console.log(`  ${cross()} Tool installation had errors.`);
       Deno.exit(1);
     }
     console.log();
@@ -1021,9 +1212,10 @@ if (args.update) {
 
   // --- Step 4: Compliance validation ---
   if (!noValidate) {
-    console.log("\n=== Step 4/4: Post-update validation ===\n");
+    console.log(`  ${ob("▸ STEP 4/4")}  ${od("Post-update validation")}`);
+    console.log(`  ${od("─".repeat(40))}\n`);
     if (dryRun) {
-      console.log("  [dry-run] would run compliance check\n");
+      console.log(`  ${od("[dry-run]")} would run compliance check\n`);
     } else {
       const complianceScript = `${scriptDir()}scripts/compliance-check.ts`;
       try {
@@ -1045,23 +1237,23 @@ if (args.update) {
 
         if (errorCount > 0) {
           console.log(stdout);
-          console.warn(`  ⚠ ${errorCount} error(s) found after update. Review above.`);
+          console.log(`  ${warn()} ${errorCount} error(s) found after update. Review above.`);
         } else {
           const passMatch = stdout.match(/Skills: \d+ total, (\d+) passed/);
           const passed = passMatch ? parseInt(passMatch[1]) : "?";
-          console.log(`  ✓ Compliance check passed (${passed}+ skills clean across all tools)\n`);
+          console.log(`  ${check()} Compliance check passed (${passed}+ skills clean across all tools)\n`);
         }
         if (stderr) console.error(stderr);
       } catch (e) {
-        console.warn(`  ⚠ Compliance check skipped: ${e}`);
-        console.log("  Run manually: deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts\n");
+        console.log(`  ${warn()} Compliance check skipped: ${e}`);
+        console.log(`  Run manually: ${od("deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts")}\n`);
       }
     }
   } else {
-    console.log("\n=== Step 4/4: Validation skipped (--no-validate) ===\n");
+    console.log(`  ${ob("▸ STEP 4/4")}  ${od("Validation skipped (--no-validate)")}\n`);
   }
 
-  console.log("\n=== Update complete ===\n");
+  console.log(`\n  ${ob("⟡ UPDATE COMPLETE")}  ${check()}\n`);
   Deno.exit(0);
 }
 

@@ -2,6 +2,12 @@
 
 ## [Unreleased] - 2026-06-12
 
+### Orange Matrix UI + `--prune` Interactive Skill Manager
+- **Matrix-style orange UI**: WO MONO ASCII logo, box-drawn step layout, colored `✧`/`·` symbols on all install output
+- **`--prune` interactive skill pruning**: scans all 7 tools, shows extra (non-manifest) files grouped by tool, interactive checkbox picker (pre-checked = safe to remove), user can un-check skills from other sources they want to keep
+- **Two-stage interactive flow**: first pick tools to prune, then pick files within each tool
+- **All output orange-colored**: `check()`/`cross()`/`warn()` ANSI helpers, install loop, stale cleanup, version checks
+
 ### WOMONO-063 — Phase 2 Complete: Skill Cleanup + Zero Hard Errors
 - **Phase 2: Moved all misplaced skills to `ref/`** — 164 skills moved to `ref/<tool>/` across all 7 harness dirs
 - **Created `scripts/fix-skills.ts`** — auto-fix script handles `allowed-tools` casing, frontmatter cleanup, `name` field fixes
