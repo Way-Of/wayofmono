@@ -48,13 +48,23 @@ ai-harness --update
 
 **Major Update** (full refresh after a breaking overhaul)
 
-```bash
-# Force fresh fetch bypassing Deno cache
-deno run --reload -A https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts --update
+Force fresh fetch bypassing Deno cache:
 
-# Or wipe everything and reinstall from scratch
+```bash
+deno run --reload -A https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts --update
+```
+
+Or wipe everything and reinstall from scratch:
+
+```bash
 ai-harness --uninstall=all --yes
+```
+
+```bash
 deno install -Agf -n ai-harness https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts
+```
+
+```bash
 ai-harness --tool=all --yes
 ```
 
