@@ -1063,7 +1063,7 @@ if (args.update) {
   // --- Phase 1: Update binary (unless --skip-binary) ---
   if (!skipBinary) {
     const updateCmd = new Deno.Command("deno", {
-      args: ["install", "-Agf", "--no-lock", "--reload", "-n", "ai-harness", installUrl],
+      args: ["install", "-Agf", "--lock=/dev/null", "--reload", "-n", "ai-harness", installUrl],
       stdout: "inherit",
       stderr: "inherit",
     });
