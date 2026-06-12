@@ -1103,6 +1103,7 @@ if (args.update) {
     if (noValidate) reExecArgs.push("--no-validate");
     const reExecCmd = new Deno.Command("ai-harness", {
       args: reExecArgs,
+      stdin: "inherit",
       stdout: "inherit",
       stderr: "inherit",
     });
