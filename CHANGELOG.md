@@ -1,5 +1,21 @@
 # Changelog
 
+## [Unreleased] - 2026-06-12
+
+### README Rewrite & Architecture Docs
+- **README.md** fully rewritten with real repository data (51,033 files, 906 SKILL.md, 13 packages, 4 developers, 29+ tickets, per-tool skill counts)
+- Added slogan blockquote to header and footer
+- Added **Quick Install** section (3-step flow: Deno → harness CLI → all tools)
+- Added `🦙 Prerequisites: Ollama` top-level section
+- Added `📦 Wo Packages` table with `Package | Description | npm` columns and install commands
+- Added **f-rr-d How it works** bullet points (clone on init, project-scoped, multi-project, pull/push, branch naming) + Config note
+- Added **AI Engineering Harness** summary with tutorial link
+- Expanded Dev-Dependencies section with full "Hammer vs. The House" analogy
+- Added `ai-harness --check`, `--interactive`, `--dry-run`, `--skill=` commands to Usage
+- Created architecture docs: `docs/cto-dashboard-architecture.md`, `docs/deployment-architecture.md`, `docs/thoughts-architecture.md`, `docs/data-storage-architecture.md`
+- Created `docs/archetecture/INDEX.md` architecture index
+- Fixed duplicate section headers and deduplicated CHANGELOG
+
 ## [Unreleased] - 2026-06-11
 
 ### WOMONO-001 — Electron UI + Cross-Platform Starters + Förråd Sync — **In Progress**
@@ -175,8 +191,6 @@
 - Added codex to manifest.json, install.ts, setup.sh
 - Updated AGENTS.md with Codex column in commands/agents tables
 - Codex skill format: skill.yaml + prompt.md per skill
-
-## Status
 
 ## Status
 
