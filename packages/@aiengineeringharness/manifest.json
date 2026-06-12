@@ -628,6 +628,96 @@
               "dest": "skills/build_tool/SKILL.md"
             }
           ]
+        },
+        "skill/build_tool_skill": {
+          "description": "Unified skill builder for all 7 tools — deployed to Claude Code",
+          "files": [
+            {
+              "src": "claude/skills/build_tool_skill/SKILL.md",
+              "dest": "skills/build_tool_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_agent": {
+          "description": "Unified agent builder for all 7 tools — deployed to Claude Code",
+          "files": [
+            {
+              "src": "claude/skills/build_tool_agent/SKILL.md",
+              "dest": "skills/build_tool_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_extension": {
+          "description": "Unified extension/plugin builder for all 7 tools — deployed to Claude Code",
+          "files": [
+            {
+              "src": "claude/skills/build_tool_extension/SKILL.md",
+              "dest": "skills/build_tool_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_tui": {
+          "description": "Unified TUI component builder for all 7 tools — deployed to Claude Code",
+          "files": [
+            {
+              "src": "claude/skills/build_tool_tui/SKILL.md",
+              "dest": "skills/build_tool_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_cli": {
+          "description": "Unified CLI reference for all 7 tools — deployed to Claude Code",
+          "files": [
+            {
+              "src": "claude/skills/build_tool_cli/SKILL.md",
+              "dest": "skills/build_tool_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_themes": {
+          "description": "Unified theme builder for all 7 tools — deployed to Claude Code",
+          "files": [
+            {
+              "src": "claude/skills/build_tool_themes/SKILL.md",
+              "dest": "skills/build_tool_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_prompts": {
+          "description": "Unified prompt template builder for all 7 tools — deployed to Claude Code",
+          "files": [
+            {
+              "src": "claude/skills/build_tool_prompts/SKILL.md",
+              "dest": "skills/build_tool_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_keybindings": {
+          "description": "Unified keybinding reference for all 7 tools — deployed to Claude Code",
+          "files": [
+            {
+              "src": "claude/skills/build_tool_keybindings/SKILL.md",
+              "dest": "skills/build_tool_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_config": {
+          "description": "Unified configuration reference for all 7 tools — deployed to Claude Code",
+          "files": [
+            {
+              "src": "claude/skills/build_tool_config/SKILL.md",
+              "dest": "skills/build_tool_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_orchestrate": {
+          "description": "Unified orchestration coordinator for all 7 tools — deployed to Claude Code",
+          "files": [
+            {
+              "src": "claude/skills/build_tool_orchestrate/SKILL.md",
+              "dest": "skills/build_tool_orchestrate/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -1251,6 +1341,96 @@
             {
               "src": "opencode/skills/build_tool/SKILL.md",
               "dest": "skills/build_tool/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_skill": {
+          "description": "Unified skill builder for all 7 tools — deployed to OpenCode",
+          "files": [
+            {
+              "src": "opencode/skills/build_tool_skill/SKILL.md",
+              "dest": "skills/build_tool_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_agent": {
+          "description": "Unified agent builder for all 7 tools — deployed to OpenCode",
+          "files": [
+            {
+              "src": "opencode/skills/build_tool_agent/SKILL.md",
+              "dest": "skills/build_tool_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_extension": {
+          "description": "Unified extension/plugin builder for all 7 tools — deployed to OpenCode",
+          "files": [
+            {
+              "src": "opencode/skills/build_tool_extension/SKILL.md",
+              "dest": "skills/build_tool_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_tui": {
+          "description": "Unified TUI component builder for all 7 tools — deployed to OpenCode",
+          "files": [
+            {
+              "src": "opencode/skills/build_tool_tui/SKILL.md",
+              "dest": "skills/build_tool_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_cli": {
+          "description": "Unified CLI reference for all 7 tools — deployed to OpenCode",
+          "files": [
+            {
+              "src": "opencode/skills/build_tool_cli/SKILL.md",
+              "dest": "skills/build_tool_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_themes": {
+          "description": "Unified theme builder for all 7 tools — deployed to OpenCode",
+          "files": [
+            {
+              "src": "opencode/skills/build_tool_themes/SKILL.md",
+              "dest": "skills/build_tool_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_prompts": {
+          "description": "Unified prompt template builder for all 7 tools — deployed to OpenCode",
+          "files": [
+            {
+              "src": "opencode/skills/build_tool_prompts/SKILL.md",
+              "dest": "skills/build_tool_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_keybindings": {
+          "description": "Unified keybinding reference for all 7 tools — deployed to OpenCode",
+          "files": [
+            {
+              "src": "opencode/skills/build_tool_keybindings/SKILL.md",
+              "dest": "skills/build_tool_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_config": {
+          "description": "Unified configuration reference for all 7 tools — deployed to OpenCode",
+          "files": [
+            {
+              "src": "opencode/skills/build_tool_config/SKILL.md",
+              "dest": "skills/build_tool_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_orchestrate": {
+          "description": "Unified orchestration coordinator for all 7 tools — deployed to OpenCode",
+          "files": [
+            {
+              "src": "opencode/skills/build_tool_orchestrate/SKILL.md",
+              "dest": "skills/build_tool_orchestrate/SKILL.md"
             }
           ]
         }
@@ -2025,6 +2205,96 @@
             {
               "src": "gemini/skills/build_tool/SKILL.md",
               "dest": "skills/build_tool/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_skill": {
+          "description": "Unified skill builder for all 7 tools — deployed to Gemini CLI",
+          "files": [
+            {
+              "src": "gemini/skills/build_tool_skill/SKILL.md",
+              "dest": "skills/build_tool_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_agent": {
+          "description": "Unified agent builder for all 7 tools — deployed to Gemini CLI",
+          "files": [
+            {
+              "src": "gemini/skills/build_tool_agent/SKILL.md",
+              "dest": "skills/build_tool_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_extension": {
+          "description": "Unified extension/plugin builder for all 7 tools — deployed to Gemini CLI",
+          "files": [
+            {
+              "src": "gemini/skills/build_tool_extension/SKILL.md",
+              "dest": "skills/build_tool_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_tui": {
+          "description": "Unified TUI component builder for all 7 tools — deployed to Gemini CLI",
+          "files": [
+            {
+              "src": "gemini/skills/build_tool_tui/SKILL.md",
+              "dest": "skills/build_tool_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_cli": {
+          "description": "Unified CLI reference for all 7 tools — deployed to Gemini CLI",
+          "files": [
+            {
+              "src": "gemini/skills/build_tool_cli/SKILL.md",
+              "dest": "skills/build_tool_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_themes": {
+          "description": "Unified theme builder for all 7 tools — deployed to Gemini CLI",
+          "files": [
+            {
+              "src": "gemini/skills/build_tool_themes/SKILL.md",
+              "dest": "skills/build_tool_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_prompts": {
+          "description": "Unified prompt template builder for all 7 tools — deployed to Gemini CLI",
+          "files": [
+            {
+              "src": "gemini/skills/build_tool_prompts/SKILL.md",
+              "dest": "skills/build_tool_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_keybindings": {
+          "description": "Unified keybinding reference for all 7 tools — deployed to Gemini CLI",
+          "files": [
+            {
+              "src": "gemini/skills/build_tool_keybindings/SKILL.md",
+              "dest": "skills/build_tool_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_config": {
+          "description": "Unified configuration reference for all 7 tools — deployed to Gemini CLI",
+          "files": [
+            {
+              "src": "gemini/skills/build_tool_config/SKILL.md",
+              "dest": "skills/build_tool_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_orchestrate": {
+          "description": "Unified orchestration coordinator for all 7 tools — deployed to Gemini CLI",
+          "files": [
+            {
+              "src": "gemini/skills/build_tool_orchestrate/SKILL.md",
+              "dest": "skills/build_tool_orchestrate/SKILL.md"
             }
           ]
         }
@@ -2826,6 +3096,96 @@
               "dest": "skills/build-tool/SKILL.md"
             }
           ]
+        },
+        "skill/build-tool-skill": {
+          "description": "Unified skill builder for all 7 tools — deployed to Pi",
+          "files": [
+            {
+              "src": "pi/skills/build-tool-skill/SKILL.md",
+              "dest": "skills/build-tool-skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build-tool-agent": {
+          "description": "Unified agent builder for all 7 tools — deployed to Pi",
+          "files": [
+            {
+              "src": "pi/skills/build-tool-agent/SKILL.md",
+              "dest": "skills/build-tool-agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build-tool-extension": {
+          "description": "Unified extension/plugin builder for all 7 tools — deployed to Pi",
+          "files": [
+            {
+              "src": "pi/skills/build-tool-extension/SKILL.md",
+              "dest": "skills/build-tool-extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build-tool-tui": {
+          "description": "Unified TUI component builder for all 7 tools — deployed to Pi",
+          "files": [
+            {
+              "src": "pi/skills/build-tool-tui/SKILL.md",
+              "dest": "skills/build-tool-tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/build-tool-cli": {
+          "description": "Unified CLI reference for all 7 tools — deployed to Pi",
+          "files": [
+            {
+              "src": "pi/skills/build-tool-cli/SKILL.md",
+              "dest": "skills/build-tool-cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/build-tool-themes": {
+          "description": "Unified theme builder for all 7 tools — deployed to Pi",
+          "files": [
+            {
+              "src": "pi/skills/build-tool-themes/SKILL.md",
+              "dest": "skills/build-tool-themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/build-tool-prompts": {
+          "description": "Unified prompt template builder for all 7 tools — deployed to Pi",
+          "files": [
+            {
+              "src": "pi/skills/build-tool-prompts/SKILL.md",
+              "dest": "skills/build-tool-prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/build-tool-keybindings": {
+          "description": "Unified keybinding reference for all 7 tools — deployed to Pi",
+          "files": [
+            {
+              "src": "pi/skills/build-tool-keybindings/SKILL.md",
+              "dest": "skills/build-tool-keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/build-tool-config": {
+          "description": "Unified configuration reference for all 7 tools — deployed to Pi",
+          "files": [
+            {
+              "src": "pi/skills/build-tool-config/SKILL.md",
+              "dest": "skills/build-tool-config/SKILL.md"
+            }
+          ]
+        },
+        "skill/build-tool-orchestrate": {
+          "description": "Unified orchestration coordinator for all 7 tools — deployed to Pi",
+          "files": [
+            {
+              "src": "pi/skills/build-tool-orchestrate/SKILL.md",
+              "dest": "skills/build-tool-orchestrate/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -3508,6 +3868,96 @@
             {
               "src": "wocoder/skills/build_tool/SKILL.md",
               "dest": "skills/build_tool/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_skill": {
+          "description": "Unified skill builder for all 7 tools — deployed to Wo Coder",
+          "files": [
+            {
+              "src": "wocoder/skills/build_tool_skill/SKILL.md",
+              "dest": "skills/build_tool_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_agent": {
+          "description": "Unified agent builder for all 7 tools — deployed to Wo Coder",
+          "files": [
+            {
+              "src": "wocoder/skills/build_tool_agent/SKILL.md",
+              "dest": "skills/build_tool_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_extension": {
+          "description": "Unified extension/plugin builder for all 7 tools — deployed to Wo Coder",
+          "files": [
+            {
+              "src": "wocoder/skills/build_tool_extension/SKILL.md",
+              "dest": "skills/build_tool_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_tui": {
+          "description": "Unified TUI component builder for all 7 tools — deployed to Wo Coder",
+          "files": [
+            {
+              "src": "wocoder/skills/build_tool_tui/SKILL.md",
+              "dest": "skills/build_tool_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_cli": {
+          "description": "Unified CLI reference for all 7 tools — deployed to Wo Coder",
+          "files": [
+            {
+              "src": "wocoder/skills/build_tool_cli/SKILL.md",
+              "dest": "skills/build_tool_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_themes": {
+          "description": "Unified theme builder for all 7 tools — deployed to Wo Coder",
+          "files": [
+            {
+              "src": "wocoder/skills/build_tool_themes/SKILL.md",
+              "dest": "skills/build_tool_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_prompts": {
+          "description": "Unified prompt template builder for all 7 tools — deployed to Wo Coder",
+          "files": [
+            {
+              "src": "wocoder/skills/build_tool_prompts/SKILL.md",
+              "dest": "skills/build_tool_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_keybindings": {
+          "description": "Unified keybinding reference for all 7 tools — deployed to Wo Coder",
+          "files": [
+            {
+              "src": "wocoder/skills/build_tool_keybindings/SKILL.md",
+              "dest": "skills/build_tool_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_config": {
+          "description": "Unified configuration reference for all 7 tools — deployed to Wo Coder",
+          "files": [
+            {
+              "src": "wocoder/skills/build_tool_config/SKILL.md",
+              "dest": "skills/build_tool_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_orchestrate": {
+          "description": "Unified orchestration coordinator for all 7 tools — deployed to Wo Coder",
+          "files": [
+            {
+              "src": "wocoder/skills/build_tool_orchestrate/SKILL.md",
+              "dest": "skills/build_tool_orchestrate/SKILL.md"
             }
           ]
         }
@@ -4382,6 +4832,96 @@
               "dest": "skills/build_tool/SKILL.md"
             }
           ]
+        },
+        "skill/build_tool_skill": {
+          "description": "Unified skill builder for all 7 tools — deployed to Antigravity",
+          "files": [
+            {
+              "src": "antigravity/skills/build_tool_skill/SKILL.md",
+              "dest": "skills/build_tool_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_agent": {
+          "description": "Unified agent builder for all 7 tools — deployed to Antigravity",
+          "files": [
+            {
+              "src": "antigravity/skills/build_tool_agent/SKILL.md",
+              "dest": "skills/build_tool_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_extension": {
+          "description": "Unified extension/plugin builder for all 7 tools — deployed to Antigravity",
+          "files": [
+            {
+              "src": "antigravity/skills/build_tool_extension/SKILL.md",
+              "dest": "skills/build_tool_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_tui": {
+          "description": "Unified TUI component builder for all 7 tools — deployed to Antigravity",
+          "files": [
+            {
+              "src": "antigravity/skills/build_tool_tui/SKILL.md",
+              "dest": "skills/build_tool_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_cli": {
+          "description": "Unified CLI reference for all 7 tools — deployed to Antigravity",
+          "files": [
+            {
+              "src": "antigravity/skills/build_tool_cli/SKILL.md",
+              "dest": "skills/build_tool_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_themes": {
+          "description": "Unified theme builder for all 7 tools — deployed to Antigravity",
+          "files": [
+            {
+              "src": "antigravity/skills/build_tool_themes/SKILL.md",
+              "dest": "skills/build_tool_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_prompts": {
+          "description": "Unified prompt template builder for all 7 tools — deployed to Antigravity",
+          "files": [
+            {
+              "src": "antigravity/skills/build_tool_prompts/SKILL.md",
+              "dest": "skills/build_tool_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_keybindings": {
+          "description": "Unified keybinding reference for all 7 tools — deployed to Antigravity",
+          "files": [
+            {
+              "src": "antigravity/skills/build_tool_keybindings/SKILL.md",
+              "dest": "skills/build_tool_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_config": {
+          "description": "Unified configuration reference for all 7 tools — deployed to Antigravity",
+          "files": [
+            {
+              "src": "antigravity/skills/build_tool_config/SKILL.md",
+              "dest": "skills/build_tool_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_orchestrate": {
+          "description": "Unified orchestration coordinator for all 7 tools — deployed to Antigravity",
+          "files": [
+            {
+              "src": "antigravity/skills/build_tool_orchestrate/SKILL.md",
+              "dest": "skills/build_tool_orchestrate/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -4895,6 +5435,96 @@
             {
               "src": "codex/skills/build_tool/SKILL.md",
               "dest": "skills/build_tool/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_skill": {
+          "description": "Unified skill builder for all 7 tools — deployed to Codex",
+          "files": [
+            {
+              "src": "codex/skills/build_tool_skill/SKILL.md",
+              "dest": "skills/build_tool_skill/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_agent": {
+          "description": "Unified agent builder for all 7 tools — deployed to Codex",
+          "files": [
+            {
+              "src": "codex/skills/build_tool_agent/SKILL.md",
+              "dest": "skills/build_tool_agent/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_extension": {
+          "description": "Unified extension/plugin builder for all 7 tools — deployed to Codex",
+          "files": [
+            {
+              "src": "codex/skills/build_tool_extension/SKILL.md",
+              "dest": "skills/build_tool_extension/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_tui": {
+          "description": "Unified TUI component builder for all 7 tools — deployed to Codex",
+          "files": [
+            {
+              "src": "codex/skills/build_tool_tui/SKILL.md",
+              "dest": "skills/build_tool_tui/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_cli": {
+          "description": "Unified CLI reference for all 7 tools — deployed to Codex",
+          "files": [
+            {
+              "src": "codex/skills/build_tool_cli/SKILL.md",
+              "dest": "skills/build_tool_cli/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_themes": {
+          "description": "Unified theme builder for all 7 tools — deployed to Codex",
+          "files": [
+            {
+              "src": "codex/skills/build_tool_themes/SKILL.md",
+              "dest": "skills/build_tool_themes/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_prompts": {
+          "description": "Unified prompt template builder for all 7 tools — deployed to Codex",
+          "files": [
+            {
+              "src": "codex/skills/build_tool_prompts/SKILL.md",
+              "dest": "skills/build_tool_prompts/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_keybindings": {
+          "description": "Unified keybinding reference for all 7 tools — deployed to Codex",
+          "files": [
+            {
+              "src": "codex/skills/build_tool_keybindings/SKILL.md",
+              "dest": "skills/build_tool_keybindings/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_config": {
+          "description": "Unified configuration reference for all 7 tools — deployed to Codex",
+          "files": [
+            {
+              "src": "codex/skills/build_tool_config/SKILL.md",
+              "dest": "skills/build_tool_config/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool_orchestrate": {
+          "description": "Unified orchestration coordinator for all 7 tools — deployed to Codex",
+          "files": [
+            {
+              "src": "codex/skills/build_tool_orchestrate/SKILL.md",
+              "dest": "skills/build_tool_orchestrate/SKILL.md"
             }
           ]
         }
