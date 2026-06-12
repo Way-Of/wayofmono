@@ -121,9 +121,9 @@ The `--init` command creates a `.wo/` folder in your project:
 └── launcher          # ./wouser or ./wocode startup script
 ```
 
-## 🎒 Prerequisites: Deno
+## 👟 Quick Install
 
-WayOfMono uses [Deno](https://deno.com) as the runtime for agent tools.
+### Step 1: Prerequisites — Deno
 
 ```powershell
 # Windows (PowerShell)
@@ -145,7 +145,21 @@ curl -fsSL https://deno.land/install.sh | sh
 deno --version
 ```
 
-### GNU Stow (Optional)
+### Step 2: Install the Harness
+
+```bash
+deno install -Agf -n ai-harness https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts
+```
+
+### Step 3: Install All Tools & Skills
+
+```bash
+ai-harness --tool=all --yes
+```
+
+That's it — project-local packages install to `node_modules/`, not globally. Binaries land in `node_modules/.bin/` accessed via `npx`/`pnpm`.
+
+### GNU Stow (Optional — symlink-based updates)
 
 ```bash
 # Ubuntu/Debian
@@ -157,9 +171,9 @@ sudo apt install stow
 brew install stow
 ```
 
-## 🚀 Getting Started
-
-Packages install to `node_modules/` in your project (not globally). Binaries land in `node_modules/.bin/` and are accessed via `npx`/`pnpm` without any global setup.
+```bash
+./packages/@aiengineeringharness/setup.sh all
+```
 
 ## 🚀 Installation
 
