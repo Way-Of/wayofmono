@@ -817,6 +817,15 @@
               "dest": "skills/womono_practices_backlog/SKILL.md"
             }
           ]
+        },
+        "skill/build_build_tool": {
+          "description": "Universal component builder for all 7 AI coding tools",
+          "files": [
+            {
+              "src": "claude/skills/build_tool/SKILL.md",
+              "dest": "skills/build_tool/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -1719,6 +1728,15 @@
             {
               "src": "opencode/skills/womono_practices_backlog/SKILL.md",
               "dest": "skills/womono_practices_backlog/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_build_tool": {
+          "description": "Universal component builder for all 7 AI coding tools",
+          "files": [
+            {
+              "src": "opencode/skills/build_tool/SKILL.md",
+              "dest": "skills/build_tool/SKILL.md"
             }
           ]
         }
@@ -2774,6 +2792,15 @@
               "dest": "skills/womono_practices_backlog/SKILL.md"
             }
           ]
+        },
+        "skill/build_build_tool": {
+          "description": "Universal component builder for all 7 AI coding tools",
+          "files": [
+            {
+              "src": "gemini/skills/build_tool/SKILL.md",
+              "dest": "skills/build_tool/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -2954,7 +2981,7 @@
           ]
         },
         "skill/observability-driven-development": {
-          "description": "Observability Driven Development (ODD) \u2014 design the trace before the feature; local OTel feedback loop",
+          "description": "Observability Driven Development (ODD) — design the trace before the feature; local OTel feedback loop",
           "files": [
             {
               "src": "pi/skills/observability-driven-development/SKILL.md",
@@ -3143,7 +3170,7 @@
           ]
         },
         "skill/pi-cli": {
-          "description": "Pi CLI expert \u2014 CLI flags, subcommands, output modes, non-interactive usage",
+          "description": "Pi CLI expert — CLI flags, subcommands, output modes, non-interactive usage",
           "files": [
             {
               "src": "pi/skills/pi-cli/SKILL.md",
@@ -3152,7 +3179,7 @@
           ]
         },
         "skill/pi-config": {
-          "description": "Pi configuration expert \u2014 settings, providers, models, packages, keybindings",
+          "description": "Pi configuration expert — settings, providers, models, packages, keybindings",
           "files": [
             {
               "src": "pi/skills/pi-config/SKILL.md",
@@ -3161,7 +3188,7 @@
           ]
         },
         "skill/build-pi-extension": {
-          "description": "Build Pi extensions \u2014 custom tools, events, commands, shortcuts, providers",
+          "description": "Build Pi extensions — custom tools, events, commands, shortcuts, providers",
           "files": [
             {
               "src": "pi/skills/build-pi-extension/SKILL.md",
@@ -3170,7 +3197,7 @@
           ]
         },
         "skill/pi-keybindings": {
-          "description": "Pi keyboard shortcuts \u2014 registerShortcut, key IDs, modifiers, reserved keys",
+          "description": "Pi keyboard shortcuts — registerShortcut, key IDs, modifiers, reserved keys",
           "files": [
             {
               "src": "pi/skills/pi-keybindings/SKILL.md",
@@ -3188,7 +3215,7 @@
           ]
         },
         "skill/pi-prompts": {
-          "description": "Pi prompt templates \u2014 single-file .md format, arguments, /template invocation",
+          "description": "Pi prompt templates — single-file .md format, arguments, /template invocation",
           "files": [
             {
               "src": "pi/skills/pi-prompts/SKILL.md",
@@ -3197,7 +3224,7 @@
           ]
         },
         "skill/build-pi-skill": {
-          "description": "Build Pi skills \u2014 SKILL.md format, frontmatter, validation, directory structure",
+          "description": "Build Pi skills — SKILL.md format, frontmatter, validation, directory structure",
           "files": [
             {
               "src": "pi/skills/build-pi-skill/SKILL.md",
@@ -3206,7 +3233,7 @@
           ]
         },
         "skill/pi-themes": {
-          "description": "Pi themes \u2014 JSON format, 51 color tokens, vars system, hex/256-color values",
+          "description": "Pi themes — JSON format, 51 color tokens, vars system, hex/256-color values",
           "files": [
             {
               "src": "pi/skills/pi-themes/SKILL.md",
@@ -3215,7 +3242,7 @@
           ]
         },
         "skill/pi-tui": {
-          "description": "Pi TUI \u2014 built-in components, custom components, keyboard input, widgets, overlays",
+          "description": "Pi TUI — built-in components, custom components, keyboard input, widgets, overlays",
           "files": [
             {
               "src": "pi/skills/pi-tui/SKILL.md",
@@ -3742,6 +3769,15 @@
             {
               "src": "pi/skills/womono-practices-backlog/SKILL.md",
               "dest": "skills/womono-practices-backlog/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_tool": {
+          "description": "Universal component builder for all 7 AI coding tools",
+          "files": [
+            {
+              "src": "pi/skills/build-tool/SKILL.md",
+              "dest": "skills/build-tool/SKILL.md"
             }
           ]
         }
@@ -4705,6 +4741,15 @@
             {
               "src": "wocoder/skills/womono_practices_backlog/SKILL.md",
               "dest": "skills/womono_practices_backlog/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_build_tool": {
+          "description": "Universal component builder for all 7 AI coding tools",
+          "files": [
+            {
+              "src": "wocoder/skills/build_tool/SKILL.md",
+              "dest": "skills/build_tool/SKILL.md"
             }
           ]
         }
@@ -5768,6 +5813,15 @@
               "dest": "skills/womono_practices_backlog/SKILL.md"
             }
           ]
+        },
+        "skill/build_build_tool": {
+          "description": "Universal component builder for all 7 AI coding tools",
+          "files": [
+            {
+              "src": "antigravity/skills/build_tool/SKILL.md",
+              "dest": "skills/build_tool/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -6560,6 +6614,15 @@
             {
               "src": "codex/skills/womono_practices_backlog/SKILL.md",
               "dest": "skills/womono_practices_backlog/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_build_tool": {
+          "description": "Universal component builder for all 7 AI coding tools",
+          "files": [
+            {
+              "src": "codex/skills/build_tool/SKILL.md",
+              "dest": "skills/build_tool/SKILL.md"
             }
           ]
         }

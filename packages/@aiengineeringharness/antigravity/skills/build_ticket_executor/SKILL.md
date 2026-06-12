@@ -1,12 +1,9 @@
 ---
 name: build_ticket_executor
-description: "Execute approved plans in phases, validating telemetry and committing changes for Antigravity"
-version: 1.0.0
-namespace: core
-tools: read, write, grep, glob, WebSearch
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
-allowed-tools: [read, write, grep, glob, web_search]
-dependencies: [ticket-manager]
+description: >-
+  Execute approved plans in phases, validating telemetry and committing changes
+  for Antigravity
+allowed-tools: 'read, write, grep, glob, web, search'
 ---
 
 # Build Ticket Executor Skill

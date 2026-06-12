@@ -2,10 +2,10 @@
 name: otel_semantic_conventions
 description: >
   OpenTelemetry semantic conventions — attribute naming, placement across
-  telemetry levels, stability/versioning, legacy→current migration,
-  and registry namespace reference.
+  telemetry levels, stability/versioning, legacy→current migration, and registry
+  namespace reference.
 disable-model-invocation: true
-allowed-tools: read_file, run_shell_command, search_file_content, glob
+allowed-tools: 'read, file, run, shell, command, search, file, content, glob'
 ---
 
 # OpenTelemetry Semantic Conventions

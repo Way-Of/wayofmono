@@ -1,7 +1,10 @@
 ---
 name: antigravity_cli
-description: Antigravity CLI expert — knows all command line arguments, flags, environment variables, subcommands, output modes, and non-interactive usage. Use when the user needs help running Antigravity from the command line.
-allowed-tools: Read, Bash, Grep, Glob, WebSearch
+description: >-
+  Antigravity CLI expert — knows all command line arguments, flags, environment
+  variables, subcommands, output modes, and non-interactive usage. Use when the
+  user needs help running Antigravity from the command line.
+allowed-tools: 'read, bash, grep, glob, websearch'
 ---
 
 # Antigravity CLI Reference

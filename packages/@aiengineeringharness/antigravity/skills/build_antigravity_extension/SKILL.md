@@ -1,7 +1,10 @@
 ---
 name: build_antigravity_extension
-description: Antigravity extensions expert — knows how to build custom tools, event handlers, commands, shortcuts, state management, custom rendering, and tool overrides. Use when the user wants to create or modify Antigravity extensions.
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
+description: >-
+  Antigravity extensions expert — knows how to build custom tools, event
+  handlers, commands, shortcuts, state management, custom rendering, and tool
+  overrides. Use when the user wants to create or modify Antigravity extensions.
+allowed-tools: 'read, write, edit, bash, grep, glob, websearch'
 ---
 
 Antigravity extensions are TypeScript files with a default export receiving `ExtensionAPI`.

@@ -1,7 +1,11 @@
 ---
 name: antigravity_keybindings
-description: Antigravity keyboard shortcut expert — knows registerShortcut(), Key IDs, modifier combos, reserved keys, terminal compatibility (macOS/Kitty/legacy), and keybindings.json customization. Use when the user needs help with Antigravity keybindings or shortcuts.
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
+description: >-
+  Antigravity keyboard shortcut expert — knows registerShortcut(), Key IDs,
+  modifier combos, reserved keys, terminal compatibility (macOS/Kitty/legacy),
+  and keybindings.json customization. Use when the user needs help with
+  Antigravity keybindings or shortcuts.
+allowed-tools: 'read, write, edit, bash, grep, glob, websearch'
 ---
 
 ## registerShortcut() API

@@ -2,11 +2,10 @@
 name: validate_telemetry
 description: >
   Validate locally-emitted OpenTelemetry telemetry against a written narrative
-  spec, or run a generic health check on the local OTel stack. Delegates to
-  the observability-driven-development skill's Validation section.
+  spec, or run a generic health check on the local OTel stack. Delegates to the
+  observability-driven-development skill's Validation section.
 disable-model-invocation: true
-argument-hint: "[spec-file-path]"
-allowed-tools: read, bash, grep, glob
+allowed-tools: 'read, bash, grep, glob'
 ---
 
 # Validate Telemetry

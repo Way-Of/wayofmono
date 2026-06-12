@@ -2,9 +2,9 @@
 name: otel_instrument
 description: >
   OpenTelemetry orchestrator — auto-activates on observability, telemetry,
-  tracing, metrics, logging, OTel SDK, Collector, semantic conventions, or
-  OTTL requests. Routes to the correct sub-skill.
-allowed-tools: read_file, run_shell_command, search_file_content, glob
+  tracing, metrics, logging, OTel SDK, Collector, semantic conventions, or OTTL
+  requests. Routes to the correct sub-skill.
+allowed-tools: 'read, file, run, shell, command, search, file, content, glob'
 ---
 
 # OpenTelemetry Orchestrator

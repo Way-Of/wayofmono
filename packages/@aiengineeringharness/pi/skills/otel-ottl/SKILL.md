@@ -5,7 +5,7 @@ description: >
   common patterns (redaction, normalization, enrichment, filtering), error
   handling, and complete function reference for Collector processors.
 disable-model-invocation: true
-allowed-tools: Read, Bash, Grep, glob, replace, Write
+allowed-tools: 'Read, Bash, Grep, Glob, Replace, Write'
 ---
 
 # OpenTelemetry Transformation Language (OTTL)

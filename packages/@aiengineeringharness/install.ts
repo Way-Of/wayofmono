@@ -280,7 +280,7 @@ INSTALL AS CLI (one-time):
   Then run:
     ai-harness --tool=claude
     ai-harness --tool=all --interactive
-    ai-harness --update             # Re-install CLI + all tools from GitHub
+    ai-harness --update             # Full sync: CLI + docs + all tools + stale cleanup + validate
 
 CLONE AND RUN (for private repos):
   gh repo clone Way-Of/wayofmono /tmp/wo -- --depth=1 -q
@@ -298,8 +298,9 @@ OPTIONS:
   --yes, -y                             Skip confirmation prompts
   --local, -l                           Install to project-local directories (.claude, .agents, .gemini, etc.)
   --check                               Check installed version vs manifest
-  --update                              Update CLI + all tools from GitHub (self-updates then re-installs)
+  --update                              Full harness sync: update CLI, sync docs, install/update all tools, remove stale files
   --uninstall=<claude|opencode|all>     Remove installed files for the given tool(s) (manifest from GitHub)
+  --no-validate                         Skip compliance validation after --update
   --import-ref                          Import ref skills/agents to all platforms (WOMONO-016)
   --sync-docs                           Sync canonical skills to all tool skill directories
   --sync-docs --check                   Preview skill sync without making changes
@@ -464,6 +465,95 @@ async function interactivePicker(components: Array<{ name: string; description: 
 }
 
 // ---------------------------------------------------------------------------
+// Stale file cleanup — delete files not in manifest
+// ---------------------------------------------------------------------------
+
+/**
+ * Recursively collect all file paths under a directory.
+ * Returns paths relative to baseDir.
+ */
+async function collectFilePaths(dir: string, baseDir: string): Promise<string[]> {
+  const results: string[] = [];
+  try {
+    for await (const entry of Deno.readDir(dir)) {
+      const fullPath = `${dir}/${entry.name}`;
+      const relPath = fullPath.startsWith(baseDir + "/") ? fullPath.slice(baseDir.length + 1) : entry.name;
+      if (entry.isDirectory) {
+        results.push(...await collectFilePaths(fullPath, baseDir));
+      } else if (entry.isFile) {
+        results.push(relPath);
+      }
+    }
+  } catch {
+    // directory doesn't exist
+  }
+  return results;
+}
+
+/**
+ * Remove files from known managed subdirs that are not in the manifest.
+ * Only touches: skills/, agents/, commands/, prompts/, extensions/, themes/, keybindings/
+ */
+async function removeStaleFiles(
+  targetDir: string,
+  expectedPaths: Set<string>,
+  opts: { dryRun: boolean; yes: boolean; toolName: string },
+): Promise<void> {
+  const knownSubdirs = ["skills", "agents", "commands", "prompts", "extensions", "themes", "keybindings"];
+
+  const installedFiles: string[] = [];
+  for (const subdir of knownSubdirs) {
+    installedFiles.push(...await collectFilePaths(`${targetDir}/${subdir}`, targetDir));
+  }
+
+  const stalePaths = installedFiles.filter((f) => !expectedPaths.has(f));
+  if (stalePaths.length === 0) return;
+
+  console.log(`\n  ${opts.toolName}: ${stalePaths.length} stale file(s) not in manifest:`);
+  for (const f of stalePaths) console.log(`    - ${f}`);
+
+  if (!opts.yes && !opts.dryRun) {
+    const ok = await promptConfirm(`  Remove ${stalePaths.length} stale file(s) from ${opts.toolName}?`);
+    if (!ok) { console.log("  Skipped stale file removal."); return; }
+  }
+
+  const parentDirs = new Set<string>();
+  let removed = 0;
+  let failed = 0;
+
+  for (const f of stalePaths) {
+    const fullPath = `${targetDir}/${f}`;
+    parentDirs.add(fullPath.slice(0, fullPath.lastIndexOf("/")));
+
+    if (opts.dryRun) { console.log(`  - would remove  ${f}`); removed++; continue; }
+
+    try {
+      await Deno.remove(fullPath);
+      console.log(`  ✓ removed  ${f}`);
+      removed++;
+    } catch (err) {
+      console.error(`  ✗ failed   ${f}: ${err}`);
+      failed++;
+    }
+  }
+
+  // Prune empty directories (deepest first)
+  if (!opts.dryRun) {
+    const sorted = [...parentDirs].sort((a, b) => b.length - a.length);
+    for (const dir of sorted) {
+      try {
+        if (Array.from(Deno.readDirSync(dir)).length === 0) {
+          await Deno.remove(dir);
+          console.log(`  ✓ removed empty dir  ${dir.slice(targetDir.length + 1)}`);
+        }
+      } catch { /* already gone or inaccessible */ }
+    }
+  }
+
+  if (failed > 0) console.log(`  ${opts.toolName}: ${removed} removed, ${failed} failed`);
+}
+
+// ---------------------------------------------------------------------------
 // Core installer
 // ---------------------------------------------------------------------------
 
@@ -513,6 +603,14 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
     description: comp.description,
     files: comp.files,
   }));
+
+  // Collect all expected file paths from manifest (used for stale cleanup)
+  const expectedPaths = new Set<string>();
+  for (const comp of Object.values(toolConfig.components)) {
+    for (const f of comp.files) {
+      expectedPaths.add(f.dest);
+    }
+  }
 
   let selectedComponents = allComponents;
 
@@ -624,6 +722,15 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 
   console.log(`\n  ${toolName}: ${installed} installed/updated, ${unchanged} unchanged, ${skipped} skipped`);
 
+  // Remove stale files not in manifest (only for full installs)
+  if (opts.skills.length === 0 && !opts.interactive) {
+    await removeStaleFiles(targetDir, expectedPaths, {
+      dryRun: opts.dryRun,
+      yes: opts.yes,
+      toolName,
+    });
+  }
+
   // Write version marker so --check can detect future updates
   if (!opts.dryRun) {
     await writeInstalledVersion(targetDir, manifest.version);
@@ -636,7 +743,7 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 
 const args = parseArgs(Deno.args, {
   string: ["tool", "skill", "dest", "mode", "report-url", "uninstall"],
-  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs", "report-skills", "update"],
+  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs", "report-skills", "update", "no-validate"],
   alias: { h: "help", n: "dry-run", y: "yes", i: "interactive", l: "local" },
 });
 
@@ -770,29 +877,192 @@ if (args.mode === "repo") {
   Deno.exit(0);
 }
 
-// --update: re-install CLI binary from GitHub, then update all tools
+// --update: full harness sync — CLI binary + changelog + docs + all tools + stale cleanup + validate
 if (args.update) {
   const installUrl =
     "https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts";
-  console.log("Updating ai-harness CLI...");
-  const updateCmd = new Deno.Command("deno", {
-    args: ["install", "-Agf", "-n", "ai-harness", installUrl],
-    stdout: "inherit",
-    stderr: "inherit",
-  });
-  const updateResult = await updateCmd.output();
-  if (!updateResult.success) {
-    console.error("Failed to update ai-harness CLI.");
-    Deno.exit(1);
+  const installBase = installUrl.slice(0, installUrl.lastIndexOf("/") + 1);
+  const dryRun = Boolean(args["dry-run"]);
+  const yes = Boolean(args.yes);
+  const noValidate = Boolean(args["no-validate"]);
+
+  // Load current manifest for version info
+  const sd = scriptDir();
+  const token = resolveToken();
+  const manifest = await loadManifest(sd, token);
+  const latestVersion = manifest.version;
+
+  // Collect installed versions for changelog diff
+  const installedVersions: Record<string, string | null> = {};
+  for (const toolName of Object.keys(manifest.tools)) {
+    const targetDir = expandHome(manifest.tools[toolName].target);
+    installedVersions[toolName] = await readInstalledVersion(targetDir);
   }
-  console.log("ai-harness CLI updated. Re-running with --tool=all --yes...\n");
-  const runCmd = new Deno.Command("ai-harness", {
-    args: ["--tool=all", "--yes"],
-    stdout: "inherit",
-    stderr: "inherit",
-  });
-  const runResult = await runCmd.output();
-  Deno.exit(runResult.success ? 0 : 1);
+
+  // --- Preview ---
+  console.log(`\n=== ai-harness --update (v${latestVersion}) ===\n`);
+  console.log("  This will:\n");
+  console.log("    1. Update ai-harness CLI binary");
+  console.log("    2. Sync canonical skills to all tool skill directories");
+  console.log(`    3. Install/update ${Object.keys(manifest.tools).length} tools + remove stale files`);
+  if (!noValidate) console.log("    4. Run compliance validation (use --no-validate to skip)");
+  console.log();
+
+  // Show version changes
+  const anyUpdates = Object.entries(installedVersions).some(([t, v]) => v !== null && v !== latestVersion);
+  if (anyUpdates) {
+    console.log("  Version changes:");
+    for (const [toolName, installed] of Object.entries(installedVersions)) {
+      if (installed === null) {
+        console.log(`    ${toolName}: new install`);
+      } else if (installed !== latestVersion) {
+        console.log(`    ${toolName}: v${installed} → v${latestVersion}`);
+      } else {
+        console.log(`    ${toolName}: up to date (v${latestVersion})`);
+      }
+    }
+
+    // Changelog: read between versions
+    const changelogPath = `${scriptDir()}../CHANGELOG.md`;
+    try {
+      const changelog = await Deno.readTextFile(changelogPath);
+      const entries: Array<{ version: string; content: string }> = [];
+      const sectionRegex = /^## \[(.+?)\]/gm;
+      let match;
+      while ((match = sectionRegex.exec(changelog)) !== null) {
+        const start = match.index;
+        const nextMatch = sectionRegex.exec(changelog);
+        const end = nextMatch ? nextMatch.index : changelog.length;
+        entries.push({ version: match[1], content: changelog.slice(start, end).trim() });
+        sectionRegex.lastIndex = match.index + match[0].length;
+      }
+
+      const relevant = entries.filter((e) => e.version === "Unreleased" || e.version === latestVersion);
+      if (relevant.length > 0) {
+        console.log("\n  What's new:");
+        for (const entry of relevant) {
+          const lines = entry.content.split("\n").filter((l) => l.startsWith("-") || l.startsWith("###"));
+          for (const line of lines.slice(0, 10)) {
+            console.log(`    ${line}`);
+          }
+          if (lines.length > 10) console.log(`    ... and ${lines.length - 10} more changes`);
+        }
+      }
+    } catch { /* changelog not available */ }
+  } else {
+    console.log("  All tools up to date.\n");
+  }
+
+  console.log();
+
+  // Confirm unless --yes or --dry-run
+  if (!yes && !dryRun) {
+    const ok = await promptConfirm("Proceed with full harness update?");
+    if (!ok) { console.log("Cancelled."); Deno.exit(0); }
+  }
+
+  // --- Step 1: Update CLI binary ---
+  console.log("\n=== Step 1/4: Updating CLI binary ===\n");
+  if (dryRun) {
+    console.log("  [dry-run] would run: deno install -Agf -n ai-harness <url>\n");
+  } else {
+    const updateCmd = new Deno.Command("deno", {
+      args: ["install", "-Agf", "-n", "ai-harness", installUrl],
+      stdout: "inherit",
+      stderr: "inherit",
+    });
+    const updateResult = await updateCmd.output();
+    if (!updateResult.success) {
+      console.error("  ✗ Failed to update ai-harness CLI.");
+      Deno.exit(1);
+    }
+    console.log("  ✓ CLI binary updated\n");
+  }
+
+  // --- Step 2: Sync canonical skills ---
+  console.log("\n=== Step 2/4: Syncing canonical skills ===\n");
+  if (dryRun) {
+    console.log("  [dry-run] would run: deno run -A install.ts --sync-docs\n");
+  } else {
+    const syncCmd = new Deno.Command("deno", {
+      args: ["run", "-A", `${installBase}install.ts`, "--sync-docs"],
+      stdout: "inherit",
+      stderr: "inherit",
+    });
+    const syncResult = await syncCmd.output();
+    if (!syncResult.success) {
+      console.warn("  ⚠ Docs sync had issues, continuing...\n");
+    } else {
+      console.log("  ✓ Docs synced\n");
+    }
+  }
+
+  // --- Step 3: Install/update all tools ---
+  console.log("\n=== Step 3/4: Installing/updating all tools ===\n");
+  if (dryRun) {
+    console.log(`  [dry-run] would run: ai-harness --tool=all${yes ? " --yes" : ""}\n`);
+    console.log("  [dry-run] would remove stale files in all 7 target dirs\n");
+  } else {
+    const runArgs = ["--tool=all"];
+    if (yes) runArgs.push("--yes");
+    if (dryRun) runArgs.push("--dry-run");
+    const runCmd = new Deno.Command("ai-harness", {
+      args: runArgs,
+      stdout: "inherit",
+      stderr: "inherit",
+    });
+    const runResult = await runCmd.output();
+    if (!runResult.success) {
+      console.error("  ✗ Tool installation had errors.");
+      Deno.exit(1);
+    }
+    console.log();
+  }
+
+  // --- Step 4: Compliance validation ---
+  if (!noValidate) {
+    console.log("\n=== Step 4/4: Post-update validation ===\n");
+    if (dryRun) {
+      console.log("  [dry-run] would run compliance check\n");
+    } else {
+      const complianceScript = `${scriptDir()}scripts/compliance-check.ts`;
+      try {
+        const compCmd = new Deno.Command("deno", {
+          args: ["run", "-A", complianceScript],
+          stdout: "piped",
+          stderr: "piped",
+        });
+        const compResult = await compCmd.output();
+        const stdout = new TextDecoder().decode(compResult.stdout);
+        const stderr = new TextDecoder().decode(compResult.stderr);
+
+        // Show error count
+        const errorLines = stdout.split("\n").filter((l) => l.includes("✗ ERROR"));
+        const errorCount = errorLines.reduce((sum, l) => {
+          const m = l.match(/(\d+)/);
+          return sum + (m ? parseInt(m[1]) : 0);
+        }, 0);
+
+        if (errorCount > 0) {
+          console.log(stdout);
+          console.warn(`  ⚠ ${errorCount} error(s) found after update. Review above.`);
+        } else {
+          const passMatch = stdout.match(/Skills: \d+ total, (\d+) passed/);
+          const passed = passMatch ? parseInt(passMatch[1]) : "?";
+          console.log(`  ✓ Compliance check passed (${passed}+ skills clean across all tools)\n`);
+        }
+        if (stderr) console.error(stderr);
+      } catch (e) {
+        console.warn(`  ⚠ Compliance check skipped: ${e}`);
+        console.log("  Run manually: deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts\n");
+      }
+    }
+  } else {
+    console.log("\n=== Step 4/4: Validation skipped (--no-validate) ===\n");
+  }
+
+  console.log("\n=== Update complete ===\n");
+  Deno.exit(0);
 }
 
 // --uninstall: remove installed files

@@ -1,12 +1,10 @@
 ---
 name: wow_tickets
-description: "Manage understanding tickets (WOW- prefixed tickets) for tracking system knowledge and refinement requests"
-version: 1.0.0
-platforms: [opencode, claude, gemini, pi, wocoder, antigravity, codex]
-allowed-tools: [read, write, glob, grep]
-dependencies: [ticket-manager]
+description: >-
+  Manage understanding tickets (WOW- prefixed tickets) for tracking system
+  knowledge and refinement requests
+allowed-tools: read, write, glob, grep
 ---
-
 # Understanding Tickets Management
 
 Skills for managing, reviewing, and tracking understanding tickets (WOW- prefixed tickets in Way of Work system). These tickets capture requests to improve system understanding, documentation needs, feature enhancements, and knowledge gaps.

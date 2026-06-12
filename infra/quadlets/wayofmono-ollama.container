@@ -1,0 +1,16 @@
+[Unit]
+Description=WayOfMono Ollama AI Engine
+
+[Container]
+Image=ollama/ollama:latest
+ContainerName=wayofmono-ollama
+Volume=wayofmono-ollama.volume:/root/.ollama
+Network=wayofmono.network
+# If you want to access Ollama from the host as well:
+# PublishPort=11434:11434
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target

@@ -1,11 +1,7 @@
 ---
-name: skill-adapter
-description: "Platform-specific skill/agent loading and format adapters for all 7 frontends"
-version: 1.0.0
-namespace: core
-tools: read, write, glob, ls, grep
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
-allowed-tools: [read, write, glob, ls, grep]
+name: skill_adapter
+description: Platform-specific skill/agent loading and format adapters for all 7 frontends
+allowed-tools: 'Read, Write, Glob, Ls, Grep'
 ---
 
 # Platform-Specific Skill Loading & Format Adapters

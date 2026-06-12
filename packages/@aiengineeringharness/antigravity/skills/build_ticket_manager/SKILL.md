@@ -1,12 +1,13 @@
 ---
-name: ticket-manager
-description: "Create, update, merge, and delete tickets with proper namespace validation and compliance checking"
-version: 1.0.0
-namespace: core
-tools: read, write, grep, glob
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
-allowed-tools: [read, write, grep, glob]
-dependencies: []
+name: build_ticket_manager
+description: >-
+  Create, update, merge, and delete tickets with proper namespace validation and
+  compliance checking
+allowed-tools:
+  - read
+  - write
+  - grep
+  - glob
 ---
 
 # Ticket Manager Skill

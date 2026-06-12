@@ -1,12 +1,9 @@
 ---
-name: skill-adapter
-description: "Connect and sync skills, agents, and projects with other harness, git repos, and platforms"
-version: 1.0.0
-namespace: tools
-tools: read, write, fetch, git
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
-allowed-tools: [read, write, fetch, git]
-dependencies: [ticket-manager]
+name: build_skill_adapter
+description: >-
+  Connect and sync skills, agents, and projects with other harness, git repos,
+  and platforms
+allowed-tools: 'Read, Write, Fetch, Git'
 ---
 
 # Skill Adapter Skill
