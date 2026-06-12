@@ -102,6 +102,17 @@ ai-harness --tool=antigravity     # Antigravity only
 ai-harness --tool=codex           # Codex only
 ```
 
+### Update
+```bash
+ai-harness --update
+```
+
+> **First-time bootstrap**: If the update fails with a "Integrity check failed" error (Deno cache mismatch after a push), run once:
+> ```bash
+> deno run --reload -A https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts --update
+> ```
+> After that, the wrapper is patched to always reload — `ai-harness --update` works forever after.
+
 ### Repo Mode (GNU Stow symlinks)
 For symlink-based installation directly from your cloned directory:
 ```bash

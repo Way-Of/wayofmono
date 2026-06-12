@@ -254,6 +254,24 @@ async function fetchRemoteFile(baseUrl: string, src: string, token: string | nul
  * LCS-based unified diff. Computes the longest common subsequence of lines
  * and renders added/removed lines with +/- prefixes.
  */
+function patchDenoWrapperReload(): void {
+  // Patches the deno run wrapper to embed --reload, ensuring
+  // that ai-harness --update always fetches fresh from the URL.
+  const home = Deno.env.get("HOME") || "/root";
+  const denoBin = Deno.env.get("DENO_INSTALL_ROOT") || join(home, ".deno", "bin");
+  const wrapperPath = join(denoBin, "ai-harness");
+  try {
+    let content = Deno.readTextFileSync(wrapperPath);
+    // Already wired? Different tools may add flags in different order
+    if (/deno run --reload/.test(content)) return;
+    // Insert --reload after 'deno run'
+    content = content.replace(/\bdeno run\b/, "deno run --reload");
+    Deno.writeTextFileSync(wrapperPath, content);
+  } catch {
+    // non-fatal — wrapper may not exist yet
+  }
+}
+
 function renderDiff(oldText: string, newText: string): string {
   const oldLines = oldText.split("\n");
   const newLines = newText.split("\n");
@@ -1063,15 +1081,20 @@ if (args.update) {
   // --- Phase 1: Update binary (unless --skip-binary) ---
   if (!skipBinary) {
     const updateCmd = new Deno.Command("deno", {
-      args: ["install", "-Agf", "--lock=/dev/null", "--reload", "-n", "ai-harness", installUrl],
+      args: ["install", "-Agf", "--no-lock", "--reload", "-n", "ai-harness", installUrl],
+      cwd: "/tmp",
       stdout: "inherit",
       stderr: "inherit",
     });
     const updateResult = await updateCmd.output();
     if (!updateResult.success) {
       console.error(`${cross()} Failed to update ai-harness CLI.`);
+      console.error(`${warn()} Try once: deno run --reload -A ${installUrl} --update`);
       Deno.exit(1);
     }
+
+    // Patch wrapper to embed --reload so future updates bypass Deno cache
+    await patchDenoWrapperReload();
 
     // Re-exec through the NEW binary for the full Matrix flow
     const reExecArgs = ["--update", "--skip-binary"];
@@ -1394,5 +1417,8 @@ const toolsToInstall = toolArg === "all" ? Object.keys(manifest.tools) : [toolAr
 for (const tool of toolsToInstall) {
   await installTool(manifest, tool, installOpts);
 }
+
+// Patch wrapper to embed --reload so future updates bypass Deno cache
+patchDenoWrapperReload();
 
 console.log("\nDone.");

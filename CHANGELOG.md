@@ -2,6 +2,12 @@
 
 ## [Unreleased] - 2026-06-12
 
+### Deno Wrapper --reload Patching + Bootstrap Fix
+- `patchDenoWrapperReload()` — post-install step edits the deno wrapper to embed `--reload`, so every `ai-harness --update` fetches fresh from the URL, bypassing Deno 2's integrity cache
+- Called on `--update` (Phase 1) and regular `--tool=all` install
+- README documents one-time bootstrap: `deno run --reload -A <url> --update` for users with a stale cached binary
+- Changelog: add unreleased section for wrapper patch
+
 ### Orange Matrix UI + `--prune` Interactive Skill Manager
 - **Matrix-style orange UI**: WO MONO ASCII logo, box-drawn step layout, colored `✧`/`·` symbols on all install output
 - **`--prune` interactive skill pruning**: scans all 7 tools, shows extra (non-manifest) files grouped by tool, interactive checkbox picker (pre-checked = safe to remove), user can un-check skills from other sources they want to keep

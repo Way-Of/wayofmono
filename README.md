@@ -46,7 +46,13 @@ ai-harness --tool=all --yes
 ai-harness --update
 ```
 
-That's it — project-local packages install to `node_modules/`, not globally. Binaries land in `node_modules/.bin/` accessed via `npx`/`pnpm`.
+> **First-time bootstrap**: If `ai-harness --update` fails with an integrity error (Deno cache mismatch after a push), run once:
+> ```bash
+> deno run --reload -A https://raw.githubusercontent.com/zerwiz/wayofmono/main/packages/@aiengineeringharness/install.ts --update
+> ```
+> After that, the wrapper is patched to always reload — `ai-harness --update` works forever.
+
+That's it — project-local packages install to `node_modules/`, not globally. Binaries land in `node_modules/.bin/` accessed via `npx`/`pnpm`. **For a major harness overhaul**, use `deno run --reload -A <url> --update` to force a completely fresh fetch from `main`.
 
 ### GNU Stow (Optional — symlink-based updates)
 
