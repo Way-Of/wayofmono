@@ -926,7 +926,7 @@ if (args["sync-docs"]) {
     Deno.exit(0);
   }
   const docsSyncScript = `${sd}scripts/docs-sync.ts`;
-  const syncArgs = ["run", "-A", docsSyncScript];
+  const syncArgs = ["run", "-A", "--reload", docsSyncScript];
   if (args["check"]) syncArgs.push("--check");
   console.log("Syncing canonical skills to all tool skill directories...\n");
   const cmd = new Deno.Command("deno", { args: syncArgs });
@@ -1177,7 +1177,7 @@ if (args["import-ref"]) {
   const importScript = `${sd}scripts/import-ref-skills.ts`;
   console.log("Importing ref skills/agents to all platforms...\n");
   const cmd = new Deno.Command("deno", {
-    args: ["run", "--allow-read", "--allow-write", "--allow-run", "--allow-env", importScript],
+    args: ["run", "--reload", "--allow-read", "--allow-write", "--allow-run", "--allow-env", importScript],
     cwd: join(sd, "..", ".."),
   });
   const output = await cmd.output();
@@ -1363,7 +1363,7 @@ if (args.update) {
     console.log(`  ${od("[dry-run]")} would run: ${C.bold}deno run -A install.ts --sync-docs${C.reset}\n`);
   } else {
     const syncCmd = new Deno.Command("deno", {
-      args: ["run", "-A", `${installBase}install.ts`, "--sync-docs"],
+      args: ["run", "-A", "--reload", `${installBase}install.ts`, "--sync-docs"],
       stdout: "inherit", stderr: "inherit",
     });
     const syncResult = await syncCmd.output();
@@ -1398,7 +1398,7 @@ if (args.update) {
       const complianceScript = `${scriptDir()}scripts/compliance-check.ts`;
       try {
         const compCmd = new Deno.Command("deno", {
-          args: ["run", "-A", complianceScript], stdout: "piped", stderr: "piped",
+          args: ["run", "-A", "--reload", complianceScript], stdout: "piped", stderr: "piped",
         });
         const compResult = await compCmd.output();
         const stdout = new TextDecoder().decode(compResult.stdout);
