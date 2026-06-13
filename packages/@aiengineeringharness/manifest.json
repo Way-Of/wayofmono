@@ -935,6 +935,15 @@
               "dest": "skills/ticket_executor/SKILL.md"
             }
           ]
+        },
+        "skill/validate_podman": {
+          "description": "Validate Podman/Quadlet configurations on Fedora",
+          "files": [
+            {
+              "src": "claude/skills/validate_podman/SKILL.md",
+              "dest": "skills/validate_podman/SKILL.md"
+            }
+          ]
         }
       }
     },
