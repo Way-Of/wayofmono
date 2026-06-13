@@ -4385,6 +4385,111 @@
             }
           ]
         },
+        "extension/web-access": {
+          "description": "Web search, URL fetching, GitHub cloning, PDF extraction, YouTube/video analysis",
+          "files": [
+            {
+              "src": "wocoder/packets/web-access/index.ts",
+              "dest": "extensions/web-access/index.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/activity.ts",
+              "dest": "extensions/web-access/activity.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/banner.png",
+              "dest": "extensions/web-access/banner.png"
+            },
+            {
+              "src": "wocoder/packets/web-access/chrome-cookies.ts",
+              "dest": "extensions/web-access/chrome-cookies.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/code-search.ts",
+              "dest": "extensions/web-access/code-search.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/curator-page.ts",
+              "dest": "extensions/web-access/curator-page.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/curator-server.ts",
+              "dest": "extensions/web-access/curator-server.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/extract.ts",
+              "dest": "extensions/web-access/extract.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/exa.ts",
+              "dest": "extensions/web-access/exa.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/gemini-api.ts",
+              "dest": "extensions/web-access/gemini-api.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/gemini-search.ts",
+              "dest": "extensions/web-access/gemini-search.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/gemini-url-context.ts",
+              "dest": "extensions/web-access/gemini-url-context.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/gemini-web.ts",
+              "dest": "extensions/web-access/gemini-web.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/gemini-web-config.ts",
+              "dest": "extensions/web-access/gemini-web-config.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/github-api.ts",
+              "dest": "extensions/web-access/github-api.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/github-extract.ts",
+              "dest": "extensions/web-access/github-extract.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/perplexity.ts",
+              "dest": "extensions/web-access/perplexity.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/pdf-extract.ts",
+              "dest": "extensions/web-access/pdf-extract.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/rsc-extract.ts",
+              "dest": "extensions/web-access/rsc-extract.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/storage.ts",
+              "dest": "extensions/web-access/storage.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/summary-review.ts",
+              "dest": "extensions/web-access/summary-review.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/utils.ts",
+              "dest": "extensions/web-access/utils.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/video-extract.ts",
+              "dest": "extensions/web-access/video-extract.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/youtube-extract.ts",
+              "dest": "extensions/web-access/youtube-extract.ts"
+            },
+            {
+              "src": "wocoder/packets/web-access/skills/librarian/SKILL.md",
+              "dest": "extensions/web-access/skills/librarian/SKILL.md"
+            }
+          ]
+        },
         "themes": {
           "description": "Built-in themes for Wo Coder",
           "files": [

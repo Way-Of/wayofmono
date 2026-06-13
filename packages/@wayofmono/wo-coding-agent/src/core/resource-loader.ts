@@ -637,6 +637,30 @@ export class DefaultResourceLoader implements ResourceLoader {
 			join(this.cwd, CONFIG_DIR_NAME, "extensions"),
 		];
 
+		// Also check additional tool directories from the AI Engineering Harness manifest
+		// This ensures resources from wocoder (~/.wocoder/) and pi (~/.pi/agent/) are recognized
+		const additionalAgentDirs = [
+			join(homedir(), ".wocoder"),
+			join(homedir(), ".pi/agent"),
+		];
+
+		for (const agentDirPath of additionalAgentDirs) {
+			if (existsSync(agentDirPath)) {
+				const originalAgentRootsCount = agentRoots.length;
+				agentRoots.push(
+					join(agentDirPath, "skills"),
+					join(agentDirPath, "prompts"),
+					join(agentDirPath, "themes"),
+					join(agentDirPath, "extensions"),
+				);
+				if (agentRoots.length > originalAgentRootsCount) {
+					console.log(chalk.green(`[ResourceLoader] Added additional agent roots from ${agentDirPath}: skills, prompts, themes, extensions`));
+				}
+			} else {
+				console.log(chalk.yellow(`[ResourceLoader] Additional agent directory does not exist: ${agentDirPath}`));
+			}
+		}
+
 		for (const root of agentRoots) {
 			if (this.isUnderPath(normalizedPath, root)) {
 				return { path: filePath, source: "local", scope: "user", origin: "top-level", baseDir: root };

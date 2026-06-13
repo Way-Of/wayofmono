@@ -65,6 +65,52 @@ Or via PowerShell wrapper:
 .\install.ps1 -Tool all -Yes
 ```
 
+### Step 3b: Install Individual Tools
+
+Install specific tools (agents, skills, commands, themes, extensions):
+
+```bash
+# Wo Coder (primary interface)
+ai-harness --tool=wocoder --yes
+
+# Pi Agent
+ai-harness --tool=pi --yes
+
+# OpenCode
+ai-harness --tool=opencode --yes
+
+# Claude Code
+ai-harness --tool=claude --yes
+
+# Gemini CLI
+ai-harness --tool=gemini --yes
+
+# Antigravity
+ai-harness --tool=antigravity --yes
+
+# Codex
+ai-harness --tool=codex --yes
+```
+
+Or with PowerShell wrapper:
+```powershell
+.\install.ps1 -Tool wocoder -Yes
+.\install.ps1 -Tool pi -Yes
+# etc.
+```
+
+### Step 3c: Install to Project-Local (Dev Mode)
+
+Install configs to `.claude/`, `.opencode/`, `.wo/`, etc. in current project:
+
+```bash
+ai-harness --tool=wocoder --local --yes
+ai-harness --tool=pi --local --yes
+ai-harness --tool=all --local --yes
+```
+
+Creates `./.wo/agent/`, `./.pi/agent/`, `./.config/opencode/`, etc. with skills, themes, extensions ready for the project.
+
 ### Update
 
 ```bash
