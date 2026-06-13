@@ -4549,6 +4549,15 @@
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
             }
           ]
+        },
+        "skill/validate-podman": {
+          "description": "Validate Podman/Quadlet configurations on Fedora",
+          "files": [
+            {
+              "src": "pi/agent/extensions/skills/validate-podman/SKILL.md",
+              "dest": "skills/validate-podman/SKILL.md"
+            }
+          ]
         }
       }
     },
