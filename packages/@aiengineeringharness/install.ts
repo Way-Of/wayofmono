@@ -1237,7 +1237,7 @@ if (args.update) {
     "https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts";
   const installBase = installUrl.slice(0, installUrl.lastIndexOf("/") + 1);
   const dryRun = Boolean(args["dry-run"]);
-  const yes = Boolean(args.yes);
+  let yes = Boolean(args.yes);
   const noValidate = Boolean(args["no-validate"]);
   const skipBinary = Boolean(args["skip-binary"]);
   const sd = scriptDir();
