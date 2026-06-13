@@ -628,7 +628,7 @@ export class InteractiveMode {
 			);
 			const onboarding = theme.fg(
 				"dim",
-				`Wo can explain its own features and look up its docs. Ask it how to use or extend Wo.`,
+				`🤖 Yo! I'm Wo — your coding co-pilot. I know all my tricks, shortcuts, and docs. Just ask: 'How do I...?' or 'What's the command for...?' and I'll show you the way. No manual reading required. 🚀`,
 			);
 			this.builtInHeader = new ExpandableText(
 				() => `${logo}\n${compactInstructions}\n${compactOnboarding}\n\n${onboarding}`,
