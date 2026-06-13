@@ -1668,135 +1668,135 @@
               "dest": "skills/investor_ready_doc_gen/SKILL.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/pdf/investor-theme.css",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/pdf/investor-theme.css",
               "dest": "skills/investor_ready_doc_gen/assets/pdf/investor-theme.css"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/examples/wow_config.yaml",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/examples/wow_config.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/examples/wow_config.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/todo.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/todo.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/todo.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/changelog.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/changelog.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/changelog.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/index.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/index.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/index.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/company_overview.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/company/company_overview.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/company_overview.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/team_values.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/company/team_values.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/team_values.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/business_plan.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/company/business_plan.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/business_plan.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/team_bios.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/company/team_bios.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/team_bios.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md"
             },
             {
