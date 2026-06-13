@@ -530,7 +530,7 @@
             }
           ]
         },
-        "skill/build_build_tool": {
+        "skill/build_tool": {
           "description": "Universal component builder for all 7 AI coding tools",
           "files": [
             {
@@ -879,6 +879,60 @@
             {
               "src": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
+            }
+          ]
+        },
+        "skill/build_auto_ticket_creator": {
+          "description": "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories",
+          "files": [
+            {
+              "src": "claude/skills/build_auto_ticket_creator/SKILL.md",
+              "dest": "skills/build_auto_ticket_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_backlog_groomer": {
+          "description": "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.",
+          "files": [
+            {
+              "src": "claude/skills/build_backlog_groomer/SKILL.md",
+              "dest": "skills/build_backlog_groomer/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_skill_adapter": {
+          "description": "Adapts skills between different AI coding tool formats and conventions",
+          "files": [
+            {
+              "src": "claude/skills/build_skill_adapter/SKILL.md",
+              "dest": "skills/build_skill_adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_skill_auto_update": {
+          "description": "Automatically updates skills when dependencies or APIs change",
+          "files": [
+            {
+              "src": "claude/skills/build_skill_auto_update/SKILL.md",
+              "dest": "skills/build_skill_auto_update/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_compliance_checker": {
+          "description": "Validates skills against production-ready standards and best practices",
+          "files": [
+            {
+              "src": "claude/skills/skill_compliance_checker/SKILL.md",
+              "dest": "skills/skill_compliance_checker/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket_executor": {
+          "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
+          "files": [
+            {
+              "src": "claude/skills/ticket_executor/SKILL.md",
+              "dest": "skills/ticket_executor/SKILL.md"
             }
           ]
         }
@@ -1498,7 +1552,7 @@
             }
           ]
         },
-        "skill/build_build_tool": {
+        "skill/build_tool": {
           "description": "Universal component builder for all 7 AI coding tools",
           "files": [
             {
@@ -1847,6 +1901,60 @@
             {
               "src": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
+            }
+          ]
+        },
+        "skill/build_auto_ticket_creator": {
+          "description": "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories",
+          "files": [
+            {
+              "src": "opencode/skills/build_auto_ticket_creator/SKILL.md",
+              "dest": "skills/build_auto_ticket_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_backlog_groomer": {
+          "description": "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.",
+          "files": [
+            {
+              "src": "opencode/skills/build_backlog_groomer/SKILL.md",
+              "dest": "skills/build_backlog_groomer/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_skill_adapter": {
+          "description": "Adapts skills between different AI coding tool formats and conventions",
+          "files": [
+            {
+              "src": "opencode/skills/build_skill_adapter/SKILL.md",
+              "dest": "skills/build_skill_adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_skill_auto_update": {
+          "description": "Automatically updates skills when dependencies or APIs change",
+          "files": [
+            {
+              "src": "opencode/skills/build_skill_auto_update/SKILL.md",
+              "dest": "skills/build_skill_auto_update/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_compliance_checker": {
+          "description": "Validates skills against production-ready standards and best practices",
+          "files": [
+            {
+              "src": "opencode/skills/skill_compliance_checker/SKILL.md",
+              "dest": "skills/skill_compliance_checker/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket_executor": {
+          "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
+          "files": [
+            {
+              "src": "opencode/skills/ticket_executor/SKILL.md",
+              "dest": "skills/ticket_executor/SKILL.md"
             }
           ]
         }
@@ -2615,7 +2723,7 @@
             }
           ]
         },
-        "skill/build_build_tool": {
+        "skill/build_tool": {
           "description": "Universal component builder for all 7 AI coding tools",
           "files": [
             {
@@ -2964,6 +3072,60 @@
             {
               "src": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
+            }
+          ]
+        },
+        "skill/build_auto_ticket_creator": {
+          "description": "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories",
+          "files": [
+            {
+              "src": "gemini/skills/build_auto_ticket_creator/SKILL.md",
+              "dest": "skills/build_auto_ticket_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_backlog_groomer": {
+          "description": "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.",
+          "files": [
+            {
+              "src": "gemini/skills/build_backlog_groomer/SKILL.md",
+              "dest": "skills/build_backlog_groomer/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_skill_adapter": {
+          "description": "Adapts skills between different AI coding tool formats and conventions",
+          "files": [
+            {
+              "src": "gemini/skills/build_skill_adapter/SKILL.md",
+              "dest": "skills/build_skill_adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_skill_auto_update": {
+          "description": "Automatically updates skills when dependencies or APIs change",
+          "files": [
+            {
+              "src": "gemini/skills/build_skill_auto_update/SKILL.md",
+              "dest": "skills/build_skill_auto_update/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_compliance_checker": {
+          "description": "Validates skills against production-ready standards and best practices",
+          "files": [
+            {
+              "src": "gemini/skills/skill_compliance_checker/SKILL.md",
+              "dest": "skills/skill_compliance_checker/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket_executor": {
+          "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
+          "files": [
+            {
+              "src": "gemini/skills/ticket_executor/SKILL.md",
+              "dest": "skills/ticket_executor/SKILL.md"
             }
           ]
         }
@@ -4000,6 +4162,60 @@
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
             }
           ]
+        },
+        "skill/build-auto-ticket-creator": {
+          "description": "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories",
+          "files": [
+            {
+              "src": "pi/skills/build-auto-ticket-creator/SKILL.md",
+              "dest": "skills/build-auto-ticket-creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/build-backlog-groomer": {
+          "description": "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.",
+          "files": [
+            {
+              "src": "pi/skills/build-backlog-groomer/SKILL.md",
+              "dest": "skills/build-backlog-groomer/SKILL.md"
+            }
+          ]
+        },
+        "skill/build-skill-adapter": {
+          "description": "Adapts skills between different AI coding tool formats and conventions",
+          "files": [
+            {
+              "src": "pi/skills/build-skill-adapter/SKILL.md",
+              "dest": "skills/build-skill-adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/build-skill-auto-update": {
+          "description": "Automatically updates skills when dependencies or APIs change",
+          "files": [
+            {
+              "src": "pi/skills/build-skill-auto-update/SKILL.md",
+              "dest": "skills/build-skill-auto-update/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill-compliance-checker": {
+          "description": "Validates skills against production-ready standards and best practices",
+          "files": [
+            {
+              "src": "pi/skills/skill-compliance-checker/SKILL.md",
+              "dest": "skills/skill-compliance-checker/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket-executor": {
+          "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
+          "files": [
+            {
+              "src": "pi/skills/ticket-executor/SKILL.md",
+              "dest": "skills/ticket-executor/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -4676,7 +4892,7 @@
             }
           ]
         },
-        "skill/build_build_tool": {
+        "skill/build_tool": {
           "description": "Universal component builder for all 7 AI coding tools",
           "files": [
             {
@@ -5025,6 +5241,60 @@
             {
               "src": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
+            }
+          ]
+        },
+        "skill/build_auto_ticket_creator": {
+          "description": "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories",
+          "files": [
+            {
+              "src": "wocoder/skills/build_auto_ticket_creator/SKILL.md",
+              "dest": "skills/build_auto_ticket_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_backlog_groomer": {
+          "description": "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.",
+          "files": [
+            {
+              "src": "wocoder/skills/build_backlog_groomer/SKILL.md",
+              "dest": "skills/build_backlog_groomer/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_skill_adapter": {
+          "description": "Adapts skills between different AI coding tool formats and conventions",
+          "files": [
+            {
+              "src": "wocoder/skills/build_skill_adapter/SKILL.md",
+              "dest": "skills/build_skill_adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_skill_auto_update": {
+          "description": "Automatically updates skills when dependencies or APIs change",
+          "files": [
+            {
+              "src": "wocoder/skills/build_skill_auto_update/SKILL.md",
+              "dest": "skills/build_skill_auto_update/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_compliance_checker": {
+          "description": "Validates skills against production-ready standards and best practices",
+          "files": [
+            {
+              "src": "wocoder/skills/skill_compliance_checker/SKILL.md",
+              "dest": "skills/skill_compliance_checker/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket_executor": {
+          "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
+          "files": [
+            {
+              "src": "wocoder/skills/ticket_executor/SKILL.md",
+              "dest": "skills/ticket_executor/SKILL.md"
             }
           ]
         }
@@ -5801,7 +6071,7 @@
             }
           ]
         },
-        "skill/build_build_tool": {
+        "skill/build_tool": {
           "description": "Universal component builder for all 7 AI coding tools",
           "files": [
             {
@@ -6150,6 +6420,60 @@
             {
               "src": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
+            }
+          ]
+        },
+        "skill/build_auto_ticket_creator": {
+          "description": "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories",
+          "files": [
+            {
+              "src": "antigravity/skills/build_auto_ticket_creator/SKILL.md",
+              "dest": "skills/build_auto_ticket_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_backlog_groomer": {
+          "description": "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.",
+          "files": [
+            {
+              "src": "antigravity/skills/build_backlog_groomer/SKILL.md",
+              "dest": "skills/build_backlog_groomer/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_skill_adapter": {
+          "description": "Adapts skills between different AI coding tool formats and conventions",
+          "files": [
+            {
+              "src": "antigravity/skills/build_skill_adapter/SKILL.md",
+              "dest": "skills/build_skill_adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_skill_auto_update": {
+          "description": "Automatically updates skills when dependencies or APIs change",
+          "files": [
+            {
+              "src": "antigravity/skills/build_skill_auto_update/SKILL.md",
+              "dest": "skills/build_skill_auto_update/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_compliance_checker": {
+          "description": "Validates skills against production-ready standards and best practices",
+          "files": [
+            {
+              "src": "antigravity/skills/skill_compliance_checker/SKILL.md",
+              "dest": "skills/skill_compliance_checker/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket_executor": {
+          "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
+          "files": [
+            {
+              "src": "antigravity/skills/ticket_executor/SKILL.md",
+              "dest": "skills/ticket_executor/SKILL.md"
             }
           ]
         }
@@ -6659,7 +6983,7 @@
             }
           ]
         },
-        "skill/build_build_tool": {
+        "skill/build_tool": {
           "description": "Universal component builder for all 7 AI coding tools",
           "files": [
             {
@@ -7008,6 +7332,60 @@
             {
               "src": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
+            }
+          ]
+        },
+        "skill/build_auto_ticket_creator": {
+          "description": "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories",
+          "files": [
+            {
+              "src": "codex/skills/build_auto_ticket_creator/SKILL.md",
+              "dest": "skills/build_auto_ticket_creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_backlog_groomer": {
+          "description": "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.",
+          "files": [
+            {
+              "src": "codex/skills/build_backlog_groomer/SKILL.md",
+              "dest": "skills/build_backlog_groomer/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_skill_adapter": {
+          "description": "Adapts skills between different AI coding tool formats and conventions",
+          "files": [
+            {
+              "src": "codex/skills/build_skill_adapter/SKILL.md",
+              "dest": "skills/build_skill_adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/build_skill_auto_update": {
+          "description": "Automatically updates skills when dependencies or APIs change",
+          "files": [
+            {
+              "src": "codex/skills/build_skill_auto_update/SKILL.md",
+              "dest": "skills/build_skill_auto_update/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill_compliance_checker": {
+          "description": "Validates skills against production-ready standards and best practices",
+          "files": [
+            {
+              "src": "codex/skills/skill_compliance_checker/SKILL.md",
+              "dest": "skills/skill_compliance_checker/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket_executor": {
+          "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
+          "files": [
+            {
+              "src": "codex/skills/ticket_executor/SKILL.md",
+              "dest": "skills/ticket_executor/SKILL.md"
             }
           ]
         }

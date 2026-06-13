@@ -14,6 +14,7 @@
     "node": ">=22"
   },
   "dependencies": {
+    "@wayofmono/wo-coding-agent": "^1.0.4",
     "wo-coding-agent": "link:../../packages/@wayofmono/wo-coding-agent"
   },
   "devDependencies": {

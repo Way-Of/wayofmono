@@ -55,6 +55,7 @@ import {
 	getAuthPath,
 	getDebugLogPath,
 	getDocsPath,
+	getModelsPath,
 	getShareViewerUrl,
 	VERSION,
 } from "../../config.js";
@@ -2562,6 +2563,11 @@ export class InteractiveMode {
 				await this.shutdown();
 				return;
 			}
+			if (text === "/modelollama") {
+				this.editor.setText("");
+				await this.handleModelOllamaCommand();
+				return;
+			}
 
 			// Handle bash command (! for normal, !! for excluded from context)
 			if (text.startsWith("!")) {
@@ -4890,6 +4896,102 @@ export class InteractiveMode {
 			dismissReloadBox(previousEditor as Component);
 			this.showError(`Reload failed: ${error instanceof Error ? error.message : String(error)}`);
 		}
+	}
+
+	private async handleModelOllamaCommand(): Promise<void> {
+		const { execSync } = await import("child_process");
+		const { readFileSync, writeFileSync, existsSync } = await import("fs");
+
+		// Check if Ollama is installed
+		let ollamaInstalled = false;
+		try {
+			execSync("ollama --version", { stdio: "ignore" });
+			ollamaInstalled = true;
+		} catch {
+			ollamaInstalled = false;
+		}
+
+		if (!ollamaInstalled) {
+			this.showStatus(
+				"Ollama is not installed. Please install it first:\n" +
+				"  Linux/macOS: curl -fsSL https://ollama.com/install.sh | sh\n" +
+				"  Windows: Download from https://ollama.com/download\n\n" +
+				"After installation, run /modelollama again."
+			);
+			return;
+		}
+
+		// Check if Ollama service is running
+		let ollamaRunning = false;
+		try {
+			execSync("curl -s http://localhost:11434/api/version", { stdio: "ignore" });
+			ollamaRunning = true;
+		} catch {
+			ollamaRunning = false;
+		}
+
+		if (!ollamaRunning) {
+			this.showStatus(
+				"Ollama is installed but not running. Start it with:\n" +
+				"  ollama serve\n\n" +
+				"Then run /modelollama again."
+			);
+			return;
+		}
+
+		// Pull recommended models
+		const models = ["qwen2.5-coder:7b", "qwen3:8b", "codellama:7b"];
+		this.showStatus("Pulling recommended models for coding...\n");
+
+		for (const model of models) {
+			this.showStatus(`Pulling ${model}...`);
+			try {
+				execSync(`ollama pull ${model}`, { stdio: "inherit" });
+				this.showStatus(`✓ ${model} pulled successfully`);
+			} catch (error) {
+				this.showWarning(`Failed to pull ${model}: ${error instanceof Error ? error.message : String(error)}`);
+			}
+		}
+
+		// Update models.json to use Ollama
+		const modelsPath = getModelsPath();
+
+		let modelsJson: any = { customModels: [] };
+		if (existsSync(modelsPath)) {
+			try {
+				modelsJson = JSON.parse(readFileSync(modelsPath, "utf-8"));
+			} catch {
+				modelsJson = { customModels: [] };
+			}
+		}
+
+		// Add Ollama as a provider if not present
+		if (!modelsJson.customModels) modelsJson.customModels = [];
+
+		// Add qwen2.5-coder:7b as default coding model
+		const qwenModel = {
+			name: "qwen2.5-coder:7b",
+			displayName: "Qwen 2.5 Coder 7B (Ollama)",
+			provider: "ollama",
+			model: "qwen2.5-coder:7b",
+			apiBase: "http://localhost:11434/v1",
+			contextWindow: 32768,
+			maxOutputTokens: 8192,
+		};
+
+		// Remove existing qwen2.5-coder if present
+		modelsJson.customModels = modelsJson.customModels.filter((m: any) => m.model !== "qwen2.5-coder:7b");
+		modelsJson.customModels.unshift(qwenModel);
+
+		writeFileSync(modelsPath, JSON.stringify(modelsJson, null, 2));
+		this.showStatus(`Updated ${modelsPath} with Ollama models`);
+
+		// Show how to use
+		this.showStatus(
+			"Done! You can now use:\n" +
+			"  wocode --provider ollama --model qwen2.5-coder:7b\n" +
+			"  Or select 'Ollama' provider in /model selector"
+		);
 	}
 
 	private async handleExportCommand(text: string): Promise<void> {

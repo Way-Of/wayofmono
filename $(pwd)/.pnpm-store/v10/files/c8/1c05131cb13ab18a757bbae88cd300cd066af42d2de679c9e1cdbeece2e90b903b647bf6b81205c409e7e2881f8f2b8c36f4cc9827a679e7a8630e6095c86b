@@ -1,0 +1,85 @@
+import { type AssistantMessage, type ImageContent, type Model } from "@wayofmono/wo-ai";
+import { Agent, type QueueMode } from "../agent.js";
+import type { AgentMessage, AgentTool, ThinkingLevel } from "../types.js";
+import type { AbortResult, AgentHarnessEvent, AgentHarnessEventResultMap, AgentHarnessOptions, AgentHarnessOwnEvent, AgentHarnessResources, AgentHarnessStreamOptions, ExecutionEnv, NavigateTreeResult, PromptTemplate, Skill } from "./types.js";
+export declare class AgentHarness<TSkill extends Skill = Skill, TPromptTemplate extends PromptTemplate = PromptTemplate, TTool extends AgentTool = AgentTool> {
+    readonly agent: Agent;
+    readonly env: ExecutionEnv;
+    private session;
+    private model;
+    private thinkingLevel;
+    private activeToolNames;
+    private nextTurnQueue;
+    private phase;
+    private steerQueue;
+    private followUpQueue;
+    private pendingSessionWrites;
+    private resources;
+    private streamOptions;
+    private appliedStreamOptions;
+    private appliedSessionId?;
+    private systemPrompt;
+    private getApiKeyAndHeaders?;
+    private tools;
+    private listeners;
+    private hooks;
+    constructor(options: AgentHarnessOptions<TSkill, TPromptTemplate, TTool>);
+    private emitOwn;
+    private emitAny;
+    private emitHook;
+    private emitBeforeProviderRequest;
+    private emitBeforeProviderPayload;
+    private emitQueueUpdate;
+    private createTurnState;
+    private applyTurnState;
+    private validateToolNames;
+    private flushPendingSessionWrites;
+    private handleAgentEvent;
+    private executeTurn;
+    prompt(text: string, options?: {
+        images?: ImageContent[];
+    }): Promise<AssistantMessage>;
+    skill(name: string, additionalInstructions?: string): Promise<AssistantMessage>;
+    promptFromTemplate(name: string, args?: string[]): Promise<AssistantMessage>;
+    steer(text: string, options?: {
+        images?: ImageContent[];
+    }): void;
+    followUp(text: string, options?: {
+        images?: ImageContent[];
+    }): void;
+    nextTurn(text: string, options?: {
+        images?: ImageContent[];
+    }): void;
+    appendMessage(message: AgentMessage): Promise<void>;
+    compact(customInstructions?: string): Promise<{
+        summary: string;
+        firstKeptEntryId: string;
+        tokensBefore: number;
+        details?: unknown;
+    }>;
+    navigateTree(targetId: string, options?: {
+        summarize?: boolean;
+        customInstructions?: string;
+        replaceInstructions?: boolean;
+        label?: string;
+    }): Promise<NavigateTreeResult>;
+    setModel(model: Model<any>): Promise<void>;
+    setThinkingLevel(level: ThinkingLevel): Promise<void>;
+    setActiveTools(toolNames: string[]): Promise<void>;
+    get steeringMode(): QueueMode;
+    set steeringMode(mode: QueueMode);
+    get followUpMode(): QueueMode;
+    set followUpMode(mode: QueueMode);
+    getResources(): AgentHarnessResources<TSkill, TPromptTemplate>;
+    setResources(resources: AgentHarnessResources<TSkill, TPromptTemplate>): Promise<void>;
+    getStreamOptions(): AgentHarnessStreamOptions;
+    setStreamOptions(streamOptions: AgentHarnessStreamOptions): void;
+    setTools(tools: TTool[], activeToolNames?: string[]): Promise<void>;
+    abort(): Promise<AbortResult>;
+    waitForIdle(): Promise<void>;
+    subscribe(listener: (event: AgentHarnessEvent<TSkill, TPromptTemplate>, signal?: AbortSignal) => Promise<void> | void): () => void;
+    on<TType extends keyof AgentHarnessEventResultMap>(type: TType, handler: (event: Extract<AgentHarnessOwnEvent, {
+        type: TType;
+    }>) => Promise<AgentHarnessEventResultMap[TType]> | AgentHarnessEventResultMap[TType]): () => void;
+}
+//# sourceMappingURL=agent-harness.d.ts.map
