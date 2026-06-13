@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@wayofmono/wo-coding-agent':
+        specifier: ^1.0.4
+        version: 1.0.4(ws@8.20.1)(zod@4.4.3)
       wo-coding-agent:
         specifier: link:../../packages/@wayofmono/wo-coding-agent
         version: link:../../packages/@wayofmono/wo-coding-agent
@@ -1918,6 +1921,19 @@ packages:
 
   '@vitest/utils@4.1.6':
     resolution: {integrity: sha512-FxIY+U81R3LGKCxaHHFRQ5+g6/iRgGLmeHWdp2Amj4ljQRrEIWHmZyDfDYBRZlpyqA7qKxtS9DD1dhk8RnRIVQ==}
+
+  '@wayofmono/wo-agent-core@1.0.4':
+    resolution: {integrity: sha512-RjFdpljQ0/TZzOMSEQcCVrQX4dCwekcKTx4c8C1QxIf+1Q1naPUuNNvK+XRjFKKw3db0ytbDhL9snbuQxJsCNA==}
+
+  '@wayofmono/wo-ai@1.0.4':
+    resolution: {integrity: sha512-xEPFfGg4dGcj17X5gLtQTWkg0tnsUgQ7XU9drSQ5YaIL7mVAVLe71W7PrgUUG48Tt7dg7CgWj5bD7eM+AP5qbw==}
+
+  '@wayofmono/wo-coding-agent@1.0.4':
+    resolution: {integrity: sha512-vNIowiDEn4haEGcMZ7zfCDxVR6v0z+/dq55UVdJ/DGoWKMB0yB5oGAl6v8R1GFIAYpLc8QUAKX7ZVI59ZEqBmg==}
+    hasBin: true
+
+  '@wayofmono/wo-tui@1.0.4':
+    resolution: {integrity: sha512-v2ArzQ+luYRiHoSlxB6/E2Xs3aD2fLxljj4GkZs7pK1R0kwU0k/CgMTsIo5N/t9LmJDKXoBrjwqHNvqbj8wGZg==}
 
   '@xterm/headless@5.5.0':
     resolution: {integrity: sha512-5xXB7kdQlFBP82ViMJTwwEc3gKCLGKR/eoxQm4zge7GPBl86tCdI0IdPJjoKd8mUSFXz5V7i/25sfsEkP4j46g==}
@@ -5481,6 +5497,79 @@ snapshots:
       '@vitest/pretty-format': 4.1.6
       convert-source-map: 2.0.0
       tinyrainbow: 3.1.0
+
+  '@wayofmono/wo-agent-core@1.0.4(ws@8.20.1)(zod@4.4.3)':
+    dependencies:
+      '@wayofmono/wo-ai': 1.0.4(ws@8.20.1)(zod@4.4.3)
+      ignore: 7.0.5
+      typebox: 1.1.38
+      yaml: 2.9.0
+    transitivePeerDependencies:
+      - '@modelcontextprotocol/sdk'
+      - aws-crt
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+      - ws
+      - zod
+
+  '@wayofmono/wo-ai@1.0.4(ws@8.20.1)(zod@4.4.3)':
+    dependencies:
+      '@anthropic-ai/sdk': 0.91.1(zod@4.4.3)
+      '@aws-sdk/client-bedrock-runtime': 3.1045.0
+      '@google/genai': 1.52.0
+      '@mistralai/mistralai': 2.2.1
+      '@smithy/node-http-handler': 4.7.1
+      '@smithy/types': 4.14.1
+      openai: 6.26.0(ws@8.20.1)(zod@4.4.3)
+      partial-json: 0.1.7
+      proxy-agent: 6.5.0
+      proxy-from-env: 1.1.0
+      typebox: 1.1.38
+    transitivePeerDependencies:
+      - '@modelcontextprotocol/sdk'
+      - aws-crt
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+      - ws
+      - zod
+
+  '@wayofmono/wo-coding-agent@1.0.4(ws@8.20.1)(zod@4.4.3)':
+    dependencies:
+      '@wayofmono/wo-agent-core': 1.0.4(ws@8.20.1)(zod@4.4.3)
+      '@wayofmono/wo-ai': 1.0.4(ws@8.20.1)(zod@4.4.3)
+      '@wayofmono/wo-tui': 1.0.4
+      chalk: 5.6.2
+      diff: 8.0.4
+      glob: 11.1.0
+      highlight.js: 10.7.3
+      hosted-git-info: 9.0.3
+      ignore: 7.0.5
+      jiti: 2.7.0
+      minimatch: 10.2.5
+      proper-lockfile: 4.1.2
+      typebox: 1.1.38
+      undici: 7.25.0
+      yaml: 2.9.0
+    optionalDependencies:
+      '@mariozechner/clipboard': 0.3.5
+      '@silvia-odwyer/photon-node': 0.3.4
+    transitivePeerDependencies:
+      - '@modelcontextprotocol/sdk'
+      - aws-crt
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+      - ws
+      - zod
+
+  '@wayofmono/wo-tui@1.0.4':
+    dependencies:
+      get-east-asian-width: 1.6.0
+      marked: 15.0.12
+    optionalDependencies:
+      koffi: 2.16.2
 
   '@xterm/headless@5.5.0': {}
 

@@ -215,6 +215,7 @@ ${chalk.bold("Commands:")}
   ${APP_NAME} list                      List installed extensions from settings
   ${APP_NAME} config                    Open TUI to enable/disable package resources
   ${APP_NAME} <command> --help          Show help for install/remove/uninstall/update/list
+  ${APP_NAME} modelollama               Set up local Ollama with recommended models
 
   ${chalk.bold("Options:")}
   --provider <name>              Provider name (default: google)
@@ -255,7 +256,17 @@ ${chalk.bold("Commands:")}
   --version, -v                  Show version number
 Extensions can register additional flags (e.g., --plan from plan-mode extension).${extensionFlagsText}
 
-${chalk.bold("Examples:")}
+  ${chalk.bold("Model Configuration:")}
+  Custom models and provider settings are stored in \`models.json\`:
+    ${chalk.dim("~/.wo/agent/models.json")}        (global default)
+    ${chalk.dim(".wo/agent/models.json")}         (project-local, if .wo/ exists)
+    \${WOCODE_CODING_AGENT_DIR}/models.json      (custom via env var)
+
+  Edit this file to add custom models, override provider settings, or configure
+  API keys. See ${chalk.underline("https://github.com/Way-Of/wayofmono/blob/main/docs/models-json.md")}
+  for the schema and examples.
+
+  ${chalk.bold("Examples:")}
   # Interactive mode
   ${APP_NAME}
 

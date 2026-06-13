@@ -1,0 +1,1 @@
+{"version":3,"file":"undo-stack.d.ts","sourceRoot":"","sources":["../src/undo-stack.ts"],"names":[],"mappings":"AAAA;;;;;GAKG;AACH,qBAAa,SAAS,CAAC,CAAC;IACvB,OAAO,CAAC,KAAK,CAAW;IAExB,2DAA2D;IAC3D,IAAI,CAAC,KAAK,EAAE,CAAC,GAAG,IAAI;IAIpB,sEAAsE;IACtE,GAAG,IAAI,CAAC,GAAG,SAAS;IAIpB,4BAA4B;IAC5B,KAAK,IAAI,IAAI;IAIb,IAAI,MAAM,IAAI,MAAM,CAEnB;CACD"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"package-manager-cli.d.ts","sourceRoot":"","sources":["../src/package-manager-cli.ts"],"names":[],"mappings":"AAiBA,MAAM,MAAM,cAAc,GAAG,SAAS,GAAG,QAAQ,GAAG,QAAQ,GAAG,MAAM,CAAC;AAkUtE,wBAAsB,mBAAmB,CAAC,IAAI,EAAE,MAAM,EAAE,GAAG,OAAO,CAAC,OAAO,CAAC,CAoB1E;AAED,wBAAsB,oBAAoB,CAAC,IAAI,EAAE,MAAM,EAAE,GAAG,OAAO,CAAC,OAAO,CAAC,CAiK3E"}

@@ -1,0 +1,62 @@
+{
+  "name": "@wayofmono/wo-ai",
+  "version": "1.0.4",
+  "description": "Unified LLM API with automatic model discovery and provider configuration",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Way-Of/wayofmono.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Way-Of/wayofmono/issues"
+  },
+  "homepage": "https://github.com/Way-Of/wayofmono#readme",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./anthropic": {
+      "types": "./dist/providers/anthropic.d.ts",
+      "import": "./dist/providers/anthropic.js"
+    },
+    "./bedrock-provider": {
+      "types": "./dist/bedrock-provider.d.ts",
+      "import": "./dist/bedrock-provider.js"
+    },
+    "./oauth": {
+      "types": "./dist/utils/oauth/index.d.ts",
+      "import": "./dist/utils/oauth/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.91.1",
+    "@aws-sdk/client-bedrock-runtime": "^3.1030.0",
+    "@google/genai": "^1.40.0",
+    "@mistralai/mistralai": "^2.2.0",
+    "@smithy/node-http-handler": "^4.0.3",
+    "@smithy/types": "^4.1.0",
+    "openai": "6.26.0",
+    "partial-json": "^0.1.7",
+    "proxy-agent": "^6.5.0",
+    "proxy-from-env": "^1.1.0",
+    "typebox": "^1.1.24"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.1"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest --run",
+    "typecheck": "tsc --noEmit"
+  }
+}
