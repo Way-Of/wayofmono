@@ -2,6 +2,7 @@
 	"$schema": "https://raw.githubusercontent.com/earendil-works/pi/main/packages/coding-agent/src/modes/interactive/theme/theme-schema.json",
 	"name": "dark",
 	"vars": {
+		"orange": 208,
 		"cyan": "#00d7ff",
 		"blue": "#5f87ff",
 		"green": "#b5bd68",
@@ -10,7 +11,7 @@
 		"gray": "#808080",
 		"dimGray": "#666666",
 		"darkGray": "#505050",
-		"accent": "#8abeb7",
+		"accent": "orange",
 		"selectedBg": "#3a3a4a",
 		"userMsgBg": "#343541",
 		"toolPendingBg": "#282832",
@@ -21,7 +22,7 @@
 	"colors": {
 		"accent": "accent",
 		"border": "blue",
-		"borderAccent": "cyan",
+		"borderAccent": "orange",
 		"borderMuted": "darkGray",
 		"success": "green",
 		"error": "red",
@@ -75,7 +76,7 @@
 		"thinkingHigh": "#b294bb",
 		"thinkingXhigh": "#d183e8",
 
-		"bashMode": "green"
+		"bashMode": "orange"
 	},
 	"export": {
 		"pageBg": "#18181e",

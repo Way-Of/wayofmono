@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@wayofmono/wo-agent':
+        specifier: ^1.0.4
+        version: 1.0.4(ws@8.20.1)(zod@4.4.3)
       '@wayofmono/wo-coding-agent':
         specifier: ^1.0.4
         version: 1.0.4(ws@8.20.1)(zod@4.4.3)
@@ -1924,6 +1927,10 @@ packages:
 
   '@wayofmono/wo-agent-core@1.0.4':
     resolution: {integrity: sha512-RjFdpljQ0/TZzOMSEQcCVrQX4dCwekcKTx4c8C1QxIf+1Q1naPUuNNvK+XRjFKKw3db0ytbDhL9snbuQxJsCNA==}
+
+  '@wayofmono/wo-agent@1.0.4':
+    resolution: {integrity: sha512-EwY7nP0JKh/aajFO92+9o0X4BVYIKQWZh91Cp0kFdqlTUrEVijmXYfTUlJzaXXjaSgrslh0LUTwDM2m4CQcoug==}
+    hasBin: true
 
   '@wayofmono/wo-ai@1.0.4':
     resolution: {integrity: sha512-xEPFfGg4dGcj17X5gLtQTWkg0tnsUgQ7XU9drSQ5YaIL7mVAVLe71W7PrgUUG48Tt7dg7CgWj5bD7eM+AP5qbw==}
@@ -5504,6 +5511,35 @@ snapshots:
       ignore: 7.0.5
       typebox: 1.1.38
       yaml: 2.9.0
+    transitivePeerDependencies:
+      - '@modelcontextprotocol/sdk'
+      - aws-crt
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+      - ws
+      - zod
+
+  '@wayofmono/wo-agent@1.0.4(ws@8.20.1)(zod@4.4.3)':
+    dependencies:
+      '@wayofmono/wo-agent-core': 1.0.4(ws@8.20.1)(zod@4.4.3)
+      '@wayofmono/wo-ai': 1.0.4(ws@8.20.1)(zod@4.4.3)
+      '@wayofmono/wo-tui': 1.0.4
+      chalk: 5.6.2
+      diff: 8.0.4
+      glob: 11.1.0
+      highlight.js: 10.7.3
+      hosted-git-info: 9.0.3
+      ignore: 7.0.5
+      jiti: 2.7.0
+      minimatch: 10.2.5
+      proper-lockfile: 4.1.2
+      typebox: 1.1.38
+      undici: 7.25.0
+      yaml: 2.9.0
+    optionalDependencies:
+      '@mariozechner/clipboard': 0.3.5
+      '@silvia-odwyer/photon-node': 0.3.4
     transitivePeerDependencies:
       - '@modelcontextprotocol/sdk'
       - aws-crt

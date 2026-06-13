@@ -2,6 +2,7 @@
 	"$schema": "https://raw.githubusercontent.com/earendil-works/pi/main/packages/coding-agent/src/modes/interactive/theme/theme-schema.json",
 	"name": "light",
 	"vars": {
+		"orange": 208,
 		"teal": "#5a8080",
 		"blue": "#547da7",
 		"green": "#588458",
@@ -15,12 +16,13 @@
 		"toolPendingBg": "#e8e8f0",
 		"toolSuccessBg": "#e8f0e8",
 		"toolErrorBg": "#f0e8e8",
-		"customMsgBg": "#ede7f6"
+		"customMsgBg": "#ede7f6",
+		"accent": "orange"
 	},
 	"colors": {
-		"accent": "teal",
+		"accent": "accent",
 		"border": "blue",
-		"borderAccent": "teal",
+		"borderAccent": "orange",
 		"borderMuted": "lightGray",
 		"success": "green",
 		"error": "red",
@@ -45,13 +47,13 @@
 		"mdHeading": "yellow",
 		"mdLink": "blue",
 		"mdLinkUrl": "dimGray",
-		"mdCode": "teal",
+		"mdCode": "accent",
 		"mdCodeBlock": "green",
 		"mdCodeBlockBorder": "mediumGray",
 		"mdQuote": "mediumGray",
 		"mdQuoteBorder": "mediumGray",
 		"mdHr": "mediumGray",
-		"mdListBullet": "green",
+		"mdListBullet": "accent",
 
 		"toolDiffAdded": "green",
 		"toolDiffRemoved": "red",
@@ -74,7 +76,7 @@
 		"thinkingHigh": "#875f87",
 		"thinkingXhigh": "#8b008b",
 
-		"bashMode": "green"
+		"bashMode": "orange"
 	},
 	"export": {
 		"pageBg": "#f8f8f8",
