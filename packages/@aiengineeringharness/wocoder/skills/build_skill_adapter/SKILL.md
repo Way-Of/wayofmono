@@ -3,10 +3,7 @@ name: build_skill_adapter
 description: >-
   Connect and sync skills, agents, and projects with other harness, git repos,
   and platforms
-allowed-tools: - read
-  - write
-  - fetch
-  - git
+allowed-tools: 'read, write, bash, grep, glob'
 ---
 
 # Skill Adapter Skill

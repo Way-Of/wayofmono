@@ -1,0 +1,70 @@
+# HVAC Optimization — Market Reference Data
+# Load this file when generating investor docs for HVAC/PropTech projects
+# Verified via web search 2026-06-13 — always re-verify before use
+
+market_sizing:
+  tam: "$12B"
+  tam_description: "Commercial HVAC optimization software"
+  tam_source: "Cross-reference: grandviewresearch.com, gminsights.com, mordorintelligence.com"
+  sam: "$3.5B"
+  som: "$450M"
+  growth_rate: "18% CAGR (2024-2030)"
+  growth_rate_source: "Smart building market 16.95-24.4% CAGR across multiple reports"
+
+key_statistics:
+  hvac_energy_share: "40-50% of commercial building energy"
+  hvac_energy_share_source: "energy.gov, gsa.gov"
+  energy_savings_potential: "15-40% with AI optimization"
+  energy_savings_source: "energy.gov, efficiencyvermont.com"
+  unplanned_failures: "Most HVAC failures are reactive/unplanned"
+  unplanned_failures_note: "Exact % varies — use qualitative descriptions unless citing specific study"
+
+competitors:
+  - name: "Optimum Energy"
+    website: "optimumenergyco.com"
+    focus: "HVAC optimization via cloud (central plants)"
+    status: "Active"
+  - name: "Clockworks Analytics"
+    website: "clockworksanalytics.com"
+    focus: "Fault detection and diagnostics"
+    status: "Active"
+  - name: "Gridium"
+    website: "gridium.com"
+    focus: "Energy analytics"
+    status: "Active"
+  - name: "Legacy BMS Vendors (Siemens, JCI)"
+    website: ""
+    focus: "Hardware-centric building management"
+    status: "Active — low AI threat"
+
+defunct_competitors:
+  - name: "BuildingIQ"
+    website: "buildingiq.com"
+    note: "Delisted ASX Sept 2022, domain parked — DO NOT list as active competitor"
+
+regulations:
+  - title: "EU Zero-Emission Buildings"
+    description: "All new buildings must be zero-emission by 2030"
+    source: "energy.ec.europa.eu — EPBD EU/2024/1275"
+    impact: "Forces HVAC optimization adoption"
+  - title: "US Building Emissions"
+    description: "Multiple states adopting building performance standards"
+    source: "energy.gov"
+    impact: "Drives demand for energy optimization"
+
+market_trends:
+  - title: "Rising Electricity Costs"
+    description: "US commercial rates 5.9% CAGR 2020-2025, EU industrial ~2x US"
+    source: "arcadia.com, iea.org, eurostat.eu"
+  - title: "Smart Building Growth"
+    description: "Smart building market $103B (2024) → $827B (2034)"
+    source: "gminsights.com — 24.4% CAGR"
+  - title: "AI in Building Management"
+    description: "AI-powered building management moving to mainstream"
+    source: "exergenics.com, meticulousresearch.com"
+
+predictive_maintenance:
+  savings_vs_reactive: "30-40%"
+  savings_vs_preventive: "8-12%"
+  source: "worktrek.com, oxmaint.com"
+  accuracy_note: "Avoid specific % claims (e.g. '95%') unless backed by published results"
