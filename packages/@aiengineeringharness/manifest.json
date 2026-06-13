@@ -1800,115 +1800,115 @@
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/README.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/financial/README.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/README.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/market_research.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/market_research.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/market_research.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/README.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/README.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/README.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/deep_research.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/deep_research.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/deep_research.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
             }
           ]
@@ -4007,247 +4007,247 @@
               "dest": "skills/investor_ready_doc_gen/SKILL.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/pdf/investor-theme.css",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/pdf/investor-theme.css",
               "dest": "skills/investor_ready_doc_gen/assets/pdf/investor-theme.css"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/examples/wow_config.yaml",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/examples/wow_config.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/examples/wow_config.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/todo.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/todo.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/todo.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/changelog.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/changelog.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/changelog.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/index.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/index.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/index.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/company_overview.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/company/company_overview.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/company_overview.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/team_values.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/company/team_values.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/team_values.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/business_plan.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/company/business_plan.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/business_plan.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/team_bios.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/company/team_bios.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/team_bios.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/README.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/financial/README.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/README.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/market_research.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/market_research.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/market_research.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/README.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/README.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/README.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/deep_research.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/deep_research.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/deep_research.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
             }
           ]
