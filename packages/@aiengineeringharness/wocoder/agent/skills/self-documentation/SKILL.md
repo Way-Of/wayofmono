@@ -31,6 +31,65 @@ This skill auto-triggers when the user asks:
 - "How can I...?" (e.g., "How can I search my codebase?")
 - "I want to...?" (e.g., "I want to export my session")
 - "Show me how to...?" (e.g., "Show me how to use skills")
+- "What is Wo Coder?" / "Who built Wo?" / "Tell me about Wo" / "About Wo"
+
+## What is Wo Coder?
+
+**Wo Coder** (wocode) is a high-performance CLI coding agent built by **developer zerwiz** as part of the **WayOfMono** (Wo) project.
+
+### Key Facts:
+- **Creator**: zerwiz (one of 4 active developers: craig, tomas, andre, zerwiz)
+- **Project**: WayOfMono — ultimate monorepo consolidation for high-performance coding agents
+- **Type**: CLI coding assistant (dev-dependency, not runtime)
+- **Architecture**: Interface-agnostic — core logic shared across 7 agent frontends
+- **Published as**: `@wayofmono/wo-coding-agent` on npm
+- **Binary**: `wocode` (or `npx wocode` / `pnpm wocode`)
+
+### What Wo Coder Does:
+- **Automated engineering & refactoring** — write code, refactor files, analyze architecture
+- **Session management** — fork, clone, tree navigation, export/import
+- **Multi-provider LLM support** — Ollama, OpenAI, Anthropic, Gemini, Bedrock, Mistral
+- **Extension system** — skills, prompts, themes, extensions loaded from `~/.wocoder/`
+- **TUI interface** — built on `@wayofmono/wo-tui` (high-performance terminal UI)
+- **Agent runtime** — powered by `@wayofmono/wo-agent-core`
+
+### How it Fits in WayOfMono:
+```
+WayOfMono (Wo)
+├── packages/@aiengineeringharness/    # 1,226 files — Harness (core)
+├── packages/@wayofmono/               # 13 NPM packages
+│   ├── wo-coding-agent/               # ← Wo Coder (wocode)
+│   ├── wo-agent/                      # wouser (SDK + CLI)
+│   ├── wo-ai/                         # Multi-provider LLM API
+│   ├── wo-tui/                        # Terminal UI library
+│   ├── wo-agent-core/                 # Agent runtime & extension API
+│   └── ... (wo-web-ui, wo-mermaid, web-access, lens, telemetry, telegram, whatsapp)
+├── ui/                                # CTO Dashboard (Next.js 16)
+├── thoughts/                          # f-rr-d context engineering (115 files)
+└── docs/                              # Architecture & reference
+```
+
+### Installation:
+```bash
+# Dev dependency (tool for engineers)
+npm install --save-dev @wayofmono/wo-coding-agent
+
+# Or via harness
+ai-harness --tool=wocoder --yes
+
+# Then run
+npx wocode --init
+./wocode
+```
+
+### Wo Coder vs Other WayOfMono Agents:
+| Agent | Purpose | Install |
+|-------|---------|---------|
+| **wocode** (wo-coding-agent) | CLI coding assistant for engineers | `--save-dev` |
+| **wouser** (wo-agent) | General-purpose user agent SDK | `dependencies` |
+| **wo-ai** | Multi-provider LLM API | — |
+| **wo-tui** | Terminal UI components | — |
+| **wo-agent-core** | Central agent runtime | — |
 
 ## Core Functionality
 
