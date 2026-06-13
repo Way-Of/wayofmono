@@ -1,0 +1,216 @@
+# YAML Schema for investor_ready_doc_gen config
+# Copy this file and fill in values for your project
+
+# REQUIRED FIELDS
+project_name: ""                    # Project/brand name
+project_tagline: ""                 # One-line value proposition
+project_description: ""             # 2-3 paragraph overview
+
+# PROBLEM & SOLUTION
+problem_statement: ""               # Market problem description
+problem_details:                    # List of specific problem points (optional)
+  - title: "Problem 1"
+    description: "Description of problem 1"
+
+solution_description: ""            # How solution solves problem
+solution_highlights:               # Key solution features (optional)
+  - title: "Feature 1"
+    description: "Description of feature 1"
+
+# MARKET
+target_market: ""                   # Market definition
+market_category: ""                 # Industry/category (optional)
+tam: ""                             # Total addressable market (e.g., "$5B")
+sam: ""                             # Serviceable addressable market
+som: ""                             # Serviceable obtainable market
+market_growth_rate: ""              # CAGR percentage (optional)
+market_trends:                      # List of market trends (optional)
+  - title: "Trend 1"
+    description: "Description"
+    impact: "High"
+    timeline: "2026-2028"
+
+customer_profiles:                  # Target customer descriptions (optional)
+  - segment: "Segment A"
+    description: "Description"
+    characteristics: "Key traits"
+    needs: "What they need"
+    acquisition_channel: "Channel"
+    deal_size: "$X"
+    sales_cycle: "X months"
+
+# BUSINESS MODEL
+revenue_streams:                    # List of revenue descriptions
+  - channel: "SaaS Subscriptions"
+    description: "Monthly/annual subscription fees"
+pricing_model: ""                   # Pricing description (e.g., "$X/month per user")
+pricing_tiers:                      # Pricing tiers (optional)
+  - name: "Basic"
+    price: "$X/month"
+    features: "Core features"
+    segment: "Small teams"
+
+# METRICS
+key_metrics:
+  arr: "$0"
+  mrr: "$0"
+  growth_rate: "0%"
+  gross_margin: "0%"
+  cac: "$0"
+  ltv: "$0"
+  churn: "0%"
+  burn_rate: "$0/month"            # optional
+  runway: "0 months"               # optional
+
+unit_economics:                     # optional
+  arpu: "$0"
+  gross_margin: "0%"
+  cac: "$0"
+  ltv: "$0"
+  payback_period: "0 months"
+
+# TECHNOLOGY
+technology_stack:                   # List of technology descriptions
+  - category: "Backend"
+    items: ["Language", "Framework"]
+  - category: "Frontend"
+    items: ["Framework", "Library"]
+  - category: "Database"
+    items: ["Database type"]
+  - category: "Infrastructure"
+    items: ["Cloud provider"]
+
+architecture_description: ""        # Architecture overview (optional)
+core_components:                    # System components (optional)
+  - name: "Component 1"
+    purpose: "What it does"
+    description: "Description"
+    features: ["Feature A", "Feature B"]
+    technical_details: "Technical implementation"
+
+api_endpoints:                      # API endpoints (optional)
+  - path: "/api/v1/endpoint"
+    method: "GET"
+    purpose: "What it does"
+
+security_features:                  # Security capabilities (optional)
+  - feature: "Encryption"
+    description: "AES-256 at rest, TLS 1.3 in transit"
+
+# COMPETITION
+competitors:                        # Competitor descriptions
+  - name: "Competitor A"
+    focus: "Focus area"
+    strengths: "Their strengths"
+    weaknesses: "Their weaknesses"
+    threat_level: "Medium"
+
+competitive_advantages:             # Differentiators
+  - "Advantage 1"
+
+competitive_matrix:                 # optional
+  - feature: "Feature X"
+    us: "✅"
+    them_a: "❌"
+    them_b: "⚠️"
+
+# TEAM
+team_members:                       # Team member descriptions
+  - name: "Name"
+    role: "Title"
+    bio: "Brief bio"
+    background: "Background"
+    experience: ["Experience 1"]
+    education: "Education"
+    role_description: "What they do at {{project_name}}"
+    officer_role: "CEO/CTO/etc"
+
+advisors:                           # optional
+  - name: "Name"
+    role: "Title"
+    background: "Background"
+    expertise: "Expertise"
+
+organizational_structure: ""        # optional
+hiring_plan:                        # optional
+  - role: "Engineer"
+    headcount: 2
+    timeline: "Q3 2026"
+    location: "Remote"
+    status: "Open"
+
+# FINANCIAL
+revenue_projections:                # optional
+  - year: "Year 1"
+    revenue: "$0"
+    growth: "0%"
+    gross_margin: "0%"
+    ebitda: "$0"
+
+cost_categories:                    # optional
+  - category: "Development"
+    monthly: "0"
+    percentage: "0%"
+    trend: "Stable"
+
+total_historical_spend: ""          # optional
+monthly_burn: ""                    # optional
+
+# FUNDING
+funding_ask: ""                     # Investment amount
+investment_type: ""                 # Equity/SAFE/convertible
+valuation: ""                       # Pre/post-money valuation
+use_of_funds:                       # Fund allocation descriptions
+  - category: "Engineering"
+    percentage: "50%"
+    description: "Product development"
+
+# TRACTION
+current_traction:                   # Milestone descriptions
+  - "Milestone 1: Description"
+
+# ROADMAP
+roadmap_short_term:                 # optional
+  - item: "Feature A"
+    description: "Description"
+    impact: "High"
+    dependencies: "None"
+
+roadmap_medium_term:                # optional
+  - item: "Feature B"
+    description: "Description"
+    impact: "Medium"
+    dependencies: "Feature A"
+
+roadmap_long_term:                  # optional
+  - item: "Feature C"
+    description: "Description"
+    rationale: "Strategic"
+
+# RISKS
+risks:                              # Risk descriptions
+  - risk: "Market Risk"
+    probability: "Medium"
+    impact: "High"
+    mitigation: "Strategy"
+
+# LEGAL
+legal_structure: ""                 # Corp/LLC/etc (optional)
+incorporation_date: ""              # Founding date (optional)
+jurisdiction: ""                    # Incorporation location
+registration_numbers:               # Business registration info (optional)
+  business: ""
+  vat: ""
+  address: ""
+
+ip_portfolio:                       # IP descriptions (optional)
+  - type: "Patent"
+    title: "Patent title"
+    description: "Description"
+    status: "Pending"
+    filing_date: "2026-01-01"
+    jurisdiction: "US"
+
+# VERSIONING
+document_version: "1.0"
+current_date: "2026-06-13"

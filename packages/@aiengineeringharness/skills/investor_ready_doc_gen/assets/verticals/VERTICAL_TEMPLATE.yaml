@@ -1,0 +1,44 @@
+# Vertical Knowledge Base Template
+# Copy this file to create a new vertical for investor docs
+# File: assets/verticals/<your_vertical>/market_reference.yaml
+#
+# Naming convention: snake_case, matches the vertical folder name
+# Example: assets/verticals/hvac_optimization/market_reference.yaml
+
+market_sizing:
+  tam: ""
+  tam_description: ""
+  tam_source: ""
+  sam: ""
+  som: ""
+  growth_rate: ""
+  growth_rate_source: ""
+
+key_statistics:
+  # Add key stats specific to this vertical
+  stat_1: ""
+  stat_1_source: ""
+  stat_2: ""
+  stat_2_source: ""
+
+competitors:
+  - name: ""
+    website: ""
+    focus: ""
+    status: "Active / Defunct / Acquired"
+
+defunct_competitors:
+  - name: ""
+    website: ""
+    note: ""
+
+regulations:
+  - title: ""
+    description: ""
+    source: ""
+    impact: ""
+
+market_trends:
+  - title: ""
+    description: ""
+    source: ""
