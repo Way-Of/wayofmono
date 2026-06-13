@@ -15,8 +15,7 @@
   },
   "dependencies": {
     "@wayofmono/wo-agent": "^1.0.4",
-    "@wayofmono/wo-coding-agent": "^1.0.4",
-    "wo-coding-agent": "link:../../packages/@wayofmono/wo-coding-agent"
+    "wo-coding-agent": "link:packages/@wayofmono/wo-coding-agent"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.2",

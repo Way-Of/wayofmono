@@ -3217,6 +3217,68 @@
             }
           ]
         },
+        "extension/theme-cycler": {
+          "description": "Cycle through themes with Ctrl+T",
+          "files": [
+            {
+              "src": "pi/agent/extensions/theme-cycler.ts",
+              "dest": "extensions/theme-cycler.ts"
+            }
+          ]
+        },
+        "themes": {
+          "description": "Built-in themes for Pi",
+          "files": [
+            {
+              "src": "pi/agent/themes/catppuccin-mocha.json",
+              "dest": "themes/catppuccin-mocha.json"
+            },
+            {
+              "src": "pi/agent/themes/cyberpunk.json",
+              "dest": "themes/cyberpunk.json"
+            },
+            {
+              "src": "pi/agent/themes/dracula.json",
+              "dest": "themes/dracula.json"
+            },
+            {
+              "src": "pi/agent/themes/everforest.json",
+              "dest": "themes/everforest.json"
+            },
+            {
+              "src": "pi/agent/themes/gruvbox.json",
+              "dest": "themes/gruvbox.json"
+            },
+            {
+              "src": "pi/agent/themes/midnight-ocean.json",
+              "dest": "themes/midnight-ocean.json"
+            },
+            {
+              "src": "pi/agent/themes/nord.json",
+              "dest": "themes/nord.json"
+            },
+            {
+              "src": "pi/agent/themes/ocean-breeze.json",
+              "dest": "themes/ocean-breeze.json"
+            },
+            {
+              "src": "pi/agent/themes/rose-pine.json",
+              "dest": "themes/rose-pine.json"
+            },
+            {
+              "src": "pi/agent/themes/synthwave.json",
+              "dest": "themes/synthwave.json"
+            },
+            {
+              "src": "pi/agent/themes/tokyo-night.json",
+              "dest": "themes/tokyo-night.json"
+            },
+            {
+              "src": "pi/agent/themes/wo-code.json",
+              "dest": "themes/wo-code.json"
+            }
+          ]
+        },
         "prompt/commit": {
           "description": "Git commit workflow prompt",
           "files": [
@@ -4311,6 +4373,68 @@
             {
               "src": "wocoder/extensions/subagent/prompts/scout-and-plan.md",
               "dest": "extensions/subagent/prompts/scout-and-plan.md"
+            }
+          ]
+        },
+        "extension/theme-cycler": {
+          "description": "Cycle through themes with Ctrl+T",
+          "files": [
+            {
+              "src": "wocoder/agent/extensions/theme-cycler.ts",
+              "dest": "extensions/theme-cycler.ts"
+            }
+          ]
+        },
+        "themes": {
+          "description": "Built-in themes for Wo Coder",
+          "files": [
+            {
+              "src": "wocoder/agent/themes/catppuccin-mocha.json",
+              "dest": "themes/catppuccin-mocha.json"
+            },
+            {
+              "src": "wocoder/agent/themes/cyberpunk.json",
+              "dest": "themes/cyberpunk.json"
+            },
+            {
+              "src": "wocoder/agent/themes/dracula.json",
+              "dest": "themes/dracula.json"
+            },
+            {
+              "src": "wocoder/agent/themes/everforest.json",
+              "dest": "themes/everforest.json"
+            },
+            {
+              "src": "wocoder/agent/themes/gruvbox.json",
+              "dest": "themes/gruvbox.json"
+            },
+            {
+              "src": "wocoder/agent/themes/midnight-ocean.json",
+              "dest": "themes/midnight-ocean.json"
+            },
+            {
+              "src": "wocoder/agent/themes/nord.json",
+              "dest": "themes/nord.json"
+            },
+            {
+              "src": "wocoder/agent/themes/ocean-breeze.json",
+              "dest": "themes/ocean-breeze.json"
+            },
+            {
+              "src": "wocoder/agent/themes/rose-pine.json",
+              "dest": "themes/rose-pine.json"
+            },
+            {
+              "src": "wocoder/agent/themes/synthwave.json",
+              "dest": "themes/synthwave.json"
+            },
+            {
+              "src": "wocoder/agent/themes/tokyo-night.json",
+              "dest": "themes/tokyo-night.json"
+            },
+            {
+              "src": "wocoder/agent/themes/wo-code.json",
+              "dest": "themes/wo-code.json"
             }
           ]
         },
