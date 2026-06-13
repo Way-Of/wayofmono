@@ -10,6 +10,7 @@ tags:
   - self-help
   - commands
   - skills
+  - about
 author: WayOfMono
 status: active
 ---
@@ -19,6 +20,8 @@ status: active
 ## Overview
 
 This skill enables Wo (the coding agent) to answer questions like "How do I...?" and "What's the command for...?" by searching its own built-in commands, extension commands, skills, keybindings, and documentation locally — without any external API calls.
+
+It also knows **what Wo Coder is**, **who built it**, and **how it fits into the WayOfMono ecosystem**.
 
 ## When to Use
 

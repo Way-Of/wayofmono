@@ -20,16 +20,22 @@ kebab=0
 snake=0
 
 for skill_dir in "$PI_SKILLS_DIR"/*/; do
-  skill_name=$(basename "$skill_dir")
-  if [[ -d "$skill_dir" ]]; then
-    total=$((total + 1))
-    if [[ "$skill_name" == *-* ]]; then
-      kebab=$((kebab + 1))
-    else
-      snake=$((snake + 1))
+    skill_name=$(basename "$skill_dir")
+    if [[ -d "$skill_dir" ]]; then
+      total=$((total + 1))
+      if [[ "$skill_name" == *_* ]]; then
+        snake=$((snake + 1))
+      elif [[ "$skill_name" =~ [A-Z] ]]; then
+        snake=$((snake + 1))
+      elif [[ "$skill_name" =~ ^- ]] || [[ "$skill_name" =~ -$ ]]; then
+        snake=$((snake + 1))
+      elif [[ "$skill_name" =~ -- ]]; then
+        snake=$((snake + 1))
+      else
+        kebab=$((kebab + 1))
+      fi
     fi
-  fi
-done
+  done
 
 echo "  Total skill directories: $total"
 echo "  Kebab-case: $kebab"
@@ -137,9 +143,25 @@ for skill_dir in "$PI_SKILLS_DIR"/*/; do
   fi
   total=$((total + 1))
   
-  if [[ "$skill_name" != *-* ]]; then
+  # Check if directory name is valid kebab-case
+  # Valid kebab-case: lowercase letters, numbers, hyphens only
+  # Single words (no hyphens) are also valid kebab-case
+  # Invalid: underscores, uppercase, leading/trailing hyphens, consecutive hyphens
+  if [[ "$skill_name" == *_* ]]; then
     snake=$((snake + 1))
-    echo "  ❌ Directory still snake_case: $skill_name"
+    echo "  ❌ Directory has underscores (snake_case): $skill_name"
+    errors=$((errors + 1))
+  elif [[ "$skill_name" =~ [A-Z] ]]; then
+    snake=$((snake + 1))
+    echo "  ❌ Directory has uppercase: $skill_name"
+    errors=$((errors + 1))
+  elif [[ "$skill_name" =~ ^- ]] || [[ "$skill_name" =~ -$ ]]; then
+    snake=$((snake + 1))
+    echo "  ❌ Directory has leading/trailing hyphen: $skill_name"
+    errors=$((errors + 1))
+  elif [[ "$skill_name" =~ -- ]]; then
+    snake=$((snake + 1))
+    echo "  ❌ Directory has consecutive hyphens: $skill_name"
     errors=$((errors + 1))
   else
     kebab=$((kebab + 1))
@@ -153,8 +175,8 @@ for skill_dir in "$PI_SKILLS_DIR"/*/; do
       errors=$((errors + 1))
     fi
     
-    # Check allowed-tools format
-    if grep -q "allowed-tools:" "$skill_file" && ! grep -A5 "allowed-tools:" "$skill_file" | grep -q "^- "; then
+# Check allowed-tools format
+    if grep -q "allowed-tools:" "$skill_file" && ! grep -A5 "allowed-tools:" "$skill_file" | grep -q "  - "; then
       echo "  ❌ allowed-tools still not array format in: $skill_name"
       errors=$((errors + 1))
     fi
