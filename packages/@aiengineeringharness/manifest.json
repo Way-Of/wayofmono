@@ -2835,7 +2835,7 @@
           "description": "Generate investor-ready documentation for any project",
           "files": [
             {
-              "src": "gemini/gemini/skills/investor_ready_doc_gen/SKILL.md",
+              "src": "gemini/skills/investor_ready_doc_gen/SKILL.md",
               "dest": "skills/investor_ready_doc_gen/SKILL.md"
             },
             {
@@ -4301,7 +4301,7 @@
           "description": "Generate investor-ready documentation for any project",
           "files": [
             {
-              "src": "pi/pi/agent/extensions/skills/investor-ready-doc-gen/SKILL.md",
+              "src": "pi/agent/extensions/skills/investor-ready-doc-gen/SKILL.md",
               "dest": "skills/investor_ready_doc_gen/SKILL.md"
             },
             {
@@ -4547,17 +4547,6 @@
             {
               "src": "pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
-            }
-          ]
-        }
-      }
-    },
-        "skill/validate-podman": {
-          "description": "Validate Podman/Quadlet configurations on Fedora",
-          "files": [
-            {
-              "src": "pi/agent/extensions/skills/validate-podman/SKILL.md",
-              "dest": "skills/validate-podman/SKILL.md"
             }
           ]
         }
@@ -5506,7 +5495,7 @@
           "description": "Generate investor-ready documentation for any project",
           "files": [
             {
-              "src": "wocoder/wocoder/skills/investor_ready_doc_gen/SKILL.md",
+              "src": "wocoder/skills/investor_ready_doc_gen/SKILL.md",
               "dest": "skills/investor_ready_doc_gen/SKILL.md"
             },
             {
