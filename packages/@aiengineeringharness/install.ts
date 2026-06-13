@@ -920,7 +920,12 @@ if (args["report-skills"]) {
 
 // --sync-docs: sync canonical skills to all tool skill directories
 if (args["sync-docs"]) {
-  const docsSyncScript = `${scriptDir()}scripts/docs-sync.ts`;
+  const sd = scriptDir();
+  if (sd.startsWith("http://") || sd.startsWith("https://")) {
+    console.log("  (docs-sync skipped: remote install — manifest handles deployment)\n");
+    Deno.exit(0);
+  }
+  const docsSyncScript = `${sd}scripts/docs-sync.ts`;
   const syncArgs = ["run", "-A", docsSyncScript];
   if (args["check"]) syncArgs.push("--check");
   console.log("Syncing canonical skills to all tool skill directories...\n");
@@ -1352,7 +1357,9 @@ if (args.update) {
   // --- Step 2: Sync canonical skills ---
   console.log(`\n  ${ob("▸ STEP 2/4")}  ${od("Sync canonical skills")}`);
   console.log(`  ${od("─".repeat(40))}\n`);
-  if (dryRun) {
+  if (sd.startsWith("http://") || sd.startsWith("https://")) {
+    console.log(`  ${check()}  ${od("(remote install — manifest handles deployment)")}\n`);
+  } else if (dryRun) {
     console.log(`  ${od("[dry-run]")} would run: ${C.bold}deno run -A install.ts --sync-docs${C.reset}\n`);
   } else {
     const syncCmd = new Deno.Command("deno", {
