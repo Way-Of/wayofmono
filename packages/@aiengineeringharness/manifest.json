@@ -633,7 +633,7 @@
           "description": "Generate investor-ready documentation for any project",
           "files": [
             {
-              "src": "claude/claude/skills/investor_ready_doc_gen/SKILL.md",
+              "src": "claude/skills/investor_ready_doc_gen/SKILL.md",
               "dest": "skills/investor_ready_doc_gen/SKILL.md"
             },
             {
@@ -1957,6 +1957,15 @@
               "dest": "skills/ticket_executor/SKILL.md"
             }
           ]
+        },
+        "skill/validate_podman": {
+          "description": "Validate Podman/Quadlet configurations on Fedora",
+          "files": [
+            {
+              "src": "opencode/skills/validate_podman/SKILL.md",
+              "dest": "skills/validate_podman/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -3126,6 +3135,15 @@
             {
               "src": "gemini/skills/ticket_executor/SKILL.md",
               "dest": "skills/ticket_executor/SKILL.md"
+            }
+          ]
+        },
+        "skill/validate_podman": {
+          "description": "Validate Podman/Quadlet configurations on Fedora",
+          "files": [
+            {
+              "src": "gemini/skills/validate_podman/SKILL.md",
+              "dest": "skills/validate_podman/SKILL.md"
             }
           ]
         }
@@ -4534,6 +4552,17 @@
         }
       }
     },
+        "skill/validate-podman": {
+          "description": "Validate Podman/Quadlet configurations on Fedora",
+          "files": [
+            {
+              "src": "pi/agent/extensions/skills/validate-podman/SKILL.md",
+              "dest": "skills/validate-podman/SKILL.md"
+            }
+          ]
+        }
+      }
+    },
     "wocoder": {
       "target": "~/.wocoder",
       "components": {
@@ -5788,6 +5817,15 @@
               "dest": "skills/self-documentation/SKILL.md"
             }
           ]
+        },
+        "skill/validate_podman": {
+          "description": "Validate Podman/Quadlet configurations on Fedora",
+          "files": [
+            {
+              "src": "wocoder/agent/skills/validate_podman/SKILL.md",
+              "dest": "skills/validate_podman/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -6967,6 +7005,15 @@
               "dest": "skills/ticket_executor/SKILL.md"
             }
           ]
+        },
+        "skill/validate_podman": {
+          "description": "Validate Podman/Quadlet configurations on Fedora",
+          "files": [
+            {
+              "src": "antigravity/skills/validate_podman/SKILL.md",
+              "dest": "skills/validate_podman/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -7877,6 +7924,15 @@
             {
               "src": "codex/skills/ticket_executor/SKILL.md",
               "dest": "skills/ticket_executor/SKILL.md"
+            }
+          ]
+        },
+        "skill/validate_podman": {
+          "description": "Validate Podman/Quadlet configurations on Fedora",
+          "files": [
+            {
+              "src": "codex/skills/validate_podman/SKILL.md",
+              "dest": "skills/validate_podman/SKILL.md"
             }
           ]
         }
