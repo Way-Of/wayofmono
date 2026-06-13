@@ -3165,31 +3165,31 @@
           "description": "Specialized subagents for Pi",
           "files": [
             {
-              "src": "pi/agents/codebase-analyzer.md",
+              "src": "pi/agent/agents/codebase-analyzer.md",
               "dest": "agents/codebase-analyzer.md"
             },
             {
-              "src": "pi/agents/codebase-locator.md",
+              "src": "pi/agent/agents/codebase-locator.md",
               "dest": "agents/codebase-locator.md"
             },
             {
-              "src": "pi/agents/codebase-pattern-finder.md",
+              "src": "pi/agent/agents/codebase-pattern-finder.md",
               "dest": "agents/codebase-pattern-finder.md"
             },
             {
-              "src": "pi/agents/thoughts-analyzer.md",
+              "src": "pi/agent/agents/thoughts-analyzer.md",
               "dest": "agents/thoughts-analyzer.md"
             },
             {
-              "src": "pi/agents/thoughts-locator.md",
+              "src": "pi/agent/agents/thoughts-locator.md",
               "dest": "agents/thoughts-locator.md"
             },
             {
-              "src": "pi/agents/web-search-researcher.md",
+              "src": "pi/agent/agents/web-search-researcher.md",
               "dest": "agents/web-search-researcher.md"
             },
             {
-              "src": "pi/agents/README.md",
+              "src": "pi/agent/agents/README.md",
               "dest": "agents/README.md"
             }
           ]
@@ -3198,7 +3198,7 @@
           "description": "Open files from cwd in $VISUAL/$EDITOR via /edit or ctrl+e",
           "files": [
             {
-              "src": "pi/extensions/open-editor.ts",
+              "src": "pi/agent/extensions/open-editor.ts",
               "dest": "extensions/open-editor.ts"
             }
           ]
@@ -3207,39 +3207,39 @@
           "description": "Subagent tool for multi-agent workflows (single, parallel, chain)",
           "files": [
             {
-              "src": "pi/extensions/subagent/index.ts",
+              "src": "pi/agent/extensions/subagent/index.ts",
               "dest": "extensions/subagent/index.ts"
             },
             {
-              "src": "pi/extensions/subagent/agents.ts",
+              "src": "pi/agent/extensions/subagent/agents.ts",
               "dest": "extensions/subagent/agents.ts"
             },
             {
-              "src": "pi/extensions/subagent/agents/planner.md",
+              "src": "pi/agent/extensions/subagent/agents/planner.md",
               "dest": "extensions/subagent/agents/planner.md"
             },
             {
-              "src": "pi/extensions/subagent/agents/reviewer.md",
+              "src": "pi/agent/extensions/subagent/agents/reviewer.md",
               "dest": "extensions/subagent/agents/reviewer.md"
             },
             {
-              "src": "pi/extensions/subagent/agents/scout.md",
+              "src": "pi/agent/extensions/subagent/agents/scout.md",
               "dest": "extensions/subagent/agents/scout.md"
             },
             {
-              "src": "pi/extensions/subagent/agents/worker.md",
+              "src": "pi/agent/extensions/subagent/agents/worker.md",
               "dest": "extensions/subagent/agents/worker.md"
             },
             {
-              "src": "pi/extensions/subagent/prompts/implement.md",
+              "src": "pi/agent/extensions/subagent/prompts/implement.md",
               "dest": "extensions/subagent/prompts/implement.md"
             },
             {
-              "src": "pi/extensions/subagent/prompts/implement-and-review.md",
+              "src": "pi/agent/extensions/subagent/prompts/implement-and-review.md",
               "dest": "extensions/subagent/prompts/implement-and-review.md"
             },
             {
-              "src": "pi/extensions/subagent/prompts/scout-and-plan.md",
+              "src": "pi/agent/extensions/subagent/prompts/scout-and-plan.md",
               "dest": "extensions/subagent/prompts/scout-and-plan.md"
             }
           ]
@@ -3310,7 +3310,7 @@
           "description": "Git commit workflow prompt",
           "files": [
             {
-              "src": "pi/prompts/commit.md",
+              "src": "pi/agent/prompts/commit.md",
               "dest": "prompts/commit.md"
             }
           ]
@@ -3319,7 +3319,7 @@
           "description": "Create implementation plans prompt",
           "files": [
             {
-              "src": "pi/prompts/create_plan.md",
+              "src": "pi/agent/prompts/create_plan.md",
               "dest": "prompts/create_plan.md"
             }
           ]
@@ -3328,7 +3328,7 @@
           "description": "Debugging investigation prompt",
           "files": [
             {
-              "src": "pi/prompts/debug.md",
+              "src": "pi/agent/prompts/debug.md",
               "dest": "prompts/debug.md"
             }
           ]
@@ -3337,7 +3337,7 @@
           "description": "Kubernetes cluster debugging prompt",
           "files": [
             {
-              "src": "pi/prompts/debug-k8s.md",
+              "src": "pi/agent/prompts/debug-k8s.md",
               "dest": "prompts/debug-k8s.md"
             }
           ]
@@ -3346,7 +3346,7 @@
           "description": "Execute an approved plan prompt",
           "files": [
             {
-              "src": "pi/prompts/implement_plan.md",
+              "src": "pi/agent/prompts/implement_plan.md",
               "dest": "prompts/implement_plan.md"
             }
           ]
@@ -3355,7 +3355,7 @@
           "description": "Initialize harness in a new repository prompt",
           "files": [
             {
-              "src": "pi/prompts/init_harness.md",
+              "src": "pi/agent/prompts/init_harness.md",
               "dest": "prompts/init_harness.md"
             }
           ]
@@ -3364,7 +3364,7 @@
           "description": "OpenTelemetry instrumentation orchestrator prompt",
           "files": [
             {
-              "src": "pi/prompts/otel_instrument.md",
+              "src": "pi/agent/prompts/otel_instrument.md",
               "dest": "prompts/otel_instrument.md"
             }
           ]
@@ -3373,7 +3373,7 @@
           "description": "Comprehensive codebase research prompt",
           "files": [
             {
-              "src": "pi/prompts/research_codebase.md",
+              "src": "pi/agent/prompts/research_codebase.md",
               "dest": "prompts/research_codebase.md"
             }
           ]
@@ -3382,7 +3382,7 @@
           "description": "Validate implementation against plan prompt",
           "files": [
             {
-              "src": "pi/prompts/validate_plan.md",
+              "src": "pi/agent/prompts/validate_plan.md",
               "dest": "prompts/validate_plan.md"
             }
           ]
@@ -3391,7 +3391,7 @@
           "description": "Validate local telemetry against a narrative spec prompt",
           "files": [
             {
-              "src": "pi/prompts/validate_telemetry.md",
+              "src": "pi/agent/prompts/validate_telemetry.md",
               "dest": "prompts/validate_telemetry.md"
             }
           ]
@@ -3400,19 +3400,19 @@
           "description": "Observability Driven Development (ODD) — design the trace before the feature; local OTel feedback loop",
           "files": [
             {
-              "src": "pi/skills/observability-driven-development/SKILL.md",
+              "src": "pi/agent/skills/observability-driven-development/SKILL.md",
               "dest": "skills/observability-driven-development/SKILL.md"
             },
             {
-              "src": "pi/skills/observability-driven-development/narrative.md",
+              "src": "pi/agent/skills/observability-driven-development/narrative.md",
               "dest": "skills/observability-driven-development/narrative.md"
             },
             {
-              "src": "pi/skills/observability-driven-development/loop.md",
+              "src": "pi/agent/skills/observability-driven-development/loop.md",
               "dest": "skills/observability-driven-development/loop.md"
             },
             {
-              "src": "pi/skills/observability-driven-development/local-setup.md",
+              "src": "pi/agent/skills/observability-driven-development/local-setup.md",
               "dest": "skills/observability-driven-development/local-setup.md"
             }
           ]
@@ -3421,7 +3421,7 @@
           "description": "Git worktree manager prompt",
           "files": [
             {
-              "src": "pi/prompts/worktree.md",
+              "src": "pi/agent/prompts/worktree.md",
               "dest": "prompts/worktree.md"
             }
           ]
@@ -3430,7 +3430,7 @@
           "description": "Experimental PR workflow skill",
           "files": [
             {
-              "src": "pi/skills/experimental-pr-workflow/SKILL.md",
+              "src": "pi/agent/skills/experimental-pr-workflow/SKILL.md",
               "dest": "skills/experimental-pr-workflow/SKILL.md"
             }
           ]
@@ -3439,7 +3439,7 @@
           "description": "Auto-triggered git commit helper skill",
           "files": [
             {
-              "src": "pi/skills/git-commit-helper/SKILL.md",
+              "src": "pi/agent/skills/git-commit-helper/SKILL.md",
               "dest": "skills/git-commit-helper/SKILL.md"
             }
           ]
@@ -3448,7 +3448,7 @@
           "description": "Initialize harness skill",
           "files": [
             {
-              "src": "pi/skills/init-harness/SKILL.md",
+              "src": "pi/agent/skills/init-harness/SKILL.md",
               "dest": "skills/init-harness/SKILL.md"
             }
           ]
@@ -3457,7 +3457,7 @@
           "description": "OpenTelemetry Collector configuration skill",
           "files": [
             {
-              "src": "pi/skills/otel-collector/SKILL.md",
+              "src": "pi/agent/skills/otel-collector/SKILL.md",
               "dest": "skills/otel-collector/SKILL.md"
             }
           ]
@@ -3466,7 +3466,7 @@
           "description": "OpenTelemetry instrumentation orchestrator skill",
           "files": [
             {
-              "src": "pi/skills/otel-instrument/SKILL.md",
+              "src": "pi/agent/skills/otel-instrument/SKILL.md",
               "dest": "skills/otel-instrument/SKILL.md"
             }
           ]
@@ -3475,7 +3475,7 @@
           "description": "OpenTelemetry SDK instrumentation skill",
           "files": [
             {
-              "src": "pi/skills/otel-instrumentation/SKILL.md",
+              "src": "pi/agent/skills/otel-instrumentation/SKILL.md",
               "dest": "skills/otel-instrumentation/SKILL.md"
             }
           ]
@@ -3484,7 +3484,7 @@
           "description": "OpenTelemetry OTTL expressions skill",
           "files": [
             {
-              "src": "pi/skills/otel-ottl/SKILL.md",
+              "src": "pi/agent/skills/otel-ottl/SKILL.md",
               "dest": "skills/otel-ottl/SKILL.md"
             }
           ]
@@ -3493,7 +3493,7 @@
           "description": "OpenTelemetry semantic conventions skill",
           "files": [
             {
-              "src": "pi/skills/otel-semantic-conventions/SKILL.md",
+              "src": "pi/agent/skills/otel-semantic-conventions/SKILL.md",
               "dest": "skills/otel-semantic-conventions/SKILL.md"
             }
           ]
@@ -3502,7 +3502,7 @@
           "description": "Automated PR description generator skill",
           "files": [
             {
-              "src": "pi/skills/pr-description-generator/SKILL.md",
+              "src": "pi/agent/skills/pr-description-generator/SKILL.md",
               "dest": "skills/pr-description-generator/SKILL.md"
             }
           ]
@@ -3511,7 +3511,7 @@
           "description": "Stress-test plans via relentless user interview skill",
           "files": [
             {
-              "src": "pi/skills/interview/SKILL.md",
+              "src": "pi/agent/skills/interview/SKILL.md",
               "dest": "skills/interview/SKILL.md"
             }
           ]
@@ -3520,27 +3520,27 @@
           "description": "Test-driven development with red-green-refactor loop skill",
           "files": [
             {
-              "src": "pi/skills/tdd/SKILL.md",
+              "src": "pi/agent/skills/tdd/SKILL.md",
               "dest": "skills/tdd/SKILL.md"
             },
             {
-              "src": "pi/skills/tdd/tests.md",
+              "src": "pi/agent/skills/tdd/tests.md",
               "dest": "skills/tdd/tests.md"
             },
             {
-              "src": "pi/skills/tdd/mocking.md",
+              "src": "pi/agent/skills/tdd/mocking.md",
               "dest": "skills/tdd/mocking.md"
             },
             {
-              "src": "pi/skills/tdd/deep-modules.md",
+              "src": "pi/agent/skills/tdd/deep-modules.md",
               "dest": "skills/tdd/deep-modules.md"
             },
             {
-              "src": "pi/skills/tdd/interface-design.md",
+              "src": "pi/agent/skills/tdd/interface-design.md",
               "dest": "skills/tdd/interface-design.md"
             },
             {
-              "src": "pi/skills/tdd/refactoring.md",
+              "src": "pi/agent/skills/tdd/refactoring.md",
               "dest": "skills/tdd/refactoring.md"
             }
           ]
@@ -3549,11 +3549,11 @@
           "description": "Find architectural friction and propose deep-module refactors skill",
           "files": [
             {
-              "src": "pi/skills/improve-codebase-architecture/SKILL.md",
+              "src": "pi/agent/skills/improve-codebase-architecture/SKILL.md",
               "dest": "skills/improve-codebase-architecture/SKILL.md"
             },
             {
-              "src": "pi/skills/improve-codebase-architecture/REFERENCE.md",
+              "src": "pi/agent/skills/improve-codebase-architecture/REFERENCE.md",
               "dest": "skills/improve-codebase-architecture/REFERENCE.md"
             }
           ]
@@ -3562,7 +3562,7 @@
           "description": "Break a PRD into vertical-slice issue files skill",
           "files": [
             {
-              "src": "pi/skills/prd-to-issues/SKILL.md",
+              "src": "pi/agent/skills/prd-to-issues/SKILL.md",
               "dest": "skills/prd-to-issues/SKILL.md"
             }
           ]
@@ -3571,7 +3571,7 @@
           "description": "Generate a PRD from a client brief skill",
           "files": [
             {
-              "src": "pi/skills/write-a-prd/SKILL.md",
+              "src": "pi/agent/skills/write-a-prd/SKILL.md",
               "dest": "skills/write-a-prd/SKILL.md"
             }
           ]
@@ -3580,7 +3580,7 @@
           "description": "Ticket Manager - manage tickets across all namespaces with full lifecycle",
           "files": [
             {
-              "src": "pi/skills/ticket-manager/SKILL.md",
+              "src": "pi/agent/skills/ticket-manager/SKILL.md",
               "dest": "skills/ticket-manager/SKILL.md"
             }
           ]
@@ -3589,7 +3589,7 @@
           "description": "Team Setup - initialize and manage team configuration",
           "files": [
             {
-              "src": "pi/skills/team-setup/SKILL.md",
+              "src": "pi/agent/skills/team-setup/SKILL.md",
               "dest": "skills/team-setup/SKILL.md"
             }
           ]
@@ -3598,7 +3598,7 @@
           "description": "Skill Auto-Update - auto-discover and sync skills across all frontends",
           "files": [
             {
-              "src": "pi/skills/skill-auto-update/SKILL.md",
+              "src": "pi/agent/skills/skill-auto-update/SKILL.md",
               "dest": "skills/skill-auto-update/SKILL.md"
             }
           ]
@@ -3607,7 +3607,7 @@
           "description": "Auto-Ticket Creator - monitor and auto-create tickets from changes",
           "files": [
             {
-              "src": "pi/skills/auto-ticket-creator/SKILL.md",
+              "src": "pi/agent/skills/auto-ticket-creator/SKILL.md",
               "dest": "skills/auto-ticket-creator/SKILL.md"
             }
           ]
@@ -3616,7 +3616,7 @@
           "description": "Docs Sync Updater - fetch latest docs and auto-update skill configs",
           "files": [
             {
-              "src": "pi/skills/docs-sync-updater/SKILL.md",
+              "src": "pi/agent/skills/docs-sync-updater/SKILL.md",
               "dest": "skills/docs-sync-updater/SKILL.md"
             }
           ]
@@ -3625,7 +3625,7 @@
           "description": "CTO Dashboard - ticket overview, developer progress, review queue",
           "files": [
             {
-              "src": "pi/skills/cto-dashboard/SKILL.md",
+              "src": "pi/agent/skills/cto-dashboard/SKILL.md",
               "dest": "skills/cto-dashboard/SKILL.md"
             }
           ]
@@ -3634,7 +3634,7 @@
           "description": "Skill Adapter - platform-specific skill loading and format adapters",
           "files": [
             {
-              "src": "pi/skills/skill-adapter/SKILL.md",
+              "src": "pi/agent/skills/skill-adapter/SKILL.md",
               "dest": "skills/skill-adapter/SKILL.md"
             }
           ]
@@ -3643,7 +3643,7 @@
           "description": "Backlog Groomer skill",
           "files": [
             {
-              "src": "pi/skills/backlog-groomer/SKILL.md",
+              "src": "pi/agent/skills/backlog-groomer/SKILL.md",
               "dest": "skills/backlog-groomer/SKILL.md"
             }
           ]
@@ -3652,7 +3652,7 @@
           "description": "Create Plan skill",
           "files": [
             {
-              "src": "pi/skills/create-plan/SKILL.md",
+              "src": "pi/agent/skills/create-plan/SKILL.md",
               "dest": "skills/create-plan/SKILL.md"
             }
           ]
@@ -3661,7 +3661,7 @@
           "description": "Debug skill",
           "files": [
             {
-              "src": "pi/skills/debug/SKILL.md",
+              "src": "pi/agent/skills/debug/SKILL.md",
               "dest": "skills/debug/SKILL.md"
             }
           ]
@@ -3670,7 +3670,7 @@
           "description": "Debug K8S skill",
           "files": [
             {
-              "src": "pi/skills/debug-k8s/SKILL.md",
+              "src": "pi/agent/skills/debug-k8s/SKILL.md",
               "dest": "skills/debug-k8s/SKILL.md"
             }
           ]
@@ -3679,7 +3679,7 @@
           "description": "Document Generation skill",
           "files": [
             {
-              "src": "pi/skills/document-generation/SKILL.md",
+              "src": "pi/agent/skills/document-generation/SKILL.md",
               "dest": "skills/document-generation/SKILL.md"
             }
           ]
@@ -3688,7 +3688,7 @@
           "description": "Help Command skill",
           "files": [
             {
-              "src": "pi/skills/help-command/SKILL.md",
+              "src": "pi/agent/skills/help-command/SKILL.md",
               "dest": "skills/help-command/SKILL.md"
             }
           ]
@@ -3697,7 +3697,7 @@
           "description": "Implement Plan skill",
           "files": [
             {
-              "src": "pi/skills/implement-plan/SKILL.md",
+              "src": "pi/agent/skills/implement-plan/SKILL.md",
               "dest": "skills/implement-plan/SKILL.md"
             }
           ]
@@ -3706,7 +3706,7 @@
           "description": "Opticat Backend Integrator skill",
           "files": [
             {
-              "src": "pi/skills/opticat-backend-integrator/SKILL.md",
+              "src": "pi/agent/skills/opticat-backend-integrator/SKILL.md",
               "dest": "skills/opticat-backend-integrator/SKILL.md"
             }
           ]
@@ -3715,7 +3715,7 @@
           "description": "Opticat Simulator skill",
           "files": [
             {
-              "src": "pi/skills/opticat-simulator/SKILL.md",
+              "src": "pi/agent/skills/opticat-simulator/SKILL.md",
               "dest": "skills/opticat-simulator/SKILL.md"
             }
           ]
@@ -3724,7 +3724,7 @@
           "description": "Opticat Ui Builder skill",
           "files": [
             {
-              "src": "pi/skills/opticat-ui-builder/SKILL.md",
+              "src": "pi/agent/skills/opticat-ui-builder/SKILL.md",
               "dest": "skills/opticat-ui-builder/SKILL.md"
             }
           ]
@@ -3733,7 +3733,7 @@
           "description": "Research Codebase skill",
           "files": [
             {
-              "src": "pi/skills/research-codebase/SKILL.md",
+              "src": "pi/agent/skills/research-codebase/SKILL.md",
               "dest": "skills/research-codebase/SKILL.md"
             }
           ]
@@ -3742,7 +3742,7 @@
           "description": "Ticket Context skill",
           "files": [
             {
-              "src": "pi/skills/ticket-context/SKILL.md",
+              "src": "pi/agent/skills/ticket-context/SKILL.md",
               "dest": "skills/ticket-context/SKILL.md"
             }
           ]
@@ -3751,7 +3751,7 @@
           "description": "Usage Rules skill",
           "files": [
             {
-              "src": "pi/skills/usage-rules/SKILL.md",
+              "src": "pi/agent/skills/usage-rules/SKILL.md",
               "dest": "skills/usage-rules/SKILL.md"
             }
           ]
@@ -3760,7 +3760,7 @@
           "description": "Validate Plan skill",
           "files": [
             {
-              "src": "pi/skills/validate-plan/SKILL.md",
+              "src": "pi/agent/skills/validate-plan/SKILL.md",
               "dest": "skills/validate-plan/SKILL.md"
             }
           ]
@@ -3769,7 +3769,7 @@
           "description": "Validate Telemetry skill",
           "files": [
             {
-              "src": "pi/skills/validate-telemetry/SKILL.md",
+              "src": "pi/agent/skills/validate-telemetry/SKILL.md",
               "dest": "skills/validate-telemetry/SKILL.md"
             }
           ]
@@ -3778,7 +3778,7 @@
           "description": "Worktree skill",
           "files": [
             {
-              "src": "pi/skills/worktree/SKILL.md",
+              "src": "pi/agent/skills/worktree/SKILL.md",
               "dest": "skills/worktree/SKILL.md"
             }
           ]
@@ -3787,7 +3787,7 @@
           "description": "Wow Access Control skill",
           "files": [
             {
-              "src": "pi/skills/wow-access-control/SKILL.md",
+              "src": "pi/agent/skills/wow-access-control/SKILL.md",
               "dest": "skills/wow-access-control/SKILL.md"
             }
           ]
@@ -3796,7 +3796,7 @@
           "description": "Wow Agent Dev skill",
           "files": [
             {
-              "src": "pi/skills/wow-agent-dev/SKILL.md",
+              "src": "pi/agent/skills/wow-agent-dev/SKILL.md",
               "dest": "skills/wow-agent-dev/SKILL.md"
             }
           ]
@@ -3805,7 +3805,7 @@
           "description": "Wow Backend Dev skill",
           "files": [
             {
-              "src": "pi/skills/wow-backend-dev/SKILL.md",
+              "src": "pi/agent/skills/wow-backend-dev/SKILL.md",
               "dest": "skills/wow-backend-dev/SKILL.md"
             }
           ]
@@ -3814,7 +3814,7 @@
           "description": "Wow Communications skill",
           "files": [
             {
-              "src": "pi/skills/wow-communications/SKILL.md",
+              "src": "pi/agent/skills/wow-communications/SKILL.md",
               "dest": "skills/wow-communications/SKILL.md"
             }
           ]
@@ -3823,7 +3823,7 @@
           "description": "Wow Core Architecture skill",
           "files": [
             {
-              "src": "pi/skills/wow-core-architecture/SKILL.md",
+              "src": "pi/agent/skills/wow-core-architecture/SKILL.md",
               "dest": "skills/wow-core-architecture/SKILL.md"
             }
           ]
@@ -3832,7 +3832,7 @@
           "description": "Wow Frontend Dev skill",
           "files": [
             {
-              "src": "pi/skills/wow-frontend-dev/SKILL.md",
+              "src": "pi/agent/skills/wow-frontend-dev/SKILL.md",
               "dest": "skills/wow-frontend-dev/SKILL.md"
             }
           ]
@@ -3841,7 +3841,7 @@
           "description": "Wow Human In The Loop skill",
           "files": [
             {
-              "src": "pi/skills/wow-human-in-the-loop/SKILL.md",
+              "src": "pi/agent/skills/wow-human-in-the-loop/SKILL.md",
               "dest": "skills/wow-human-in-the-loop/SKILL.md"
             }
           ]
@@ -3850,7 +3850,7 @@
           "description": "Wow Skill Creator skill",
           "files": [
             {
-              "src": "pi/skills/wow-skill-creator/SKILL.md",
+              "src": "pi/agent/skills/wow-skill-creator/SKILL.md",
               "dest": "skills/wow-skill-creator/SKILL.md"
             }
           ]
@@ -3859,7 +3859,7 @@
           "description": "Wow Tickets skill",
           "files": [
             {
-              "src": "pi/skills/wow-tickets/SKILL.md",
+              "src": "pi/agent/skills/wow-tickets/SKILL.md",
               "dest": "skills/wow-tickets/SKILL.md"
             }
           ]
@@ -3868,7 +3868,7 @@
           "description": "Wow Ui Surfaces skill",
           "files": [
             {
-              "src": "pi/skills/wow-ui-surfaces/SKILL.md",
+              "src": "pi/agent/skills/wow-ui-surfaces/SKILL.md",
               "dest": "skills/wow-ui-surfaces/SKILL.md"
             }
           ]
@@ -3877,7 +3877,7 @@
           "description": "Wow Practices Guide",
           "files": [
             {
-              "src": "pi/skills/womono-practices-guide/SKILL.md",
+              "src": "pi/agent/skills/womono-practices-guide/SKILL.md",
               "dest": "skills/womono-practices-guide/SKILL.md"
             }
           ]
@@ -3886,7 +3886,7 @@
           "description": "Wow Practices Audit",
           "files": [
             {
-              "src": "pi/skills/womono-practices-audit/SKILL.md",
+              "src": "pi/agent/skills/womono-practices-audit/SKILL.md",
               "dest": "skills/womono-practices-audit/SKILL.md"
             }
           ]
@@ -3895,7 +3895,7 @@
           "description": "Wow Practices Backlog",
           "files": [
             {
-              "src": "pi/skills/womono-practices-backlog/SKILL.md",
+              "src": "pi/agent/skills/womono-practices-backlog/SKILL.md",
               "dest": "skills/womono-practices-backlog/SKILL.md"
             }
           ]
@@ -3904,7 +3904,7 @@
           "description": "Universal component builder for all 7 AI coding tools",
           "files": [
             {
-              "src": "pi/skills/build-tool/SKILL.md",
+              "src": "pi/agent/skills/build-tool/SKILL.md",
               "dest": "skills/build-tool/SKILL.md"
             }
           ]
@@ -3913,7 +3913,7 @@
           "description": "Unified skill builder for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-skill/SKILL.md",
+              "src": "pi/agent/skills/build-tool-skill/SKILL.md",
               "dest": "skills/build-tool-skill/SKILL.md"
             }
           ]
@@ -3922,7 +3922,7 @@
           "description": "Unified agent builder for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-agent/SKILL.md",
+              "src": "pi/agent/skills/build-tool-agent/SKILL.md",
               "dest": "skills/build-tool-agent/SKILL.md"
             }
           ]
@@ -3931,7 +3931,7 @@
           "description": "Unified extension/plugin builder for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-extension/SKILL.md",
+              "src": "pi/agent/skills/build-tool-extension/SKILL.md",
               "dest": "skills/build-tool-extension/SKILL.md"
             }
           ]
@@ -3940,7 +3940,7 @@
           "description": "Unified TUI component builder for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-tui/SKILL.md",
+              "src": "pi/agent/skills/build-tool-tui/SKILL.md",
               "dest": "skills/build-tool-tui/SKILL.md"
             }
           ]
@@ -3949,7 +3949,7 @@
           "description": "Unified CLI reference for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-cli/SKILL.md",
+              "src": "pi/agent/skills/build-tool-cli/SKILL.md",
               "dest": "skills/build-tool-cli/SKILL.md"
             }
           ]
@@ -3958,7 +3958,7 @@
           "description": "Unified theme builder for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-themes/SKILL.md",
+              "src": "pi/agent/skills/build-tool-themes/SKILL.md",
               "dest": "skills/build-tool-themes/SKILL.md"
             }
           ]
@@ -3967,7 +3967,7 @@
           "description": "Unified prompt template builder for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-prompts/SKILL.md",
+              "src": "pi/agent/skills/build-tool-prompts/SKILL.md",
               "dest": "skills/build-tool-prompts/SKILL.md"
             }
           ]
@@ -3976,7 +3976,7 @@
           "description": "Unified keybinding reference for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-keybindings/SKILL.md",
+              "src": "pi/agent/skills/build-tool-keybindings/SKILL.md",
               "dest": "skills/build-tool-keybindings/SKILL.md"
             }
           ]
@@ -3985,7 +3985,7 @@
           "description": "Unified configuration reference for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-config/SKILL.md",
+              "src": "pi/agent/skills/build-tool-config/SKILL.md",
               "dest": "skills/build-tool-config/SKILL.md"
             }
           ]
@@ -3994,7 +3994,7 @@
           "description": "Unified orchestration coordinator for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-orchestrate/SKILL.md",
+              "src": "pi/agent/skills/build-tool-orchestrate/SKILL.md",
               "dest": "skills/build-tool-orchestrate/SKILL.md"
             }
           ]
@@ -4003,7 +4003,7 @@
           "description": "Generate investor-ready documentation for any project",
           "files": [
             {
-              "src": "pi/skills/investor-ready-doc-gen/SKILL.md",
+              "src": "pi/agent/skills/investor-ready-doc-gen/SKILL.md",
               "dest": "skills/investor_ready_doc_gen/SKILL.md"
             },
             {
@@ -4256,7 +4256,7 @@
           "description": "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories",
           "files": [
             {
-              "src": "pi/skills/build-auto-ticket-creator/SKILL.md",
+              "src": "pi/agent/skills/build-auto-ticket-creator/SKILL.md",
               "dest": "skills/build-auto-ticket-creator/SKILL.md"
             }
           ]
@@ -4265,7 +4265,7 @@
           "description": "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.",
           "files": [
             {
-              "src": "pi/skills/build-backlog-groomer/SKILL.md",
+              "src": "pi/agent/skills/build-backlog-groomer/SKILL.md",
               "dest": "skills/build-backlog-groomer/SKILL.md"
             }
           ]
@@ -4274,7 +4274,7 @@
           "description": "Adapts skills between different AI coding tool formats and conventions",
           "files": [
             {
-              "src": "pi/skills/build-skill-adapter/SKILL.md",
+              "src": "pi/agent/skills/build-skill-adapter/SKILL.md",
               "dest": "skills/build-skill-adapter/SKILL.md"
             }
           ]
@@ -4283,7 +4283,7 @@
           "description": "Automatically updates skills when dependencies or APIs change",
           "files": [
             {
-              "src": "pi/skills/build-skill-auto-update/SKILL.md",
+              "src": "pi/agent/skills/build-skill-auto-update/SKILL.md",
               "dest": "skills/build-skill-auto-update/SKILL.md"
             }
           ]
@@ -4292,7 +4292,7 @@
           "description": "Validates skills against production-ready standards and best practices",
           "files": [
             {
-              "src": "pi/skills/skill-compliance-checker/SKILL.md",
+              "src": "pi/agent/skills/skill-compliance-checker/SKILL.md",
               "dest": "skills/skill-compliance-checker/SKILL.md"
             }
           ]
@@ -4301,7 +4301,7 @@
           "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
           "files": [
             {
-              "src": "pi/skills/ticket-executor/SKILL.md",
+              "src": "pi/agent/skills/ticket-executor/SKILL.md",
               "dest": "skills/ticket-executor/SKILL.md"
             }
           ]
