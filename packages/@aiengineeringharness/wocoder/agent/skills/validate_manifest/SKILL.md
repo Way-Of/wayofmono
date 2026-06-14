@@ -1,7 +1,6 @@
 ---
 name: validate_manifest
-description: >-
-  Validate that all file paths in manifest.json exist on disk for all 7 AI coding tools. Checks for missing, stale, or incorrectly formatted entries and offers auto-fix capabilities.
+description: "Validate that all file paths in manifest.json exist on disk for all 7 AI coding tools. Checks for missing, stale, or incorrectly formatted entries and offers auto-fix capabilities."
 allowed-tools: read, write, bash, glob, grep, websearch
 ---
 
@@ -307,7 +306,7 @@ npm run test:watch
 ### Source Files
 
 1. `packages/@aiengineeringharness/wocoder/agent/skills/validate-manifest/SKILL.md`
-   - Skill definition and documentation
+   - skill definition and documentation
 
 2. `packages/@aiengineeringharness/scripts/validate-manifest.ts`
    - Core validation logic
@@ -341,7 +340,7 @@ npm run test:watch
 ### Related Tools
 
 - `ai-harness --compliance` - Built-in installer compliance check
-- `deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts` - Skill compliance validator
+- `deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts` - skill compliance validator
 
 ### Validation Commands
 
