@@ -1,0 +1,152 @@
+# Construction Software / ConTech — Market Reference Data
+# Verified via web search 2026-06-13 — always re-verify before use
+# Sources: NextMSC, ResearchAndMarkets, Fortune Business Insights, GM Insights, Zion Market Research,
+#          AEC Hub, Nymbl Ventures, EU-Startups, ArcticStartup, SBN, MDPI, EU BIM Task Group
+
+market_sizing:
+  tam: "$10.8B"
+  tam_description: "Global AEC/construction software market (2025)"
+  tam_source: |
+    Multiple: SkyQuest/IMARC ($10.1-11.3B 2025 → $24.3B by 2032, 10.3% CAGR),
+    Fortune Business Insights ($10.76B 2025 → $24.72B by 2034, 9.7% CAGR),
+    GM Insights ($10.2B 2024 construction design software)
+    Cross-reference: AEC Hub 2025 Research Report, aechub.org
+  sam: "$2.2B"
+  sam_description: "European construction software market"
+  som: "$420M"
+  growth_rate: "10.3% CAGR (2025-2032)"
+  growth_rate_source: "SkyQuest/IMARC via AEC Hub 2025 — AEC software market growth"
+
+key_statistics:
+  swedish_construction_market: "SEK 680B ($63.4B) in 2025, growing to SEK 930B ($86.9B) by 2035"
+  swedish_construction_market_source: "NextMSC — Sweden Construction Market Report 2026-2035, nextmsc.com"
+  swedish_construction_growth: "4.2% AAGR 2026-2029 after 2.6% contraction in 2025"
+  swedish_construction_growth_source: "ResearchAndMarkets — Sweden Construction Industry Report 2025, researchandmarkets.com"
+  swedish_highest_costs: "Sweden has EU's highest construction costs — driving digitalization imperative"
+  swedish_highest_costs_source: "Bygg 4.0 consortium — linkedin.com/company/bygg-4-0"
+  contech_global_2024: "$3.1B ConTech VC funding globally in 2024 (325 deals)"
+  contech_global_2024_source: "Cemex Ventures Top 50 ConTech Startups 2024; Nymbl Ventures Q3 2025 ConTech Report, nymblventures.com"
+  ai_contech_funding: "46% of all ConTech funding in Q1 2025 went to AI ($3.55B)"
+  ai_contech_funding_source: "AEC Hub 2025 Research Report, aechub.org"
+  global_construction_output: "~$15T global construction industry, 8-10% of global GDP"
+  global_construction_output_source: "Multiple: McKinsey, AEC Hub, Fortune Business Insights"
+  bim_global_market: "$8.85B (2024), projected $25.6B by 2034, 11.2% CAGR"
+  bim_global_market_source: "Zion Market Research, zionmarketresearch.com"
+  swedish_bim_adoption: "Limited in production phase — key barrier is absence of external requirements/policies"
+  swedish_bim_adoption_source: "MDPI Buildings 2025 — Obstacles to BIM Adoption in Swedish Construction, mdpi.com/2075-5309/15/18/3288"
+
+competitors:
+  - name: "Endra"
+    website: "endra.ai"
+    focus: "AI-powered MEP design platform — generative AI for electrical, ventilation, fire safety, cabling"
+    status: "Active — $73M total raised (€3M pre-seed May 2025, $20M seed Dec 2025, $50M Series A Jun 2026 by a16z)"
+    note: "Most well-funded Swedish ConTech. Headquartered Stockholm. Founded 2023 by Niklas Lindgren, Anton Juric."
+
+  - name: "Brickanta"
+    website: "brickanta.com"
+    focus: "AI-native agentic platform for construction cost estimation, bid analysis, and procurement"
+    status: "Active — $8M Seed Jan 2026 (Northzone lead, angels from OpenAI/Google/Meta)"
+    note: "Stockholm. Founded 2025 by Lucas Otterling. In use by hundreds of users across 11 countries."
+
+  - name: "AI-BOB"
+    website: "aibob.io"
+    focus: "AI compliance checking for construction blueprints — detects errors with millimeter precision"
+    status: "Active — €2M raised Feb 2025 (CapitalT lead). €10M+ valuation."
+    note: "Stockholm. Founded 2024 by Elin Mårtensson, Petter Wallberg. Female-founded."
+
+  - name: "Struqtur"
+    website: "struqtur.se"
+    focus: "SaaS project management tool for small and medium-sized Swedish construction businesses"
+    status: "Active — bootstrapped, no VC funding. ~10 employees. Founded 2013."
+    note: "Gothenburg. Niche Swedish SMB market. Low threat to AI-native startups."
+
+  - name: "Autodesk"
+    website: "autodesk.com"
+    focus: "BIM 360, Revit, Autodesk Construction Cloud — design, coordination, project execution"
+    status: "Active — public company, market leader"
+    note: "Global incumbents (Autodesk, Procore, Trimble, Bentley) are the primary competitive landscape"
+
+  - name: "Procore Technologies"
+    website: "procore.com"
+    focus: "Construction project management platform — real-time visibility into budgets, progress, compliance"
+    status: "Active — public company (NYSE: PCOR)"
+    note: "Dominant in US market, expanding into Europe"
+
+  - name: "Trimble"
+    website: "trimble.com"
+    focus: "Construction management, positioning, mixed reality for construction"
+    status: "Active — public company (NASDAQ: TRMB)"
+    note: "Strong in infrastructure and civil construction segments"
+
+defunct_competitors:
+  - name: "PlanGrid"
+    website: "plangrid.com"
+    note: "Acquired by Autodesk 2018 — no longer operates as independent entity"
+
+  - name: "Fieldwire"
+    website: "fieldwire.com"
+    note: "Acquired by Hilti Corporation Oct 2023 — now part of Hilti software portfolio"
+
+  - name: "Aconex"
+    website: "aconex.com"
+    note: "Acquired by Oracle 2018 — subsumed into Oracle Construction and Engineering"
+
+regulations:
+  - title: "ID06 — Mandatory Construction ID System"
+    description: "Electronic personnel register mandatory on all Swedish construction sites since 2016. 700,000+ valid cards, ~1,500 new applications daily. New security requirements from Jan 2026: passport/national ID scanning via mobile app required for all card applications. Owner organizations: Byggföretagen, Byggherrarna, Fastighetsägarna, Installatörsföretagen."
+    source: "id06.se, codexgroup.se, arlettipartners.com, 1office.co"
+    impact: "Drives demand for digital workforce management, compliance tracking, and document verification software on construction sites"
+
+  - title: "AFS 2023:3 — Construction Work Environment"
+    description: "New Swedish Work Environment Authority provisions effective Jan 2025. Replaces AFS 1999:3. New requirements clarifying responsibilities for builders, designers, and construction coordinators, especially in early construction stages. Part of broader restructuring of 67 provisions into 15."
+    source: "av.se — Swedish Work Environment Authority; leglobal.law; kund.falcksverige.se"
+    impact: "Forces adoption of digital compliance and safety documentation tools; creates regulatory tailwind for construction software"
+
+  - title: "EU BIM Mandate / Public Procurement"
+    description: "Sweden participates in EU BIM Task Group. Nordic countries (incl. Sweden) are among most advanced in public sector BIM requirements. EU-level push for BIM in public infrastructure procurement."
+    source: "eubim.eu — EU BIM Task Group Survey Report 2024; bmv.de — Road Map for Digital Design and Construction"
+    impact: "Creates minimum digital capability requirements for contractors bidding on public projects, driving BIM software adoption"
+
+  - title: "AB 25 / ABT 25 — New Standard Contracts"
+    description: "New Swedish standard construction contracts replacing AB 04 and ABT 06. Expected publication summer 2025 after referral process since 2016. Major structural changes: replaces ÄTA with 'Amendment of contract', new risk transfer provisions, updated purchaser rights."
+    source: "lindahl.se — Advokatfirman Lindahl construction law seminar Nov 2024"
+    impact: "Changes to contract structures, risk allocation, and change order management will require software updates for Swedish contractors"
+
+  - title: "National Infrastructure Plan 2026-2037"
+    description: "SEK 354B ($33.5B) for road infrastructure, SEK 210B ($19.9B) for rail maintenance by 2037. Grid Development Plan 2024-2033: 1,500km new transmission lines, 30 substations."
+    source: "ResearchAndMarkets — Sweden Construction Industry Report 2025"
+    impact: "Massive public infrastructure spending creates demand for construction software across project lifecycle — planning, design, project management, compliance"
+
+  - title: "Smart Built Environment — Government Digitalization Program"
+    description: "Government-backed consortium exploring fully digital construction process. Partners represent 20% of Swedish residential development and $10B+ turnover. Supported by Research Council Formas and Swedish National Board of Housing."
+    source: "bygg40.se — Bygg 4.0 consortium; linkedin.com/company/bygg-4-0"
+    impact: "Government commitment to digitalization creates policy tailwind for ConTech adoption; consortium validates market need"
+
+market_trends:
+  - title: "AI Dominates ConTech Investment"
+    description: "46% of all ConTech funding in Q1 2025 went to AI companies ($3.55B in single quarter). AI in construction expected to grow from $1.3B (2022) to $13.5B by 2030. Swedish ConTech startups (Endra, Brickanta, AI-BOB) all AI-native."
+    source: "AEC Hub 2025 Research Report, aechub.org; nymblventures.com Q3 2025 ConTech Report; ArcticStartup, EU-Startups"
+
+  - title: "Swedish ConTech Ecosystem Maturing Rapidly"
+    description: "Endra raised from pre-seed to Series A ($73M total) in 13 months. Brickanta raised $8M Seed led by Northzone with angels from OpenAI/Google/Meta. AI-BOB reached €10M+ valuation in first year. Q1 2026 ConTech funding up 21.73% over 2025."
+    source: "Bricks & Bytes (bricks-bytes.com), ArcticStartup, EU-Startups, Tracxn"
+
+  - title: "Cloud-First Becomes Default"
+    description: "62.35% of construction management software is cloud-based, growing at 12.08% CAGR. Swedish ICT market growing at 8.8% CAGR to 2032 with cloud as primary driver. SaaS delivery model expected to dominate."
+    source: "AEC Hub 2025; Trade Commissioner Canada — Sweden ICT Market 2026"
+
+  - title: "Digital Divide Deepening"
+    description: "Adopters vs non-adopters increasingly diverging. Average construction firm uses 6.2 of 16 digital technologies (up 20%). SMEs face highest adoption barriers — cost, skills gap, lack of client demand. Key opportunity for accessible, low-friction solutions."
+    source: "RICS Digitalisation in Construction Report 2024; Deloitte State of Digital Adoption 2025; MDPI BIM Adoption Study 2025"
+
+  - title: "Sustainability Mandates Driving Digitalization"
+    description: "Sweden targets 65% renewable electricity by 2030, 100% fossil-free by 2040. SEK 220B ($21B) in government loans for nuclear reactors. Green building materials market projected $1.37T by 2034. LEED v5 launched April 2025. Digital tools required for carbon reporting and compliance."
+    source: "ResearchAndMarkets Sweden Construction Report; government announcements via SCB; AEC Hub 2025"
+
+  - title: "Labor Crisis Accelerating Tech Adoption"
+    description: "439K new AEC workers needed globally in 2025, 1.9M over next decade. Sweden has tens of thousands of unfilled digital jobs. 80% of construction firms are self-employed or <3 employees. Fragmented market needs accessible tech solutions."
+    source: "AEC Hub 2025; Nymbl Ventures Q3 2025 ConTech Report; Trade Commissioner Canada — Sweden ICT Market"
+
+  - title: "Sweden as ConTech Testbed"
+    description: "Sweden has 30+ testbeds for AI, IoT, 5G/6G. Strong VC ecosystem (Northzone, Norrsken, Creandum). ICT contributes 4.7% of GDP, 40% of Nordic ICT market. Early adopter culture and high English proficiency enable rapid scaling."
+    source: "Trade Commissioner Canada — Sweden ICT Market 2026; Swedish Tech News; eu-startups.com"
