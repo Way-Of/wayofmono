@@ -1,3 +1,8 @@
+---
+name: subagent_reference
+description: Reference documentation for Antigravity subagents — lifecycle, communication, delegation hierarchy, permissions, and multi-agent teamwork. Use when the user asks about subagents, spawning agents, agent communication, or multi-agent orchestration.
+---
+
 # Asynchronous Subagents
 
 > [!NOTE]
