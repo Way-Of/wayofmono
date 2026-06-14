@@ -461,6 +461,11 @@ pnpm wocode --init
 ```
 
 ```bash
+# Update local pnpm installation
+pnpm update @wayofmono/wo-coding-agent
+```
+
+```bash
 # Global installation (for use across all projects)
 npm install -g @wayofmono/wo-coding-agent
 ```
