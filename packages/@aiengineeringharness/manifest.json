@@ -5779,6 +5779,15 @@
               "dest": "skills/womono_version_updater/SKILL.md"
             }
           ]
+        },
+        "skill/validate_manifest": {
+          "description": "Validate skill manifest against production-ready standards and conventions",
+          "files": [
+            {
+              "src": "wocoder/agent/skills/validate_manifest/SKILL.md",
+              "dest": "skills/validate_manifest/SKILL.md"
+            }
+          ]
         }
       }
     },
