@@ -940,6 +940,13 @@ The `--init` command creates a `.wo/` folder in your project:
 
 ## 🚀 Installation
 
+**⚠️ Troubleshooting (Windows/Mac/Linux):** If you encounter 404 errors or fetch failures during installation or updates, add the `--reload` flag to your command. This forces Deno to bypass its cache and fetch the latest files from GitHub:
+
+```bash
+# Example for installing all tools:
+deno run -A --reload https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=all --yes
+```
+
 ### One-Command Agent Install (CI/scripts/one-time)
 
 Run any of these directly without installing the CLI first — pick one per need:
