@@ -659,6 +659,14 @@ async function removeStaleFiles(
 async function installExtensionDependencies(targetDir: string): Promise<void> {
   const extensionsDir = join(targetDir, "extensions");
   try {
+    // Check if extensions directory exists first
+    await Deno.stat(extensionsDir);
+  } catch {
+    // No extensions directory - skip silently
+    return;
+  }
+
+  try {
     const entries = await Deno.readDir(extensionsDir);
     for (const entry of entries) {
       if (!entry.isDirectory) continue;
@@ -687,7 +695,7 @@ async function installExtensionDependencies(targetDir: string): Promise<void> {
       }
     }
   } catch {
-    // No extensions directory
+    // Extensions directory exists but can't read it - skip silently
   }
 }
 

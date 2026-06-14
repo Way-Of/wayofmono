@@ -150,6 +150,7 @@ Any AI agent working with this repo:
 - `packages/@aiengineeringharness/install.ts` — Installer logic
 - `thoughts/wayofmono/shared/tickets/ticket-template.md` — Canonical ticket template
 - `thoughts/wayofmono/docs/best-practices/` — Production-ready standards
+- `docs/ai-coding-tools/` — **Authoritative reference for all 7 AI coding tools** (install, config, extensions, MCP, subagents, commands, capabilities). Each tool has a dedicated `.md` file verified against official docs (June 2026).
 
 ## Production-Ready Mandate
 
