@@ -1,12 +1,10 @@
 ---
 name: help_command
-description: >-
-  Unified /help system — skills, commands, agents, workflows, practices, search,
-  onboarding
-allowed-tools: 'read, grep, glob, bash, write'
+description: Unified /help system — skills, commands, agents, workflows, practices, search, onboarding
+allowed-tools: read, grep, glob, bash, write
 ---
 
-# Help Command Skill
+# Help Command skill
 
 Provides a unified `/help` command across all platforms. Dynamically loads from
 manifest.json, SKILL.md files, agent definitions, and thoughts/ docs to present
@@ -37,7 +35,7 @@ categorized, up-to-date documentation for both AI agents and human developers.
 
 1. **Determine what they need**: Is it a skill listing, specific skill detail, command reference, workflow guidance, or onboarding?
 2. **Map to subcommand**: Use the table above to route to the right subcommand.
-3. **Load dynamically**: Read from manifest.json for skills, agents/ directory for agents, SKILL.md frontmatter for details. Never hardcode.
+3. **Load dynamically**: read from manifest.json for skills, agents/ directory for agents, SKILL.md frontmatter for details. Never hardcode.
 4. **Format output**: Use markdown structure for readability. Use the companion `help.ts` script for structured data when available.
 
 ### Dynamic Data Sources

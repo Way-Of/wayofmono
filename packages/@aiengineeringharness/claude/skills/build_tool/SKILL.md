@@ -1,7 +1,7 @@
 ---
 name: build_tool
 description: Universal builder — generates ANY component type (skills, agents, extensions, commands, configs, keybindings, themes, prompts, TUI) for ANY of 7 AI coding tools. Knows ALL per-tool formats, casing rules, naming conventions, and frontmatter specs. Fetches latest online docs before generating.
-allowed-tools: read, write, bash, edit, grep, glob, webfetch, websearch, question
+allowed-tools: Read, Write, Bash, Edit, Grep, Glob, WebFetch, WebSearch, Question
 ---
 
 # Build Tool — Universal Component Generator
@@ -20,7 +20,7 @@ Generates any AI coding tool component for any of 7 target tools using per-tool 
 | Codex | `codex` | snake_case | lowercase | JSON | https://developers.openai.com/codex/cli |
 | Wo Coder | `wocode` | snake_case | lowercase | JSON | internal (wo-coder.md) |
 
-Always read `thoughts/global/docs/ai-coding-tools/<tool>.md` for current format specs before generating.
+Always Read `thoughts/global/docs/ai-coding-tools/<tool>.md` for current format specs before generating.
 
 ---
 
@@ -36,13 +36,13 @@ Each tool uses SKILL.md with YAML frontmatter. Per-tool rules:
 
 | Tool | allowed-tools Example | Allowed Values |
 |------|----------------------|----------------|
-| opencode | `read, write, bash, edit, grep, glob` | lowercase: `read, write, bash, edit, grep, glob, webfetch, websearch, question, todowrite, skill` |
+| opencode | `Read, Write, Bash, Edit, Grep, Glob` | lowercase: `Read, Write, Bash, Edit, Grep, Glob, WebFetch, WebSearch, Question, todowrite, Skill` |
 | claude | `Read, Write, Bash, Edit, Glob, Grep` | Title Case: `Read, Write, Bash, Edit, Glob, Grep, WebFetch, WebSearch, Web` |
-| gemini | `read, write, bash, glob, grep, web, code` | lowercase: `read, write, bash, glob, grep, web, code` |
+| gemini | `Read, Write, Bash, Glob, Grep, web, code` | lowercase: `Read, Write, Bash, Glob, Grep, web, code` |
 | pi | `Read, Write, Bash, Edit, Glob, Grep` | Title Case: `Read, Write, Bash, Edit, Glob, Grep, WebFetch, WebSearch` |
-| antigravity | `read, write, bash, glob, grep, web, code` | lowercase: `read, write, bash, glob, grep, web, code` |
+| antigravity | `Read, Write, Bash, Glob, Grep, web, code` | lowercase: `Read, Write, Bash, Glob, Grep, web, code` |
 | codex | `read_file, write_file, run_shell_command` | lowercase: `read_file, write_file, run_shell_command` |
-| wocoder | `read, write, bash, edit, grep, glob` | lowercase: `read, write, bash, edit, grep, glob` |
+| wocoder | `Read, Write, Bash, Edit, Grep, Glob` | lowercase: `Read, Write, Bash, Edit, Grep, Glob` |
 
 Allowed frontmatter fields per tool: `name` (required), `description` (required), `allowed-tools` (optional). Some tools also support: `docs-url`, `disable-model-invocation`, `on` (trigger keywords). Strip all other fields.
 

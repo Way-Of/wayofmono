@@ -1,9 +1,7 @@
 ---
 name: help_command
-description: >-
-  Unified /help system — skills, commands, agents, workflows, practices, search,
-  onboarding
-allowed-tools: 'read, grep, glob, bash, write'
+description: Unified /help system — skills, commands, agents, workflows, practices, search, onboarding
+allowed-tools: Read, Grep, Glob, Bash, Write
 ---
 
 # Help Command Skill
@@ -18,7 +16,7 @@ categorized, up-to-date documentation for both AI agents and human developers.
 |---------|-------------|
 | `/help` | Top-level overview with quick links |
 | `/help skills` | List all skills with descriptions |
-| `/help skills <name>` | Detail for a specific skill |
+| `/help skills <name>` | Detail for a specific Skill |
 | `/help commands` | List all slash commands |
 | `/help agents` | List all agents |
 | `/help workflow` | Standard workflows (f-rr-d, TDD, PRD, ODD, etc.) |
@@ -35,7 +33,7 @@ categorized, up-to-date documentation for both AI agents and human developers.
 
 ### When the User Asks for Help
 
-1. **Determine what they need**: Is it a skill listing, specific skill detail, command reference, workflow guidance, or onboarding?
+1. **Determine what they need**: Is it a Skill listing, specific Skill detail, command reference, workflow guidance, or onboarding?
 2. **Map to subcommand**: Use the table above to route to the right subcommand.
 3. **Load dynamically**: Read from manifest.json for skills, agents/ directory for agents, SKILL.md frontmatter for details. Never hardcode.
 4. **Format output**: Use markdown structure for readability. Use the companion `help.ts` script for structured data when available.
@@ -43,20 +41,20 @@ categorized, up-to-date documentation for both AI agents and human developers.
 ### Dynamic Data Sources
 
 ```
-manifest.json                        → skill listing (all tools)
+manifest.json                        → Skill listing (all tools)
 <tool>/agents/*.md                   → agent listing (frontmatter)
-<tool>/skills/<name>/SKILL.md        → skill detail (frontmatter + body)
+<tool>/skills/<name>/SKILL.md        → Skill detail (frontmatter + body)
 thoughts/<project>/docs/best-practices/ → practices docs
 thoughts/shared/tickets/             → ticket examples
 ```
 
 ### Cross-References to Include
 
-When showing a skill detail, always mention:
-- **Related commands**: Which `/command` triggers this skill
+When showing a Skill detail, always mention:
+- **Related commands**: Which `/command` triggers this Skill
 - **Related skills**: Other skills in the same namespace
-- **Related agents**: Which agent might use this skill
-- **Workflow**: Where this skill fits in the standard workflow
+- **Related agents**: Which agent might use this Skill
+- **Workflow**: Where this Skill fits in the standard workflow
 
 ### Agent Usage
 
@@ -81,8 +79,8 @@ deno run -A packages/@aiengineeringharness/codex/skills/help_command/help.ts --j
 
 - **No manifest found**: The help system should still show static subcommand help
 - **No agents directory**: Show "no agents found" rather than erroring
-- **Missing skill SKILL.md**: Show name and description from manifest, mark as "no detail available"
-- **Unknown skill name**: Suggest similar names using fuzzy match
+- **Missing Skill SKILL.md**: Show name and description from manifest, mark as "no detail available"
+- **Unknown Skill name**: Suggest similar names using fuzzy match
 - **Empty search results**: Show "no results found" with suggestions
 - **Onboarding for first time**: Use the companion script or walk through steps manually
 
@@ -90,5 +88,5 @@ deno run -A packages/@aiengineeringharness/codex/skills/help_command/help.ts --j
 
 - Pi uses kebab-case: `help-command` directory, `name: help-command` in frontmatter
 - The `help.ts` companion script is NOT installed by ai-harness — run from the repo
-- All data is loaded dynamically at runtime — no hardcoded skill lists
+- All data is loaded dynamically at runtime — no hardcoded Skill lists
 - Use `--markdown` flag when output is for AI agent consumption

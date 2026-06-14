@@ -1,12 +1,8 @@
 ---
 name: research_codebase
-description: >-
-  Conduct comprehensive codebase research by delegating to parallel sub-agents
-  and synthesizing findings using Gemini CLI tools.
+description: Conduct comprehensive codebase research by delegating to parallel sub-agents and synthesizing findings using Gemini CLI tools.
+allowed-tools: Read, Write, Bash, Grep, Glob, TodoWrite, Task, Google, Web, Search, Web, Fetch
 disable-model-invocation: true
-allowed-tools: >-
-  read, write, bash, grep, glob, todowrite, task, google, web, search, web,
-  fetch
 ---
 
 # Research Codebase
@@ -17,16 +13,16 @@ You are tasked with conducting comprehensive research across the codebase to ans
 
 When this command is invoked, respond with:
 ```
-I'm ready to research the codebase. Please provide your research question or area of interest, and I'll analyze it thoroughly by exploring relevant components and connections.
+I'm ready to research the codebase. Please provide your research Question or area of interest, and I'll analyze it thoroughly by exploring relevant components and connections.
 ```
 
 ## Steps to follow after receiving the research query:
 
 1. **Read any directly mentioned files first:**
-   - If the user mentions specific files, read them FULLY first
+   - If the user mentions specific files, Read them FULLY first
    - Read these files yourself before spawning sub-tasks
 
-2. **Analyze and decompose the research question:**
+2. **Analyze and decompose the research Question:**
    - Break down the query into composable research areas
    - Create a research plan using TodoWrite
 

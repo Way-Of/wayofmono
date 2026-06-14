@@ -1,22 +1,19 @@
 ---
 name: docs-sync-updater
-description: >-
-  Fetch latest documentation from all AI tool sources and update tool reference
-  docs + skills/agent configs
+description: Fetch latest documentation from all AI tool sources and update tool reference docs + skills/agent configs
 allowed-tools:
-  - grep
+  - Grep
   - web
   - search
-  - write
-  - 'read
-  - web
-  - fetch'
+  - Write
+  - Read
+  - WebFetch
 ---
 
 # Documentation Sync Updater
 
 Fetches the latest documentation from all supported AI coding tools to keep
-**tool reference docs** (`docs/tools/ai-coding-tools/*.md`) and **skill/agent configs**
+**tool reference docs** (`docs/tools/ai-coding-tools/*.md`) and **Skill/agent configs**
 up to date.
 
 ## Reference Docs Target
@@ -47,7 +44,7 @@ For each tool reference doc:
 
 ## Commands
 
-- `ai-harness docs sync` — Fetch all tool docs, update reference files, create tickets for skill changes
+- `ai-harness docs sync` — Fetch all tool docs, update reference files, create tickets for Skill changes
 - `ai-harness docs sync --source=claude,opencode` — Selective update for specific tools
 - `ai-harness docs sync --path=docs/tools/ai-coding-tools/pi.md` — Single file update
 - `ai-harness docs watch` — Continuous monitoring daemon
@@ -55,7 +52,7 @@ For each tool reference doc:
 
 ## Installation
 
-This skill ships as part of every tool harness. On `ai-harness --tool=all` or `ai-harness --tool=<tool>`, it is installed to the user's machine at `~/.<tool>/skills/docs-sync-updater/SKILL.md` just like every other skill. No separate install step needed.
+This Skill ships as part of every tool harness. On `ai-harness --tool=all` or `ai-harness --tool=<tool>`, it is installed to the user's machine at `~/.<tool>/skills/docs-sync-updater/SKILL.md` just like every other Skill. No separate install step needed.
 
 If the canonical source at `docs/skills/docs-sync-updater/SKILL.md` is updated, run `ai-harness docs sync` to propagate changes to all installed tool copies.
 

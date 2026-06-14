@@ -1,12 +1,11 @@
 ---
 name: document_generation
 description: Generates various types of documents, including offers, invoices, reports, and templates, often based on structured data.
-
 ---
 
 # Document Generation Skill
 
-This skill provides agents with the capability to create a variety of structured documents, such as offers, invoices, and reports. It automates the process of compiling information into professional, formatted outputs, which is crucial for business operations and client communication.
+This Skill provides agents with the capability to create a variety of structured documents, such as offers, invoices, and reports. It automates the process of compiling information into professional, formatted outputs, which is crucial for business operations and client communication.
 
 ## Usage Guidelines
 

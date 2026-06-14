@@ -1,10 +1,7 @@
 ---
 name: ticket_manager
-description: >-
-  Manage tickets across all namespaces (WOMONO, WOW, OPT) with proper naming,
-  numbering, and storage. Enforces production-ready standard: no mock data,
-  enterprise grade.
-allowed-tools: 'read, grep, glob, bash, write, edit'
+description: "Manage tickets across all namespaces (WOMONO, WOW, OPT) with proper naming, numbering, and storage. Enforces production-ready standard: no mock data, enterprise grade."
+allowed-tools: Read, Grep, Glob, Bash, Write, Edit
 ---
 
 # Ticket Manager Skill
@@ -42,7 +39,7 @@ Examples:
 
 ### Finding the Next Number
 
-```bash
+```Bash
 ls thoughts/<project-slug>/shared/tickets/<PREFIX>-*.md
 ```
 

@@ -1,7 +1,7 @@
 ---
 name: investor_ready_doc_gen
 description: Generate complete investor-ready documentation for ANY project. Auto-fires when the user asks to generate investor docs, funding materials, pitch decks, or white papers. Uses 40+ mustache-style templates bundled as assets. Includes Marp CLI + Pandoc for PDF/HTML/DOCX export. Project-agnostic — works for OptiCat, Way of Work, or any new project.
-allowed-tools: read, write, bash, edit, grep, glob, webfetch, websearch, question
+allowed-tools: Read, Write, Bash, Edit, Grep, Glob, WebFetch, WebSearch, Question
 ---
 
 # Investor-Ready Document Generator
@@ -10,8 +10,8 @@ Generates a full investor-ready documentation package for any project. All templ
 
 ## Required Input
 
-The skill needs a project config. Either:
-- **Interactive**: The skill asks the user questions and builds the config
+The Skill needs a project config. Either:
+- **Interactive**: The Skill asks the user questions and builds the config
 - **Config file**: User provides `investor_config.yaml` (see `assets/examples/`)
 - **Hybrid**: Start from config file, override interactively
 
@@ -152,7 +152,7 @@ Optional variables support `{{#if variable}}...{{/if}}` conditionals.
 
 ## Vertical Knowledge Bases
 
-The skill uses `assets/verticals/<vertical>/` to store industry-specific reference data. This keeps templates project-agnostic while providing accurate, pre-verified data per vertical.
+The Skill uses `assets/verticals/<vertical>/` to store industry-specific reference data. This keeps templates project-agnostic while providing accurate, pre-verified data per vertical.
 
 ### Available Verticals
 
@@ -195,7 +195,7 @@ The template at `assets/verticals/VERTICAL_TEMPLATE.yaml` provides a complete sk
 
 Before generating ANY investor docs, you MUST thoroughly investigate the application's actual codebase. This is not optional.
 
-1. **Explore the full repository structure** — read README, package.json, directory tree, configuration files
+1. **Explore the full repository structure** — Read README, package.json, directory tree, configuration files
 2. **Identify the technology stack** — languages, frameworks, databases, infrastructure, APIs
 3. **Analyze the architecture** — components, modules, data flow, integrations, deployments
 4. **Extract actual metrics** — real code stats (lines of code, number of services, API endpoints)
@@ -258,7 +258,7 @@ The AI must work through this TODO systematically, ticking off items as complete
 
 Now that you have thorough codebase understanding, build the project config:
 ```yaml
-# Ask the user for details OR read from existing config file
+# Ask the user for details OR Read from existing config file
 # Use your codebase investigation to pre-fill as much as possible
 # Required fields:
 project_name: ""
@@ -344,7 +344,7 @@ docs/Product docs/Investor Ready/
 ```
 
 ### Step 7: Validate Output
-1. Re-read your TODO.md — every item ticked?
+1. Re-Read your TODO.md — every item ticked?
 2. Check for **any remaining unclosed placeholders** — these indicate missing config values
 3. Check for **forbidden terms** based on project context
 4. Verify **every market claim has a source URL**
@@ -383,11 +383,11 @@ Write `investor_research/<project_name>/TODO.md` to the output folder documentin
 ## PDF Export: Marp + Pandoc
 
 ### Marp CLI (Presentation to PDF)
-The skill bundles Marp CLI for converting pitch deck markdown to professional PDF presentations.
+The Skill bundles Marp CLI for converting pitch deck markdown to professional PDF presentations.
 
 **Location**: `assets/marp/` (downloaded on first use)
 **Usage**:
-```bash
+```Bash
 # Convert master deck to PDF
 npx @marp-team/marp-cli@latest assets/templates/pitch_deck/master_deck.md --pdf --allow-local-files
 
@@ -396,11 +396,11 @@ npx @marp-team/marp-cli@latest assets/templates/pitch_deck/master_deck.md --pdf 
 ```
 
 ### Pandoc (Universal Document Conversion)
-The skill uses Pandoc for converting any markdown template to PDF, HTML, DOCX, or other formats.
+The Skill uses Pandoc for converting any markdown template to PDF, HTML, DOCX, or other formats.
 
 **Location**: System-installed (pandoc must be available in PATH)
 **Usage**:
-```bash
+```Bash
 # Markdown to PDF (with custom template)
 pandoc assets/templates/executive/executive_summary.md -o output/executive_summary.pdf --pdf-engine=weasyprint --css assets/pdf/investor-theme.css
 
@@ -417,7 +417,7 @@ done
 ```
 
 ### Automated PDF Generation Workflow
-After generating all markdown documents (Step 6), the skill can optionally run:
+After generating all markdown documents (Step 6), the Skill can optionally run:
 
 1. **Marp** for pitch decks (master_deck, one_pager, send_ahead_deck, pitch_script, supporting_slides)
 2. **Pandoc** for all other documents (executive, technical, financial, legal, market, company, operations)
@@ -451,7 +451,7 @@ docs/Product docs/Investor Ready/
 
 ```
 User: "Generate investor-ready docs for my project"
-Agent: [triggers investor_ready_doc_gen skill]
+Agent: [triggers investor_ready_doc_gen Skill]
        [prompts user for project details]
        [generates full documentation package]
        [optionally exports to PDF/HTML/DOCX via Marp + Pandoc]

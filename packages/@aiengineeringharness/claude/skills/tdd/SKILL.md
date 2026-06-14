@@ -1,7 +1,7 @@
 ---
 name: tdd
 description: Test-driven development with red-green-refactor loop. Use when user wants to build features or fix bugs using TDD, mentions "red-green-refactor", asks for test-first development, or wants integration-style tests that survive refactors.
-allowed-tools: read, bash, glob, write, replace
+allowed-tools: Read, Bash, Glob, Write, Replace
 ---
 
 # Test-Driven Development
@@ -18,7 +18,7 @@ See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking g
 
 ## Anti-Pattern: Horizontal Slices
 
-**DO NOT write all tests first, then all implementation.** This is "horizontal slicing" - treating RED as "write all tests" and GREEN as "write all code."
+**DO NOT Write all tests first, then all implementation.** This is "horizontal slicing" - treating RED as "Write all tests" and GREEN as "Write all code."
 
 This produces **crap tests**:
 

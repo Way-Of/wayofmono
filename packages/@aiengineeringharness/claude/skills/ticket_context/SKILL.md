@@ -7,7 +7,7 @@ description: Associates work with a specific ticket ID across all WoM projects (
 
 ## Overview
 
-This skill ensures all work is linked to an approved ticket from the correct namespace, following WoM naming conventions and production-ready standards.
+This Skill ensures all work is linked to an approved ticket from the correct namespace, following WoM naming conventions and production-ready standards.
 
 ## Ticket Namespaces
 
@@ -27,14 +27,14 @@ This skill ensures all work is linked to an approved ticket from the correct nam
 
 ## Usage
 
-*   When beginning a new task, activate this skill.
+*   When beginning a new task, activate this Skill.
 *   Provide a ticket ID like `WOMONO-051`, `WOW-001`, or `OPT-003`.
-*   The skill loads the full ticket context from `thoughts/<project>/shared/tickets/`.
+*   The Skill loads the full ticket context from `thoughts/<project>/shared/tickets/`.
 
 ## Rules
 
 *   All code changes, feature implementations, and bug fixes **must** be associated with an existing ticket.
 *   Tickets are stored at `thoughts/<project-slug>/shared/tickets/<PREFIX>-<NNN>-<DESCRIPTION>.md`.
 *   New tickets follow the naming convention and template in `thoughts/shared/tickets/ticket-template.md`.
-*   The `ticket_manager` skill has full lifecycle management. This skill ensures adherence to the process.
+*   The `ticket_manager` Skill has full lifecycle management. This Skill ensures adherence to the process.
 

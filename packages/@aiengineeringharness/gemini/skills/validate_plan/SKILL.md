@@ -1,10 +1,7 @@
 ---
 name: validate_plan
-description: >-
-  Validate that an implementation plan was correctly executed, verifying all
-  success criteria using Gemini CLI tools and delegating to research agents.
-disable-model-invocation: true
-allowed-tools: 'read, write, bash, grep, glob, task'
+description: Validate that an implementation plan was correctly executed, verifying all success criteria using Gemini CLI tools and delegating to research agents.
+allowed-tools: read, write, bash, grep, glob, task
 ---
 
 # Validate Plan
@@ -22,7 +19,7 @@ When invoked:
 
 ### Step 1: Context Discovery
 
-1. **Read the implementation plan** completely
+1. **read the implementation plan** completely
 2. **Identify what should have changed**
 3. **Delegate to research agents** (e.g., `codebase_investigator`, `codebase_locator`) to verify implementation details and find modified files.
 
@@ -78,7 +75,7 @@ Recommended workflow:
 
 ## Key Principles
 
-1. **Understand Before Validating** - Read the entire plan first
+1. **Understand Before Validating** - read the entire plan first
 2. **Be Objective and Critical** - Validate functionality, not just presence
 3. **Verify Comprehensively** - Run all automated checks
 4. **Communicate Clearly** - Provide specific file references

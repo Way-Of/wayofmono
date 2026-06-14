@@ -1,14 +1,14 @@
 ---
 name: skill_adapter
 description: Platform-specific skill/agent loading and format adapters for all 7 frontends
-allowed-tools: 'read, write, glob, bash, grep'
+allowed-tools: read, write, glob, bash, grep
 ---
 
-# Platform-Specific Skill Loading & Format Adapters
+# Platform-Specific skill Loading & Format Adapters
 
 Maintains a single canonical skill format and generates platform-specific configurations for all 7 frontends.
 
-## Canonical Skill Format
+## Canonical skill Format
 
 Each skill in `packages/@aiengineeringharness/skills/<skill>/` has:
 - `SKILL.md` - Canonical spec with YAML frontmatter (name, description, version, tools, platforms, allowed-tools)

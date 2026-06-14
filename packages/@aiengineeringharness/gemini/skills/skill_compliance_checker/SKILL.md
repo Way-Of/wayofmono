@@ -4,7 +4,7 @@ description: Validate all skill SKILL.md files across all 7 tool harnesses for c
 allowed-tools: read, write, bash
 ---
 
-# Skill Compliance Checker
+# skill Compliance Checker
 
 Validate all skill files across the AI Engineering Harness against per-tool format specifications.
 
@@ -84,5 +84,5 @@ The script checks every `SKILL.md` in `packages/@aiengineeringharness/<tool>/ski
 Tool specs are defined in `scripts/compliance-check.ts` at lines 60-138. Key rules:
 
 - **opencode/gemini/antigravity/codex**: lowercase allowed-tools (`read, write, bash`), snake_case dirs
-- **claude/pi/wocoder**: PascalCase allowed-tools (`Read, Write, Bash`), snake_case dirs (claude/wocoder) or kebab-case (pi)
+- **claude/pi/wocoder**: PascalCase allowed-tools (`read, write, bash`), snake_case dirs (claude/wocoder) or kebab-case (pi)
 - **codex**: lowercase allowed-tools (`read_file, write_file, run_shell_command`)

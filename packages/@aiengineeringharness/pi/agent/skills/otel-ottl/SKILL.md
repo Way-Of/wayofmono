@@ -1,17 +1,14 @@
 ---
 name: otel-ottl
-description: >
-  OTTL (OpenTelemetry Transformation Language) reference — syntax, contexts,
-  common patterns (redaction, normalization, enrichment, filtering), error
-  handling, and complete function reference for Collector processors.
-disable-model-invocation: true
+description: OTTL (OpenTelemetry Transformation Language) reference — syntax, contexts, common patterns (redaction, normalization, enrichment, filtering), error handling, and complete function reference for Collector processors.
+
 allowed-tools:
-  - grep
-  - write
+  - Grep
+  - Write
   - replace
-  - bash
-  - read
-  - glob
+  - Bash
+  - Read
+  - Glob
 ---
 
 # OpenTelemetry Transformation Language (OTTL)
@@ -189,13 +186,13 @@ Always use `where` guards to prevent nil access:
 |---|---|
 | `set(target, value)` | Set value |
 | `delete_key(map, key)` | Remove key |
-| `delete_matching_keys(map, pattern)` | Remove keys by glob |
+| `delete_matching_keys(map, pattern)` | Remove keys by Glob |
 | `keep_keys(map, keys...)` | Keep only listed keys |
 | `truncate_all(map, limit)` | Truncate all string values |
 | `limit(map, count)` | Cap key count |
-| `replace_match(target, glob, replacement)` | Glob replace |
+| `replace_match(target, Glob, replacement)` | Glob replace |
 | `replace_pattern(target, regex, replacement)` | Regex replace |
-| `replace_all_matches(map, glob, replacement)` | Glob replace all values |
+| `replace_all_matches(map, Glob, replacement)` | Glob replace all values |
 | `replace_all_patterns(map, mode, regex, replacement)` | Regex replace all values |
 | `merge_maps(target, source, strategy)` | Merge maps (upsert/insert/update) |
 | `flatten(target)` | Flatten nested map |

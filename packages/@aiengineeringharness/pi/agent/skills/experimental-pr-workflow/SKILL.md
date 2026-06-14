@@ -2,25 +2,25 @@
 name: experimental-pr-workflow
 description: Handles experimental features that lack proper ticketing by retroactively creating Linear tickets and PRs from commits. Utilizes `git` and `gh` commands via Gemini CLI's `run_shell_command` to formalize experimental work.
 allowed-tools:
-  - grep
-  - write
-  - bash
-  - read
-  - glob
+  - Grep
+  - Write
+  - Bash
+  - Read
+  - Glob
 ---
 
 # Experimental PR Workflow
 
 ## When to Use This Skill
 
-Activate this skill when:
+Activate this Skill when:
 - User mentions "founder mode" or references rapid experimentation
 - User has made commits without associated tickets
 - User asks to "formalize experimental work" or "create ticket for this"
 - You detect commits on a feature branch without ticket references
 - User asks to "clean up" or "properly document" exploratory work
 
-This skill helps transition from rapid prototyping to proper workflow hygiene.
+This Skill helps transition from rapid prototyping to proper workflow hygiene.
 
 ## The Problem This Solves
 
@@ -30,14 +30,14 @@ Sometimes you need to move fast and experiment without the overhead of creating 
 3. Get the work into a reviewable PR
 4. Follow the team's standard workflow
 
-This skill handles that transition retroactively.
+This Skill handles that transition retroactively.
 
 ## Core Process
 
 ### Step 1: Verify Commit Exists
 
 **Check recent commits**:
-```bash
+```Bash
 git log --oneline -5
 ```
 
@@ -46,7 +46,7 @@ git log --oneline -5
 ### Step 2: Understand What Was Built
 
 **Gather context from the commit**:
-```bash
+```Bash
 git show --stat HEAD
 git show HEAD
 ```
@@ -83,35 +83,35 @@ Create a ticket describing the work:
 ### Step 4: Create Proper Git Branch
 
 **Ensure you're on main first**:
-```bash
+```Bash
 git checkout main
 ```
 
 **Create the new branch with proper naming**:
-```bash
+```Bash
 git checkout -b [TICKET-ID]-[description]
 ```
 
 **Cherry-pick your experimental commit(s)**:
-```bash
+```Bash
 git cherry-pick [COMMIT_SHA]
 ```
 
 ### Step 5: Push and Create PR
 
 **Push the branch to remote**:
-```bash
+```Bash
 git push -u origin [BRANCH_NAME]
 ```
 
 **Create the pull request**:
-```bash
+```Bash
 gh pr create --fill
 ```
 
 ### Step 6: Generate PR Description
 
-Hand off to the `pr-description-generator` skill to create a comprehensive PR description.
+Hand off to the `pr-description-generator` Skill to create a comprehensive PR description.
 
 ## Key Principles
 
@@ -153,7 +153,7 @@ Even if the code is already written, take time to understand:
 ## Variations and Edge Cases
 
 ### Multiple Experimental Commits
-```bash
+```Bash
 git log main..HEAD --oneline
 git checkout main
 git checkout -b [BRANCH_NAME]
@@ -161,7 +161,7 @@ git cherry-pick [FIRST_SHA]^..[LAST_SHA]
 ```
 
 ### Already on Feature Branch (poorly named)
-```bash
+```Bash
 git checkout main
 git checkout -b [NEW_BRANCH_NAME]
 git cherry-pick main..[OLD_BRANCH_NAME]
@@ -183,7 +183,7 @@ You've succeeded when:
 
 ## Notes
 
-- This skill enables fast iteration while maintaining eventual consistency with process
+- This Skill enables fast iteration while maintaining eventual consistency with process
 - It's a "get out of jail free" card for exploratory work
 - Don't abuse it - proper planning upfront is still better when possible
-- The skill automates the tedious cleanup work of formalizing experiments
+- The Skill automates the tedious cleanup work of formalizing experiments

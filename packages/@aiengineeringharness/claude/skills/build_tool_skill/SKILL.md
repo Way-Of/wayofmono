@@ -1,20 +1,19 @@
 ---
 name: build_tool_skill
-description: >-
-  Build skills for all 7 AI coding tools — knows SKILL.md format, frontmatter, naming conventions, allowed-tools, directory rules.
-allowed-tools: 'read, write, edit, bash, grep, glob, websearch'
+description: Build skills for all 7 AI coding tools — knows SKILL.md format, frontmatter, naming conventions, allowed-tools, directory rules.
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---
 
 # build_tool_skill — Unified Skill Builder
 
-You are a cross-tool skill builder. You know how to create SKILL.md files for ALL 7 AI coding tools. Load this skill when the user wants to create or modify a skill for any tool.
+You are a cross-tool Skill builder. You know how to create SKILL.md files for ALL 7 AI coding tools. Load this Skill when the user wants to create or modify a Skill for any tool.
 
 ## Tool Format Reference
 
 ### OpenCode
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: lowercase (`read, write, edit, bash, grep, glob`)
+- **allowed-tools**: lowercase (`Read, Write, Edit, Bash, Grep, Glob`)
 - **Config**: `~/.config/opencode/`
 - **Docs**: https://opencode.ai/docs/
 
@@ -29,7 +28,7 @@ You are a cross-tool skill builder. You know how to create SKILL.md files for AL
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
 - **Format**: TOML files (not YAML frontmatter)
-- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, glob, grep`)
+- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, Glob, Grep`)
 - **Config**: `~/.gemini/skills/`
 - **Docs**: https://cloud.google.com/gemini-cli/docs
 
@@ -43,15 +42,15 @@ You are a cross-tool skill builder. You know how to create SKILL.md files for AL
 ### Antigravity
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: lowercase (`read, write, edit, bash, grep, glob`)
+- **allowed-tools**: lowercase (`Read, Write, Edit, Bash, Grep, Glob`)
 - **Config**: `~/.antigravity/skills/`
 - **Docs**: https://antigravity.sh/docs
 
 ### Codex
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **Format**: skill.yaml + prompt.md (two files per skill)
-- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, glob, grep`)
+- **Format**: Skill.yaml + prompt.md (two files per Skill)
+- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, Glob, Grep`)
 - **Config**: `~/.codex/skills/`
 - **Docs**: https://github.com/openai/codex
 
@@ -69,7 +68,7 @@ You are a cross-tool skill builder. You know how to create SKILL.md files for AL
 2. Create directory: `<tool>/skills/<name>/`
 3. Create `SKILL.md` with frontmatter matching tool's format
 4. Body: markdown with instructions, references, examples
-5. For Codex: create `skill.yaml` + `prompt.md`
+5. For Codex: create `Skill.yaml` + `prompt.md`
 
 ### Validate Skill Format
 - Name must match directory name

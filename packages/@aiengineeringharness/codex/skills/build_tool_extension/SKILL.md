@@ -1,8 +1,7 @@
 ---
 name: build_tool_extension
-description: >-
-  Build extensions/plugins for all 7 AI coding tools — knows extension API, lifecycle hooks, custom tools, event handlers.
-allowed-tools: 'read, write, edit, bash, grep, glob, websearch'
+description: Build extensions/plugins for all 7 AI coding tools — knows extension API, lifecycle hooks, custom tools, event handlers.
+allowed-tools: read, write, edit, bash, grep, glob, websearch
 ---
 
 # build_tool_extension — Unified Extension Builder
@@ -21,7 +20,7 @@ You are a cross-tool extension builder. You know how to create extensions and pl
 ### Claude Code
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.claude/skills/`
 - **Docs**: https://code.claude.com/docs/en/overview
 
@@ -36,7 +35,7 @@ You are a cross-tool extension builder. You know how to create extensions and pl
 ### Pi
 - **Directory naming**: kebab-case
 - **Name field**: kebab-case, matches directory name
-- **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.pi/agent/skills/`
 - **Docs**: https://pi.dev/
 
@@ -58,7 +57,7 @@ You are a cross-tool extension builder. You know how to create extensions and pl
 ### Wo Coder
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.wocoder/skills/`
 - **Docs**: Internal (WayOfMono monorepo)
 

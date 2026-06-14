@@ -6,7 +6,7 @@ allowed-tools: read, bash, grep, glob, replace, write
 
 # PR Description Generator
 
-## When to Use This Skill
+## When to Use This skill
 
 Activate this skill when the user:
 - Asks to "create a PR description" or "describe this PR"
@@ -64,7 +64,7 @@ git diff --name-only main...HEAD
 
 **Deep analysis required** - Think carefully about:
 
-1. **Code changes**: Read the entire diff, understand purpose and impact
+1. **Code changes**: read the entire diff, understand purpose and impact
 2. **User-facing impact**: What will users notice? Breaking changes?
 3. **Implementation details**: Technical approach and decisions
 4. **Migration requirements**: Data migration, deployment steps
@@ -118,7 +118,7 @@ git diff --name-only main...HEAD
 **Save the description**:
 ```bash
 mkdir -p thoughts/shared/prs/
-# Write to thoughts/shared/prs/{number}_description.md
+# write to thoughts/shared/prs/{number}_description.md
 ```
 
 **Apply to PR**:

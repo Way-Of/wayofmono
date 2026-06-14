@@ -234,7 +234,7 @@ For every claim that will go into investor docs, verify it via web search:
    - **Compare**: How does the national market compare to global? (e.g., "Sweden represents 2% of the global HVAC optimization market but is growing at 22% CAGR due to strict EU regulations")
 9. **Save all source URLs** — every claim must have a verifiable source
 
-Write findings to `investor_research/<project_name>/MARKET_RESEARCH.md` and `COMPETITOR_RESEARCH.md`.
+write findings to `investor_research/<project_name>/MARKET_RESEARCH.md` and `COMPETITOR_RESEARCH.md`.
 
 ### Step 3: Create Self-Managed TODO.md ⚠️ MANDATORY
 
@@ -297,7 +297,7 @@ jurisdiction: ""
 ```
 
 ### Step 5: Load Vertical Knowledge Base
-1. Read the `market_category` from config
+1. read the `market_category` from config
 2. Find matching folder in `assets/verticals/` (e.g., `hvac_optimization` for HVAC projects)
 3. Load `market_reference.yaml` for that vertical
 4. Cross-reference vertical data with your codebase investigation and web verification
@@ -307,12 +307,12 @@ jurisdiction: ""
 ### Step 6: Generate All Documents — Work Through TODO.md
 
 For each item in your TODO.md:
-1. Read the template file from `assets/templates/<category>/<template>.md`
+1. read the template file from `assets/templates/<category>/<template>.md`
 2. Replace all `{{variable}}` placeholders with merged config values
 3. Enrich market sections with verified web research data (competitor names, stats, source URLs)
 4. Enrich technical sections with actual codebase analysis findings
 5. Handle conditionals (`{{#if}}`) and iterators (`{{#each}}`)
-6. Write the rendered output to the project's docs directory
+6. write the rendered output to the project's docs directory
 7. Tick off the item in TODO.md
 8. Self-check: verify all placeholders filled, all claims sourced
 
@@ -363,7 +363,7 @@ Show the user:
 - Next steps and review process
 
 ### Step 9: Generate Final TODO.md for User
-Write `investor_research/<project_name>/TODO.md` to the output folder documenting:
+write `investor_research/<project_name>/TODO.md` to the output folder documenting:
 - What was generated
 - What needs human review
 - What data is still missing

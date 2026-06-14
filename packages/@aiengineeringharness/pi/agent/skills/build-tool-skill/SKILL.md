@@ -1,7 +1,6 @@
 ---
 name: build-tool-skill
-description: >-
-  Build skills for all 7 AI coding tools — knows SKILL.md format, frontmatter, naming conventions, allowed-tools casing, and directory rules.
+description: Build skills for all 7 AI coding tools — knows SKILL.md format, frontmatter, naming conventions, allowed-tools casing, and directory rules.
 allowed-tools:
   - Read
   - Write
@@ -15,14 +14,14 @@ allowed-tools:
 
 # build_tool_skill — Unified Skill Builder
 
-You are a cross-tool skill builder. You know how to create skill definitions for ALL 7 AI coding tools. Load this skill when the user wants to create or modify a skill for any tool.
+You are a cross-tool Skill builder. You know how to create Skill definitions for ALL 7 AI coding tools. Load this Skill when the user wants to create or modify a Skill for any tool.
 
 ## Tool Format Reference
 
 ### OpenCode
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name, regex `^[a-z0-9]+(-[a-z0-9]+)*$`
-- **allowed-tools**: lowercase (`read, write, edit, bash, grep, glob, webfetch, websearch, question, todowrite, skill`)
+- **allowed-tools**: lowercase (`Read, Write, Edit, Bash, Grep, Glob, WebFetch, WebSearch, Question, todowrite, Skill`)
 - **Config**: `~/.config/opencode/skills/`
 - **Docs**: https://opencode.ai/docs/
 
@@ -36,7 +35,7 @@ You are a cross-tool skill builder. You know how to create skill definitions for
 ### Gemini CLI
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: lowercase (`read, write, bash, glob, grep, web, code`)
+- **allowed-tools**: lowercase (`Read, Write, Bash, Glob, Grep, web, code`)
 - **Config**: `~/.gemini/skills/`
 - **Docs**: https://cloud.google.com/gemini-cli/docs
 
@@ -50,15 +49,15 @@ You are a cross-tool skill builder. You know how to create skill definitions for
 ### Antigravity
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: lowercase (`read, write, edit, bash, grep, glob, webfetch, websearch`)
+- **allowed-tools**: lowercase (`Read, Write, Edit, Bash, Grep, Glob, WebFetch, WebSearch`)
 - **Config**: `~/.antigravity/skills/`
 - **Docs**: https://antigravity.sh/docs
 
 ### Codex
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **Format**: skill.yaml + prompt.md (two files per skill)
-- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, glob, grep`)
+- **Format**: Skill.yaml + prompt.md (two files per Skill)
+- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, Glob, Grep`)
 - **Config**: `~/.codex/skills/`
 - **Docs**: https://github.com/openai/codex
 
@@ -89,7 +88,7 @@ You are a cross-tool skill builder. You know how to create skill definitions for
 - Fields match TOML schema
 
 ### Codex
-- Format: Two files per skill - `skill.yaml` (metadata) + `prompt.md` (instructions)
+- Format: Two files per Skill - `Skill.yaml` (metadata) + `prompt.md` (instructions)
 - Location: `skills/` directory
 
 ## Allowed Frontmatter Fields Per Tool
@@ -101,12 +100,12 @@ You are a cross-tool skill builder. You know how to create skill definitions for
 | Gemini | name, description | allowed-tools, disable-model-invocation, on | All others |
 | Pi | name, description, allowed-tools/tools | docs-url, disable-model-invocation, on | All others |
 | Antigravity | name, description | allowed-tools, docs-url, disable-model-invocation, on | All others |
-| Codex | name, description (in skill.yaml) | allowed-tools, docs-url, disable-model-invocation, on | All others |
+| Codex | name, description (in Skill.yaml) | allowed-tools, docs-url, disable-model-invocation, on | All others |
 | Wo Coder | name, description | allowed-tools, docs-url, disable-model-invocation, on | All others |
 
 ## Generation Workflow
 
-1. **Identify target tool** — Ask user which of 7 tools the skill is for
+1. **Identify target tool** — Ask user which of 7 tools the Skill is for
 2. **Fetch latest docs** — Read `thoughts/global/docs/ai-coding-tools/<tool>.md` AND fetch official docs URL
 3. **Determine naming** — snake_case or kebab-case per tool
 4. **Set allowed-tools** — Must match per-tool casing exactly

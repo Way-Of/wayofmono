@@ -37,9 +37,9 @@ Each tool uses SKILL.md with YAML frontmatter. Per-tool rules:
 | Tool | allowed-tools Example | Allowed Values |
 |------|----------------------|----------------|
 | opencode | `read, write, bash, edit, grep, glob` | lowercase: `read, write, bash, edit, grep, glob, webfetch, websearch, question, todowrite, skill` |
-| claude | `Read, Write, Bash, Edit, Glob, Grep` | Title Case: `Read, Write, Bash, Edit, Glob, Grep, WebFetch, WebSearch, Web` |
+| claude | `read, write, bash, edit, glob, grep` | Title Case: `read, write, bash, edit, glob, grep, webfetch, websearch, Web` |
 | gemini | `read, write, bash, glob, grep, web, code` | lowercase: `read, write, bash, glob, grep, web, code` |
-| pi | `Read, Write, Bash, Edit, Glob, Grep` | Title Case: `Read, Write, Bash, Edit, Glob, Grep, WebFetch, WebSearch` |
+| pi | `read, write, bash, edit, glob, grep` | Title Case: `read, write, bash, edit, glob, grep, webfetch, websearch` |
 | antigravity | `read, write, bash, glob, grep, web, code` | lowercase: `read, write, bash, glob, grep, web, code` |
 | codex | `read_file, write_file, run_shell_command` | lowercase: `read_file, write_file, run_shell_command` |
 | wocoder | `read, write, bash, edit, grep, glob` | lowercase: `read, write, bash, edit, grep, glob` |
@@ -130,12 +130,12 @@ All tools use JSON config files. Key files per tool:
 ## Generation Workflow
 
 1. **Identify target tool** — Ask user which of 7 tools the component is for
-2. **Identify component type** — Skill, Agent, Command, Extension, Config, Keybinding, Theme, or TUI
-3. **Fetch latest docs** — Read `thoughts/global/docs/ai-coding-tools/<tool>.md` AND fetch the official docs URL
+2. **Identify component type** — skill, Agent, Command, Extension, Config, Keybinding, Theme, or TUI
+3. **Fetch latest docs** — read `thoughts/global/docs/ai-coding-tools/<tool>.md` AND fetch the official docs URL
 4. **Generate with correct naming** — snake_case or kebab-case per tool
 5. **Use correct casing** — allowed-tools values must match per-tool spec exactly
 6. **Validate frontmatter** — Only include fields supported by target tool
-7. **Write to correct directory** — Place in harness dir or user config dir per tool
+7. **write to correct directory** — Place in harness dir or user config dir per tool
 8. **Run compliance check** — `deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts` to validate
 
 ---

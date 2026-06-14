@@ -1,13 +1,13 @@
 ---
 name: opticat-simulator
-description: "Enables setup, execution, and analysis of OptiCat HVAC simulations. Use this skill for configuring simulation parameters, executing simulation runs, interpreting results, and performing what-if analysis on HVAC systems."
+description: Enables setup, execution, and analysis of OptiCat HVAC simulations. Use this skill for configuring simulation parameters, executing simulation runs, interpreting results, and performing what-if analysis on HVAC systems.
 ---
 
 # OptiCat Simulator
 
 ## Overview
 
-This skill provides specialized knowledge and tools for setting up, executing, and analyzing simulations related to OptiCat's HVAC domain. It aims to streamline the process of configuring simulation parameters, running various simulation scenarios, interpreting the results, and performing what-if analysis to evaluate system performance and efficiency.
+This Skill provides specialized knowledge and tools for setting up, executing, and analyzing simulations related to OptiCat's HVAC domain. It aims to streamline the process of configuring simulation parameters, running various simulation scenarios, interpreting the results, and performing what-if analysis to evaluate system performance and efficiency.
 
 ## Core Capabilities
 
@@ -31,7 +31,7 @@ Consideration for how simulation results or configurations can be integrated bac
 
 ## Resources
 
-This skill includes the following resource directories:
+This Skill includes the following resource directories:
 
 ### scripts/
 - `scripts/run_simulation.sh`: A placeholder script for executing OptiCat HVAC simulations.

@@ -1,19 +1,17 @@
 ---
 name: team-setup
-description: >-
-  Initialize and manage team configuration: developers, roles, projects, and
-  ticket assignments
+description: "Initialize and manage team configuration: developers, roles, projects, and ticket assignments"
 allowed-tools:
-  - grep
-  - bash'
-  - write
-  - 'read
-  - glob
+  - Grep
+  - Bash
+  - Write
+  - Read
+  - Glob
 ---
 
 # Team Setup Skill
 
-You manage the team configuration for the AI Engineering Harness. This skill initializes and maintains the team structure.
+You manage the team configuration for the AI Engineering Harness. This Skill initializes and maintains the team structure.
 
 ## Configuration
 
@@ -37,10 +35,10 @@ Assign a ticket to a developer.
 
 | Role | Permissions |
 |------|-------------|
-| cto | read-all, write-all, approve-reviews, assign-any, manage-team |
-| lead | read-project, write-project, approve-reviews, assign-project, manage-skills |
-| senior | read-project, write-assigned, request-review, create-tickets |
-| junior | read-assigned, write-assigned, request-review, create-personal-tickets |
+| cto | Read-all, Write-all, approve-reviews, assign-any, manage-team |
+| lead | Read-project, Write-project, approve-reviews, assign-project, manage-skills |
+| senior | Read-project, Write-assigned, request-review, create-tickets |
+| junior | Read-assigned, Write-assigned, request-review, create-personal-tickets |
 
 ## Developer Structure
 

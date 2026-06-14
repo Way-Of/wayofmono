@@ -7,13 +7,13 @@ description: Validates existing code and infrastructure against WoM best practic
 
 ## Purpose
 
-Audit existing code, configuration, or infrastructure against the canonical best-practices docs at `thoughts/wayofmono/docs/best-practices/`. This skill produces a compliance report identifying gaps, violations, and risks.
+Audit existing code, configuration, or infrastructure against the canonical best-practices docs at `thoughts/wayofmono/docs/best-practices/`. This Skill produces a compliance report identifying gaps, violations, and risks.
 
 ## Workflow
 
 ### 1. Load Practices to Audit Against
 
-```bash
+```Bash
 ls thoughts/wayofmono/docs/best-practices/
 ```
 
@@ -29,7 +29,7 @@ For each practice doc, systematically check the codebase for compliance:
 - **Code style**: Check lint rules, formatting, naming conventions
 - **Production readiness**: Flag any mock data in application code, missing error handling, missing observability, insecure patterns, or untested failure modes
 
-Use `grep`, `glob`, and codebase reading tools to search for violations.
+Use `Grep`, `Glob`, and codebase reading tools to search for violations.
 
 ### 3. Produce an Audit Report
 
@@ -53,4 +53,4 @@ Output a structured report:
 
 ### 4. Create Tickets for Violations
 
-For each violation, create a ticket. Use the `wow_practices_backlog` skill or manual ticket creation at `thoughts/wayofmono/shared/tickets/`.
+For each violation, create a ticket. Use the `wow_practices_backlog` Skill or manual ticket creation at `thoughts/wayofmono/shared/tickets/`.

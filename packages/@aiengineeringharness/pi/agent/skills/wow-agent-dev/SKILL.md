@@ -11,7 +11,7 @@ Way of Work employs a decentralized, specialized agent architecture.
 ### The Orchestrator
 - **File:** `.wo/agents/orchestrator.md`
 - **Role:** The primary entry point for inbound requests (UI or Channels).
-- **Behavior:** It **never** executes tasks directly. It uses the `dispatch-agent` skill to analyze intent and route the request to a sub-agent.
+- **Behavior:** It **never** executes tasks directly. It uses the `dispatch-agent` Skill to analyze intent and route the request to a sub-agent.
 
 ### Specialized Agents
 - Defined in `.wo/agents/*.md` using YAML frontmatter:
@@ -25,9 +25,9 @@ Way of Work employs a decentralized, specialized agent architecture.
 - **Current Roster:** `claw` (general), `docs`, `kanban`, `fakturering` (finance), `forskare` (research), `projektledare` (heavy PM), `schemaplanerare` (schedules), `ata` (change orders).
 
 ## 2. Skills Definition
-- Stored in `.wo/skills/<skill-name>/SKILL.md`.
+- Stored in `.wo/skills/<Skill-name>/SKILL.md`.
 - Skills inject specific rules, instructions, or expected data formats into the agent's context.
-- **Example:** A skill might instruct the agent to output a specific JSON payload when creating an invoice or dictate the tone for `client-communication`.
+- **Example:** A Skill might instruct the agent to output a specific JSON payload when creating an invoice or dictate the tone for `client-communication`.
 
 ## 3. Human-in-the-Loop Constraint (WOW-010)
 **CRITICAL SECURITY RULE:** Agents MUST NEVER execute writes to production data tables (e.g., `price_lists`, `tasks`, `projects`, `offers`).

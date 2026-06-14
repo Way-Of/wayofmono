@@ -91,7 +91,7 @@ Match `project` and `namespace` to the correct project:
 | WOW | `WOW` | `wow` |
 | OPT | `OPT` | `opticat` |
 
-### Step 6: Write Description
+### Step 6: write Description
 
 Include:
 - **What** violates the practice

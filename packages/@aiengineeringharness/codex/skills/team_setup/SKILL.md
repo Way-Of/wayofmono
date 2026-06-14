@@ -1,12 +1,10 @@
 ---
 name: team_setup
-description: >-
-  Initialize and manage team configuration: developers, roles, projects, and
-  ticket assignments
-allowed-tools: 'read, write, grep, glob, bash'
+description: "Initialize and manage team configuration: developers, roles, projects, and ticket assignments"
+allowed-tools: read, write, grep, glob, bash
 ---
 
-# Team Setup Skill
+# Team Setup skill
 
 You manage the team configuration for the AI Engineering Harness. This skill initializes and maintains the team structure.
 

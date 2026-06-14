@@ -1,9 +1,9 @@
 ---
 name: wow_skill_creator
-description: "Facilitates the creation of new AI tool skills specifically for the Way of Work platform, ensuring adherence to WoW architectural mandates and best practices. Use this skill when generating new WoW-specific skills, defining their structure, or incorporating WoW's unique requirements like multi-tenancy, access control, and HITL."
+description: Facilitates the creation of new AI tool skills specifically for the Way of Work platform, ensuring adherence to WoW architectural mandates and best practices. Use this skill when generating new WoW-specific skills, defining their structure, or incorporating WoW's unique requirements like multi-tenancy, access control, and HITL.
 ---
 
-# Way of Work Skill Creator
+# Way of Work skill Creator
 
 ## Overview
 
@@ -11,7 +11,7 @@ This skill guides the creation of new AI tool skills tailored for the Way of Wor
 
 <h2>Core Capabilities</h2>
 
-<h3>1. WoW-Specific Skill Templates</h3>
+<h3>1. WoW-Specific skill Templates</h3>
 Provides pre-configured `SKILL.md` templates that include necessary WoW architectural mandates, required sections, and best practices for documentation.
 - **Asset**: `assets/skill-template.md` (a customized `SKILL.md` template for WoW).
 
@@ -32,7 +32,7 @@ Provides examples and placeholder files for `scripts/`, `references/`, and `asse
 <h3>4. Validation and Compliance Checklists</h3>
 Includes checklists or automated steps to ensure new skills comply with WoW's critical mandates and coding standards.
 
-<h3>5. Skill Packaging and Installation Workflow</h3>
+<h3>5. skill Packaging and Installation Workflow</h3>
 Instructions on how to correctly package and install new WoW skills within the AI tool's environment, ensuring they are discoverable and usable by the agent.
 
 <h2>Resources</h2>

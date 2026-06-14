@@ -1,11 +1,7 @@
 ---
 name: observability_driven_development
-description: >
-  Observability Driven Development (ODD) — design the trace before the feature.
-  Auto-activates when the user wants to "drive with observability", "ODD",
-  "instrument first", "narrative-first", "telemetry-driven", or wants to set
-  up a local OTel feedback loop with the Aspire dashboard. Pairs with
-  /validate_telemetry to verify behaviour against a written narrative.
+description: Observability Driven Development (ODD) — design the trace before the feature. Auto-activates when the user wants to "drive with observability", "ODD", "instrument first", "narrative-first", "telemetry-driven", or wants to set up a local OTel feedback loop with the Aspire dashboard. Pairs with /validate_telemetry to verify behaviour against a written narrative.
+
 allowed-tools: read, bash, glob, write, replace
 ---
 
@@ -39,7 +35,7 @@ If the work is a pure-compute helper, a config tweak, or a CSS change,
 ## The Inner Loop
 
 ```
-Write Code → Instrument (OTel spans) → Run Locally → OTel Collector → Aspire → Observe → [repeat]
+write Code → Instrument (OTel spans) → Run Locally → OTel Collector → Aspire → Observe → [repeat]
 ```
 
 Every code change produces a trace. Every trace answers a question. The loop
@@ -47,7 +43,7 @@ is measured in seconds, not hours. Detail in [loop.md](loop.md).
 
 ## Workflow
 
-1. **Write the narrative spec** before the implementation. Format: see
+1. **write the narrative spec** before the implementation. Format: see
    [narrative.md](narrative.md). Save to
    `thoughts/shared/telemetry/<feature>.md`. Template:
    `thoughts/shared/telemetry/narrative-template.md`.
@@ -60,7 +56,7 @@ is measured in seconds, not hours. Detail in [loop.md](loop.md).
    should converge toward the spec.
 5. **Validate** with `/validate_telemetry thoughts/shared/telemetry/<feature>.md`.
 
-## Cross-Skill Routing
+## Cross-skill Routing
 
 | Concern | Route to |
 |---|---|
@@ -77,7 +73,7 @@ The `/validate_telemetry` slash command activates this section.
 
 ### Mode A: Spec-Driven Validation — `/validate_telemetry <spec-path>`
 
-1. Read the narrative spec at `<spec-path>` completely.
+1. read the narrative spec at `<spec-path>` completely.
 2. Confirm the local Aspire dashboard is reachable (see
    [local-setup.md](local-setup.md)).
 3. Trigger the feature locally (HTTP call, CLI invocation, message publish).

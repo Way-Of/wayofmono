@@ -1,11 +1,9 @@
 ---
 name: build_backlog_groomer
-description: >-
-  Product & Ticket Manager. Helps transform ideas/plans into structured tickets
-  in thoughts/shared/tickets/ and maintains the project backlog.
+description: Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.
 ---
 
-# Backlog Groomer Skill
+# Backlog Groomer skill
 
 You are the Project's Product Manager and Backlog Groomer. Your task is to organize project tickets, break down complex plans into manageable tasks, and keep the backlog updated.
 

@@ -1,18 +1,14 @@
 ---
 name: otel-collector
-description: >
-  OpenTelemetry Collector configuration — receivers, processors, exporters,
-  pipelines, sampling, deployment. Covers OTLP, Prometheus, filelog,
-  hostmetrics; processor ordering; pipeline design; head/tail sampling;
-  and RED metric derivation via signaltometrics.
-disable-model-invocation: true
+description: OpenTelemetry Collector configuration — receivers, processors, exporters, pipelines, sampling, deployment. Covers OTLP, Prometheus, filelog, hostmetrics; processor ordering; pipeline design; head/tail sampling; and RED metric derivation via signaltometrics.
+
 allowed-tools:
-  - grep
-  - write
+  - Grep
+  - Write
   - replace
-  - bash
-  - read
-  - glob
+  - Bash
+  - Read
+  - Glob
 ---
 
 # OpenTelemetry Collector Configuration
@@ -364,7 +360,7 @@ traces/pre-sampling:
 
 ### Helm
 
-```bash
+```Bash
 helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
 helm install otel-collector open-telemetry/opentelemetry-collector --set mode=deployment --values values.yaml
 ```

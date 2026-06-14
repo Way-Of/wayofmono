@@ -1,9 +1,7 @@
 ---
 name: otel_instrument
-description: >
-  OpenTelemetry orchestrator — auto-activates on observability, telemetry,
-  tracing, metrics, logging, OTel SDK, Collector, semantic conventions, or
-  OTTL requests. Routes to the correct sub-skill.
+description: OpenTelemetry orchestrator — auto-activates on observability, telemetry, tracing, metrics, logging, OTel SDK, Collector, semantic conventions, or OTTL requests. Routes to the correct sub-skill.
+
 allowed-tools: read, bash, grep, glob
 ---
 
@@ -40,7 +38,7 @@ Match the user's intent to exactly one sub-skill. Use the **first match**:
 If ambiguous, ask:
 > Which area? (1) Application instrumentation (2) Collector configuration (3) Semantic conventions (4) OTTL transforms
 
-## Step 3: Multi-Skill Sequencing
+## Step 3: Multi-skill Sequencing
 
 Some tasks span skills. Execute in this order:
 
@@ -52,9 +50,9 @@ Some tasks span skills. Execute in this order:
 | Fix naming + add redaction | `otel_semantic_conventions` → `otel_ottl` |
 | Derive metrics from traces | `otel_instrumentation` (verify span attrs) → `otel_collector` (signaltometrics connector) |
 
-## Sub-Skill Scope
+## Sub-skill Scope
 
-| Skill | Owns | Key Concerns |
+| skill | Owns | Key Concerns |
 |---|---|---|
 | `otel_instrumentation` | Application code, SDK config, deployment env vars | Resource attrs, spans, metrics, logs, sensitive data, language guides, validation |
 | `otel_collector` | Collector YAML, deployment manifests | Receivers, processors, exporters, pipelines, sampling, RED metrics |

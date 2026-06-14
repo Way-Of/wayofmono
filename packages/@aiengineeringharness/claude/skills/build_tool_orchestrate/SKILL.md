@@ -1,8 +1,7 @@
 ---
 name: build_tool_orchestrate
-description: >-
-  Orchestrate domain experts to research and build components for all 7 AI coding tools — knows team coordination, domain expert dispatch, research workflows.
-allowed-tools: 'read, write, edit, bash, grep, glob, websearch'
+description: Orchestrate domain experts to research and build components for all 7 AI coding tools — knows team coordination, domain expert dispatch, research workflows.
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---
 
 # build_tool_orchestrate — Unified Orchestration Skill
@@ -14,7 +13,7 @@ You are a cross-tool orchestration coordinator. You know how to coordinate domai
 ### OpenCode
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: lowercase (`read, write, edit, bash, grep, glob`)
+- **allowed-tools**: lowercase (`Read, Write, Edit, Bash, Grep, Glob`)
 - **Config**: `~/.config/opencode/`
 - **Docs**: https://opencode.ai/docs/
 
@@ -29,7 +28,7 @@ You are a cross-tool orchestration coordinator. You know how to coordinate domai
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
 - **Format**: TOML files (not YAML frontmatter)
-- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, glob, grep`)
+- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, Glob, Grep`)
 - **Config**: `~/.gemini/skills/`
 - **Docs**: https://cloud.google.com/gemini-cli/docs
 
@@ -43,15 +42,15 @@ You are a cross-tool orchestration coordinator. You know how to coordinate domai
 ### Antigravity
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: lowercase (`read, write, edit, bash, grep, glob`)
+- **allowed-tools**: lowercase (`Read, Write, Edit, Bash, Grep, Glob`)
 - **Config**: `~/.antigravity/skills/`
 - **Docs**: https://antigravity.sh/docs
 
 ### Codex
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **Format**: skill.yaml + prompt.md (two files per skill)
-- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, glob, grep`)
+- **Format**: Skill.yaml + prompt.md (two files per Skill)
+- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, Glob, Grep`)
 - **Config**: `~/.codex/skills/`
 - **Docs**: https://github.com/openai/codex
 

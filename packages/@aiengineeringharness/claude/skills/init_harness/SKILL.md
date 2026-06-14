@@ -1,12 +1,8 @@
 ---
 name: init_harness
-description: >-
-  Initialize the AI Engineering Harness in a repository by running the tool's
-  project memory init, then cloning the shared f-rr-d thoughts repo and setting
-  up the standard directory structure. The f-rr-d repo is append-only — never
-  delete, rename, or move anything inside thoughts/.
+description: Initialize the AI Engineering Harness in a repository by running the tool's project memory init, then cloning the shared f-rr-d thoughts repo and setting up the standard directory structure. The f-rr-d repo is append-only — never delete, rename, or move anything inside thoughts/.
+allowed-tools: Read, Write, Bash
 disable-model-invocation: true
-allowed-tools: 'read, write, bash'
 ---
 
 # Initialize Harness
@@ -60,11 +56,11 @@ If not, run the tool's `/init` command. If this tool has no `/init`, create the 
 Run these checks in order:
 
 1. If `thoughts/` does not exist:
-   ```bash
+   ```Bash
    git clone https://github.com/Way-Of/f-rr-d.git thoughts/ || { rm -rf thoughts/; echo "ERROR: git clone failed — thoughts/ has been cleaned up."; exit 1; }
    ```
    After cloning, fetch all branches and set up tracking:
-   ```bash
+   ```Bash
    git -C thoughts/ fetch --all
    git -C thoughts/ branch -a
    ```
@@ -98,7 +94,7 @@ thoughts/${PROJECT_SLUG}/
 
 Create the core structure:
 
-```bash
+```Bash
 mkdir -p thoughts/${PROJECT_SLUG}/shared/{tickets,plans,research}
 mkdir -p thoughts/${PROJECT_SLUG}/docs/{architecture,decisions,guides,references}
 mkdir -p thoughts/${PROJECT_SLUG}/global
@@ -106,7 +102,7 @@ mkdir -p thoughts/${PROJECT_SLUG}/global
 
 Copy the ticket template from the shared location:
 
-```bash
+```Bash
 cp thoughts/shared/tickets/ticket-template.md thoughts/${PROJECT_SLUG}/shared/tickets/
 ```
 
@@ -114,7 +110,7 @@ Additional subdirectories like `docs/best-practices/`, `docs/skills/`, `docs/too
 
 ### Step 5: Create Personal Thoughts Directories
 
-```bash
+```Bash
 mkdir -p thoughts/${PROJECT_SLUG}/$(whoami)
 ```
 
@@ -122,9 +118,9 @@ Create directories for any known team members the user mentions. Personal dirs c
 
 ### Step 6: Add thoughts/ to .gitignore
 
-```bash
-grep -q '^thoughts/' .gitignore 2>/dev/null || echo '# Centralized in Way-Of/f-rr-d' >> .gitignore
-grep -q '^thoughts/' .gitignore 2>/dev/null || echo 'thoughts/' >> .gitignore
+```Bash
+Grep -q '^thoughts/' .gitignore 2>/dev/null || echo '# Centralized in Way-Of/f-rr-d' >> .gitignore
+Grep -q '^thoughts/' .gitignore 2>/dev/null || echo 'thoughts/' >> .gitignore
 ```
 
 ### Step 7: Output Success Message

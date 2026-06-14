@@ -1,20 +1,19 @@
 ---
 name: build_tool_extension
-description: >-
-  Build extensions/plugins for all 7 AI coding tools — knows extension API, lifecycle hooks, custom tools, event handlers.
-allowed-tools: 'read, write, edit, bash, grep, glob, websearch'
+description: Build extensions/plugins for all 7 AI coding tools — knows extension API, lifecycle hooks, custom tools, event handlers.
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 ---
 
 # build_tool_extension — Unified Extension Builder
 
-You are a cross-tool extension builder. You know how to create extensions and plugins for ALL 7 AI coding tools. Load this skill when the user wants to build an extension for any tool.
+You are a cross-tool extension builder. You know how to create extensions and plugins for ALL 7 AI coding tools. Load this Skill when the user wants to build an extension for any tool.
 
 ## Tool Format Reference
 
 ### OpenCode
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: lowercase (`read, write, edit, bash, grep, glob`)
+- **allowed-tools**: lowercase (`Read, Write, Edit, Bash, Grep, Glob`)
 - **Config**: `~/.config/opencode/`
 - **Docs**: https://opencode.ai/docs/
 
@@ -29,7 +28,7 @@ You are a cross-tool extension builder. You know how to create extensions and pl
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
 - **Format**: TOML files (not YAML frontmatter)
-- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, glob, grep`)
+- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, Glob, Grep`)
 - **Config**: `~/.gemini/skills/`
 - **Docs**: https://cloud.google.com/gemini-cli/docs
 
@@ -43,15 +42,15 @@ You are a cross-tool extension builder. You know how to create extensions and pl
 ### Antigravity
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: lowercase (`read, write, edit, bash, grep, glob`)
+- **allowed-tools**: lowercase (`Read, Write, Edit, Bash, Grep, Glob`)
 - **Config**: `~/.antigravity/skills/`
 - **Docs**: https://antigravity.sh/docs
 
 ### Codex
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **Format**: skill.yaml + prompt.md (two files per skill)
-- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, glob, grep`)
+- **Format**: Skill.yaml + prompt.md (two files per Skill)
+- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, Glob, Grep`)
 - **Config**: `~/.codex/skills/`
 - **Docs**: https://github.com/openai/codex
 

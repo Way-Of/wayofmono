@@ -1,11 +1,10 @@
 ---
 name: build_tool_skill
-description: >-
-  Build skills for all 7 AI coding tools — knows SKILL.md format, frontmatter, naming conventions, allowed-tools, directory rules.
-allowed-tools: 'read, write, edit, bash, grep, glob, websearch'
+description: Build skills for all 7 AI coding tools — knows SKILL.md format, frontmatter, naming conventions, allowed-tools, directory rules.
+allowed-tools: read, write, edit, bash, grep, glob, websearch
 ---
 
-# build_tool_skill — Unified Skill Builder
+# build_tool_skill — Unified skill Builder
 
 You are a cross-tool skill builder. You know how to create SKILL.md files for ALL 7 AI coding tools. Load this skill when the user wants to create or modify a skill for any tool.
 
@@ -21,7 +20,7 @@ You are a cross-tool skill builder. You know how to create SKILL.md files for AL
 ### Claude Code
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.claude/skills/`
 - **Docs**: https://code.claude.com/docs/en/overview
 
@@ -36,7 +35,7 @@ You are a cross-tool skill builder. You know how to create SKILL.md files for AL
 ### Pi
 - **Directory naming**: kebab-case
 - **Name field**: kebab-case, matches directory name
-- **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.pi/agent/skills/`
 - **Docs**: https://pi.dev/
 
@@ -58,20 +57,20 @@ You are a cross-tool skill builder. You know how to create SKILL.md files for AL
 ### Wo Coder
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.wocoder/skills/`
 - **Docs**: Internal (WayOfMono monorepo)
 
 ## Common Tasks
 
-### Create a New Skill
+### Create a New skill
 1. Determine target tool (or cross-tool)
 2. Create directory: `<tool>/skills/<name>/`
 3. Create `SKILL.md` with frontmatter matching tool's format
 4. Body: markdown with instructions, references, examples
 5. For Codex: create `skill.yaml` + `prompt.md`
 
-### Validate Skill Format
+### Validate skill Format
 - Name must match directory name
 - allowed-tools must use correct casing for target tool
 - Frontmatter must be valid YAML (or TOML for Gemini)

@@ -1,15 +1,13 @@
 ---
 name: build-auto-ticket-creator
-description: >-
-  Monitor codebase, dependencies, and external sources to auto-create tickets
-  for agent updates, skill updates, dep updates, security advisories
+description: Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories
 allowed-tools:
-  - grep
-  - search'
+  - Grep
+  - search
   - web
-  - write
-  - 'read
-  - glob
+  - Write
+  - Read
+  - Glob
 ---
 
 # Build Auto-Ticket Creation Skill

@@ -2,13 +2,13 @@
 name: write-a-prd
 description: Generate a PRD from a client brief and write it as issues/prd.md. Interviews the user about problem and solution, sketches deep modules, and writes a structured PRD. Use when the user wants to turn a client request or rough idea into a structured PRD.
 allowed-tools:
-  - glob
-  - bash
-  - read
-  - write
+  - Glob
+  - Bash
+  - Read
+  - Write
 ---
 
-This skill will be invoked when the user wants to create a PRD. You may skip steps if you don't consider them necessary.
+This Skill will be invoked when the user wants to create a PRD. You may skip steps if you don't consider them necessary.
 
 1. Ask the user for a long, detailed description of the problem they want to solve and any potential ideas for solutions.
 
@@ -22,7 +22,7 @@ A deep module (as opposed to a shallow module) is one which encapsulates a lot o
 
 Check with the user that these modules match their expectations. Check with the user which modules they want tests written for.
 
-5. Once you have a complete understanding of the problem and solution, use the template below to write the PRD. The PRD should be written as a local markdown file at `issues/prd.md`. Create the `issues/` directory if it doesn't exist. Do NOT submit a GitHub issue or call any external service.
+5. Once you have a complete understanding of the problem and solution, use the template below to Write the PRD. The PRD should be written as a local markdown file at `issues/prd.md`. Create the `issues/` directory if it doesn't exist. Do NOT submit a GitHub issue or call any external service.
 
 <prd-template>
 

@@ -1,19 +1,19 @@
 ---
 name: wow-skill-creator
-description: "Facilitates the creation of new AI tool skills specifically for the Way of Work platform, ensuring adherence to WoW architectural mandates and best practices. Use this skill when generating new WoW-specific skills, defining their structure, or incorporating WoW's unique requirements like multi-tenancy, access control, and HITL."
+description: Facilitates the creation of new AI tool skills specifically for the Way of Work platform, ensuring adherence to WoW architectural mandates and best practices. Use this skill when generating new WoW-specific skills, defining their structure, or incorporating WoW's unique requirements like multi-tenancy, access control, and HITL.
 ---
 
 # Way of Work Skill Creator
 
 ## Overview
 
-This skill guides the creation of new AI tool skills tailored for the Way of Work (WoW) platform. It provides specialized knowledge, templates, and best practices to ensure that newly developed skills align with WoW's architectural mandates, such as multi-tenancy, access control, and Human-in-the-Loop (HITL) requirements.
+This Skill guides the creation of new AI tool skills tailored for the Way of Work (WoW) platform. It provides specialized knowledge, templates, and best practices to ensure that newly developed skills align with WoW's architectural mandates, such as multi-tenancy, access control, and Human-in-the-Loop (HITL) requirements.
 
 <h2>Core Capabilities</h2>
 
 <h3>1. WoW-Specific Skill Templates</h3>
 Provides pre-configured `SKILL.md` templates that include necessary WoW architectural mandates, required sections, and best practices for documentation.
-- **Asset**: `assets/skill-template.md` (a customized `SKILL.md` template for WoW).
+- **Asset**: `assets/Skill-template.md` (a customized `SKILL.md` template for WoW).
 
 <h3>2. Architectural Mandate Guidance</h3>
 Offers detailed guidance on incorporating WoW's critical architectural mandates into new skills:
@@ -37,7 +37,7 @@ Instructions on how to correctly package and install new WoW skills within the A
 
 <h2>Resources</h2>
 
-This skill includes the following resource directories:
+This Skill includes the following resource directories:
 
 <h3>scripts/</h3>
 - `scripts/backend-api-example.js`: Example Node.js script for making authenticated backend API calls within WoW.
@@ -47,5 +47,5 @@ This skill includes the following resource directories:
 - `references/db-schema-snippets.md`: Common database schema snippets and best practices for WoW.
 
 <h3>assets/</h3>
-- `assets/skill-template.md`: A customized `SKILL.md` template specifically for creating WoW skills.
+- `assets/Skill-template.md`: A customized `SKILL.md` template specifically for creating WoW skills.
 - `assets/ui-templates/`: Directory containing basic UI component templates (e.g., React components) aligned with WoW's frontend.

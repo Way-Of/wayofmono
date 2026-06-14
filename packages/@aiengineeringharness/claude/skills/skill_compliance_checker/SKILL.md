@@ -1,18 +1,18 @@
 ---
 name: skill_compliance_checker
 description: Validate all skill SKILL.md files across all 7 tool harnesses for correct frontmatter, naming, allowed-tools casing, and format compliance. Use when the user asks to check compliance, validate skills, run compliance check, or verify skill formatting.
-allowed-tools: read, write, bash
+allowed-tools: Read, Write, Bash
 ---
 
 # Skill Compliance Checker
 
-Validate all skill files across the AI Engineering Harness against per-tool format specifications.
+Validate all Skill files across the AI Engineering Harness against per-tool format specifications.
 
 ## Tool
 
 Run the compliance check script:
 
-```bash
+```Bash
 deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts
 ```
 
@@ -20,7 +20,7 @@ deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts
 
 Check a single tool:
 
-```bash
+```Bash
 deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts --tool=opencode
 ```
 
@@ -30,7 +30,7 @@ Replace `opencode` with: `claude`, `gemini`, `pi`, `antigravity`, `codex`, `woco
 
 Some issues can be auto-fixed:
 
-```bash
+```Bash
 deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts --fix
 ```
 
@@ -38,7 +38,7 @@ deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts --fix
 
 The installer also has a built-in `--compliance` flag that validates manifest integrity:
 
-```bash
+```Bash
 ai-harness --compliance
 ```
 
@@ -83,6 +83,6 @@ The script checks every `SKILL.md` in `packages/@aiengineeringharness/<tool>/ski
 
 Tool specs are defined in `scripts/compliance-check.ts` at lines 60-138. Key rules:
 
-- **opencode/gemini/antigravity/codex**: lowercase allowed-tools (`read, write, bash`), snake_case dirs
+- **opencode/gemini/antigravity/codex**: lowercase allowed-tools (`Read, Write, Bash`), snake_case dirs
 - **claude/pi/wocoder**: PascalCase allowed-tools (`Read, Write, Bash`), snake_case dirs (claude/wocoder) or kebab-case (pi)
 - **codex**: lowercase allowed-tools (`read_file, write_file, run_shell_command`)

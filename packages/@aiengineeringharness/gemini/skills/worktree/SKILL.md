@@ -8,7 +8,7 @@ allowed-tools: read, bash, glob, grep
 
 All git operations use `run_shell_command`. File reads use `read_file`.
 
-## When to Use This Skill
+## When to Use This skill
 
 **Activate** when the user:
 - Invokes `/worktree` directly

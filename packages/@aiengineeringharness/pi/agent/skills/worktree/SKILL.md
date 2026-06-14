@@ -2,10 +2,10 @@
 name: worktree
 description: Manage git worktrees for parallel development workflows integrated with the harness ticket system. Use when the user mentions worktrees, wants to work on multiple branches simultaneously, asks about parallel development, or wants to create an isolated workspace for a ticket or feature. Uses run_shell_command for git operations.
 allowed-tools:
-  - glob
-  - bash
-  - read
-  - grep
+  - Glob
+  - Bash
+  - Read
+  - Grep
 ---
 
 # Git Worktree Manager
@@ -34,7 +34,7 @@ All git operations use `run_shell_command`. File reads use `read_file`.
 **Worktree location**: `<repo-root>/../<repo-name>-worktrees/<branch-name>` (sibling dir, outside main repo)
 
 **Default branch detection** — never hardcode `main`:
-```bash
+```Bash
 DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||') || DEFAULT_BRANCH="main"
 ```
 
@@ -53,16 +53,16 @@ Examples:
   /worktree create thoughts/shared/tickets/add-auth.md
 ```
 
-When auto-triggered (no explicit subcommand), infer intent from context. If ambiguous, ask one clarifying question.
+When auto-triggered (no explicit subcommand), infer intent from context. If ambiguous, ask one clarifying Question.
 
 ---
 
 ## `create`
 
-1. **Resolve branch name** using naming conventions above. If argument is a ticket path, use `read_file` to read the ticket for context.
+1. **Resolve branch name** using naming conventions above. If argument is a ticket path, use `read_file` to Read the ticket for context.
 
 2. **Check conflicts**:
-   ```bash
+   ```Bash
    git branch --list "<branch-name>"
    git worktree list
    ```
@@ -70,7 +70,7 @@ When auto-triggered (no explicit subcommand), infer intent from context. If ambi
    If worktree already exists at path → show its location, ask if user wants to `cd` there instead.
 
 3. **Create**:
-   ```bash
+   ```Bash
    REPO_ROOT=$(git rev-parse --show-toplevel)
    REPO_NAME=$(basename "$REPO_ROOT")
    WORKTREE_PATH="$REPO_ROOT/../${REPO_NAME}-worktrees/<branch-name>"
@@ -119,11 +119,11 @@ Present per-worktree blocks with all fields.
    - **Never pass `--force`** without user consent.
 
 3. **Remove**:
-   ```bash
+   ```Bash
    git worktree remove <path>
    git worktree prune  # clean stale metadata
    ```
 
-4. **Branch cleanup** — check `git branch --merged $DEFAULT_BRANCH | grep <branch>`:
+4. **Branch cleanup** — check `git branch --merged $DEFAULT_BRANCH | Grep <branch>`:
    - Merged → offer `git branch -d <branch>`
    - Not merged → inform user the branch is retained

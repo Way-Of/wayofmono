@@ -1,13 +1,13 @@
 ---
 name: opticat_ui_builder
-description: "Facilitates the generation and enhancement of OptiCat-related UI components and dashboards. Use this skill when building new OptiCat data visualizations, extending existing dashboards with more detailed information from OptiCat APIs, or creating interactive UI elements based on HVAC project data."
+description: Facilitates the generation and enhancement of OptiCat-related UI components and dashboards. Use this skill when building new OptiCat data visualizations, extending existing dashboards with more detailed information from OptiCat APIs, or creating interactive UI elements based on HVAC project data.
 ---
 
 # OptiCat UI Builder
 
 ## Overview
 
-This skill enables the creation and modification of user interface components for displaying OptiCat data. It provides guidance and resources for leveraging OptiCat APIs to build rich, interactive dashboards and visualizations for HVAC projects, AHUs, service reports, and other related metrics.
+This Skill enables the creation and modification of user interface components for displaying OptiCat data. It provides guidance and resources for leveraging OptiCat APIs to build rich, interactive dashboards and visualizations for HVAC projects, AHUs, service reports, and other related metrics.
 
 ## Core Capabilities
 
@@ -32,7 +32,7 @@ Guidance on applying the Way of Work (WoW) dark theme and Tailwind CSS best prac
 
 ## Resources
 
-This skill includes the following resource directories:
+This Skill includes the following resource directories:
 
 ### scripts/
 (Currently empty - add scripts for automating UI tasks, data processing, or API calls if needed.)
@@ -47,4 +47,4 @@ This skill includes the following resource directories:
 
 ---
 
-**Any unneeded directories can be deleted.** Not every skill requires all three types of resources.
+**Any unneeded directories can be deleted.** Not every Skill requires all three types of resources.

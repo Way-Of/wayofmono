@@ -1,14 +1,14 @@
 ---
 name: git_commit_helper
 description: Creates well-structured git commits by analyzing changes, drafting messages, and executing commits using Gemini CLI's `run_shell_command` for git operations.
-allowed-tools: read, bash, grep, glob
+allowed-tools: Read, Bash, Grep, Glob
 ---
 
 # Git Commit Helper
 
 ## When to Use This Skill
 
-Activate this skill when the user:
+Activate this Skill when the user:
 - Explicitly asks to "commit" their changes
 - Says "save my work" or "save these changes"
 - Says "create a commit" or "make a commit"
@@ -23,7 +23,7 @@ Activate this skill when the user:
 
 Run these commands in parallel to understand the changes:
 
-```bash
+```Bash
 git status                    # See all changed files
 git diff                      # View modifications
 git diff --staged            # View staged changes
@@ -67,7 +67,7 @@ Shall I proceed?
 
 Once the user approves:
 
-```bash
+```Bash
 # Add specific files (NEVER use -A or .)
 git add path/to/file1.js path/to/file2.ts
 
@@ -136,7 +136,7 @@ The commits should be authored solely by the user with no AI attribution.
 
 ### Context Awareness
 - You have the full context of what was done in this session
-- Use conversation history to write meaningful commit messages
+- Use conversation history to Write meaningful commit messages
 - The user trusts your judgment - they asked you to commit
 - Don't ask unnecessary questions - use your understanding of the work
 
@@ -144,7 +144,7 @@ The commits should be authored solely by the user with no AI attribution.
 
 ### Single Feature Implementation
 If everything accomplished relates to one feature:
-```bash
+```Bash
 git add src/feature.ts src/feature.test.ts docs/feature.md
 git commit -m "Add new feature for user analytics
 
@@ -155,7 +155,7 @@ git commit -m "Add new feature for user analytics
 
 ### Multiple Logical Changes
 If there are distinct changes:
-```bash
+```Bash
 # Commit 1: Refactoring
 git add src/old-code.ts
 git commit -m "Refactor authentication logic for clarity"
@@ -166,7 +166,7 @@ git commit -m "Add social login support"
 ```
 
 ### Bug Fix
-```bash
+```Bash
 git add src/buggy-file.ts tests/regression.test.ts
 git commit -m "Fix race condition in event handler
 
@@ -200,7 +200,7 @@ When the user asks to push:
 
 **Always create a new branch first:**
 
-```bash
+```Bash
 # Create and switch to a new branch
 git checkout -b <type>/<ticket-id>-<short-description>
 
@@ -214,6 +214,6 @@ Follow the branch naming convention from the repo. If the repo uses ticket-based
 
 - Always create a new branch before pushing — never push to main/master directly
 - When the user says "push" or "save and push", create a branch, commit if needed, and push
-- The skill focuses on creating clean, atomic commits with meaningful messages
+- The Skill focuses on creating clean, atomic commits with meaningful messages
 - The user maintains full control and must approve before commits are created
 - All git operations are transparent and shown to the user

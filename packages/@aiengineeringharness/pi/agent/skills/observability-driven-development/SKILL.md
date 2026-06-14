@@ -1,17 +1,13 @@
 ---
 name: observability-driven-development
-description: >
-  Observability Driven Development (ODD) — design the trace before the feature.
-  Auto-activates when the user wants to "drive with observability", "ODD",
-  "instrument first", "narrative-first", "telemetry-driven", or wants to set
-  up a local OTel feedback loop with the Aspire dashboard. Pairs with
-  /validate_telemetry to verify behaviour against a written narrative.
+description: Observability Driven Development (ODD) — design the trace before the feature. Auto-activates when the user wants to "drive with observability", "ODD", "instrument first", "narrative-first", "telemetry-driven", or wants to set up a local OTel feedback loop with the Aspire dashboard. Pairs with /validate_telemetry to verify behaviour against a written narrative.
+
 allowed-tools:
-  - glob
+  - Glob
   - replace
-  - bash
-  - read
-  - write
+  - Bash
+  - Read
+  - Write
 ---
 
 # Observability Driven Development (ODD)
@@ -21,8 +17,8 @@ allowed-tools:
 > — *Observability 4.0 is Inferable*, Adriel Perkins
 
 ODD treats **the trace as a first-class design artifact**. You design the span
-tree before you write the feature, then run code against a local OTel stack so
-every change produces a trace you can read in seconds. No guessing, no
+tree before you Write the feature, then run code against a local OTel stack so
+every change produces a trace you can Read in seconds. No guessing, no
 post-hoc instrumentation.
 
 ## When to Use ODD
@@ -36,7 +32,7 @@ Reach for ODD when **any** of the following are true:
   recovery, memory access).
 - Past production debugging stalled because the existing telemetry didn't
   narrate what the code was doing.
-- You're about to write code where "the trace" is the only honest spec.
+- You're about to Write code where "the trace" is the only honest spec.
 
 If the work is a pure-compute helper, a config tweak, or a CSS change,
 **don't** use ODD — it's overhead.
@@ -47,7 +43,7 @@ If the work is a pure-compute helper, a config tweak, or a CSS change,
 Write Code → Instrument (OTel spans) → Run Locally → OTel Collector → Aspire → Observe → [repeat]
 ```
 
-Every code change produces a trace. Every trace answers a question. The loop
+Every code change produces a trace. Every trace answers a Question. The loop
 is measured in seconds, not hours. Detail in [loop.md](loop.md).
 
 ## Workflow

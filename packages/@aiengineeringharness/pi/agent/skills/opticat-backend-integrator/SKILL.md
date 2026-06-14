@@ -1,13 +1,13 @@
 ---
 name: opticat-backend-integrator
-description: "Facilitates interaction with OptiCat backend systems, including C/C++ interfaces or low-level APIs. Use this skill for tasks involving OptiCat backend integration, data manipulation, system configuration, direct service calls, or when dealing with C/C++ specific aspects of the OptiCat platform."
+description: Facilitates interaction with OptiCat backend systems, including C/C++ interfaces or low-level APIs. Use this skill for tasks involving OptiCat backend integration, data manipulation, system configuration, direct service calls, or when dealing with C/C++ specific aspects of the OptiCat platform.
 ---
 
 # OptiCat Backend Integrator
 
 ## Overview
 
-This skill provides specialized knowledge and tools for interacting with the backend systems of the OptiCat platform. It focuses on integrating with existing services, manipulating data at a deeper level, and understanding system configurations, particularly for components that might be implemented in lower-level languages like C/C++.
+This Skill provides specialized knowledge and tools for interacting with the backend systems of the OptiCat platform. It focuses on integrating with existing services, manipulating data at a deeper level, and understanding system configurations, particularly for components that might be implemented in lower-level languages like C/C++.
 
 ## Core Capabilities
 
@@ -31,7 +31,7 @@ Best practices for debugging backend issues, interpreting logs, and implementing
 
 ## Resources
 
-This skill includes the following resource directories:
+This Skill includes the following resource directories:
 
 ### scripts/
 (Currently empty - add scripts for automating backend tasks, data migrations, or diagnostic procedures if needed.)

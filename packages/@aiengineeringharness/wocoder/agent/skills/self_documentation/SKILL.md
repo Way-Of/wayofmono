@@ -1,21 +1,9 @@
 ---
-name: self-documentation
+name: self_documentation
 description: Enables Wo to answer "How do I...?" and "What's the command for...?" questions by searching its own commands, skills, and documentation locally
-version: 1.0.0
-namespace: wocoder
-category: help
-tags:
-  - help
-  - documentation
-  - self-help
-  - commands
-  - skills
-  - about
-author: WayOfMono
-status: active
 ---
 
-# Self-Documentation Skill
+# Self-Documentation skill
 
 ## Overview
 
@@ -98,7 +86,7 @@ npx wocode --init
 The skill uses regex patterns to detect and parse user questions:
 
 ```regex
-# Question patterns
+# question patterns
 - "How do I (.*?)\??"
 - "What'?s the command for (.*?)\??"
 - "How can I (.*?)\??"
@@ -166,7 +154,7 @@ For each match, the skill provides a structured response:
 **Keybinding**: Ctrl+G
 
 **Related Commands**:
-- `edit`: Edit files inline
+- `edit`: edit files inline
 - `export`: Export session to file
 
 **File References**: packages/@wayofmono/wo-coding-agent/src/core/keybindings.ts
@@ -175,7 +163,7 @@ For each match, the skill provides a structured response:
 ### Example 3: "How do I search my codebase?"
 
 ```
-🔍 **Skill: research_codebase**
+🔍 **skill: research_codebase**
 
 **Description**: Conduct comprehensive codebase research by delegating to parallel sub-agents
 
@@ -280,11 +268,11 @@ The skill can be configured via settings:
 
 ### Acceptance Criteria
 
-- [ ] Skill correctly parses "How do I...?" questions
-- [ ] Skill correctly parses "What's the command for...?" questions
-- [ ] Skill provides accurate command descriptions
-- [ ] Skill includes file references for all commands
-- [ ] Skill provides related commands when appropriate
-- [ ] Skill handles ambiguous queries gracefully
-- [ ] Skill works without external API calls
-- [ ] Skill responses are user-friendly and well-formatted
+- [ ] skill correctly parses "How do I...?" questions
+- [ ] skill correctly parses "What's the command for...?" questions
+- [ ] skill provides accurate command descriptions
+- [ ] skill includes file references for all commands
+- [ ] skill provides related commands when appropriate
+- [ ] skill handles ambiguous queries gracefully
+- [ ] skill works without external API calls
+- [ ] skill responses are user-friendly and well-formatted

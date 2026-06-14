@@ -1,20 +1,16 @@
 ---
 name: validate-telemetry
-description: >
-  Validate locally-emitted OpenTelemetry telemetry against a written narrative
-  spec, or run a generic health check on the local OTel stack. Delegates to the
-  observability-driven-development skill's Validation section.
-disable-model-invocation: true
+description: Validate locally-emitted OpenTelemetry telemetry against a written narrative spec, or run a generic health check on the local OTel stack. Delegates to the observability-driven-development skill's Validation section.
+
 allowed-tools:
-  - grep
-  - bash
-  - 'read
-  - glob'
+  - Grep
+  - Bash
+  - read - glob
 ---
 
 # Validate Telemetry
 
-Activate the **observability-driven-development** skill and run its
+Activate the **observability-driven-development** Skill and run its
 **Validation** section.
 
 ## Mode Detection
@@ -38,13 +34,13 @@ If either fails, surface a one-line setup hint pointing at
 
 ## Output
 
-Per the report format in the ODD skill's Validation section. Don't modify
+Per the report format in the ODD Skill's Validation section. Don't modify
 code or config silently — the report is the output.
 
 ## Relationship to Other Commands
 
 ```
-Ticket → /create_plan → [ODD: write narrative]
+Ticket → /create_plan → [ODD: Write narrative]
        → /implement_plan → /validate_plan (correctness)
        → /validate_telemetry (telemetry) → /commit
 ```

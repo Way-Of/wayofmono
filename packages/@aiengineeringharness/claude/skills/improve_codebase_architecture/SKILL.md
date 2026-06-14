@@ -1,7 +1,7 @@
 ---
 name: improve_codebase_architecture
 description: Explore a codebase to find architectural friction, propose deep-module refactors as RFC issues. Use when the user wants to improve architecture, find refactoring opportunities, deepen shallow modules, or make a codebase more AI-navigable and testable.
-allowed-tools: read, bash, glob, write
+allowed-tools: Read, Bash, Glob, Write
 ---
 
 # Improve Codebase Architecture
@@ -39,7 +39,7 @@ Do NOT propose interfaces yet. Ask the user: "Which of these would you like to e
 
 ### 4. Frame the problem space
 
-Before spawning sub-agents, write a user-facing explanation of the problem space for the chosen candidate:
+Before spawning sub-agents, Write a user-facing explanation of the problem space for the chosen candidate:
 
 - The constraints any new interface would need to satisfy
 - The dependencies it would need to rely on
@@ -68,10 +68,10 @@ Each sub-agent outputs:
 
 Present designs sequentially, then compare them in prose.
 
-After comparing, give your own recommendation: which design you think is strongest and why. If elements from different designs would combine well, propose a hybrid. Be opinionated — the user wants a strong read, not just a menu.
+After comparing, give your own recommendation: which design you think is strongest and why. If elements from different designs would combine well, propose a hybrid. Be opinionated — the user wants a strong Read, not just a menu.
 
 ### 6. User picks an interface (or accepts recommendation)
 
 ### 7. Write issue file
 
-Write the refactor RFC as a local markdown file in `issues/` using the template in [REFERENCE.md](REFERENCE.md). Do NOT ask the user to review before writing — just write it and share the path.
+Write the refactor RFC as a local markdown file in `issues/` using the template in [REFERENCE.md](REFERENCE.md). Do NOT ask the user to review before writing — just Write it and share the path.

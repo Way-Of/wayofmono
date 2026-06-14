@@ -6,7 +6,7 @@ allowed-tools: read, bash, grep, glob, write
 
 # Experimental PR Workflow
 
-## When to Use This Skill
+## When to Use This skill
 
 Activate this skill when:
 - User mentions "founder mode" or references rapid experimentation

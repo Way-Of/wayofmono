@@ -1,9 +1,7 @@
 ---
 name: auto_ticket_creator
-description: >-
-  Monitor codebase, dependencies, and external sources to auto-create tickets
-  for agent updates, skill updates, dep updates, security advisories
-allowed-tools: 'read, write, grep, glob, web, search'
+description: Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories
+allowed-tools: Read, Write, Grep, Glob, Web, Search
 ---
 
 # Auto-Ticket Creation Skill
@@ -27,6 +25,6 @@ Autonomously monitors the codebase, dependencies, and external sources for updat
 
 ## Change Classification
 
-Detected changes are classified as: `agent-update`, `skill-update`, `dep-update`, `security`, `breaking-change`
+Detected changes are classified as: `agent-update`, `Skill-update`, `dep-update`, `security`, `breaking-change`
 
 Tickets are created with proper namespace (WOW, OPT, PROJ, TEAM) and auto-assigned based on change type.

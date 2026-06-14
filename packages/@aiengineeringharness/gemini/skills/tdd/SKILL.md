@@ -60,11 +60,11 @@ Ask: "What should the public interface look like? Which behaviors are most impor
 
 ### 2. Tracer Bullet
 
-Write ONE test that confirms ONE thing about the system:
+write ONE test that confirms ONE thing about the system:
 
 ```
-RED:   Write test for first behavior → test fails
-GREEN: Write minimal code to pass → test passes
+RED:   write test for first behavior → test fails
+GREEN: write minimal code to pass → test passes
 ```
 
 This is your tracer bullet - proves the path works end-to-end.
@@ -74,7 +74,7 @@ This is your tracer bullet - proves the path works end-to-end.
 For each remaining behavior:
 
 ```
-RED:   Write next test → fails
+RED:   write next test → fails
 GREEN: Minimal code to pass → passes
 ```
 

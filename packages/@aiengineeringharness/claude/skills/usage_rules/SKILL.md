@@ -1,10 +1,7 @@
 ---
 name: usage_rules
-description: >-
-  Manage, sync, and search LLM rules and documentation from Elixir dependencies
-  using the `ash-project/usage_rules` library. Use when working on an Elixir/Mix
-  project to provide context-aware package guidelines for the agent.
-allowed-tools: 'read, edit, write, bash'
+description: Manage, sync, and search LLM rules and documentation from Elixir dependencies using the `ash-project/usage_rules` library. Use when working on an Elixir/Mix project to provide context-aware package guidelines for the agent.
+allowed-tools: Read, Edit, Write, Bash
 ---
 
 # Elixir Usage Rules Integration
@@ -25,7 +22,7 @@ First, check if the package is configured in the project's dependencies:
 *   Alternatively, execute `mix help usage_rules.sync` inside the project root to check if the tasks are available.
 
 If missing, install it using `igniter` (recommended):
-```bash
+```Bash
 mix igniter.install usage_rules
 ```
 Or manually add it to the `deps` inside `mix.exs`:
@@ -61,12 +58,12 @@ end
 ### 3. Synchronizing Rules
 Run the synchronization task to fetch the `usage-rules.md` files from your dependency tree and update your workspace rules/skills:
 
-```bash
+```Bash
 mix usage_rules.sync
 ```
 
 You can also pass arguments to target specific rule sheets or specify target folders:
-```bash
+```Bash
 mix usage_rules.sync AGENTS.md --all --link-to-folder docs
 ```
 
@@ -77,11 +74,11 @@ Ensure you commit the generated rule files/folders to Git so all agents share th
 ### 4. Searching HexDocs (AI-Optimized Search)
 If you encounter a compiling error or need to understand how to use a specific function/module in a dependency, use the semantic doc search. The output is structured for both humans and AI parsing:
 
-```bash
+```Bash
 mix usage_rules.search_docs <query>
 ```
 *Example:*
-```bash
+```Bash
 mix usage_rules.search_docs "how to define an resource action in Ash"
 ```
 
@@ -90,10 +87,10 @@ mix usage_rules.search_docs "how to define an resource action in Ash"
 ### 5. Inspecting Specific Modules
 To lookup exact documentation and rules for a specific Elixir module:
 
-```bash
+```Bash
 mix usage_rules.docs Ash.Resource
 ```
 Or for a specific function:
-```bash
+```Bash
 mix usage_rules.docs Ash.Changeset.change/2
 ```

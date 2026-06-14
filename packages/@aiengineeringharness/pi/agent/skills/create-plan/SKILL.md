@@ -1,17 +1,14 @@
 ---
 name: create-plan
-description: >-
-  Create detailed, actionable implementation plans through an interactive,
-  iterative process, leveraging Gemini CLI tools for research and documentation.
-disable-model-invocation: true
+description: Create detailed, actionable implementation plans through an interactive, iterative process, leveraging Gemini CLI tools for research and documentation.
 allowed-tools:
-  - bash
+  - Bash
   - todowrite
-  - grep
-  - write
-  - 'read
-  - glob
-  - task'
+  - Grep
+  - Write
+  - Read
+  - Glob
+  - Task
 ---
 
 # Create Plan
@@ -35,7 +32,7 @@ This command uses the `thoughts/` directory pattern for organizing planning arti
 When this command is invoked:
 
 1. **Check if parameters were provided**:
-   - If a file path or ticket reference was provided, read it immediately
+   - If a file path or ticket reference was provided, Read it immediately
    - Begin the research process
 
 2. **If no parameters provided**, respond with:
@@ -68,14 +65,14 @@ Tip: You can also invoke this command with a ticket file directly: `/create_plan
 
 ### Stress-testing the plan
 
-When the user's requirements are vague or you need to walk down decision branches with the user, delegate to the `interview` skill to drive a focused, relentless interview. Useful when:
+When the user's requirements are vague or you need to walk down decision branches with the user, delegate to the `interview` Skill to drive a focused, relentless interview. Useful when:
 - Requirements have hidden ambiguity
 - Multiple architectural choices need to be resolved
 - The user explicitly asks to "stress-test" or "drill into" the plan
 
 ### Telemetry-bearing features
 
-When the plan touches a request lifecycle, an AI agent/MCP, or any work where the trace is the spec, delegate to the `observability_driven_development` skill. The plan should include:
+When the plan touches a request lifecycle, an AI agent/MCP, or any work where the trace is the spec, delegate to the `observability_driven_development` Skill. The plan should include:
 
 - A reference to the narrative spec at `thoughts/shared/telemetry/<feature>.md` (to be written before implementation).
 - A `/validate_telemetry` step in Phase verification, parallel to `/validate_plan`.

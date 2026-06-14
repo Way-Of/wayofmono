@@ -1,12 +1,10 @@
 ---
 name: ticket_executor
-description: >-
-  Execute approved plans in phases, validating telemetry and committing changes
-  after each phase completes successfully
-allowed-tools: 'read, write, grep, glob, web, search'
+description: Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully
+allowed-tools: read, write, grep, glob, web, search
 ---
 
-# Ticket Executor Skill
+# Ticket Executor skill
 
 Executes approved plans in phases, with validation and telemetry tracking after each phase.
 

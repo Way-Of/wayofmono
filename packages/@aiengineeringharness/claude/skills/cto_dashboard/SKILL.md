@@ -1,9 +1,7 @@
 ---
 name: cto_dashboard
-description: >-
-  CTO dashboard with ticket overview, developer progress, review queue, and
-  GitHub PR integration
-allowed-tools: 'read, grep, glob, bash, write'
+description: CTO dashboard with ticket overview, developer progress, review queue, and GitHub PR integration
+allowed-tools: Read, Grep, Glob, Bash, Write
 ---
 
 # CTO Dashboard & Developer Reporting

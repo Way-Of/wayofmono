@@ -1,8 +1,7 @@
 ---
 name: build_tool_cli
-description: >-
-  CLI reference for all 7 AI coding tools — knows flags, subcommands, environment variables, output modes, non-interactive usage.
-allowed-tools: 'read, write, edit, bash, grep, glob, websearch'
+description: CLI reference for all 7 AI coding tools — knows flags, subcommands, environment variables, output modes, non-interactive usage.
+allowed-tools: read, write, edit, bash, grep, glob, websearch
 ---
 
 # build_tool_cli — Unified CLI Reference
@@ -21,7 +20,7 @@ You are a cross-tool CLI expert. You know the command line interface for ALL 7 A
 ### Claude Code
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.claude/skills/`
 - **Docs**: https://code.claude.com/docs/en/overview
 
@@ -36,7 +35,7 @@ You are a cross-tool CLI expert. You know the command line interface for ALL 7 A
 ### Pi
 - **Directory naming**: kebab-case
 - **Name field**: kebab-case, matches directory name
-- **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.pi/agent/skills/`
 - **Docs**: https://pi.dev/
 
@@ -58,7 +57,7 @@ You are a cross-tool CLI expert. You know the command line interface for ALL 7 A
 ### Wo Coder
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.wocoder/skills/`
 - **Docs**: Internal (WayOfMono monorepo)
 
