@@ -1,6 +1,7 @@
-# AI Engineering Harness — AGENTS.md
+# WayOfMono Monorepo — AGENTS.md
 
-This is the **AGENTS.md for förråd (f-rr-d)** — the centralized thoughts repository for all Way-Of projects.
+This is the **AGENTS.md for the WayOfMono monorepo** (not the förråd thoughts repo).
+The förråd AGENTS.md is at `thoughts/AGENTS.md`.
 
 ## Project Overview
 
