@@ -176,7 +176,7 @@ brew install stow
 | Subagents | **6** |
 | Active developers | **4** (craig, tomas, andre, zerwiz) |
 | Active tickets | **29+** (WOMONO, WOW, OPT namespaces) |
-| Harness version | **1.6.0** |
+| Harness version | **1.6.1** |
 | Files in harness | **1,226** |
 | Files in docs | **173** |
 | Files in thoughts | **115** |

@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.6.1] - 2026-06-14
+
+### Fixed
+- Command/skill naming conflicts: renamed gemini/antigravity command files with `run-` prefix to avoid clashing with skill directories
+- WoCoder cleanup: removed duplicate `agent/commands/` dir (kept `agent/prompts/`)
+- OpenCode: no changes needed (handles commands/skills separately)
+
+### Added
+- `womono_version_updater` skill — knows how to bump manifest version, update CHANGELOG, sync README version refs, and deploy to all 7 tools
+- Release notes in `docs/fixes/README.md` for user-facing changes
+
 ## [1.6.0] - 2026-06-14
 
 ### Fixed

@@ -1,5 +1,5 @@
 {
-  "version": "1.6.0",
+  "version": "1.6.1",
   "tools": {
     "claude": {
       "target": "~/.claude",
@@ -942,6 +942,15 @@
             {
               "src": "claude/skills/validate_podman/SKILL.md",
               "dest": "skills/validate_podman/SKILL.md"
+            }
+          ]
+        },
+        "skill/womono_version_updater": {
+          "description": "Bump WoM harness version across all files and tools",
+          "files": [
+            {
+              "src": "claude/skills/womono_version_updater/SKILL.md",
+              "dest": "skills/womono_version_updater/SKILL.md"
             }
           ]
         }
@@ -1975,6 +1984,15 @@
               "dest": "skills/validate_podman/SKILL.md"
             }
           ]
+        },
+        "skill/womono_version_updater": {
+          "description": "Bump WoM harness version across all files and tools",
+          "files": [
+            {
+              "src": "opencode/skills/womono_version_updater/SKILL.md",
+              "dest": "skills/womono_version_updater/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -2054,59 +2072,59 @@
           "description": "Gemini commands",
           "files": [
             {
-              "src": "gemini/commands/commit.toml",
+              "src": "gemini/commands/run-commit.toml",
               "dest": "commands/commit.toml"
             },
             {
-              "src": "gemini/commands/create_plan.toml",
+              "src": "gemini/commands/run-create_plan.toml",
               "dest": "commands/create_plan.toml"
             },
             {
-              "src": "gemini/commands/debug-k8s.toml",
+              "src": "gemini/commands/run-debug-k8s.toml",
               "dest": "commands/debug-k8s.toml"
             },
             {
-              "src": "gemini/commands/debug.toml",
+              "src": "gemini/commands/run-debug.toml",
               "dest": "commands/debug.toml"
             },
             {
-              "src": "gemini/commands/experimental-pr-workflow.toml",
+              "src": "gemini/commands/run-experimental-pr-workflow.toml",
               "dest": "commands/experimental-pr-workflow.toml"
             },
             {
-              "src": "gemini/commands/git_commit_helper.toml",
+              "src": "gemini/commands/run-git_commit_helper.toml",
               "dest": "commands/git_commit_helper.toml"
             },
             {
-              "src": "gemini/commands/implement_plan.toml",
+              "src": "gemini/commands/run-implement_plan.toml",
               "dest": "commands/implement_plan.toml"
             },
             {
-              "src": "gemini/commands/init_harness.toml",
+              "src": "gemini/commands/run-init_harness.toml",
               "dest": "commands/init_harness.toml"
             },
             {
-              "src": "gemini/commands/otel_instrument.toml",
+              "src": "gemini/commands/run-otel_instrument.toml",
               "dest": "commands/otel_instrument.toml"
             },
             {
-              "src": "gemini/commands/pr_description_generator.toml",
+              "src": "gemini/commands/run-pr_description_generator.toml",
               "dest": "commands/pr_description_generator.toml"
             },
             {
-              "src": "gemini/commands/research_codebase.toml",
+              "src": "gemini/commands/run-research_codebase.toml",
               "dest": "commands/research_codebase.toml"
             },
             {
-              "src": "gemini/commands/validate_plan.toml",
+              "src": "gemini/commands/run-validate_plan.toml",
               "dest": "commands/validate_plan.toml"
             },
             {
-              "src": "gemini/commands/validate_telemetry.toml",
+              "src": "gemini/commands/run-validate_telemetry.toml",
               "dest": "commands/validate_telemetry.toml"
             },
             {
-              "src": "gemini/commands/worktree.toml",
+              "src": "gemini/commands/run-worktree.toml",
               "dest": "commands/worktree.toml"
             }
           ]
@@ -2115,7 +2133,7 @@
           "description": "Commit command",
           "files": [
             {
-              "src": "gemini/commands/commit.toml",
+              "src": "gemini/commands/run-commit.toml",
               "dest": "commands/commit.toml"
             }
           ]
@@ -2124,7 +2142,7 @@
           "description": "Create Plan command",
           "files": [
             {
-              "src": "gemini/commands/create_plan.toml",
+              "src": "gemini/commands/run-create_plan.toml",
               "dest": "commands/create_plan.toml"
             }
           ]
@@ -2133,7 +2151,7 @@
           "description": "Debug K8s command",
           "files": [
             {
-              "src": "gemini/commands/debug-k8s.toml",
+              "src": "gemini/commands/run-debug-k8s.toml",
               "dest": "commands/debug-k8s.toml"
             }
           ]
@@ -2142,7 +2160,7 @@
           "description": "Debug command",
           "files": [
             {
-              "src": "gemini/commands/debug.toml",
+              "src": "gemini/commands/run-debug.toml",
               "dest": "commands/debug.toml"
             }
           ]
@@ -2151,7 +2169,7 @@
           "description": "Experimental Pr Workflow command",
           "files": [
             {
-              "src": "gemini/commands/experimental-pr-workflow.toml",
+              "src": "gemini/commands/run-experimental-pr-workflow.toml",
               "dest": "commands/experimental-pr-workflow.toml"
             }
           ]
@@ -2160,7 +2178,7 @@
           "description": "Git Commit Helper command",
           "files": [
             {
-              "src": "gemini/commands/git_commit_helper.toml",
+              "src": "gemini/commands/run-git_commit_helper.toml",
               "dest": "commands/git_commit_helper.toml"
             }
           ]
@@ -2169,7 +2187,7 @@
           "description": "Implement Plan command",
           "files": [
             {
-              "src": "gemini/commands/implement_plan.toml",
+              "src": "gemini/commands/run-implement_plan.toml",
               "dest": "commands/implement_plan.toml"
             }
           ]
@@ -2178,7 +2196,7 @@
           "description": "Init Harness command",
           "files": [
             {
-              "src": "gemini/commands/init_harness.toml",
+              "src": "gemini/commands/run-init_harness.toml",
               "dest": "commands/init_harness.toml"
             }
           ]
@@ -2187,7 +2205,7 @@
           "description": "Otel Instrument command",
           "files": [
             {
-              "src": "gemini/commands/otel_instrument.toml",
+              "src": "gemini/commands/run-otel_instrument.toml",
               "dest": "commands/otel_instrument.toml"
             }
           ]
@@ -2196,7 +2214,7 @@
           "description": "Pr Description Generator command",
           "files": [
             {
-              "src": "gemini/commands/pr_description_generator.toml",
+              "src": "gemini/commands/run-pr_description_generator.toml",
               "dest": "commands/pr_description_generator.toml"
             }
           ]
@@ -2205,7 +2223,7 @@
           "description": "Research Codebase command",
           "files": [
             {
-              "src": "gemini/commands/research_codebase.toml",
+              "src": "gemini/commands/run-research_codebase.toml",
               "dest": "commands/research_codebase.toml"
             }
           ]
@@ -2214,7 +2232,7 @@
           "description": "Validate Plan command",
           "files": [
             {
-              "src": "gemini/commands/validate_plan.toml",
+              "src": "gemini/commands/run-validate_plan.toml",
               "dest": "commands/validate_plan.toml"
             }
           ]
@@ -2223,7 +2241,7 @@
           "description": "Validate Telemetry command",
           "files": [
             {
-              "src": "gemini/commands/validate_telemetry.toml",
+              "src": "gemini/commands/run-validate_telemetry.toml",
               "dest": "commands/validate_telemetry.toml"
             }
           ]
@@ -2232,7 +2250,7 @@
           "description": "Worktree command",
           "files": [
             {
-              "src": "gemini/commands/worktree.toml",
+              "src": "gemini/commands/run-worktree.toml",
               "dest": "commands/worktree.toml"
             }
           ]
@@ -3153,6 +3171,15 @@
             {
               "src": "gemini/skills/validate_podman/SKILL.md",
               "dest": "skills/validate_podman/SKILL.md"
+            }
+          ]
+        },
+        "skill/womono_version_updater": {
+          "description": "Bump WoM harness version across all files and tools",
+          "files": [
+            {
+              "src": "gemini/skills/womono_version_updater/SKILL.md",
+              "dest": "skills/womono_version_updater/SKILL.md"
             }
           ]
         }
@@ -4567,6 +4594,15 @@
               "dest": "skills/validate-podman/SKILL.md"
             }
           ]
+        },
+        "skill/womono-version-updater": {
+          "description": "Bump WoM harness version across all files and tools",
+          "files": [
+            {
+              "src": "pi/agent/skills/womono-version-updater/SKILL.md",
+              "dest": "skills/womono-version-updater/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -5833,6 +5869,15 @@
               "dest": "skills/validate_podman/SKILL.md"
             }
           ]
+        },
+        "skill/womono_version_updater": {
+          "description": "Bump WoM harness version across all files and tools",
+          "files": [
+            {
+              "src": "wocoder/agent/skills/womono_version_updater/SKILL.md",
+              "dest": "skills/womono_version_updater/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -5920,59 +5965,59 @@
               "dest": "commands/README.md"
             },
             {
-              "src": "antigravity/commands/commit.toml",
+              "src": "antigravity/commands/run-commit.toml",
               "dest": "commands/commit.toml"
             },
             {
-              "src": "antigravity/commands/create_plan.toml",
+              "src": "antigravity/commands/run-create_plan.toml",
               "dest": "commands/create_plan.toml"
             },
             {
-              "src": "antigravity/commands/debug-k8s.toml",
+              "src": "antigravity/commands/run-debug-k8s.toml",
               "dest": "commands/debug-k8s.toml"
             },
             {
-              "src": "antigravity/commands/debug.toml",
+              "src": "antigravity/commands/run-debug.toml",
               "dest": "commands/debug.toml"
             },
             {
-              "src": "antigravity/commands/experimental-pr-workflow.toml",
+              "src": "antigravity/commands/run-experimental-pr-workflow.toml",
               "dest": "commands/experimental-pr-workflow.toml"
             },
             {
-              "src": "antigravity/commands/git_commit_helper.toml",
+              "src": "antigravity/commands/run-git_commit_helper.toml",
               "dest": "commands/git_commit_helper.toml"
             },
             {
-              "src": "antigravity/commands/implement_plan.toml",
+              "src": "antigravity/commands/run-implement_plan.toml",
               "dest": "commands/implement_plan.toml"
             },
             {
-              "src": "antigravity/commands/init_harness.toml",
+              "src": "antigravity/commands/run-init_harness.toml",
               "dest": "commands/init_harness.toml"
             },
             {
-              "src": "antigravity/commands/otel_instrument.toml",
+              "src": "antigravity/commands/run-otel_instrument.toml",
               "dest": "commands/otel_instrument.toml"
             },
             {
-              "src": "antigravity/commands/pr_description_generator.toml",
+              "src": "antigravity/commands/run-pr_description_generator.toml",
               "dest": "commands/pr_description_generator.toml"
             },
             {
-              "src": "antigravity/commands/research_codebase.toml",
+              "src": "antigravity/commands/run-research_codebase.toml",
               "dest": "commands/research_codebase.toml"
             },
             {
-              "src": "antigravity/commands/validate_plan.toml",
+              "src": "antigravity/commands/run-validate_plan.toml",
               "dest": "commands/validate_plan.toml"
             },
             {
-              "src": "antigravity/commands/validate_telemetry.toml",
+              "src": "antigravity/commands/run-validate_telemetry.toml",
               "dest": "commands/validate_telemetry.toml"
             },
             {
-              "src": "antigravity/commands/worktree.toml",
+              "src": "antigravity/commands/run-worktree.toml",
               "dest": "commands/worktree.toml"
             }
           ]
@@ -5981,7 +6026,7 @@
           "description": "Commit command",
           "files": [
             {
-              "src": "antigravity/commands/commit.toml",
+              "src": "antigravity/commands/run-commit.toml",
               "dest": "commands/commit.toml"
             }
           ]
@@ -5990,7 +6035,7 @@
           "description": "Create Plan command",
           "files": [
             {
-              "src": "antigravity/commands/create_plan.toml",
+              "src": "antigravity/commands/run-create_plan.toml",
               "dest": "commands/create_plan.toml"
             }
           ]
@@ -5999,7 +6044,7 @@
           "description": "Debug K8s command",
           "files": [
             {
-              "src": "antigravity/commands/debug-k8s.toml",
+              "src": "antigravity/commands/run-debug-k8s.toml",
               "dest": "commands/debug-k8s.toml"
             }
           ]
@@ -6008,7 +6053,7 @@
           "description": "Debug command",
           "files": [
             {
-              "src": "antigravity/commands/debug.toml",
+              "src": "antigravity/commands/run-debug.toml",
               "dest": "commands/debug.toml"
             }
           ]
@@ -6017,7 +6062,7 @@
           "description": "Experimental Pr Workflow command",
           "files": [
             {
-              "src": "antigravity/commands/experimental-pr-workflow.toml",
+              "src": "antigravity/commands/run-experimental-pr-workflow.toml",
               "dest": "commands/experimental-pr-workflow.toml"
             }
           ]
@@ -6026,7 +6071,7 @@
           "description": "Git Commit Helper command",
           "files": [
             {
-              "src": "antigravity/commands/git_commit_helper.toml",
+              "src": "antigravity/commands/run-git_commit_helper.toml",
               "dest": "commands/git_commit_helper.toml"
             }
           ]
@@ -6035,7 +6080,7 @@
           "description": "Implement Plan command",
           "files": [
             {
-              "src": "antigravity/commands/implement_plan.toml",
+              "src": "antigravity/commands/run-implement_plan.toml",
               "dest": "commands/implement_plan.toml"
             }
           ]
@@ -6044,7 +6089,7 @@
           "description": "Init Harness command",
           "files": [
             {
-              "src": "antigravity/commands/init_harness.toml",
+              "src": "antigravity/commands/run-init_harness.toml",
               "dest": "commands/init_harness.toml"
             }
           ]
@@ -6053,7 +6098,7 @@
           "description": "Otel Instrument command",
           "files": [
             {
-              "src": "antigravity/commands/otel_instrument.toml",
+              "src": "antigravity/commands/run-otel_instrument.toml",
               "dest": "commands/otel_instrument.toml"
             }
           ]
@@ -6062,7 +6107,7 @@
           "description": "Pr Description Generator command",
           "files": [
             {
-              "src": "antigravity/commands/pr_description_generator.toml",
+              "src": "antigravity/commands/run-pr_description_generator.toml",
               "dest": "commands/pr_description_generator.toml"
             }
           ]
@@ -6071,7 +6116,7 @@
           "description": "Research Codebase command",
           "files": [
             {
-              "src": "antigravity/commands/research_codebase.toml",
+              "src": "antigravity/commands/run-research_codebase.toml",
               "dest": "commands/research_codebase.toml"
             }
           ]
@@ -6080,7 +6125,7 @@
           "description": "Validate Plan command",
           "files": [
             {
-              "src": "antigravity/commands/validate_plan.toml",
+              "src": "antigravity/commands/run-validate_plan.toml",
               "dest": "commands/validate_plan.toml"
             }
           ]
@@ -6089,7 +6134,7 @@
           "description": "Validate Telemetry command",
           "files": [
             {
-              "src": "antigravity/commands/validate_telemetry.toml",
+              "src": "antigravity/commands/run-validate_telemetry.toml",
               "dest": "commands/validate_telemetry.toml"
             }
           ]
@@ -6098,7 +6143,7 @@
           "description": "Worktree command",
           "files": [
             {
-              "src": "antigravity/commands/worktree.toml",
+              "src": "antigravity/commands/run-worktree.toml",
               "dest": "commands/worktree.toml"
             }
           ]
@@ -7021,6 +7066,15 @@
               "dest": "skills/validate_podman/SKILL.md"
             }
           ]
+        },
+        "skill/womono_version_updater": {
+          "description": "Bump WoM harness version across all files and tools",
+          "files": [
+            {
+              "src": "antigravity/skills/womono_version_updater/SKILL.md",
+              "dest": "skills/womono_version_updater/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -7940,6 +7994,15 @@
             {
               "src": "codex/skills/validate_podman/SKILL.md",
               "dest": "skills/validate_podman/SKILL.md"
+            }
+          ]
+        },
+        "skill/womono_version_updater": {
+          "description": "Bump WoM harness version across all files and tools",
+          "files": [
+            {
+              "src": "codex/skills/womono_version_updater/SKILL.md",
+              "dest": "skills/womono_version_updater/SKILL.md"
             }
           ]
         }
