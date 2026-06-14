@@ -5369,8 +5369,8 @@
           "description": "Unified agent builder for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build-tool_agent/SKILL.md",
-              "dest": "skills/build-tool_agent/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool-agent/SKILL.md",
+              "dest": "skills/build-tool-agent/SKILL.md"
             }
           ]
         },
@@ -5378,8 +5378,8 @@
           "description": "Unified extension/plugin builder for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build-tool_extension/SKILL.md",
-              "dest": "skills/build-tool_extension/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool-extension/SKILL.md",
+              "dest": "skills/build-tool-extension/SKILL.md"
             }
           ]
         },
@@ -5387,8 +5387,8 @@
           "description": "Unified TUI component builder for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build-tool_tui/SKILL.md",
-              "dest": "skills/build-tool_tui/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool-tui/SKILL.md",
+              "dest": "skills/build-tool-tui/SKILL.md"
             }
           ]
         },
@@ -5396,8 +5396,8 @@
           "description": "Unified CLI reference for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build-tool_cli/SKILL.md",
-              "dest": "skills/build-tool_cli/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool-cli/SKILL.md",
+              "dest": "skills/build-tool-cli/SKILL.md"
             }
           ]
         },
@@ -5405,8 +5405,8 @@
           "description": "Unified theme builder for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build-tool_themes/SKILL.md",
-              "dest": "skills/build-tool_themes/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool-themes/SKILL.md",
+              "dest": "skills/build-tool-themes/SKILL.md"
             }
           ]
         },
@@ -5414,8 +5414,8 @@
           "description": "Unified prompt template builder for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build-tool_prompts/SKILL.md",
-              "dest": "skills/build-tool_prompts/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool-prompts/SKILL.md",
+              "dest": "skills/build-tool-prompts/SKILL.md"
             }
           ]
         },
@@ -5423,8 +5423,8 @@
           "description": "Unified keybinding reference for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build-tool_keybindings/SKILL.md",
-              "dest": "skills/build-tool_keybindings/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool-keybindings/SKILL.md",
+              "dest": "skills/build-tool-keybindings/SKILL.md"
             }
           ]
         },
@@ -5432,8 +5432,8 @@
           "description": "Unified configuration reference for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build-tool_config/SKILL.md",
-              "dest": "skills/build-tool_config/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool-config/SKILL.md",
+              "dest": "skills/build-tool-config/SKILL.md"
             }
           ]
         },
@@ -5441,8 +5441,8 @@
           "description": "Unified orchestration coordinator for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build-tool_orchestrate/SKILL.md",
-              "dest": "skills/build-tool_orchestrate/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool-orchestrate/SKILL.md",
+              "dest": "skills/build-tool-orchestrate/SKILL.md"
             }
           ]
         },

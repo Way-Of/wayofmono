@@ -1,0 +1,102 @@
+---
+name: build_tool_cli
+description: CLI reference for all 7 AI coding tools — knows flags, subcommands, environment variables, output modes, non-interactive usage.
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
+---
+
+# build_tool_cli — Unified CLI Reference
+
+You are a cross-tool CLI expert. You know the command line interface for ALL 7 AI coding tools. Load this Skill when the user needs help running any tool from the command line.
+
+## Tool Format Reference
+
+### OpenCode
+- **Directory naming**: snake_case
+- **Name field**: snake_case, matches directory name
+- **allowed-tools**: lowercase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **Config**: `~/.config/opencode/`
+- **Docs**: https://opencode.ai/docs/
+
+### Claude Code
+- **Directory naming**: snake_case
+- **Name field**: snake_case, matches directory name
+- **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **Config**: `~/.claude/skills/`
+- **Docs**: https://code.claude.com/docs/en/overview
+
+### Gemini CLI
+- **Directory naming**: snake_case
+- **Name field**: snake_case, matches directory name
+- **Format**: TOML files (not YAML frontmatter)
+- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, Glob, Grep`)
+- **Config**: `~/.gemini/skills/`
+- **Docs**: https://cloud.google.com/gemini-cli/docs
+
+### Pi
+- **Directory naming**: kebab-case
+- **Name field**: kebab-case, matches directory name
+- **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **Config**: `~/.pi/agent/skills/`
+- **Docs**: https://pi.dev/
+
+### Antigravity
+- **Directory naming**: snake_case
+- **Name field**: snake_case, matches directory name
+- **allowed-tools**: lowercase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **Config**: `~/.antigravity/skills/`
+- **Docs**: https://antigravity.sh/docs
+
+### Codex
+- **Directory naming**: snake_case
+- **Name field**: snake_case, matches directory name
+- **Format**: Skill.yaml + prompt.md (two files per Skill)
+- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, Glob, Grep`)
+- **Config**: `~/.codex/skills/`
+- **Docs**: https://github.com/openai/codex
+
+### Wo Coder
+- **Directory naming**: snake_case
+- **Name field**: snake_case, matches directory name
+- **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **Config**: `~/.wocoder/skills/`
+- **Docs**: Internal (WayOfMono monorepo)
+
+## CLI Patterns Per Tool
+
+### OpenCode
+- Binary: `opencode`
+- Flags: `--model`, `--provider`, `--dir`, `--yes`, `--help`
+
+### Claude Code
+- Binary: `claude`
+- Flags: `-p` (prompt), `--model`, `--resume`, `--print`
+
+### Gemini CLI
+- Binary: `gemini`
+- Flags: `--model`, `--context`, `--stream`
+
+### Pi
+- Binary: `pi`
+- Flags: `--mode` (agent/chat/pipe/apply), `--model`, `--provider`
+
+### Antigravity
+- Binary: `agy`
+- Flags: `--model`, `--context-size`, `--mode`
+
+### Codex
+- Binary: `codex`
+- Flags: `--model`, `--sandbox`, `--eval`
+
+### Wo Coder
+- Binary: `wocode`
+- Flags: `--mode`, `--model`, `--provider`
+
+## Online Sources
+Always fetch the latest docs before building:
+- OpenCode: https://opencode.ai/docs/
+- Claude Code: https://code.claude.com/docs/en/overview
+- Gemini CLI: https://cloud.google.com/gemini-cli/docs
+- Pi: https://pi.dev/
+- Antigravity: https://antigravity.sh/docs
+- Codex: https://github.com/openai/codex
+- Wo Coder: packages/@wayofmono/wo-agent/
