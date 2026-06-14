@@ -59,28 +59,65 @@ ai-harness --tool=all --yes
 .\install.ps1 -Tool all -Yes
 ```
 
-### Step 3b: Install Individual Tools (one copy-paste per platform)
+### Step 3b: Install Individual Tools (one copy-paste per tool)
 
-**macOS / Linux / Windows (bash):**
+**macOS / Linux / Windows (bash) — pick one tool per copy-paste:**
+
 ```bash
-# Install specific tools — pick one or run all sequentially
-ai-harness --tool=wocoder --yes     # Wo Coder (primary interface)
-ai-harness --tool=pi --yes          # Pi Agent
-ai-harness --tool=opencode --yes    # OpenCode
-ai-harness --tool=claude --yes      # Claude Code
-ai-harness --tool=gemini --yes      # Gemini CLI
-ai-harness --tool=antigravity --yes # Antigravity
-ai-harness --tool=codex --yes       # Codex
+ai-harness --tool=wocoder --yes
 ```
 
-**Windows (PowerShell wrapper):**
+```bash
+ai-harness --tool=pi --yes
+```
+
+```bash
+ai-harness --tool=opencode --yes
+```
+
+```bash
+ai-harness --tool=claude --yes
+```
+
+```bash
+ai-harness --tool=gemini --yes
+```
+
+```bash
+ai-harness --tool=antigravity --yes
+```
+
+```bash
+ai-harness --tool=codex --yes
+```
+
+**Windows (PowerShell wrapper) — pick one tool per copy-paste:**
+
 ```powershell
 .\install.ps1 -Tool wocoder -Yes
+```
+
+```powershell
 .\install.ps1 -Tool pi -Yes
+```
+
+```powershell
 .\install.ps1 -Tool opencode -Yes
+```
+
+```powershell
 .\install.ps1 -Tool claude -Yes
+```
+
+```powershell
 .\install.ps1 -Tool gemini -Yes
+```
+
+```powershell
 .\install.ps1 -Tool antigravity -Yes
+```
+
+```powershell
 .\install.ps1 -Tool codex -Yes
 ```
 
@@ -310,15 +347,22 @@ ai-harness --import-ref
 Show clone + stow instructions for GNU Stow-based installation — one copy-paste:
 
 **macOS / Linux / Windows (bash):**
+
 ```bash
 ai-harness --mode=repo
-# Custom clone destination
+```
+
+```bash
 ai-harness --mode=repo --dest=~/.ai-engineering-harness
 ```
 
 **Windows (PowerShell wrapper):**
+
 ```powershell
 .\install.ps1 -Mode repo
+```
+
+```powershell
 .\install.ps1 -Mode repo -Dest "~/.ai-engineering-harness"
 ```
 
@@ -526,28 +570,50 @@ deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@ai
 ```
 
 **Sync documentation:**
+
 ```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --sync-docs
+```
+
+```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --sync-docs --check
 ```
 
 **Validate & maintenance:**
+
 ```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --check
+```
+
+```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --compliance
+```
+
+```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --prune
 ```
 
 **Report & import:**
+
 ```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --report-skills
+```
+
+```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --import-ref
 ```
 
 **Repo mode & uninstall:**
+
 ```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --mode=repo
+```
+
+```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --uninstall=claude
+```
+
+```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --uninstall=all
 ```
 
@@ -565,15 +631,37 @@ Install CLI once, then use `ai-harness` for everything — one copy-paste for in
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 ```
 
-**Step 2: Install tools (pick one or run all)**
+**Step 2: Install tools (pick one tool per copy-paste)**
+
 ```bash
 ai-harness --tool=opencode
+```
+
+```bash
 ai-harness --tool=claude
+```
+
+```bash
 ai-harness --tool=pi
+```
+
+```bash
 ai-harness --tool=gemini
+```
+
+```bash
 ai-harness --tool=codex
+```
+
+```bash
 ai-harness --tool=antigravity
+```
+
+```bash
 ai-harness --tool=wocoder
+```
+
+```bash
 ai-harness --tool=all --yes
 ```
 
@@ -641,23 +729,45 @@ ai-harness --tool=claude --local --yes
 
 ### GNU Stow Mode (Symlink-based)
 
-One copy-paste for all stow commands:
+Each command separate copy-paste:
 
 ```bash
-# Install all tools via stow
 ./packages/@aiengineeringharness/setup.sh all
+```
 
-# Install specific tool via stow
+```bash
 ./packages/@aiengineeringharness/setup.sh claude
-./packages/@aiengineeringharness/setup.sh opencode
-./packages/@aiengineeringharness/setup.sh gemini
-./packages/@aiengineeringharness/setup.sh pi
-./packages/@aiengineeringharness/setup.sh wocoder
-./packages/@aiengineeringharness/setup.sh antigravity
+```
 
-# Stow management
+```bash
+./packages/@aiengineeringharness/setup.sh opencode
+```
+
+```bash
+./packages/@aiengineeringharness/setup.sh gemini
+```
+
+```bash
+./packages/@aiengineeringharness/setup.sh pi
+```
+
+```bash
+./packages/@aiengineeringharness/setup.sh wocoder
+```
+
+```bash
+./packages/@aiengineeringharness/setup.sh antigravity
+```
+
+```bash
 ./packages/@aiengineeringharness/setup.sh --restow
+```
+
+```bash
 ./packages/@aiengineeringharness/setup.sh --delete
+```
+
+```bash
 ./packages/@aiengineeringharness/setup.sh --dry-run
 ```
 
@@ -666,29 +776,68 @@ One copy-paste for all stow commands:
 For automated engineering and refactoring. Installed as a **dev-dependency** (tool for engineers, not end-users).
 
 **Local (project) install — npm:**
+
 ```bash
 npm install --save-dev @wayofmono/wo-coding-agent
+```
+
+```bash
 npx wocode --init
+```
+
+```bash
 ./wocode
+```
+
+```bash
 # Update: pnpm update @wayofmono/wo-coding-agent
+```
+
+```bash
 # Uninstall: npm uninstall @wayofmono/wo-coding-agent
 ```
 
 **Local (project) install — pnpm:**
+
 ```bash
 pnpm add -D @wayofmono/wo-coding-agent
+```
+
+```bash
 pnpm wocode --init
+```
+
+```bash
 ./wocode
+```
+
+```bash
 # Update: pnpm update @wayofmono/wo-coding-agent
+```
+
+```bash
 # Uninstall: pnpm remove @wayofmono/wo-coding-agent
 ```
 
 **Global install (cross-project):**
+
 ```bash
 npm install -g @wayofmono/wo-coding-agent
+```
+
+```bash
 wocode --init
+```
+
+```bash
 wocode
+```
+
+```bash
 # Update: npm update -g @wayofmono/wo-coding-agent
+```
+
+```bash
 # Uninstall: npm uninstall -g @wayofmono/wo-coding-agent
 ```
 
@@ -697,16 +846,30 @@ wocode
 For general use and SDK integration. Installed as a standard **dependency** (needed at runtime).
 
 **Local (project) install — npm:**
+
 ```bash
 npm install @wayofmono/wo-agent
+```
+
+```bash
 npx wouser --init
+```
+
+```bash
 ./wouser
 ```
 
 **Local (project) install — pnpm:**
+
 ```bash
 pnpm add @wayofmono/wo-agent
+```
+
+```bash
 pnpm wouser --init
+```
+
+```bash
 ./wouser
 ```
 
@@ -745,29 +908,71 @@ The User Assistant (wouser) is an **SDK**. If you're building an AI chatbot or f
 
 All **13** packages published under `@wayofmono` scope at [npmjs.com/settings/wayofmono](https://www.npmjs.com/settings/wayofmono/packages).
 
-### Install from npm (one copy-paste)
+### Install from npm (each package separate copy-paste)
 
 ```bash
 npm install @wayofmono/wo-agent
+```
+
+```bash
 npm install @wayofmono/wo-coding-agent
+```
+
+```bash
 npm install @wayofmono/wo-ai
+```
+
+```bash
 npm install @wayofmono/wo-tui
+```
+
+```bash
 npm install @wayofmono/wo-agent-core
+```
+
+```bash
 npm install @wayofmono/wo-skill-docs
+```
+
+```bash
 npm install @wayofmono/wo-mermaid
+```
+
+```bash
 npm install @wayofmono/web-access
+```
+
+```bash
 npm install @wayofmono/lens
+```
+
+```bash
 npm install @wayofmono/wo-web-ui
+```
+
+```bash
 npm install @wayofmono/telemetry
+```
+
+```bash
 npm install @wayofmono/telegram
+```
+
+```bash
 npm install @wayofmono/whatsapp
 ```
 
-### Install from cloned repo (one copy-paste)
+### Install from cloned repo (each command separate copy-paste)
 
 ```bash
 git clone https://github.com/Way-Of/wayofmono.git ~/wayofmono
+```
+
+```bash
 pnpm add ~/wayofmono/packages/@wayofmono/wo-agent
+```
+
+```bash
 pnpm add ~/wayofmono/packages/@wayofmono/wo-coding-agent
 ```
 
@@ -805,13 +1010,17 @@ Production dashboard at **[https://cto.wayof.work](https://cto.wayof.work)** (v0
 | **Developers** | Workflow and assignment tracking |
 | **Docs** | Architecture docs and decision records |
 
-### Run Locally (one copy-paste)
+### Run Locally (each command separate copy-paste)
 
 ```bash
 cd ui && pnpm install && pnpm dev
-# Quick start script
+```
+
+```bash
 ./scripts/dev-dashboard.sh
-# Custom port
+```
+
+```bash
 ./scripts/dev-dashboard.sh 4000
 ```
 
@@ -828,16 +1037,25 @@ cd ui && pnpm install && pnpm dev
 | GET | `/api/skills/report` | Skills health report |
 | POST | `/api/skills/report` | Submit skills report |
 
-## 🔧 Pipeline Tools (one copy-paste each)
+## 🔧 Pipeline Tools (each command separate copy-paste)
 
 ```bash
 ai-harness --sync-docs
+```
+
+```bash
 ai-harness --sync-docs --check
 ```
 
 ```bash
 deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts
+```
+
+```bash
 deno run -A packages/@aiengineeringharness/scripts/migrate-tickets.ts
+```
+
+```bash
 deno run -A packages/@aiengineeringharness/scripts/import-ref-skills.ts
 ```
 
@@ -933,16 +1151,29 @@ Internet → Cloudflare Tunnel [cto.wayof.work]
 - **Caddy** reverse proxy
 - **Next.js** application server
 
-### Deploy (one copy-paste)
+### Deploy (each command separate copy-paste)
 
 ```bash
 ./scripts/deploy-dashboard.sh
-# Or manual:
+```
+
+```bash
 cd ui && podman-compose up --build -d
+```
+
+```bash
 curl https://cto.wayof.work/api/health
+```
+
+```bash
 podman-compose logs -f
-# Systemd service:
+```
+
+```bash
 sudo cp ui/docker/wayofmono-dashboard.service /etc/systemd/system/
+```
+
+```bash
 sudo systemctl enable --now wayofmono-dashboard
 ```
 
@@ -1041,13 +1272,25 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
 
-### Pre-Deploy Checklist (one copy-paste)
+### Pre-Deploy Checklist (each command separate copy-paste)
 
 ```bash
 pnpm -r test
+```
+
+```bash
 ai-harness --sync-docs --check
+```
+
+```bash
 pnpm -r --parallel typecheck
+```
+
+```bash
 curl https://cto.wayof.work/api/health
+```
+
+```bash
 cd ui && pnpm build
 ```
 
@@ -1165,10 +1408,13 @@ perf: Improve performance
 
 All deployments include: Content Security Policy, X-Frame-Options, X-Content-Type-Options, Referrer Policy
 
-### Scanning (one copy-paste)
+### Scanning (each command separate copy-paste)
 
 ```bash
 pnpm audit
+```
+
+```bash
 pnpm run security:check
 ```
 
@@ -1181,12 +1427,21 @@ pnpm run security:check
 | **Linux** | `curl -fsSL https://deno.land/install.sh | sh` | Full |
 | **WSL/Git Bash** | `apt install deno` | Full |
 
-## 🤝 Contributing (one copy-paste)
+## 🤝 Contributing (each command separate copy-paste)
 
 ```bash
 git clone https://github.com/Way-Of/wayofmono.git
+```
+
+```bash
 git checkout -b feat/your-feature
+```
+
+```bash
 pnpm install
+```
+
+```bash
 pnpm -r test
 ```
 
