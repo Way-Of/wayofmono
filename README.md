@@ -770,6 +770,18 @@ wocode
 npm update -g @wayofmono/wo-coding-agent
 ```
 
+```bash
+# Uninstall global installation
+npm uninstall -g @wayofmono/wo-coding-agent
+```
+
+```bash
+# Uninstall local (project) installation
+npm uninstall @wayofmono/wo-coding-agent
+# or with pnpm
+pnpm remove @wayofmono/wo-coding-agent
+```
+
 ## 🤖 User Assistant (wouser)
 
 For general use and SDK integration. Installed as a standard **dependency** (needed at runtime).
