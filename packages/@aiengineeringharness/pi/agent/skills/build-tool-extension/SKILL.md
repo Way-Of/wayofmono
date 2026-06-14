@@ -4,12 +4,11 @@ description: >-
   Build extensions/plugins for all 7 AI coding tools — knows extension API, lifecycle hooks, custom tools, event handlers.
 allowed-tools:
   - edit
-  - glob
+  - run_shell_command
   - grep
   - write
-  - 'read
   - bash
-  - websearch'
+  - web-search
 ---
 
 # build_tool_extension — Unified Extension Builder

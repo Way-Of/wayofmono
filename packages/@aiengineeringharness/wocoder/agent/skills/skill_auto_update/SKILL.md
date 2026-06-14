@@ -4,15 +4,15 @@ description: >-
   Auto-discover, sync, and update skills across all 7 frontends (claude,
   opencode, gemini, pi, wocoder, antigravity, codex)
 allowed-tools:
-  - read
-  - write
-  - bash
-  - edit
-  - grep
-  - glob
-  - skill
-  - todowrite
-  - webfetch
+  - Read
+  - Write
+  - Bash
+  - Edit
+  - Grep
+  - Run_Shell_Command
+  - Skill
+  - TodoWrite
+  - Web-Fetch
   - websearch
   - question
   - ls

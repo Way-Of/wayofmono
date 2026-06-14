@@ -4,12 +4,11 @@ description: >-
   CLI reference for all 7 AI coding tools — knows flags, subcommands, environment variables, output modes, non-interactive usage.
 allowed-tools:
   - edit
-  - glob
+  - run_shell_command
   - grep
   - write
-  - 'read
   - bash
-  - websearch'
+  - web-search
 ---
 
 # build_tool_cli — Unified CLI Reference

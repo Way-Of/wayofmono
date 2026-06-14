@@ -9,11 +9,11 @@ allowed-tools:
   - bash
   - edit
   - grep
-  - glob
+  - run_shell_command
   - skill
   - todowrite
-  - webfetch
-  - websearch
+  - web-fetch
+  - web-search
   - question
 ---
 
