@@ -99,6 +99,29 @@ Or with PowerShell wrapper:
 # etc.
 ```
 
+### Step 3c: Install Specific Components (--skill)
+
+Install only specific components (skills, agents, commands, etc.) for a tool:
+
+```bash
+# Install only skills and agents for OpenCode
+ai-harness --tool=opencode --skill=skills,agents --yes
+
+# Install only commands for Claude Code
+ai-harness --tool=claude --skill=commands --yes
+
+# Preview what would be installed (dry run)
+ai-harness --tool=opencode --skill=skills,agents --dry-run
+```
+
+Or with PowerShell wrapper:
+```powershell
+.\install.ps1 -Tool opencode -Skill "skills,agents" -Yes
+.\install.ps1 -Tool opencode -Skill "skills,agents" -DryRun
+```
+
+Available component names vary by tool. Common ones: `skills`, `agents`, `commands`, `prompts`, `extensions`, `themes`, `keybindings`, `settings`.
+
 ### Step 3c: Install to Project-Local (Dev Mode)
 
 Install configs to `.claude/`, `.opencode/`, `.wo/`, etc. in current project:
@@ -111,10 +134,52 @@ ai-harness --tool=all --local --yes
 
 Creates `./.wo/agent/`, `./.pi/agent/`, `./.config/opencode/`, etc. with skills, themes, extensions ready for the project.
 
+Or with PowerShell wrapper:
+```powershell
+.\install.ps1 -Tool wocoder -Local -Yes
+.\install.ps1 -Tool all -Local -Yes
+```
+
+### Step 3d: Interactive Component Selection (--interactive / -i)
+
+Pick components via interactive checkbox picker:
+
+```bash
+ai-harness --tool=claude --interactive
+# or short form:
+ai-harness --tool=claude -i
+```
+
+Or with PowerShell wrapper:
+```powershell
+.\install.ps1 -Tool claude -Interactive
+```
+
 ### Update
 
 ```bash
 ai-harness --update
+```
+
+Full harness sync: CLI binary + docs + all tools + stale cleanup + compliance validation.
+
+```bash
+# Skip compliance validation after update
+ai-harness --update --no-validate
+
+# Skip CLI binary update (only sync tools/docs)
+ai-harness --update --skip-binary
+
+# Preview without writing
+ai-harness --update --dry-run
+```
+
+Or with PowerShell wrapper:
+```powershell
+.\install.ps1 -Update
+.\install.ps1 -Update -NoValidate
+.\install.ps1 -Update -SkipBinary
+.\install.ps1 -Update -DryRun
 ```
 
 ### Major Update (full refresh after a breaking overhaul)
@@ -148,6 +213,108 @@ ai-harness --compliance
 ```
 
 Checks for missing source files, stale files in target directories, and dangling manifest entries. Exit code 0 if compliant.
+
+### Prune Stale Skills (--prune)
+
+Interactively review and remove non-manifest skill files across all tools:
+
+```bash
+ai-harness --prune
+```
+
+Or with PowerShell wrapper:
+```powershell
+.\install.ps1 -Prune
+```
+
+### Sync Documentation (--sync-docs)
+
+Sync canonical skills to all tool skill directories:
+
+```bash
+ai-harness --sync-docs
+# Preview only (no changes)
+ai-harness --sync-docs --check
+```
+
+Or with PowerShell wrapper:
+```powershell
+.\install.ps1 -SyncDocs
+.\install.ps1 -SyncDocs
+```
+
+### Report Skills to Dashboard (--report-skills / --report-url)
+
+Report local skills to CTO Dashboard telemetry API:
+
+```bash
+ai-harness --report-skills
+# Custom dashboard URL
+ai-harness --report-skills --report-url https://cto.wayof.work
+```
+
+Or with PowerShell wrapper:
+```powershell
+.\install.ps1 -ReportSkills
+.\install.ps1 -ReportSkills -ReportUrl "https://cto.wayof.work"
+```
+
+### Import Reference Skills (--import-ref)
+
+Import reference skills/agents to all platforms:
+
+```bash
+ai-harness --import-ref
+```
+
+Or with PowerShell wrapper:
+```powershell
+.\install.ps1 -ImportRef
+```
+
+### Repo / Stow Mode (--mode / --dest)
+
+Show clone + stow instructions for GNU Stow-based installation:
+
+```bash
+ai-harness --mode=repo
+# Custom clone destination
+ai-harness --mode=repo --dest=~/.ai-engineering-harness
+```
+
+Or with PowerShell wrapper:
+```powershell
+.\install.ps1 -Mode repo
+.\install.ps1 -Mode repo -Dest "~/.ai-engineering-harness"
+```
+
+### Quick Reference: All PowerShell Flags
+
+| Parameter | Description |
+|-----------|-------------|
+| `-InstallCli` | Install/update CLI binary |
+| `-Tool <name>` | Install tool config (claude, opencode, gemini, pi, wocoder, antigravity, codex, all) |
+| `-Update` | Full harness sync: CLI + docs + all tools + compliance |
+| `-Compliance` | Validate all installed files match manifest |
+| `-Check` | Compare installed versions against manifest |
+| `-Yes` | Skip confirmation prompts |
+| `-DryRun` | Preview without writing files |
+| `-Skill <name>` | Specific components to install (comma-separated) |
+| `-Interactive` | Interactive checkbox picker |
+| `-Local` | Install to project-local directories |
+| `-Uninstall <name>` | Remove installed files (claude, opencode, all, ...) |
+| `-NoValidate` | Skip compliance validation after --update |
+| `-Prune` | Interactive: review & remove non-manifest skills |
+| `-SyncDocs` | Sync canonical skills to all tool directories |
+| `-ReportSkills` | Report local skills to dashboard telemetry API |
+| `-ReportUrl <url>` | Dashboard URL for skill reporting |
+| `-ImportRef` | Import ref skills/agents to all platforms |
+| `-Mode <mode>` | Show clone + stow instructions (repo) |
+| `-Dest <path>` | Clone destination for --mode=repo |
+| `-SkipBinary` | Skip CLI binary update in --update |
+| `-Help` | Show help |
+
+> **Note**: PowerShell uses full parameter names (no single-letter aliases). The underlying Deno script supports `-y`, `-n`, `-i`, `-l`, `-h` as aliases.
 
 ### GNU Stow (Optional — symlink-based updates, macOS/Linux only)
 
@@ -327,6 +494,47 @@ deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@ai
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --sync-docs --check
 ```
 
+```bash
+# Check installed versions against manifest
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --check
+```
+
+```bash
+# Validate all installed files match manifest
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --compliance
+```
+
+```bash
+# Prune stale skills interactively
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --prune
+```
+
+```bash
+# Report skills to dashboard
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --report-skills
+```
+
+```bash
+# Import reference skills
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --import-ref
+```
+
+```bash
+# Show repo/stow instructions
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --mode=repo
+```
+
+```bash
+# Uninstall tool configs
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --uninstall=claude
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --uninstall=all
+```
+
+```bash
+# Full help
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --help
+```
+
 ### Global CLI Install (Recommended for repeated use)
 
 ```bash
@@ -370,8 +578,24 @@ ai-harness --update
 ```
 
 ```bash
+ai-harness --update --no-validate
+```
+
+```bash
+ai-harness --update --skip-binary
+```
+
+```bash
 ai-harness --check
 # → wocoder: UPDATE AVAILABLE v1.1.0 → v1.2.0
+```
+
+```bash
+ai-harness --compliance
+```
+
+```bash
+ai-harness --prune
 ```
 
 ```bash
@@ -379,11 +603,7 @@ ai-harness --report-skills
 ```
 
 ```bash
-ai-harness --uninstall=claude
-```
-
-```bash
-ai-harness --uninstall=all
+ai-harness --report-skills --report-url https://cto.wayof.work
 ```
 
 ```bash
@@ -392,6 +612,22 @@ ai-harness --sync-docs
 
 ```bash
 ai-harness --sync-docs --check
+```
+
+```bash
+ai-harness --import-ref
+```
+
+```bash
+ai-harness --mode=repo --dest=~/.ai-engineering-harness
+```
+
+```bash
+ai-harness --uninstall=claude
+```
+
+```bash
+ai-harness --uninstall=all
 ```
 
 ```bash
@@ -409,6 +645,36 @@ ai-harness --tool=claude --skill=agents
 ```bash
 ai-harness --help
 ```
+
+```bash
+ai-harness --tool=claude --local --yes
+```
+
+### Quick Reference: All CLI Flags
+
+| Flag | Alias | Description |
+|------|-------|-------------|
+| `--install-cli` | | Install/update CLI binary |
+| `--tool=<name>` | | Install tool config (claude, opencode, gemini, pi, wocoder, antigravity, codex, all) |
+| `--update` | | Full harness sync: CLI + docs + all tools + compliance |
+| `--compliance` | | Validate all installed files match manifest |
+| `--check` | | Compare installed versions against manifest |
+| `--yes` | `-y` | Skip confirmation prompts |
+| `--dry-run` | `-n` | Preview without writing files |
+| `--skill=<name>` | | Specific components to install (comma-separated) |
+| `--interactive` | `-i` | Interactive checkbox picker |
+| `--local` | `-l` | Install to project-local directories |
+| `--uninstall=<name>` | | Remove installed files (claude, opencode, all, ...) |
+| `--no-validate` | | Skip compliance validation after --update |
+| `--prune` | | Interactive: review & remove non-manifest skills |
+| `--sync-docs` | | Sync canonical skills to all tool directories |
+| `--report-skills` | | Report local skills to dashboard telemetry API |
+| `--report-url=<url>` | | Dashboard URL for skill reporting |
+| `--import-ref` | | Import ref skills/agents to all platforms |
+| `--mode=<mode>` | | Show clone + stow instructions (repo) |
+| `--dest=<path>` | | Clone destination for --mode=repo |
+| `--skip-binary` | | Skip CLI binary update in --update |
+| `--help` | `-h` | Show help |
 
 ### GNU Stow Mode (Symlink-based)
 

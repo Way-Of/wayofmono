@@ -20,6 +20,32 @@
   Skip confirmation prompts.
 .PARAMETER DryRun
   Preview without writing files.
+.PARAMETER Skill
+  Specific component names to install (comma-separated).
+.PARAMETER Interactive
+  Interactive checkbox picker for components.
+.PARAMETER Local
+  Install to project-local directories.
+.PARAMETER Uninstall
+  Remove installed files (claude, opencode, all, ...).
+.PARAMETER NoValidate
+  Skip compliance validation after --update.
+.PARAMETER Prune
+  Interactive: review & remove non-manifest skills.
+.PARAMETER SyncDocs
+  Sync canonical skills to all tool directories.
+.PARAMETER ReportSkills
+  Report local skills to dashboard telemetry API.
+.PARAMETER ReportUrl
+  Dashboard URL for skill reporting.
+.PARAMETER ImportRef
+  Import ref skills/agents to all platforms.
+.PARAMETER Mode
+  Show clone + stow instructions (repo).
+.PARAMETER Dest
+  Clone destination for --mode=repo.
+.PARAMETER SkipBinary
+  Skip CLI binary update in --update.
 .PARAMETER Help
   Show this help message.
 .EXAMPLE
@@ -27,6 +53,11 @@
   .\install.ps1 -Tool all -Yes
   .\install.ps1 -Update
   .\install.ps1 -Compliance
+  .\install.ps1 -Tool opencode -Skill skills,agents
+  .\install.ps1 -Update -NoValidate
+  .\install.ps1 -Prune
+  .\install.ps1 -ReportSkills -ReportUrl https://cto.wayof.work
+  .\install.ps1 -Mode repo -Dest ~/.ai-engineering-harness
 .LINK
   https://github.com/Way-Of/wayofmono
 #>
@@ -39,7 +70,20 @@ param(
   [switch]$Check,
   [switch]$Yes,
   [switch]$DryRun,
-  [switch]$Help
+  [switch]$Help,
+  [string]$Skill,
+  [switch]$Interactive,
+  [switch]$Local,
+  [string]$Uninstall,
+  [switch]$NoValidate,
+  [switch]$Prune,
+  [switch]$SyncDocs,
+  [switch]$ReportSkills,
+  [string]$ReportUrl,
+  [switch]$ImportRef,
+  [string]$Mode,
+  [string]$Dest,
+  [switch]$SkipBinary
 )
 
 $ScriptUrl = "https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts"
@@ -126,22 +170,43 @@ function Show-Help {
   Write-Host ""
   Write-Host "  USAGE:" -ForegroundColor White
   Write-Host "    .\install.ps1 [-InstallCli] [-Tool <name>] [-Update] [-Compliance] [-Check] [-Yes] [-DryRun]"
+  Write-Host "                    [-Skill <name>] [-Interactive] [-Local] [-Uninstall <name>] [-NoValidate]"
+  Write-Host "                    [-Prune] [-SyncDocs] [-ReportSkills] [-ReportUrl <url>] [-ImportRef]"
+  Write-Host "                    [-Mode <mode>] [-Dest <path>] [-SkipBinary]"
   Write-Host ""
   Write-Host "  PARAMETERS:" -ForegroundColor White
-  Write-Host "    -InstallCli     Install/update ai-harness CLI binary"
-  Write-Host "    -Tool <name>    Install tool config (claude, opencode, gemini, pi, wocoder, antigravity, codex, all)"
-  Write-Host "    -Update         Full harness sync: CLI + docs + all tools + compliance"
-  Write-Host "    -Compliance     Validate all installed files match manifest"
-  Write-Host "    -Check          Compare installed versions against manifest"
-  Write-Host "    -Yes            Skip confirmation prompts"
-  Write-Host "    -DryRun         Preview without writing files"
-  Write-Host "    -Help           Show this help"
+  Write-Host "    -InstallCli       Install/update ai-harness CLI binary"
+  Write-Host "    -Tool <name>      Install tool config (claude, opencode, gemini, pi, wocoder, antigravity, codex, all)"
+  Write-Host "    -Update           Full harness sync: CLI + docs + all tools + compliance"
+  Write-Host "    -Compliance       Validate all installed files match manifest"
+  Write-Host "    -Check            Compare installed versions against manifest"
+  Write-Host "    -Yes              Skip confirmation prompts"
+  Write-Host "    -DryRun           Preview without writing files"
+  Write-Host "    -Skill <name>     Specific component names to install (comma-separated)"
+  Write-Host "    -Interactive      Interactive checkbox picker for components"
+  Write-Host "    -Local            Install to project-local directories"
+  Write-Host "    -Uninstall <name> Remove installed files (claude, opencode, all, ...)"
+  Write-Host "    -NoValidate       Skip compliance validation after --update"
+  Write-Host "    -Prune            Interactive: review & remove non-manifest skills"
+  Write-Host "    -SyncDocs         Sync canonical skills to all tool directories"
+  Write-Host "    -ReportSkills     Report local skills to dashboard telemetry API"
+  Write-Host "    -ReportUrl <url>  Dashboard URL for skill reporting"
+  Write-Host "    -ImportRef        Import ref skills/agents to all platforms"
+  Write-Host "    -Mode <mode>      Show clone + stow instructions (repo)"
+  Write-Host "    -Dest <path>      Clone destination for --mode=repo"
+  Write-Host "    -SkipBinary       Skip CLI binary update in --update"
+  Write-Host "    -Help             Show this help"
   Write-Host ""
   Write-Host "  EXAMPLES:" -ForegroundColor White
   Write-Host "    .\install.ps1 -InstallCli"
   Write-Host "    .\install.ps1 -Tool all -Yes"
   Write-Host "    .\install.ps1 -Update"
   Write-Host "    .\install.ps1 -Compliance"
+  Write-Host "    .\install.ps1 -Tool opencode -Skill skills,agents"
+  Write-Host "    .\install.ps1 -Update -NoValidate"
+  Write-Host "    .\install.ps1 -Prune"
+  Write-Host "    .\install.ps1 -ReportSkills -ReportUrl https://cto.wayof.work"
+  Write-Host "    .\install.ps1 -Mode repo -Dest ~/.ai-engineering-harness"
   Write-Host ""
   Write-Host "  AFTER INSTALL:" -ForegroundColor White
   Write-Host "    Run ai-harness from any terminal: ai-harness --tool=claude"
@@ -166,6 +231,19 @@ function Main {
   if ($Yes) { $denoArgs += "--yes" }
   if ($DryRun) { $denoArgs += "--dry-run" }
   if ($Tool) { $denoArgs += "--tool=$Tool" }
+  if ($Skill) { $denoArgs += "--skill=$Skill" }
+  if ($Interactive) { $denoArgs += "--interactive" }
+  if ($Local) { $denoArgs += "--local" }
+  if ($Uninstall) { $denoArgs += "--uninstall=$Uninstall" }
+  if ($NoValidate) { $denoArgs += "--no-validate" }
+  if ($Prune) { $denoArgs += "--prune" }
+  if ($SyncDocs) { $denoArgs += "--sync-docs" }
+  if ($ReportSkills) { $denoArgs += "--report-skills" }
+  if ($ReportUrl) { $denoArgs += "--report-url=$ReportUrl" }
+  if ($ImportRef) { $denoArgs += "--import-ref" }
+  if ($Mode) { $denoArgs += "--mode=$Mode" }
+  if ($Dest) { $denoArgs += "--dest=$Dest" }
+  if ($SkipBinary) { $denoArgs += "--skip-binary" }
 
   if ($denoArgs.Count -eq 3 -and -not $Help) {
     Write-Warn "No action specified."
