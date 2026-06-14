@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/wo-coding-agent",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "Coding agent CLI with read, bash, edit, write tools and session management",
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   "files": [
     "dist",
     "src",
+    "docs",
     "README.md"
   ],
   "scripts": {

@@ -416,16 +416,16 @@ interface PackageJson {
 
 const pkg = JSON.parse(readFileSync(getPackageJsonPath(), "utf-8")) as PackageJson;
 
-const piConfigName: string | undefined = "wo";
+const piConfigName: string | undefined = "wocode";
 export const PACKAGE_NAME: string = pkg.name || "@wayofmono/wo-coding-agent";
 export const APP_NAME: string = "wocode";
 export const APP_TITLE: string = "WayOfMono Coding Agent";
-export const CONFIG_DIR_NAME: string = ".wo";
+export const CONFIG_DIR_NAME: string = ".wocoder";
 export const VERSION: string = pkg.version || "0.0.0";
 
 // e.g., PI_CODING_AGENT_DIR or TAU_CODING_AGENT_DIR
-export const ENV_AGENT_DIR = `${APP_NAME.toUpperCase()}_CODING_AGENT_DIR`;
-export const ENV_SESSION_DIR = `${APP_NAME.toUpperCase()}_CODING_AGENT_SESSION_DIR`;
+export const ENV_AGENT_DIR = `WOCODE_CODING_AGENT_DIR`;
+export const ENV_SESSION_DIR = `WOCODE_CODING_AGENT_SESSION_DIR`;
 
 export function expandTildePath(path: string): string {
 	if (path === "~") return homedir();
