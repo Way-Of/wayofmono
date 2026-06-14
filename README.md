@@ -110,6 +110,50 @@ ai-harness --tool=opencode --skill=skills,commands,themes --yes
 .\install.ps1 -Tool opencode -Skill "skills,agents" -DryRun
 ```
 
+### Step 3d: Install wocoder via npm/pnpm (Alternative)
+
+Install wocoder directly from npm without the harness CLI — one copy-paste:
+
+**Local (project) install — npm:**
+```bash
+npm install --save-dev @wayofmono/wo-coding-agent
+npx wocode --init
+./wocode
+# Update: pnpm update @wayofmono/wo-coding-agent
+# Uninstall: npm uninstall @wayofmono/wo-coding-agent
+```
+
+**Local (project) install — pnpm:**
+```bash
+pnpm add -D @wayofmono/wo-coding-agent
+pnpm wocode --init
+./wocode
+# Update: pnpm update @wayofmono/wo-coding-agent
+# Uninstall: pnpm remove @wayofmono/wo-coding-agent
+```
+
+**Global install (cross-project):**
+```bash
+npm install -g @wayofmono/wo-coding-agent
+wocode --init
+wocode
+# Update: npm update -g @wayofmono/wo-coding-agent
+# Uninstall: npm uninstall -g @wayofmono/wo-coding-agent
+```
+
+**Install wouser (User Assistant) via npm/pnpm:**
+```bash
+# Local project install
+npm install @wayofmono/wo-agent
+npx wouser --init
+./wouser
+
+# Or pnpm
+pnpm add @wayofmono/wo-agent
+pnpm wouser --init
+./wouser
+```
+
 ### Step 3c: Install to Project-Local (Dev Mode)
 
 Install configs to `.claude/`, `.opencode/`, `.wo/`, etc. in current project — one copy-paste:
@@ -1121,13 +1165,10 @@ perf: Improve performance
 
 All deployments include: Content Security Policy, X-Frame-Options, X-Content-Type-Options, Referrer Policy
 
-### Scanning
+### Scanning (one copy-paste)
 
 ```bash
 pnpm audit
-```
-
-```bash
 pnpm run security:check
 ```
 
