@@ -656,6 +656,41 @@ async function removeStaleFiles(
   if (failed > 0) console.log(`  ${opts.toolName}: ${green(String(removed))} removed, ${red(String(failed))} failed`);
 }
 
+async function installExtensionDependencies(targetDir: string): Promise<void> {
+  const extensionsDir = join(targetDir, "extensions");
+  try {
+    const entries = await Deno.readDir(extensionsDir);
+    for (const entry of entries) {
+      if (!entry.isDirectory) continue;
+      const extDir = join(extensionsDir, entry.name);
+      const packageJsonPath = join(extDir, "package.json");
+      try {
+        const pkgText = await Deno.readTextFile(packageJsonPath);
+        const pkg = JSON.parse(pkgText);
+        if (pkg.dependencies && Object.keys(pkg.dependencies).length > 0) {
+          console.log(`  ${o("⟳")} Installing dependencies for extension: ${entry.name}`);
+          const cmd = new Deno.Command("npm", {
+            args: ["install", "--prefix", extDir, "--loglevel", "error"],
+            stdout: "inherit",
+            stderr: "inherit",
+          });
+          const result = await cmd.output();
+          if (result.success) {
+            console.log(`  ${o("✧")} Dependencies installed for ${entry.name}`);
+          } else {
+            const err = new TextDecoder().decode(result.stderr);
+            console.log(`  ${cross()} Failed to install dependencies for ${entry.name}: ${err}`);
+          }
+        }
+      } catch {
+        // No package.json or not valid JSON, skip
+      }
+    }
+  } catch {
+    // No extensions directory
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Core installer
 // ---------------------------------------------------------------------------
@@ -830,6 +865,11 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
   // Write version marker so --check can detect future updates
   if (!opts.dryRun) {
     await writeInstalledVersion(targetDir, manifest.version);
+  }
+
+  // Install extension dependencies for extensions that have package.json
+  if (!opts.dryRun) {
+    await installExtensionDependencies(targetDir);
   }
 }
 

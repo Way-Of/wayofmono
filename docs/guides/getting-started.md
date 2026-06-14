@@ -2,59 +2,93 @@
 
 Welcome to Wo — your coding co-pilot! 🚀
 
-## What is Wo?
+## The Three Layers
 
-Wo is an AI coding agent harness that works across 7 tools:
-- **OpenCode** (`opencode`)
-- **Claude Code** (`claude`)
-- **Gemini CLI** (`gemini`)
-- **Pi** (`pi`)
-- **Codex** (`codex`)
-- **Antigravity** (`antigravity`)
-- **Wo Coder** (`wocoder`)
+Understanding the architecture helps you use the right tool for the job:
+
+```
+┌─────────────────────────────────────┐
+│    AI Engineering Harness           │  Core: skills, agents, commands for 7 tools
+│    (packages/@aiengineeringharness) │  Install: ai-harness --tool=all --yes
+├─────────────────────────────────────┤
+│    Wo Coder (wocode)                │  CLI: TUI coding assistant for engineers
+│    (@wayofmono/wo-coding-agent)     │  Install: npm install --save-dev @wayofmono/wo-coding-agent
+├─────────────────────────────────────┤
+│    Wo User (wouser)                 │  SDK: Embed agent capabilities in your app
+│    (@wayofmono/wo-agent)            │  Install: npm install @wayofmono/wo-agent
+├─────────────────────────────────────┤
+│    Wo (persona)                     │  You're talking to me! 👋
+└─────────────────────────────────────┘
+```
+
+**Quick rule**: 
+- **Engineer wanting a coding assistant?** → Use **Wo Coder** (dev-dependency)
+- **Building an AI feature in your app?** → Use **Wo User** (runtime dependency)  
+- **Managing skills across tools?** → Use **AI Engineering Harness**
 
 ## First Steps
 
-### 1. Install the Harness
+### Option A: Use Wo Coder (Recommended for Engineers)
+
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
-ai-harness --tool=all --yes
+# Quick start
+npm install --save-dev @wayofmono/wo-coding-agent
+npx wocode --init
+./wocode
 ```
 
-### 2. Start Coding
-Open your project and start Wo:
+### Option B: Full Harness (All 7 Tools)
+
 ```bash
-wo
-# or for your specific tool:
+# Install CLI
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+
+# Sync everything
+ai-harness --tool=all --yes
+
+# Start your preferred tool
 opencode
 claude
 gemini
 pi
+# etc.
 ```
 
-### 3. Ask Wo Anything
+### Option C: Use Wo User in Your App
+
+```bash
+npm install @wayofmono/wo-agent
+# Then use as SDK in your code
+```
+
+## Ask Wo Anything
+
+Once running, just talk to me:
+
 ```
 Wo, how do I create a new React component?
 Wo, what's the command to run tests?
 Wo, help me debug this error
+Wo, show me the project structure
 ```
 
 ## Key Concepts
 
 ### Skills
-Skills are reusable instruction sets that teach Wo new capabilities. They live in:
+Reusable instruction sets synced by the Harness to all 7 tools:
 - `~/.config/opencode/skills/` (OpenCode)
 - `~/.claude/skills/` (Claude)
+- `~/.wocoder/agent/skills/` (Wo Coder)
 - etc.
 
 ### Tickets
-Work is tracked via tickets in `thoughts/<project>/shared/tickets/`:
+Work tracked in `thoughts/<project>/shared/tickets/`:
 - `WOMONO-XXX` — WayOfMono tasks
-- `WOW-XXX` — WayOfWork tasks
+- `WOW-XXX` — WayOfWork tasks  
 - `OPT-XXX` — OptiCat tasks
 
 ### Commands
-Built-in slash commands:
+Built-in slash commands (work in all tools):
 - `/help` — Show all commands
 - `/create_plan` — Generate implementation plan
 - `/implement_plan` — Execute approved plan
@@ -66,16 +100,24 @@ Built-in slash commands:
 ## Quick Tips
 
 - **No manual reading needed** — Just ask: "How do I...?" or "What's the command for...?"
-- **Skills auto-sync** — Run `ai-harness --sync skills` to update all tools
+- **Skills auto-sync** — Run `ai-harness --sync-docs` to update all tools
 - **Git workflow** — Use `/commit` for well-structured commits
 - **Observability** — Use `/validate_telemetry` to verify traces
 
+## Documentation Guides
+
+| Guide | Description |
+|-------|-------------|
+| [Wo Coder (wocode)](wocoder/) | CLI coding assistant for engineers |
+| [Wo User (wouser)](wouser/) | SDK for embedding agent in your app |
+| [AI Engineering Harness](ai-harness/) | Core skill/agent management for 7 tools |
+| [Installation & Update](installation-and-update.md) | Detailed install instructions |
+
 ## Next Steps
 
-- Read [Installation & Update Guide](installation-and-update.md)
-- Explore [Skills Guide](skills.md)
-- Check [Commands Reference](commands.md)
-- Learn [Project Structure](project-structure.md)
+1. Pick your layer above
+2. Follow the corresponding guide
+3. Start coding with Wo!
 
 ---
 
