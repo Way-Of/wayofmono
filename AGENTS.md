@@ -3,6 +3,116 @@
 This is the **AGENTS.md for the WayOfMono monorepo** (not the förråd thoughts repo).
 The förråd AGENTS.md is at `thoughts/AGENTS.md`.
 
+---
+
+## AGENTS.md Architecture Standard
+
+This file follows the **Agent Ecosystem Manifest** blueprint — a runtime manifest and single source of truth for multi-agent systems. It aligns human developers, system administrators, and models on boundaries, routing logic, and execution layers.
+
+### Global Orchestration Rules
+
+- All agents must output structured JSON when interacting with the execution layer
+- If an agent encounters an unrecoverable validation error, it must route state back to the coordinator
+- No agent may invoke an external tool without an explicit schema check
+- Negative constraints are mandatory: every agent must define what it is *not* allowed to do
+
+### Agent Directory
+
+#### Agent: Harness Installer (ai-harness)
+- **Identifier:** `harness_installer_v1`
+- **Primary Runtime:** Deno (install.ts)
+- **Target Model:** System (deterministic execution)
+- **Context Window:** N/A (CLI binary)
+
+**Core Responsibility:** Install, update, sync, and validate skills/agents/commands across 7 AI coding tool frontends
+
+**Inputs & Outputs:**
+- **Upstream:** User CLI commands (`--tool`, `--update`, `--sync-docs`, etc.)
+- **Downstream:** Manifest.json, tool config directories (`~/.claude/`, `~/.config/opencode/`, etc.)
+
+**Constraints:**
+- Never modify user code outside target config directories
+- Never delete files not in manifest (unless `--prune` explicitly confirmed)
+- Must validate all paths exist before write operations
+
+---
+
+#### Agent: Skill Auto-Updater (skill_auto_update)
+- **Identifier:** `skill_auto_updater_v1`
+- **Primary Runtime:** Platform-native (each tool's agent runtime)
+- **Target Model:** Host tool's configured model
+
+**Core Responsibility:** Auto-discover, sync, and update skills across all 7 frontends
+
+**Inputs & Outputs:**
+- **Upstream:** Manifest changes, GitHub releases, skill registry updates
+- **Downstream:** Per-tool skill directories
+
+**Constraints:**
+- Never overwrite user-modified skills without confirmation
+- Must preserve per-tool naming conventions (snake_case vs kebab-case)
+- Must validate frontmatter compliance before deployment
+
+---
+
+#### Agent: Ticket Manager (ticket_manager)
+- **Identifier:** `ticket_manager_v1`
+- **Primary Runtime:** Platform-native
+- **Target Model:** Host tool's configured model
+
+**Core Responsibility:** Manage tickets across WOMONO/WOW/OPT namespaces with full lifecycle
+
+**Inputs & Outputs:**
+- **Upstream:** User requests, auto-ticket-creator detections
+- **Downstream:** `thoughts/<project>/shared/tickets/`
+
+**Constraints:**
+- Never create tickets without proper namespace prefix
+- Must enforce production-ready standards (no mock data)
+- Must update status on every work session
+
+---
+
+#### Agent: Codebase Analyzer (codebase_analyzer)
+- **Identifier:** `codebase_analyzer_v1`
+- **Primary Runtime:** Platform-native
+- **Target Model:** Host tool's configured model
+
+**Core Responsibility:** Analyze implementation details, trace data flow, identify architectural patterns
+
+**Inputs & Outputs:**
+- **Upstream:** User queries, other agents
+- **Downstream:** Structured analysis reports
+
+**Constraints:**
+- Never modify code — read-only analysis
+- Must cite file paths with line numbers (`file_path:line_number`)
+
+---
+
+#### Agent: CTO Dashboard (cto_dashboard)
+- **Identifier:** `cto_dashboard_v1`
+- **Primary Runtime:** Next.js 16 (ui/)
+- **Target Model:** N/A (web dashboard)
+
+**Core Responsibility:** Telemetry, standups, tickets, review queues, skills health visualization
+
+**Inputs & Outputs:**
+- **Upstream:** Skill reports, GitHub webhooks, ticket updates
+- **Downstream:** Dashboard UI, API endpoints
+
+**Constraints:**
+- Must not expose secrets in UI
+- Must validate all API inputs
+
+### AGENTS.md Maintenance Protocol
+
+**Automatic Sync Verification:** The harness includes `scripts/compliance-check.ts` and `scripts/docs-sync.ts` that verify AGENTS.md content matches active code.
+
+**Prompt Metrics Tracking:** Version changes to agent definitions are tracked in `CHANGELOG.md` with triggering issues and outcome metrics.
+
+**Context Budget Review:** Monthly review of agent system prompts — constraints not triggered in 30 days move to defensive code layers.
+
 ## Project Overview
 
 **ALLWAYS USE CHANGELOG.md**
@@ -172,6 +282,17 @@ Any AI agent working with this repo:
 - `thoughts/wayofmono/docs/best-practices/` — Production-ready standards
 - `docs/ai-coding-tools/` — **Authoritative reference for all 7 AI coding tools** (install, config, extensions, MCP, subagents, commands, capabilities). Each tool has a dedicated `.md` file verified against official docs (June 2026).
 - `docs/guides/` — **Installation, commands, skills, troubleshooting, project structure** guides for the harness and tools (getting-started, installation, commands, skills, wocoder, wouser, dashboard, project-structure, troubleshooting)
+- `README.md` — Complete installation guide, CLI reference, package list, dashboard, CI/CD
+- `CHANGELOG.md` — Full version history
+- `docs/fixes/` — Release notes and bug fixes for harness, wocode, wouser
+- `docs/extensions.md` — Extension system documentation
+- `docs/packages.md` — NPM package details
+- `docs/themes.md` — Theme system
+- `docs/keybindings.md` — Keybinding reference
+- `docs/sdk.md` — SDK documentation
+- `docs/models.md` — Model configuration
+- `docs/tui.md` — TUI components
+- `docs/prompt-templates.md` — Prompt template reference
 
 ## Production-Ready Mandate
 
@@ -182,3 +303,67 @@ All code must be:
 - Secure (input validation, auth, rate limiting)
 - Edge cases handled (empty states, timeouts, duplicates)
 - Tests for failure modes (not just happy path)
+
+## Key Documentation URLs
+
+| Document | Purpose |
+|----------|---------|
+| `README.md` | Complete installation guide, CLI reference, package list, dashboard, CI/CD |
+| `CHANGELOG.md` | Full version history |
+| `docs/fixes/` | Release notes and bug fixes for harness, wocode, wouser |
+| `docs/extensions.md` | Extension system documentation |
+| `docs/packages.md` | NPM package details |
+| `docs/themes.md` | Theme system |
+| `docs/keybindings.md` | Keybinding reference |
+| `docs/sdk.md` | SDK documentation |
+| `docs/models.md` | Model configuration |
+| `docs/tui.md` | TUI components |
+| `docs/prompt-templates.md` — Prompt template reference |
+| `docs/ai-coding-tools/` | Authoritative reference for all 7 AI coding tools (verified June 2026) |
+| `docs/guides/` | Installation, commands, skills, troubleshooting, project structure guides |
+| `docs/best-practices/` | Production-ready standards |
+
+## NPM Packages (13 packages under @wayofmono scope)
+
+| Package | Description |
+|---------|-------------|
+| `@wayofmono/wo-ai` | Multi-Provider LLM API (OpenAI, Anthropic, Gemini) |
+| `@wayofmono/wo-tui` | High-Performance Terminal UI Library |
+| `@wayofmono/wo-agent-core` | Central Agent Runtime & Extension API |
+| `@wayofmono/wo-agent` | General-Purpose Agent SDK & CLI (**wouser**) |
+| `@wayofmono/wo-coding-agent` | CLI Coding Agent (**wocode**) |
+| `@wayofmono/wo-skill-docs` | Multi-format Documentation Expert |
+| `@wayofmono/wo-mermaid` | TUI Mermaid Renderer (ASCII art) |
+| `@wayofmono/web-access` | Web search, URL fetching, GitHub cloning, PDF/YouTube extraction |
+| `@wayofmono/lens` | Codebase Analysis & Safety Engine |
+| `@wayofmono/wo-web-ui` | Web UI Components (React 19) |
+| `@wayofmono/telemetry` | Telemetry and metrics |
+| `@wayofmono/telegram` | Telegram bot integration |
+| `@wayofmono/whatsapp` | WhatsApp bot integration |
+
+## External Integrations
+
+| Project | Description | Integration |
+|---------|-------------|-------------|
+| [Way of Pi](https://github.com/Way-Of/pi) | AI-augmented engineering platform (Electron/Web IDE) | Uses `@wayofmono/wo-agent` as backend SDK |
+| [Way of Work](https://github.com/Way-Of/work) | AI-powered productivity platform | Uses `@wayofmono/wo-agent` as user agent SDK |
+
+## CI/CD Commands
+
+```bash
+# Run tests
+pnpm -r test
+
+# Typecheck
+pnpm -r --parallel typecheck
+
+# Sync docs check
+ai-harness --sync-docs --check
+
+# Build
+pnpm -r build
+
+# Pre-deploy
+curl https://cto.wayof.work/api/health
+cd ui && pnpm build
+```

@@ -142,63 +142,88 @@ Each folder contains: `skills/`, `agents/`, `prompts/`, `commands/`, `settings.j
 
 ### Step 3b: Install Individual Tools (one copy-paste per tool)
 
+**Use this if you only want specific tools instead of all 7.**
+
+**What each tool does:**
+- **wocoder** — Wo Coder, our primary high-performance coding agent (recommended)
+- **pi** — Pi Agent, lightweight agent standard
+- **opencode** — Open-source TUI (terminal UI) coding agent
+- **claude** — Anthropic's Claude Code (requires Anthropic API key)
+- **gemini** — Google's Gemini CLI (requires Google API key)
+- **antigravity** — Autonomous agent platform
+- **codex** — OpenAI's Codex agent (requires OpenAI API key)
+
 **macOS / Linux / Windows (bash) — pick one tool per copy-paste:**
 
 ```bash
+# Wo Coder — our primary coding agent (recommended starting point)
 ai-harness --tool=wocoder --yes
 ```
 
 ```bash
+# Pi Agent — lightweight agent standard
 ai-harness --tool=pi --yes
 ```
 
 ```bash
+# OpenCode — open-source terminal UI coding agent
 ai-harness --tool=opencode --yes
 ```
 
 ```bash
+# Claude Code — Anthropic's coding agent (needs ANTHROPIC_API_KEY)
 ai-harness --tool=claude --yes
 ```
 
 ```bash
+# Gemini CLI — Google's multimodal agent (needs GOOGLE_API_KEY)
 ai-harness --tool=gemini --yes
 ```
 
 ```bash
+# Antigravity — autonomous agent platform
 ai-harness --tool=antigravity --yes
 ```
 
 ```bash
+# Codex — OpenAI's coding agent (needs OPENAI_API_KEY)
 ai-harness --tool=codex --yes
 ```
 
 **Windows (PowerShell wrapper) — pick one tool per copy-paste:**
 
 ```powershell
+# Wo Coder
 .\install.ps1 -Tool wocoder -Yes
 ```
 
 ```powershell
+# Pi Agent
 .\install.ps1 -Tool pi -Yes
 ```
 
 ```powershell
+# OpenCode
 .\install.ps1 -Tool opencode -Yes
 ```
 
 ```powershell
+# Claude Code
 .\install.ps1 -Tool claude -Yes
 ```
 
 ```powershell
+# Gemini CLI
 .\install.ps1 -Tool gemini -Yes
 ```
 
 ```powershell
+# Antigravity
 .\install.ps1 -Tool antigravity -Yes
 ```
 
 ```powershell
+# Codex
 .\install.ps1 -Tool codex -Yes
 ```
 
@@ -244,9 +269,20 @@ ai-harness --tool=opencode --skill=skills,commands,themes --yes
 
 ### Step 3d: Install wocoder via npm/pnpm (Alternative)
 
-Install wocoder directly from npm without the harness CLI — **each command is a separate copy-paste**:
+**Use this if you want to install wocoder directly as an npm package in your project, without the harness CLI.**
+
+**What's the difference?**
+- **Harness CLI method (Steps 1-3)**: Installs configs globally to `~/.wocoder/` — shared across all projects
+- **npm/pnpm method**: Installs wocoder as a dependency in your project's `node_modules/` — project-specific
+
+**When to use which?**
+- **Harness CLI**: You want the same setup across all projects, easy updates with `ai-harness --update`
+- **npm/pnpm**: You want wocoder bundled with your project, version-locked in `package.json`, CI/CD friendly
+
+---
 
 **Local (project) install — npm:**
+> `--save-dev` adds it to `devDependencies` (tools for developers, not shipped to users)
 
 ```bash
 npm install --save-dev @wayofmono/wo-coding-agent
@@ -255,10 +291,12 @@ npm install --save-dev @wayofmono/wo-coding-agent
 ```bash
 npx wocode --init
 ```
+> Creates `.wo/` folder in your project with config files
 
 ```bash
 ./wocode
 ```
+> Starts the wocoder agent
 
 ```bash
 # Update later: pnpm update @wayofmono/wo-coding-agent
@@ -269,6 +307,7 @@ npx wocode --init
 ```
 
 **Local (project) install — pnpm:**
+> `-D` = `--save-dev` (shorthand)
 
 ```bash
 pnpm add -D @wayofmono/wo-coding-agent
@@ -291,6 +330,7 @@ pnpm wocode --init
 ```
 
 **Global install (cross-project):**
+> Installs to global npm prefix, available everywhere as `wocode` command
 
 ```bash
 npm install -g @wayofmono/wo-coding-agent
@@ -313,6 +353,7 @@ wocode
 ```
 
 **Install wouser (User Assistant) via npm/pnpm:**
+> wouser is a standard dependency (not dev) because it's an SDK your app might use at runtime
 
 ```bash
 # Local project install
@@ -342,19 +383,43 @@ pnpm wouser --init
 
 ### Step 3c: Install to Project-Local (Dev Mode)
 
-Install configs to `.claude/`, `.opencode/`, `.wo/`, etc. in current project — **each command is a separate copy-paste**:
+**Use this to install tool configs directly in your project folder (not globally).**
+
+**Why use `--local`?**
+- **Global install (default)**: Configs go to `~/.claude/`, `~/.wocoder/`, etc. — shared across all projects
+- **Local install (`--local`)**: Configs go to `./.claude/`, `./.wo/`, etc. in your current project folder
+- **Use case**: Team sharing (commit `.claude/` to git), project-specific settings, CI/CD pipelines
+
+**What gets created:**
+```
+your-project/
+├── .wo/
+│   ├── agent/skills/      # 81 skills for wocode
+│   ├── settings.json      # wocode settings
+│   └── models.json        # LLM provider config
+├── .claude/
+│   ├── skills/            # 90 skills for Claude Code
+│   └── settings.json
+├── .config/opencode/
+│   ├── skills/            # 91 skills for OpenCode
+│   └── opencode.json
+└── ... (other tools)
+```
 
 **macOS / Linux / Windows (bash):**
 
 ```bash
+# Install wocoder config locally
 ai-harness --tool=wocoder --local --yes
 ```
 
 ```bash
+# Install Pi config locally
 ai-harness --tool=pi --local --yes
 ```
 
 ```bash
+# Install ALL 7 tools locally
 ai-harness --tool=all --local --yes
 ```
 > Creates `./.wo/agent/`, `./.pi/agent/`, `./.config/opencode/`, etc. in your project folder.
@@ -362,16 +427,21 @@ ai-harness --tool=all --local --yes
 **Windows (PowerShell wrapper):**
 
 ```powershell
+# Install wocoder config locally
 .\install.ps1 -Tool wocoder -Local -Yes
 ```
 
 ```powershell
+# Install Pi config locally
 .\install.ps1 -Tool pi -Local -Yes
 ```
 
 ```powershell
+# Install ALL 7 tools locally
 .\install.ps1 -Tool all -Local -Yes
 ```
+
+**Tip**: Commit the generated folders (`.wo/`, `.claude/`, etc.) to git so your team gets the same setup!
 
 ### Step 3d: Interactive Component Selection (--interactive / -i)
 
@@ -396,47 +466,63 @@ ai-harness --tool=claude -i
 
 ### Update
 
-Full harness sync: CLI binary + docs + all tools + stale cleanup + compliance validation — **each command is a separate copy-paste**:
+**Run this regularly to get the latest skills, agents, and tool configs.**
+
+**What `--update` does:**
+1. Updates the `ai-harness` CLI binary to latest version
+2. Syncs all 7 tool configs with latest skills/agents/prompts from GitHub
+3. Removes stale/obsolete skill files (cleanup)
+4. Runs compliance validation (checks all files match manifest)
+5. Shows a summary of what changed
 
 **macOS / Linux / Windows (bash):**
 
 ```bash
-# Standard update — run this regularly
+# Standard update — run this regularly (weekly or before starting work)
 ai-harness --update
 ```
 
 ```bash
-# Skip compliance validation after update (faster)
+# Skip compliance validation after update (faster, use if you're in a hurry)
 ai-harness --update --no-validate
 ```
 
 ```bash
-# Skip CLI binary update (only sync tools/docs)
+# Skip CLI binary update (only sync tools/docs, keep current CLI version)
 ai-harness --update --skip-binary
 ```
 
 ```bash
-# Preview without writing (see what would change)
+# Preview without writing (see what would change — safe to run anytime)
 ai-harness --update --dry-run
 ```
 
 **Windows (PowerShell wrapper):**
 
 ```powershell
+# Standard update
 .\install.ps1 -Update
 ```
 
 ```powershell
+# Skip compliance validation
 .\install.ps1 -Update -NoValidate
 ```
 
 ```powershell
+# Skip CLI binary update
 .\install.ps1 -Update -SkipBinary
 ```
 
 ```powershell
+# Preview only
 .\install.ps1 -Update -DryRun
 ```
+
+**How often should you update?**
+- **Weekly** for active development
+- **Before starting a new project/feature**
+- **When you see "UPDATE AVAILABLE" in `ai-harness --check` output**
 
 ### Major Update (full refresh after a breaking overhaul)
 
@@ -493,18 +579,25 @@ ai-harness --prune
 
 ### Sync Documentation (--sync-docs)
 
-Sync canonical skills to all tool skill directories — **each command is a separate copy-paste**:
+**Syncs the 81 canonical skills from the harness to all 7 tool directories.**
+
+**When to use:**
+- After editing skills in `packages/@aiengineeringharness/` (the source of truth)
+- To verify all tools have the latest skill versions
+- Part of the `--update` process (runs automatically)
 
 **macOS / Linux / Windows (bash):**
 
 ```bash
+# Sync all skills to all 7 tools
 ai-harness --sync-docs
 ```
 
 ```bash
-# Preview only (no changes)
+# Preview only (no changes) — safe to run anytime to check status
 ai-harness --sync-docs --check
 ```
+> Output shows: "Would sync: X files" or "All skills in sync"
 
 **Windows (PowerShell wrapper):**
 
@@ -516,18 +609,29 @@ ai-harness --sync-docs --check
 .\install.ps1 -SyncDocs -Check
 ```
 
+---
+
 ### Report Skills to Dashboard (--report-skills / --report-url)
 
-Report local skills to CTO Dashboard telemetry API — **each command is a separate copy-paste**:
+**Sends your local skills inventory to the CTO Dashboard for team visibility.**
+
+**What it reports:**
+- Which skills are installed for each tool
+- Skill versions (from manifest)
+- Tool versions
+- Timestamp
+
+**Used by:** CTO Dashboard at https://cto.wayof.work to show skill health across all machines/developers.
 
 **macOS / Linux / Windows (bash):**
 
 ```bash
+# Report to default dashboard (cto.wayof.work)
 ai-harness --report-skills
 ```
 
 ```bash
-# Custom dashboard URL
+# Custom dashboard URL (self-hosted)
 ai-harness --report-skills --report-url https://cto.wayof.work
 ```
 
@@ -541,9 +645,18 @@ ai-harness --report-skills --report-url https://cto.wayof.work
 .\install.ps1 -ReportSkills -ReportUrl "https://cto.wayof.work"
 ```
 
+---
+
 ### Import Reference Skills (--import-ref)
 
-Import reference skills/agents to all platforms — **each command is a separate copy-paste**:
+**Imports reference skills/agents from the docs/ folder to all 7 tool platforms.**
+
+**What are reference skills?**
+Skills that live in `docs/skills/` and `docs/agents/` as documentation/examples. This command converts them to the proper format for each tool and installs them.
+
+**When to use:**
+- After adding new reference skills to `docs/`
+- To bootstrap a new tool with documented skills
 
 **macOS / Linux / Windows (bash):**
 
@@ -557,17 +670,27 @@ ai-harness --import-ref
 .\install.ps1 -ImportRef
 ```
 
+---
+
 ### Repo / Stow Mode (--mode / --dest)
 
-Show clone + stow instructions for GNU Stow-based installation — one copy-paste:
+**Shows instructions for GNU Stow-based installation (symlink approach).**
+
+**What is GNU Stow?**
+A symlink farm manager. Instead of copying files, it creates symlinks from your home directory to the repo. Benefits:
+- **Single source of truth**: Edit files in the repo, changes reflect immediately
+- **Easy updates**: `git pull` updates everything
+- **Clean uninstall**: `stow -D` removes all symlinks
 
 **macOS / Linux / Windows (bash):**
 
 ```bash
+# Show stow instructions for all tools
 ai-harness --mode=repo
 ```
 
 ```bash
+# Custom clone destination (default: ~/.ai-engineering-harness)
 ai-harness --mode=repo --dest=~/.ai-engineering-harness
 ```
 
@@ -579,6 +702,12 @@ ai-harness --mode=repo --dest=~/.ai-engineering-harness
 
 ```powershell
 .\install.ps1 -Mode repo -Dest "~/.ai-engineering-harness"
+```
+
+**After getting instructions, run:**
+```bash
+# Example: install all tools via stow
+./packages/@aiengineeringharness/setup.sh all
 ```
 
 ### Quick Reference: All PowerShell Flags
@@ -728,16 +857,59 @@ Each agent frontend loads skills from specific directories. The AI Engineering H
 
 ## 🦙 Prerequisites: Ollama
 
-WayOfMono defaults to using Ollama for local-first AI. Ensure it is installed and running — **each command is a separate copy-paste**:
+**WayOfMono defaults to using Ollama for local-first AI.** This means your code and data never leave your machine — no API keys, no cloud costs, full privacy.
+
+**What is Ollama?**
+A tool that runs LLMs (Large Language Models) locally on your computer. Think of it as "Docker for AI models."
+
+**Why Ollama?**
+- **Private**: Your code never sent to external APIs
+- **Free**: No per-token costs
+- **Fast**: Runs on your GPU/CPU
+- **Offline**: Works without internet
+
+**Install Ollama — each command is a separate copy-paste:**
 
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
 ```
+> Downloads and runs the official Ollama installer. Creates `ollama` command and starts background service.
 
 ```bash
 ollama pull qwen3.5:9b
 ```
-> This downloads the qwen3.5:9b model (about 5GB). It runs locally on your machine — no API keys needed.
+> Downloads the **qwen3.5:9b** model (~5GB). This is our default model — excellent for coding, reasoning, and general tasks. Runs on most modern laptops (needs ~8GB RAM).
+
+**Verify Ollama works:**
+```bash
+ollama list
+```
+Should show `qwen3.5:9b` in the list.
+
+```bash
+ollama run qwen3.5:9b "Hello, write a hello world in Python"
+```
+Should respond with code.
+
+**Alternative models you can use:**
+```bash
+# Smaller/faster (4GB RAM)
+ollama pull qwen2.5:7b
+
+# Better coding (needs 16GB+ RAM)
+ollama pull codellama:13b
+
+# Best quality (needs 32GB+ RAM)
+ollama pull qwen3.5:32b
+```
+
+**Configure a different model:**
+Edit `~/.wocoder/agent/settings.json` or `.wo/settings.json`:
+```json
+{
+  "model": "codellama:13b"
+}
+```
 
 ## 📦 Zero-Pollution Installation
 
