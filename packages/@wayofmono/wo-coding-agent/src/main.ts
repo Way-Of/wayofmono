@@ -218,6 +218,13 @@ fi
 	console.log(chalk.green(`✓ Created launcher script: ./${APP_NAME}`));
 
 	console.log(`\n${chalk.bold("Success!")} You can now run the agent using: ${chalk.cyan(`./${APP_NAME}`)}`);
+	console.log(`\n${chalk.dim("Configuration:")}`);
+	console.log(`  ${chalk.cyan(`${CONFIG_DIR_NAME}/models.json`)}  ${chalk.dim("- LLM providers (default: Ollama + qwen3.5:9b)")}`);
+	console.log(`  ${chalk.cyan(`${CONFIG_DIR_NAME}/settings.json`)} ${chalk.dim("- Agent behavior & themes")}`);
+	console.log(`\n${chalk.dim("To use Ollama:")}`);
+	console.log(`  1. Install: ${chalk.cyan("curl -fsSL https://ollama.com/install.sh | sh")}`);
+	console.log(`  2. Pull model: ${chalk.cyan("ollama pull qwen3.5:9b")}`);
+	console.log(`  3. Run: ${chalk.cyan("./wocode")}`);
 }
 
 /**
@@ -635,7 +642,7 @@ export async function main(args: string[], options?: MainOptions) {
 			...services.diagnostics,
 			...collectSettingsDiagnostics(settingsManager, "runtime creation"),
 			...resourceLoader.getExtensions().errors.map(({ path, error }) => ({
-				type: "error" as const,
+				type: "warning" as const,
 				message: `Failed to load extension "${path}": ${error}`,
 			})),
 		];

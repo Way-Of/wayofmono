@@ -1,20 +1,26 @@
 # wo-coding-agent Fixes & Release Notes
 
-## v1.0.9 — 2026-06-14
+## v1.0.11 — 2026-06-14
 
-### Added: docs folder to npm package
-- **Files**: `docs/providers.md`, `docs/models.md`
-- **Reason**: Users need configuration guidance for providers and models
-- **Impact**: Global install now includes documentation for troubleshooting
-
-### Fixed: Ollama default configuration
-- **Files**: `src/main.ts` (create default models.json)
-- **Default**: Ollama provider with `qwen3.5:9b` model
-- **Settings**: Default provider = ollama, default model = qwen3.5:9b
+### Enhanced: Init command success message
+- **Files**: `src/main.ts` (init command)
+- **Added**: Clear guidance showing config file locations and Ollama setup steps
+- **Output**: Shows `.wocoder/models.json`, `.wocoder/settings.json` locations
+- **Added**: Step-by-step Ollama installation instructions
 
 ---
 
-## v1.0.8 — 2026-06-14
+## v1.0.10 — 2026-06-14
+
+### Fixed: Extension loading errors no longer crash wocode
+- **Files**: `src/main.ts` (runtime creation)
+- **Change**: Extension load errors changed from `type: "error"` → `type: "warning"`
+- **Impact**: wocode starts even if extensions fail to load (e.g., web-access missing deps)
+- **User sees**: Warning message instead of crash
+
+---
+
+## v1.0.9 — 2026-06-14
 
 ### Fixed: CONFIG_DIR_NAME separation
 - **Changed**: `.wo` → `.wocoder`
