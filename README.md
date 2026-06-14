@@ -460,6 +460,24 @@ pnpm wocode --init
 ./wocode
 ```
 
+```bash
+# Global installation (for use across all projects)
+npm install -g @wayofmono/wo-coding-agent
+```
+
+```bash
+wocode --init
+```
+
+```bash
+wocode
+```
+
+```bash
+# Update global installation
+npm update -g @wayofmono/wo-coding-agent
+```
+
 ## 🤖 User Assistant (wouser)
 
 For general use and SDK integration. Installed as a standard **dependency** (needed at runtime).
