@@ -11,6 +11,25 @@ This is the **AGENTS.md for förråd (f-rr-d)** — the centralized thoughts rep
 - **CTO Dashboard**: Telemetry, standups, tickets, review queues, skills health
 - **f-rr-d (förråd)**: Centralized thoughts storage at `github.com/Way-Of/f-rr-d`
 
+## This Monorepo Contains
+
+| Package | Purpose | Location |
+|---------|---------|----------|
+| **AI Engineering Harness** | Core installer, skills, agents, commands for 7 AI coding tools | `packages/@aiengineeringharness/` |
+| **wo-coding-agent (wocode)** | Native CLI coding agent for WayOfMono | `packages/wo-coding-agent/` |
+| **wo-agent (wouser)** | General-purpose user agent SDK + CLI | `packages/wo-agent/` |
+| **CTO Dashboard** | Next.js 16 dashboard for telemetry, tickets, reviews | `ui/` |
+| **Documentation** | Authoritative reference for all 7 AI coding tools | `docs/ai-coding-tools/` |
+| **Thoughts (f-rr-d)** | Tickets, plans, research, context engineering | `thoughts/` |
+
+## Key Projects in This Org
+
+| Project | Prefix | Description |
+|---------|--------|-------------|
+| **WayOfMono** | WOMONO | This monorepo - harness, agents, tooling |
+| **WayOfWork (WoW)** | WOW | Multi-tenant workspace platform with AI agents |
+| **OptiCat** | OPT | HVAC optimization platform with simulation backend |
+
 ## Repository Structure
 
 ```
@@ -151,6 +170,7 @@ Any AI agent working with this repo:
 - `thoughts/wayofmono/shared/tickets/ticket-template.md` — Canonical ticket template
 - `thoughts/wayofmono/docs/best-practices/` — Production-ready standards
 - `docs/ai-coding-tools/` — **Authoritative reference for all 7 AI coding tools** (install, config, extensions, MCP, subagents, commands, capabilities). Each tool has a dedicated `.md` file verified against official docs (June 2026).
+- `docs/guides/` — **Installation, commands, skills, troubleshooting, project structure** guides for the harness and tools (getting-started, installation, commands, skills, wocoder, wouser, dashboard, project-structure, troubleshooting)
 
 ## Production-Ready Mandate
 

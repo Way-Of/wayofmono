@@ -19,70 +19,126 @@ Each tool will have access to **81 battle-tested skills** for tasks like debuggi
 
 ### Step 1: Prerequisites — Deno
 
-**Deno** is a modern JavaScript/TypeScript runtime (like Node.js but more secure). Our installer runs on Deno.
+**What is Deno?**
+Deno is a modern JavaScript/TypeScript runtime (similar to Node.js but more secure by default). Our installer is written in TypeScript and runs on Deno.
 
-**Windows (PowerShell):**
+**Why Deno?**
+- Secure by default (no file/network access unless explicitly allowed)
+- Built-in TypeScript support (no compilation step needed)
+- Single executable, no `node_modules` folder
+- Our installer uses Deno's built-in tools to fetch and set up everything
+
+**Windows (PowerShell) — run as Administrator:**
 ```powershell
 irm https://deno.land/install.ps1 | iex
 ```
+> This downloads and runs the official Deno installer script. `irm` = Invoke-RestMethod, `iex` = Invoke-Expression.
 
 **macOS (Homebrew):**
 ```bash
 brew install deno
 ```
+> Homebrew is the standard package manager for macOS. If you don't have it, install from https://brew.sh first.
 
 **Linux/Unix:**
 ```bash
 curl -fsSL https://deno.land/install.sh | sh
 ```
+> `curl` downloads the script, `| sh` pipes it to the shell to execute. `-fsSL` = fail silently, show errors, follow redirects.
 
 **Verify it works:**
 ```bash
 deno --version
 ```
-You should see something like `deno 2.x.x`. If you get "command not found", restart your terminal.
+You should see something like `deno 2.x.x`. 
+
+**⚠️ If you get "command not found":**
+- **Windows**: Restart PowerShell/terminal, or run `refreshenv` if using Chocolatey
+- **macOS/Linux**: Restart your terminal, or run `source ~/.bashrc` (or `~/.zshrc`)
+- Make sure Deno's install directory is in your PATH (usually `~/.deno/bin`)
 
 ---
 
 ### Step 2: Install the CLI (One-time)
 
-This installs the `ai-harness` command that manages everything else.
+**What is the CLI?**
+The `ai-harness` command is your main interface for installing, updating, and managing all 7 AI tools and their shared skills. You install it once, then use it for everything.
+
+**What does `--install-cli` do?**
+- Downloads the latest installer script from GitHub
+- Compiles it to a fast binary (`ai-harness`)
+- Places it in your PATH (usually `~/.deno/bin/ai-harness`)
 
 **macOS / Linux:**
 ```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 ```
+> `-A` = allow all permissions (network, file system). The script needs to download files and write the binary.
 
 **Windows (PowerShell):**
 ```powershell
 deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 ```
+> `--reload` forces Deno to re-download the script (bypasses cache). **Required on first run on Windows** due to Deno's caching behavior. Later updates work without it.
 
-> **Windows users**: First run needs `--reload` to bypass Deno's cache. Later updates work without it.
-
-**Alternative (PowerShell wrapper):**
+**Alternative (PowerShell wrapper — easier for Windows):**
 ```powershell
 iex (iwr https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ps1 -useb)
 ```
-Then inside that session: `install.ps1 -InstallCli`
+> This downloads and runs a PowerShell wrapper script that provides a friendlier interface. `-useb` = UseBasicParsing (avoids IE COM object issues).
+
+Then inside that session:
+```powershell
+install.ps1 -InstallCli
+```
+
+**Verify CLI works:**
+```bash
+ai-harness --help
+```
+You should see the help output with all available commands.
 
 ---
 
 ### Step 3: Install All 7 Tools at Once (Recommended)
 
-This one command installs configurations for all 7 AI tools with all 81 skills.
+**What does this do?**
+One command sets up configurations for **all 7 AI coding tools** with **81 shared skills**, agents, prompts, and settings. This is the fastest way to get started.
+
+**What are the 7 tools?**
+1. **wocode** (Wo Coder) — our primary coding agent
+2. **wouser** — general-purpose AI assistant  
+3. **Claude Code** — Anthropic's coding agent
+4. **OpenCode** — Open-source TUI-driven agent
+5. **Gemini CLI** — Google's multimodal agent
+6. **Pi** — Pi Agent standard
+7. **Codex** — OpenAI's coding agent
+8. **Antigravity** — Autonomous agent platform
 
 **macOS / Linux / Windows (bash):**
 ```bash
 ai-harness --tool=all --yes
 ```
+> `--tool=all` = install all 7 tools. `--yes` = skip confirmation prompts.
 
 **Windows (PowerShell wrapper):**
 ```powershell
 .\install.ps1 -Tool all -Yes
 ```
 
-**What happens**: Creates config folders at `~/.config/opencode/`, `~/.claude/`, `~/.gemini/`, `~/.pi/agent/`, `~/.codex/`, `~/.antigravity/`, `~/.wocoder/` — each with skills, agents, and settings.
+**What happens (takes 30-60 seconds):**
+Creates config folders in your home directory:
+- `~/.config/opencode/` — OpenCode config + 91 skills
+- `~/.claude/` — Claude Code config + 90 skills
+- `~/.gemini/` — Gemini CLI config + 90 skills
+- `~/.pi/agent/` — Pi config + 85 skills
+- `~/.codex/` — Codex config + 90 skills
+- `~/.antigravity/` — Antigravity config + 89 skills
+- `~/.wocoder/` — Wo Coder config + 85 skills
+
+Each folder contains: `skills/`, `agents/`, `prompts/`, `commands/`, `settings.json`
+
+**After this step:** Each AI tool will automatically load all 81 skills when you start it. No further configuration needed!
 
 ### Step 3b: Install Individual Tools (one copy-paste per tool)
 
