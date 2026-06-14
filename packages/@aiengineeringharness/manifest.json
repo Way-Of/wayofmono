@@ -6712,7 +6712,7 @@
           "description": "Generate investor-ready documentation for any project",
           "files": [
             {
-              "src": "antigravity/antigravity/skills/investor_ready_doc_gen/SKILL.md",
+              "src": "antigravity/skills/investor_ready_doc_gen/SKILL.md",
               "dest": "skills/investor_ready_doc_gen/SKILL.md"
             },
             {
@@ -7633,7 +7633,7 @@
           "description": "Generate investor-ready documentation for any project",
           "files": [
             {
-              "src": "codex/codex/skills/investor_ready_doc_gen/SKILL.md",
+              "src": "codex/skills/investor_ready_doc_gen/SKILL.md",
               "dest": "skills/investor_ready_doc_gen/SKILL.md"
             },
             {

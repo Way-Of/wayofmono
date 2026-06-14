@@ -3,7 +3,7 @@ name: build-tool-cli
 description: CLI reference for all 7 AI coding tools — knows flags, subcommands, environment variables, output modes, non-interactive usage.
 allowed-tools:
   - edit
-  - glob
+  - run_shell_command
   - grep
   - write
   - read - bash - websearch

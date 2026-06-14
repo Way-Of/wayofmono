@@ -3,7 +3,7 @@ name: build-tool-tui
 description: Build TUI components for all 7 AI coding tools — knows React Ink, built-in components, custom rendering, overlays, keyboard input.
 allowed-tools:
   - edit
-  - glob
+  - run_shell_command
   - grep
   - write
   - read - bash - websearch

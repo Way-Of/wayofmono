@@ -4,9 +4,16 @@ description: Auto-discover, sync, and update skills across all 7 frontends (clau
 allowed-tools:
   - read
   - write
-  - glob
-  - ls
+  - bash
+  - edit
   - grep
+  - glob
+  - skill
+  - todowrite
+  - webfetch
+  - websearch
+  - question
+  - ls
 ---
 
 # skill Auto-Update & Sync

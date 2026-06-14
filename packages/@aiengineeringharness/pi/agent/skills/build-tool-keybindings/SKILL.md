@@ -3,7 +3,7 @@ name: build-tool-keybindings
 description: Build keybindings for all 7 AI coding tools — knows registerShortcut(), Key IDs, modifier combos, reserved keys, terminal compatibility.
 allowed-tools:
   - edit
-  - glob
+  - run_shell_command
   - grep
   - write
   - read - bash - websearch
