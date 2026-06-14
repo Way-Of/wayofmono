@@ -62,35 +62,25 @@ You should see something like `deno 2.x.x`.
 ### Step 2: Install the CLI (One-time)
 
 **What is the CLI?**
-The `ai-harness` command is your main interface for installing, updating, and managing all 7 AI tools and their shared skills. You install it once, then use it for everything.
-
-**What does `--install-cli` do?**
-- Downloads the latest installer script from GitHub
-- Compiles it to a fast binary (`ai-harness`)
-- Places it in your PATH (usually `~/.deno/bin/ai-harness`)
+The `ai-harness` command is your main interface for managing all tools and skills.
 
 **macOS / Linux:**
 ```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 ```
-> `-A` = allow all permissions (network, file system). The script needs to download files and write the binary.
 
 **Windows (PowerShell):**
 ```powershell
 deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 ```
-> `--reload` forces Deno to re-download the script (bypasses cache). **Required on first run on Windows** due to Deno's caching behavior. Later updates work without it.
+> `--reload` forces Deno to re-download the script. **Required on first run on Windows** due to Deno's caching. Later updates work without it.
 
 **Alternative (PowerShell wrapper — easier for Windows):**
 ```powershell
 iex (iwr https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ps1 -useb)
-```
-> This downloads and runs a PowerShell wrapper script that provides a friendlier interface. `-useb` = UseBasicParsing (avoids IE COM object issues).
-
-Then inside that session:
-```powershell
 install.ps1 -InstallCli
 ```
+> Downloads a wrapper script that provides a friendlier interface. `-useb` = UseBasicParsing.
 
 **Verify CLI works:**
 ```bash
