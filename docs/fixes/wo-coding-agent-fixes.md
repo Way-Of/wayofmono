@@ -8,6 +8,15 @@
 - **Output**: Shows `.wocoder/models.json`, `.wocoder/settings.json` locations
 - **Added**: Step-by-step Ollama installation instructions
 
+### Fixed: Wocoder skill directories renamed to kebab-case (matches Pi convention)
+- **Files**: 
+  - `packages/@aiengineeringharness/wocoder/agent/skills/` - all 81 directories renamed
+  - `packages/@aiengineeringharness/manifest.json` - all skill entries updated
+  - `packages/@aiengineeringharness/wocoder/agent/skills/*/SKILL.md` - name fields updated
+- **Change**: snake_case → kebab-case (e.g., `auto_ticket_creator` → `auto-ticket-creator`)
+- **Reason**: Matches Pi's kebab-case convention; fixes "name contains invalid characters" validation errors
+- **Impact**: All 81 skills now use consistent kebab-case naming across Pi and wocoder
+
 ---
 
 ## v1.0.10 — 2026-06-14

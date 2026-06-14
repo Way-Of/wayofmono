@@ -23,7 +23,7 @@
 See [wo-coding-agent-fixes.md](./wo-coding-agent-fixes.md) for detailed release notes.
 
 **Quick Summary:**
-- v1.0.11: Enhanced init message with config locations + Ollama setup
+- v1.0.11: Enhanced init message + skill directories kebab-case (matches Pi)
 - v1.0.10: Extension errors → warnings (wocode won't crash on missing deps)
 - v1.0.9: Added docs folder, Ollama defaults
 - v1.0.8: CONFIG_DIR_NAME `.wo` → `.wocoder` (separate from wouser)
