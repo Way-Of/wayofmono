@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.6.0] - 2026-06-14
+
+### Fixed
+- Fixed JSON parse error in manifest.json (malformed self_documentation entry with wrong indentation and stray bracket)
+- `ai-harness --update` now works without SyntaxError
+
 ## [Unreleased] - 2026-06-12
 
 ### Deno Wrapper --reload Patching + Bootstrap Fix
