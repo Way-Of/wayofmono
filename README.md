@@ -224,6 +224,27 @@ packages/@aiengineeringharness/     → 1,226 files
 - Multi-format documentation (MDX, HTML, PDF, JSON)
 - Mermaid TUI renderer (ASCII art diagrams)
 
+### Skill Loading Paths
+
+Each agent frontend loads skills from specific directories. The AI Engineering Harness installs skills to these locations:
+
+| Tool | Global Skill Directory | Project-Local Skill Directory |
+|------|------------------------|-------------------------------|
+| **Wo Coder (wocode)** | `~/.wocoder/agent/skills/` | `.wo/agent/skills/` |
+| **Pi** | `~/.pi/agent/skills/` | `.pi/agent/skills/` |
+| **OpenCode** | `~/.config/opencode/skills/` | `.config/opencode/skills/` |
+| **Claude Code** | `~/.claude/skills/` | `.claude/skills/` |
+| **Gemini CLI** | `~/.gemini/skills/` | `.gemini/skills/` |
+| **Codex** | `~/.codex/skills/` | `.codex/skills/` |
+| **Antigravity** | `~/.antigravity/skills/` | `.antigravity/skills/` |
+
+**Additional skill discovery:**
+- All tools also discover skills from `~/.agents/skills/` (shared cross-tool location)
+- Pi and wocode support adding custom paths via `settings.json` skills array
+- CLI flags like `--skill <path>` allow ad-hoc skill loading
+
+**Skill format:** Each skill is a directory containing `SKILL.md` (frontmatter + instructions) plus optional scripts, references, and assets.
+
 ### Per-Tool Skill Counts
 
 | Tool | SKILL.md files | Total files |
