@@ -2,12 +2,12 @@
 name: implement-plan
 description: Implement an approved technical plan from thoughts/plans/ with phase-by-phase execution, leveraging Gemini CLI tools for file interaction, command execution, and task management.
 allowed-tools:
-  - Bash
+  - bash
   - todowrite
-  - Glob
-  - Write
-  - Read
-  - Grep
+  - glob
+  - write
+  - read
+  - grep
   - task'
 ---
 
@@ -23,9 +23,9 @@ You are tasked with implementing an approved technical plan from `thoughts/plans
 ## Getting Started
 
 When given a plan path:
-- Read the plan completely and check for any existing checkmarks (- [x])
-- Read the original ticket and all files mentioned in the plan
-- **Read files fully** - never use limit/offset parameters
+- read the plan completely and check for any existing checkmarks (- [x])
+- read the original ticket and all files mentioned in the plan
+- **read files fully** - never use limit/offset parameters
 - Use `write_todos` to track your progress
 - Start implementing if you understand what needs to be done
 
@@ -67,12 +67,12 @@ Use technology-appropriate commands:
 ### 2. Fix Issues and Update Progress
 
 - Address any failures before moving to the next phase
-- Update checkboxes in the plan file using the Edit tool
+- Update checkboxes in the plan file using the edit tool
 - Update your TodoWrite list
 
 ## If You Get Stuck
 
-1. **Investigate First** - Read all relevant code completely
+1. **Investigate First** - read all relevant code completely
 2. **Delegate to research agents** (e.g., `codebase_investigator`, `codebase_locator`, `codebase_pattern_finder`) for targeted help
 3. **Present Issues Clearly** - Don't guess, ask for clarification
 
@@ -85,7 +85,7 @@ If the plan has existing checkmarks:
 
 ## Key Principles
 
-1. **Deep Understanding Before Action** - Read files completely
+1. **Deep Understanding Before Action** - read files completely
 2. **Follow Intent, Not Just Instructions** - Adapt to reality
 3. **Maintain Quality** - Run verification commands
 4. **Communicate Clearly** - Update checkboxes and todos

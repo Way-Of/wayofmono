@@ -2,15 +2,15 @@
 name: investor-ready-doc-gen
 description: Generate complete investor-ready documentation for ANY project. Auto-fires when the user asks to generate investor docs, funding materials, pitch decks, or white papers. Uses 28+ mustache-style templates bundled as assets in the skill folder. Exports all docs as professional PDFs via Marp CLI. Project-agnostic — works for OptiCat, Way of Work, or any new project.
 allowed-tools:
-  - Bash
-  - WebSearch
-  - Glob
-  - Grep
-  - Write
-  - Read
-  - Edit
-  - Question
-  - WebFetch
+  - bash
+  - websearch
+  - glob
+  - grep
+  - write
+  - read
+  - edit
+  - question
+  - webfetch
 ---
 
 # Investor-Ready Document Generator
@@ -19,8 +19,8 @@ Generates a full investor-ready documentation package for any project. All templ
 
 ## Required Input
 
-The Skill needs a project config. Either:
-- **Interactive**: The Skill asks the user questions and builds the config
+The skill needs a project config. Either:
+- **Interactive**: The skill asks the user questions and builds the config
 - **Config file**: User provides `investor_config.yaml` (see `assets/examples/`)
 - **Hybrid**: Start from config file, override interactively
 
@@ -161,7 +161,7 @@ Optional variables support `{{#if variable}}...{{/if}}` conditionals.
 
 ## Vertical Knowledge Bases
 
-The Skill uses `assets/verticals/<vertical>/` to store industry-specific reference data. This keeps templates project-agnostic while providing accurate, pre-verified data per vertical.
+The skill uses `assets/verticals/<vertical>/` to store industry-specific reference data. This keeps templates project-agnostic while providing accurate, pre-verified data per vertical.
 
 ### Available Verticals
 
@@ -204,7 +204,7 @@ The template at `assets/verticals/VERTICAL_TEMPLATE.yaml` provides a complete sk
 
 Before generating ANY investor docs, you MUST thoroughly investigate the application's actual codebase. This is not optional.
 
-1. **Explore the full repository structure** — Read README, package.json, directory tree, configuration files
+1. **Explore the full repository structure** — read README, package.json, directory tree, configuration files
 2. **Identify the technology stack** — languages, frameworks, databases, infrastructure, APIs
 3. **Analyze the architecture** — components, modules, data flow, integrations, deployments
 4. **Extract actual metrics** — real code stats (lines of code, number of services, API endpoints)
@@ -243,7 +243,7 @@ For every claim that will go into investor docs, verify it via web search:
    - **Compare**: How does the national market compare to global? (e.g., "Sweden represents 2% of the global HVAC optimization market but is growing at 22% CAGR due to strict EU regulations")
 9. **Save all source URLs** — every claim must have a verifiable source
 
-Write findings to `investor_research/<project_name>/MARKET_RESEARCH.md` and `COMPETITOR_RESEARCH.md`.
+write findings to `investor_research/<project_name>/MARKET_RESEARCH.md` and `COMPETITOR_RESEARCH.md`.
 
 ### Step 3: Create Self-Managed TODO.md ⚠️ MANDATORY
 
@@ -267,7 +267,7 @@ The AI must work through this TODO systematically, ticking off items as complete
 
 Now that you have thorough codebase understanding, build the project config:
 ```yaml
-# Ask the user for details OR Read from existing config file
+# Ask the user for details OR read from existing config file
 # Use your codebase investigation to pre-fill as much as possible
 # Required fields:
 project_name: ""
@@ -306,7 +306,7 @@ jurisdiction: ""
 ```
 
 ### Step 5: Load Vertical Knowledge Base
-1. Read the `market_category` from config
+1. read the `market_category` from config
 2. Find matching folder in `assets/verticals/` (e.g., `hvac_optimization` for HVAC projects)
 3. Load `market_reference.yaml` for that vertical
 4. Cross-reference vertical data with your codebase investigation and web verification
@@ -316,12 +316,12 @@ jurisdiction: ""
 ### Step 6: Generate All Documents — Work Through TODO.md
 
 For each item in your TODO.md:
-1. Read the template file from `assets/templates/<category>/<template>.md`
+1. read the template file from `assets/templates/<category>/<template>.md`
 2. Replace all `{{variable}}` placeholders with merged config values
 3. Enrich market sections with verified web research data (competitor names, stats, source URLs)
 4. Enrich technical sections with actual codebase analysis findings
 5. Handle conditionals (`{{#if}}`) and iterators (`{{#each}}`)
-6. Write the rendered output to the project's docs directory
+6. write the rendered output to the project's docs directory
 7. Tick off the item in TODO.md
 8. Self-check: verify all placeholders filled, all claims sourced
 
@@ -362,7 +362,7 @@ docs/Product docs/Investor Ready/
 ```
 
 ### Step 7: Validate Output
-1. Re-Read your TODO.md — every item ticked?
+1. Re-read your TODO.md — every item ticked?
 2. Check for **any remaining unclosed placeholders** — these indicate missing config values
 3. Check for **forbidden terms** based on project context
 4. Verify **every market claim has a source URL**
@@ -417,9 +417,9 @@ docs/Product docs/Investor Ready/PDF/
 
 For **pitch decks**, templates already contain `---` slide separators — Marp renders one slide per separator.
 
-For **documents**, the Skill auto-inserts `---` before each `##` heading during PDF conversion (preserving original markdown). This creates natural page breaks at each section. Example:
+For **documents**, the skill auto-inserts `---` before each `##` heading during PDF conversion (preserving original markdown). This creates natural page breaks at each section. Example:
 
-```Bash
+```bash
 # Auto-insert slide breaks before ## headings for document PDFs
 sed 's/^## /---\n\n## /' document.md > document_for_marp.md
 npx @marp-team/marp-cli@latest document_for_marp.md --pdf --output document.pdf
@@ -439,7 +439,7 @@ Apply with `--theme assets/pdf/investor-theme.css`.
 #### Automation Script
 
 For batch conversion across all generated docs:
-```Bash
+```bash
 # From the output root:
 PDF_DIR="docs/Product docs/Investor Ready/PDF"
 find "docs/Product docs/Investor Ready" -name "*.md" \
@@ -447,7 +447,7 @@ find "docs/Product docs/Investor Ready" -name "*.md" \
   -not -name "README.md" \
   -not -name "CHANGELOG.md" \
   -not -name "TODO.md" \
-  | while Read md; do
+  | while read md; do
     rel="${md#docs/Product docs/Investor Ready/}"
     outdir="$PDF_DIR/$(dirname "$rel")"
     mkdir -p "$outdir"
@@ -498,7 +498,7 @@ Show the user:
 - Next steps and review process
 
 ### Step 10: Generate Final TODO.md for User
-Write `investor_research/<project_name>/TODO.md` to the output folder documenting:
+write `investor_research/<project_name>/TODO.md` to the output folder documenting:
 - What was generated
 - What needs human review
 - What data is still missing
@@ -519,7 +519,7 @@ Write `investor_research/<project_name>/TODO.md` to the output folder documentin
 
 ```
 User: "Generate investor-ready docs for my project"
-Agent: [triggers investor_ready_doc_gen Skill]
+Agent: [triggers investor_ready_doc_gen skill]
        [prompts user for project details]
        [generates full documentation package]
 ```

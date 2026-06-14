@@ -2,15 +2,15 @@
 name: ticket-executor
 description: Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully
 allowed-tools:
-  - Grep
+  - grep
   - search
   - web
-  - Write
-  - Read
-  - Glob
+  - write
+  - read
+  - glob
 ---
 
-# Ticket Executor Skill
+# Ticket Executor skill
 
 Executes approved plans in phases, with validation and telemetry tracking after each phase.
 

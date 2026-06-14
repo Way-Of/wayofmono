@@ -2,21 +2,21 @@
 name: pr-description-generator
 description: Generates comprehensive pull request descriptions following repository templates. Utilizes Gemini CLI tools including `run_shell_command` for `git` and `gh` commands.
 allowed-tools:
-  - Grep
-  - Write
+  - grep
+  - write
   - replace
-  - Bash
-  - Read
-  - Glob
+  - bash
+  - read
+  - glob
 ---
 
 # PR Description Generator
 
-## When to Use This Skill
+## When to Use This skill
 
-Activate this Skill when the user:
+Activate this skill when the user:
 - Asks to "create a PR description" or "describe this PR"
-- Says "generate PR description" or "Write PR description"
+- Says "generate PR description" or "write PR description"
 - Mentions "pull request" in context of documenting changes
 - Asks to "update PR description" for an existing PR
 
@@ -25,7 +25,7 @@ Activate this Skill when the user:
 ### Step 1: Locate the PR Description Template
 
 **Check for template in standard locations**:
-```Bash
+```bash
 # Project-specific template
 test -f thoughts/shared/pr_description.md && echo "Found"
 
@@ -39,7 +39,7 @@ test -f docs/pr_template.md && echo "Found"
 ### Step 2: Identify the Pull Request
 
 **Check current branch for associated PR**:
-```Bash
+```bash
 gh pr view --json url,number,title,state 2>/dev/null
 ```
 
@@ -48,7 +48,7 @@ gh pr view --json url,number,title,state 2>/dev/null
 ### Step 3: Gather Comprehensive PR Information
 
 **Collect all PR context**:
-```Bash
+```bash
 # Full diff of changes
 gh pr diff {number}
 
@@ -60,7 +60,7 @@ gh pr view {number} --json url,title,number,state
 ```
 
 **For new PRs (not yet created)**:
-```Bash
+```bash
 git diff main...HEAD
 git log main..HEAD --oneline
 git diff --name-only main...HEAD
@@ -70,7 +70,7 @@ git diff --name-only main...HEAD
 
 **Deep analysis required** - Think carefully about:
 
-1. **Code changes**: Read the entire diff, understand purpose and impact
+1. **Code changes**: read the entire diff, understand purpose and impact
 2. **User-facing impact**: What will users notice? Breaking changes?
 3. **Implementation details**: Technical approach and decisions
 4. **Migration requirements**: Data migration, deployment steps
@@ -122,14 +122,14 @@ git diff --name-only main...HEAD
 ### Step 7: Save and Update PR
 
 **Save the description**:
-```Bash
+```bash
 mkdir -p thoughts/shared/prs/
-# Write to thoughts/shared/prs/{number}_description.md
+# write to thoughts/shared/prs/{number}_description.md
 ```
 
 **Apply to PR**:
-```Bash
-gh pr Edit {number} --body-file thoughts/shared/prs/{number}_description.md
+```bash
+gh pr edit {number} --body-file thoughts/shared/prs/{number}_description.md
 ```
 
 ## Quality Guidelines
@@ -214,7 +214,7 @@ Added distributed lock using Redis to ensure only one worker processes each even
 
 ## Notes
 
-- This Skill adapts to any repository's PR template structure
+- This skill adapts to any repository's PR template structure
 - It preserves the thoughts/ directory pattern for saved descriptions
 - Automated verification helps catch issues before review
 - All PR operations use the GitHub CLI (`gh`) for consistency

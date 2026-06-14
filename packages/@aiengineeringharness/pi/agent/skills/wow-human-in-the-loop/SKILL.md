@@ -27,4 +27,4 @@ Whenever an internal AI agent needs to modify data, it must submit a proposal to
 4. **Execution:** The backend (`server/pending-changes-api.ts`) applies the `proposed_data` to the `target_table`.
 
 ## Your Responsibility
-When modifying backend routes or internal agent prompts, you must ensure this architecture is respected. Do not build bypasses for agents to Write directly to the database unless explicitly requested by the developer for a specific, safe edge case.
+When modifying backend routes or internal agent prompts, you must ensure this architecture is respected. Do not build bypasses for agents to write directly to the database unless explicitly requested by the developer for a specific, safe edge case.

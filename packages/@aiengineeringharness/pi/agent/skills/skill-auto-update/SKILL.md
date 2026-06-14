@@ -2,14 +2,14 @@
 name: skill-auto-update
 description: Auto-discover, sync, and update skills across all 7 frontends (claude, opencode, gemini, pi, wocoder, antigravity, codex)
 allowed-tools:
-  - Read
-  - Write
-  - Glob
+  - read
+  - write
+  - glob
   - ls
-  - Grep
+  - grep
 ---
 
-# Skill Auto-Update & Sync
+# skill Auto-Update & Sync
 
 Detects new/updated skills in `packages/@aiengineeringharness/skills/` and automatically propagates them to all configured frontends.
 
@@ -17,14 +17,14 @@ Detects new/updated skills in `packages/@aiengineeringharness/skills/` and autom
 
 - `ai-harness --sync-skills` - Sync all skills to all frontends
 - `ai-harness --watch-skills` - Watch for changes and auto-sync
-- `/sync skills` - Agent slash command for Skill sync
+- `/sync skills` - Agent slash command for skill sync
 
 ## How It Works
 
-1. Scans `packages/@aiengineeringharness/skills/` for all Skill directories (core, wow_*, opticat_*)
-2. Reads `Skill-registry.json` for versions and hashes
+1. Scans `packages/@aiengineeringharness/skills/` for all skill directories (core, wow_*, opticat_*)
+2. Reads `skill-registry.json` for versions and hashes
 3. Compares with installed skills per frontend
-4. Generates platform-specific format using Skill-adapter
+4. Generates platform-specific format using skill-adapter
 5. Installs/updates via stow (`setup.sh`) or direct file copy
 
 ## Dry-Run Mode

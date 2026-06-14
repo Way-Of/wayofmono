@@ -7,7 +7,7 @@ description: Facilitates the generation and enhancement of OptiCat-related UI co
 
 ## Overview
 
-This Skill enables the creation and modification of user interface components for displaying OptiCat data. It provides guidance and resources for leveraging OptiCat APIs to build rich, interactive dashboards and visualizations for HVAC projects, AHUs, service reports, and other related metrics.
+This skill enables the creation and modification of user interface components for displaying OptiCat data. It provides guidance and resources for leveraging OptiCat APIs to build rich, interactive dashboards and visualizations for HVAC projects, AHUs, service reports, and other related metrics.
 
 ## Core Capabilities
 
@@ -32,7 +32,7 @@ Guidance on applying the Way of Work (WoW) dark theme and Tailwind CSS best prac
 
 ## Resources
 
-This Skill includes the following resource directories:
+This skill includes the following resource directories:
 
 ### scripts/
 (Currently empty - add scripts for automating UI tasks, data processing, or API calls if needed.)
@@ -47,4 +47,4 @@ This Skill includes the following resource directories:
 
 ---
 
-**Any unneeded directories can be deleted.** Not every Skill requires all three types of resources.
+**Any unneeded directories can be deleted.** Not every skill requires all three types of resources.

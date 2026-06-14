@@ -76,7 +76,7 @@ The script checks every `SKILL.md` in `packages/@aiengineeringharness/<tool>/ski
 | Frontmatter fields | `UNSUPPORTED_FRONTMATTER` | Only fields supported by each tool (e.g., `disable-model-invocation` only for opencode/claude/antigravity/wocoder) |
 | allowed-tools casing | `WRONG_TOOL_CASE` | PascalCase for claude/pi/wocoder, lowercase for others |
 | Body tool name casing | `BODY_WRONG_TOOL_CASE` | Tool names in markdown body match tool's convention |
-| Deprecated patterns | `DEPRECATED_PATTERN` | Avoids deprecated tool names (e.g., `TodoWrite` for claude) |
+| Deprecated patterns | `DEPRECATED_PATTERN` | Avoids deprecated tool names (e.g., `TaskCreate` for claude) |
 | name matches dir | `NAME_MISMATCH` | Frontmatter `name` field matches directory name |
 
 ## Spec Reference

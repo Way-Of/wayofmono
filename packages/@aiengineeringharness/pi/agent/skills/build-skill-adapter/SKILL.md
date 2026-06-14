@@ -2,14 +2,14 @@
 name: build-skill-adapter
 description: Connect and sync skills, agents, and projects with other harness, git repos, and platforms
 allowed-tools:
-  - Bash
-  - Glob
-  - Write
-  - Read
-  - Grep
+  - bash
+  - glob
+  - write
+  - read
+  - grep
 ---
 
-# Skill Adapter Skill
+# skill Adapter skill
 
 Connects and syncs skills with other harness, git repositories, and platforms.
 
@@ -31,7 +31,7 @@ Connects and syncs skills with other harness, git repositories, and platforms.
 
 - Pull from remote branches
 - Push changes to remote
-- Create PRs from Skill changes
+- Create PRs from skill changes
 - Manage dependencies
 
 ## Platform Integration

@@ -2,11 +2,11 @@
 name: tdd
 description: Test-driven development with red-green-refactor loop. Use when user wants to build features or fix bugs using TDD, mentions "red-green-refactor", asks for test-first development, or wants integration-style tests that survive refactors.
 allowed-tools:
-  - Glob
+  - glob
   - replace
-  - Bash
-  - Read
-  - Write
+  - bash
+  - read
+  - write
 ---
 
 # Test-Driven Development
@@ -23,7 +23,7 @@ See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking g
 
 ## Anti-Pattern: Horizontal Slices
 
-**DO NOT Write all tests first, then all implementation.** This is "horizontal slicing" - treating RED as "Write all tests" and GREEN as "Write all code."
+**DO NOT write all tests first, then all implementation.** This is "horizontal slicing" - treating RED as "write all tests" and GREEN as "write all code."
 
 This produces **crap tests**:
 
@@ -65,11 +65,11 @@ Ask: "What should the public interface look like? Which behaviors are most impor
 
 ### 2. Tracer Bullet
 
-Write ONE test that confirms ONE thing about the system:
+write ONE test that confirms ONE thing about the system:
 
 ```
-RED:   Write test for first behavior → test fails
-GREEN: Write minimal code to pass → test passes
+RED:   write test for first behavior → test fails
+GREEN: write minimal code to pass → test passes
 ```
 
 This is your tracer bullet - proves the path works end-to-end.
@@ -79,7 +79,7 @@ This is your tracer bullet - proves the path works end-to-end.
 For each remaining behavior:
 
 ```
-RED:   Write next test → fails
+RED:   write next test → fails
 GREEN: Minimal code to pass → passes
 ```
 

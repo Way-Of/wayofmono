@@ -2,13 +2,13 @@
 name: build-skill-auto-update
 description: Auto-update harness skills from upstream changes, sync documentation, and apply patches
 allowed-tools:
-  - Bash
-  - Write
-  - Read
-  - WebFetch
+  - bash
+  - write
+  - read
+  - webfetch
 ---
 
-# Skill Auto-Update Skill
+# skill Auto-Update skill
 
 Automatically updates harness skills from upstream changes, syncs documentation, and applies patches.
 

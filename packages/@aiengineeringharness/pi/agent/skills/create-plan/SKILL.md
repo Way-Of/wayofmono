@@ -2,13 +2,13 @@
 name: create-plan
 description: Create detailed, actionable implementation plans through an interactive, iterative process, leveraging Gemini CLI tools for research and documentation.
 allowed-tools:
-  - Bash
+  - bash
   - todowrite
-  - Grep
-  - Write
-  - Read
-  - Glob
-  - Task
+  - grep
+  - write
+  - read
+  - glob
+  - task
 ---
 
 # Create Plan
@@ -16,7 +16,7 @@ allowed-tools:
 You are an expert technical planning assistant. Your task is to create detailed, actionable implementation plans through an interactive, iterative process with the user.
 
 **Core Principles:**
-- **Skeptical**: Question vague requirements and verify assumptions with code
+- **Skeptical**: question vague requirements and verify assumptions with code
 - **Thorough**: Research comprehensively before planning
 - **Collaborative**: Work iteratively with the user, getting feedback at each stage
 - **Practical**: Focus on incremental, testable changes with clear success criteria
@@ -32,7 +32,7 @@ This command uses the `thoughts/` directory pattern for organizing planning arti
 When this command is invoked:
 
 1. **Check if parameters were provided**:
-   - If a file path or ticket reference was provided, Read it immediately
+   - If a file path or ticket reference was provided, read it immediately
    - Begin the research process
 
 2. **If no parameters provided**, respond with:
@@ -51,9 +51,9 @@ Tip: You can also invoke this command with a ticket file directly: `/create_plan
 
 ### Step 1: Context Gathering & Initial Analysis
 
-1. **Read all mentioned files immediately and FULLY**
+1. **read all mentioned files immediately and FULLY**
 2. **Delegate to research agents** (e.g., `codebase_investigator`, `codebase_locator`, `codebase_pattern_finder`) to gather context.
-3. **Read all files identified by research tasks**
+3. **read all files identified by research tasks**
 4. **Present informed understanding with focused questions**
 
 ### Step 2: Research & Discovery
@@ -65,14 +65,14 @@ Tip: You can also invoke this command with a ticket file directly: `/create_plan
 
 ### Stress-testing the plan
 
-When the user's requirements are vague or you need to walk down decision branches with the user, delegate to the `interview` Skill to drive a focused, relentless interview. Useful when:
+When the user's requirements are vague or you need to walk down decision branches with the user, delegate to the `interview` skill to drive a focused, relentless interview. Useful when:
 - Requirements have hidden ambiguity
 - Multiple architectural choices need to be resolved
 - The user explicitly asks to "stress-test" or "drill into" the plan
 
 ### Telemetry-bearing features
 
-When the plan touches a request lifecycle, an AI agent/MCP, or any work where the trace is the spec, delegate to the `observability_driven_development` Skill. The plan should include:
+When the plan touches a request lifecycle, an AI agent/MCP, or any work where the trace is the spec, delegate to the `observability_driven_development` skill. The plan should include:
 
 - A reference to the narrative spec at `thoughts/shared/telemetry/<feature>.md` (to be written before implementation).
 - A `/validate_telemetry` step in Phase verification, parallel to `/validate_plan`.
@@ -83,7 +83,7 @@ Present a high-level structure for approval before detailed writing.
 
 ### Step 4: Detailed Plan Writing
 
-Write the plan to `thoughts/plans/{descriptive_name}.md` using this template:
+write the plan to `thoughts/plans/{descriptive_name}.md` using this template:
 
 ```markdown
 # [Feature/Task Name] Implementation Plan
@@ -138,9 +138,9 @@ Continue refining until the user is satisfied.
 
 ## Important Guidelines
 
-1. **Be Skeptical** - Question vague requirements
+1. **Be Skeptical** - question vague requirements
 2. **Be Interactive** - Get user buy-in at each step
-3. **Be Thorough** - Read all context files COMPLETELY
+3. **Be Thorough** - read all context files COMPLETELY
 4. **Be Practical** - Focus on incremental, testable changes
 5. **Track Progress** - Use TodoWrite
 

@@ -1,14 +1,13 @@
 ---
 name: otel-instrumentation
 description: Application-side OpenTelemetry SDK setup — traces, metrics, structured logging across Node.js, Go, Python, Java, .NET, Ruby. Prescriptive guidance for resource attributes, span design, metric instrument selection, sensitive data handling, and validation.
-
 allowed-tools:
-  - Grep
-  - Write
+  - grep
+  - write
   - replace
-  - Bash
-  - Read
-  - Glob
+  - bash
+  - read
+  - glob
 ---
 
 # OpenTelemetry Application Instrumentation
@@ -55,7 +54,7 @@ Resource attributes identify your service. This is the single highest-impact con
 
 ### Environment Variables
 
-```Bash
+```bash
 OTEL_SERVICE_NAME=order-service
 OTEL_RESOURCE_ATTRIBUTES=service.namespace=commerce,deployment.environment.name=production
 OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
@@ -311,7 +310,7 @@ For Collector-side redaction as defence-in-depth, see `otel_ottl`.
 
 ### Node.js
 
-```Bash
+```bash
 npm install @opentelemetry/sdk-node @opentelemetry/auto-instrumentations-node \
   @opentelemetry/exporter-trace-otlp-grpc @opentelemetry/exporter-metrics-otlp-grpc \
   @opentelemetry/exporter-logs-otlp-grpc @opentelemetry/resources @opentelemetry/semantic-conventions
@@ -350,7 +349,7 @@ sdk.start();
 process.on('SIGTERM', () => sdk.shutdown().then(() => process.exit(0)).catch(() => process.exit(1)));
 ```
 
-```Bash
+```bash
 node --require ./instrumentation.ts src/index.ts
 # ESM: node --import ./instrumentation.ts src/index.ts
 ```
@@ -388,7 +387,7 @@ const requestDuration = meter.createHistogram('http.server.request.duration', {
 
 ### Go
 
-```Bash
+```bash
 go get go.opentelemetry.io/otel go.opentelemetry.io/otel/sdk go.opentelemetry.io/otel/sdk/metric \
   go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc \
   go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc \
@@ -444,7 +443,7 @@ func ProcessOrder(ctx context.Context, orderID string) error {
 
 ### Python
 
-```Bash
+```bash
 pip install opentelemetry-distro opentelemetry-exporter-otlp
 opentelemetry-bootstrap -a install  # Auto-detect instrumentations
 ```
@@ -481,7 +480,7 @@ def process_order(order_id: str):
 ### Java
 
 **Recommended: Java agent (zero-code):**
-```Bash
+```bash
 java -javaagent:opentelemetry-javaagent.jar \
   -Dotel.service.name=my-service \
   -Dotel.exporter.otlp.endpoint=http://otel-collector:4317 \
@@ -505,7 +504,7 @@ try (Scope scope = span.makeCurrent()) {
 
 ### .NET
 
-```Bash
+```bash
 dotnet add package OpenTelemetry.Extensions.Hosting OpenTelemetry.Instrumentation.AspNetCore OpenTelemetry.Exporter.OpenTelemetryProtocol
 ```
 
@@ -520,7 +519,7 @@ builder.Services.AddOpenTelemetry()
 
 ### Ruby
 
-```Bash
+```bash
 gem install opentelemetry-sdk opentelemetry-exporter-otlp opentelemetry-instrumentation-all
 ```
 
@@ -538,8 +537,8 @@ end
 
 ### Pre-Flight
 
-```Bash
-env | Grep OTEL_
+```bash
+env | grep OTEL_
 curl -sf http://otel-collector:4317 || echo "Collector unreachable (gRPC)"
 curl -sf http://otel-collector:4318/v1/traces || echo "Collector unreachable (HTTP)"
 # Protocol must match: grpc→:4317, http/protobuf→:4318

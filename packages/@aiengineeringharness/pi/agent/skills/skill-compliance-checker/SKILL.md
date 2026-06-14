@@ -7,15 +7,15 @@ allowed-tools:
   - read
 ---
 
-# Skill Compliance Checker
+# skill Compliance Checker
 
-Validate all Skill files across the AI Engineering Harness against per-tool format specifications.
+Validate all skill files across the AI Engineering Harness against per-tool format specifications.
 
 ## Tool
 
 Run the compliance check script:
 
-```Bash
+```bash
 deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts
 ```
 
@@ -23,7 +23,7 @@ deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts
 
 Check a single tool:
 
-```Bash
+```bash
 deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts --tool=opencode
 ```
 
@@ -33,7 +33,7 @@ Replace `opencode` with: `claude`, `gemini`, `pi`, `antigravity`, `codex`, `woco
 
 Some issues can be auto-fixed:
 
-```Bash
+```bash
 deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts --fix
 ```
 
@@ -41,7 +41,7 @@ deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts --fix
 
 The installer also has a built-in `--compliance` flag that validates manifest integrity:
 
-```Bash
+```bash
 ai-harness --compliance
 ```
 
@@ -86,8 +86,8 @@ The script checks every `SKILL.md` in `packages/@aiengineeringharness/<tool>/ski
 
 Tool specs are defined in `scripts/compliance-check.ts` at lines 60-138. Key rules:
 
-- **opencode/gemini/antigravity/codex**: lowercase allowed-tools (`Read, Write, Bash`), snake_case dirs
-- **claude/pi/wocoder**: PascalCase allowed-tools (`Read, Write, Bash`), snake_case dirs (claude/wocoder) or kebab-case (pi)
+- **opencode/gemini/antigravity/codex**: lowercase allowed-tools (`read, write, bash`), snake_case dirs
+- **claude/pi/wocoder**: PascalCase allowed-tools (`read, write, bash`), snake_case dirs (claude/wocoder) or kebab-case (pi)
 - **codex**: lowercase allowed-tools (`read_file, write_file, run_shell_command`)
 
 ## Assets

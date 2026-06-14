@@ -1,7 +1,7 @@
 ---
 name: create_plan
 description: Create detailed, actionable implementation plans through an interactive, iterative process, leveraging Gemini CLI tools for research and documentation.
-allowed-tools: Read, Write, Bash, Glob, Grep, TodoWrite, Task
+allowed-tools: Read, Write, Bash, Glob, Grep, Task
 disable-model-invocation: true
 ---
 
@@ -53,7 +53,7 @@ Tip: You can also invoke this command with a ticket file directly: `/create_plan
 ### Step 2: Research & Discovery
 
 1. **Verify any corrections from the user**
-2. **Create a research todo list** using TodoWrite
+2. **Create a research todo list** using TaskCreate
 3. **Spawn parallel sub-tasks** for comprehensive research
 4. **Present findings and design options**
 
@@ -136,5 +136,5 @@ Continue refining until the user is satisfied.
 2. **Be Interactive** - Get user buy-in at each step
 3. **Be Thorough** - Read all context files COMPLETELY
 4. **Be Practical** - Focus on incremental, testable changes
-5. **Track Progress** - Use TodoWrite
+5. **Track Progress** - Use TaskCreate
 

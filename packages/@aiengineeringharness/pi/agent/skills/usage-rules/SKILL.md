@@ -2,8 +2,8 @@
 name: usage-rules
 description: Manage, sync, and search LLM rules and documentation from Elixir dependencies using the `ash-project/usage_rules` library. Use when working on an Elixir/Mix project to provide context-aware package guidelines for the agent.
 allowed-tools:
-  - Write
-  - Edit
+  - write
+  - edit
   - read - bash
 ---
 
@@ -25,7 +25,7 @@ First, check if the package is configured in the project's dependencies:
 *   Alternatively, execute `mix help usage_rules.sync` inside the project root to check if the tasks are available.
 
 If missing, install it using `igniter` (recommended):
-```Bash
+```bash
 mix igniter.install usage_rules
 ```
 Or manually add it to the `deps` inside `mix.exs`:
@@ -61,12 +61,12 @@ end
 ### 3. Synchronizing Rules
 Run the synchronization task to fetch the `usage-rules.md` files from your dependency tree and update your workspace rules/skills:
 
-```Bash
+```bash
 mix usage_rules.sync
 ```
 
 You can also pass arguments to target specific rule sheets or specify target folders:
-```Bash
+```bash
 mix usage_rules.sync AGENTS.md --all --link-to-folder docs
 ```
 
@@ -77,11 +77,11 @@ Ensure you commit the generated rule files/folders to Git so all agents share th
 ### 4. Searching HexDocs (AI-Optimized Search)
 If you encounter a compiling error or need to understand how to use a specific function/module in a dependency, use the semantic doc search. The output is structured for both humans and AI parsing:
 
-```Bash
+```bash
 mix usage_rules.search_docs <query>
 ```
 *Example:*
-```Bash
+```bash
 mix usage_rules.search_docs "how to define an resource action in Ash"
 ```
 
@@ -90,10 +90,10 @@ mix usage_rules.search_docs "how to define an resource action in Ash"
 ### 5. Inspecting Specific Modules
 To lookup exact documentation and rules for a specific Elixir module:
 
-```Bash
+```bash
 mix usage_rules.docs Ash.Resource
 ```
 Or for a specific function:
-```Bash
+```bash
 mix usage_rules.docs Ash.Changeset.change/2
 ```

@@ -1,13 +1,12 @@
 ---
 name: observability-driven-development
 description: Observability Driven Development (ODD) — design the trace before the feature. Auto-activates when the user wants to "drive with observability", "ODD", "instrument first", "narrative-first", "telemetry-driven", or wants to set up a local OTel feedback loop with the Aspire dashboard. Pairs with /validate_telemetry to verify behaviour against a written narrative.
-
 allowed-tools:
-  - Glob
+  - glob
   - replace
-  - Bash
-  - Read
-  - Write
+  - bash
+  - read
+  - write
 ---
 
 # Observability Driven Development (ODD)
@@ -17,8 +16,8 @@ allowed-tools:
 > — *Observability 4.0 is Inferable*, Adriel Perkins
 
 ODD treats **the trace as a first-class design artifact**. You design the span
-tree before you Write the feature, then run code against a local OTel stack so
-every change produces a trace you can Read in seconds. No guessing, no
+tree before you write the feature, then run code against a local OTel stack so
+every change produces a trace you can read in seconds. No guessing, no
 post-hoc instrumentation.
 
 ## When to Use ODD
@@ -32,7 +31,7 @@ Reach for ODD when **any** of the following are true:
   recovery, memory access).
 - Past production debugging stalled because the existing telemetry didn't
   narrate what the code was doing.
-- You're about to Write code where "the trace" is the only honest spec.
+- You're about to write code where "the trace" is the only honest spec.
 
 If the work is a pure-compute helper, a config tweak, or a CSS change,
 **don't** use ODD — it's overhead.
@@ -40,15 +39,15 @@ If the work is a pure-compute helper, a config tweak, or a CSS change,
 ## The Inner Loop
 
 ```
-Write Code → Instrument (OTel spans) → Run Locally → OTel Collector → Aspire → Observe → [repeat]
+write Code → Instrument (OTel spans) → Run Locally → OTel Collector → Aspire → Observe → [repeat]
 ```
 
-Every code change produces a trace. Every trace answers a Question. The loop
+Every code change produces a trace. Every trace answers a question. The loop
 is measured in seconds, not hours. Detail in [loop.md](loop.md).
 
 ## Workflow
 
-1. **Write the narrative spec** before the implementation. Format: see
+1. **write the narrative spec** before the implementation. Format: see
    [narrative.md](narrative.md). Save to
    `thoughts/shared/telemetry/<feature>.md`. Template:
    `thoughts/shared/telemetry/narrative-template.md`.
@@ -61,7 +60,7 @@ is measured in seconds, not hours. Detail in [loop.md](loop.md).
    should converge toward the spec.
 5. **Validate** with `/validate_telemetry thoughts/shared/telemetry/<feature>.md`.
 
-## Cross-Skill Routing
+## Cross-skill Routing
 
 | Concern | Route to |
 |---|---|
@@ -78,7 +77,7 @@ The `/validate_telemetry` slash command activates this section.
 
 ### Mode A: Spec-Driven Validation — `/validate_telemetry <spec-path>`
 
-1. Read the narrative spec at `<spec-path>` completely.
+1. read the narrative spec at `<spec-path>` completely.
 2. Confirm the local Aspire dashboard is reachable (see
    [local-setup.md](local-setup.md)).
 3. Trigger the feature locally (HTTP call, CLI invocation, message publish).

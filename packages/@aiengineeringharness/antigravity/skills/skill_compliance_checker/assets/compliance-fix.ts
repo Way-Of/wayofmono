@@ -59,10 +59,10 @@ const TOOL_SPECS: Record<string, ToolSpec> = {
   pi: {
     name: "pi",
     naming: "kebab",
-    toolNameCase: "PascalCase",
-    allowedToolsFormat: "word",
+    toolNameCase: "lowercase",
+    allowedToolsFormat: "lowercase",
     supportedFrontmatter: ["name", "description", "allowed-tools"],
-    knownToolNames: ["Read", "Bash", "Edit", "Write", "Grep", "Glob", "WebFetch", "WebSearch", "Question", "Skill", "Task", "LSP"],
+    knownToolNames: ["read", "bash", "edit", "write", "grep", "glob", "webfetch", "websearch", "question", "skill", "task", "lsp"],
   },
   wocoder: {
     name: "wocoder",
@@ -200,10 +200,22 @@ function fixBodyToolNames(body: string, spec: ToolSpec): { fixed: string; change
   return { fixed: result, changed: fixes > 0, fixes };
 }
 
+function needsQuoting(s: string): boolean {
+  return /[:,]/.test(s) || s.includes("'") || s.startsWith('"') || s.trim() !== s;
+}
+
+function quoteYamlValue(s: string): string {
+  if (needsQuoting(s)) {
+    const escaped = s.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+    return `"${escaped}"`;
+  }
+  return s;
+}
+
 function rebuildFrontmatterYaml(fm: Record<string, unknown>, spec: ToolSpec): string {
   const lines: string[] = [];
-  lines.push("name: " + fm["name"]);
-  lines.push("description: " + fm["description"]);
+  lines.push("name: " + quoteYamlValue(String(fm["name"])));
+  lines.push("description: " + quoteYamlValue(String(fm["description"])));
 
   const allowed = fm["allowed-tools"];
   if (allowed) {

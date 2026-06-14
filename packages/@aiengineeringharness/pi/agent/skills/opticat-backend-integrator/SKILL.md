@@ -7,7 +7,7 @@ description: Facilitates interaction with OptiCat backend systems, including C/C
 
 ## Overview
 
-This Skill provides specialized knowledge and tools for interacting with the backend systems of the OptiCat platform. It focuses on integrating with existing services, manipulating data at a deeper level, and understanding system configurations, particularly for components that might be implemented in lower-level languages like C/C++.
+This skill provides specialized knowledge and tools for interacting with the backend systems of the OptiCat platform. It focuses on integrating with existing services, manipulating data at a deeper level, and understanding system configurations, particularly for components that might be implemented in lower-level languages like C/C++.
 
 ## Core Capabilities
 
@@ -31,7 +31,7 @@ Best practices for debugging backend issues, interpreting logs, and implementing
 
 ## Resources
 
-This Skill includes the following resource directories:
+This skill includes the following resource directories:
 
 ### scripts/
 (Currently empty - add scripts for automating backend tasks, data migrations, or diagnostic procedures if needed.)

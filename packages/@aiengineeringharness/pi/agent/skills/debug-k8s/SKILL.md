@@ -2,10 +2,10 @@
 name: debug-k8s
 description: Debug Kubernetes issues by examining pods, logs, events, and cluster state using `kubectl` commands via Gemini CLI's `run_shell_command`.
 allowed-tools:
-  - Grep
-  - Bash
-  - Read
-  - Glob
+  - grep
+  - bash
+  - read
+  - glob
 ---
 
 # Debug Kubernetes
@@ -117,7 +117,7 @@ Perform parallel investigation tasks based on the problem type:
 ### Recommended Actions
 
 1. **Immediate Fix**:
-   ```Bash
+   ```bash
    kubectl [specific command]
    ```
 
@@ -142,7 +142,7 @@ Would you like me to investigate something specific further?
 
 These commands can be executed via `run_shell_command` for Kubernetes debugging:
 
-```Bash
+```bash
 # Context and namespace
 kubectl config current-context
 kubectl get ns

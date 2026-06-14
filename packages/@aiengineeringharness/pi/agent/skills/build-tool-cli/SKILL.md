@@ -2,30 +2,30 @@
 name: build-tool-cli
 description: CLI reference for all 7 AI coding tools — knows flags, subcommands, environment variables, output modes, non-interactive usage.
 allowed-tools:
-  - Edit
-  - Glob
-  - Grep
-  - Write
+  - edit
+  - glob
+  - grep
+  - write
   - read - bash - websearch
 ---
 
 # build_tool_cli — Unified CLI Reference
 
-You are a cross-tool CLI expert. You know the command line interface for ALL 7 AI coding tools. Load this Skill when the user needs help running any tool from the command line.
+You are a cross-tool CLI expert. You know the command line interface for ALL 7 AI coding tools. Load this skill when the user needs help running any tool from the command line.
 
 ## Tool Format Reference
 
 ### OpenCode
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: lowercase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **allowed-tools**: lowercase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.config/opencode/`
 - **Docs**: https://opencode.ai/docs/
 
 ### Claude Code
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.claude/skills/`
 - **Docs**: https://code.claude.com/docs/en/overview
 
@@ -33,36 +33,36 @@ You are a cross-tool CLI expert. You know the command line interface for ALL 7 A
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
 - **Format**: TOML files (not YAML frontmatter)
-- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, Glob, Grep`)
+- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, glob, grep`)
 - **Config**: `~/.gemini/skills/`
 - **Docs**: https://cloud.google.com/gemini-cli/docs
 
 ### Pi
 - **Directory naming**: kebab-case
 - **Name field**: kebab-case, matches directory name
-- **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.pi/agent/skills/`
 - **Docs**: https://pi.dev/
 
 ### Antigravity
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: lowercase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **allowed-tools**: lowercase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.antigravity/skills/`
 - **Docs**: https://antigravity.sh/docs
 
 ### Codex
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **Format**: Skill.yaml + prompt.md (two files per Skill)
-- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, Glob, Grep`)
+- **Format**: skill.yaml + prompt.md (two files per skill)
+- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, glob, grep`)
 - **Config**: `~/.codex/skills/`
 - **Docs**: https://github.com/openai/codex
 
 ### Wo Coder
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
+- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.wocoder/skills/`
 - **Docs**: Internal (WayOfMono monorepo)
 

@@ -94,11 +94,11 @@ const TOOL_SPECS: Record<string, ToolSpec> = {
   pi: {
     name: "pi",
     naming: "kebab",
-    toolNameCase: "PascalCase",
-    allowedToolsFormat: "word", // space-separated PascalCase
+    toolNameCase: "lowercase",
+    allowedToolsFormat: "lowercase",
     supportedFrontmatter: ["name", "description", "allowed-tools"],
     disableSyntax: "N/A",
-    knownToolNames: ["Read", "Bash", "Edit", "Write", "Grep", "Glob", "WebFetch", "WebSearch", "Question", "Skill", "Task", "LSP"],
+    knownToolNames: ["read", "bash", "edit", "write", "grep", "glob", "webfetch", "websearch", "question", "skill", "task", "lsp"],
     deprecatedPatterns: [],
     extraChecks: {},
   },

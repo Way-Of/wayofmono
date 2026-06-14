@@ -2,10 +2,10 @@
 name: wow-tickets
 description: Manage understanding tickets (WOW- prefixed tickets) for tracking system knowledge and refinement requests
 allowed-tools:
-  - Glob
-  - Write
-  - Read
-  - Grep
+  - glob
+  - write
+  - read
+  - grep
 ---
 # Understanding Tickets Management
 
@@ -13,9 +13,9 @@ Skills for managing, reviewing, and tracking understanding tickets (WOW- prefixe
 
 ## Quick Start
 
-```Bash
+```bash
 # View pending understanding tickets
-ls thoughts/shared/tickets/WOW-*.md | Grep "status: Backlog"
+ls thoughts/shared/tickets/WOW-*.md | grep "status: Backlog"
 
 # Review ticket details
 think thoughts/shared/tickets/WOW-107-vnc-database-authentication.md

@@ -1,7 +1,7 @@
 ---
 name: implement_plan
 description: Implement an approved technical plan from thoughts/plans/ with phase-by-phase execution, leveraging Gemini CLI tools for file interaction, command execution, and task management.
-allowed-tools: Read, Write, Bash, Grep, Glob, TodoWrite, Task
+allowed-tools: Read, Write, Bash, Grep, Glob, Task
 disable-model-invocation: true
 ---
 
@@ -62,7 +62,7 @@ Use technology-appropriate commands:
 
 - Address any failures before moving to the next phase
 - Update checkboxes in the plan file using the Edit tool
-- Update your TodoWrite list
+- Update your TaskCreate list
 
 ## If You Get Stuck
 

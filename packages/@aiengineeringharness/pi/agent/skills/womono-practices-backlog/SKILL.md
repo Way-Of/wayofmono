@@ -7,7 +7,7 @@ description: Creates tickets across all WoM projects (WOMONO, WOW, OPT) with cor
 
 ## Purpose
 
-When you find code, infrastructure, or workflows that don't follow WoM best practices, create a ticket so the work is tracked and prioritized. This Skill formalizes the ticketing process for tech debt and improvement items across all Way-Of projects.
+When you find code, infrastructure, or workflows that don't follow WoM best practices, create a ticket so the work is tracked and prioritized. This skill formalizes the ticketing process for tech debt and improvement items across all Way-Of projects.
 
 ## Project Namespace Reference
 
@@ -38,7 +38,7 @@ Check `thoughts/README.md` for the definitive project list. The project is usual
 
 ### Step 2: Determine the Next Ticket Number
 
-```Bash
+```bash
 ls thoughts/<project-slug>/shared/tickets/<PREFIX>-*.md
 ```
 
@@ -91,7 +91,7 @@ Match `project` and `namespace` to the correct project:
 | WOW | `WOW` | `wow` |
 | OPT | `OPT` | `opticat` |
 
-### Step 6: Write Description
+### Step 6: write Description
 
 Include:
 - **What** violates the practice
