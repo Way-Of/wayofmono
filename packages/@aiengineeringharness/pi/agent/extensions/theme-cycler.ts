@@ -84,7 +84,7 @@ export default function (api: any) {
   // --- Shortcuts ---
 
   if (typeof api.registerShortcut === 'function') {
-    api.registerShortcut("shift+x", {
+    api.registerShortcut("ctrl+w", {
       description: "Cycle theme forward",
       handler: async (ctx: any) => {
         cycleTheme(ctx, 1);
