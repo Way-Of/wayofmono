@@ -1,5 +1,24 @@
 # Release Notes & Fixes
 
+## Index
+
+- [wo-coding-agent Fixes](./wo-coding-agent-fixes.md) — CLI coding agent (wocode) v1.0.6+
+- [Harness v1.6.1](#v161--2026-06-14) — Core harness fixes
+
+---
+
+## wo-coding-agent Fixes
+
+See [wo-coding-agent-fixes.md](./wo-coding-agent-fixes.md) for detailed release notes on v1.0.6 through v1.0.9.
+
+**Quick Summary:**
+- v1.0.9: Added docs folder, Ollama defaults
+- v1.0.8: CONFIG_DIR_NAME `.wo` → `.wocoder` (separate from wouser)
+- v1.0.7: npm workspace deps → explicit versions
+- v1.0.6: Removed `link:` protocol (npm incompatible)
+
+---
+
 ## v1.6.1 — 2026-06-14
 
 ### Command/Skill Conflicts Resolved
