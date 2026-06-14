@@ -53,7 +53,7 @@ ai-engineering-harness/
 │   └── extensions/     # subagent extension (multi-agent workflows)
 ├── wocoder/            → ~/.wocoder/
 │   ├── agents/         # 6 agents (snake_case)
-│   ├── commands/       # 11 slash commands
+│   ├── prompts/        # 11 prompt templates (commands via prompts)
 │   ├── skills/         # 25+ skills (auto-triggered)
 │   ├── extensions/     # subagent extension (multi-agent workflows)
 │   └── wocoder.json    # MCP configuration
@@ -103,6 +103,7 @@ ai-engineering-harness/
 | `prd_to_issues` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Break a PRD into vertical-slice issue files |
 | `tdd` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Red-green-refactor TDD discipline |
 | `write_a_prd` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Generate a PRD from a client brief |
+| `womono_version_updater` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Bump WoM harness version across all files and tools |
 | `build_pi_agent` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Build Pi agent definitions with frontmatter format |
 | `pi_cli` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi CLI expert — CLI flags, subcommands, output modes |
 | `pi_config` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi configuration — settings, providers, models, packages |
