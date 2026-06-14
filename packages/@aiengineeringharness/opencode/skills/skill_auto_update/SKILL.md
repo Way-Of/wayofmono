@@ -3,7 +3,8 @@ name: skill_auto_update
 description: >-
   Auto-discover, sync, and update skills across all 7 frontends (claude,
   opencode, gemini, pi, wocoder, antigravity, codex)
-allowed-tools: - read
+allowed-tools:
+  - read
   - write
   - glob
   - ls

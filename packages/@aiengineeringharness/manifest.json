@@ -4619,7 +4619,7 @@
           "description": "Open files from cwd in $VISUAL/$EDITOR via /edit or ctrl+e",
           "files": [
             {
-              "src": "wocoder/extensions/open-editor.ts",
+              "src": "wocoder/agent/extensions/open-editor.ts",
               "dest": "extensions/open-editor.ts"
             }
           ]
@@ -4628,39 +4628,39 @@
           "description": "Subagent tool for multi-agent workflows (single, parallel, chain)",
           "files": [
             {
-              "src": "wocoder/extensions/subagent/index.ts",
+              "src": "wocoder/agent/extensions/subagent/index.ts",
               "dest": "extensions/subagent/index.ts"
             },
             {
-              "src": "wocoder/extensions/subagent/agents.ts",
+              "src": "wocoder/agent/extensions/subagent/agents.ts",
               "dest": "extensions/subagent/agents.ts"
             },
             {
-              "src": "wocoder/extensions/subagent/agents/planner.md",
+              "src": "wocoder/agent/extensions/subagent/agents/planner.md",
               "dest": "extensions/subagent/agents/planner.md"
             },
             {
-              "src": "wocoder/extensions/subagent/agents/reviewer.md",
+              "src": "wocoder/agent/extensions/subagent/agents/reviewer.md",
               "dest": "extensions/subagent/agents/reviewer.md"
             },
             {
-              "src": "wocoder/extensions/subagent/agents/scout.md",
+              "src": "wocoder/agent/extensions/subagent/agents/scout.md",
               "dest": "extensions/subagent/agents/scout.md"
             },
             {
-              "src": "wocoder/extensions/subagent/agents/worker.md",
+              "src": "wocoder/agent/extensions/subagent/agents/worker.md",
               "dest": "extensions/subagent/agents/worker.md"
             },
             {
-              "src": "wocoder/extensions/subagent/prompts/implement.md",
+              "src": "wocoder/agent/extensions/subagent/prompts/implement.md",
               "dest": "extensions/subagent/prompts/implement.md"
             },
             {
-              "src": "wocoder/extensions/subagent/prompts/implement-and-review.md",
+              "src": "wocoder/agent/extensions/subagent/prompts/implement-and-review.md",
               "dest": "extensions/subagent/prompts/implement-and-review.md"
             },
             {
-              "src": "wocoder/extensions/subagent/prompts/scout-and-plan.md",
+              "src": "wocoder/agent/extensions/subagent/prompts/scout-and-plan.md",
               "dest": "extensions/subagent/prompts/scout-and-plan.md"
             }
           ]
