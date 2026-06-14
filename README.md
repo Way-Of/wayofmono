@@ -50,59 +50,45 @@ Then inside the session: `install.ps1 -InstallCli`
 
 ### Step 3: Install All Tools & Skills
 
-**macOS / Linux:**
+**macOS / Linux / Windows (PowerShell):**
 ```bash
+# Install all 7 tools + skills in one command
 ai-harness --tool=all --yes
-```
 
-**Windows (PowerShell):**
-```powershell
-ai-harness --tool=all --yes
-```
-
-Or via PowerShell wrapper:
-```powershell
+# Or via PowerShell wrapper
 .\install.ps1 -Tool all -Yes
 ```
 
-### Step 3b: Install Individual Tools
+### Step 3b: Install Individual Tools (one copy-paste per platform)
 
-Install specific tools (agents, skills, commands, themes, extensions):
-
+**macOS / Linux / Windows (bash):**
 ```bash
-# Wo Coder (primary interface)
-ai-harness --tool=wocoder --yes
-
-# Pi Agent
-ai-harness --tool=pi --yes
-
-# OpenCode
-ai-harness --tool=opencode --yes
-
-# Claude Code
-ai-harness --tool=claude --yes
-
-# Gemini CLI
-ai-harness --tool=gemini --yes
-
-# Antigravity
-ai-harness --tool=antigravity --yes
-
-# Codex
-ai-harness --tool=codex --yes
+# Install specific tools — pick one or run all sequentially
+ai-harness --tool=wocoder --yes     # Wo Coder (primary interface)
+ai-harness --tool=pi --yes          # Pi Agent
+ai-harness --tool=opencode --yes    # OpenCode
+ai-harness --tool=claude --yes      # Claude Code
+ai-harness --tool=gemini --yes      # Gemini CLI
+ai-harness --tool=antigravity --yes # Antigravity
+ai-harness --tool=codex --yes       # Codex
 ```
 
-Or with PowerShell wrapper:
+**Windows (PowerShell wrapper):**
 ```powershell
 .\install.ps1 -Tool wocoder -Yes
 .\install.ps1 -Tool pi -Yes
-# etc.
+.\install.ps1 -Tool opencode -Yes
+.\install.ps1 -Tool claude -Yes
+.\install.ps1 -Tool gemini -Yes
+.\install.ps1 -Tool antigravity -Yes
+.\install.ps1 -Tool codex -Yes
 ```
 
 ### Step 3c: Install Specific Components (--skill)
 
-Install only specific components (skills, agents, commands, etc.) for a tool:
+Install only specific components (skills, agents, commands, etc.) for a tool — one copy-paste:
 
+**macOS / Linux / Windows (bash):**
 ```bash
 # Install only skills and agents for OpenCode
 ai-harness --tool=opencode --skill=skills,agents --yes
@@ -112,58 +98,62 @@ ai-harness --tool=claude --skill=commands --yes
 
 # Preview what would be installed (dry run)
 ai-harness --tool=opencode --skill=skills,agents --dry-run
+
+# Other common components: skills, agents, commands, prompts, extensions, themes, keybindings, settings
+ai-harness --tool=opencode --skill=skills,commands,themes --yes
 ```
 
-Or with PowerShell wrapper:
+**Windows (PowerShell wrapper):**
 ```powershell
 .\install.ps1 -Tool opencode -Skill "skills,agents" -Yes
+.\install.ps1 -Tool claude -Skill "commands" -Yes
 .\install.ps1 -Tool opencode -Skill "skills,agents" -DryRun
 ```
 
-Available component names vary by tool. Common ones: `skills`, `agents`, `commands`, `prompts`, `extensions`, `themes`, `keybindings`, `settings`.
-
 ### Step 3c: Install to Project-Local (Dev Mode)
 
-Install configs to `.claude/`, `.opencode/`, `.wo/`, etc. in current project:
+Install configs to `.claude/`, `.opencode/`, `.wo/`, etc. in current project — one copy-paste:
 
+**macOS / Linux / Windows (bash):**
 ```bash
 ai-harness --tool=wocoder --local --yes
 ai-harness --tool=pi --local --yes
 ai-harness --tool=all --local --yes
+# Creates ./.wo/agent/, ./.pi/agent/, ./.config/opencode/, etc.
 ```
 
-Creates `./.wo/agent/`, `./.pi/agent/`, `./.config/opencode/`, etc. with skills, themes, extensions ready for the project.
-
-Or with PowerShell wrapper:
+**Windows (PowerShell wrapper):**
 ```powershell
 .\install.ps1 -Tool wocoder -Local -Yes
+.\install.ps1 -Tool pi -Local -Yes
 .\install.ps1 -Tool all -Local -Yes
 ```
 
 ### Step 3d: Interactive Component Selection (--interactive / -i)
 
-Pick components via interactive checkbox picker:
+Pick components via interactive checkbox picker — one copy-paste:
 
+**macOS / Linux / Windows (bash):**
 ```bash
 ai-harness --tool=claude --interactive
 # or short form:
 ai-harness --tool=claude -i
 ```
 
-Or with PowerShell wrapper:
+**Windows (PowerShell wrapper):**
 ```powershell
 .\install.ps1 -Tool claude -Interactive
 ```
 
 ### Update
 
+Full harness sync: CLI binary + docs + all tools + stale cleanup + compliance validation — one copy-paste:
+
+**macOS / Linux / Windows (bash):**
 ```bash
+# Standard update
 ai-harness --update
-```
 
-Full harness sync: CLI binary + docs + all tools + stale cleanup + compliance validation.
-
-```bash
 # Skip compliance validation after update
 ai-harness --update --no-validate
 
@@ -174,7 +164,7 @@ ai-harness --update --skip-binary
 ai-harness --update --dry-run
 ```
 
-Or with PowerShell wrapper:
+**Windows (PowerShell wrapper):**
 ```powershell
 .\install.ps1 -Update
 .\install.ps1 -Update -NoValidate
@@ -184,21 +174,16 @@ Or with PowerShell wrapper:
 
 ### Major Update (full refresh after a breaking overhaul)
 
+One copy-paste for complete reinstall:
+
+**macOS / Linux / Windows (bash):**
 ```bash
+# Full refresh from source
 deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --update
-```
 
-Or wipe everything and reinstall from scratch:
-
-```bash
+# OR wipe everything and reinstall from scratch
 ai-harness --uninstall=all --yes
-```
-
-```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
-```
-
-```bash
 ai-harness --tool=all --yes
 ```
 
@@ -206,54 +191,57 @@ That's it — project-local packages install to `node_modules/`, not globally. B
 
 ### Compliance Check
 
-Validate that all installed files match the manifest:
+Validate that all installed files match the manifest — one copy-paste:
 
+**macOS / Linux / Windows (bash):**
 ```bash
 ai-harness --compliance
+# Exit code 0 if compliant
 ```
-
-Checks for missing source files, stale files in target directories, and dangling manifest entries. Exit code 0 if compliant.
 
 ### Prune Stale Skills (--prune)
 
-Interactively review and remove non-manifest skill files across all tools:
+Interactively review and remove non-manifest skill files across all tools — one copy-paste:
 
+**macOS / Linux / Windows (bash):**
 ```bash
 ai-harness --prune
 ```
 
-Or with PowerShell wrapper:
+**Windows (PowerShell wrapper):**
 ```powershell
 .\install.ps1 -Prune
 ```
 
 ### Sync Documentation (--sync-docs)
 
-Sync canonical skills to all tool skill directories:
+Sync canonical skills to all tool skill directories — one copy-paste:
 
+**macOS / Linux / Windows (bash):**
 ```bash
 ai-harness --sync-docs
 # Preview only (no changes)
 ai-harness --sync-docs --check
 ```
 
-Or with PowerShell wrapper:
+**Windows (PowerShell wrapper):**
 ```powershell
 .\install.ps1 -SyncDocs
-.\install.ps1 -SyncDocs
+.\install.ps1 -SyncDocs -Check
 ```
 
 ### Report Skills to Dashboard (--report-skills / --report-url)
 
-Report local skills to CTO Dashboard telemetry API:
+Report local skills to CTO Dashboard telemetry API — one copy-paste:
 
+**macOS / Linux / Windows (bash):**
 ```bash
 ai-harness --report-skills
 # Custom dashboard URL
 ai-harness --report-skills --report-url https://cto.wayof.work
 ```
 
-Or with PowerShell wrapper:
+**Windows (PowerShell wrapper):**
 ```powershell
 .\install.ps1 -ReportSkills
 .\install.ps1 -ReportSkills -ReportUrl "https://cto.wayof.work"
@@ -261,28 +249,30 @@ Or with PowerShell wrapper:
 
 ### Import Reference Skills (--import-ref)
 
-Import reference skills/agents to all platforms:
+Import reference skills/agents to all platforms — one copy-paste:
 
+**macOS / Linux / Windows (bash):**
 ```bash
 ai-harness --import-ref
 ```
 
-Or with PowerShell wrapper:
+**Windows (PowerShell wrapper):**
 ```powershell
 .\install.ps1 -ImportRef
 ```
 
 ### Repo / Stow Mode (--mode / --dest)
 
-Show clone + stow instructions for GNU Stow-based installation:
+Show clone + stow instructions for GNU Stow-based installation — one copy-paste:
 
+**macOS / Linux / Windows (bash):**
 ```bash
 ai-harness --mode=repo
 # Custom clone destination
 ai-harness --mode=repo --dest=~/.ai-engineering-harness
 ```
 
-Or with PowerShell wrapper:
+**Windows (PowerShell wrapper):**
 ```powershell
 .\install.ps1 -Mode repo
 .\install.ps1 -Mode repo -Dest "~/.ai-engineering-harness"
@@ -474,179 +464,108 @@ The `--init` command creates a `.wo/` folder in your project:
 
 ### One-Command Agent Install (CI/scripts/one-time)
 
+Run any of these directly without installing the CLI first — pick one per need:
+
+**Install all tools:**
 ```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=all --yes
 ```
 
+**Install specific tool:**
 ```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=claude --yes
 ```
 
+**Update harness:**
 ```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --update
 ```
 
+**Sync documentation:**
 ```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --sync-docs
-```
-
-```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --sync-docs --check
 ```
 
+**Validate & maintenance:**
 ```bash
-# Check installed versions against manifest
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --check
-```
-
-```bash
-# Validate all installed files match manifest
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --compliance
-```
-
-```bash
-# Prune stale skills interactively
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --prune
 ```
 
+**Report & import:**
 ```bash
-# Report skills to dashboard
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --report-skills
-```
-
-```bash
-# Import reference skills
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --import-ref
 ```
 
+**Repo mode & uninstall:**
 ```bash
-# Show repo/stow instructions
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --mode=repo
-```
-
-```bash
-# Uninstall tool configs
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --uninstall=claude
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --uninstall=all
 ```
 
+**Help:**
 ```bash
-# Full help
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --help
 ```
 
 ### Global CLI Install (Recommended for repeated use)
 
+Install CLI once, then use `ai-harness` for everything — one copy-paste for install, then one per task:
+
+**Step 1: Install CLI**
 ```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 ```
 
+**Step 2: Install tools (pick one or run all)**
 ```bash
 ai-harness --tool=opencode
-```
-
-```bash
 ai-harness --tool=claude
-```
-
-```bash
 ai-harness --tool=pi
-```
-
-```bash
 ai-harness --tool=gemini
-```
-
-```bash
 ai-harness --tool=codex
-```
-
-```bash
 ai-harness --tool=antigravity
-```
-
-```bash
 ai-harness --tool=wocoder
-```
-
-```bash
 ai-harness --tool=all --yes
 ```
 
+**Step 3: Update & maintenance**
 ```bash
 ai-harness --update
-```
-
-```bash
 ai-harness --update --no-validate
-```
-
-```bash
 ai-harness --update --skip-binary
-```
-
-```bash
 ai-harness --check
 # → wocoder: UPDATE AVAILABLE v1.1.0 → v1.2.0
-```
-
-```bash
 ai-harness --compliance
-```
-
-```bash
 ai-harness --prune
 ```
 
+**Step 4: Reporting & sync**
 ```bash
 ai-harness --report-skills
-```
-
-```bash
 ai-harness --report-skills --report-url https://cto.wayof.work
-```
-
-```bash
 ai-harness --sync-docs
-```
-
-```bash
 ai-harness --sync-docs --check
-```
-
-```bash
 ai-harness --import-ref
 ```
 
+**Step 5: Repo mode & uninstall**
 ```bash
 ai-harness --mode=repo --dest=~/.ai-engineering-harness
-```
-
-```bash
 ai-harness --uninstall=claude
-```
-
-```bash
 ai-harness --uninstall=all
 ```
 
+**Step 6: Component selection**
 ```bash
 ai-harness --tool=claude --dry-run
-```
-
-```bash
 ai-harness --tool=claude --interactive
-```
-
-```bash
 ai-harness --tool=claude --skill=agents
-```
-
-```bash
 ai-harness --help
-```
-
-```bash
 ai-harness --tool=claude --local --yes
 ```
 
@@ -678,43 +597,23 @@ ai-harness --tool=claude --local --yes
 
 ### GNU Stow Mode (Symlink-based)
 
+One copy-paste for all stow commands:
+
 ```bash
+# Install all tools via stow
 ./packages/@aiengineeringharness/setup.sh all
-```
 
-```bash
+# Install specific tool via stow
 ./packages/@aiengineeringharness/setup.sh claude
-```
-
-```bash
 ./packages/@aiengineeringharness/setup.sh opencode
-```
-
-```bash
 ./packages/@aiengineeringharness/setup.sh gemini
-```
-
-```bash
 ./packages/@aiengineeringharness/setup.sh pi
-```
-
-```bash
 ./packages/@aiengineeringharness/setup.sh wocoder
-```
-
-```bash
 ./packages/@aiengineeringharness/setup.sh antigravity
-```
 
-```bash
+# Stow management
 ./packages/@aiengineeringharness/setup.sh --restow
-```
-
-```bash
 ./packages/@aiengineeringharness/setup.sh --delete
-```
-
-```bash
 ./packages/@aiengineeringharness/setup.sh --dry-run
 ```
 
@@ -722,92 +621,48 @@ ai-harness --tool=claude --local --yes
 
 For automated engineering and refactoring. Installed as a **dev-dependency** (tool for engineers, not end-users).
 
+**Local (project) install — npm:**
 ```bash
 npm install --save-dev @wayofmono/wo-coding-agent
-```
-
-```bash
 npx wocode --init
-```
-
-```bash
 ./wocode
+# Update: pnpm update @wayofmono/wo-coding-agent
+# Uninstall: npm uninstall @wayofmono/wo-coding-agent
 ```
 
+**Local (project) install — pnpm:**
 ```bash
-# pnpm alternative
 pnpm add -D @wayofmono/wo-coding-agent
-```
-
-```bash
 pnpm wocode --init
-```
-
-```bash
 ./wocode
+# Update: pnpm update @wayofmono/wo-coding-agent
+# Uninstall: pnpm remove @wayofmono/wo-coding-agent
 ```
 
+**Global install (cross-project):**
 ```bash
-# Update local pnpm installation
-pnpm update @wayofmono/wo-coding-agent
-```
-
-```bash
-# Global installation (for use across all projects)
 npm install -g @wayofmono/wo-coding-agent
-```
-
-```bash
 wocode --init
-```
-
-```bash
 wocode
-```
-
-```bash
-# Update global installation
-npm update -g @wayofmono/wo-coding-agent
-```
-
-```bash
-# Uninstall global installation
-npm uninstall -g @wayofmono/wo-coding-agent
-```
-
-```bash
-# Uninstall local (project) installation
-npm uninstall @wayofmono/wo-coding-agent
-# or with pnpm
-pnpm remove @wayofmono/wo-coding-agent
+# Update: npm update -g @wayofmono/wo-coding-agent
+# Uninstall: npm uninstall -g @wayofmono/wo-coding-agent
 ```
 
 ## 🤖 User Assistant (wouser)
 
 For general use and SDK integration. Installed as a standard **dependency** (needed at runtime).
 
+**Local (project) install — npm:**
 ```bash
 npm install @wayofmono/wo-agent
-```
-
-```bash
 npx wouser --init
-```
-
-```bash
 ./wouser
 ```
 
+**Local (project) install — pnpm:**
 ```bash
-# pnpm alternative
 pnpm add @wayofmono/wo-agent
-```
-
-```bash
 pnpm wouser --init
-```
-
-```bash
 ./wouser
 ```
 

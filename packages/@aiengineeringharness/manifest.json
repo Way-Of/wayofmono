@@ -540,7 +540,7 @@
           ]
         },
         "skill/build_tool_skill": {
-          "description": "Unified skill builder for all 7 tools — deployed to Claude Code",
+          "description": "Unified skill builder for all 7 tools \u2014 deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_skill/SKILL.md",
@@ -549,7 +549,7 @@
           ]
         },
         "skill/build_tool_agent": {
-          "description": "Unified agent builder for all 7 tools — deployed to Claude Code",
+          "description": "Unified agent builder for all 7 tools \u2014 deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_agent/SKILL.md",
@@ -558,7 +558,7 @@
           ]
         },
         "skill/build_tool_extension": {
-          "description": "Unified extension/plugin builder for all 7 tools — deployed to Claude Code",
+          "description": "Unified extension/plugin builder for all 7 tools \u2014 deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_extension/SKILL.md",
@@ -567,7 +567,7 @@
           ]
         },
         "skill/build_tool_tui": {
-          "description": "Unified TUI component builder for all 7 tools — deployed to Claude Code",
+          "description": "Unified TUI component builder for all 7 tools \u2014 deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_tui/SKILL.md",
@@ -576,7 +576,7 @@
           ]
         },
         "skill/build_tool_cli": {
-          "description": "Unified CLI reference for all 7 tools — deployed to Claude Code",
+          "description": "Unified CLI reference for all 7 tools \u2014 deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_cli/SKILL.md",
@@ -585,7 +585,7 @@
           ]
         },
         "skill/build_tool_themes": {
-          "description": "Unified theme builder for all 7 tools — deployed to Claude Code",
+          "description": "Unified theme builder for all 7 tools \u2014 deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_themes/SKILL.md",
@@ -594,7 +594,7 @@
           ]
         },
         "skill/build_tool_prompts": {
-          "description": "Unified prompt template builder for all 7 tools — deployed to Claude Code",
+          "description": "Unified prompt template builder for all 7 tools \u2014 deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_prompts/SKILL.md",
@@ -603,7 +603,7 @@
           ]
         },
         "skill/build_tool_keybindings": {
-          "description": "Unified keybinding reference for all 7 tools — deployed to Claude Code",
+          "description": "Unified keybinding reference for all 7 tools \u2014 deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_keybindings/SKILL.md",
@@ -612,7 +612,7 @@
           ]
         },
         "skill/build_tool_config": {
-          "description": "Unified configuration reference for all 7 tools — deployed to Claude Code",
+          "description": "Unified configuration reference for all 7 tools \u2014 deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_config/SKILL.md",
@@ -621,7 +621,7 @@
           ]
         },
         "skill/build_tool_orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools — deployed to Claude Code",
+          "description": "Unified orchestration coordinator for all 7 tools \u2014 deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_orchestrate/SKILL.md",
@@ -1580,7 +1580,7 @@
           ]
         },
         "skill/build_tool_skill": {
-          "description": "Unified skill builder for all 7 tools — deployed to OpenCode",
+          "description": "Unified skill builder for all 7 tools \u2014 deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build_tool_skill/SKILL.md",
@@ -1589,7 +1589,7 @@
           ]
         },
         "skill/build_tool_agent": {
-          "description": "Unified agent builder for all 7 tools — deployed to OpenCode",
+          "description": "Unified agent builder for all 7 tools \u2014 deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build_tool_agent/SKILL.md",
@@ -1598,7 +1598,7 @@
           ]
         },
         "skill/build_tool_extension": {
-          "description": "Unified extension/plugin builder for all 7 tools — deployed to OpenCode",
+          "description": "Unified extension/plugin builder for all 7 tools \u2014 deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build_tool_extension/SKILL.md",
@@ -1607,7 +1607,7 @@
           ]
         },
         "skill/build_tool_tui": {
-          "description": "Unified TUI component builder for all 7 tools — deployed to OpenCode",
+          "description": "Unified TUI component builder for all 7 tools \u2014 deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build_tool_tui/SKILL.md",
@@ -1616,7 +1616,7 @@
           ]
         },
         "skill/build_tool_cli": {
-          "description": "Unified CLI reference for all 7 tools — deployed to OpenCode",
+          "description": "Unified CLI reference for all 7 tools \u2014 deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build_tool_cli/SKILL.md",
@@ -1625,7 +1625,7 @@
           ]
         },
         "skill/build_tool_themes": {
-          "description": "Unified theme builder for all 7 tools — deployed to OpenCode",
+          "description": "Unified theme builder for all 7 tools \u2014 deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build_tool_themes/SKILL.md",
@@ -1634,7 +1634,7 @@
           ]
         },
         "skill/build_tool_prompts": {
-          "description": "Unified prompt template builder for all 7 tools — deployed to OpenCode",
+          "description": "Unified prompt template builder for all 7 tools \u2014 deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build_tool_prompts/SKILL.md",
@@ -1643,7 +1643,7 @@
           ]
         },
         "skill/build_tool_keybindings": {
-          "description": "Unified keybinding reference for all 7 tools — deployed to OpenCode",
+          "description": "Unified keybinding reference for all 7 tools \u2014 deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build_tool_keybindings/SKILL.md",
@@ -1652,7 +1652,7 @@
           ]
         },
         "skill/build_tool_config": {
-          "description": "Unified configuration reference for all 7 tools — deployed to OpenCode",
+          "description": "Unified configuration reference for all 7 tools \u2014 deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build_tool_config/SKILL.md",
@@ -1661,7 +1661,7 @@
           ]
         },
         "skill/build_tool_orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools — deployed to OpenCode",
+          "description": "Unified orchestration coordinator for all 7 tools \u2014 deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build_tool_orchestrate/SKILL.md",
@@ -2769,7 +2769,7 @@
           ]
         },
         "skill/build_tool_skill": {
-          "description": "Unified skill builder for all 7 tools — deployed to Gemini CLI",
+          "description": "Unified skill builder for all 7 tools \u2014 deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_skill/SKILL.md",
@@ -2778,7 +2778,7 @@
           ]
         },
         "skill/build_tool_agent": {
-          "description": "Unified agent builder for all 7 tools — deployed to Gemini CLI",
+          "description": "Unified agent builder for all 7 tools \u2014 deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_agent/SKILL.md",
@@ -2787,7 +2787,7 @@
           ]
         },
         "skill/build_tool_extension": {
-          "description": "Unified extension/plugin builder for all 7 tools — deployed to Gemini CLI",
+          "description": "Unified extension/plugin builder for all 7 tools \u2014 deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_extension/SKILL.md",
@@ -2796,7 +2796,7 @@
           ]
         },
         "skill/build_tool_tui": {
-          "description": "Unified TUI component builder for all 7 tools — deployed to Gemini CLI",
+          "description": "Unified TUI component builder for all 7 tools \u2014 deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_tui/SKILL.md",
@@ -2805,7 +2805,7 @@
           ]
         },
         "skill/build_tool_cli": {
-          "description": "Unified CLI reference for all 7 tools — deployed to Gemini CLI",
+          "description": "Unified CLI reference for all 7 tools \u2014 deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_cli/SKILL.md",
@@ -2814,7 +2814,7 @@
           ]
         },
         "skill/build_tool_themes": {
-          "description": "Unified theme builder for all 7 tools — deployed to Gemini CLI",
+          "description": "Unified theme builder for all 7 tools \u2014 deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_themes/SKILL.md",
@@ -2823,7 +2823,7 @@
           ]
         },
         "skill/build_tool_prompts": {
-          "description": "Unified prompt template builder for all 7 tools — deployed to Gemini CLI",
+          "description": "Unified prompt template builder for all 7 tools \u2014 deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_prompts/SKILL.md",
@@ -2832,7 +2832,7 @@
           ]
         },
         "skill/build_tool_keybindings": {
-          "description": "Unified keybinding reference for all 7 tools — deployed to Gemini CLI",
+          "description": "Unified keybinding reference for all 7 tools \u2014 deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_keybindings/SKILL.md",
@@ -2841,7 +2841,7 @@
           ]
         },
         "skill/build_tool_config": {
-          "description": "Unified configuration reference for all 7 tools — deployed to Gemini CLI",
+          "description": "Unified configuration reference for all 7 tools \u2014 deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_config/SKILL.md",
@@ -2850,7 +2850,7 @@
           ]
         },
         "skill/build_tool_orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools — deployed to Gemini CLI",
+          "description": "Unified orchestration coordinator for all 7 tools \u2014 deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_orchestrate/SKILL.md",
@@ -3424,7 +3424,7 @@
           ]
         },
         "skill/observability-driven-development": {
-          "description": "Observability Driven Development (ODD) — design the trace before the feature; local OTel feedback loop",
+          "description": "Observability Driven Development (ODD) \u2014 design the trace before the feature; local OTel feedback loop",
           "files": [
             {
               "src": "pi/agent/skills/observability-driven-development/SKILL.md",
@@ -3937,7 +3937,7 @@
           ]
         },
         "skill/build-tool-skill": {
-          "description": "Unified skill builder for all 7 tools — deployed to Pi",
+          "description": "Unified skill builder for all 7 tools \u2014 deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-skill/SKILL.md",
@@ -3946,7 +3946,7 @@
           ]
         },
         "skill/build-tool-agent": {
-          "description": "Unified agent builder for all 7 tools — deployed to Pi",
+          "description": "Unified agent builder for all 7 tools \u2014 deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-agent/SKILL.md",
@@ -3955,7 +3955,7 @@
           ]
         },
         "skill/build-tool-extension": {
-          "description": "Unified extension/plugin builder for all 7 tools — deployed to Pi",
+          "description": "Unified extension/plugin builder for all 7 tools \u2014 deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-extension/SKILL.md",
@@ -3964,7 +3964,7 @@
           ]
         },
         "skill/build-tool-tui": {
-          "description": "Unified TUI component builder for all 7 tools — deployed to Pi",
+          "description": "Unified TUI component builder for all 7 tools \u2014 deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-tui/SKILL.md",
@@ -3973,7 +3973,7 @@
           ]
         },
         "skill/build-tool-cli": {
-          "description": "Unified CLI reference for all 7 tools — deployed to Pi",
+          "description": "Unified CLI reference for all 7 tools \u2014 deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-cli/SKILL.md",
@@ -3982,7 +3982,7 @@
           ]
         },
         "skill/build-tool-themes": {
-          "description": "Unified theme builder for all 7 tools — deployed to Pi",
+          "description": "Unified theme builder for all 7 tools \u2014 deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-themes/SKILL.md",
@@ -3991,7 +3991,7 @@
           ]
         },
         "skill/build-tool-prompts": {
-          "description": "Unified prompt template builder for all 7 tools — deployed to Pi",
+          "description": "Unified prompt template builder for all 7 tools \u2014 deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-prompts/SKILL.md",
@@ -4000,7 +4000,7 @@
           ]
         },
         "skill/build-tool-keybindings": {
-          "description": "Unified keybinding reference for all 7 tools — deployed to Pi",
+          "description": "Unified keybinding reference for all 7 tools \u2014 deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-keybindings/SKILL.md",
@@ -4009,7 +4009,7 @@
           ]
         },
         "skill/build-tool-config": {
-          "description": "Unified configuration reference for all 7 tools — deployed to Pi",
+          "description": "Unified configuration reference for all 7 tools \u2014 deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-config/SKILL.md",
@@ -4018,7 +4018,7 @@
           ]
         },
         "skill/build-tool-orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools — deployed to Pi",
+          "description": "Unified orchestration coordinator for all 7 tools \u2014 deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-orchestrate/SKILL.md",
@@ -4868,12 +4868,12 @@
             }
           ]
         },
-        "skill/init_harness": {
+        "skill/init-harness": {
           "description": "Initialize harness skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/init_harness/SKILL.md",
-              "dest": "skills/init_harness/SKILL.md"
+              "src": "wocoder/agent/skills/init-harness/SKILL.md",
+              "dest": "skills/init-harness/SKILL.md"
             }
           ]
         },
@@ -4915,39 +4915,39 @@
             }
           ]
         },
-        "skill/auto_ticket_creator": {
+        "skill/auto-ticket-creator": {
           "description": "Auto Ticket Creator skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/auto_ticket_creator/SKILL.md",
-              "dest": "skills/auto_ticket_creator/SKILL.md"
+              "src": "wocoder/agent/skills/auto-ticket-creator/SKILL.md",
+              "dest": "skills/auto-ticket-creator/SKILL.md"
             }
           ]
         },
-        "skill/backlog_groomer": {
+        "skill/backlog-groomer": {
           "description": "Backlog Groomer skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/backlog_groomer/SKILL.md",
-              "dest": "skills/backlog_groomer/SKILL.md"
+              "src": "wocoder/agent/skills/backlog-groomer/SKILL.md",
+              "dest": "skills/backlog-groomer/SKILL.md"
             }
           ]
         },
-        "skill/create_plan": {
+        "skill/create-plan": {
           "description": "Create Plan skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/create_plan/SKILL.md",
-              "dest": "skills/create_plan/SKILL.md"
+              "src": "wocoder/agent/skills/create-plan/SKILL.md",
+              "dest": "skills/create-plan/SKILL.md"
             }
           ]
         },
-        "skill/cto_dashboard": {
+        "skill/cto-dashboard": {
           "description": "Cto Dashboard skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/cto_dashboard/SKILL.md",
-              "dest": "skills/cto_dashboard/SKILL.md"
+              "src": "wocoder/agent/skills/cto-dashboard/SKILL.md",
+              "dest": "skills/cto-dashboard/SKILL.md"
             }
           ]
         },
@@ -4960,255 +4960,255 @@
             }
           ]
         },
-        "skill/debug_k8s": {
+        "skill/debug-k8s": {
           "description": "Debug K8S skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/debug_k8s/SKILL.md",
-              "dest": "skills/debug_k8s/SKILL.md"
+              "src": "wocoder/agent/skills/debug-k8s/SKILL.md",
+              "dest": "skills/debug-k8s/SKILL.md"
             }
           ]
         },
-        "skill/docs_sync_updater": {
+        "skill/docs-sync-updater": {
           "description": "Docs Sync Updater skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/docs_sync_updater/SKILL.md",
-              "dest": "skills/docs_sync_updater/SKILL.md"
+              "src": "wocoder/agent/skills/docs-sync-updater/SKILL.md",
+              "dest": "skills/docs-sync-updater/SKILL.md"
             }
           ]
         },
-        "skill/document_generation": {
+        "skill/document-generation": {
           "description": "Document Generation skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/document_generation/SKILL.md",
-              "dest": "skills/document_generation/SKILL.md"
+              "src": "wocoder/agent/skills/document-generation/SKILL.md",
+              "dest": "skills/document-generation/SKILL.md"
             }
           ]
         },
-        "skill/experimental_pr_workflow": {
+        "skill/experimental-pr-workflow": {
           "description": "Experimental Pr Workflow skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/experimental_pr_workflow/SKILL.md",
-              "dest": "skills/experimental_pr_workflow/SKILL.md"
+              "src": "wocoder/agent/skills/experimental-pr-workflow/SKILL.md",
+              "dest": "skills/experimental-pr-workflow/SKILL.md"
             }
           ]
         },
-        "skill/git_commit_helper": {
+        "skill/git-commit-helper": {
           "description": "Git Commit Helper skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/git_commit_helper/SKILL.md",
-              "dest": "skills/git_commit_helper/SKILL.md"
+              "src": "wocoder/agent/skills/git-commit-helper/SKILL.md",
+              "dest": "skills/git-commit-helper/SKILL.md"
             }
           ]
         },
-        "skill/help_command": {
+        "skill/help-command": {
           "description": "Help Command skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/help_command/SKILL.md",
-              "dest": "skills/help_command/SKILL.md"
+              "src": "wocoder/agent/skills/help-command/SKILL.md",
+              "dest": "skills/help-command/SKILL.md"
             }
           ]
         },
-        "skill/implement_plan": {
+        "skill/implement-plan": {
           "description": "Implement Plan skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/implement_plan/SKILL.md",
-              "dest": "skills/implement_plan/SKILL.md"
+              "src": "wocoder/agent/skills/implement-plan/SKILL.md",
+              "dest": "skills/implement-plan/SKILL.md"
             }
           ]
         },
-        "skill/improve_codebase_architecture": {
+        "skill/improve-codebase-architecture": {
           "description": "Improve Codebase Architecture skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/improve_codebase_architecture/SKILL.md",
-              "dest": "skills/improve_codebase_architecture/SKILL.md"
+              "src": "wocoder/agent/skills/improve-codebase-architecture/SKILL.md",
+              "dest": "skills/improve-codebase-architecture/SKILL.md"
             }
           ]
         },
-        "skill/observability_driven_development": {
+        "skill/observability-driven-development": {
           "description": "Observability Driven Development skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/observability_driven_development/SKILL.md",
-              "dest": "skills/observability_driven_development/SKILL.md"
+              "src": "wocoder/agent/skills/observability-driven-development/SKILL.md",
+              "dest": "skills/observability-driven-development/SKILL.md"
             }
           ]
         },
-        "skill/opticat_backend_integrator": {
+        "skill/opticat-backend-integrator": {
           "description": "Opticat Backend Integrator skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/opticat_backend_integrator/SKILL.md",
-              "dest": "skills/opticat_backend_integrator/SKILL.md"
+              "src": "wocoder/agent/skills/opticat-backend-integrator/SKILL.md",
+              "dest": "skills/opticat-backend-integrator/SKILL.md"
             }
           ]
         },
-        "skill/opticat_simulator": {
+        "skill/opticat-simulator": {
           "description": "Opticat Simulator skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/opticat_simulator/SKILL.md",
-              "dest": "skills/opticat_simulator/SKILL.md"
+              "src": "wocoder/agent/skills/opticat-simulator/SKILL.md",
+              "dest": "skills/opticat-simulator/SKILL.md"
             }
           ]
         },
-        "skill/opticat_ui_builder": {
+        "skill/opticat-ui-builder": {
           "description": "Opticat Ui Builder skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/opticat_ui_builder/SKILL.md",
-              "dest": "skills/opticat_ui_builder/SKILL.md"
+              "src": "wocoder/agent/skills/opticat-ui-builder/SKILL.md",
+              "dest": "skills/opticat-ui-builder/SKILL.md"
             }
           ]
         },
-        "skill/otel_collector": {
+        "skill/otel-collector": {
           "description": "Otel Collector skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/otel_collector/SKILL.md",
-              "dest": "skills/otel_collector/SKILL.md"
+              "src": "wocoder/agent/skills/otel-collector/SKILL.md",
+              "dest": "skills/otel-collector/SKILL.md"
             }
           ]
         },
-        "skill/otel_instrument": {
+        "skill/otel-instrument": {
           "description": "Otel Instrument skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/otel_instrument/SKILL.md",
-              "dest": "skills/otel_instrument/SKILL.md"
+              "src": "wocoder/agent/skills/otel-instrument/SKILL.md",
+              "dest": "skills/otel-instrument/SKILL.md"
             }
           ]
         },
-        "skill/otel_instrumentation": {
+        "skill/otel-instrumentation": {
           "description": "Otel Instrumentation skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/otel_instrumentation/SKILL.md",
-              "dest": "skills/otel_instrumentation/SKILL.md"
+              "src": "wocoder/agent/skills/otel-instrumentation/SKILL.md",
+              "dest": "skills/otel-instrumentation/SKILL.md"
             }
           ]
         },
-        "skill/otel_ottl": {
+        "skill/otel-ottl": {
           "description": "Otel Ottl skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/otel_ottl/SKILL.md",
-              "dest": "skills/otel_ottl/SKILL.md"
+              "src": "wocoder/agent/skills/otel-ottl/SKILL.md",
+              "dest": "skills/otel-ottl/SKILL.md"
             }
           ]
         },
-        "skill/otel_semantic_conventions": {
+        "skill/otel-semantic-conventions": {
           "description": "Otel Semantic Conventions skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/otel_semantic_conventions/SKILL.md",
-              "dest": "skills/otel_semantic_conventions/SKILL.md"
+              "src": "wocoder/agent/skills/otel-semantic-conventions/SKILL.md",
+              "dest": "skills/otel-semantic-conventions/SKILL.md"
             }
           ]
         },
-        "skill/pr_description_generator": {
+        "skill/pr-description-generator": {
           "description": "Pr Description Generator skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/pr_description_generator/SKILL.md",
-              "dest": "skills/pr_description_generator/SKILL.md"
+              "src": "wocoder/agent/skills/pr-description-generator/SKILL.md",
+              "dest": "skills/pr-description-generator/SKILL.md"
             }
           ]
         },
-        "skill/prd_to_issues": {
+        "skill/prd-to-issues": {
           "description": "Prd To Issues skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/prd_to_issues/SKILL.md",
-              "dest": "skills/prd_to_issues/SKILL.md"
+              "src": "wocoder/agent/skills/prd-to-issues/SKILL.md",
+              "dest": "skills/prd-to-issues/SKILL.md"
             }
           ]
         },
-        "skill/research_codebase": {
+        "skill/research-codebase": {
           "description": "Research Codebase skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/research_codebase/SKILL.md",
-              "dest": "skills/research_codebase/SKILL.md"
+              "src": "wocoder/agent/skills/research-codebase/SKILL.md",
+              "dest": "skills/research-codebase/SKILL.md"
             }
           ]
         },
-        "skill/skill_adapter": {
+        "skill/skill-adapter": {
           "description": "Skill Adapter skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/skill_adapter/SKILL.md",
-              "dest": "skills/skill_adapter/SKILL.md"
+              "src": "wocoder/agent/skills/skill-adapter/SKILL.md",
+              "dest": "skills/skill-adapter/SKILL.md"
             }
           ]
         },
-        "skill/skill_auto_update": {
+        "skill/skill-auto-update": {
           "description": "Skill Auto Update skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/skill_auto_update/SKILL.md",
-              "dest": "skills/skill_auto_update/SKILL.md"
+              "src": "wocoder/agent/skills/skill-auto-update/SKILL.md",
+              "dest": "skills/skill-auto-update/SKILL.md"
             }
           ]
         },
-        "skill/team_setup": {
+        "skill/team-setup": {
           "description": "Team Setup skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/team_setup/SKILL.md",
-              "dest": "skills/team_setup/SKILL.md"
+              "src": "wocoder/agent/skills/team-setup/SKILL.md",
+              "dest": "skills/team-setup/SKILL.md"
             }
           ]
         },
-        "skill/ticket_context": {
+        "skill/ticket-context": {
           "description": "Ticket Context skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/ticket_context/SKILL.md",
-              "dest": "skills/ticket_context/SKILL.md"
+              "src": "wocoder/agent/skills/ticket-context/SKILL.md",
+              "dest": "skills/ticket-context/SKILL.md"
             }
           ]
         },
-        "skill/ticket_manager": {
+        "skill/ticket-manager": {
           "description": "Ticket Manager skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/ticket_manager/SKILL.md",
-              "dest": "skills/ticket_manager/SKILL.md"
+              "src": "wocoder/agent/skills/ticket-manager/SKILL.md",
+              "dest": "skills/ticket-manager/SKILL.md"
             }
           ]
         },
-        "skill/usage_rules": {
+        "skill/usage-rules": {
           "description": "Usage Rules skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/usage_rules/SKILL.md",
-              "dest": "skills/usage_rules/SKILL.md"
+              "src": "wocoder/agent/skills/usage-rules/SKILL.md",
+              "dest": "skills/usage-rules/SKILL.md"
             }
           ]
         },
-        "skill/validate_plan": {
+        "skill/validate-plan": {
           "description": "Validate Plan skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/validate_plan/SKILL.md",
-              "dest": "skills/validate_plan/SKILL.md"
+              "src": "wocoder/agent/skills/validate-plan/SKILL.md",
+              "dest": "skills/validate-plan/SKILL.md"
             }
           ]
         },
-        "skill/validate_telemetry": {
+        "skill/validate-telemetry": {
           "description": "Validate Telemetry skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/validate_telemetry/SKILL.md",
-              "dest": "skills/validate_telemetry/SKILL.md"
+              "src": "wocoder/agent/skills/validate-telemetry/SKILL.md",
+              "dest": "skills/validate-telemetry/SKILL.md"
             }
           ]
         },
@@ -5221,571 +5221,571 @@
             }
           ]
         },
-        "skill/wow_access_control": {
+        "skill/wow-access-control": {
           "description": "Wow Access Control skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/wow_access_control/SKILL.md",
-              "dest": "skills/wow_access_control/SKILL.md"
+              "src": "wocoder/agent/skills/wow-access-control/SKILL.md",
+              "dest": "skills/wow-access-control/SKILL.md"
             }
           ]
         },
-        "skill/wow_agent_dev": {
+        "skill/wow-agent-dev": {
           "description": "Wow Agent Dev skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/wow_agent_dev/SKILL.md",
-              "dest": "skills/wow_agent_dev/SKILL.md"
+              "src": "wocoder/agent/skills/wow-agent-dev/SKILL.md",
+              "dest": "skills/wow-agent-dev/SKILL.md"
             }
           ]
         },
-        "skill/wow_backend_dev": {
+        "skill/wow-backend-dev": {
           "description": "Wow Backend Dev skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/wow_backend_dev/SKILL.md",
-              "dest": "skills/wow_backend_dev/SKILL.md"
+              "src": "wocoder/agent/skills/wow-backend-dev/SKILL.md",
+              "dest": "skills/wow-backend-dev/SKILL.md"
             }
           ]
         },
-        "skill/wow_communications": {
+        "skill/wow-communications": {
           "description": "Wow Communications skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/wow_communications/SKILL.md",
-              "dest": "skills/wow_communications/SKILL.md"
+              "src": "wocoder/agent/skills/wow-communications/SKILL.md",
+              "dest": "skills/wow-communications/SKILL.md"
             }
           ]
         },
-        "skill/wow_core_architecture": {
+        "skill/wow-core-architecture": {
           "description": "Wow Core Architecture skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/wow_core_architecture/SKILL.md",
-              "dest": "skills/wow_core_architecture/SKILL.md"
+              "src": "wocoder/agent/skills/wow-core-architecture/SKILL.md",
+              "dest": "skills/wow-core-architecture/SKILL.md"
             }
           ]
         },
-        "skill/wow_frontend_dev": {
+        "skill/wow-frontend-dev": {
           "description": "Wow Frontend Dev skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/wow_frontend_dev/SKILL.md",
-              "dest": "skills/wow_frontend_dev/SKILL.md"
+              "src": "wocoder/agent/skills/wow-frontend-dev/SKILL.md",
+              "dest": "skills/wow-frontend-dev/SKILL.md"
             }
           ]
         },
-        "skill/wow_human_in_the_loop": {
+        "skill/wow-human-in-the-loop": {
           "description": "Wow Human In The Loop skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/wow_human_in_the_loop/SKILL.md",
-              "dest": "skills/wow_human_in_the_loop/SKILL.md"
+              "src": "wocoder/agent/skills/wow-human-in-the-loop/SKILL.md",
+              "dest": "skills/wow-human-in-the-loop/SKILL.md"
             }
           ]
         },
-        "skill/wow_skill_creator": {
+        "skill/wow-skill-creator": {
           "description": "Wow Skill Creator skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/wow_skill_creator/SKILL.md",
-              "dest": "skills/wow_skill_creator/SKILL.md"
+              "src": "wocoder/agent/skills/wow-skill-creator/SKILL.md",
+              "dest": "skills/wow-skill-creator/SKILL.md"
             }
           ]
         },
-        "skill/wow_tickets": {
+        "skill/wow-tickets": {
           "description": "Wow Tickets skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/wow_tickets/SKILL.md",
-              "dest": "skills/wow_tickets/SKILL.md"
+              "src": "wocoder/agent/skills/wow-tickets/SKILL.md",
+              "dest": "skills/wow-tickets/SKILL.md"
             }
           ]
         },
-        "skill/wow_ui_surfaces": {
+        "skill/wow-ui-surfaces": {
           "description": "Wow Ui Surfaces skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/wow_ui_surfaces/SKILL.md",
-              "dest": "skills/wow_ui_surfaces/SKILL.md"
+              "src": "wocoder/agent/skills/wow-ui-surfaces/SKILL.md",
+              "dest": "skills/wow-ui-surfaces/SKILL.md"
             }
           ]
         },
-        "skill/write_a_prd": {
+        "skill/write-a-prd": {
           "description": "Write A Prd skill",
           "files": [
             {
-              "src": "wocoder/agent/skills/write_a_prd/SKILL.md",
-              "dest": "skills/write_a_prd/SKILL.md"
+              "src": "wocoder/agent/skills/write-a-prd/SKILL.md",
+              "dest": "skills/write-a-prd/SKILL.md"
             }
           ]
         },
-        "skill/womono_practices_guide": {
+        "skill/womono-practices-guide": {
           "description": "Wow Practices Guide",
           "files": [
             {
-              "src": "wocoder/agent/skills/womono_practices_guide/SKILL.md",
-              "dest": "skills/womono_practices_guide/SKILL.md"
+              "src": "wocoder/agent/skills/womono-practices-guide/SKILL.md",
+              "dest": "skills/womono-practices-guide/SKILL.md"
             }
           ]
         },
-        "skill/womono_practices_audit": {
+        "skill/womono-practices-audit": {
           "description": "Wow Practices Audit",
           "files": [
             {
-              "src": "wocoder/agent/skills/womono_practices_audit/SKILL.md",
-              "dest": "skills/womono_practices_audit/SKILL.md"
+              "src": "wocoder/agent/skills/womono-practices-audit/SKILL.md",
+              "dest": "skills/womono-practices-audit/SKILL.md"
             }
           ]
         },
-        "skill/womono_practices_backlog": {
+        "skill/womono-practices-backlog": {
           "description": "Wow Practices Backlog",
           "files": [
             {
-              "src": "wocoder/agent/skills/womono_practices_backlog/SKILL.md",
-              "dest": "skills/womono_practices_backlog/SKILL.md"
+              "src": "wocoder/agent/skills/womono-practices-backlog/SKILL.md",
+              "dest": "skills/womono-practices-backlog/SKILL.md"
             }
           ]
         },
-        "skill/build_tool": {
+        "skill/build-tool": {
           "description": "Universal component builder for all 7 AI coding tools",
           "files": [
             {
-              "src": "wocoder/agent/skills/build_tool/SKILL.md",
-              "dest": "skills/build_tool/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool/SKILL.md",
+              "dest": "skills/build-tool/SKILL.md"
             }
           ]
         },
-        "skill/build_tool_skill": {
-          "description": "Unified skill builder for all 7 tools — deployed to Wo Coder",
+        "skill/build-tool-skill": {
+          "description": "Unified skill builder for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build_tool_skill/SKILL.md",
-              "dest": "skills/build_tool_skill/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool_skill/SKILL.md",
+              "dest": "skills/build-tool_skill/SKILL.md"
             }
           ]
         },
-        "skill/build_tool_agent": {
-          "description": "Unified agent builder for all 7 tools — deployed to Wo Coder",
+        "skill/build-tool-agent": {
+          "description": "Unified agent builder for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build_tool_agent/SKILL.md",
-              "dest": "skills/build_tool_agent/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool_agent/SKILL.md",
+              "dest": "skills/build-tool_agent/SKILL.md"
             }
           ]
         },
-        "skill/build_tool_extension": {
-          "description": "Unified extension/plugin builder for all 7 tools — deployed to Wo Coder",
+        "skill/build-tool-extension": {
+          "description": "Unified extension/plugin builder for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build_tool_extension/SKILL.md",
-              "dest": "skills/build_tool_extension/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool_extension/SKILL.md",
+              "dest": "skills/build-tool_extension/SKILL.md"
             }
           ]
         },
-        "skill/build_tool_tui": {
-          "description": "Unified TUI component builder for all 7 tools — deployed to Wo Coder",
+        "skill/build-tool-tui": {
+          "description": "Unified TUI component builder for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build_tool_tui/SKILL.md",
-              "dest": "skills/build_tool_tui/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool_tui/SKILL.md",
+              "dest": "skills/build-tool_tui/SKILL.md"
             }
           ]
         },
-        "skill/build_tool_cli": {
-          "description": "Unified CLI reference for all 7 tools — deployed to Wo Coder",
+        "skill/build-tool-cli": {
+          "description": "Unified CLI reference for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build_tool_cli/SKILL.md",
-              "dest": "skills/build_tool_cli/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool_cli/SKILL.md",
+              "dest": "skills/build-tool_cli/SKILL.md"
             }
           ]
         },
-        "skill/build_tool_themes": {
-          "description": "Unified theme builder for all 7 tools — deployed to Wo Coder",
+        "skill/build-tool-themes": {
+          "description": "Unified theme builder for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build_tool_themes/SKILL.md",
-              "dest": "skills/build_tool_themes/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool_themes/SKILL.md",
+              "dest": "skills/build-tool_themes/SKILL.md"
             }
           ]
         },
-        "skill/build_tool_prompts": {
-          "description": "Unified prompt template builder for all 7 tools — deployed to Wo Coder",
+        "skill/build-tool-prompts": {
+          "description": "Unified prompt template builder for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build_tool_prompts/SKILL.md",
-              "dest": "skills/build_tool_prompts/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool_prompts/SKILL.md",
+              "dest": "skills/build-tool_prompts/SKILL.md"
             }
           ]
         },
-        "skill/build_tool_keybindings": {
-          "description": "Unified keybinding reference for all 7 tools — deployed to Wo Coder",
+        "skill/build-tool-keybindings": {
+          "description": "Unified keybinding reference for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build_tool_keybindings/SKILL.md",
-              "dest": "skills/build_tool_keybindings/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool_keybindings/SKILL.md",
+              "dest": "skills/build-tool_keybindings/SKILL.md"
             }
           ]
         },
-        "skill/build_tool_config": {
-          "description": "Unified configuration reference for all 7 tools — deployed to Wo Coder",
+        "skill/build-tool-config": {
+          "description": "Unified configuration reference for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build_tool_config/SKILL.md",
-              "dest": "skills/build_tool_config/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool_config/SKILL.md",
+              "dest": "skills/build-tool_config/SKILL.md"
             }
           ]
         },
-        "skill/build_tool_orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools — deployed to Wo Coder",
+        "skill/build-tool-orchestrate": {
+          "description": "Unified orchestration coordinator for all 7 tools \u2014 deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/agent/skills/build_tool_orchestrate/SKILL.md",
-              "dest": "skills/build_tool_orchestrate/SKILL.md"
+              "src": "wocoder/agent/skills/build-tool_orchestrate/SKILL.md",
+              "dest": "skills/build-tool_orchestrate/SKILL.md"
             }
           ]
         },
-        "skill/investor_ready_doc_gen": {
+        "skill/investor-ready-doc-gen": {
           "description": "Generate investor-ready documentation for any project",
           "files": [
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/SKILL.md",
-              "dest": "skills/investor_ready_doc_gen/SKILL.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/SKILL.md",
+              "dest": "skills/investor-ready-doc-gen/SKILL.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml",
-              "dest": "skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/verticals/VERTICAL_TEMPLATE.yaml",
+              "dest": "skills/investor-ready-doc-gen/assets/verticals/VERTICAL_TEMPLATE.yaml"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml",
-              "dest": "skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/verticals/hvac_optimization/market_reference.yaml",
+              "dest": "skills/investor-ready-doc-gen/assets/verticals/hvac_optimization/market_reference.yaml"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml",
-              "dest": "skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml",
+              "dest": "skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/pdf/investor-theme.css",
-              "dest": "skills/investor_ready_doc_gen/assets/pdf/investor-theme.css"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/pdf/investor-theme.css",
+              "dest": "skills/investor-ready-doc-gen/assets/pdf/investor-theme.css"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
-              "dest": "skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml",
+              "dest": "skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/examples/wow_config.yaml",
-              "dest": "skills/investor_ready_doc_gen/assets/examples/wow_config.yaml"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/examples/wow_config.yaml",
+              "dest": "skills/investor-ready-doc-gen/assets/examples/wow_config.yaml"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml",
-              "dest": "skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/examples/opticat_config.yaml",
+              "dest": "skills/investor-ready-doc-gen/assets/examples/opticat_config.yaml"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/todo.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/todo.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/todo.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/todo.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/changelog.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/changelog.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/changelog.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/changelog.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/index.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/index.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/index.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/index.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/costs/cloud_costs.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/costs/cloud_costs.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/costs/hardware_costs.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/costs/hardware_costs.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/costs/setup_legal_costs.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/costs/setup_legal_costs.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/costs/detailed_breakdown.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/costs/detailed_breakdown.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/costs/cost_analysis.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/costs/cost_analysis.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/costs/team_tooling_costs.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/costs/team_tooling_costs.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/costs/alignment_summary.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/costs/alignment_summary.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/technical/demo_script.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/technical/demo_script.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/technical/product_functionality.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/technical/product_functionality.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/technical/demo_presentation_slides.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/technical/demo_presentation_slides.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/technical/technical_overview.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/technical/technical_overview.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/technical/demo_video_links.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/technical/demo_video_links.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/technical/demo_use_case_scenarios.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/technical/demo_use_case_scenarios.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/company/company_overview.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/company/company_overview.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/company/company_overview.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/company/company_overview.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/company/team_values.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/company/team_values.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/company/team_values.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/company/team_values.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/company/organizational_chart.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/company/organizational_chart.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/company/business_plan.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/company/business_plan.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/company/business_plan.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/company/business_plan.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/company/team_bios.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/company/team_bios.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/company/team_bios.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/company/team_bios.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/venture_studio/README.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/venture_studio/README.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/venture_studio/venture_studio_strategy.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/venture_studio/venture_studio_strategy.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/pitch_deck/send_ahead_deck.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/pitch_deck/send_ahead_deck.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/pitch_deck/pitch_script.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/pitch_deck/pitch_script.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/pitch_deck/supporting_slides.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/pitch_deck/supporting_slides.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/pitch_deck/master_deck.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/pitch_deck/master_deck.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/pitch_deck/one_pager.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/pitch_deck/one_pager.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/operations/kpi_dashboard.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/operations/kpi_dashboard.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/operations/client_overview.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/operations/client_overview.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/operations/venture_studio_strategy.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/operations/venture_studio_strategy.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/financial/master_financial_model.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/financial/master_financial_model.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/financial/README.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/financial/README.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/financial/README.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/financial/README.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/financial/seed_allocation_plan.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/financial/seed_allocation_plan.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/financial/cost_analysis.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/financial/cost_analysis.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/financial/revenue_model.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/financial/revenue_model.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/financial/historical_financials.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/financial/historical_financials.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/financial/cap_table.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/financial/cap_table.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/legal/intellectual_property.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/legal/intellectual_property.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/legal/shareholder_agreement.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/legal/shareholder_agreement.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/legal/vc_investor_contract.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/legal/vc_investor_contract.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/legal/advisor_board_contract.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/legal/advisor_board_contract.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/legal/angel_investor_contract.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/legal/angel_investor_contract.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/executive/executive_summary.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/executive/executive_summary.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/executive/white_paper.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/executive/white_paper.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/executive/investment_thesis.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/executive/investment_thesis.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/market/research_prompt.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/market/research_prompt.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/market_research.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/market/market_research.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/market/market_research.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/market/market_research.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/market/product_roadmap.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/market/product_roadmap.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/README.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/market/README.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/market/README.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/market/README.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/market/go_to_market_strategy.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/market/go_to_market_strategy.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/deep_research.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/market/deep_research.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/market/deep_research.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/market/deep_research.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/market/partnership_strategy.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/market/partnership_strategy.md"
             },
             {
-              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
-              "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
+              "src": "wocoder/agent/skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md",
+              "dest": "skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md"
             }
           ]
         },
-        "skill/build_auto_ticket_creator": {
+        "skill/build-auto-ticket-creator": {
           "description": "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories",
           "files": [
             {
-              "src": "wocoder/agent/skills/build_auto_ticket_creator/SKILL.md",
-              "dest": "skills/build_auto_ticket_creator/SKILL.md"
+              "src": "wocoder/agent/skills/build_auto-ticket-creator/SKILL.md",
+              "dest": "skills/build_auto-ticket-creator/SKILL.md"
             }
           ]
         },
-        "skill/build_backlog_groomer": {
+        "skill/build-backlog-groomer": {
           "description": "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.",
           "files": [
             {
-              "src": "wocoder/agent/skills/build_backlog_groomer/SKILL.md",
-              "dest": "skills/build_backlog_groomer/SKILL.md"
+              "src": "wocoder/agent/skills/build_backlog-groomer/SKILL.md",
+              "dest": "skills/build_backlog-groomer/SKILL.md"
             }
           ]
         },
-        "skill/build_skill_adapter": {
+        "skill/build-skill-adapter": {
           "description": "Adapts skills between different AI coding tool formats and conventions",
           "files": [
             {
-              "src": "wocoder/agent/skills/build_skill_adapter/SKILL.md",
-              "dest": "skills/build_skill_adapter/SKILL.md"
+              "src": "wocoder/agent/skills/build-skill-adapter/SKILL.md",
+              "dest": "skills/build-skill-adapter/SKILL.md"
             }
           ]
         },
-        "skill/build_skill_auto_update": {
+        "skill/build-skill-auto-update": {
           "description": "Automatically updates skills when dependencies or APIs change",
           "files": [
             {
-              "src": "wocoder/agent/skills/build_skill_auto_update/SKILL.md",
-              "dest": "skills/build_skill_auto_update/SKILL.md"
+              "src": "wocoder/agent/skills/build-skill-auto-update/SKILL.md",
+              "dest": "skills/build-skill-auto-update/SKILL.md"
             }
           ]
         },
-        "skill/skill_compliance_checker": {
+        "skill/skill-compliance-checker": {
           "description": "Validates skills against production-ready standards and best practices",
           "files": [
             {
-              "src": "wocoder/agent/skills/skill_compliance_checker/SKILL.md",
-              "dest": "skills/skill_compliance_checker/SKILL.md"
+              "src": "wocoder/agent/skills/skill-compliance-checker/SKILL.md",
+              "dest": "skills/skill-compliance-checker/SKILL.md"
             }
           ]
         },
-        "skill/ticket_executor": {
+        "skill/ticket-executor": {
           "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
           "files": [
             {
-              "src": "wocoder/agent/skills/ticket_executor/SKILL.md",
-              "dest": "skills/ticket_executor/SKILL.md"
+              "src": "wocoder/agent/skills/ticket-executor/SKILL.md",
+              "dest": "skills/ticket-executor/SKILL.md"
             }
           ]
         },
-        "skill/self_documentation": {
+        "skill/self-documentation": {
           "description": "Enables Wo to answer How do I...? and What's the command for...? questions by searching its own commands, skills, and documentation locally",
           "files": [
             {
-              "src": "wocoder/agent/skills/self_documentation/SKILL.md",
-              "dest": "skills/self_documentation/SKILL.md"
+              "src": "wocoder/agent/skills/self-documentation/SKILL.md",
+              "dest": "skills/self-documentation/SKILL.md"
             }
           ]
         },
-        "skill/validate_podman": {
+        "skill/validate-podman": {
           "description": "Validate Podman/Quadlet configurations on Fedora",
           "files": [
             {
-              "src": "wocoder/agent/skills/validate_podman/SKILL.md",
-              "dest": "skills/validate_podman/SKILL.md"
+              "src": "wocoder/agent/skills/validate-podman/SKILL.md",
+              "dest": "skills/validate-podman/SKILL.md"
             }
           ]
         },
-        "skill/womono_version_updater": {
+        "skill/womono-version-updater": {
           "description": "Bump WoM harness version across all files and tools",
           "files": [
             {
-              "src": "wocoder/agent/skills/womono_version_updater/SKILL.md",
-              "dest": "skills/womono_version_updater/SKILL.md"
+              "src": "wocoder/agent/skills/womono-version-updater/SKILL.md",
+              "dest": "skills/womono-version-updater/SKILL.md"
             }
           ]
         },
-        "skill/validate_manifest": {
+        "skill/validate-manifest": {
           "description": "Validate skill manifest against production-ready standards and conventions",
           "files": [
             {
-              "src": "wocoder/agent/skills/validate_manifest/SKILL.md",
-              "dest": "skills/validate_manifest/SKILL.md"
+              "src": "wocoder/agent/skills/validate-manifest/SKILL.md",
+              "dest": "skills/validate-manifest/SKILL.md"
             }
           ]
         }
@@ -6572,7 +6572,7 @@
           ]
         },
         "skill/build_tool_skill": {
-          "description": "Unified skill builder for all 7 tools — deployed to Antigravity",
+          "description": "Unified skill builder for all 7 tools \u2014 deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_skill/SKILL.md",
@@ -6581,7 +6581,7 @@
           ]
         },
         "skill/build_tool_agent": {
-          "description": "Unified agent builder for all 7 tools — deployed to Antigravity",
+          "description": "Unified agent builder for all 7 tools \u2014 deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_agent/SKILL.md",
@@ -6590,7 +6590,7 @@
           ]
         },
         "skill/build_tool_extension": {
-          "description": "Unified extension/plugin builder for all 7 tools — deployed to Antigravity",
+          "description": "Unified extension/plugin builder for all 7 tools \u2014 deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_extension/SKILL.md",
@@ -6599,7 +6599,7 @@
           ]
         },
         "skill/build_tool_tui": {
-          "description": "Unified TUI component builder for all 7 tools — deployed to Antigravity",
+          "description": "Unified TUI component builder for all 7 tools \u2014 deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_tui/SKILL.md",
@@ -6608,7 +6608,7 @@
           ]
         },
         "skill/build_tool_cli": {
-          "description": "Unified CLI reference for all 7 tools — deployed to Antigravity",
+          "description": "Unified CLI reference for all 7 tools \u2014 deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_cli/SKILL.md",
@@ -6617,7 +6617,7 @@
           ]
         },
         "skill/build_tool_themes": {
-          "description": "Unified theme builder for all 7 tools — deployed to Antigravity",
+          "description": "Unified theme builder for all 7 tools \u2014 deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_themes/SKILL.md",
@@ -6626,7 +6626,7 @@
           ]
         },
         "skill/build_tool_prompts": {
-          "description": "Unified prompt template builder for all 7 tools — deployed to Antigravity",
+          "description": "Unified prompt template builder for all 7 tools \u2014 deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_prompts/SKILL.md",
@@ -6635,7 +6635,7 @@
           ]
         },
         "skill/build_tool_keybindings": {
-          "description": "Unified keybinding reference for all 7 tools — deployed to Antigravity",
+          "description": "Unified keybinding reference for all 7 tools \u2014 deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_keybindings/SKILL.md",
@@ -6644,7 +6644,7 @@
           ]
         },
         "skill/build_tool_config": {
-          "description": "Unified configuration reference for all 7 tools — deployed to Antigravity",
+          "description": "Unified configuration reference for all 7 tools \u2014 deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_config/SKILL.md",
@@ -6653,7 +6653,7 @@
           ]
         },
         "skill/build_tool_orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools — deployed to Antigravity",
+          "description": "Unified orchestration coordinator for all 7 tools \u2014 deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_orchestrate/SKILL.md",
@@ -7502,7 +7502,7 @@
           ]
         },
         "skill/build_tool_skill": {
-          "description": "Unified skill builder for all 7 tools — deployed to Codex",
+          "description": "Unified skill builder for all 7 tools \u2014 deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_skill/SKILL.md",
@@ -7511,7 +7511,7 @@
           ]
         },
         "skill/build_tool_agent": {
-          "description": "Unified agent builder for all 7 tools — deployed to Codex",
+          "description": "Unified agent builder for all 7 tools \u2014 deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_agent/SKILL.md",
@@ -7520,7 +7520,7 @@
           ]
         },
         "skill/build_tool_extension": {
-          "description": "Unified extension/plugin builder for all 7 tools — deployed to Codex",
+          "description": "Unified extension/plugin builder for all 7 tools \u2014 deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_extension/SKILL.md",
@@ -7529,7 +7529,7 @@
           ]
         },
         "skill/build_tool_tui": {
-          "description": "Unified TUI component builder for all 7 tools — deployed to Codex",
+          "description": "Unified TUI component builder for all 7 tools \u2014 deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_tui/SKILL.md",
@@ -7538,7 +7538,7 @@
           ]
         },
         "skill/build_tool_cli": {
-          "description": "Unified CLI reference for all 7 tools — deployed to Codex",
+          "description": "Unified CLI reference for all 7 tools \u2014 deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_cli/SKILL.md",
@@ -7547,7 +7547,7 @@
           ]
         },
         "skill/build_tool_themes": {
-          "description": "Unified theme builder for all 7 tools — deployed to Codex",
+          "description": "Unified theme builder for all 7 tools \u2014 deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_themes/SKILL.md",
@@ -7556,7 +7556,7 @@
           ]
         },
         "skill/build_tool_prompts": {
-          "description": "Unified prompt template builder for all 7 tools — deployed to Codex",
+          "description": "Unified prompt template builder for all 7 tools \u2014 deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_prompts/SKILL.md",
@@ -7565,7 +7565,7 @@
           ]
         },
         "skill/build_tool_keybindings": {
-          "description": "Unified keybinding reference for all 7 tools — deployed to Codex",
+          "description": "Unified keybinding reference for all 7 tools \u2014 deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_keybindings/SKILL.md",
@@ -7574,7 +7574,7 @@
           ]
         },
         "skill/build_tool_config": {
-          "description": "Unified configuration reference for all 7 tools — deployed to Codex",
+          "description": "Unified configuration reference for all 7 tools \u2014 deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_config/SKILL.md",
@@ -7583,7 +7583,7 @@
           ]
         },
         "skill/build_tool_orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools — deployed to Codex",
+          "description": "Unified orchestration coordinator for all 7 tools \u2014 deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_orchestrate/SKILL.md",
