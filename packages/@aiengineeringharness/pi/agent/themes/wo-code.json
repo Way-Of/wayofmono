@@ -38,7 +38,7 @@
     "error": "red",
     "warning": "yellow",
     "muted": "gray",
-    "dim": "dimGray",
+    "dim": "orange",
     "text": "fg",
     "thinkingText": "gray",
     "selectedBg": "selectedBg",
