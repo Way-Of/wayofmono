@@ -659,35 +659,53 @@ async function removeStaleFiles(
 async function installExtensionDependencies(targetDir: string): Promise<void> {
   const extensionsDir = join(targetDir, "extensions");
   try {
-    const entries = await Deno.readDir(extensionsDir);
-    for (const entry of entries) {
-      if (!entry.isDirectory) continue;
-      const extDir = join(extensionsDir, entry.name);
-      const packageJsonPath = join(extDir, "package.json");
-      try {
-        const pkgText = await Deno.readTextFile(packageJsonPath);
-        const pkg = JSON.parse(pkgText);
-        if (pkg.dependencies && Object.keys(pkg.dependencies).length > 0) {
-          console.log(`  ${o("⟳")} Installing dependencies for extension: ${entry.name}`);
-          const cmd = new Deno.Command("npm", {
-            args: ["install", "--prefix", extDir, "--loglevel", "error"],
-            stdout: "inherit",
-            stderr: "inherit",
-          });
-          const result = await cmd.output();
-          if (result.success) {
-            console.log(`  ${o("✧")} Dependencies installed for ${entry.name}`);
-          } else {
-            const err = new TextDecoder().decode(result.stderr);
-            console.log(`  ${cross()} Failed to install dependencies for ${entry.name}: ${err}`);
-          }
-        }
-      } catch {
-        // No package.json or not valid JSON, skip
-      }
+    // Check if extensions directory exists and is a directory
+    const stat = await Deno.stat(extensionsDir);
+    if (!stat.isDirectory) {
+      return;
     }
   } catch {
-    // No extensions directory
+    // No extensions directory - skip silently
+    return;
+  }
+
+  // Read directory entries
+  let entries: Deno.DirEntry[];
+  try {
+    entries = [];
+    for await (const entry of Deno.readDir(extensionsDir)) {
+      entries.push(entry);
+    }
+  } catch {
+    // Extensions directory exists but can't read it - skip silently
+    return;
+  }
+
+  for (const entry of entries) {
+    if (!entry.isDirectory) continue;
+    const extDir = join(extensionsDir, entry.name);
+    const packageJsonPath = join(extDir, "package.json");
+    try {
+      const pkgText = await Deno.readTextFile(packageJsonPath);
+      const pkg = JSON.parse(pkgText);
+      if (pkg.dependencies && Object.keys(pkg.dependencies).length > 0) {
+        console.log(`  ${o("⟳")} Installing dependencies for extension: ${entry.name}`);
+        const cmd = new Deno.Command("npm", {
+          args: ["install", "--prefix", extDir, "--loglevel", "error"],
+          stdout: "inherit",
+          stderr: "inherit",
+        });
+        const result = await cmd.output();
+        if (result.success) {
+          console.log(`  ${o("✧")} Dependencies installed for ${entry.name}`);
+        } else {
+          const err = new TextDecoder().decode(result.stderr);
+          console.log(`  ${cross()} Failed to install dependencies for ${entry.name}: ${err}`);
+        }
+      }
+    } catch {
+      // No package.json or not valid JSON, skip
+    }
   }
 }
 
