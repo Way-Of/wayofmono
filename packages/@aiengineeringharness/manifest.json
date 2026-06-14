@@ -633,7 +633,7 @@
           "description": "Generate investor-ready documentation for any project",
           "files": [
             {
-              "src": "claude/claude/skills/investor_ready_doc_gen/SKILL.md",
+              "src": "claude/skills/investor_ready_doc_gen/SKILL.md",
               "dest": "skills/investor_ready_doc_gen/SKILL.md"
             },
             {
@@ -933,6 +933,15 @@
             {
               "src": "claude/skills/ticket_executor/SKILL.md",
               "dest": "skills/ticket_executor/SKILL.md"
+            }
+          ]
+        },
+        "skill/validate_podman": {
+          "description": "Validate Podman/Quadlet configurations on Fedora",
+          "files": [
+            {
+              "src": "claude/skills/validate_podman/SKILL.md",
+              "dest": "skills/validate_podman/SKILL.md"
             }
           ]
         }
@@ -1659,247 +1668,247 @@
               "dest": "skills/investor_ready_doc_gen/SKILL.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/pdf/investor-theme.css",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/pdf/investor-theme.css",
               "dest": "skills/investor_ready_doc_gen/assets/pdf/investor-theme.css"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/examples/wow_config.yaml",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/examples/wow_config.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/examples/wow_config.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/todo.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/todo.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/todo.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/changelog.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/changelog.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/changelog.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/index.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/index.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/index.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/company_overview.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/company/company_overview.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/company_overview.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/team_values.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/company/team_values.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/team_values.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/business_plan.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/company/business_plan.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/business_plan.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/team_bios.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/company/team_bios.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/team_bios.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md",
+              "src": "opencode/skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/README.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/financial/README.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/README.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/market_research.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/market_research.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/market_research.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/README.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/README.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/README.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/deep_research.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/deep_research.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/deep_research.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
+              "src": "claude/skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
             }
           ]
@@ -1955,6 +1964,15 @@
             {
               "src": "opencode/skills/ticket_executor/SKILL.md",
               "dest": "skills/ticket_executor/SKILL.md"
+            }
+          ]
+        },
+        "skill/validate_podman": {
+          "description": "Validate Podman/Quadlet configurations on Fedora",
+          "files": [
+            {
+              "src": "opencode/skills/validate_podman/SKILL.md",
+              "dest": "skills/validate_podman/SKILL.md"
             }
           ]
         }
@@ -2826,7 +2844,7 @@
           "description": "Generate investor-ready documentation for any project",
           "files": [
             {
-              "src": "gemini/gemini/skills/investor_ready_doc_gen/SKILL.md",
+              "src": "gemini/skills/investor_ready_doc_gen/SKILL.md",
               "dest": "skills/investor_ready_doc_gen/SKILL.md"
             },
             {
@@ -3128,6 +3146,15 @@
               "dest": "skills/ticket_executor/SKILL.md"
             }
           ]
+        },
+        "skill/validate_podman": {
+          "description": "Validate Podman/Quadlet configurations on Fedora",
+          "files": [
+            {
+              "src": "gemini/skills/validate_podman/SKILL.md",
+              "dest": "skills/validate_podman/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -3138,31 +3165,31 @@
           "description": "Specialized subagents for Pi",
           "files": [
             {
-              "src": "pi/agents/codebase-analyzer.md",
+              "src": "pi/agent/agents/codebase-analyzer.md",
               "dest": "agents/codebase-analyzer.md"
             },
             {
-              "src": "pi/agents/codebase-locator.md",
+              "src": "pi/agent/agents/codebase-locator.md",
               "dest": "agents/codebase-locator.md"
             },
             {
-              "src": "pi/agents/codebase-pattern-finder.md",
+              "src": "pi/agent/agents/codebase-pattern-finder.md",
               "dest": "agents/codebase-pattern-finder.md"
             },
             {
-              "src": "pi/agents/thoughts-analyzer.md",
+              "src": "pi/agent/agents/thoughts-analyzer.md",
               "dest": "agents/thoughts-analyzer.md"
             },
             {
-              "src": "pi/agents/thoughts-locator.md",
+              "src": "pi/agent/agents/thoughts-locator.md",
               "dest": "agents/thoughts-locator.md"
             },
             {
-              "src": "pi/agents/web-search-researcher.md",
+              "src": "pi/agent/agents/web-search-researcher.md",
               "dest": "agents/web-search-researcher.md"
             },
             {
-              "src": "pi/agents/README.md",
+              "src": "pi/agent/agents/README.md",
               "dest": "agents/README.md"
             }
           ]
@@ -3171,7 +3198,7 @@
           "description": "Open files from cwd in $VISUAL/$EDITOR via /edit or ctrl+e",
           "files": [
             {
-              "src": "pi/extensions/open-editor.ts",
+              "src": "pi/agent/extensions/open-editor.ts",
               "dest": "extensions/open-editor.ts"
             }
           ]
@@ -3180,39 +3207,39 @@
           "description": "Subagent tool for multi-agent workflows (single, parallel, chain)",
           "files": [
             {
-              "src": "pi/extensions/subagent/index.ts",
+              "src": "pi/agent/extensions/subagent/index.ts",
               "dest": "extensions/subagent/index.ts"
             },
             {
-              "src": "pi/extensions/subagent/agents.ts",
+              "src": "pi/agent/extensions/subagent/agents.ts",
               "dest": "extensions/subagent/agents.ts"
             },
             {
-              "src": "pi/extensions/subagent/agents/planner.md",
+              "src": "pi/agent/extensions/subagent/agents/planner.md",
               "dest": "extensions/subagent/agents/planner.md"
             },
             {
-              "src": "pi/extensions/subagent/agents/reviewer.md",
+              "src": "pi/agent/extensions/subagent/agents/reviewer.md",
               "dest": "extensions/subagent/agents/reviewer.md"
             },
             {
-              "src": "pi/extensions/subagent/agents/scout.md",
+              "src": "pi/agent/extensions/subagent/agents/scout.md",
               "dest": "extensions/subagent/agents/scout.md"
             },
             {
-              "src": "pi/extensions/subagent/agents/worker.md",
+              "src": "pi/agent/extensions/subagent/agents/worker.md",
               "dest": "extensions/subagent/agents/worker.md"
             },
             {
-              "src": "pi/extensions/subagent/prompts/implement.md",
+              "src": "pi/agent/extensions/subagent/prompts/implement.md",
               "dest": "extensions/subagent/prompts/implement.md"
             },
             {
-              "src": "pi/extensions/subagent/prompts/implement-and-review.md",
+              "src": "pi/agent/extensions/subagent/prompts/implement-and-review.md",
               "dest": "extensions/subagent/prompts/implement-and-review.md"
             },
             {
-              "src": "pi/extensions/subagent/prompts/scout-and-plan.md",
+              "src": "pi/agent/extensions/subagent/prompts/scout-and-plan.md",
               "dest": "extensions/subagent/prompts/scout-and-plan.md"
             }
           ]
@@ -3283,7 +3310,7 @@
           "description": "Git commit workflow prompt",
           "files": [
             {
-              "src": "pi/prompts/commit.md",
+              "src": "pi/agent/prompts/commit.md",
               "dest": "prompts/commit.md"
             }
           ]
@@ -3292,7 +3319,7 @@
           "description": "Create implementation plans prompt",
           "files": [
             {
-              "src": "pi/prompts/create_plan.md",
+              "src": "pi/agent/prompts/create_plan.md",
               "dest": "prompts/create_plan.md"
             }
           ]
@@ -3301,7 +3328,7 @@
           "description": "Debugging investigation prompt",
           "files": [
             {
-              "src": "pi/prompts/debug.md",
+              "src": "pi/agent/prompts/debug.md",
               "dest": "prompts/debug.md"
             }
           ]
@@ -3310,7 +3337,7 @@
           "description": "Kubernetes cluster debugging prompt",
           "files": [
             {
-              "src": "pi/prompts/debug-k8s.md",
+              "src": "pi/agent/prompts/debug-k8s.md",
               "dest": "prompts/debug-k8s.md"
             }
           ]
@@ -3319,7 +3346,7 @@
           "description": "Execute an approved plan prompt",
           "files": [
             {
-              "src": "pi/prompts/implement_plan.md",
+              "src": "pi/agent/prompts/implement_plan.md",
               "dest": "prompts/implement_plan.md"
             }
           ]
@@ -3328,7 +3355,7 @@
           "description": "Initialize harness in a new repository prompt",
           "files": [
             {
-              "src": "pi/prompts/init_harness.md",
+              "src": "pi/agent/prompts/init_harness.md",
               "dest": "prompts/init_harness.md"
             }
           ]
@@ -3337,7 +3364,7 @@
           "description": "OpenTelemetry instrumentation orchestrator prompt",
           "files": [
             {
-              "src": "pi/prompts/otel_instrument.md",
+              "src": "pi/agent/prompts/otel_instrument.md",
               "dest": "prompts/otel_instrument.md"
             }
           ]
@@ -3346,7 +3373,7 @@
           "description": "Comprehensive codebase research prompt",
           "files": [
             {
-              "src": "pi/prompts/research_codebase.md",
+              "src": "pi/agent/prompts/research_codebase.md",
               "dest": "prompts/research_codebase.md"
             }
           ]
@@ -3355,7 +3382,7 @@
           "description": "Validate implementation against plan prompt",
           "files": [
             {
-              "src": "pi/prompts/validate_plan.md",
+              "src": "pi/agent/prompts/validate_plan.md",
               "dest": "prompts/validate_plan.md"
             }
           ]
@@ -3364,7 +3391,7 @@
           "description": "Validate local telemetry against a narrative spec prompt",
           "files": [
             {
-              "src": "pi/prompts/validate_telemetry.md",
+              "src": "pi/agent/prompts/validate_telemetry.md",
               "dest": "prompts/validate_telemetry.md"
             }
           ]
@@ -3373,19 +3400,19 @@
           "description": "Observability Driven Development (ODD) — design the trace before the feature; local OTel feedback loop",
           "files": [
             {
-              "src": "pi/skills/observability-driven-development/SKILL.md",
+              "src": "pi/agent/skills/observability-driven-development/SKILL.md",
               "dest": "skills/observability-driven-development/SKILL.md"
             },
             {
-              "src": "pi/skills/observability-driven-development/narrative.md",
+              "src": "pi/agent/skills/observability-driven-development/narrative.md",
               "dest": "skills/observability-driven-development/narrative.md"
             },
             {
-              "src": "pi/skills/observability-driven-development/loop.md",
+              "src": "pi/agent/skills/observability-driven-development/loop.md",
               "dest": "skills/observability-driven-development/loop.md"
             },
             {
-              "src": "pi/skills/observability-driven-development/local-setup.md",
+              "src": "pi/agent/skills/observability-driven-development/local-setup.md",
               "dest": "skills/observability-driven-development/local-setup.md"
             }
           ]
@@ -3394,7 +3421,7 @@
           "description": "Git worktree manager prompt",
           "files": [
             {
-              "src": "pi/prompts/worktree.md",
+              "src": "pi/agent/prompts/worktree.md",
               "dest": "prompts/worktree.md"
             }
           ]
@@ -3403,7 +3430,7 @@
           "description": "Experimental PR workflow skill",
           "files": [
             {
-              "src": "pi/skills/experimental-pr-workflow/SKILL.md",
+              "src": "pi/agent/skills/experimental-pr-workflow/SKILL.md",
               "dest": "skills/experimental-pr-workflow/SKILL.md"
             }
           ]
@@ -3412,7 +3439,7 @@
           "description": "Auto-triggered git commit helper skill",
           "files": [
             {
-              "src": "pi/skills/git-commit-helper/SKILL.md",
+              "src": "pi/agent/skills/git-commit-helper/SKILL.md",
               "dest": "skills/git-commit-helper/SKILL.md"
             }
           ]
@@ -3421,7 +3448,7 @@
           "description": "Initialize harness skill",
           "files": [
             {
-              "src": "pi/skills/init-harness/SKILL.md",
+              "src": "pi/agent/skills/init-harness/SKILL.md",
               "dest": "skills/init-harness/SKILL.md"
             }
           ]
@@ -3430,7 +3457,7 @@
           "description": "OpenTelemetry Collector configuration skill",
           "files": [
             {
-              "src": "pi/skills/otel-collector/SKILL.md",
+              "src": "pi/agent/skills/otel-collector/SKILL.md",
               "dest": "skills/otel-collector/SKILL.md"
             }
           ]
@@ -3439,7 +3466,7 @@
           "description": "OpenTelemetry instrumentation orchestrator skill",
           "files": [
             {
-              "src": "pi/skills/otel-instrument/SKILL.md",
+              "src": "pi/agent/skills/otel-instrument/SKILL.md",
               "dest": "skills/otel-instrument/SKILL.md"
             }
           ]
@@ -3448,7 +3475,7 @@
           "description": "OpenTelemetry SDK instrumentation skill",
           "files": [
             {
-              "src": "pi/skills/otel-instrumentation/SKILL.md",
+              "src": "pi/agent/skills/otel-instrumentation/SKILL.md",
               "dest": "skills/otel-instrumentation/SKILL.md"
             }
           ]
@@ -3457,7 +3484,7 @@
           "description": "OpenTelemetry OTTL expressions skill",
           "files": [
             {
-              "src": "pi/skills/otel-ottl/SKILL.md",
+              "src": "pi/agent/skills/otel-ottl/SKILL.md",
               "dest": "skills/otel-ottl/SKILL.md"
             }
           ]
@@ -3466,7 +3493,7 @@
           "description": "OpenTelemetry semantic conventions skill",
           "files": [
             {
-              "src": "pi/skills/otel-semantic-conventions/SKILL.md",
+              "src": "pi/agent/skills/otel-semantic-conventions/SKILL.md",
               "dest": "skills/otel-semantic-conventions/SKILL.md"
             }
           ]
@@ -3475,7 +3502,7 @@
           "description": "Automated PR description generator skill",
           "files": [
             {
-              "src": "pi/skills/pr-description-generator/SKILL.md",
+              "src": "pi/agent/skills/pr-description-generator/SKILL.md",
               "dest": "skills/pr-description-generator/SKILL.md"
             }
           ]
@@ -3484,7 +3511,7 @@
           "description": "Stress-test plans via relentless user interview skill",
           "files": [
             {
-              "src": "pi/skills/interview/SKILL.md",
+              "src": "pi/agent/skills/interview/SKILL.md",
               "dest": "skills/interview/SKILL.md"
             }
           ]
@@ -3493,27 +3520,27 @@
           "description": "Test-driven development with red-green-refactor loop skill",
           "files": [
             {
-              "src": "pi/skills/tdd/SKILL.md",
+              "src": "pi/agent/skills/tdd/SKILL.md",
               "dest": "skills/tdd/SKILL.md"
             },
             {
-              "src": "pi/skills/tdd/tests.md",
+              "src": "pi/agent/skills/tdd/tests.md",
               "dest": "skills/tdd/tests.md"
             },
             {
-              "src": "pi/skills/tdd/mocking.md",
+              "src": "pi/agent/skills/tdd/mocking.md",
               "dest": "skills/tdd/mocking.md"
             },
             {
-              "src": "pi/skills/tdd/deep-modules.md",
+              "src": "pi/agent/skills/tdd/deep-modules.md",
               "dest": "skills/tdd/deep-modules.md"
             },
             {
-              "src": "pi/skills/tdd/interface-design.md",
+              "src": "pi/agent/skills/tdd/interface-design.md",
               "dest": "skills/tdd/interface-design.md"
             },
             {
-              "src": "pi/skills/tdd/refactoring.md",
+              "src": "pi/agent/skills/tdd/refactoring.md",
               "dest": "skills/tdd/refactoring.md"
             }
           ]
@@ -3522,11 +3549,11 @@
           "description": "Find architectural friction and propose deep-module refactors skill",
           "files": [
             {
-              "src": "pi/skills/improve-codebase-architecture/SKILL.md",
+              "src": "pi/agent/skills/improve-codebase-architecture/SKILL.md",
               "dest": "skills/improve-codebase-architecture/SKILL.md"
             },
             {
-              "src": "pi/skills/improve-codebase-architecture/REFERENCE.md",
+              "src": "pi/agent/skills/improve-codebase-architecture/REFERENCE.md",
               "dest": "skills/improve-codebase-architecture/REFERENCE.md"
             }
           ]
@@ -3535,7 +3562,7 @@
           "description": "Break a PRD into vertical-slice issue files skill",
           "files": [
             {
-              "src": "pi/skills/prd-to-issues/SKILL.md",
+              "src": "pi/agent/skills/prd-to-issues/SKILL.md",
               "dest": "skills/prd-to-issues/SKILL.md"
             }
           ]
@@ -3544,7 +3571,7 @@
           "description": "Generate a PRD from a client brief skill",
           "files": [
             {
-              "src": "pi/skills/write-a-prd/SKILL.md",
+              "src": "pi/agent/skills/write-a-prd/SKILL.md",
               "dest": "skills/write-a-prd/SKILL.md"
             }
           ]
@@ -3553,7 +3580,7 @@
           "description": "Ticket Manager - manage tickets across all namespaces with full lifecycle",
           "files": [
             {
-              "src": "pi/skills/ticket-manager/SKILL.md",
+              "src": "pi/agent/skills/ticket-manager/SKILL.md",
               "dest": "skills/ticket-manager/SKILL.md"
             }
           ]
@@ -3562,7 +3589,7 @@
           "description": "Team Setup - initialize and manage team configuration",
           "files": [
             {
-              "src": "pi/skills/team-setup/SKILL.md",
+              "src": "pi/agent/skills/team-setup/SKILL.md",
               "dest": "skills/team-setup/SKILL.md"
             }
           ]
@@ -3571,7 +3598,7 @@
           "description": "Skill Auto-Update - auto-discover and sync skills across all frontends",
           "files": [
             {
-              "src": "pi/skills/skill-auto-update/SKILL.md",
+              "src": "pi/agent/skills/skill-auto-update/SKILL.md",
               "dest": "skills/skill-auto-update/SKILL.md"
             }
           ]
@@ -3580,7 +3607,7 @@
           "description": "Auto-Ticket Creator - monitor and auto-create tickets from changes",
           "files": [
             {
-              "src": "pi/skills/auto-ticket-creator/SKILL.md",
+              "src": "pi/agent/skills/auto-ticket-creator/SKILL.md",
               "dest": "skills/auto-ticket-creator/SKILL.md"
             }
           ]
@@ -3589,7 +3616,7 @@
           "description": "Docs Sync Updater - fetch latest docs and auto-update skill configs",
           "files": [
             {
-              "src": "pi/skills/docs-sync-updater/SKILL.md",
+              "src": "pi/agent/skills/docs-sync-updater/SKILL.md",
               "dest": "skills/docs-sync-updater/SKILL.md"
             }
           ]
@@ -3598,7 +3625,7 @@
           "description": "CTO Dashboard - ticket overview, developer progress, review queue",
           "files": [
             {
-              "src": "pi/skills/cto-dashboard/SKILL.md",
+              "src": "pi/agent/skills/cto-dashboard/SKILL.md",
               "dest": "skills/cto-dashboard/SKILL.md"
             }
           ]
@@ -3607,7 +3634,7 @@
           "description": "Skill Adapter - platform-specific skill loading and format adapters",
           "files": [
             {
-              "src": "pi/skills/skill-adapter/SKILL.md",
+              "src": "pi/agent/skills/skill-adapter/SKILL.md",
               "dest": "skills/skill-adapter/SKILL.md"
             }
           ]
@@ -3616,7 +3643,7 @@
           "description": "Backlog Groomer skill",
           "files": [
             {
-              "src": "pi/skills/backlog-groomer/SKILL.md",
+              "src": "pi/agent/skills/backlog-groomer/SKILL.md",
               "dest": "skills/backlog-groomer/SKILL.md"
             }
           ]
@@ -3625,7 +3652,7 @@
           "description": "Create Plan skill",
           "files": [
             {
-              "src": "pi/skills/create-plan/SKILL.md",
+              "src": "pi/agent/skills/create-plan/SKILL.md",
               "dest": "skills/create-plan/SKILL.md"
             }
           ]
@@ -3634,7 +3661,7 @@
           "description": "Debug skill",
           "files": [
             {
-              "src": "pi/skills/debug/SKILL.md",
+              "src": "pi/agent/skills/debug/SKILL.md",
               "dest": "skills/debug/SKILL.md"
             }
           ]
@@ -3643,7 +3670,7 @@
           "description": "Debug K8S skill",
           "files": [
             {
-              "src": "pi/skills/debug-k8s/SKILL.md",
+              "src": "pi/agent/skills/debug-k8s/SKILL.md",
               "dest": "skills/debug-k8s/SKILL.md"
             }
           ]
@@ -3652,7 +3679,7 @@
           "description": "Document Generation skill",
           "files": [
             {
-              "src": "pi/skills/document-generation/SKILL.md",
+              "src": "pi/agent/skills/document-generation/SKILL.md",
               "dest": "skills/document-generation/SKILL.md"
             }
           ]
@@ -3661,7 +3688,7 @@
           "description": "Help Command skill",
           "files": [
             {
-              "src": "pi/skills/help-command/SKILL.md",
+              "src": "pi/agent/skills/help-command/SKILL.md",
               "dest": "skills/help-command/SKILL.md"
             }
           ]
@@ -3670,7 +3697,7 @@
           "description": "Implement Plan skill",
           "files": [
             {
-              "src": "pi/skills/implement-plan/SKILL.md",
+              "src": "pi/agent/skills/implement-plan/SKILL.md",
               "dest": "skills/implement-plan/SKILL.md"
             }
           ]
@@ -3679,7 +3706,7 @@
           "description": "Opticat Backend Integrator skill",
           "files": [
             {
-              "src": "pi/skills/opticat-backend-integrator/SKILL.md",
+              "src": "pi/agent/skills/opticat-backend-integrator/SKILL.md",
               "dest": "skills/opticat-backend-integrator/SKILL.md"
             }
           ]
@@ -3688,7 +3715,7 @@
           "description": "Opticat Simulator skill",
           "files": [
             {
-              "src": "pi/skills/opticat-simulator/SKILL.md",
+              "src": "pi/agent/skills/opticat-simulator/SKILL.md",
               "dest": "skills/opticat-simulator/SKILL.md"
             }
           ]
@@ -3697,7 +3724,7 @@
           "description": "Opticat Ui Builder skill",
           "files": [
             {
-              "src": "pi/skills/opticat-ui-builder/SKILL.md",
+              "src": "pi/agent/skills/opticat-ui-builder/SKILL.md",
               "dest": "skills/opticat-ui-builder/SKILL.md"
             }
           ]
@@ -3706,7 +3733,7 @@
           "description": "Research Codebase skill",
           "files": [
             {
-              "src": "pi/skills/research-codebase/SKILL.md",
+              "src": "pi/agent/skills/research-codebase/SKILL.md",
               "dest": "skills/research-codebase/SKILL.md"
             }
           ]
@@ -3715,7 +3742,7 @@
           "description": "Ticket Context skill",
           "files": [
             {
-              "src": "pi/skills/ticket-context/SKILL.md",
+              "src": "pi/agent/skills/ticket-context/SKILL.md",
               "dest": "skills/ticket-context/SKILL.md"
             }
           ]
@@ -3724,7 +3751,7 @@
           "description": "Usage Rules skill",
           "files": [
             {
-              "src": "pi/skills/usage-rules/SKILL.md",
+              "src": "pi/agent/skills/usage-rules/SKILL.md",
               "dest": "skills/usage-rules/SKILL.md"
             }
           ]
@@ -3733,7 +3760,7 @@
           "description": "Validate Plan skill",
           "files": [
             {
-              "src": "pi/skills/validate-plan/SKILL.md",
+              "src": "pi/agent/skills/validate-plan/SKILL.md",
               "dest": "skills/validate-plan/SKILL.md"
             }
           ]
@@ -3742,7 +3769,7 @@
           "description": "Validate Telemetry skill",
           "files": [
             {
-              "src": "pi/skills/validate-telemetry/SKILL.md",
+              "src": "pi/agent/skills/validate-telemetry/SKILL.md",
               "dest": "skills/validate-telemetry/SKILL.md"
             }
           ]
@@ -3751,7 +3778,7 @@
           "description": "Worktree skill",
           "files": [
             {
-              "src": "pi/skills/worktree/SKILL.md",
+              "src": "pi/agent/skills/worktree/SKILL.md",
               "dest": "skills/worktree/SKILL.md"
             }
           ]
@@ -3760,7 +3787,7 @@
           "description": "Wow Access Control skill",
           "files": [
             {
-              "src": "pi/skills/wow-access-control/SKILL.md",
+              "src": "pi/agent/skills/wow-access-control/SKILL.md",
               "dest": "skills/wow-access-control/SKILL.md"
             }
           ]
@@ -3769,7 +3796,7 @@
           "description": "Wow Agent Dev skill",
           "files": [
             {
-              "src": "pi/skills/wow-agent-dev/SKILL.md",
+              "src": "pi/agent/skills/wow-agent-dev/SKILL.md",
               "dest": "skills/wow-agent-dev/SKILL.md"
             }
           ]
@@ -3778,7 +3805,7 @@
           "description": "Wow Backend Dev skill",
           "files": [
             {
-              "src": "pi/skills/wow-backend-dev/SKILL.md",
+              "src": "pi/agent/skills/wow-backend-dev/SKILL.md",
               "dest": "skills/wow-backend-dev/SKILL.md"
             }
           ]
@@ -3787,7 +3814,7 @@
           "description": "Wow Communications skill",
           "files": [
             {
-              "src": "pi/skills/wow-communications/SKILL.md",
+              "src": "pi/agent/skills/wow-communications/SKILL.md",
               "dest": "skills/wow-communications/SKILL.md"
             }
           ]
@@ -3796,7 +3823,7 @@
           "description": "Wow Core Architecture skill",
           "files": [
             {
-              "src": "pi/skills/wow-core-architecture/SKILL.md",
+              "src": "pi/agent/skills/wow-core-architecture/SKILL.md",
               "dest": "skills/wow-core-architecture/SKILL.md"
             }
           ]
@@ -3805,7 +3832,7 @@
           "description": "Wow Frontend Dev skill",
           "files": [
             {
-              "src": "pi/skills/wow-frontend-dev/SKILL.md",
+              "src": "pi/agent/skills/wow-frontend-dev/SKILL.md",
               "dest": "skills/wow-frontend-dev/SKILL.md"
             }
           ]
@@ -3814,7 +3841,7 @@
           "description": "Wow Human In The Loop skill",
           "files": [
             {
-              "src": "pi/skills/wow-human-in-the-loop/SKILL.md",
+              "src": "pi/agent/skills/wow-human-in-the-loop/SKILL.md",
               "dest": "skills/wow-human-in-the-loop/SKILL.md"
             }
           ]
@@ -3823,7 +3850,7 @@
           "description": "Wow Skill Creator skill",
           "files": [
             {
-              "src": "pi/skills/wow-skill-creator/SKILL.md",
+              "src": "pi/agent/skills/wow-skill-creator/SKILL.md",
               "dest": "skills/wow-skill-creator/SKILL.md"
             }
           ]
@@ -3832,7 +3859,7 @@
           "description": "Wow Tickets skill",
           "files": [
             {
-              "src": "pi/skills/wow-tickets/SKILL.md",
+              "src": "pi/agent/skills/wow-tickets/SKILL.md",
               "dest": "skills/wow-tickets/SKILL.md"
             }
           ]
@@ -3841,7 +3868,7 @@
           "description": "Wow Ui Surfaces skill",
           "files": [
             {
-              "src": "pi/skills/wow-ui-surfaces/SKILL.md",
+              "src": "pi/agent/skills/wow-ui-surfaces/SKILL.md",
               "dest": "skills/wow-ui-surfaces/SKILL.md"
             }
           ]
@@ -3850,7 +3877,7 @@
           "description": "Wow Practices Guide",
           "files": [
             {
-              "src": "pi/skills/womono-practices-guide/SKILL.md",
+              "src": "pi/agent/skills/womono-practices-guide/SKILL.md",
               "dest": "skills/womono-practices-guide/SKILL.md"
             }
           ]
@@ -3859,7 +3886,7 @@
           "description": "Wow Practices Audit",
           "files": [
             {
-              "src": "pi/skills/womono-practices-audit/SKILL.md",
+              "src": "pi/agent/skills/womono-practices-audit/SKILL.md",
               "dest": "skills/womono-practices-audit/SKILL.md"
             }
           ]
@@ -3868,7 +3895,7 @@
           "description": "Wow Practices Backlog",
           "files": [
             {
-              "src": "pi/skills/womono-practices-backlog/SKILL.md",
+              "src": "pi/agent/skills/womono-practices-backlog/SKILL.md",
               "dest": "skills/womono-practices-backlog/SKILL.md"
             }
           ]
@@ -3877,7 +3904,7 @@
           "description": "Universal component builder for all 7 AI coding tools",
           "files": [
             {
-              "src": "pi/skills/build-tool/SKILL.md",
+              "src": "pi/agent/skills/build-tool/SKILL.md",
               "dest": "skills/build-tool/SKILL.md"
             }
           ]
@@ -3886,7 +3913,7 @@
           "description": "Unified skill builder for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-skill/SKILL.md",
+              "src": "pi/agent/skills/build-tool-skill/SKILL.md",
               "dest": "skills/build-tool-skill/SKILL.md"
             }
           ]
@@ -3895,7 +3922,7 @@
           "description": "Unified agent builder for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-agent/SKILL.md",
+              "src": "pi/agent/skills/build-tool-agent/SKILL.md",
               "dest": "skills/build-tool-agent/SKILL.md"
             }
           ]
@@ -3904,7 +3931,7 @@
           "description": "Unified extension/plugin builder for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-extension/SKILL.md",
+              "src": "pi/agent/skills/build-tool-extension/SKILL.md",
               "dest": "skills/build-tool-extension/SKILL.md"
             }
           ]
@@ -3913,7 +3940,7 @@
           "description": "Unified TUI component builder for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-tui/SKILL.md",
+              "src": "pi/agent/skills/build-tool-tui/SKILL.md",
               "dest": "skills/build-tool-tui/SKILL.md"
             }
           ]
@@ -3922,7 +3949,7 @@
           "description": "Unified CLI reference for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-cli/SKILL.md",
+              "src": "pi/agent/skills/build-tool-cli/SKILL.md",
               "dest": "skills/build-tool-cli/SKILL.md"
             }
           ]
@@ -3931,7 +3958,7 @@
           "description": "Unified theme builder for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-themes/SKILL.md",
+              "src": "pi/agent/skills/build-tool-themes/SKILL.md",
               "dest": "skills/build-tool-themes/SKILL.md"
             }
           ]
@@ -3940,7 +3967,7 @@
           "description": "Unified prompt template builder for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-prompts/SKILL.md",
+              "src": "pi/agent/skills/build-tool-prompts/SKILL.md",
               "dest": "skills/build-tool-prompts/SKILL.md"
             }
           ]
@@ -3949,7 +3976,7 @@
           "description": "Unified keybinding reference for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-keybindings/SKILL.md",
+              "src": "pi/agent/skills/build-tool-keybindings/SKILL.md",
               "dest": "skills/build-tool-keybindings/SKILL.md"
             }
           ]
@@ -3958,7 +3985,7 @@
           "description": "Unified configuration reference for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-config/SKILL.md",
+              "src": "pi/agent/skills/build-tool-config/SKILL.md",
               "dest": "skills/build-tool-config/SKILL.md"
             }
           ]
@@ -3967,7 +3994,7 @@
           "description": "Unified orchestration coordinator for all 7 tools — deployed to Pi",
           "files": [
             {
-              "src": "pi/skills/build-tool-orchestrate/SKILL.md",
+              "src": "pi/agent/skills/build-tool-orchestrate/SKILL.md",
               "dest": "skills/build-tool-orchestrate/SKILL.md"
             }
           ]
@@ -3976,251 +4003,251 @@
           "description": "Generate investor-ready documentation for any project",
           "files": [
             {
-              "src": "pi/skills/investor-ready-doc-gen/SKILL.md",
+              "src": "pi/agent/skills/investor-ready-doc-gen/SKILL.md",
               "dest": "skills/investor_ready_doc_gen/SKILL.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/pdf/investor-theme.css",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/pdf/investor-theme.css",
               "dest": "skills/investor_ready_doc_gen/assets/pdf/investor-theme.css"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/examples/wow_config.yaml",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/examples/wow_config.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/examples/wow_config.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/todo.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/todo.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/todo.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/changelog.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/changelog.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/changelog.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/index.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/index.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/index.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/company_overview.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/company/company_overview.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/company_overview.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/team_values.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/company/team_values.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/team_values.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/business_plan.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/company/business_plan.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/business_plan.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/company/team_bios.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/company/team_bios.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/team_bios.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/README.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/financial/README.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/README.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/market_research.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/market_research.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/market_research.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/README.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/README.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/README.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/deep_research.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/deep_research.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/deep_research.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md"
             },
             {
-              "src": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
             }
           ]
@@ -4229,7 +4256,7 @@
           "description": "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories",
           "files": [
             {
-              "src": "pi/skills/build-auto-ticket-creator/SKILL.md",
+              "src": "pi/agent/skills/build-auto-ticket-creator/SKILL.md",
               "dest": "skills/build-auto-ticket-creator/SKILL.md"
             }
           ]
@@ -4238,7 +4265,7 @@
           "description": "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.",
           "files": [
             {
-              "src": "pi/skills/build-backlog-groomer/SKILL.md",
+              "src": "pi/agent/skills/build-backlog-groomer/SKILL.md",
               "dest": "skills/build-backlog-groomer/SKILL.md"
             }
           ]
@@ -4247,7 +4274,7 @@
           "description": "Adapts skills between different AI coding tool formats and conventions",
           "files": [
             {
-              "src": "pi/skills/build-skill-adapter/SKILL.md",
+              "src": "pi/agent/skills/build-skill-adapter/SKILL.md",
               "dest": "skills/build-skill-adapter/SKILL.md"
             }
           ]
@@ -4256,7 +4283,7 @@
           "description": "Automatically updates skills when dependencies or APIs change",
           "files": [
             {
-              "src": "pi/skills/build-skill-auto-update/SKILL.md",
+              "src": "pi/agent/skills/build-skill-auto-update/SKILL.md",
               "dest": "skills/build-skill-auto-update/SKILL.md"
             }
           ]
@@ -4265,7 +4292,7 @@
           "description": "Validates skills against production-ready standards and best practices",
           "files": [
             {
-              "src": "pi/skills/skill-compliance-checker/SKILL.md",
+              "src": "pi/agent/skills/skill-compliance-checker/SKILL.md",
               "dest": "skills/skill-compliance-checker/SKILL.md"
             }
           ]
@@ -4274,7 +4301,7 @@
           "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
           "files": [
             {
-              "src": "pi/skills/ticket-executor/SKILL.md",
+              "src": "pi/agent/skills/ticket-executor/SKILL.md",
               "dest": "skills/ticket-executor/SKILL.md"
             }
           ]
@@ -4283,7 +4310,7 @@
           "description": "Generate investor-ready documentation for any project",
           "files": [
             {
-              "src": "pi/pi/agent/extensions/skills/investor-ready-doc-gen/SKILL.md",
+              "src": "pi/agent/extensions/skills/investor-ready-doc-gen/SKILL.md",
               "dest": "skills/investor_ready_doc_gen/SKILL.md"
             },
             {
@@ -4531,6 +4558,15 @@
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
             }
           ]
+        },
+        "skill/validate-podman": {
+          "description": "Validate Podman/Quadlet configurations on Fedora",
+          "files": [
+            {
+              "src": "pi/agent/extensions/skills/validate-podman/SKILL.md",
+              "dest": "skills/validate-podman/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -4554,27 +4590,27 @@
           "description": "Specialized subagents for Wo Coder",
           "files": [
             {
-              "src": "wocoder/agents/codebase_analyzer.md",
+              "src": "wocoder/agent/agents/codebase_analyzer.md",
               "dest": "agents/codebase_analyzer.md"
             },
             {
-              "src": "wocoder/agents/codebase_locator.md",
+              "src": "wocoder/agent/agents/codebase_locator.md",
               "dest": "agents/codebase_locator.md"
             },
             {
-              "src": "wocoder/agents/codebase_pattern_finder.md",
+              "src": "wocoder/agent/agents/codebase_pattern_finder.md",
               "dest": "agents/codebase_pattern_finder.md"
             },
             {
-              "src": "wocoder/agents/thoughts_analyzer.md",
+              "src": "wocoder/agent/agents/thoughts_analyzer.md",
               "dest": "agents/thoughts_analyzer.md"
             },
             {
-              "src": "wocoder/agents/thoughts_locator.md",
+              "src": "wocoder/agent/agents/thoughts_locator.md",
               "dest": "agents/thoughts_locator.md"
             },
             {
-              "src": "wocoder/agents/web_search_researcher.md",
+              "src": "wocoder/agent/agents/web_search_researcher.md",
               "dest": "agents/web_search_researcher.md"
             }
           ]
@@ -4583,7 +4619,7 @@
           "description": "Open files from cwd in $VISUAL/$EDITOR via /edit or ctrl+e",
           "files": [
             {
-              "src": "wocoder/extensions/open-editor.ts",
+              "src": "wocoder/agent/extensions/open-editor.ts",
               "dest": "extensions/open-editor.ts"
             }
           ]
@@ -4592,39 +4628,39 @@
           "description": "Subagent tool for multi-agent workflows (single, parallel, chain)",
           "files": [
             {
-              "src": "wocoder/extensions/subagent/index.ts",
+              "src": "wocoder/agent/extensions/subagent/index.ts",
               "dest": "extensions/subagent/index.ts"
             },
             {
-              "src": "wocoder/extensions/subagent/agents.ts",
+              "src": "wocoder/agent/extensions/subagent/agents.ts",
               "dest": "extensions/subagent/agents.ts"
             },
             {
-              "src": "wocoder/extensions/subagent/agents/planner.md",
+              "src": "wocoder/agent/extensions/subagent/agents/planner.md",
               "dest": "extensions/subagent/agents/planner.md"
             },
             {
-              "src": "wocoder/extensions/subagent/agents/reviewer.md",
+              "src": "wocoder/agent/extensions/subagent/agents/reviewer.md",
               "dest": "extensions/subagent/agents/reviewer.md"
             },
             {
-              "src": "wocoder/extensions/subagent/agents/scout.md",
+              "src": "wocoder/agent/extensions/subagent/agents/scout.md",
               "dest": "extensions/subagent/agents/scout.md"
             },
             {
-              "src": "wocoder/extensions/subagent/agents/worker.md",
+              "src": "wocoder/agent/extensions/subagent/agents/worker.md",
               "dest": "extensions/subagent/agents/worker.md"
             },
             {
-              "src": "wocoder/extensions/subagent/prompts/implement.md",
+              "src": "wocoder/agent/extensions/subagent/prompts/implement.md",
               "dest": "extensions/subagent/prompts/implement.md"
             },
             {
-              "src": "wocoder/extensions/subagent/prompts/implement-and-review.md",
+              "src": "wocoder/agent/extensions/subagent/prompts/implement-and-review.md",
               "dest": "extensions/subagent/prompts/implement-and-review.md"
             },
             {
-              "src": "wocoder/extensions/subagent/prompts/scout-and-plan.md",
+              "src": "wocoder/agent/extensions/subagent/prompts/scout-and-plan.md",
               "dest": "extensions/subagent/prompts/scout-and-plan.md"
             }
           ]
@@ -4642,103 +4678,103 @@
           "description": "Web search, URL fetching, GitHub cloning, PDF extraction, YouTube/video analysis",
           "files": [
             {
-              "src": "wocoder/packets/web-access/index.ts",
+              "src": "wocoder/agent/packets/web-access/index.ts",
               "dest": "extensions/web-access/index.ts"
             },
             {
-              "src": "wocoder/packets/web-access/activity.ts",
+              "src": "wocoder/agent/packets/web-access/activity.ts",
               "dest": "extensions/web-access/activity.ts"
             },
             {
-              "src": "wocoder/packets/web-access/banner.png",
+              "src": "wocoder/agent/packets/web-access/banner.png",
               "dest": "extensions/web-access/banner.png"
             },
             {
-              "src": "wocoder/packets/web-access/chrome-cookies.ts",
+              "src": "wocoder/agent/packets/web-access/chrome-cookies.ts",
               "dest": "extensions/web-access/chrome-cookies.ts"
             },
             {
-              "src": "wocoder/packets/web-access/code-search.ts",
+              "src": "wocoder/agent/packets/web-access/code-search.ts",
               "dest": "extensions/web-access/code-search.ts"
             },
             {
-              "src": "wocoder/packets/web-access/curator-page.ts",
+              "src": "wocoder/agent/packets/web-access/curator-page.ts",
               "dest": "extensions/web-access/curator-page.ts"
             },
             {
-              "src": "wocoder/packets/web-access/curator-server.ts",
+              "src": "wocoder/agent/packets/web-access/curator-server.ts",
               "dest": "extensions/web-access/curator-server.ts"
             },
             {
-              "src": "wocoder/packets/web-access/extract.ts",
+              "src": "wocoder/agent/packets/web-access/extract.ts",
               "dest": "extensions/web-access/extract.ts"
             },
             {
-              "src": "wocoder/packets/web-access/exa.ts",
+              "src": "wocoder/agent/packets/web-access/exa.ts",
               "dest": "extensions/web-access/exa.ts"
             },
             {
-              "src": "wocoder/packets/web-access/gemini-api.ts",
+              "src": "wocoder/agent/packets/web-access/gemini-api.ts",
               "dest": "extensions/web-access/gemini-api.ts"
             },
             {
-              "src": "wocoder/packets/web-access/gemini-search.ts",
+              "src": "wocoder/agent/packets/web-access/gemini-search.ts",
               "dest": "extensions/web-access/gemini-search.ts"
             },
             {
-              "src": "wocoder/packets/web-access/gemini-url-context.ts",
+              "src": "wocoder/agent/packets/web-access/gemini-url-context.ts",
               "dest": "extensions/web-access/gemini-url-context.ts"
             },
             {
-              "src": "wocoder/packets/web-access/gemini-web.ts",
+              "src": "wocoder/agent/packets/web-access/gemini-web.ts",
               "dest": "extensions/web-access/gemini-web.ts"
             },
             {
-              "src": "wocoder/packets/web-access/gemini-web-config.ts",
+              "src": "wocoder/agent/packets/web-access/gemini-web-config.ts",
               "dest": "extensions/web-access/gemini-web-config.ts"
             },
             {
-              "src": "wocoder/packets/web-access/github-api.ts",
+              "src": "wocoder/agent/packets/web-access/github-api.ts",
               "dest": "extensions/web-access/github-api.ts"
             },
             {
-              "src": "wocoder/packets/web-access/github-extract.ts",
+              "src": "wocoder/agent/packets/web-access/github-extract.ts",
               "dest": "extensions/web-access/github-extract.ts"
             },
             {
-              "src": "wocoder/packets/web-access/perplexity.ts",
+              "src": "wocoder/agent/packets/web-access/perplexity.ts",
               "dest": "extensions/web-access/perplexity.ts"
             },
             {
-              "src": "wocoder/packets/web-access/pdf-extract.ts",
+              "src": "wocoder/agent/packets/web-access/pdf-extract.ts",
               "dest": "extensions/web-access/pdf-extract.ts"
             },
             {
-              "src": "wocoder/packets/web-access/rsc-extract.ts",
+              "src": "wocoder/agent/packets/web-access/rsc-extract.ts",
               "dest": "extensions/web-access/rsc-extract.ts"
             },
             {
-              "src": "wocoder/packets/web-access/storage.ts",
+              "src": "wocoder/agent/packets/web-access/storage.ts",
               "dest": "extensions/web-access/storage.ts"
             },
             {
-              "src": "wocoder/packets/web-access/summary-review.ts",
+              "src": "wocoder/agent/packets/web-access/summary-review.ts",
               "dest": "extensions/web-access/summary-review.ts"
             },
             {
-              "src": "wocoder/packets/web-access/utils.ts",
+              "src": "wocoder/agent/packets/web-access/utils.ts",
               "dest": "extensions/web-access/utils.ts"
             },
             {
-              "src": "wocoder/packets/web-access/video-extract.ts",
+              "src": "wocoder/agent/packets/web-access/video-extract.ts",
               "dest": "extensions/web-access/video-extract.ts"
             },
             {
-              "src": "wocoder/packets/web-access/youtube-extract.ts",
+              "src": "wocoder/agent/packets/web-access/youtube-extract.ts",
               "dest": "extensions/web-access/youtube-extract.ts"
             },
             {
-              "src": "wocoder/packets/web-access/skills/librarian/SKILL.md",
+              "src": "wocoder/agent/packets/web-access/skills/librarian/SKILL.md",
               "dest": "extensions/web-access/skills/librarian/SKILL.md"
             }
           ]
@@ -4800,7 +4836,7 @@
           "description": "Git commit workflow command",
           "files": [
             {
-              "src": "wocoder/commands/commit.md",
+              "src": "wocoder/agent/commands/commit.md",
               "dest": "commands/commit.md"
             }
           ]
@@ -4809,7 +4845,7 @@
           "description": "Create implementation plans command",
           "files": [
             {
-              "src": "wocoder/commands/create_plan.md",
+              "src": "wocoder/agent/commands/create_plan.md",
               "dest": "commands/create_plan.md"
             }
           ]
@@ -4818,7 +4854,7 @@
           "description": "Debugging investigation command",
           "files": [
             {
-              "src": "wocoder/commands/debug.md",
+              "src": "wocoder/agent/commands/debug.md",
               "dest": "commands/debug.md"
             }
           ]
@@ -4827,7 +4863,7 @@
           "description": "Kubernetes cluster debugging command",
           "files": [
             {
-              "src": "wocoder/commands/debug-k8s.md",
+              "src": "wocoder/agent/commands/debug-k8s.md",
               "dest": "commands/debug-k8s.md"
             }
           ]
@@ -4836,7 +4872,7 @@
           "description": "Execute an approved plan command",
           "files": [
             {
-              "src": "wocoder/commands/implement_plan.md",
+              "src": "wocoder/agent/commands/implement_plan.md",
               "dest": "commands/implement_plan.md"
             }
           ]
@@ -4845,7 +4881,7 @@
           "description": "Initialize harness in a new repository command",
           "files": [
             {
-              "src": "wocoder/commands/init_harness.md",
+              "src": "wocoder/agent/commands/init_harness.md",
               "dest": "commands/init_harness.md"
             }
           ]
@@ -4854,7 +4890,7 @@
           "description": "OpenTelemetry instrumentation orchestrator command",
           "files": [
             {
-              "src": "wocoder/commands/otel_instrument.md",
+              "src": "wocoder/agent/commands/otel_instrument.md",
               "dest": "commands/otel_instrument.md"
             }
           ]
@@ -4863,7 +4899,7 @@
           "description": "Comprehensive codebase research command",
           "files": [
             {
-              "src": "wocoder/commands/research_codebase.md",
+              "src": "wocoder/agent/commands/research_codebase.md",
               "dest": "commands/research_codebase.md"
             }
           ]
@@ -4872,7 +4908,7 @@
           "description": "Validate implementation against plan command",
           "files": [
             {
-              "src": "wocoder/commands/validate_plan.md",
+              "src": "wocoder/agent/commands/validate_plan.md",
               "dest": "commands/validate_plan.md"
             }
           ]
@@ -4881,7 +4917,7 @@
           "description": "Validate local telemetry against a narrative spec command",
           "files": [
             {
-              "src": "wocoder/commands/validate_telemetry.md",
+              "src": "wocoder/agent/commands/validate_telemetry.md",
               "dest": "commands/validate_telemetry.md"
             }
           ]
@@ -4890,7 +4926,7 @@
           "description": "Git worktree manager command",
           "files": [
             {
-              "src": "wocoder/commands/worktree.md",
+              "src": "wocoder/agent/commands/worktree.md",
               "dest": "commands/worktree.md"
             }
           ]
@@ -4899,7 +4935,7 @@
           "description": "Initialize harness skill",
           "files": [
             {
-              "src": "wocoder/skills/init_harness/SKILL.md",
+              "src": "wocoder/agent/skills/init_harness/SKILL.md",
               "dest": "skills/init_harness/SKILL.md"
             }
           ]
@@ -4908,7 +4944,7 @@
           "description": "Stress-test plans via relentless user interview skill",
           "files": [
             {
-              "src": "wocoder/skills/interview/SKILL.md",
+              "src": "wocoder/agent/skills/interview/SKILL.md",
               "dest": "skills/interview/SKILL.md"
             }
           ]
@@ -4917,27 +4953,27 @@
           "description": "Test-driven development with red-green-refactor loop skill",
           "files": [
             {
-              "src": "wocoder/skills/tdd/SKILL.md",
+              "src": "wocoder/agent/skills/tdd/SKILL.md",
               "dest": "skills/tdd/SKILL.md"
             },
             {
-              "src": "wocoder/skills/tdd/tests.md",
+              "src": "wocoder/agent/skills/tdd/tests.md",
               "dest": "skills/tdd/tests.md"
             },
             {
-              "src": "wocoder/skills/tdd/mocking.md",
+              "src": "wocoder/agent/skills/tdd/mocking.md",
               "dest": "skills/tdd/mocking.md"
             },
             {
-              "src": "wocoder/skills/tdd/deep-modules.md",
+              "src": "wocoder/agent/skills/tdd/deep-modules.md",
               "dest": "skills/tdd/deep-modules.md"
             },
             {
-              "src": "wocoder/skills/tdd/interface-design.md",
+              "src": "wocoder/agent/skills/tdd/interface-design.md",
               "dest": "skills/tdd/interface-design.md"
             },
             {
-              "src": "wocoder/skills/tdd/refactoring.md",
+              "src": "wocoder/agent/skills/tdd/refactoring.md",
               "dest": "skills/tdd/refactoring.md"
             }
           ]
@@ -4946,7 +4982,7 @@
           "description": "Auto Ticket Creator skill",
           "files": [
             {
-              "src": "wocoder/skills/auto_ticket_creator/SKILL.md",
+              "src": "wocoder/agent/skills/auto_ticket_creator/SKILL.md",
               "dest": "skills/auto_ticket_creator/SKILL.md"
             }
           ]
@@ -4955,7 +4991,7 @@
           "description": "Backlog Groomer skill",
           "files": [
             {
-              "src": "wocoder/skills/backlog_groomer/SKILL.md",
+              "src": "wocoder/agent/skills/backlog_groomer/SKILL.md",
               "dest": "skills/backlog_groomer/SKILL.md"
             }
           ]
@@ -4964,7 +5000,7 @@
           "description": "Create Plan skill",
           "files": [
             {
-              "src": "wocoder/skills/create_plan/SKILL.md",
+              "src": "wocoder/agent/skills/create_plan/SKILL.md",
               "dest": "skills/create_plan/SKILL.md"
             }
           ]
@@ -4973,7 +5009,7 @@
           "description": "Cto Dashboard skill",
           "files": [
             {
-              "src": "wocoder/skills/cto_dashboard/SKILL.md",
+              "src": "wocoder/agent/skills/cto_dashboard/SKILL.md",
               "dest": "skills/cto_dashboard/SKILL.md"
             }
           ]
@@ -4982,7 +5018,7 @@
           "description": "Debug skill",
           "files": [
             {
-              "src": "wocoder/skills/debug/SKILL.md",
+              "src": "wocoder/agent/skills/debug/SKILL.md",
               "dest": "skills/debug/SKILL.md"
             }
           ]
@@ -4991,7 +5027,7 @@
           "description": "Debug K8S skill",
           "files": [
             {
-              "src": "wocoder/skills/debug_k8s/SKILL.md",
+              "src": "wocoder/agent/skills/debug_k8s/SKILL.md",
               "dest": "skills/debug_k8s/SKILL.md"
             }
           ]
@@ -5000,7 +5036,7 @@
           "description": "Docs Sync Updater skill",
           "files": [
             {
-              "src": "wocoder/skills/docs_sync_updater/SKILL.md",
+              "src": "wocoder/agent/skills/docs_sync_updater/SKILL.md",
               "dest": "skills/docs_sync_updater/SKILL.md"
             }
           ]
@@ -5009,7 +5045,7 @@
           "description": "Document Generation skill",
           "files": [
             {
-              "src": "wocoder/skills/document_generation/SKILL.md",
+              "src": "wocoder/agent/skills/document_generation/SKILL.md",
               "dest": "skills/document_generation/SKILL.md"
             }
           ]
@@ -5018,7 +5054,7 @@
           "description": "Experimental Pr Workflow skill",
           "files": [
             {
-              "src": "wocoder/skills/experimental_pr_workflow/SKILL.md",
+              "src": "wocoder/agent/skills/experimental_pr_workflow/SKILL.md",
               "dest": "skills/experimental_pr_workflow/SKILL.md"
             }
           ]
@@ -5027,7 +5063,7 @@
           "description": "Git Commit Helper skill",
           "files": [
             {
-              "src": "wocoder/skills/git_commit_helper/SKILL.md",
+              "src": "wocoder/agent/skills/git_commit_helper/SKILL.md",
               "dest": "skills/git_commit_helper/SKILL.md"
             }
           ]
@@ -5036,7 +5072,7 @@
           "description": "Help Command skill",
           "files": [
             {
-              "src": "wocoder/skills/help_command/SKILL.md",
+              "src": "wocoder/agent/skills/help_command/SKILL.md",
               "dest": "skills/help_command/SKILL.md"
             }
           ]
@@ -5045,7 +5081,7 @@
           "description": "Implement Plan skill",
           "files": [
             {
-              "src": "wocoder/skills/implement_plan/SKILL.md",
+              "src": "wocoder/agent/skills/implement_plan/SKILL.md",
               "dest": "skills/implement_plan/SKILL.md"
             }
           ]
@@ -5054,7 +5090,7 @@
           "description": "Improve Codebase Architecture skill",
           "files": [
             {
-              "src": "wocoder/skills/improve_codebase_architecture/SKILL.md",
+              "src": "wocoder/agent/skills/improve_codebase_architecture/SKILL.md",
               "dest": "skills/improve_codebase_architecture/SKILL.md"
             }
           ]
@@ -5063,7 +5099,7 @@
           "description": "Observability Driven Development skill",
           "files": [
             {
-              "src": "wocoder/skills/observability_driven_development/SKILL.md",
+              "src": "wocoder/agent/skills/observability_driven_development/SKILL.md",
               "dest": "skills/observability_driven_development/SKILL.md"
             }
           ]
@@ -5072,7 +5108,7 @@
           "description": "Opticat Backend Integrator skill",
           "files": [
             {
-              "src": "wocoder/skills/opticat_backend_integrator/SKILL.md",
+              "src": "wocoder/agent/skills/opticat_backend_integrator/SKILL.md",
               "dest": "skills/opticat_backend_integrator/SKILL.md"
             }
           ]
@@ -5081,7 +5117,7 @@
           "description": "Opticat Simulator skill",
           "files": [
             {
-              "src": "wocoder/skills/opticat_simulator/SKILL.md",
+              "src": "wocoder/agent/skills/opticat_simulator/SKILL.md",
               "dest": "skills/opticat_simulator/SKILL.md"
             }
           ]
@@ -5090,7 +5126,7 @@
           "description": "Opticat Ui Builder skill",
           "files": [
             {
-              "src": "wocoder/skills/opticat_ui_builder/SKILL.md",
+              "src": "wocoder/agent/skills/opticat_ui_builder/SKILL.md",
               "dest": "skills/opticat_ui_builder/SKILL.md"
             }
           ]
@@ -5099,7 +5135,7 @@
           "description": "Otel Collector skill",
           "files": [
             {
-              "src": "wocoder/skills/otel_collector/SKILL.md",
+              "src": "wocoder/agent/skills/otel_collector/SKILL.md",
               "dest": "skills/otel_collector/SKILL.md"
             }
           ]
@@ -5108,7 +5144,7 @@
           "description": "Otel Instrument skill",
           "files": [
             {
-              "src": "wocoder/skills/otel_instrument/SKILL.md",
+              "src": "wocoder/agent/skills/otel_instrument/SKILL.md",
               "dest": "skills/otel_instrument/SKILL.md"
             }
           ]
@@ -5117,7 +5153,7 @@
           "description": "Otel Instrumentation skill",
           "files": [
             {
-              "src": "wocoder/skills/otel_instrumentation/SKILL.md",
+              "src": "wocoder/agent/skills/otel_instrumentation/SKILL.md",
               "dest": "skills/otel_instrumentation/SKILL.md"
             }
           ]
@@ -5126,7 +5162,7 @@
           "description": "Otel Ottl skill",
           "files": [
             {
-              "src": "wocoder/skills/otel_ottl/SKILL.md",
+              "src": "wocoder/agent/skills/otel_ottl/SKILL.md",
               "dest": "skills/otel_ottl/SKILL.md"
             }
           ]
@@ -5135,7 +5171,7 @@
           "description": "Otel Semantic Conventions skill",
           "files": [
             {
-              "src": "wocoder/skills/otel_semantic_conventions/SKILL.md",
+              "src": "wocoder/agent/skills/otel_semantic_conventions/SKILL.md",
               "dest": "skills/otel_semantic_conventions/SKILL.md"
             }
           ]
@@ -5144,7 +5180,7 @@
           "description": "Pr Description Generator skill",
           "files": [
             {
-              "src": "wocoder/skills/pr_description_generator/SKILL.md",
+              "src": "wocoder/agent/skills/pr_description_generator/SKILL.md",
               "dest": "skills/pr_description_generator/SKILL.md"
             }
           ]
@@ -5153,7 +5189,7 @@
           "description": "Prd To Issues skill",
           "files": [
             {
-              "src": "wocoder/skills/prd_to_issues/SKILL.md",
+              "src": "wocoder/agent/skills/prd_to_issues/SKILL.md",
               "dest": "skills/prd_to_issues/SKILL.md"
             }
           ]
@@ -5162,7 +5198,7 @@
           "description": "Research Codebase skill",
           "files": [
             {
-              "src": "wocoder/skills/research_codebase/SKILL.md",
+              "src": "wocoder/agent/skills/research_codebase/SKILL.md",
               "dest": "skills/research_codebase/SKILL.md"
             }
           ]
@@ -5171,7 +5207,7 @@
           "description": "Skill Adapter skill",
           "files": [
             {
-              "src": "wocoder/skills/skill_adapter/SKILL.md",
+              "src": "wocoder/agent/skills/skill_adapter/SKILL.md",
               "dest": "skills/skill_adapter/SKILL.md"
             }
           ]
@@ -5180,7 +5216,7 @@
           "description": "Skill Auto Update skill",
           "files": [
             {
-              "src": "wocoder/skills/skill_auto_update/SKILL.md",
+              "src": "wocoder/agent/skills/skill_auto_update/SKILL.md",
               "dest": "skills/skill_auto_update/SKILL.md"
             }
           ]
@@ -5189,7 +5225,7 @@
           "description": "Team Setup skill",
           "files": [
             {
-              "src": "wocoder/skills/team_setup/SKILL.md",
+              "src": "wocoder/agent/skills/team_setup/SKILL.md",
               "dest": "skills/team_setup/SKILL.md"
             }
           ]
@@ -5198,7 +5234,7 @@
           "description": "Ticket Context skill",
           "files": [
             {
-              "src": "wocoder/skills/ticket_context/SKILL.md",
+              "src": "wocoder/agent/skills/ticket_context/SKILL.md",
               "dest": "skills/ticket_context/SKILL.md"
             }
           ]
@@ -5207,7 +5243,7 @@
           "description": "Ticket Manager skill",
           "files": [
             {
-              "src": "wocoder/skills/ticket_manager/SKILL.md",
+              "src": "wocoder/agent/skills/ticket_manager/SKILL.md",
               "dest": "skills/ticket_manager/SKILL.md"
             }
           ]
@@ -5216,7 +5252,7 @@
           "description": "Usage Rules skill",
           "files": [
             {
-              "src": "wocoder/skills/usage_rules/SKILL.md",
+              "src": "wocoder/agent/skills/usage_rules/SKILL.md",
               "dest": "skills/usage_rules/SKILL.md"
             }
           ]
@@ -5225,7 +5261,7 @@
           "description": "Validate Plan skill",
           "files": [
             {
-              "src": "wocoder/skills/validate_plan/SKILL.md",
+              "src": "wocoder/agent/skills/validate_plan/SKILL.md",
               "dest": "skills/validate_plan/SKILL.md"
             }
           ]
@@ -5234,7 +5270,7 @@
           "description": "Validate Telemetry skill",
           "files": [
             {
-              "src": "wocoder/skills/validate_telemetry/SKILL.md",
+              "src": "wocoder/agent/skills/validate_telemetry/SKILL.md",
               "dest": "skills/validate_telemetry/SKILL.md"
             }
           ]
@@ -5243,7 +5279,7 @@
           "description": "Worktree skill",
           "files": [
             {
-              "src": "wocoder/skills/worktree/SKILL.md",
+              "src": "wocoder/agent/skills/worktree/SKILL.md",
               "dest": "skills/worktree/SKILL.md"
             }
           ]
@@ -5252,7 +5288,7 @@
           "description": "Wow Access Control skill",
           "files": [
             {
-              "src": "wocoder/skills/wow_access_control/SKILL.md",
+              "src": "wocoder/agent/skills/wow_access_control/SKILL.md",
               "dest": "skills/wow_access_control/SKILL.md"
             }
           ]
@@ -5261,7 +5297,7 @@
           "description": "Wow Agent Dev skill",
           "files": [
             {
-              "src": "wocoder/skills/wow_agent_dev/SKILL.md",
+              "src": "wocoder/agent/skills/wow_agent_dev/SKILL.md",
               "dest": "skills/wow_agent_dev/SKILL.md"
             }
           ]
@@ -5270,7 +5306,7 @@
           "description": "Wow Backend Dev skill",
           "files": [
             {
-              "src": "wocoder/skills/wow_backend_dev/SKILL.md",
+              "src": "wocoder/agent/skills/wow_backend_dev/SKILL.md",
               "dest": "skills/wow_backend_dev/SKILL.md"
             }
           ]
@@ -5279,7 +5315,7 @@
           "description": "Wow Communications skill",
           "files": [
             {
-              "src": "wocoder/skills/wow_communications/SKILL.md",
+              "src": "wocoder/agent/skills/wow_communications/SKILL.md",
               "dest": "skills/wow_communications/SKILL.md"
             }
           ]
@@ -5288,7 +5324,7 @@
           "description": "Wow Core Architecture skill",
           "files": [
             {
-              "src": "wocoder/skills/wow_core_architecture/SKILL.md",
+              "src": "wocoder/agent/skills/wow_core_architecture/SKILL.md",
               "dest": "skills/wow_core_architecture/SKILL.md"
             }
           ]
@@ -5297,7 +5333,7 @@
           "description": "Wow Frontend Dev skill",
           "files": [
             {
-              "src": "wocoder/skills/wow_frontend_dev/SKILL.md",
+              "src": "wocoder/agent/skills/wow_frontend_dev/SKILL.md",
               "dest": "skills/wow_frontend_dev/SKILL.md"
             }
           ]
@@ -5306,7 +5342,7 @@
           "description": "Wow Human In The Loop skill",
           "files": [
             {
-              "src": "wocoder/skills/wow_human_in_the_loop/SKILL.md",
+              "src": "wocoder/agent/skills/wow_human_in_the_loop/SKILL.md",
               "dest": "skills/wow_human_in_the_loop/SKILL.md"
             }
           ]
@@ -5315,7 +5351,7 @@
           "description": "Wow Skill Creator skill",
           "files": [
             {
-              "src": "wocoder/skills/wow_skill_creator/SKILL.md",
+              "src": "wocoder/agent/skills/wow_skill_creator/SKILL.md",
               "dest": "skills/wow_skill_creator/SKILL.md"
             }
           ]
@@ -5324,7 +5360,7 @@
           "description": "Wow Tickets skill",
           "files": [
             {
-              "src": "wocoder/skills/wow_tickets/SKILL.md",
+              "src": "wocoder/agent/skills/wow_tickets/SKILL.md",
               "dest": "skills/wow_tickets/SKILL.md"
             }
           ]
@@ -5333,7 +5369,7 @@
           "description": "Wow Ui Surfaces skill",
           "files": [
             {
-              "src": "wocoder/skills/wow_ui_surfaces/SKILL.md",
+              "src": "wocoder/agent/skills/wow_ui_surfaces/SKILL.md",
               "dest": "skills/wow_ui_surfaces/SKILL.md"
             }
           ]
@@ -5342,7 +5378,7 @@
           "description": "Write A Prd skill",
           "files": [
             {
-              "src": "wocoder/skills/write_a_prd/SKILL.md",
+              "src": "wocoder/agent/skills/write_a_prd/SKILL.md",
               "dest": "skills/write_a_prd/SKILL.md"
             }
           ]
@@ -5351,7 +5387,7 @@
           "description": "Wow Practices Guide",
           "files": [
             {
-              "src": "wocoder/skills/womono_practices_guide/SKILL.md",
+              "src": "wocoder/agent/skills/womono_practices_guide/SKILL.md",
               "dest": "skills/womono_practices_guide/SKILL.md"
             }
           ]
@@ -5360,7 +5396,7 @@
           "description": "Wow Practices Audit",
           "files": [
             {
-              "src": "wocoder/skills/womono_practices_audit/SKILL.md",
+              "src": "wocoder/agent/skills/womono_practices_audit/SKILL.md",
               "dest": "skills/womono_practices_audit/SKILL.md"
             }
           ]
@@ -5369,7 +5405,7 @@
           "description": "Wow Practices Backlog",
           "files": [
             {
-              "src": "wocoder/skills/womono_practices_backlog/SKILL.md",
+              "src": "wocoder/agent/skills/womono_practices_backlog/SKILL.md",
               "dest": "skills/womono_practices_backlog/SKILL.md"
             }
           ]
@@ -5378,7 +5414,7 @@
           "description": "Universal component builder for all 7 AI coding tools",
           "files": [
             {
-              "src": "wocoder/skills/build_tool/SKILL.md",
+              "src": "wocoder/agent/skills/build_tool/SKILL.md",
               "dest": "skills/build_tool/SKILL.md"
             }
           ]
@@ -5387,7 +5423,7 @@
           "description": "Unified skill builder for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/skills/build_tool_skill/SKILL.md",
+              "src": "wocoder/agent/skills/build_tool_skill/SKILL.md",
               "dest": "skills/build_tool_skill/SKILL.md"
             }
           ]
@@ -5396,7 +5432,7 @@
           "description": "Unified agent builder for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/skills/build_tool_agent/SKILL.md",
+              "src": "wocoder/agent/skills/build_tool_agent/SKILL.md",
               "dest": "skills/build_tool_agent/SKILL.md"
             }
           ]
@@ -5405,7 +5441,7 @@
           "description": "Unified extension/plugin builder for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/skills/build_tool_extension/SKILL.md",
+              "src": "wocoder/agent/skills/build_tool_extension/SKILL.md",
               "dest": "skills/build_tool_extension/SKILL.md"
             }
           ]
@@ -5414,7 +5450,7 @@
           "description": "Unified TUI component builder for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/skills/build_tool_tui/SKILL.md",
+              "src": "wocoder/agent/skills/build_tool_tui/SKILL.md",
               "dest": "skills/build_tool_tui/SKILL.md"
             }
           ]
@@ -5423,7 +5459,7 @@
           "description": "Unified CLI reference for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/skills/build_tool_cli/SKILL.md",
+              "src": "wocoder/agent/skills/build_tool_cli/SKILL.md",
               "dest": "skills/build_tool_cli/SKILL.md"
             }
           ]
@@ -5432,7 +5468,7 @@
           "description": "Unified theme builder for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/skills/build_tool_themes/SKILL.md",
+              "src": "wocoder/agent/skills/build_tool_themes/SKILL.md",
               "dest": "skills/build_tool_themes/SKILL.md"
             }
           ]
@@ -5441,7 +5477,7 @@
           "description": "Unified prompt template builder for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/skills/build_tool_prompts/SKILL.md",
+              "src": "wocoder/agent/skills/build_tool_prompts/SKILL.md",
               "dest": "skills/build_tool_prompts/SKILL.md"
             }
           ]
@@ -5450,7 +5486,7 @@
           "description": "Unified keybinding reference for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/skills/build_tool_keybindings/SKILL.md",
+              "src": "wocoder/agent/skills/build_tool_keybindings/SKILL.md",
               "dest": "skills/build_tool_keybindings/SKILL.md"
             }
           ]
@@ -5459,7 +5495,7 @@
           "description": "Unified configuration reference for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/skills/build_tool_config/SKILL.md",
+              "src": "wocoder/agent/skills/build_tool_config/SKILL.md",
               "dest": "skills/build_tool_config/SKILL.md"
             }
           ]
@@ -5468,7 +5504,7 @@
           "description": "Unified orchestration coordinator for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocoder/skills/build_tool_orchestrate/SKILL.md",
+              "src": "wocoder/agent/skills/build_tool_orchestrate/SKILL.md",
               "dest": "skills/build_tool_orchestrate/SKILL.md"
             }
           ]
@@ -5477,251 +5513,251 @@
           "description": "Generate investor-ready documentation for any project",
           "files": [
             {
-              "src": "wocoder/wocoder/skills/investor_ready_doc_gen/SKILL.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/SKILL.md",
               "dest": "skills/investor_ready_doc_gen/SKILL.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/pdf/investor-theme.css",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/pdf/investor-theme.css",
               "dest": "skills/investor_ready_doc_gen/assets/pdf/investor-theme.css"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/examples/wow_config.yaml",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/examples/wow_config.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/examples/wow_config.yaml"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml",
               "dest": "skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/todo.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/todo.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/todo.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/changelog.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/changelog.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/changelog.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/index.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/index.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/index.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/company/company_overview.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/company/company_overview.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/company_overview.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/company/team_values.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/company/team_values.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/team_values.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/company/business_plan.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/company/business_plan.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/business_plan.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/company/team_bios.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/company/team_bios.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/company/team_bios.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/financial/README.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/financial/README.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/README.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/market/market_research.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/market_research.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/market_research.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/market/README.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/README.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/README.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/market/deep_research.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/deep_research.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/deep_research.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md"
             },
             {
-              "src": "wocoder/skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
+              "src": "wocoder/agent/skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
               "dest": "skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md"
             }
           ]
@@ -5730,7 +5766,7 @@
           "description": "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories",
           "files": [
             {
-              "src": "wocoder/skills/build_auto_ticket_creator/SKILL.md",
+              "src": "wocoder/agent/skills/build_auto_ticket_creator/SKILL.md",
               "dest": "skills/build_auto_ticket_creator/SKILL.md"
             }
           ]
@@ -5739,7 +5775,7 @@
           "description": "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.",
           "files": [
             {
-              "src": "wocoder/skills/build_backlog_groomer/SKILL.md",
+              "src": "wocoder/agent/skills/build_backlog_groomer/SKILL.md",
               "dest": "skills/build_backlog_groomer/SKILL.md"
             }
           ]
@@ -5748,7 +5784,7 @@
           "description": "Adapts skills between different AI coding tool formats and conventions",
           "files": [
             {
-              "src": "wocoder/skills/build_skill_adapter/SKILL.md",
+              "src": "wocoder/agent/skills/build_skill_adapter/SKILL.md",
               "dest": "skills/build_skill_adapter/SKILL.md"
             }
           ]
@@ -5757,7 +5793,7 @@
           "description": "Automatically updates skills when dependencies or APIs change",
           "files": [
             {
-              "src": "wocoder/skills/build_skill_auto_update/SKILL.md",
+              "src": "wocoder/agent/skills/build_skill_auto_update/SKILL.md",
               "dest": "skills/build_skill_auto_update/SKILL.md"
             }
           ]
@@ -5766,7 +5802,7 @@
           "description": "Validates skills against production-ready standards and best practices",
           "files": [
             {
-              "src": "wocoder/skills/skill_compliance_checker/SKILL.md",
+              "src": "wocoder/agent/skills/skill_compliance_checker/SKILL.md",
               "dest": "skills/skill_compliance_checker/SKILL.md"
             }
           ]
@@ -5775,7 +5811,7 @@
           "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
           "files": [
             {
-              "src": "wocoder/skills/ticket_executor/SKILL.md",
+              "src": "wocoder/agent/skills/ticket_executor/SKILL.md",
               "dest": "skills/ticket_executor/SKILL.md"
             }
           ]
@@ -5786,6 +5822,15 @@
             {
               "src": "wocoder/agent/skills/self-documentation/SKILL.md",
               "dest": "skills/self-documentation/SKILL.md"
+            }
+          ]
+        },
+        "skill/validate_podman": {
+          "description": "Validate Podman/Quadlet configurations on Fedora",
+          "files": [
+            {
+              "src": "wocoder/agent/skills/validate_podman/SKILL.md",
+              "dest": "skills/validate_podman/SKILL.md"
             }
           ]
         }
@@ -6967,6 +7012,15 @@
               "dest": "skills/ticket_executor/SKILL.md"
             }
           ]
+        },
+        "skill/validate_podman": {
+          "description": "Validate Podman/Quadlet configurations on Fedora",
+          "files": [
+            {
+              "src": "antigravity/skills/validate_podman/SKILL.md",
+              "dest": "skills/validate_podman/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -7877,6 +7931,15 @@
             {
               "src": "codex/skills/ticket_executor/SKILL.md",
               "dest": "skills/ticket_executor/SKILL.md"
+            }
+          ]
+        },
+        "skill/validate_podman": {
+          "description": "Validate Podman/Quadlet configurations on Fedora",
+          "files": [
+            {
+              "src": "codex/skills/validate_podman/SKILL.md",
+              "dest": "skills/validate_podman/SKILL.md"
             }
           ]
         }

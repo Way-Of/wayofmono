@@ -2,13 +2,13 @@
 set -e
 
 # Pi Skill Frontmatter Fixer Script
-# Fixes Pi skill frontmatter formatting issues
+# Fixes Pi skill frontmatter formatting issues to match official Pi specification
+# allowed-tools should be space-delimited, NOT YAML array
 
 PI_SKILLS_DIR="/home/zerwiz/wayofmono/packages/@aiengineeringharness/pi/agent/skills"
-DRY_RUN=false
 
-echo "🔧 Pi Skill Frontmatter Fixer Script"
-echo "===================================="
+echo "🔧 Pi Skill Frontmatter Fixer Script (Pi Official Spec)"
+echo "======================================================"
 echo "Pi Skills Directory: $PI_SKILLS_DIR"
 echo ""
 
@@ -16,59 +16,29 @@ echo ""
 echo "📋 Checking current Pi skill state..."
 
 total=0
-kebab=0
-snake=0
-
-for skill_dir in "$PI_SKILLS_DIR"/*/; do
-    skill_name=$(basename "$skill_dir")
-    if [[ -d "$skill_dir" ]]; then
-      total=$((total + 1))
-      if [[ "$skill_name" == *_* ]]; then
-        snake=$((snake + 1))
-      elif [[ "$skill_name" =~ [A-Z] ]]; then
-        snake=$((snake + 1))
-      elif [[ "$skill_name" =~ ^- ]] || [[ "$skill_name" =~ -$ ]]; then
-        snake=$((snake + 1))
-      elif [[ "$skill_name" =~ -- ]]; then
-        snake=$((snake + 1))
-      else
-        kebab=$((kebab + 1))
-      fi
-    fi
-  done
-
-echo "  Total skill directories: $total"
-echo "  Kebab-case: $kebab"
-echo "  Snake_case: $snake"
-echo ""
-
-if [[ $snake -gt 0 ]]; then
-  echo "⚠️  Found $snake snake_case directories to fix"
-fi
-
-# Step 2: Rename snake_case to kebab-case
-echo "🔄 Renaming snake_case to kebab-case..."
-renamed=0
+valid_kebab=0
+invalid=0
 
 for skill_dir in "$PI_SKILLS_DIR"/*/; do
   skill_name=$(basename "$skill_dir")
-  if [[ ! -d "$skill_dir" ]]; then
-    continue
-  fi
-  # Only rename if it contains underscores (snake_case)
-  if [[ "$skill_name" == *_* ]]; then
-    new_name=$(echo "$skill_name" | sed 's/_/\-/g')
-    echo "  Renaming: $skill_name → $new_name"
-    mv "$skill_dir" "${PI_SKILLS_DIR}/${new_name}"
-    renamed=$((renamed + 1))
+  if [[ -d "$skill_dir" ]]; then
+    total=$((total + 1))
+    # Valid kebab-case: lowercase letters, numbers, hyphens only
+    if [[ "$skill_name" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+      valid_kebab=$((valid_kebab + 1))
+    else
+      invalid=$((invalid + 1))
+    fi
   fi
 done
 
-echo "  Renamed: $renamed directories"
+echo "  Total skill directories: $total"
+echo "  Valid kebab-case: $valid_kebab"
+echo "  Invalid names: $invalid"
 echo ""
 
-# Step 3: Fix SKILL.md frontmatter
-echo "📝 Fixing SKILL.md frontmatter..."
+# Step 2: Fix allowed-tools format (space-delimited per Pi spec)
+echo "📝 Fixing SKILL.md frontmatter (allowed-tools → space-delimited)..."
 fixed=0
 
 for skill_dir in "$PI_SKILLS_DIR"/*/; do
@@ -79,62 +49,53 @@ for skill_dir in "$PI_SKILLS_DIR"/*/; do
     continue
   fi
   
-  # Fix name field
-  current_name=$(grep "^name: " "$skill_file" | sed 's/^name: //' | tr -d '"' | tr -d "'")
-  if [[ "$current_name" != "$skill_name" ]]; then
-    echo "  Fixing name: $current_name → $skill_name in $skill_name"
-    sed -i "s/^name: .*/name: $skill_name/" "$skill_file"
-    fixed=$((fixed + 1))
-  fi
-  
-  # Fix allowed-tools: convert comma-separated to YAML array
-  if grep -q "allowed-tools:" "$skill_file"; then
-    # Check if it's already in array format
-    if ! grep -A5 "allowed-tools:" "$skill_file" | grep -q "^- "; then
-      echo "  Fixing allowed-tools format in: $skill_name"
-      # Use sed to fix the format - more reliable than awk
-      # First, replace the line with allowed-tools: and array format
-      sed -i '/allowed-tools:/ {
-        s/allowed-tools: *\(.*\)$/allowed-tools:/
-        s/, */\n  - /g
-      }' "$skill_file"
-      
-      # The above might not work perfectly, let me use a more robust approach
-      # Read the file, find allowed-tools line, and rebuild it
-      python3 -c "
+  # Check if allowed-tools exists and is in array format (has "- ")
+  if grep -q "allowed-tools:" "$skill_file" && grep -A10 "allowed-tools:" "$skill_file" | grep -q "^- "; then
+    echo "  Converting allowed-tools to space-delimited in: $skill_name"
+    
+    # Use Python to properly convert YAML array to space-delimited
+    python3 -c "
 import re
 with open('$skill_file', 'r') as f:
     content = f.read()
 
-# Find allowed-tools line
-match = re.search(r'allowed-tools:\s*(.+)', content)
-if match and '- ' not in content[match.start():match.end()+200]:
-    tools_str = match.group(1).strip()
-    # Split by comma
-    tools = [t.strip() for t in tools_str.split(',') if t.strip()]
-    # Build new allowed-tools section
-    new_section = 'allowed-tools:\n'
-    for tool in tools:
-        new_section += '  - ' + tool + '\n'
-    # Replace in content
+# Find the allowed-tools section
+# Pattern: allowed-tools:\n  - tool1\n  - tool2\n  ...
+match = re.search(r'(allowed-tools:)\n((?:  - [^\n]+\n)+)', content)
+if match:
+    # Extract tools
+    tools_section = match.group(2)
+    tools = re.findall(r'  - ([^\n]+)', tools_section)
+    # Join with spaces
+    tools_str = ' '.join(tools)
+    # Replace
+    new_section = 'allowed-tools: ' + tools_str + '\n'
     content = content[:match.start()] + new_section + content[match.end():]
     with open('$skill_file', 'w') as f:
         f.write(content)
+    print('  Converted:', '$skill_name', '->', tools_str)
+else:
+    print('  No array format found or already space-delimited')
 "
-      fixed=$((fixed + 1))
-    fi
+    fixed=$((fixed + 1))
+  fi
+  
+  # Also fix name field if needed (remove quotes)
+  if grep -q '^name: "' "$skill_file" || grep -q "^name: '" "$skill_file"; then
+    sed -i 's/^name: ["'"'"']\([^"'"'"']*\)["'"'"']$/name: \1/' "$skill_file"
+    echo "  Fixed name field quotes in: $skill_name"
   fi
 done
 
 echo "  Fixed: $fixed SKILL.md files"
 echo ""
 
-# Step 4: Validate
+# Step 3: Validate
 echo "✅ Validating fixed state..."
 total=0
-kebab=0
-snake=0
-errors=0
+valid_kebab=0
+invalid=0
+frontmatter_errors=0
 
 for skill_dir in "$PI_SKILLS_DIR"/*/; do
   skill_name=$(basename "$skill_dir")
@@ -143,58 +104,49 @@ for skill_dir in "$PI_SKILLS_DIR"/*/; do
   fi
   total=$((total + 1))
   
-  # Check if directory name is valid kebab-case
-  # Valid kebab-case: lowercase letters, numbers, hyphens only
-  # Single words (no hyphens) are also valid kebab-case
-  # Invalid: underscores, uppercase, leading/trailing hyphens, consecutive hyphens
-  if [[ "$skill_name" == *_* ]]; then
-    snake=$((snake + 1))
-    echo "  ❌ Directory has underscores (snake_case): $skill_name"
-    errors=$((errors + 1))
-  elif [[ "$skill_name" =~ [A-Z] ]]; then
-    snake=$((snake + 1))
-    echo "  ❌ Directory has uppercase: $skill_name"
-    errors=$((errors + 1))
-  elif [[ "$skill_name" =~ ^- ]] || [[ "$skill_name" =~ -$ ]]; then
-    snake=$((snake + 1))
-    echo "  ❌ Directory has leading/trailing hyphen: $skill_name"
-    errors=$((errors + 1))
-  elif [[ "$skill_name" =~ -- ]]; then
-    snake=$((snake + 1))
-    echo "  ❌ Directory has consecutive hyphens: $skill_name"
-    errors=$((errors + 1))
+  # Check directory name format
+  if [[ "$skill_name" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+    valid_kebab=$((valid_kebab + 1))
   else
-    kebab=$((kebab + 1))
+    invalid=$((invalid + 1))
+    echo "  ❌ Invalid directory name: $skill_name"
   fi
   
+  # Check SKILL.md frontmatter
   skill_file="${skill_dir}SKILL.md"
   if [[ -f "$skill_file" ]]; then
+    # Check name field matches directory
     current_name=$(grep "^name: " "$skill_file" | sed 's/^name: //' | tr -d '"' | tr -d "'")
     if [[ "$current_name" != "$skill_name" ]]; then
       echo "  ❌ Name mismatch: $skill_name (dir) != $current_name (file)"
-      errors=$((errors + 1))
+      frontmatter_errors=$((frontmatter_errors + 1))
     fi
     
-# Check allowed-tools format
-    if grep -q "allowed-tools:" "$skill_file" && ! grep -A5 "allowed-tools:" "$skill_file" | grep -q "  - "; then
-      echo "  ❌ allowed-tools still not array format in: $skill_name"
-      errors=$((errors + 1))
+    # Check allowed-tools is space-delimited (not YAML array)
+    if grep -q "allowed-tools:" "$skill_file" && grep -A10 "allowed-tools:" "$skill_file" | grep -q "^- "; then
+      echo "  ❌ allowed-tools still YAML array format in: $skill_name"
+      frontmatter_errors=$((frontmatter_errors + 1))
     fi
   fi
 done
 
-echo "  Total: $total, Kebab-case: $kebab, Snake_case: $snake, Errors: $errors"
+echo "  Total: $total, Valid kebab-case: $valid_kebab, Invalid: $invalid, Frontmatter errors: $frontmatter_errors"
 
-if [[ $errors -gt 0 ]]; then
+if [[ $invalid -gt 0 ]] || [[ $frontmatter_errors -gt 0 ]]; then
   echo ""
   echo "❌ Some issues remain. Please check above."
   exit 1
 else
   echo ""
-  echo "✅ All Pi skills fixed successfully!"
+  echo "✅ All Pi skills fixed successfully per official Pi specification!"
+  echo ""
+  echo "Key changes:"
+  echo "  - allowed-tools: space-delimited (e.g., 'read write bash')"
+  echo "  - name field: no quotes, matches directory exactly"
+  echo "  - Directory names: valid kebab-case"
   echo ""
   echo "Next steps:"
-  echo "  1. Run: deno install.ts --update"
+  echo "  1. Run: ai-harness --update"
   echo "  2. Test Pi skills: /pi skill <skill-name>"
   echo "  3. Verify Pi harness loads all skills correctly"
 fi
