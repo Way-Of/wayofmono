@@ -778,7 +778,7 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
       const existingContent = await readFileIfExists(destPath);
 
       if (existingContent !== null && existingContent === srcContent) {
-        console.log(`  ${od("·")} ${fileEntry.dest}  ${od("(ok)")}`);
+        console.log(`  ${od("·")} ${fileEntry.dest}  ${od("(new)")}`);
         unchanged++;
         continue;
       }
@@ -816,7 +816,7 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
     }
   }
 
-  console.log(`\n  ${o("└")} ${od(toolName)}: ${green(String(installed))} changed, ${od(String(unchanged) + " ok")}, ${yellow(String(skipped) + " skipped")}`);
+  console.log(`\n  ${o("└")} ${od(toolName)}: ${green(String(installed))} changed, ${od(String(unchanged) + " new")}, ${yellow(String(skipped) + " skipped")}`);
 
   // Remove stale files not in manifest (only for full installs)
   if (opts.skills.length === 0 && !opts.interactive) {
