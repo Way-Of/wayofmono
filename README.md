@@ -701,71 +701,29 @@ The User Assistant (wouser) is an **SDK**. If you're building an AI chatbot or f
 
 All **13** packages published under `@wayofmono` scope at [npmjs.com/settings/wayofmono](https://www.npmjs.com/settings/wayofmono/packages).
 
-### Install from npm
+### Install from npm (one copy-paste)
 
 ```bash
 npm install @wayofmono/wo-agent
-```
-
-```bash
 npm install @wayofmono/wo-coding-agent
-```
-
-```bash
 npm install @wayofmono/wo-ai
-```
-
-```bash
 npm install @wayofmono/wo-tui
-```
-
-```bash
 npm install @wayofmono/wo-agent-core
-```
-
-```bash
 npm install @wayofmono/wo-skill-docs
-```
-
-```bash
 npm install @wayofmono/wo-mermaid
-```
-
-```bash
 npm install @wayofmono/web-access
-```
-
-```bash
 npm install @wayofmono/lens
-```
-
-```bash
 npm install @wayofmono/wo-web-ui
-```
-
-```bash
 npm install @wayofmono/telemetry
-```
-
-```bash
 npm install @wayofmono/telegram
-```
-
-```bash
 npm install @wayofmono/whatsapp
 ```
 
-### Install from cloned repo
+### Install from cloned repo (one copy-paste)
 
 ```bash
 git clone https://github.com/Way-Of/wayofmono.git ~/wayofmono
-```
-
-```bash
 pnpm add ~/wayofmono/packages/@wayofmono/wo-agent
-```
-
-```bash
 pnpm add ~/wayofmono/packages/@wayofmono/wo-coding-agent
 ```
 
@@ -803,26 +761,12 @@ Production dashboard at **[https://cto.wayof.work](https://cto.wayof.work)** (v0
 | **Developers** | Workflow and assignment tracking |
 | **Docs** | Architecture docs and decision records |
 
-### Run Locally
+### Run Locally (one copy-paste)
 
 ```bash
-cd ui
-```
-
-```bash
-pnpm install
-```
-
-```bash
-pnpm dev
-```
-
-```bash
+cd ui && pnpm install && pnpm dev
 # Quick start script
 ./scripts/dev-dashboard.sh
-```
-
-```bash
 # Custom port
 ./scripts/dev-dashboard.sh 4000
 ```
@@ -840,22 +784,17 @@ pnpm dev
 | GET | `/api/skills/report` | Skills health report |
 | POST | `/api/skills/report` | Submit skills report |
 
-## 🔧 Pipeline Tools
+## 🔧 Pipeline Tools (one copy-paste each)
 
 ```bash
 ai-harness --sync-docs
-```
-
-```bash
 ai-harness --sync-docs --check
 ```
 
 ```bash
 deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts
-```
-
-```bash
 deno run -A packages/@aiengineeringharness/scripts/migrate-tickets.ts
+deno run -A packages/@aiengineeringharness/scripts/import-ref-skills.ts
 ```
 
 ```bash
@@ -950,25 +889,15 @@ Internet → Cloudflare Tunnel [cto.wayof.work]
 - **Caddy** reverse proxy
 - **Next.js** application server
 
-### Deploy
+### Deploy (one copy-paste)
 
 ```bash
 ./scripts/deploy-dashboard.sh
-```
-
-```bash
+# Or manual:
 cd ui && podman-compose up --build -d
-```
-
-```bash
 curl https://cto.wayof.work/api/health
-```
-
-```bash
 podman-compose logs -f
-```
-
-```bash
+# Systemd service:
 sudo cp ui/docker/wayofmono-dashboard.service /etc/systemd/system/
 sudo systemctl enable --now wayofmono-dashboard
 ```
@@ -1068,25 +997,13 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
 
-### Pre-Deploy Checklist
+### Pre-Deploy Checklist (one copy-paste)
 
 ```bash
 pnpm -r test
-```
-
-```bash
 ai-harness --sync-docs --check
-```
-
-```bash
 pnpm -r --parallel typecheck
-```
-
-```bash
 curl https://cto.wayof.work/api/health
-```
-
-```bash
 cd ui && pnpm build
 ```
 
@@ -1223,21 +1140,12 @@ pnpm run security:check
 | **Linux** | `curl -fsSL https://deno.land/install.sh | sh` | Full |
 | **WSL/Git Bash** | `apt install deno` | Full |
 
-## 🤝 Contributing
+## 🤝 Contributing (one copy-paste)
 
 ```bash
 git clone https://github.com/Way-Of/wayofmono.git
-```
-
-```bash
 git checkout -b feat/your-feature
-```
-
-```bash
 pnpm install
-```
-
-```bash
 pnpm -r test
 ```
 
