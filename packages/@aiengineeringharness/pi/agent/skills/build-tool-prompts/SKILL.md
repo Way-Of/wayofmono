@@ -4,12 +4,11 @@ description: >-
   Build prompt templates for all 7 AI coding tools — knows single-file .md format, frontmatter, positional arguments, discovery locations.
 allowed-tools:
   - edit
-  - glob
+  - run_shell_command
   - grep
   - write
-  - 'read
   - bash
-  - websearch'
+  - web-search
 ---
 
 # build_tool_prompts — Unified Prompt Template Builder

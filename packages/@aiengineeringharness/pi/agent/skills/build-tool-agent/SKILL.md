@@ -4,12 +4,11 @@ description: >-
   Build agent definitions for all 7 AI coding tools — knows frontmatter format, subagents, teams, and agent directory structure.
 allowed-tools:
   - edit
-  - glob
+  - run_shell_command
   - grep
   - write
-  - 'read
   - bash
-  - websearch'
+  - web-search
 ---
 
 # build_tool_agent — Unified Agent Builder

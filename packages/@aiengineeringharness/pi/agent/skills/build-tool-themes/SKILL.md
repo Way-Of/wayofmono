@@ -4,12 +4,11 @@ description: >-
   Build themes for all 7 AI coding tools — knows JSON format, color tokens, vars system, hex/256-color values, hot reload.
 allowed-tools:
   - edit
-  - glob
+  - run_shell_command
   - grep
   - write
-  - 'read
   - bash
-  - websearch'
+  - web-search
 ---
 
 # build_tool_themes — Unified Theme Builder

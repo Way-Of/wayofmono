@@ -6,9 +6,16 @@ description: >-
 allowed-tools:
   - read
   - write
-  - glob
-  - ls
+  - bash
+  - edit
   - grep
+  - glob
+  - skill
+  - todowrite
+  - webfetch
+  - websearch
+  - question
+  - ls
 ---
 
 # Skill Auto-Update & Sync

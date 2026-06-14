@@ -4,12 +4,11 @@ description: >-
   Configure all 7 AI coding tools — knows settings.json, providers, models, packages, keybindings, all configuration options.
 allowed-tools:
   - edit
-  - glob
+  - run_shell_command
   - grep
   - write
-  - 'read
   - bash
-  - websearch'
+  - web-search
 ---
 
 # build_tool_config — Unified Configuration Reference
