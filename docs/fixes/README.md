@@ -3,15 +3,28 @@
 ## Index
 
 - [wo-coding-agent Fixes](./wo-coding-agent-fixes.md) — CLI coding agent (wocode) v1.0.6+
-- [Harness v1.6.1](#v161--2026-06-14) — Core harness fixes
+- [wouser (wo-agent) Fixes](./wo-agent-fixes.md) — General-purpose user agent v1.0.4+
+- [AI Engineering Harness Fixes](./ai-engineering-harness-fixes.md) — Core harness v1.6.1+
+
+---
+
+## Quick Summary
+
+| Component | Package | Current Version | Config Dir |
+|-----------|---------|----------------|------------|
+| **wocode** | `@wayofmono/wo-coding-agent` | v1.0.11 | `~/.wocoder/` |
+| **wouser** | `@wayofmono/wo-agent` | v1.0.4 | `~/.wo/` |
+| **Harness** | `@aiengineeringharness` | v1.6.1 | `~/.wocoder/`, `~/.pi/agent/`, etc. |
 
 ---
 
 ## wo-coding-agent Fixes
 
-See [wo-coding-agent-fixes.md](./wo-coding-agent-fixes.md) for detailed release notes on v1.0.6 through v1.0.9.
+See [wo-coding-agent-fixes.md](./wo-coding-agent-fixes.md) for detailed release notes.
 
 **Quick Summary:**
+- v1.0.11: Enhanced init message with config locations + Ollama setup
+- v1.0.10: Extension errors → warnings (wocode won't crash on missing deps)
 - v1.0.9: Added docs folder, Ollama defaults
 - v1.0.8: CONFIG_DIR_NAME `.wo` → `.wocoder` (separate from wouser)
 - v1.0.7: npm workspace deps → explicit versions
@@ -19,30 +32,28 @@ See [wo-coding-agent-fixes.md](./wo-coding-agent-fixes.md) for detailed release 
 
 ---
 
-## v1.6.1 — 2026-06-14
+## wouser (wo-agent) Fixes
 
-### Command/Skill Conflicts Resolved
+See [wo-agent-fixes.md](./wo-agent-fixes.md) for detailed release notes.
 
-**Problem**: Gemini CLI and Antigravity CLI had naming conflicts where `commands/*.toml` files shared the same names as `skills/*/` directories. This caused auto-renaming to `/user.*` and `/.*1` variants.
-
-**Fix**: Renamed all command files with `run-` prefix:
-- `/run-create_plan` instead of `/create_plan`
-- `/run-debug` instead of `/debug`
-- `/run-worktree` instead of `/worktree`
-- (and all 14 commands)
-
-**Tools affected**: Gemini CLI, Antigravity CLI
-
-**Tools NOT affected**: OpenCode (handles commands/skills separately), Claude (no commands dir), Pi (prompts only), WoCoder (prompts only), Codex
-
-### WoCoder Cleanup
-
-Removed duplicate `agent/commands/` directory (was identical to `agent/prompts/`). WoCoder now uses prompts only, matching the Pi pattern.
-
-### New Skill: womono_version_updater
-
-Auto-triggered skill that knows how to bump the harness version across all files and tools. Invoked when the user requests a version update.
+**Quick Summary:**
+- v1.0.4: npm workspace deps → explicit versions, working npm global install
+- CONFIG_DIR_NAME: `~/.wo/` (separate from wocode's `~/.wocoder/`)
 
 ---
+
+## AI Engineering Harness Fixes
+
+See [ai-engineering-harness-fixes.md](./ai-engineering-harness-fixes.md) for detailed release notes.
+
+**Quick Summary (v1.6.1):**
+- Command/skill conflicts resolved (run- prefix for Gemini, Antigravity)
+- WoCoder cleanup (removed duplicate commands dir)
+- New skill: womono_version_updater
+- Extension dependency installation (fixes web-access missing deps)
+
+---
+
+## Full Changelog
 
 For full changelog, see [CHANGELOG.md](../../CHANGELOG.md).
