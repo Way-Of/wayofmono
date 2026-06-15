@@ -1010,11 +1010,11 @@
             }
           ]
         },
-        "command/create-plan": {
+        "command/create_plan": {
           "description": "Create implementation plans command",
           "files": [
             {
-              "src": "opencode/commands/create-plan.md",
+              "src": "opencode/commands/create_plan.md",
               "dest": "commands/create-plan.md"
             }
           ]
@@ -1028,7 +1028,7 @@
             }
           ]
         },
-        "command/debug-k8s": {
+        "command/debug_k8s": {
           "description": "Kubernetes cluster debugging command",
           "files": [
             {
@@ -1037,47 +1037,47 @@
             }
           ]
         },
-        "command/implement-plan": {
+        "command/implement_plan": {
           "description": "Execute an approved plan command",
           "files": [
             {
-              "src": "opencode/commands/implement-plan.md",
+              "src": "opencode/commands/implement_plan.md",
               "dest": "commands/implement-plan.md"
             }
           ]
         },
-        "command/init-harness": {
+        "command/init_harness": {
           "description": "Initialize harness in a new repository command",
           "files": [
             {
-              "src": "opencode/commands/init-harness.md",
+              "src": "opencode/commands/init_harness.md",
               "dest": "commands/init-harness.md"
             }
           ]
         },
-        "command/research-codebase": {
+        "command/research_codebase": {
           "description": "Comprehensive codebase research command",
           "files": [
             {
-              "src": "opencode/commands/research-codebase.md",
+              "src": "opencode/commands/research_codebase.md",
               "dest": "commands/research-codebase.md"
             }
           ]
         },
-        "command/validate-plan": {
+        "command/validate_plan": {
           "description": "Validate implementation against plan command",
           "files": [
             {
-              "src": "opencode/commands/validate-plan.md",
+              "src": "opencode/commands/validate_plan.md",
               "dest": "commands/validate-plan.md"
             }
           ]
         },
-        "command/validate-telemetry": {
+        "command/validate_telemetry": {
           "description": "Validate local telemetry against a narrative spec command",
           "files": [
             {
-              "src": "opencode/commands/validate-telemetry.md",
+              "src": "opencode/commands/validate_telemetry.md",
               "dest": "commands/validate-telemetry.md"
             }
           ]
@@ -2138,7 +2138,7 @@
             }
           ]
         },
-        "command/create-plan": {
+        "command/create_plan": {
           "description": "Create Plan command",
           "files": [
             {
@@ -2147,7 +2147,7 @@
             }
           ]
         },
-        "command/debug-k8s": {
+        "command/debug_k8s": {
           "description": "Debug K8s command",
           "files": [
             {
@@ -2174,7 +2174,7 @@
             }
           ]
         },
-        "command/git-commit-helper": {
+        "command/git_commit_helper": {
           "description": "Git Commit Helper command",
           "files": [
             {
@@ -2183,7 +2183,7 @@
             }
           ]
         },
-        "command/implement-plan": {
+        "command/implement_plan": {
           "description": "Implement Plan command",
           "files": [
             {
@@ -2192,7 +2192,7 @@
             }
           ]
         },
-        "command/init-harness": {
+        "command/init_harness": {
           "description": "Init Harness command",
           "files": [
             {
@@ -2201,7 +2201,7 @@
             }
           ]
         },
-        "command/otel-instrument": {
+        "command/otel_instrument": {
           "description": "Otel Instrument command",
           "files": [
             {
@@ -2210,7 +2210,7 @@
             }
           ]
         },
-        "command/pr-description-generator": {
+        "command/pr_description_generator": {
           "description": "Pr Description Generator command",
           "files": [
             {
@@ -2219,7 +2219,7 @@
             }
           ]
         },
-        "command/research-codebase": {
+        "command/research_codebase": {
           "description": "Research Codebase command",
           "files": [
             {
@@ -2228,7 +2228,7 @@
             }
           ]
         },
-        "command/validate-plan": {
+        "command/validate_plan": {
           "description": "Validate Plan command",
           "files": [
             {
@@ -2237,7 +2237,7 @@
             }
           ]
         },
-        "command/validate-telemetry": {
+        "command/validate_telemetry": {
           "description": "Validate Telemetry command",
           "files": [
             {
@@ -4030,313 +4030,6 @@
           "description": "Generate investor-ready documentation for any project",
           "files": [
             {
-              "src": "pi/agent/skills/investor-ready-doc-gen/SKILL.md",
-              "dest": "skills/investor-ready-doc-gen/SKILL.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/verticals/VERTICAL_TEMPLATE.yaml",
-              "dest": "skills/investor-ready-doc-gen/assets/verticals/VERTICAL_TEMPLATE.yaml"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/verticals/hvac_optimization/market_reference.yaml",
-              "dest": "skills/investor-ready-doc-gen/assets/verticals/hvac_optimization/market_reference.yaml"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml",
-              "dest": "skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/pdf/investor-theme.css",
-              "dest": "skills/investor-ready-doc-gen/assets/pdf/investor-theme.css"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml",
-              "dest": "skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/examples/wow_config.yaml",
-              "dest": "skills/investor-ready-doc-gen/assets/examples/wow_config.yaml"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/examples/opticat_config.yaml",
-              "dest": "skills/investor-ready-doc-gen/assets/examples/opticat_config.yaml"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/todo.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/todo.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/changelog.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/changelog.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/index.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/index.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/costs/cloud_costs.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/costs/cloud_costs.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/costs/hardware_costs.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/costs/hardware_costs.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/costs/setup_legal_costs.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/costs/setup_legal_costs.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/costs/detailed_breakdown.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/costs/detailed_breakdown.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/costs/cost_analysis.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/costs/cost_analysis.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/costs/team_tooling_costs.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/costs/team_tooling_costs.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/costs/alignment_summary.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/costs/alignment_summary.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/technical/demo_script.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/technical/demo_script.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/technical/product_functionality.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/technical/product_functionality.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/technical/demo_presentation_slides.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/technical/demo_presentation_slides.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/technical/technical_overview.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/technical/technical_overview.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/technical/demo_video_links.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/technical/demo_video_links.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/technical/demo_use_case_scenarios.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/technical/demo_use_case_scenarios.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/company/company_overview.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/company/company_overview.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/company/team_values.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/company/team_values.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/company/organizational_chart.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/company/organizational_chart.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/company/business_plan.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/company/business_plan.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/company/team_bios.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/company/team_bios.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/venture_studio/README.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/venture_studio/README.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/venture_studio/venture_studio_strategy.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/venture_studio/venture_studio_strategy.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/pitch_deck/send_ahead_deck.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/pitch_deck/send_ahead_deck.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/pitch_deck/pitch_script.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/pitch_deck/pitch_script.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/pitch_deck/supporting_slides.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/pitch_deck/supporting_slides.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/pitch_deck/master_deck.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/pitch_deck/master_deck.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/pitch_deck/one_pager.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/pitch_deck/one_pager.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/operations/kpi_dashboard.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/operations/kpi_dashboard.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/operations/client_overview.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/operations/client_overview.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/operations/venture_studio_strategy.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/operations/venture_studio_strategy.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/financial/master_financial_model.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/financial/master_financial_model.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/financial/README.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/financial/README.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/financial/seed_allocation_plan.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/financial/seed_allocation_plan.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/financial/cost_analysis.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/financial/cost_analysis.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/financial/revenue_model.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/financial/revenue_model.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/financial/historical_financials.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/financial/historical_financials.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/financial/cap_table.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/financial/cap_table.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/legal/intellectual_property.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/legal/intellectual_property.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/legal/shareholder_agreement.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/legal/shareholder_agreement.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/legal/vc_investor_contract.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/legal/vc_investor_contract.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/legal/advisor_board_contract.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/legal/advisor_board_contract.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/legal/angel_investor_contract.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/legal/angel_investor_contract.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/executive/executive_summary.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/executive/executive_summary.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/executive/white_paper.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/executive/white_paper.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/executive/investment_thesis.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/executive/investment_thesis.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/market/research_prompt.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/market/research_prompt.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/market/market_research.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/market/market_research.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/market/product_roadmap.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/market/product_roadmap.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/market/README.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/market/README.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/market/go_to_market_strategy.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/market/go_to_market_strategy.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/market/deep_research.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/market/deep_research.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/market/partnership_strategy.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/market/partnership_strategy.md"
-            },
-            {
-              "src": "gemini/skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md",
-              "dest": "skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md"
-            }
-          ]
-        },
-        "skill/build-auto-ticket-creator": {
-          "description": "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories",
-          "files": [
-            {
-              "src": "pi/agent/skills/build-auto-ticket-creator/SKILL.md",
-              "dest": "skills/build-auto-ticket-creator/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-backlog-groomer": {
-          "description": "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.",
-          "files": [
-            {
-              "src": "pi/agent/skills/build-backlog-groomer/SKILL.md",
-              "dest": "skills/build-backlog-groomer/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-skill-adapter": {
-          "description": "Adapts skills between different AI coding tool formats and conventions",
-          "files": [
-            {
-              "src": "pi/agent/skills/build-skill-adapter/SKILL.md",
-              "dest": "skills/build-skill-adapter/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-skill-auto-update": {
-          "description": "Automatically updates skills when dependencies or APIs change",
-          "files": [
-            {
-              "src": "pi/agent/skills/build-skill-auto-update/SKILL.md",
-              "dest": "skills/build-skill-auto-update/SKILL.md"
-            }
-          ]
-        },
-        "skill/skill-compliance-checker": {
-          "description": "Validates skills against production-ready standards and best practices",
-          "files": [
-            {
-              "src": "pi/agent/skills/skill-compliance-checker/SKILL.md",
-              "dest": "skills/skill-compliance-checker/SKILL.md"
-            }
-          ]
-        },
-        "skill/ticket-executor": {
-          "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
-          "files": [
-            {
-              "src": "pi/agent/skills/ticket-executor/SKILL.md",
-              "dest": "skills/ticket-executor/SKILL.md"
-            }
-          ]
-        },
-        "skill/investor-ready-doc-gen": {
-          "description": "Generate investor-ready documentation for any project",
-          "files": [
-            {
               "src": "pi/agent/extensions/skills/investor-ready-doc-gen/SKILL.md",
               "dest": "skills/investor-ready-doc-gen/SKILL.md"
             },
@@ -4583,6 +4276,60 @@
             {
               "src": "pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md"
+            }
+          ]
+        },
+        "skill/build-auto-ticket-creator": {
+          "description": "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories",
+          "files": [
+            {
+              "src": "pi/agent/skills/build-auto-ticket-creator/SKILL.md",
+              "dest": "skills/build-auto-ticket-creator/SKILL.md"
+            }
+          ]
+        },
+        "skill/build-backlog-groomer": {
+          "description": "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.",
+          "files": [
+            {
+              "src": "pi/agent/skills/build-backlog-groomer/SKILL.md",
+              "dest": "skills/build-backlog-groomer/SKILL.md"
+            }
+          ]
+        },
+        "skill/build-skill-adapter": {
+          "description": "Adapts skills between different AI coding tool formats and conventions",
+          "files": [
+            {
+              "src": "pi/agent/skills/build-skill-adapter/SKILL.md",
+              "dest": "skills/build-skill-adapter/SKILL.md"
+            }
+          ]
+        },
+        "skill/build-skill-auto-update": {
+          "description": "Automatically updates skills when dependencies or APIs change",
+          "files": [
+            {
+              "src": "pi/agent/skills/build-skill-auto-update/SKILL.md",
+              "dest": "skills/build-skill-auto-update/SKILL.md"
+            }
+          ]
+        },
+        "skill/skill-compliance-checker": {
+          "description": "Validates skills against production-ready standards and best practices",
+          "files": [
+            {
+              "src": "pi/agent/skills/skill-compliance-checker/SKILL.md",
+              "dest": "skills/skill-compliance-checker/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket-executor": {
+          "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
+          "files": [
+            {
+              "src": "pi/agent/skills/ticket-executor/SKILL.md",
+              "dest": "skills/ticket-executor/SKILL.md"
             }
           ]
         },
@@ -5941,7 +5688,7 @@
             }
           ]
         },
-        "command/create-plan": {
+        "command/create_plan": {
           "description": "Create Plan command",
           "files": [
             {
@@ -5950,7 +5697,7 @@
             }
           ]
         },
-        "command/debug-k8s": {
+        "command/debug_k8s": {
           "description": "Debug K8s command",
           "files": [
             {
@@ -5977,7 +5724,7 @@
             }
           ]
         },
-        "command/git-commit-helper": {
+        "command/git_commit_helper": {
           "description": "Git Commit Helper command",
           "files": [
             {
@@ -5986,7 +5733,7 @@
             }
           ]
         },
-        "command/implement-plan": {
+        "command/implement_plan": {
           "description": "Implement Plan command",
           "files": [
             {
@@ -5995,7 +5742,7 @@
             }
           ]
         },
-        "command/init-harness": {
+        "command/init_harness": {
           "description": "Init Harness command",
           "files": [
             {
@@ -6004,7 +5751,7 @@
             }
           ]
         },
-        "command/otel-instrument": {
+        "command/otel_instrument": {
           "description": "Otel Instrument command",
           "files": [
             {
@@ -6013,7 +5760,7 @@
             }
           ]
         },
-        "command/pr-description-generator": {
+        "command/pr_description_generator": {
           "description": "Pr Description Generator command",
           "files": [
             {
@@ -6022,7 +5769,7 @@
             }
           ]
         },
-        "command/research-codebase": {
+        "command/research_codebase": {
           "description": "Research Codebase command",
           "files": [
             {
@@ -6031,7 +5778,7 @@
             }
           ]
         },
-        "command/validate-plan": {
+        "command/validate_plan": {
           "description": "Validate Plan command",
           "files": [
             {
@@ -6040,7 +5787,7 @@
             }
           ]
         },
-        "command/validate-telemetry": {
+        "command/validate_telemetry": {
           "description": "Validate Telemetry command",
           "files": [
             {

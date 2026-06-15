@@ -1011,129 +1011,176 @@ deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@ai
 
 ### Global CLI Install (Recommended for repeated use)
 
-Install CLI once, then use `ai-harness` for everything — one copy-paste for install, then one per task:
+**Best for**: Developers who use WayOfMono regularly across multiple projects.
 
-**Step 1: Install CLI**
+**Workflow**: Install CLI once → use `ai-harness` command for everything else.
+
+---
+
+**Step 1: Install CLI** (run once)
 ```bash
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 ```
+> Creates `ai-harness` binary in `~/.deno/bin/`. Adds to PATH automatically.
 
-**Step 2: Install tools (pick one tool per copy-paste)**
-
-```bash
-ai-harness --tool=opencode
-```
-
-```bash
-ai-harness --tool=claude
-```
-
-```bash
-ai-harness --tool=pi
-```
-
-```bash
-ai-harness --tool=gemini
-```
-
-```bash
-ai-harness --tool=codex
-```
-
-```bash
-ai-harness --tool=antigravity
-```
-
-```bash
-ai-harness --tool=wocoder
-```
-
-```bash
-ai-harness --tool=all --yes
-```
-
-**Step 3: Update & maintenance** — **each command is a separate copy-paste**
-
-```bash
-ai-harness --update
-```
-
-```bash
-ai-harness --update --no-validate
-```
-
-```bash
-ai-harness --update --skip-binary
-```
-
-```bash
-ai-harness --check
-```
-> Shows updates like: `wocoder: UPDATE AVAILABLE v1.1.0 → v1.2.0`
-
-```bash
-ai-harness --compliance
-```
-
-```bash
-ai-harness --prune
-```
-
-**Step 4: Reporting & sync** — **each command is a separate copy-paste**
-
-```bash
-ai-harness --report-skills
-```
-
-```bash
-ai-harness --report-skills --report-url https://cto.wayof.work
-```
-
-```bash
-ai-harness --sync-docs
-```
-
-```bash
-ai-harness --sync-docs --check
-```
-
-```bash
-ai-harness --import-ref
-```
-
-**Step 5: Repo mode & uninstall** — **each command is a separate copy-paste**
-
-```bash
-ai-harness --mode=repo --dest=~/.ai-engineering-harness
-```
-
-```bash
-ai-harness --uninstall=claude
-```
-
-```bash
-ai-harness --uninstall=all
-```
-
-**Step 6: Component selection** — **each command is a separate copy-paste**
-
-```bash
-ai-harness --tool=claude --dry-run
-```
-
-```bash
-ai-harness --tool=claude --interactive
-```
-
-```bash
-ai-harness --tool=claude --skill=agents
-```
-
+**Verify:**
 ```bash
 ai-harness --help
 ```
 
+---
+
+**Step 2: Install tools** (pick one tool per copy-paste)
+
 ```bash
+# OpenCode — open-source terminal UI agent
+ai-harness --tool=opencode
+```
+
+```bash
+# Claude Code — Anthropic's agent (needs ANTHROPIC_API_KEY)
+ai-harness --tool=claude
+```
+
+```bash
+# Pi Agent — lightweight standard
+ai-harness --tool=pi
+```
+
+```bash
+# Gemini CLI — Google's agent (needs GOOGLE_API_KEY)
+ai-harness --tool=gemini
+```
+
+```bash
+# Codex — OpenAI's agent (needs OPENAI_API_KEY)
+ai-harness --tool=codex
+```
+
+```bash
+# Antigravity — autonomous platform
+ai-harness --tool=antigravity
+```
+
+```bash
+# Wo Coder — our primary agent (recommended)
+ai-harness --tool=wocoder
+```
+
+```bash
+# ALL 7 tools at once
+ai-harness --tool=all --yes
+```
+
+---
+
+**Step 3: Update & maintenance** — **each command is a separate copy-paste**
+
+```bash
+# Standard update — run weekly
+ai-harness --update
+```
+
+```bash
+# Skip compliance validation (faster)
+ai-harness --update --no-validate
+```
+
+```bash
+# Skip CLI binary update (only sync tools/docs)
+ai-harness --update --skip-binary
+```
+
+```bash
+# Check for updates without installing
+ai-harness --check
+```
+> Shows: `wocoder: UPDATE AVAILABLE v1.1.0 → v1.2.0`
+
+```bash
+# Validate all installed files match manifest
+ai-harness --compliance
+```
+
+```bash
+# Interactive removal of non-manifest skills
+ai-harness --prune
+```
+
+---
+
+**Step 4: Reporting & sync** — **each command is a separate copy-paste**
+
+```bash
+# Report skills to CTO Dashboard
+ai-harness --report-skills
+```
+
+```bash
+# Custom dashboard URL
+ai-harness --report-skills --report-url https://cto.wayof.work
+```
+
+```bash
+# Sync canonical skills to all tools
+ai-harness --sync-docs
+```
+
+```bash
+# Preview sync (no changes)
+ai-harness --sync-docs --check
+```
+
+```bash
+# Import reference skills from docs/
+ai-harness --import-ref
+```
+
+---
+
+**Step 5: Repo mode & uninstall** — **each command is a separate copy-paste**
+
+```bash
+# Show GNU Stow instructions
+ai-harness --mode=repo --dest=~/.ai-engineering-harness
+```
+
+```bash
+# Uninstall one tool (e.g., Claude)
+ai-harness --uninstall=claude
+```
+
+```bash
+# Uninstall ALL tools (nuclear option)
+ai-harness --uninstall=all
+```
+
+---
+
+**Step 6: Component selection** — **each command is a separate copy-paste**
+
+```bash
+# Preview what would be installed for Claude
+ai-harness --tool=claude --dry-run
+```
+
+```bash
+# Interactive component picker for Claude
+ai-harness --tool=claude --interactive
+```
+
+```bash
+# Install only agents for Claude
+ai-harness --tool=claude --skill=agents
+```
+
+```bash
+# Show all CLI help
+ai-harness --help
+```
+
+```bash
+# Install Claude locally in current project
 ai-harness --tool=claude --local --yes
 ```
 
@@ -1209,24 +1256,44 @@ Each command separate copy-paste:
 
 ## 💻 Coding Assistant (wocode)
 
-For automated engineering and refactoring. Installed as a **dev-dependency** (tool for engineers, not end-users).
+**What is wocode?**
+A high-performance CLI coding agent for automated engineering, refactoring, and code analysis. Think of it as an AI pair programmer that lives in your terminal.
+
+**Key features:**
+- 81 built-in skills (debugging, planning, code review, architecture analysis, etc.)
+- 6 subagents for parallel codebase research
+- Local-first with Ollama (private, free, offline)
+- Project-aware (reads your AGENTS.md for persona)
+- TUI (Terminal UI) with syntax highlighting, diffs, file tree
+
+**Installation methods:**
+| Method | Best for | Config location |
+|--------|----------|-----------------|
+| **Harness CLI** (Steps 1-3) | Shared config across projects | `~/.wocoder/` |
+| **npm/pnpm** (below) | Per-project, version-locked, CI/CD | `./.wo/` |
+
+---
 
 **Local (project) install — npm:**
+> `--save-dev` = devDependency (tool for you, not shipped to users)
 
 ```bash
 npm install --save-dev @wayofmono/wo-coding-agent
 ```
+> Adds to `package.json` devDependencies. Installs to `node_modules/`.
 
 ```bash
 npx wocode --init
 ```
+> Creates `.wo/` folder in your project with config, models, settings.
 
 ```bash
 ./wocode
 ```
+> Starts the wocode agent. Opens TUI interface.
 
 ```bash
-# Update: pnpm update @wayofmono/wo-coding-agent
+# Update later: pnpm update @wayofmono/wo-coding-agent
 ```
 
 ```bash
@@ -1234,6 +1301,7 @@ npx wocode --init
 ```
 
 **Local (project) install — pnpm:**
+> `-D` = `--save-dev` (shorthand). Faster, stricter dependency resolution.
 
 ```bash
 pnpm add -D @wayofmono/wo-coding-agent
@@ -1248,7 +1316,7 @@ pnpm wocode --init
 ```
 
 ```bash
-# Update: pnpm update @wayofmono/wo-coding-agent
+# Update later: pnpm update @wayofmono/wo-coding-agent
 ```
 
 ```bash
@@ -1256,6 +1324,7 @@ pnpm wocode --init
 ```
 
 **Global install (cross-project):**
+> Available as `wocode` command everywhere. Good for quick one-off use.
 
 ```bash
 npm install -g @wayofmono/wo-coding-agent
@@ -1270,30 +1339,64 @@ wocode
 ```
 
 ```bash
-# Update: npm update -g @wayofmono/wo-coding-agent
+# Update later: npm update -g @wayofmono/wo-coding-agent
 ```
 
 ```bash
 # Uninstall: npm uninstall -g @wayofmono/wo-coding-agent
 ```
 
+**First run:**
+1. `wocode` starts the TUI
+2. Select a skill (press `/` for help)
+3. Or just chat: "Help me refactor this function"
+4. Press `Ctrl+C` to exit
+
+**Config files created:**
+```
+.wo/
+├── models.json       # LLM providers (default: Ollama + qwen3.5:9b)
+├── settings.json     # Agent behavior, theme, keybindings
+└── launcher          # Executable startup script
+```
+
 ## 🤖 User Assistant (wouser)
 
-For general use and SDK integration. Installed as a standard **dependency** (needed at runtime).
+**What is wouser?**
+A general-purpose AI assistant SDK + CLI. Unlike wocode (which is for coding), wouser is designed for:
+- Building AI chatbots and assistants into your applications
+- General conversation, research, analysis tasks
+- SDK integration (your code calls wouser programmatically)
+- End-user facing features (it's a runtime dependency)
+
+**Key differences from wocode:**
+| Aspect | wocode | wouser |
+|--------|--------|--------|
+| Purpose | Coding agent for engineers | General assistant + SDK |
+| Install type | `--save-dev` (devDependency) | `--save` (dependency) |
+| Bundled in app? | No | Yes, if you use SDK |
+| Interface | TUI (terminal UI) | CLI + programmatic API |
+| Skills | 81 coding-focused skills | Same skills, general use |
+
+---
 
 **Local (project) install — npm:**
+> Standard dependency (not dev) because your app may need it at runtime
 
 ```bash
 npm install @wayofmono/wo-agent
 ```
+> Adds to `package.json` dependencies. Installs to `node_modules/`.
 
 ```bash
 npx wouser --init
 ```
+> Creates `.wo/` folder with config (shared with wocode if both installed).
 
 ```bash
 ./wouser
 ```
+> Starts the wouser CLI. Chat interface for general tasks.
 
 **Local (project) install — pnpm:**
 
@@ -1307,6 +1410,27 @@ pnpm wouser --init
 
 ```bash
 ./wouser
+```
+
+**Using as SDK (in your code):**
+```typescript
+import { createAgent } from '@wayofmono/wo-agent';
+
+const agent = createAgent({
+  model: 'qwen3.5:9b',
+  skills: ['debug', 'create_plan', 'research_codebase']
+});
+
+const result = await agent.run('Analyze this codebase for security issues');
+console.log(result);
+```
+
+**Config files created (same .wo/ folder as wocode):**
+```
+.wo/
+├── models.json       # LLM providers (default: Ollama + qwen3.5:9b)
+├── settings.json     # Agent behavior, theme, keybindings
+└── launcher          # Executable startup script
 ```
 
 ## 💡 Understanding Dev-Dependencies (`--save-dev` / `-D`)
@@ -1414,51 +1538,81 @@ pnpm add ~/wayofmono/packages/@wayofmono/wo-coding-agent
 
 ### Package Details
 
-| Package | Description | npm |
-|---------|-------------|-----|
-| [@wayofmono/wo-ai](https://www.npmjs.com/package/@wayofmono/wo-ai) | Multi-Provider LLM API (OpenAI, Anthropic, Gemini) | `npm install @wayofmono/wo-ai` |
-| [@wayofmono/wo-tui](https://www.npmjs.com/package/@wayofmono/wo-tui) | High-Performance Terminal UI Library | `npm install @wayofmono/wo-tui` |
-| [@wayofmono/wo-agent-core](https://www.npmjs.com/package/@wayofmono/wo-agent-core) | Central Agent Runtime & Extension API | `npm install @wayofmono/wo-agent-core` |
-| [@wayofmono/wo-agent](https://www.npmjs.com/package/@wayofmono/wo-agent) | General-Purpose Agent SDK & CLI (**wouser**) | `npm install @wayofmono/wo-agent` |
-| [@wayofmono/wo-coding-agent](https://www.npmjs.com/package/@wayofmono/wo-coding-agent) | CLI Coding Agent (**wocode**) | `npm install @wayofmono/wo-coding-agent` |
-| [@wayofmono/wo-skill-docs](https://www.npmjs.com/package/@wayofmono/wo-skill-docs) | Multi-format Documentation Expert | `npm install @wayofmono/wo-skill-docs` |
-| [@wayofmono/wo-mermaid](https://www.npmjs.com/package/@wayofmono/wo-mermaid) | TUI Mermaid Renderer (ASCII art) | `npm install @wayofmono/wo-mermaid` |
-| [@wayofmono/web-access](https://www.npmjs.com/package/@wayofmono/web-access) | Web search, URL fetching, GitHub cloning, PDF/YouTube extraction | `npm install @wayofmono/web-access` |
-| [@wayofmono/lens](https://www.npmjs.com/package/@wayofmono/lens) | Codebase Analysis & Safety Engine | `npm install @wayofmono/lens` |
-| [@wayofmono/wo-web-ui](https://www.npmjs.com/package/@wayofmono/wo-web-ui) | Web UI Components (React 19) | `npm install @wayofmono/wo-web-ui` |
-| [@wayofmono/telemetry](https://www.npmjs.com/package/@wayofmono/telemetry) | Telemetry and metrics | `npm install @wayofmono/telemetry` |
-| [@wayofmono/telegram](https://www.npmjs.com/package/@wayofmono/telegram) | Telegram bot integration | `npm install @wayofmono/telegram` |
-| [@wayofmono/whatsapp](https://www.npmjs.com/package/@wayofmono/whatsapp) | WhatsApp bot integration | `npm install @wayofmono/whatsapp` |
+All 13 packages published under `@wayofmono` scope at [npmjs.com/settings/wayofmono](https://www.npmjs.com/settings/wayofmono/packages).
+
+| Package | Description | When to Use | npm |
+|---------|-------------|-------------|-----|
+| **@wayofmono/wo-ai** | Multi-Provider LLM API (OpenAI, Anthropic, Gemini, Ollama) | Need unified interface for multiple LLM providers | `npm install @wayofmono/wo-ai` |
+| **@wayofmono/wo-tui** | High-Performance Terminal UI Library (React Ink based) | Building terminal apps with React-like components | `npm install @wayofmono/wo-tui` |
+| **@wayofmono/wo-agent-core** | Central Agent Runtime & Extension API | Building custom agents, need core runtime | `npm install @wayofmono/wo-agent-core` |
+| **@wayofmono/wo-agent** | General-Purpose Agent SDK & CLI (**wouser**) | Building AI features in your app, chatbots | `npm install @wayofmono/wo-agent` |
+| **@wayofmono/wo-coding-agent** | CLI Coding Agent (**wocode**) | Automated coding, refactoring, code analysis | `npm install @wayofmono/wo-coding-agent` |
+| **@wayofmono/wo-skill-docs** | Multi-format Documentation Expert | Auto-generating docs from code/comments | `npm install @wayofmono/wo-skill-docs` |
+| **@wayofmono/wo-mermaid** | TUI Mermaid Renderer (ASCII art diagrams) | Rendering diagrams in terminal | `npm install @wayofmono/wo-mermaid` |
+| **@wayofmono/web-access** | Web search, URL fetching, GitHub cloning, PDF/YouTube extraction | Agents need web access, research tasks | `npm install @wayofmono/web-access` |
+| **@wayofmono/lens** | Codebase Analysis & Safety Engine | Static analysis, security scanning, architecture | `npm install @wayofmono/lens` |
+| **@wayofmono/wo-web-ui** | Web UI Components (React 19) | Building web dashboards for agents | `npm install @wayofmono/wo-web-ui` |
+| **@wayofmono/telemetry** | Telemetry and metrics (OpenTelemetry) | Observability, tracing, metrics collection | `npm install @wayofmono/telemetry` |
+| **@wayofmono/telegram** | Telegram bot integration | Building Telegram bots with agent logic | `npm install @wayofmono/telegram` |
+| **@wayofmono/whatsapp** | WhatsApp bot integration | Building WhatsApp bots with agent logic | `npm install @wayofmono/whatsapp` |
+
+**Core packages** (most commonly used): `wo-ai`, `wo-agent`, `wo-coding-agent`, `wo-agent-core`, `telemetry`
+
+**Specialized packages** (specific use cases): `wo-tui`, `wo-mermaid`, `wo-skill-docs`, `web-access`, `lens`, `wo-web-ui`, `telegram`, `whatsapp`
 
 ## 📊 CTO Dashboard
 
-Production dashboard at **[https://cto.wayof.work](https://cto.wayof.work)** (v0.2.0, Next.js 16, Prisma/SQLite).
+**Production dashboard**: https://cto.wayof.work (v0.2.0, Next.js 16, Prisma/SQLite)
+
+**What it does:**
+- **Team visibility**: See all tickets, velocity, blockers across projects
+- **Skill health**: Real-time skill installation status across all machines
+- **Standups**: Daily async check-ins (yesterday/today/blockers)
+- **Idea board**: Prioritized ideas with voting
+- **Review queue**: PRs waiting for review
 
 ### Features
 
-| View | Description |
-|------|-------------|
-| **Overview** | Ticket stats, velocity, blockers |
-| **Tickets** | Full Kanban with filters, review queue |
-| **Standup** | Daily check-ins (yesterday/today/blockers) |
-| **Skills** | Real-time skill health across all machines |
-| **Ideas** | Prioritized idea board with voting |
-| **Developers** | Workflow and assignment tracking |
-| **Docs** | Architecture docs and decision records |
+| View | Description | Best For |
+|------|-------------|----------|
+| **Overview** | Ticket stats, velocity, blockers | Quick team health check |
+| **Tickets** | Full Kanban with filters, review queue | Project managers, leads |
+| **Standup** | Daily check-ins (yesterday/today/blockers) | Async standups, remote teams |
+| **Skills** | Real-time skill health across all machines | Ensuring team has latest skills |
+| **Ideas** | Prioritized idea board with voting | Product planning, RFCs |
+| **Developers** | Workflow and assignment tracking | Resource planning |
+| **Docs** | Architecture docs and decision records | Onboarding, reference |
 
 ### Run Locally (each command separate copy-paste)
 
 ```bash
+# Full setup: install deps + start dev server
 cd ui && pnpm install && pnpm dev
 ```
+> Starts Next.js on http://localhost:3000
 
 ```bash
+# Quick start script (handles everything)
 ./scripts/dev-dashboard.sh
 ```
 
 ```bash
+# Custom port (default: 3000)
 ./scripts/dev-dashboard.sh 4000
 ```
+
+### API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/health` | Health check (used by deploy script) |
+| GET | `/api` | List tickets, developers, docs |
+| POST | `/api/ideas` | Create new idea |
+| POST | `/api/standup` | Create standup entry |
+| POST | `/api/news` | Create news item |
+| GET | `/api/news` | List news items |
+| GET | `/api/skills/report` | Skills health report |
+| POST | `/api/skills/report` | Submit skills report (from `ai-harness --report-skills`) |
 
 ### API Endpoints
 
@@ -1475,29 +1629,41 @@ cd ui && pnpm install && pnpm dev
 
 ## 🔧 Pipeline Tools (each command separate copy-paste)
 
+**These are maintenance scripts for the harness itself. Run them when contributing to WayOfMono or doing maintenance.**
+
 ```bash
+# Sync canonical skills to all 7 tool directories
 ai-harness --sync-docs
 ```
 
 ```bash
+# Preview sync without changes (safe to run anytime)
 ai-harness --sync-docs --check
 ```
 
 ```bash
+# Validate all skill files for correct frontmatter, naming, format
 deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts
 ```
+> Runs in CI. Checks: frontmatter fields, snake_case naming, allowed-tools casing, file structure.
 
 ```bash
+# Migrate ticket namespaces (e.g., PROJ-XXX → WOMONO-XXX)
 deno run -A packages/@aiengineeringharness/scripts/migrate-tickets.ts
 ```
+> One-time migration script. Updates ticket filenames and frontmatter.
 
 ```bash
+# Import reference skills from docs/ to all tool platforms
 deno run -A packages/@aiengineeringharness/scripts/import-ref-skills.ts
 ```
+> Converts documented skills in `docs/skills/` to proper format for each tool.
 
 ```bash
+# Generate repository statistics (lines of code, file counts)
 npx tsx scripts/stats.ts
 ```
+> Outputs: total files, lines per package, skill counts, etc.
 
 | Tool | Location | Purpose |
 |------|----------|---------|
@@ -1507,38 +1673,54 @@ npx tsx scripts/stats.ts
 | `import-ref-skills.ts` | `packages/@aiengineeringharness/scripts/` | Import reference skills from docs/ |
 | `stats.ts` | `scripts/stats.ts` | Count lines per package |
 
-## 🧠 f-rr-d Context Engineering
+## 🧠 f-rr-d Context Engineering (förråd)
 
-Centralized thoughts repository at [github.com/Way-Of/f-r-r-d](https://github.com/Way-Of/f-r-r-d) — **115 files** across 3 namespaces.
+**What is f-rr-d?**
+**förråd** (Swedish for "storage/depot") is a **centralized thoughts repository** — a single Git repo that stores all tickets, plans, research, and decisions across all Way-Of projects. Think of it as a "shared brain" for the team.
+
+**Why use it?**
+- **Single source of truth**: All project knowledge in one place
+- **Cross-project**: WayOfMono, WayOfWork, and Opticat share the same repo
+- **AI-friendly**: Structured so agents can read/write context automatically
+- **Git-powered**: Full history, branching, collaboration
+- **Append-only**: Never delete, only add — complete audit trail
+
+**Repository**: https://github.com/Way-Of/f-r-r-d (115 files across 3 namespaces)
 
 ### How it works
 
-- **Clone on init**: `ai-harness --init` clones f-rr-d into `thoughts/`
-- **Project-scoped**: WayOfMono tickets live in `thoughts/wayofmono/shared/tickets/` (WOMONO-XXX namespace)
-- **Multi-project**: WoW (`thoughts/wow/`, WOW-XXX) and Opticat (`thoughts/opticat/`, OPT-XXX) share the same repo
-- **Pull before read, push after write**: All harness skills auto-sync with f-rr-d
-- **Branch naming**: `<project-slug>/<namespace>/<ticket-id>-<short-desc>` (e.g., `wayofmono/womono/WOMONO-001-centralized-repo`)
+| Step | Action | Command |
+|------|--------|---------|
+| 1 | Clone on first init | `ai-harness --init` clones f-rr-d into `thoughts/` |
+| 2 | Project-scoped tickets | WayOfMono → `thoughts/wayofmono/shared/tickets/` (WOMONO-XXX) |
+| 3 | Multi-project | WoW → `thoughts/wow/` (WOW-XXX), Opticat → `thoughts/opticat/` (OPT-XXX) |
+| 4 | Sync protocol | **Pull before read, push after write** — all harness skills auto-sync |
+| 5 | Branch naming | `<project-slug>/<namespace>/<ticket-id>-<short-desc>` |
 
 ### Structure
 
 ```
 thoughts/
-├── global/                    # Cross-project concerns
-├── wayofmono/                 # WOMONO-XXX (WayOfMono)
-│   ├── shared/tickets/        # 17+ WOMONO tickets
-│   ├── shared/plans/
-│   ├── shared/research/
-│   ├── craig/                 # 5 WOMONO tickets assigned
-│   ├── tomas/                 # 1 WOMONO ticket
-│   ├── andre/                 # 1 OPT ticket
-│   └── zerwiz/                # 1 WOMONO + 1 WOW ticket
-├── wow/                       # WOW-XXX (WayOfWork)
+├── global/                    # Cross-project concerns (shared configs, standards)
+├── wayofmono/                 # WOMONO-XXX (WayOfMono monorepo)
+│   ├── shared/tickets/        # 17+ WOMONO tickets (team-visible)
+│   ├── shared/plans/          # Implementation plans
+│   ├── shared/research/       # Technical research, evaluations
+│   ├── craig/                 # Craig's personal tickets
+│   ├── tomas/                 # Tomas's personal tickets
+│   ├── andre/                 # Andre's personal tickets
+│   └── zerwiz/                # Zerwiz's personal tickets
+├── wow/                       # WOW-XXX (WayOfWork platform)
 │   ├── shared/tickets/
-│   ├── andre/, craig/, tomas/, zerwiz/
-└── opticat/                   # OPT-XXX (Opticat)
+│   └── andre/, craig/, tomas/, zerwiz/
+└── opticat/                   # OPT-XXX (Opticat HVAC platform)
     ├── shared/tickets/
     └── andre/, craig/, tomas/, zerwiz/
 ```
+
+**Key folders:**
+- `shared/` = team-visible (tickets, plans, research)
+- `personal/` = per-developer (work-in-progress, notes)
 
 Config: `.wo/config/harness.json` stores `f_rrd_url` and `project_slug` for the harness.
 
@@ -1548,19 +1730,27 @@ Config: `.wo/config/harness.json` stores `f_rrd_url` and `project_slug` for the 
 Ticket → /create_plan → /implement_plan → /validate_plan → /validate_telemetry → /commit
 ```
 
+**Step-by-step:**
+1. **Ticket**: Create/select ticket in `thoughts/<project>/shared/tickets/`
+2. **Plan**: `/create_plan` — AI generates detailed implementation plan
+3. **Implement**: `/implement_plan` — Execute plan phase-by-phase with validation
+4. **Validate**: `/validate_plan` — Verify implementation matches plan
+5. **Telemetry**: `/validate_telemetry` — Check observability/tracing matches expectations
+6. **Commit**: `/commit` — Create structured git commit with ticket reference
+
 ### Slash Commands
 
-| Command | Description |
-|---------|-------------|
-| `/init_harness` | Initialize harness (project memory + thoughts/) |
-| `/create_plan` | Generate implementation plan from ticket |
-| `/implement_plan` | Execute approved plan phase-by-phase |
-| `/validate_plan` | Verify implementation against plan |
-| `/validate_telemetry` | Validate local telemetry against narrative spec |
-| `/commit` | Create well-structured git commits |
-| `/debug` | Investigate issues during testing |
-| `/sync skills` | Sync all skills to all frontends |
-| `/help` | Unified help system |
+| Command | Description | When to Use |
+|---------|-------------|-------------|
+| `/init_harness` | Initialize harness (project memory + thoughts/) | First time in a project |
+| `/create_plan` | Generate implementation plan from ticket | Starting new feature/fix |
+| `/implement_plan` | Execute approved plan phase-by-phase | After plan is approved |
+| `/validate_plan` | Verify implementation against plan | After implementation |
+| `/validate_telemetry` | Validate local telemetry against narrative spec | After adding observability |
+| `/commit` | Create well-structured git commits | Before pushing |
+| `/debug` | Investigate issues during testing | When something breaks |
+| `/sync skills` | Sync all skills to all frontends | After skill changes |
+| `/help` | Unified help system | Anytime |
 
 ## 🎛️ AI Engineering Harness
 
@@ -1579,37 +1769,58 @@ Internet → Cloudflare Tunnel [cto.wayof.work]
                           └── Volume: db_data/ (SQLite)
 ```
 
+**How it works:**
+1. **Cloudflare Tunnel**: Secure tunnel from internet to your server (no open ports needed)
+2. **Caddy**: Reverse proxy on port 81, handles HTTPS, routes to Next.js
+3. **Next.js**: Dashboard app on port 3000 (inside container)
+4. **Bind mount**: `thoughts/` folder mounted read-write (live ticket data)
+5. **SQLite volume**: Persistent database for tickets, skills, users
+
 ### Stack
 
-- **Podman** + `podman-compose` on the server
-- **Devbox** (reproducible shell environment)
-- **cloudflared** tunnel for `cto.wayof.work`
-- **Caddy** reverse proxy
-- **Next.js** application server
+| Component | Purpose |
+|-----------|---------|
+| **Podman** + `podman-compose` | Container runtime (rootless, more secure than Docker) |
+| **Devbox** | Reproducible shell environment (nix-based) |
+| **cloudflared** | Cloudflare Tunnel daemon |
+| **Caddy** | Reverse proxy with automatic HTTPS |
+| **Next.js 16** | Dashboard application server |
 
 ### Deploy (each command separate copy-paste)
 
+**Production deploy (run on server):**
+
 ```bash
+# Automated deploy script (recommended)
 ./scripts/deploy-dashboard.sh
 ```
+> Runs: git pull → build → deploy → health check → systemd setup
 
 ```bash
+# Manual: build and start containers
 cd ui && podman-compose up --build -d
 ```
+> `-d` = detached mode (runs in background)
 
 ```bash
+# Verify deployment health
 curl https://cto.wayof.work/api/health
 ```
+> Should return: `{"status":"ok"}`
 
 ```bash
+# View live logs
 podman-compose logs -f
 ```
+> `Ctrl+C` to exit (containers keep running)
 
 ```bash
+# Install as systemd service (auto-start on boot)
 sudo cp ui/docker/wayofmono-dashboard.service /etc/systemd/system/
 ```
 
 ```bash
+# Enable and start service
 sudo systemctl enable --now wayofmono-dashboard
 ```
 
@@ -1617,22 +1828,22 @@ sudo systemctl enable --now wayofmono-dashboard
 
 The `deploy-dashboard.sh` script (55 lines):
 
-1. Detects compose: `podman-compose` > `podman compose` > `docker-compose` > `docker compose`
-2. Runs `git pull` for latest code
-3. Creates `.env` if missing (default: `DATABASE_URL=file:../db/custom.db`)
-4. Runs `$COMPOSE_CMD up --build -d`
-5. Polls `http://localhost:81/api/health` every 5s for 60s
-6. Shows last 5 log lines from `nextjs` on success
+1. **Detects compose**: Tries `podman-compose` → `podman compose` → `docker-compose` → `docker compose`
+2. **Runs `git pull`**: Gets latest code from main branch
+3. **Creates `.env`**: If missing, creates with default `DATABASE_URL=file:../db/custom.db`
+4. **Builds & starts**: Runs `$COMPOSE_CMD up --build -d`
+5. **Health check**: Polls `http://localhost:81/api/health` every 5s for 60s
+6. **Shows logs**: Last 5 lines from `nextjs` container on success
 
 ### Dev Script Details
 
 The `dev-dashboard.sh` script (32 lines):
 
-1. Optional PORT argument (default 3000)
-2. `bun install` in ui/
-3. Starts `bun run dev` in background
-4. Waits up to 30s for server ready
-5. Opens browser via `xdg-open` / `sensible-browser`
+1. **Optional PORT**: Default 3000, override with `./scripts/dev-dashboard.sh 4000`
+2. **`bun install`**: Installs dependencies in `ui/` (faster than npm/pnpm)
+3. **Starts dev server**: `bun run dev` in background
+4. **Waits for ready**: Up to 30s for Next.js compilation
+5. **Opens browser**: Via `xdg-open` (Linux) or `sensible-browser` (cross-platform)
 
 ## 🔄 CI/CD Pipeline
 
@@ -1710,25 +1921,37 @@ jobs:
 
 ### Pre-Deploy Checklist (each command separate copy-paste)
 
+**Run all of these before deploying to production.**
+
 ```bash
+# 1. Run all tests across all packages
 pnpm -r test
 ```
+> Must pass: unit tests, integration tests for all 13 packages
 
 ```bash
+# 2. Verify all skills are in sync across tools
 ai-harness --sync-docs --check
 ```
+> Must output: "All skills in sync" or "Would sync: 0"
 
 ```bash
+# 3. TypeScript type checking across all packages
 pnpm -r --parallel typecheck
 ```
+> Must pass with zero errors. `--parallel` runs simultaneously for speed.
 
 ```bash
+# 4. Verify production dashboard is healthy
 curl https://cto.wayof.work/api/health
 ```
+> Should return: `{"status":"ok"}`
 
 ```bash
+# 5. Build dashboard for production
 cd ui && pnpm build
 ```
+> Creates optimized Next.js build in `.next/`. Must succeed.
 
 ## 📂 Complete Repository Structure
 
@@ -1842,48 +2065,82 @@ perf: Improve performance
 
 ### Security Headers
 
-All deployments include: Content Security Policy, X-Frame-Options, X-Content-Type-Options, Referrer Policy
+All deployments include these security headers:
+
+| Header | Purpose |
+|--------|---------|
+| **Content Security Policy** | Prevents XSS by controlling resource loading |
+| **X-Frame-Options** | Prevents clickjacking (DENY or SAMEORIGIN) |
+| **X-Content-Type-Options** | Prevents MIME type sniffing (nosniff) |
+| **Referrer Policy** | Controls referrer information sent with requests |
 
 ### Scanning (each command separate copy-paste)
 
 ```bash
+# Audit dependencies for known vulnerabilities
 pnpm audit
 ```
+> Checks all packages in `node_modules` against CVE database. Run regularly.
 
 ```bash
+# Run custom security checks (if configured)
 pnpm run security:check
 ```
+> Runs project-specific security scripts (SAST, dependency review, etc.)
 
 ## 🌐 Multi-Platform Support
 
-| Platform | Deno Install | Level |
-|----------|-------------|-------|
+WayOfMono works on all major platforms with Deno:
+
+| Platform | Deno Install | Support Level |
+|----------|-------------|---------------|
 | **Windows** | `irm https://deno.land/install.ps1 | iex` | Full |
 | **macOS** | `brew install deno` | Full |
 | **Linux** | `curl -fsSL https://deno.land/install.sh | sh` | Full |
 | **WSL/Git Bash** | `apt install deno` | Full |
 
+**Notes:**
+- **Windows**: Use PowerShell (not CMD). Run as Administrator for first install.
+- **macOS**: Homebrew required. Install from https://brew.sh if missing.
+- **Linux**: Works on all distros (Ubuntu, Debian, Fedora, Arch, etc.)
+- **WSL**: Windows Subsystem for Linux — full Linux compatibility
+
 ## 🤝 Contributing (each command separate copy-paste)
 
 ```bash
+# 1. Fork and clone the repo
 git clone https://github.com/Way-Of/wayofmono.git
 ```
 
 ```bash
+# 2. Create feature branch
 git checkout -b feat/your-feature
 ```
+> Use prefix: `feat/`, `fix/`, `docs/`, `chore/`, `refactor/`, `test/`
 
 ```bash
+# 3. Install dependencies
 pnpm install
 ```
+> Uses pnpm workspaces — installs all 13 packages + harness + dashboard
 
 ```bash
+# 4. Run tests
 pnpm -r test
 ```
+> `-r` = recursive (all packages). Must pass before PR.
 
 ```bash
+# 5. Type check
 pnpm -r --parallel typecheck
 ```
+> `--parallel` runs simultaneously for speed. Must pass with zero errors.
+
+**Before submitting PR:**
+- Run `ai-harness --sync-docs --check` (skills in sync)
+- Run `ai-harness --compliance` (manifest validation)
+- Update CHANGELOG.md if needed
+- Follow commit message convention
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines.
 

@@ -113,6 +113,59 @@ This file follows the **Agent Ecosystem Manifest** blueprint — a runtime manif
 
 **Context Budget Review:** Monthly review of agent system prompts — constraints not triggered in 30 days move to defensive code layers.
 
+---
+
+## Non-Orchestrated AGENTS.md Blueprint (Static Reference)
+
+When the dynamic orchestration layer is stripped away, an `AGENTS.md` shifts from a **runtime configuration manifest** into a **static developer reference and architecture contract**. It guides human developers and ensures hardcoded prompts, isolated background workers, and direct LLM API calls do not diverge from system design.
+
+### Integration Standards
+
+- Every LLM interaction in code must be wrapped in deterministic error-handling blocks
+- Raw prompts in code must remain identical to prompt signatures documented below
+- Changes to token budgets or models require corresponding AGENTS.md updates
+- Each component must specify exact code path (`file_path:line_number`) where LLM interaction occurs
+
+### Component Directory (Code-Coupled)
+
+#### Component: Harness Installer CLI
+- **Code Reference:** `packages/@aiengineeringharness/install.ts:879`
+- **Trigger Event:** Direct CLI execution (`deno run -A install.ts` or `ai-harness`)
+- **Runtime:** Deno (deterministic, no LLM)
+- **Purpose:** Install, update, sync, validate skills/agents/commands across 7 AI coding tool frontends
+
+#### Component: Skill Auto-Updater
+- **Code Reference:** `packages/@aiengineeringharness/opencode/skills/skill_auto_update/SKILL.md`
+- **Trigger Event:** Auto-triggered on skill registry changes, GitHub releases
+- **Runtime:** Platform-native (each tool's agent runtime)
+- **Purpose:** Auto-discover, sync, update skills across 7 frontends
+
+#### Component: Ticket Manager
+- **Code Reference:** `packages/@aiengineeringharness/opencode/skills/ticket_manager/SKILL.md`
+- **Trigger Event:** User requests, auto-ticket-creator detections
+- **Runtime:** Platform-native
+- **Purpose:** Manage tickets across WOMONO/WOW/OPT namespaces with full lifecycle
+
+#### Component: Codebase Analyzer
+- **Code Reference:** `packages/@aiengineeringharness/opencode/agents/codebase_analyzer.md`
+- **Trigger Event:** User queries, other agents
+- **Runtime:** Platform-native
+- **Purpose:** Analyze implementation details, trace data flow, identify architectural patterns
+
+#### Component: CTO Dashboard
+- **Code Reference:** `ui/src/app/api/`
+- **Trigger Event:** HTTP requests, GitHub webhooks, scheduled jobs
+- **Runtime:** Next.js 16 (web server)
+- **Purpose:** Telemetry, standups, tickets, review queues, skills health visualization
+
+### Non-Orchestrated Maintenance Protocol
+
+**Code-to-Markdown Mapping:** Every component block specifies exact code path. If directory structure changes or files are renamed, AGENTS.md must be updated in same commit.
+
+**Pre-Commit Checksums:** A git hook can verify raw string literals in code match documented prompt signatures. If prompt changes without documentation update, commit fails.
+
+**Manual Context Budget Review:** Since no orchestration manager monitors context exhaustion, developers must audit token sizes manually. Log maximum allowable input length for every hardcoded function call. If context window errors occur, adjust entry point rules in AGENTS.md alongside code-level trimming logic.
+
 ## Project Overview
 
 **ALLWAYS USE CHANGELOG.md**
