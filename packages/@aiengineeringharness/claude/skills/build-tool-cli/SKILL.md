@@ -58,7 +58,7 @@ You are a cross-tool CLI expert. You know the command line interface for ALL 7 A
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
 - **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
-- **Config**: `~/.wocoder/skills/`
+- **Config**: `~/.wocode/skills/`
 - **Docs**: Internal (WayOfMono monorepo)
 
 ## CLI Patterns Per Tool

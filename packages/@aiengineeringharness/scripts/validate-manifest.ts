@@ -22,7 +22,7 @@ const toolPaths: ToolPathPatterns = {
   pi: 'packages/@aiengineeringharness/pi/agent',
   antigravity: 'packages/@aiengineeringharness/antigravity',
   codex: 'packages/@aiengineeringharness/codex',
-  wocoder: 'packages/@aiengineeringharness/wocoder/agent',
+  wocode: 'packages/@aiengineeringharness/wocode/agent',
 };
 
 interface ValidationIssue {

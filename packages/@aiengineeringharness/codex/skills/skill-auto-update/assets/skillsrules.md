@@ -4,7 +4,7 @@ description: >-
   Comprehensive Pi skill rules and conventions for Way of Mono shared workspace. Coordinates all agent
   skills across 7 AI coding tools (Pi, OpenCode, Claude Code, Codex, Antigravity CLI, Wo Coder, Cursor),
   manages lifecycle across packages and ~/.pi/agent directories, handles naming conventions,
-  validation rules, and installation synchronization between @aiengineeringharness/wocoder
+  validation rules, and installation synchronization between @aiengineeringharness/wocode
   and all supported tool runtime locations.
 allowed-tools: 'read, write, bash, edit, grep, glob, webfetch, websearch, question'
 ---
@@ -20,7 +20,7 @@ These rules coordinate agent skills across **all 7 AI coding tools** in the Way 
 3. **Claude Code** (`~/.claude/skills/`) — snake_case naming, Markdown commands
 4. **Codex** (`~/.codex/skills/`) — snake_case naming, Rust-based fast startup
 5. **Antigravity CLI** (`~/.antigravity/skills/`) — snake_case naming, Go runtime
-6. **Wo Coder** (`~/.wocoder/skills/`) — snake_case naming, kebab-case tool names
+6. **Wo Coder** (`~/.wocode/skills/`) — snake_case naming, kebab-case tool names
 7. **Cursor** (IDE) — Full IDE experience with Cloud Agents
 
 Ensures consistency between package-based installations and all runtime agent directories.
@@ -76,7 +76,7 @@ allowed-tools: read_file, write_file, run_command
 #### Pi / Wo Coder
 ```bash
 ~/.pi/agent/skills/tdd/SKILL.md
-~/.wocoder/skills/tdd/SKILL.md
+~/.wocode/skills/tdd/SKILL.md
 cwd/.wo/skills/tdd/SKILL.md
 ```
 
@@ -99,7 +99,7 @@ cwd/.claude/skills/tdd/SKILL.md
 ### 5. Installation Synchronization by Tool
 
 #### Pi / Wo Coder (`install.ts` manifest sync)
-The AI Engineering Harness at `packages/@aiengineeringharness/wocoder/` deploys to `~/.wocoder/skills/` and `~/.pi/agent/skills/`. The `install.ts` script reads from a manifest and syncs skills between package and agent directories.
+The AI Engineering Harness at `packages/@aiengineeringharness/wocode/` deploys to `~/.wocode/skills/` and `~/.pi/agent/skills/`. The `install.ts` script reads from a manifest and syncs skills between package and agent directories.
 
 **Ensure:**
 1. **Manifest entries** reflect actual directory names (kebab-case for Pi)
@@ -191,7 +191,7 @@ After creating/updating a skill:
 ### Pi / Wo Coder (Primary)
 - [README.md](./README.md) - General skill documentation overview  
 - [../../pi/skills/](../../pi/skills/) - Pi-specific skill implementations  
-- [../../packages/@aiengineeringharness/wocoder/skills/](../../packages/@aiengineeringharness/wocoder/skills/) - Package-based skills  
+- [../../packages/@aiengineeringharness/wocode/skills/](../../packages/@aiengineeringharness/wocode/skills/) - Package-based skills  
 - [manifest.json](../..//packages/@aiengineeringharness/manifest.json) - Installation manifest
 
 ### OpenCode / Antigravity CLI / Gemini CLI
@@ -420,8 +420,8 @@ EOF
 
 ### Pi / Wo Coder (Primary)
 - [Pi Skill Schema](../../pi/skills/tdd/SKILL.md) - Example Pi skill implementation  
-- [Build Tool Skill](../../packages/@aiengineeringharness/wocoder/skills/build_tool/SKILL.md) - Build tool integration example  
-- [Auto Ticket Creator](../../packages/@aiengineeringharness/wocoder/skills/auto-ticket-creator/SKILL.md) - Auto-discovery example  
+- [Build Tool Skill](../../packages/@aiengineeringharness/wocode/skills/build_tool/SKILL.md) - Build tool integration example  
+- [Auto Ticket Creator](../../packages/@aiengineeringharness/wocode/skills/auto-ticket-creator/SKILL.md) - Auto-discovery example  
 
 ---
 
@@ -938,7 +938,7 @@ Both scripts use a **single source of truth** manifest at [`packages/@aiengineer
 | **OpenCode / Antigravity / Gemini** | `~/.config/opencode/skills/` | `<cwd>/.opencode/skills/` |
 | **Claude Code** | `~/.claude/skills/` | `<cwd>/.claude/skills/` |
 | **Codex** | `~/.codex/skills/` | `<cwd>/.codex/skills/` |
-| **Wo Coder (native)** | `~/.wocoder/skills/` | `<cwd>/.wo/skills/` |
+| **Wo Coder (native)** | `~/.wocode/skills/` | `<cwd>/.wo/skills/` |
 
 ---
 

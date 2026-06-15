@@ -28,7 +28,7 @@ const STATE_DIR = join(ROOT, ".wo", "state");
 const SYNC_STATE_PATH = join(STATE_DIR, "skill-sync-state.json");
 const REF_SKILLS_DIR = join(ROOT, "ref", "skills");
 
-const PLATFORMS = ["claude", "opencode", "gemini", "pi", "wocoder", "antigravity", "codex"];
+const PLATFORMS = ["claude", "opencode", "gemini", "pi", "wocode", "antigravity", "codex"];
 
 interface SkillRegistry {
   version: string;

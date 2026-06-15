@@ -35,7 +35,7 @@ const HARNESS_DIR = join(ROOT, "packages", "@aiengineeringharness");
 const CANONICAL_SKILLS_DIR = join(HARNESS_DIR, "skills");
 const CANONICAL_AGENTS_DIR = join(HARNESS_DIR, "agents");
 
-const PLATFORMS = ["claude", "opencode", "gemini", "pi", "wocoder", "antigravity"];
+const PLATFORMS = ["claude", "opencode", "gemini", "pi", "wocode", "antigravity"];
 
 // Tool name mappings: ref tool names → platform-specific tool names
 const TOOL_MAP: Record<string, Record<string, string>> = {
@@ -83,7 +83,7 @@ const TOOL_MAP: Record<string, Record<string, string>> = {
     web_search: "web_search",
     web_fetch: "web_fetch",
   },
-  wocoder: {
+  wocode: {
     read_file: "read",
     run_shell_command: "bash",
     search_file_content: "grep",
@@ -113,7 +113,7 @@ const NAMING: Record<string, "snake" | "kebab"> = {
   opencode: "snake",
   gemini: "snake",
   pi: "kebab",
-  wocoder: "snake",
+  wocode: "snake",
   antigravity: "snake",
 };
 

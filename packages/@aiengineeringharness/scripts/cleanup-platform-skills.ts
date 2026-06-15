@@ -6,7 +6,7 @@
  * Removes incorrect naming convention duplicates from platform-specific skills directories.
  * Based on the canonical naming conventions:
  * - pi: kebab-case (hyphens)
- * - claude, opencode, gemini, wocoder, antigravity, codex: snake_case (underscores)
+ * - claude, opencode, gemini, wocode, antigravity, codex: snake_case (underscores)
  * 
  * The 7 core skills (auto-ticket-creator, cto-dashboard, docs-sync-updater, 
  * help-command, skill-adapter, skill-auto-update, ticket-manager) use hyphens on ALL platforms.
@@ -34,7 +34,7 @@ const PLATFORM_NAMING: Record<string, "kebab" | "snake"> = {
   claude: "snake",
   opencode: "snake",
   gemini: "snake",
-  wocoder: "snake",
+  wocode: "snake",
   antigravity: "snake",
   codex: "snake",
 };

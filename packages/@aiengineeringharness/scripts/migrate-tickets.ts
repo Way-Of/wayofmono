@@ -23,7 +23,7 @@ const CATEGORY_MAP: Record<string, string> = {
   "PROJ-007-adapt-wo-coding-agent.md": "architecture",
   "PROJ-008-bulk-copy-pi-to-wo.md": "architecture",
   "PROJ-009-adapt-wo-agent.md": "architecture",
-  "PROJ-010-bootstrap-wocoder.md": "architecture",
+  "PROJ-010-bootstrap-wocode.md": "architecture",
   "PROJ-011-fix-npm-packages-republish.md": "architecture",
   "PROJ-012-fix-pnpm-workspace-protocol-for-bun-compat.md": "architecture",
 

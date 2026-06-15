@@ -16,7 +16,7 @@
 # Tools:
 #   opencode    Install OpenCode configuration
 #   claude      Install Claude Code configuration
-#   wocoder     Install Wo Coder configuration
+#   wocode      Install Wo Coder configuration
 #   all         Install all configurations
 #
 # Options:
@@ -55,8 +55,8 @@ get_target_dir() {
             pi)
                 echo "./.pi/agent"
                 ;;
-            wocoder)
-                echo "./.wocoder"
+            wocode)
+                echo "./.wocode"
                 ;;
             antigravity)
                 echo "./.agents"
@@ -82,8 +82,8 @@ get_target_dir() {
             pi)
                 echo "$HOME/.pi/agent"
                 ;;
-            wocoder)
-                echo "$HOME/.wocoder"
+            wocode)
+                echo "$HOME/.wocode"
                 ;;
             antigravity)
                 echo "$HOME/.antigravity"
@@ -108,7 +108,7 @@ Tools:
   claude      Install Claude Code configuration
   gemini      Install Gemini CLI configuration
   pi          Install Pi configuration
-  wocoder     Install Wo Coder configuration
+  wocode      Install Wo Coder configuration
   antigravity Install Antigravity configuration
   codex       Install Codex CLI configuration
   all         Install all configurations
@@ -300,7 +300,7 @@ main() {
                 print_usage
                 exit 0
                 ;;
-            opencode|claude|gemini|pi|wocoder|antigravity|codex|all)
+            opencode|claude|gemini|pi|wocode|antigravity|codex|all)
                 tool="$1"
                 shift
                 ;;
@@ -340,7 +340,7 @@ main() {
     if [[ "$tool" == "all" ]]; then
         log_info "Installing all tools..."
         echo ""
-        for t in opencode claude gemini pi wocoder antigravity codex; do
+        for t in opencode claude gemini pi wocode antigravity codex; do
             process_tool "$t" "$action" "$restow" "$dry_run" "$local_mode"
             echo ""
         done
@@ -357,7 +357,7 @@ main() {
     if [[ "$action" == "stow" ]]; then
         echo "Your AI harness configuration is now linked:"
         if [[ "$tool" == "all" ]]; then
-        for t in opencode claude gemini pi wocoder antigravity codex; do
+        for t in opencode claude gemini pi wocode antigravity codex; do
                 local target=$(get_target_dir "$t" "$local_mode")
                 echo "  $target/ -> $STOW_DIR/$t/"
             done

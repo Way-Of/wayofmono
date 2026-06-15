@@ -359,7 +359,7 @@ function printHelp(): void {
     {
       title: "install & update",
       items: [
-        { cmd: "--tool=<name>", desc: "Install tool config (claude, opencode, gemini, pi, wocoder, antigravity, codex, all)" },
+        { cmd: "--tool=<name>", desc: "Install tool config (claude, opencode, gemini, pi, wocode, antigravity, codex, all)" },
         { cmd: "--install-cli", desc: "Install/update CLI binary with Matrix output" },
         { cmd: "--update", desc: "Full harness sync: CLI + docs + all tools + stale cleanup + validate" },
         { cmd: "--yes, -y", desc: "Skip confirmation prompts" },
@@ -439,7 +439,7 @@ The repo must remain at a stable path on your system.
        ./setup.sh opencode           # OpenCode
        ./setup.sh gemini             # Gemini CLI
        ./setup.sh pi                 # Pi
-       ./setup.sh wocoder            # Wo Coder
+       ./setup.sh wocode            # Wo Coder
        ./setup.sh antigravity        # Antigravity
        ./setup.sh all                # All six
 
@@ -736,10 +736,24 @@ function getProjectLocalTarget(tool: string): string {
       return "./.config/opencode";
     case "antigravity":
       return "./.agents";
-    case "wocoder":
-      return "./.wocoder";
+    case "wocode":
+      return "./.wocode";
     default:
       return `./.${tool}`;
+  }
+}
+
+// Recursively copy directory contents
+async function copyDirRecursive(srcDir: string, destDir: string): Promise<void> {
+  await ensureDir(destDir);
+  for await (const entry of Deno.readDir(srcDir)) {
+    const srcPath = join(srcDir, entry.name);
+    const destPath = join(destDir, entry.name);
+    if (entry.isDirectory) {
+      await copyDirRecursive(srcPath, destPath);
+    } else if (entry.isFile) {
+      await Deno.copyFile(srcPath, destPath);
+    }
   }
 }
 
@@ -818,13 +832,42 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 
     for (const fileEntry of comp.files) {
       const destPath = join(targetDir, fileEntry.dest);
+      const srcPath = join(opts.sd, fileEntry.src);
 
+      // Check if source is a directory
+      let srcStat: Deno.FileInfo | null = null;
+      try {
+        srcStat = await Deno.stat(srcPath);
+      } catch {
+        // Source doesn't exist, will be handled below
+      }
+
+      if (srcStat && srcStat.isDirectory) {
+        // Handle directory: copy recursively
+        const destDir = destPath;
+        if (opts.dryRun) {
+          console.log(`  ${o("+")} ${"create".padEnd(9)}  ${fileEntry.dest}/`);
+          installed++;
+          continue;
+        }
+        await copyDirRecursive(srcPath, destDir);
+        console.log(`  ${o("✧")} ${"installed".padEnd(9)}  ${fileEntry.dest}/`);
+        installed++;
+        continue;
+      }
+
+      // Handle file (existing logic)
       // Get source content
       let srcContent: string;
       if (opts.sd.startsWith("http://") || opts.sd.startsWith("https://")) {
         srcContent = await fetchRemoteFile(opts.sd, fileEntry.src, opts.token);
       } else {
-        srcContent = await Deno.readTextFile(`${opts.sd}${fileEntry.src}`);
+        if (!srcStat) {
+          console.error(`  ${o("✗")} Source not found: ${fileEntry.src}`);
+          skipped++;
+          continue;
+        }
+        srcContent = await Deno.readTextFile(srcPath);
       }
 
       // Check existing destination
@@ -917,7 +960,7 @@ if (args["report-skills"]) {
     { name: "Codex", path: join(homedir, ".codex", "skills") },
     { name: "Claude Code", path: join(homedir, ".claude", "skills") },
     { name: "Antigravity", path: join(homedir, ".antigravity", "skills") },
-    { name: "Wo Coder", path: join(homedir, ".wocoder", "skills") },
+    { name: "Wo Coder", path: join(homedir, ".wocode", "skills") },
   ];
 
   const clientId = new TextDecoder().decode(

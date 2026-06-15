@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@wayofmono/wo-agent':
         specifier: ^1.0.4
-        version: 1.0.4(ws@8.20.1)(zod@4.4.3)
+        version: 1.0.4
     devDependencies:
       '@changesets/changelog-github':
         specifier: ^0.5.2
@@ -310,14 +310,14 @@ importers:
   packages/@wayofmono/wo-coding-agent:
     dependencies:
       '@wayofmono/wo-agent-core':
-        specifier: workspace:*
-        version: link:../wo-agent-core
+        specifier: ^1.0.4
+        version: 1.0.4(ws@8.20.1)(zod@4.4.3)
       '@wayofmono/wo-ai':
-        specifier: workspace:*
-        version: link:../wo-ai
+        specifier: ^1.0.4
+        version: 1.0.4(ws@8.20.1)(zod@4.4.3)
       '@wayofmono/wo-tui':
-        specifier: workspace:*
-        version: link:../wo-tui
+        specifier: ^1.0.4
+        version: 1.0.4
       chalk:
         specifier: ^5.5.0
         version: 5.6.2
@@ -5521,7 +5521,7 @@ snapshots:
       - ws
       - zod
 
-  '@wayofmono/wo-agent@1.0.4(ws@8.20.1)(zod@4.4.3)':
+  '@wayofmono/wo-agent@1.0.4':
     dependencies:
       '@wayofmono/wo-agent-core': 1.0.4(ws@8.20.1)(zod@4.4.3)
       '@wayofmono/wo-ai': 1.0.4(ws@8.20.1)(zod@4.4.3)

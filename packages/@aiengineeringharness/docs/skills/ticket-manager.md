@@ -4,7 +4,7 @@ description: "Create, update, merge, and delete tickets with proper namespace va
 version: 1.0.0
 namespace: core
 tools: read, write, grep, glob
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
+platforms: [claude, opencode, gemini, pi, wocode, antigravity, codex]
 allowed-tools: [read, write, grep, glob]
 dependencies: []
 ---

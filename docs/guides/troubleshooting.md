@@ -71,7 +71,7 @@ lsof -i :3000
 
 ```bash
 # Check skill directories exist
-ls ~/.wocoder/agent/skills/
+ls ~/.wocode/agent/skills/
 ls .wo/agent/skills/
 
 # Sync from harness
@@ -85,10 +85,10 @@ ai-harness --compliance
 
 ```bash
 # Ensure packet is installed
-ls ~/.wocoder/packets/web-access/
+ls ~/.wocode/packets/web-access/
 
 # Reinstall harness
-ai-harness --tool=wocoder --yes
+ai-harness --tool=wocode --yes
 ```
 
 ### TUI Rendering Issues
@@ -260,7 +260,7 @@ DEBUG=* ./wocode
 DEBUG=* ./wouser
 
 # Harness
-DEBUG=* ai-harness --tool=wocoder --yes
+DEBUG=* ai-harness --tool=wocode --yes
 ```
 
 ---

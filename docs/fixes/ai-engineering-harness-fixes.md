@@ -90,7 +90,7 @@ Auto-triggered skill that knows how to bump the harness version across all files
 - ❌ Command/skill naming conflicts in Gemini CLI and Antigravity
 - ❌ Duplicate `commands/` and `prompts/` in WoCoder
 - ❌ Extension dependencies not installed (web-access failed to load)
-- ❌ WoCoder config dir confused with wouser (`.wo` vs `.wocoder`)
+- ❌ WoCoder config dir confused with wouser (`.wo` vs `.wocode`)
 
 ---
 
@@ -102,7 +102,7 @@ Auto-triggered skill that knows how to bump the harness version across all files
 ai-harness --tool=all --yes
 
 # Or individual tools
-ai-harness --tool=wocoder --yes
+ai-harness --tool=wocode --yes
 ai-harness --tool=pi --yes
 ai-harness --tool=opencode --yes
 ai-harness --tool=claude --yes
@@ -117,7 +117,7 @@ ai-harness --update
 ### ✅ Per-Tool Config Directories
 | Tool | Config Dir | Skills Dir |
 |------|------------|------------|
-| **Wo Coder** | `~/.wocoder/` | `~/.wocoder/agent/skills/` |
+| **Wo Coder** | `~/.wocode/` | `~/.wocode/agent/skills/` |
 | **Pi** | `~/.pi/agent/` | `~/.pi/agent/skills/` |
 | **OpenCode** | `~/.config/opencode/` | `~/.config/opencode/skills/` |
 | **Claude Code** | `~/.claude/` | `~/.claude/skills/` |
@@ -145,7 +145,7 @@ All tools also discover skills from `~/.agents/skills/` (shared cross-tool locat
 
 ## Known Issues (Future Work)
 
-- ❌ Harness skills installation via `ai-harness --tool=wocoder` only installs 25/81 skills
+- ❌ Harness skills installation via `ai-harness --tool=wocode` only installs 25/81 skills
 - ❌ Extensions, prompts, themes from harness NOT fully installed
 - ❌ Skills don't appear in `/skill:` commands or system prompt
 - ❌ Web-access extension requires `npm install` in extension dir (fixed by v1.6.1 installer)

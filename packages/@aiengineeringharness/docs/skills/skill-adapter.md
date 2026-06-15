@@ -4,7 +4,7 @@ description: "Connect and sync skills, agents, and projects with other harness, 
 version: 1.0.0
 namespace: tools
 tools: read, write, fetch, git
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
+platforms: [claude, opencode, gemini, pi, wocode, antigravity, codex]
 allowed-tools: [read, write, fetch, git]
 dependencies: [ticket-manager]
 ---

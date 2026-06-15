@@ -54,11 +54,11 @@ const testManifest = {
       { src: 'codex/skills/test-skill.md', dest: 'skills/test-skill.md' },
     ],
   },
-  wocoder: {
-    name: 'wocoder',
+  wocode: {
+    name: 'wocode',
     description: 'Test tool',
     files: [
-      { src: 'wocoder/agent/skills/test-skill.md', dest: 'skills/test-skill.md' },
+      { src: 'wocode/agent/skills/test-skill.md', dest: 'skills/test-skill.md' },
     ],
   },
 };

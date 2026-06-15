@@ -63,7 +63,7 @@ You are a cross-tool keybinding expert. You know how to configure keyboard short
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
 - **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob`)
-- **Config**: `~/.wocoder/skills/`
+- **Config**: `~/.wocode/skills/`
 - **Docs**: Internal (WayOfMono monorepo)
 
 ## Keybinding Systems Per Tool

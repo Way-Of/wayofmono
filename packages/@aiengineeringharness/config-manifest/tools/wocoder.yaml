@@ -1,6 +1,6 @@
 name: wocoder
 version: 1.0.0
-target: ~/.wocoder
+target: ~/.wocoder/agent
 components:
   settings:
     description: Wo Coder global configuration
@@ -56,8 +56,7 @@ components:
     - src: wocoder/agent/extensions/theme-cycler.ts
       dest: extensions/theme-cycler.ts
   extension/web-access:
-    description: Web search, URL fetching, GitHub cloning, PDF extraction, YouTube/video
-      analysis
+    description: Web search, URL fetching, GitHub cloning, PDF extraction, YouTube/video analysis
     files:
     - src: wocoder/agent/packets/web-access/index.ts
       dest: extensions/web-access/index.ts
@@ -291,11 +290,69 @@ components:
     files:
     - src: wocoder/agent/skills/skill-adapter/SKILL.md
       dest: skills/skill-adapter/SKILL.md
+    - src: wocoder/agent/skills/skill-adapter/assets
+      dest: skills/skill-adapter/assets
+    - src: wocoder/agent/skills/skill-adapter/scripts
+      dest: skills/skill-adapter/scripts
+    - src: wocoder/agent/skills/skill-adapter/assets/compliance-fix.ts
+      dest: skills/skill-adapter/assets/compliance-fix.ts
+    - src: wocoder/agent/skills/skill-adapter/scripts/gemini-skill-update.py
+      dest: skills/skill-adapter/scripts/gemini-skill-update.py
+    - src: wocoder/agent/skills/skill-adapter/scripts/test-yamls.py
+      dest: skills/skill-adapter/scripts/test-yamls.py
+    - src: wocoder/agent/skills/skill-adapter/scripts/claude-skill-update.py
+      dest: skills/skill-adapter/scripts/claude-skill-update.py
+    - src: wocoder/agent/skills/skill-adapter/scripts/test-manifest.py
+      dest: skills/skill-adapter/scripts/test-manifest.py
+    - src: wocoder/agent/skills/skill-adapter/scripts/wocoder-skill-update.py
+      dest: skills/skill-adapter/scripts/wocoder-skill-update.py
+    - src: wocoder/agent/skills/skill-adapter/scripts/codex-skill-update.py
+      dest: skills/skill-adapter/scripts/codex-skill-update.py
+    - src: wocoder/agent/skills/skill-adapter/scripts/pi-skill-update.py
+      dest: skills/skill-adapter/scripts/pi-skill-update.py
+    - src: wocoder/agent/skills/skill-adapter/scripts/test-skills.py
+      dest: skills/skill-adapter/scripts/test-skills.py
+    - src: wocoder/agent/skills/skill-adapter/scripts/opencode-skill-update.py
+      dest: skills/skill-adapter/scripts/opencode-skill-update.py
+    - src: wocoder/agent/skills/skill-adapter/scripts/run-all-tests.py
+      dest: skills/skill-adapter/scripts/run-all-tests.py
+    - src: wocoder/agent/skills/skill-adapter/scripts/antigravity-skill-update.py
+      dest: skills/skill-adapter/scripts/antigravity-skill-update.py
   skill/skill-auto-update:
     description: Skill Auto Update skill
     files:
     - src: wocoder/agent/skills/skill-auto-update/SKILL.md
       dest: skills/skill-auto-update/SKILL.md
+    - src: wocoder/agent/skills/skill-auto-update/assets
+      dest: skills/skill-auto-update/assets
+    - src: wocoder/agent/skills/skill-auto-update/scripts
+      dest: skills/skill-auto-update/scripts
+    - src: wocoder/agent/skills/skill-auto-update/assets/compliance-fix.ts
+      dest: skills/skill-auto-update/assets/compliance-fix.ts
+    - src: wocoder/agent/skills/skill-auto-update/assets/skillsrules.md
+      dest: skills/skill-auto-update/assets/skillsrules.md
+    - src: wocoder/agent/skills/skill-auto-update/scripts/gemini-skill-update.py
+      dest: skills/skill-auto-update/scripts/gemini-skill-update.py
+    - src: wocoder/agent/skills/skill-auto-update/scripts/test-yamls.py
+      dest: skills/skill-auto-update/scripts/test-yamls.py
+    - src: wocoder/agent/skills/skill-auto-update/scripts/claude-skill-update.py
+      dest: skills/skill-auto-update/scripts/claude-skill-update.py
+    - src: wocoder/agent/skills/skill-auto-update/scripts/test-manifest.py
+      dest: skills/skill-auto-update/scripts/test-manifest.py
+    - src: wocoder/agent/skills/skill-auto-update/scripts/wocoder-skill-update.py
+      dest: skills/skill-auto-update/scripts/wocoder-skill-update.py
+    - src: wocoder/agent/skills/skill-auto-update/scripts/codex-skill-update.py
+      dest: skills/skill-auto-update/scripts/codex-skill-update.py
+    - src: wocoder/agent/skills/skill-auto-update/scripts/pi-skill-update.py
+      dest: skills/skill-auto-update/scripts/pi-skill-update.py
+    - src: wocoder/agent/skills/skill-auto-update/scripts/test-skills.py
+      dest: skills/skill-auto-update/scripts/test-skills.py
+    - src: wocoder/agent/skills/skill-auto-update/scripts/opencode-skill-update.py
+      dest: skills/skill-auto-update/scripts/opencode-skill-update.py
+    - src: wocoder/agent/skills/skill-auto-update/scripts/run-all-tests.py
+      dest: skills/skill-auto-update/scripts/run-all-tests.py
+    - src: wocoder/agent/skills/skill-auto-update/scripts/antigravity-skill-update.py
+      dest: skills/skill-auto-update/scripts/antigravity-skill-update.py
   skill/team-setup:
     description: Team Setup skill
     files:
@@ -407,56 +464,52 @@ components:
     - src: wocoder/agent/skills/build-tool/SKILL.md
       dest: skills/build-tool/SKILL.md
   skill/build-tool-skill:
-    description: Unified skill builder for all 7 tools — deployed to Wo Coder
+    description: "Unified skill builder for all 7 tools \u2014 deployed to Wo Coder"
     files:
     - src: wocoder/agent/skills/build-tool-skill/SKILL.md
       dest: skills/build-tool-skill/SKILL.md
   skill/build-tool-agent:
-    description: Unified agent builder for all 7 tools — deployed to Wo Coder
+    description: "Unified agent builder for all 7 tools \u2014 deployed to Wo Coder"
     files:
     - src: wocoder/agent/skills/build-tool-agent/SKILL.md
       dest: skills/build-tool-agent/SKILL.md
   skill/build-tool-extension:
-    description: Unified extension/plugin builder for all 7 tools — deployed to Wo
-      Coder
+    description: "Unified extension/plugin builder for all 7 tools \u2014 deployed to Wo Coder"
     files:
     - src: wocoder/agent/skills/build-tool-extension/SKILL.md
       dest: skills/build-tool-extension/SKILL.md
   skill/build-tool-tui:
-    description: Unified TUI component builder for all 7 tools — deployed to Wo Coder
+    description: "Unified TUI component builder for all 7 tools \u2014 deployed to Wo Coder"
     files:
     - src: wocoder/agent/skills/build-tool-tui/SKILL.md
       dest: skills/build-tool-tui/SKILL.md
   skill/build-tool-cli:
-    description: Unified CLI reference for all 7 tools — deployed to Wo Coder
+    description: "Unified CLI reference for all 7 tools \u2014 deployed to Wo Coder"
     files:
     - src: wocoder/agent/skills/build-tool-cli/SKILL.md
       dest: skills/build-tool-cli/SKILL.md
   skill/build-tool-themes:
-    description: Unified theme builder for all 7 tools — deployed to Wo Coder
+    description: "Unified theme builder for all 7 tools \u2014 deployed to Wo Coder"
     files:
     - src: wocoder/agent/skills/build-tool-themes/SKILL.md
       dest: skills/build-tool-themes/SKILL.md
   skill/build-tool-prompts:
-    description: Unified prompt template builder for all 7 tools — deployed to Wo
-      Coder
+    description: "Unified prompt template builder for all 7 tools \u2014 deployed to Wo Coder"
     files:
     - src: wocoder/agent/skills/build-tool-prompts/SKILL.md
       dest: skills/build-tool-prompts/SKILL.md
   skill/build-tool-keybindings:
-    description: Unified keybinding reference for all 7 tools — deployed to Wo Coder
+    description: "Unified keybinding reference for all 7 tools \u2014 deployed to Wo Coder"
     files:
     - src: wocoder/agent/skills/build-tool-keybindings/SKILL.md
       dest: skills/build-tool-keybindings/SKILL.md
   skill/build-tool-config:
-    description: Unified configuration reference for all 7 tools — deployed to Wo
-      Coder
+    description: "Unified configuration reference for all 7 tools \u2014 deployed to Wo Coder"
     files:
     - src: wocoder/agent/skills/build-tool-config/SKILL.md
       dest: skills/build-tool-config/SKILL.md
   skill/build-tool-orchestrate:
-    description: Unified orchestration coordinator for all 7 tools — deployed to Wo
-      Coder
+    description: "Unified orchestration coordinator for all 7 tools \u2014 deployed to Wo Coder"
     files:
     - src: wocoder/agent/skills/build-tool-orchestrate/SKILL.md
       dest: skills/build-tool-orchestrate/SKILL.md
@@ -588,14 +641,12 @@ components:
     - src: wocoder/agent/skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
       dest: skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
   skill/build-auto-ticket-creator:
-    description: Monitor codebase, dependencies, and external sources to auto-create
-      tickets for agent updates, skill updates, dep updates, security advisories
+    description: Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories
     files:
     - src: wocoder/agent/skills/build-auto-ticket-creator/SKILL.md
       dest: skills/build-auto-ticket-creator/SKILL.md
   skill/build-backlog-groomer:
-    description: Product & Ticket Manager. Helps transform ideas/plans into structured
-      tickets in thoughts/shared/tickets/ and maintains the project backlog.
+    description: Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.
     files:
     - src: wocoder/agent/skills/build-backlog-groomer/SKILL.md
       dest: skills/build-backlog-groomer/SKILL.md
@@ -614,15 +665,41 @@ components:
     files:
     - src: wocoder/agent/skills/skill-compliance-checker/SKILL.md
       dest: skills/skill-compliance-checker/SKILL.md
+    - src: wocoder/agent/skills/skill-compliance-checker/assets
+      dest: skills/skill-compliance-checker/assets
+    - src: wocoder/agent/skills/skill-compliance-checker/scripts
+      dest: skills/skill-compliance-checker/scripts
+    - src: wocoder/agent/skills/skill-compliance-checker/assets/compliance-fix.ts
+      dest: skills/skill-compliance-checker/assets/compliance-fix.ts
+    - src: wocoder/agent/skills/skill-compliance-checker/scripts/gemini-skill-update.py
+      dest: skills/skill-compliance-checker/scripts/gemini-skill-update.py
+    - src: wocoder/agent/skills/skill-compliance-checker/scripts/test-yamls.py
+      dest: skills/skill-compliance-checker/scripts/test-yamls.py
+    - src: wocoder/agent/skills/skill-compliance-checker/scripts/claude-skill-update.py
+      dest: skills/skill-compliance-checker/scripts/claude-skill-update.py
+    - src: wocoder/agent/skills/skill-compliance-checker/scripts/test-manifest.py
+      dest: skills/skill-compliance-checker/scripts/test-manifest.py
+    - src: wocoder/agent/skills/skill-compliance-checker/scripts/wocoder-skill-update.py
+      dest: skills/skill-compliance-checker/scripts/wocoder-skill-update.py
+    - src: wocoder/agent/skills/skill-compliance-checker/scripts/codex-skill-update.py
+      dest: skills/skill-compliance-checker/scripts/codex-skill-update.py
+    - src: wocoder/agent/skills/skill-compliance-checker/scripts/pi-skill-update.py
+      dest: skills/skill-compliance-checker/scripts/pi-skill-update.py
+    - src: wocoder/agent/skills/skill-compliance-checker/scripts/test-skills.py
+      dest: skills/skill-compliance-checker/scripts/test-skills.py
+    - src: wocoder/agent/skills/skill-compliance-checker/scripts/opencode-skill-update.py
+      dest: skills/skill-compliance-checker/scripts/opencode-skill-update.py
+    - src: wocoder/agent/skills/skill-compliance-checker/scripts/run-all-tests.py
+      dest: skills/skill-compliance-checker/scripts/run-all-tests.py
+    - src: wocoder/agent/skills/skill-compliance-checker/scripts/antigravity-skill-update.py
+      dest: skills/skill-compliance-checker/scripts/antigravity-skill-update.py
   skill/ticket-executor:
-    description: Execute approved plans in phases, validating telemetry and committing
-      changes after each phase completes successfully
+    description: Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully
     files:
     - src: wocoder/agent/skills/ticket-executor/SKILL.md
       dest: skills/ticket-executor/SKILL.md
   skill/self-documentation:
-    description: Enables Wo to answer How do I...? and What's the command for...?
-      questions by searching its own commands, skills, and documentation locally
+    description: Enables Wo to answer How do I...? and What's the command for...? questions by searching its own commands, skills, and documentation locally
     files:
     - src: wocoder/agent/skills/self-documentation/SKILL.md
       dest: skills/self-documentation/SKILL.md

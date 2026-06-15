@@ -14,7 +14,7 @@ import { parse as parseYaml, stringify as stringifyYaml } from "jsr:@std/yaml@1"
 
 const REPO_ROOT = join(import.meta.dirname!, "..", "..", "..");
 
-const TOOLS = ["opencode", "claude", "gemini", "pi", "antigravity", "codex", "wocoder"];
+const TOOLS = ["opencode", "claude", "gemini", "pi", "antigravity", "codex", "wocode"];
 
 // === Fix 1: document_generation — remove broken "tools" field ===
 function fixDocumentGeneration() {
@@ -108,12 +108,12 @@ function fixTicketExecutor() {
 
 // === Fix 4: skill-creator dir naming ===
 function fixSkillCreatorNaming() {
-  const snakeTools = ["opencode", "claude", "gemini", "antigravity", "codex", "wocoder"];
+  const snakeTools = ["opencode", "claude", "gemini", "antigravity", "codex", "wocode"];
 
   for (const tool of snakeTools) {
     const skillsDir = join(REPO_ROOT, "packages/@aiengineeringharness", tool, "skills");
     // The tool-specific dirs: opencode_skill-creator, claude_skill-creator, gemini_skill-creator, etc.
-    // Plus antigravity_skill-creator, codex_skill-creator, wocoder_skill-creator
+    // Plus antigravity_skill-creator, codex_skill-creator, wocode_skill-creator
     for (const entry of Deno.readDirSync(skillsDir)) {
       if (entry.isDirectory && entry.name.includes("-")) {
         const newName = entry.name.replace(/-/g, "_");

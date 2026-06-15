@@ -19,7 +19,7 @@ The AI Engineering Harness is the **shared intelligence backend** that serves 7 
 │  pi/          → ~/.pi/agent/        │
 │  codex/       → ~/.codex/           │
 │  antigravity/ → ~/.antigravity/     │
-│  wocoder/     → ~/.wocoder/         │
+│  wocode/     → ~/.wocode/         │
 └─────────────────────────────────────┘
 ```
 
@@ -106,6 +106,6 @@ The harness adapts each skill for 7 tools:
 
 ## Related
 
-- [Wo Coder (wocode)](../wocoder/) — CLI coding assistant (dev tool)
+- [Wo Coder (wocode)](../wocode/) — CLI coding assistant (dev tool)
 - [Wo User (wouser)](../wouser/) — General-purpose user agent SDK
 - [Getting Started](../getting-started.md) — Quick start for all components

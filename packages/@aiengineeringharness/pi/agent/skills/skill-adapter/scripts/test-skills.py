@@ -31,7 +31,7 @@ TOOL_SKILL_DIRS = {
     "claude": os.path.join(REPO_ROOT, "claude", "skills"),
     "gemini": os.path.join(REPO_ROOT, "gemini", "skills"),
     "pi": os.path.join(REPO_ROOT, "pi", "agent", "skills"),
-    "wocoder": os.path.join(REPO_ROOT, "wocoder", "skills"),
+    "wocode": os.path.join(REPO_ROOT, "wocode", "skills"),
     "codex": os.path.join(REPO_ROOT, "codex", "skills"),
     "antigravity": os.path.join(REPO_ROOT, "antigravity", "skills"),
 }
@@ -73,7 +73,7 @@ TOOL_SPECS = {
         "supports_disable_model_invocation": False,
         "has_commands": False,
     },
-    "wocoder": {
+    "wocode": {
         "dir_naming": "kebab",
         "name_naming": "kebab",
         "skill_file": "SKILL.md",
@@ -264,7 +264,7 @@ def test_skill(tool, skill_dir_name, spec):
         dmi = frontmatter.get("disable-model-invocation", None)
         is_command = skill_dir_name in COMMAND_SKILLS
         # DMI check is only enforced for Claude (uses DMI instead of commands/ dir)
-        # Other tools (opencode, antigravity, wocoder) use separate commands/ directories
+        # Other tools (opencode, antigravity, wocode) use separate commands/ directories
         if tool == "claude" and spec["supports_disable_model_invocation"]:
             if is_command and dmi is not True:
                 if dmi is None:

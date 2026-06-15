@@ -85,6 +85,6 @@ const result = await session.prompt('Build me a React component');
 
 ## Related
 
-- [Wo Coder (wocode)](../wocoder/) — CLI coding assistant (dev tool)
+- [Wo Coder (wocode)](../wocode/) — CLI coding assistant (dev tool)
 - [AI Engineering Harness](../ai-harness/) — Core skill/agent management
 - [Getting Started](../getting-started.md) — Quick start for all components

@@ -9,7 +9,7 @@ const buildToolSkills: Record<string, { tool: string; dirName: string }> = {
   pi: { tool: "pi", dirName: "build-tool" },
   antigravity: { tool: "antigravity", dirName: "build_tool" },
   codex: { tool: "codex", dirName: "build_tool" },
-  wocoder: { tool: "wocoder", dirName: "build_tool" },
+  wocode: { tool: "wocode", dirName: "build_tool" },
 };
 
 for (const [toolName, spec] of Object.entries(buildToolSkills)) {

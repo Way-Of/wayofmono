@@ -61,8 +61,8 @@ const OLD_SKILLS_BY_TOOL: Record<string, string[]> = {
   codex: [
     "codex_skill_creator",
   ],
-  wocoder: [
-    "wocoder_skill_creator",
+  wocode: [
+    "wocode_skill_creator",
   ],
 };
 
@@ -74,7 +74,7 @@ const EXTRA_VARIANTS: Record<string, string[]> = {
   gemini: ["build_skill_creator"],
   antigravity: ["build_skill_creator"],
   codex: ["build_skill_creator"],
-  wocoder: ["build_skill_creator"],
+  wocode: ["build_skill_creator"],
   pi: ["build-skill-creator"],
 };
 

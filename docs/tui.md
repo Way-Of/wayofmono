@@ -241,7 +241,7 @@ export const CustomLayout = () => (
 
 ## Related
 
-- [Wo Coder Guide](guides/wocoder/)
+- [Wo Coder Guide](guides/wocode/)
 - [Themes](themes.md)
 - [Keybindings](keybindings.md)
 - [wo-tui package](https://www.npmjs.com/package/@wayofmono/wo-tui)

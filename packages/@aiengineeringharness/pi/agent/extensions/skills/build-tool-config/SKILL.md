@@ -59,7 +59,7 @@ You are a cross-tool configuration expert. You know how to configure ALL 7 AI co
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
 - **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
-- **Config**: `~/.wocoder/skills/`
+- **Config**: `~/.wocode/skills/`
 - **Docs**: Internal (WayOfMono monorepo)
 
 ## Config Systems Per Tool
@@ -97,7 +97,7 @@ You are a cross-tool configuration expert. You know how to configure ALL 7 AI co
 - **Providers**: OpenAI
 
 ### Wo Coder
-- **Config**: `~/.wocoder/wocoder.json`
+- **Config**: `~/.wocode/wocode.json`
 - **Providers**: OpenAI, Anthropic, Google
 
 ## Online Sources

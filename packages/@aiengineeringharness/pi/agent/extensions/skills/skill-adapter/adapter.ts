@@ -4,7 +4,7 @@
  * Skill Adapter
  *
  * Converts canonical skill format to platform-specific formats
- * for all 7 frontends: claude, opencode, gemini, pi, wocoder, antigravity, and codex.
+ * for all 7 frontends: claude, opencode, gemini, pi, wocode, antigravity, and codex.
  *
  * Usage:
  *   deno run -A adapter.ts list                                    # List all canonical skills
@@ -25,7 +25,7 @@ const ROOT = join(SCRIPT_DIR, "..", "..", "..", "..");
 const HARNESS_DIR = join(ROOT, "packages", "@aiengineeringharness");
 const CANONICAL_SKILLS_DIR = join(HARNESS_DIR, "skills");
 
-const PLATFORMS = ["claude", "opencode", "gemini", "pi", "wocoder", "antigravity", "codex"];
+const PLATFORMS = ["claude", "opencode", "gemini", "pi", "wocode", "antigravity", "codex"];
 
 interface SkillFrontmatter {
   name: string;
@@ -235,7 +235,7 @@ async function generateForPlatform(
     case "antigravity":
       results = [toAntigravity(skill)];
       break;
-    case "wocoder":
+    case "wocode":
       results = [toWocode(skill)];
       break;
     default:

@@ -19,7 +19,7 @@ Each coding tool has its own dedicated directory in this harness containing spec
 | **Claude Code** | [claude/README.md](./claude/README.md) | [code.claude.com](https://code.claude.com) | `~/.claude` |
 | **OpenCode** | [opencode/README.md](./opencode/README.md) | [opencode.ai/docs](https://opencode.ai/docs) | `~/.config/opencode` |
 | **Pi** | [pi/README.md](./pi/README.md) | [pi.dev/docs/latest](https://pi.dev/docs/latest) | `~/.pi/agent` |
-| **Wo Coder** | [wocoder/README.md](./wocoder/README.md) | [Monorepo Wo Guide](../../docs/wo/README.md) | `~/.wocoder` |
+| **Wo Code** | [wocode/README.md](./wocode/README.md) | [Monorepo Wo Guide](../../docs/wo/README.md) | `~/.wocode` |
 | **Codex** | [codex/README.md](./codex/README.md) | [openai.com/codex](https://openai.com/codex) | `~/.codex` |
 
 ---
@@ -28,12 +28,12 @@ Each coding tool has its own dedicated directory in this harness containing spec
 
 While the harness provides a shared logic layer, each agent platform operates differently under the hood. The table below outlines the core architectural similarities and differences:
 
-| Feature Dimension | Antigravity | Gemini CLI | Claude Code | OpenCode | Pi | Wo Coder | Codex |
+| Feature Dimension | Antigravity | Gemini CLI | Claude Code | OpenCode | Pi | Wo Code | Codex |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Target Directory** | `~/.antigravity/` | `~/.gemini/` | `~/.claude/` | `~/.config/opencode/` | `~/.pi/agent/` | `~/.wocoder/` | `~/.codex/` |
+| **Target Directory** | `~/.antigravity/` | `~/.gemini/` | `~/.claude/` | `~/.config/opencode/` | `~/.pi/agent/` | `~/.wocode/` | `~/.codex/` |
 | **Workspace Target** | `.agents/` | `.agents/` | `.claude/rules/` | `.agents/` | `.agents/` | `.wo/` | `.codex/rules/` |
 | **Naming Convention** | `snake_case` | `snake_case` | `snake_case` | `snake_case` | `kebab-case` | `snake_case` | `snake_case` |
-| **Primary Config File**| `antigravity.json` | `config.json` | `settings.json`, `.mcp.json` | `opencode.json` | `config.json` | `wocoder.json` | `README.md` |
+| **Primary Config File**| `antigravity.json` | `config.json` | `settings.json`, `.mcp.json` | `opencode.json` | `config.json` | `wocode.json` | `README.md` |
 | **Memory / Rules File**| `ANTIGRAVITY.md` | `GEMINI.md` | `CLAUDE.md` | `AGENTS.md` | `AGENTS.md` | `AGENTS.md` | `RULES.md` |
 | **Custom Commands** | Yes (TOML files) | Yes (TOML files) | Yes (Skills schema) | Yes (Markdown commands) | Yes (Prompts folder) | Yes (Markdown files) | No |
 | **Command Format** | Slash commands | Slash commands | Slash commands | Slash commands | Slash / `@` context | Slash commands | N/A |

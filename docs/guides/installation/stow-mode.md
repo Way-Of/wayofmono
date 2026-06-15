@@ -23,7 +23,7 @@ brew install stow
 ./packages/@aiengineeringharness/setup.sh opencode
 ./packages/@aiengineeringharness/setup.sh gemini
 ./packages/@aiengineeringharness/setup.sh pi
-./packages/@aiengineeringharness/setup.sh wocoder
+./packages/@aiengineeringharness/setup.sh wocode
 ./packages/@aiengineeringharness/setup.sh antigravity
 
 # Stow management
@@ -56,7 +56,7 @@ packages/@aiengineeringharness/
 ├── pi/          → ~/.pi/agent/
 ├── codex/       → ~/.codex/
 ├── antigravity/ → ~/.antigravity/
-└── wocoder/     → ~/.wocoder/
+└── wocode/     → ~/.wocode/
 ```
 
 ## Commands

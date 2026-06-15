@@ -420,7 +420,7 @@ const piConfigName: string | undefined = "wocode";
 export const PACKAGE_NAME: string = pkg.name || "@wayofmono/wo-coding-agent";
 export const APP_NAME: string = "wocode";
 export const APP_TITLE: string = "WayOfMono Coding Agent";
-export const CONFIG_DIR_NAME: string = ".wocoder";
+export const CONFIG_DIR_NAME: string = ".wocode";
 export const VERSION: string = pkg.version || "0.0.0";
 
 // e.g., PI_CODING_AGENT_DIR or TAU_CODING_AGENT_DIR
@@ -442,10 +442,10 @@ export function getShareViewerUrl(gistId: string): string {
 }
 
 // =============================================================================
-// User Config Paths (~/.wo/agent/*)
+// User Config Paths (~/.wocode/agent/*)
 // =============================================================================
 
-/** Get the agent config directory (e.g., ~/.wo/agent/ or project-local .wo/) */
+/** Get the agent config directory (e.g., ~/.wocode/agent/ or project-local .wocode/) */
 export function getAgentDir(): string {
 	const envDir = process.env[ENV_AGENT_DIR];
 	if (envDir) {

@@ -5,7 +5,7 @@ Configure LLM models for Wo Coder and Wo User.
 ## Overview
 
 Models are configured in `models.json` at:
-- Global: `~/.wocoder/models.json` or `~/.wouser/models.json`
+- Global: `~/.wocode/models.json` or `~/.wouser/models.json`
 - Project: `.wo/models.json`
 
 ## models.json Format
@@ -205,5 +205,5 @@ ollama list
 
 - [Custom Provider](custom-provider.md)
 - [SDK](sdk.md)
-- [Wo Coder Config](guides/wocoder/#configuration)
+- [Wo Coder Config](guides/wocode/#configuration)
 - [Wo User Config](guides/wouser/#configuration)

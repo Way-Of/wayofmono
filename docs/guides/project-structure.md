@@ -45,7 +45,7 @@
 ├── pi/            → ~/.pi/agent/           # 174 files, 85 SKILL.md
 ├── codex/         → ~/.codex/              # 186 files, 90 SKILL.md
 ├── antigravity/   → ~/.antigravity/        # 146 files, 89 SKILL.md
-└── wocoder/       → ~/.wocoder/            # 182 files, 85 SKILL.md
+└── wocode/       → ~/.wocode/            # 182 files, 85 SKILL.md
 ```
 
 ## NPM Packages (`packages/@wayofmono/`)

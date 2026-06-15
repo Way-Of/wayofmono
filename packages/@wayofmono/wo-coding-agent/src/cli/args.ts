@@ -258,8 +258,8 @@ Extensions can register additional flags (e.g., --plan from plan-mode extension)
 
   ${chalk.bold("Model Configuration:")}
   Custom models and provider settings are stored in \`models.json\`:
-    ${chalk.dim("~/.wo/agent/models.json")}        (global default)
-    ${chalk.dim(".wo/agent/models.json")}         (project-local, if .wo/ exists)
+    ${chalk.dim("~/.wocode/agent/models.json")}        (global default)
+    ${chalk.dim(".wocode/agent/models.json")}         (project-local, if .wocode/ exists)
     \${WOCODE_CODING_AGENT_DIR}/models.json      (custom via env var)
 
   Edit this file to add custom models, override provider settings, or configure

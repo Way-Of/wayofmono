@@ -8,7 +8,7 @@
 import { join } from "jsr:@std/path@1/join";
 import { relative } from "jsr:@std/path@1/relative";
 
-const TOOLS = ["opencode", "claude", "gemini", "pi", "antigravity", "codex", "wocoder"] as const;
+const TOOLS = ["opencode", "claude", "gemini", "pi", "antigravity", "codex", "wocode"] as const;
 
 type ToolConfig = {
   dirName: string;
@@ -26,7 +26,7 @@ const TOOL_CONFIGS: Record<ToolName, ToolConfig> = {
   pi:       { dirName: "pi",       name: "build-tool-skill", allowedTools: "'Read, Write, Edit, Bash, Grep, Glob, WebSearch'", allowedToolsArray: ["Read", "Write", "Edit", "Bash", "Grep", "Glob", "WebSearch"] },
   antigravity: { dirName: "antigravity", name: "build_tool_skill", allowedTools: "'read, write, edit, bash, grep, glob, websearch'", allowedToolsArray: ["read", "write", "edit", "bash", "grep", "glob", "websearch"] },
   codex:    { dirName: "codex",    name: "build_tool_skill", allowedTools: "'read_file, write_file, run_shell_command, glob, grep'", allowedToolsArray: ["read_file", "write_file", "run_shell_command", "glob", "grep"] },
-  wocoder:  { dirName: "wocoder",  name: "build_tool_skill", allowedTools: "'Read, Write, Edit, Bash, Grep, Glob, WebSearch'", allowedToolsArray: ["Read", "Write", "Edit", "Bash", "Grep", "Glob", "WebSearch"] },
+  wocode:  { dirName: "wocode",  name: "build_tool_skill", allowedTools: "'Read, Write, Edit, Bash, Grep, Glob, WebSearch'", allowedToolsArray: ["Read", "Write", "Edit", "Bash", "Grep", "Glob", "WebSearch"] },
 };
 
 function cfgFor(tool: ToolName, skillId: string, piId: string): ToolConfig {
@@ -95,7 +95,7 @@ const TOOL_REF = `## Tool Format Reference
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
 - **allowed-tools**: PascalCase (\`Read, Write, Edit, Bash, Grep, Glob\`)
-- **Config**: \`~/.wocoder/skills/\`
+- **Config**: \`~/.wocode/skills/\`
 - **Docs**: Internal (WayOfMono monorepo)
 `;
 
@@ -424,7 +424,7 @@ ${TOOL_REF}
 - **Providers**: OpenAI
 
 ### Wo Coder
-- **Config**: \`~/.wocoder/wocoder.json\`
+- **Config**: \`~/.wocode/wocode.json\`
 - **Providers**: OpenAI, Anthropic, Google
 
 ${ONLINE_SOURCES}`,

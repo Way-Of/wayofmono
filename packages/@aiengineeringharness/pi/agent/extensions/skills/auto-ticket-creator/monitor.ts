@@ -371,7 +371,7 @@ async function scanPlatforms(): Promise<DetectedChange[]> {
   const harnessDir = join(ROOT, "packages/@aiengineeringharness");
 
   // Check if platform dirs exist have skills
-  const platforms = ["claude", "opencode", "gemini", "pi", "wocoder", "antigravity"];
+  const platforms = ["claude", "opencode", "gemini", "pi", "wocode", "antigravity"];
   for (const platform of platforms) {
     const skillsDir = join(harnessDir, platform, "skills");
     try {

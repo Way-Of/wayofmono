@@ -106,7 +106,7 @@ Your prompt content with {{param1}} placeholder.
 
 ```bash
 # Global
-cp my-template.md ~/.wocoder/agent/prompts/
+cp my-template.md ~/.wocode/agent/prompts/
 
 # Project
 cp my-template.md .wo/agent/prompts/
@@ -128,13 +128,13 @@ Wo, use my-template with param1="value"
 ## Discovery
 
 Templates are loaded from:
-1. `~/.wocoder/agent/prompts/`
+1. `~/.wocode/agent/prompts/`
 2. `.wo/agent/prompts/`
 3. `~/.agents/prompts/`
 4. Built-in templates
 
 ## Related
 
-- [Wo Coder Guide](guides/wocoder/)
+- [Wo Coder Guide](guides/wocode/)
 - [Skills](skills.md)
 - [SDK](sdk.md)

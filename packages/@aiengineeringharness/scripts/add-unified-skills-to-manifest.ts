@@ -26,7 +26,7 @@ const UNIFIED_SKILLS: SkillEntry[] = [
   { name: "build_tool_orchestrate", piName: "build-tool-orchestrate", description: "Unified orchestration coordinator for all 7 tools" },
 ];
 
-const TOOLS = ["claude", "opencode", "gemini", "pi", "antigravity", "codex", "wocoder"];
+const TOOLS = ["claude", "opencode", "gemini", "pi", "antigravity", "codex", "wocode"];
 
 const TOOL_NAMES: Record<string, string> = {
   opencode: "OpenCode",
@@ -35,7 +35,7 @@ const TOOL_NAMES: Record<string, string> = {
   pi: "Pi",
   antigravity: "Antigravity",
   codex: "Codex",
-  wocoder: "Wo Coder",
+  wocode: "Wo Coder",
 };
 
 for (const tool of TOOLS) {

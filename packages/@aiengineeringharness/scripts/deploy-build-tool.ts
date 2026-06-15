@@ -32,7 +32,7 @@ Always read \`thoughts/global/docs/ai-coding-tools/<tool>.md\` for current forma
 
 Each tool uses SKILL.md with YAML frontmatter. Per-tool rules:
 
-**Naming**: snake_case (opencode, claude, gemini, antigravity, codex, wocoder) or kebab-case (pi)
+**Naming**: snake_case (opencode, claude, gemini, antigravity, codex, wocode) or kebab-case (pi)
 **Name field**: Must exactly match parent directory name, regex \`^[a-z0-9]+(-[a-z0-9]+)*$\`
 **allowed-tools**: Space-delimited string (not array). Casing per tool spec below.
 
@@ -44,7 +44,7 @@ Each tool uses SKILL.md with YAML frontmatter. Per-tool rules:
 | pi | \`Read, Write, Bash, Edit, Glob, Grep\` | Title Case: \`Read, Write, Bash, Edit, Glob, Grep, WebFetch, WebSearch\` |
 | antigravity | \`read, write, bash, glob, grep, web, code\` | lowercase: \`read, write, bash, glob, grep, web, code\` |
 | codex | \`read_file, write_file, run_shell_command\` | lowercase: \`read_file, write_file, run_shell_command\` |
-| wocoder | \`read, write, bash, edit, grep, glob\` | lowercase: \`read, write, bash, edit, grep, glob\` |
+| wocode | \`read, write, bash, edit, grep, glob\` | lowercase: \`read, write, bash, edit, grep, glob\` |
 
 Allowed frontmatter fields per tool: \`name\` (required), \`description\` (required), \`allowed-tools\` (optional). Some tools also support: \`docs-url\`, \`disable-model-invocation\`, \`on\` (trigger keywords). Strip all other fields.
 
@@ -60,7 +60,7 @@ All tools use Markdown frontmatter format for agent definitions. Per-tool rules:
 | pi | \`agents/\` | kebab-case | .md with YAML frontmatter |
 | antigravity | \`agents/\` | snake_case | .md with YAML frontmatter |
 | codex | \`agents/\` | snake_case | .md with YAML frontmatter |
-| wocoder | \`agents/\` | snake_case | .md with YAML frontmatter |
+| wocode | \`agents/\` | snake_case | .md with YAML frontmatter |
 
 Required fields: \`name\`, \`description\`, \`tools\`, system prompt in body.
 
@@ -74,7 +74,7 @@ Required fields: \`name\`, \`description\`, \`tools\`, system prompt in body.
 | pi | \`prompts/\` | Markdown prompt templates |
 | antigravity | \`commands/\` | Markdown .md files |
 | codex | N/A | N/A |
-| wocoder | \`commands/\` | Markdown .md files |
+| wocode | \`commands/\` | Markdown .md files |
 
 ### 4. Extensions
 
@@ -86,7 +86,7 @@ Required fields: \`name\`, \`description\`, \`tools\`, system prompt in body.
 | gemini | N/A | No extension system |
 | antigravity | N/A | No packaged plugin system |
 | codex | N/A | No extension system |
-| wocoder | TypeScript/JS module | Same pattern as Pi (fork) |
+| wocode | TypeScript/JS module | Same pattern as Pi (fork) |
 
 ### 5. CLI Configurations
 
@@ -100,7 +100,7 @@ All tools use JSON config files. Key files per tool:
 | pi | \`~/.pi/agent/config.json\` | JSON |
 | antigravity | \`~/.antigravity/settings.json\` | JSON |
 | codex | \`~/.codex/config.json\` | JSON |
-| wocoder | \`~/.wocoder/wocoder.json\` | JSON |
+| wocode | \`~/.wocode/wocode.json\` | JSON |
 
 ### 6. Keybindings
 
@@ -152,7 +152,7 @@ All tools use JSON config files. Key files per tool:
 | pi | \`packages/@aiengineeringharness/pi/\` → \`~/.pi/agent/\` |
 | antigravity | \`packages/@aiengineeringharness/antigravity/\` → \`~/.antigravity/\` |
 | codex | \`packages/@aiengineeringharness/codex/\` → \`~/.codex/\` |
-| wocoder | \`packages/@aiengineeringharness/wocoder/\` → \`~/.wocoder/\` |
+| wocode | \`packages/@aiengineeringharness/wocode/\` → \`~/.wocode/\` |
 
 ---
 
@@ -182,7 +182,7 @@ const TOOLS: Record<string, ToolSpec> = {
   pi: { name: "build-tool", tools: "Read, Write, Bash, Edit, Glob, Grep, WebFetch, WebSearch", naming: "kebab-case" },
   antigravity: { name: "build_tool", tools: "read, write, bash, glob, grep, web, code", naming: "snake_case" },
   codex: { name: "build_tool", tools: "read_file, write_file, run_shell_command", naming: "snake_case" },
-  wocoder: { name: "build_tool", tools: "read, write, bash, edit, grep, glob", naming: "snake_case" },
+  wocode: { name: "build_tool", tools: "read, write, bash, edit, grep, glob", naming: "snake_case" },
 };
 
 const HARNESS_ROOT = "/home/zerwiz/wayofmono/packages/@aiengineeringharness";

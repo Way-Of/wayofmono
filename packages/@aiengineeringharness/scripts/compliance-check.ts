@@ -102,8 +102,8 @@ const TOOL_SPECS: Record<string, ToolSpec> = {
     deprecatedPatterns: [],
     extraChecks: {},
   },
-  wocoder: {
-    name: "wocoder",
+  wocode: {
+    name: "wocode",
     naming: "snake",
     toolNameCase: "lowercase",
     allowedToolsFormat: "lowercase",

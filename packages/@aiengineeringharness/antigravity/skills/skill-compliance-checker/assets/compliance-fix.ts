@@ -64,8 +64,8 @@ const TOOL_SPECS: Record<string, ToolSpec> = {
     supportedFrontmatter: ["name", "description", "allowed-tools"],
     knownToolNames: ["read", "bash", "edit", "write", "grep", "glob", "webfetch", "websearch", "question", "skill", "task", "lsp"],
   },
-  wocoder: {
-    name: "wocoder",
+  wocode: {
+    name: "wocode",
     naming: "snake",
     toolNameCase: "lowercase",
     allowedToolsFormat: "lowercase",

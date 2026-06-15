@@ -128,8 +128,7 @@ components:
     - src: pi/agent/prompts/validate-telemetry.md
       dest: prompts/validate-telemetry.md
   skill/observability-driven-development:
-    description: Observability Driven Development (ODD) — design the trace before
-      the feature; local OTel feedback loop
+    description: "Observability Driven Development (ODD) \u2014 design the trace before the feature; local OTel feedback loop"
     files:
     - src: pi/agent/skills/observability-driven-development/SKILL.md
       dest: skills/observability-driven-development/SKILL.md
@@ -241,6 +240,36 @@ components:
     files:
     - src: pi/agent/skills/skill-auto-update/SKILL.md
       dest: skills/skill-auto-update/SKILL.md
+    - src: pi/agent/skills/skill-auto-update/assets
+      dest: skills/skill-auto-update/assets
+    - src: pi/agent/skills/skill-auto-update/scripts
+      dest: skills/skill-auto-update/scripts
+    - src: pi/agent/skills/skill-auto-update/assets/compliance-fix.ts
+      dest: skills/skill-auto-update/assets/compliance-fix.ts
+    - src: pi/agent/skills/skill-auto-update/assets/skillsrules.md
+      dest: skills/skill-auto-update/assets/skillsrules.md
+    - src: pi/agent/skills/skill-auto-update/scripts/gemini-skill-update.py
+      dest: skills/skill-auto-update/scripts/gemini-skill-update.py
+    - src: pi/agent/skills/skill-auto-update/scripts/test-yamls.py
+      dest: skills/skill-auto-update/scripts/test-yamls.py
+    - src: pi/agent/skills/skill-auto-update/scripts/claude-skill-update.py
+      dest: skills/skill-auto-update/scripts/claude-skill-update.py
+    - src: pi/agent/skills/skill-auto-update/scripts/test-manifest.py
+      dest: skills/skill-auto-update/scripts/test-manifest.py
+    - src: pi/agent/skills/skill-auto-update/scripts/wocoder-skill-update.py
+      dest: skills/skill-auto-update/scripts/wocoder-skill-update.py
+    - src: pi/agent/skills/skill-auto-update/scripts/codex-skill-update.py
+      dest: skills/skill-auto-update/scripts/codex-skill-update.py
+    - src: pi/agent/skills/skill-auto-update/scripts/pi-skill-update.py
+      dest: skills/skill-auto-update/scripts/pi-skill-update.py
+    - src: pi/agent/skills/skill-auto-update/scripts/test-skills.py
+      dest: skills/skill-auto-update/scripts/test-skills.py
+    - src: pi/agent/skills/skill-auto-update/scripts/opencode-skill-update.py
+      dest: skills/skill-auto-update/scripts/opencode-skill-update.py
+    - src: pi/agent/skills/skill-auto-update/scripts/run-all-tests.py
+      dest: skills/skill-auto-update/scripts/run-all-tests.py
+    - src: pi/agent/skills/skill-auto-update/scripts/antigravity-skill-update.py
+      dest: skills/skill-auto-update/scripts/antigravity-skill-update.py
   skill/auto-ticket-creator:
     description: Auto-Ticket Creator - monitor and auto-create tickets from changes
     files:
@@ -261,6 +290,34 @@ components:
     files:
     - src: pi/agent/skills/skill-adapter/SKILL.md
       dest: skills/skill-adapter/SKILL.md
+    - src: pi/agent/skills/skill-adapter/assets
+      dest: skills/skill-adapter/assets
+    - src: pi/agent/skills/skill-adapter/scripts
+      dest: skills/skill-adapter/scripts
+    - src: pi/agent/skills/skill-adapter/assets/compliance-fix.ts
+      dest: skills/skill-adapter/assets/compliance-fix.ts
+    - src: pi/agent/skills/skill-adapter/scripts/gemini-skill-update.py
+      dest: skills/skill-adapter/scripts/gemini-skill-update.py
+    - src: pi/agent/skills/skill-adapter/scripts/test-yamls.py
+      dest: skills/skill-adapter/scripts/test-yamls.py
+    - src: pi/agent/skills/skill-adapter/scripts/claude-skill-update.py
+      dest: skills/skill-adapter/scripts/claude-skill-update.py
+    - src: pi/agent/skills/skill-adapter/scripts/test-manifest.py
+      dest: skills/skill-adapter/scripts/test-manifest.py
+    - src: pi/agent/skills/skill-adapter/scripts/wocoder-skill-update.py
+      dest: skills/skill-adapter/scripts/wocoder-skill-update.py
+    - src: pi/agent/skills/skill-adapter/scripts/codex-skill-update.py
+      dest: skills/skill-adapter/scripts/codex-skill-update.py
+    - src: pi/agent/skills/skill-adapter/scripts/pi-skill-update.py
+      dest: skills/skill-adapter/scripts/pi-skill-update.py
+    - src: pi/agent/skills/skill-adapter/scripts/test-skills.py
+      dest: skills/skill-adapter/scripts/test-skills.py
+    - src: pi/agent/skills/skill-adapter/scripts/opencode-skill-update.py
+      dest: skills/skill-adapter/scripts/opencode-skill-update.py
+    - src: pi/agent/skills/skill-adapter/scripts/run-all-tests.py
+      dest: skills/skill-adapter/scripts/run-all-tests.py
+    - src: pi/agent/skills/skill-adapter/scripts/antigravity-skill-update.py
+      dest: skills/skill-adapter/scripts/antigravity-skill-update.py
   skill/backlog-groomer:
     description: Backlog Groomer skill
     files:
@@ -412,52 +469,52 @@ components:
     - src: pi/agent/skills/build-tool/SKILL.md
       dest: skills/build-tool/SKILL.md
   skill/build-tool-skill:
-    description: Unified skill builder for all 7 tools — deployed to Pi
+    description: "Unified skill builder for all 7 tools \u2014 deployed to Pi"
     files:
     - src: pi/agent/skills/build-tool-skill/SKILL.md
       dest: skills/build-tool-skill/SKILL.md
   skill/build-tool-agent:
-    description: Unified agent builder for all 7 tools — deployed to Pi
+    description: "Unified agent builder for all 7 tools \u2014 deployed to Pi"
     files:
     - src: pi/agent/skills/build-tool-agent/SKILL.md
       dest: skills/build-tool-agent/SKILL.md
   skill/build-tool-extension:
-    description: Unified extension/plugin builder for all 7 tools — deployed to Pi
+    description: "Unified extension/plugin builder for all 7 tools \u2014 deployed to Pi"
     files:
     - src: pi/agent/skills/build-tool-extension/SKILL.md
       dest: skills/build-tool-extension/SKILL.md
   skill/build-tool-tui:
-    description: Unified TUI component builder for all 7 tools — deployed to Pi
+    description: "Unified TUI component builder for all 7 tools \u2014 deployed to Pi"
     files:
     - src: pi/agent/skills/build-tool-tui/SKILL.md
       dest: skills/build-tool-tui/SKILL.md
   skill/build-tool-cli:
-    description: Unified CLI reference for all 7 tools — deployed to Pi
+    description: "Unified CLI reference for all 7 tools \u2014 deployed to Pi"
     files:
     - src: pi/agent/skills/build-tool-cli/SKILL.md
       dest: skills/build-tool-cli/SKILL.md
   skill/build-tool-themes:
-    description: Unified theme builder for all 7 tools — deployed to Pi
+    description: "Unified theme builder for all 7 tools \u2014 deployed to Pi"
     files:
     - src: pi/agent/skills/build-tool-themes/SKILL.md
       dest: skills/build-tool-themes/SKILL.md
   skill/build-tool-prompts:
-    description: Unified prompt template builder for all 7 tools — deployed to Pi
+    description: "Unified prompt template builder for all 7 tools \u2014 deployed to Pi"
     files:
     - src: pi/agent/skills/build-tool-prompts/SKILL.md
       dest: skills/build-tool-prompts/SKILL.md
   skill/build-tool-keybindings:
-    description: Unified keybinding reference for all 7 tools — deployed to Pi
+    description: "Unified keybinding reference for all 7 tools \u2014 deployed to Pi"
     files:
     - src: pi/agent/skills/build-tool-keybindings/SKILL.md
       dest: skills/build-tool-keybindings/SKILL.md
   skill/build-tool-config:
-    description: Unified configuration reference for all 7 tools — deployed to Pi
+    description: "Unified configuration reference for all 7 tools \u2014 deployed to Pi"
     files:
     - src: pi/agent/skills/build-tool-config/SKILL.md
       dest: skills/build-tool-config/SKILL.md
   skill/build-tool-orchestrate:
-    description: Unified orchestration coordinator for all 7 tools — deployed to Pi
+    description: "Unified orchestration coordinator for all 7 tools \u2014 deployed to Pi"
     files:
     - src: pi/agent/skills/build-tool-orchestrate/SKILL.md
       dest: skills/build-tool-orchestrate/SKILL.md
@@ -589,14 +646,12 @@ components:
     - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
       dest: skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
   skill/build-auto-ticket-creator:
-    description: Monitor codebase, dependencies, and external sources to auto-create
-      tickets for agent updates, skill updates, dep updates, security advisories
+    description: Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories
     files:
     - src: pi/agent/skills/build-auto-ticket-creator/SKILL.md
       dest: skills/build-auto-ticket-creator/SKILL.md
   skill/build-backlog-groomer:
-    description: Product & Ticket Manager. Helps transform ideas/plans into structured
-      tickets in thoughts/shared/tickets/ and maintains the project backlog.
+    description: Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.
     files:
     - src: pi/agent/skills/build-backlog-groomer/SKILL.md
       dest: skills/build-backlog-groomer/SKILL.md
@@ -615,9 +670,14 @@ components:
     files:
     - src: pi/agent/skills/skill-compliance-checker/SKILL.md
       dest: skills/skill-compliance-checker/SKILL.md
+    - src: pi/agent/skills/skill-compliance-checker/assets
+      dest: skills/skill-compliance-checker/assets
+    - src: pi/agent/skills/skill-compliance-checker/scripts
+      dest: skills/skill-compliance-checker/scripts
+    - src: pi/agent/skills/skill-compliance-checker/assets/compliance-fix.ts
+      dest: skills/skill-compliance-checker/assets/compliance-fix.ts
   skill/ticket-executor:
-    description: Execute approved plans in phases, validating telemetry and committing
-      changes after each phase completes successfully
+    description: Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully
     files:
     - src: pi/agent/skills/ticket-executor/SKILL.md
       dest: skills/ticket-executor/SKILL.md

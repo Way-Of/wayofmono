@@ -31,43 +31,43 @@ TOOL_SPECS = {
     "opencode": {
         "naming": "snake",
         "allowed_prefixes": ["opencode/"],
-        "forbidden_prefixes": ["claude/", "gemini/", "pi/", "wocoder/", "codex/", "antigravity/"],
+        "forbidden_prefixes": ["claude/", "gemini/", "pi/", "wocode/", "codex/", "antigravity/"],
         "target": "~/.config/opencode",
     },
     "claude": {
         "naming": "snake",
         "allowed_prefixes": ["claude/"],
-        "forbidden_prefixes": ["opencode/", "gemini/", "pi/", "wocoder/", "codex/", "antigravity/"],
+        "forbidden_prefixes": ["opencode/", "gemini/", "pi/", "wocode/", "codex/", "antigravity/"],
         "target": "~/.claude",
     },
     "gemini": {
         "naming": "snake",
         "allowed_prefixes": ["gemini/"],
-        "forbidden_prefixes": ["claude/", "opencode/", "pi/", "wocoder/", "codex/", "antigravity/"],
+        "forbidden_prefixes": ["claude/", "opencode/", "pi/", "wocode/", "codex/", "antigravity/"],
         "target": "~/.gemini",
     },
     "pi": {
         "naming": "kebab",
         "allowed_prefixes": ["pi/agent/"],
-        "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "wocoder/", "codex/", "antigravity/"],
+        "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "wocode/", "codex/", "antigravity/"],
         "target": "~/.pi/agent",
     },
-    "wocoder": {
+    "wocode": {
         "naming": "snake",
-        "allowed_prefixes": ["wocoder/", "wocoder/agent/"],
+        "allowed_prefixes": ["wocode/", "wocode/agent/"],
         "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "codex/", "antigravity/"],
-        "target": "~/.wocoder",
+        "target": "~/.wocode",
     },
     "codex": {
         "naming": "snake",
         "allowed_prefixes": ["codex/"],
-        "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "wocoder/", "antigravity/"],
+        "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "wocode/", "antigravity/"],
         "target": "~/.codex",
     },
     "antigravity": {
         "naming": "snake",
         "allowed_prefixes": ["antigravity/"],
-        "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "wocoder/", "codex/"],
+        "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "wocode/", "codex/"],
         "target": "~/.antigravity",
     },
 }

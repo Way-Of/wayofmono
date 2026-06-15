@@ -162,7 +162,7 @@ Or in TUI: Press `F1` → Keybindings tab.
 
 ## Related
 
-- [Wo Coder Guide](guides/wocoder/)
+- [Wo Coder Guide](guides/wocode/)
 - [TUI Components](tui.md)
 - [Themes](themes.md)
-- [Settings](guides/wocoder/#configuration)
+- [Settings](guides/wocode/#configuration)
