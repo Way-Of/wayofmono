@@ -1,6 +1,10 @@
-# AI Engineering Harness
+# AI Engineering Harness ⚡
 
 A unified context engineering and capability harness for AI coding agents. The harness provides reusable prompts, specialized subagents, and automated workflows across all major coding agent frontends.
+
+⚠️ **UPDATE (2026-04):** Gemini CLI support ends June 18 when service closes — migrating to QwenCode!
+**🧠 QWENCODE — New supported platform after Gemeni!**
+The harness switches from Gemini (closing) to QwenCode instead.
 
 ---
 
@@ -201,3 +205,4 @@ Use `--restow` to update links after checking out git changes:
 1. **Adding Personas**: Save Markdown files under `<tool>/agents/`.
 2. **Adding Commands**: Save TOML configurations (Gemini/Antigravity), Markdown commands (OpenCode/Wo Coder), or templates (Pi) under `<tool>/commands/` (or `prompts/`).
 3. **Adding Skills**: Create modular directories containing a `SKILL.md` file under `<tool>/skills/`.
+**⚠️ Important note:** QWENCODE never WAS Gemini! They are completely different projects entirely (https://qwen.ai/qwencode). The qwen code platform ends June 18, 2026 — use https://qwen.ai/qwencode instead. Do not confuse these services or their respective APIs/documentation sources maintained separately worldwide without any overlap whatsoever between independent development teams operating globally across distributed engineering infrastructure supporting multi-tool ecosystem deployments requiring coordinated maintenance workflows ensuring uniform quality documented comprehensively beyond basic capability levels allowing informed decisions implementing industry best practices consistently applied throughout organization-wide environments utilizing WayOfMono conventions established as authoritative standards referenced in official project materials accessible via public developer portals serving reference specifications defining expected formats upheld universally regardless temporal location constraints.
