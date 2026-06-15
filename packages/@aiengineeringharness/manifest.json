@@ -2076,7 +2076,7 @@
               "dest": "commands/commit.toml"
             },
             {
-              "src": "gemini/commands/run-create-plan.toml",
+              "src": "gemini/commands/run-create_plan.toml",
               "dest": "commands/create-plan.toml"
             },
             {
@@ -2092,35 +2092,35 @@
               "dest": "commands/experimental-pr-workflow.toml"
             },
             {
-              "src": "gemini/commands/run-git-commit-helper.toml",
+              "src": "gemini/commands/run-git_commit_helper.toml",
               "dest": "commands/git-commit-helper.toml"
             },
             {
-              "src": "gemini/commands/run-implement-plan.toml",
+              "src": "gemini/commands/run-implement_plan.toml",
               "dest": "commands/implement-plan.toml"
             },
             {
-              "src": "gemini/commands/run-init-harness.toml",
+              "src": "gemini/commands/run-init_harness.toml",
               "dest": "commands/init-harness.toml"
             },
             {
-              "src": "gemini/commands/run-otel-instrument.toml",
+              "src": "gemini/commands/run-otel_instrument.toml",
               "dest": "commands/otel-instrument.toml"
             },
             {
-              "src": "gemini/commands/run-pr-description-generator.toml",
+              "src": "gemini/commands/run-pr_description_generator.toml",
               "dest": "commands/pr-description-generator.toml"
             },
             {
-              "src": "gemini/commands/run-research-codebase.toml",
+              "src": "gemini/commands/run-research_codebase.toml",
               "dest": "commands/research-codebase.toml"
             },
             {
-              "src": "gemini/commands/run-validate-plan.toml",
+              "src": "gemini/commands/run-validate_plan.toml",
               "dest": "commands/validate-plan.toml"
             },
             {
-              "src": "gemini/commands/run-validate-telemetry.toml",
+              "src": "gemini/commands/run-validate_telemetry.toml",
               "dest": "commands/validate-telemetry.toml"
             },
             {
@@ -2142,7 +2142,7 @@
           "description": "Create Plan command",
           "files": [
             {
-              "src": "gemini/commands/run-create-plan.toml",
+              "src": "gemini/commands/run-create_plan.toml",
               "dest": "commands/create-plan.toml"
             }
           ]
@@ -2178,7 +2178,7 @@
           "description": "Git Commit Helper command",
           "files": [
             {
-              "src": "gemini/commands/run-git-commit-helper.toml",
+              "src": "gemini/commands/run-git_commit_helper.toml",
               "dest": "commands/git-commit-helper.toml"
             }
           ]
@@ -2187,7 +2187,7 @@
           "description": "Implement Plan command",
           "files": [
             {
-              "src": "gemini/commands/run-implement-plan.toml",
+              "src": "gemini/commands/run-implement_plan.toml",
               "dest": "commands/implement-plan.toml"
             }
           ]
@@ -2196,7 +2196,7 @@
           "description": "Init Harness command",
           "files": [
             {
-              "src": "gemini/commands/run-init-harness.toml",
+              "src": "gemini/commands/run-init_harness.toml",
               "dest": "commands/init-harness.toml"
             }
           ]
@@ -2205,7 +2205,7 @@
           "description": "Otel Instrument command",
           "files": [
             {
-              "src": "gemini/commands/run-otel-instrument.toml",
+              "src": "gemini/commands/run-otel_instrument.toml",
               "dest": "commands/otel-instrument.toml"
             }
           ]
@@ -2214,7 +2214,7 @@
           "description": "Pr Description Generator command",
           "files": [
             {
-              "src": "gemini/commands/run-pr-description-generator.toml",
+              "src": "gemini/commands/run-pr_description_generator.toml",
               "dest": "commands/pr-description-generator.toml"
             }
           ]
@@ -2223,7 +2223,7 @@
           "description": "Research Codebase command",
           "files": [
             {
-              "src": "gemini/commands/run-research-codebase.toml",
+              "src": "gemini/commands/run-research_codebase.toml",
               "dest": "commands/research-codebase.toml"
             }
           ]
@@ -2232,7 +2232,7 @@
           "description": "Validate Plan command",
           "files": [
             {
-              "src": "gemini/commands/run-validate-plan.toml",
+              "src": "gemini/commands/run-validate_plan.toml",
               "dest": "commands/validate-plan.toml"
             }
           ]
@@ -2241,7 +2241,7 @@
           "description": "Validate Telemetry command",
           "files": [
             {
-              "src": "gemini/commands/run-validate-telemetry.toml",
+              "src": "gemini/commands/run-validate_telemetry.toml",
               "dest": "commands/validate-telemetry.toml"
             }
           ]
@@ -3346,7 +3346,7 @@
           "description": "Create implementation plans prompt",
           "files": [
             {
-              "src": "pi/agent/prompts/create-plan.md",
+              "src": "pi/agent/prompts/create_plan.md",
               "dest": "prompts/create-plan.md"
             }
           ]
@@ -3373,7 +3373,7 @@
           "description": "Execute an approved plan prompt",
           "files": [
             {
-              "src": "pi/agent/prompts/implement-plan.md",
+              "src": "pi/agent/prompts/implement_plan.md",
               "dest": "prompts/implement-plan.md"
             }
           ]
@@ -3382,7 +3382,7 @@
           "description": "Initialize harness in a new repository prompt",
           "files": [
             {
-              "src": "pi/agent/prompts/init-harness.md",
+              "src": "pi/agent/prompts/init_harness.md",
               "dest": "prompts/init-harness.md"
             }
           ]
@@ -3391,7 +3391,7 @@
           "description": "OpenTelemetry instrumentation orchestrator prompt",
           "files": [
             {
-              "src": "pi/agent/prompts/otel-instrument.md",
+              "src": "pi/agent/prompts/otel_instrument.md",
               "dest": "prompts/otel-instrument.md"
             }
           ]
@@ -3400,7 +3400,7 @@
           "description": "Comprehensive codebase research prompt",
           "files": [
             {
-              "src": "pi/agent/prompts/research-codebase.md",
+              "src": "pi/agent/prompts/research_codebase.md",
               "dest": "prompts/research-codebase.md"
             }
           ]
@@ -3409,7 +3409,7 @@
           "description": "Validate implementation against plan prompt",
           "files": [
             {
-              "src": "pi/agent/prompts/validate-plan.md",
+              "src": "pi/agent/prompts/validate_plan.md",
               "dest": "prompts/validate-plan.md"
             }
           ]
@@ -3418,7 +3418,7 @@
           "description": "Validate local telemetry against a narrative spec prompt",
           "files": [
             {
-              "src": "pi/agent/prompts/validate-telemetry.md",
+              "src": "pi/agent/prompts/validate_telemetry.md",
               "dest": "prompts/validate-telemetry.md"
             }
           ]
@@ -5626,7 +5626,7 @@
               "dest": "commands/commit.toml"
             },
             {
-              "src": "antigravity/commands/run-create-plan.toml",
+              "src": "antigravity/commands/run-create_plan.toml",
               "dest": "commands/create-plan.toml"
             },
             {
@@ -5642,35 +5642,35 @@
               "dest": "commands/experimental-pr-workflow.toml"
             },
             {
-              "src": "antigravity/commands/run-git-commit-helper.toml",
+              "src": "antigravity/commands/run-git_commit_helper.toml",
               "dest": "commands/git-commit-helper.toml"
             },
             {
-              "src": "antigravity/commands/run-implement-plan.toml",
+              "src": "antigravity/commands/run-implement_plan.toml",
               "dest": "commands/implement-plan.toml"
             },
             {
-              "src": "antigravity/commands/run-init-harness.toml",
+              "src": "antigravity/commands/run-init_harness.toml",
               "dest": "commands/init-harness.toml"
             },
             {
-              "src": "antigravity/commands/run-otel-instrument.toml",
+              "src": "antigravity/commands/run-otel_instrument.toml",
               "dest": "commands/otel-instrument.toml"
             },
             {
-              "src": "antigravity/commands/run-pr-description-generator.toml",
+              "src": "antigravity/commands/run-pr_description_generator.toml",
               "dest": "commands/pr-description-generator.toml"
             },
             {
-              "src": "antigravity/commands/run-research-codebase.toml",
+              "src": "antigravity/commands/run-research_codebase.toml",
               "dest": "commands/research-codebase.toml"
             },
             {
-              "src": "antigravity/commands/run-validate-plan.toml",
+              "src": "antigravity/commands/run-validate_plan.toml",
               "dest": "commands/validate-plan.toml"
             },
             {
-              "src": "antigravity/commands/run-validate-telemetry.toml",
+              "src": "antigravity/commands/run-validate_telemetry.toml",
               "dest": "commands/validate-telemetry.toml"
             },
             {
@@ -5692,7 +5692,7 @@
           "description": "Create Plan command",
           "files": [
             {
-              "src": "antigravity/commands/run-create-plan.toml",
+              "src": "antigravity/commands/run-create_plan.toml",
               "dest": "commands/create-plan.toml"
             }
           ]
@@ -5728,7 +5728,7 @@
           "description": "Git Commit Helper command",
           "files": [
             {
-              "src": "antigravity/commands/run-git-commit-helper.toml",
+              "src": "antigravity/commands/run-git_commit_helper.toml",
               "dest": "commands/git-commit-helper.toml"
             }
           ]
@@ -5737,7 +5737,7 @@
           "description": "Implement Plan command",
           "files": [
             {
-              "src": "antigravity/commands/run-implement-plan.toml",
+              "src": "antigravity/commands/run-implement_plan.toml",
               "dest": "commands/implement-plan.toml"
             }
           ]
@@ -5746,7 +5746,7 @@
           "description": "Init Harness command",
           "files": [
             {
-              "src": "antigravity/commands/run-init-harness.toml",
+              "src": "antigravity/commands/run-init_harness.toml",
               "dest": "commands/init-harness.toml"
             }
           ]
@@ -5755,7 +5755,7 @@
           "description": "Otel Instrument command",
           "files": [
             {
-              "src": "antigravity/commands/run-otel-instrument.toml",
+              "src": "antigravity/commands/run-otel_instrument.toml",
               "dest": "commands/otel-instrument.toml"
             }
           ]
@@ -5764,7 +5764,7 @@
           "description": "Pr Description Generator command",
           "files": [
             {
-              "src": "antigravity/commands/run-pr-description-generator.toml",
+              "src": "antigravity/commands/run-pr_description_generator.toml",
               "dest": "commands/pr-description-generator.toml"
             }
           ]
@@ -5773,7 +5773,7 @@
           "description": "Research Codebase command",
           "files": [
             {
-              "src": "antigravity/commands/run-research-codebase.toml",
+              "src": "antigravity/commands/run-research_codebase.toml",
               "dest": "commands/research-codebase.toml"
             }
           ]
@@ -5782,7 +5782,7 @@
           "description": "Validate Plan command",
           "files": [
             {
-              "src": "antigravity/commands/run-validate-plan.toml",
+              "src": "antigravity/commands/run-validate_plan.toml",
               "dest": "commands/validate-plan.toml"
             }
           ]
@@ -5791,7 +5791,7 @@
           "description": "Validate Telemetry command",
           "files": [
             {
-              "src": "antigravity/commands/run-validate-telemetry.toml",
+              "src": "antigravity/commands/run-validate_telemetry.toml",
               "dest": "commands/validate-telemetry.toml"
             }
           ]
