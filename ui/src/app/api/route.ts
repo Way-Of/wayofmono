@@ -15,7 +15,9 @@ export async function GET(request: NextRequest) {
         return NextResponse.json(devs);
       }
       case 'tickets': {
-        const tickets = await getTickets();
+        const source = request.nextUrl.searchParams.get('source') || 'local';
+        const branch = request.nextUrl.searchParams.get('branch') || 'main';
+        const tickets = await getTickets(source as 'local' | 'github', branch);
         return NextResponse.json(tickets);
       }
       case 'docs': {

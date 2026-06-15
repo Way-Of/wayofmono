@@ -19,6 +19,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { Switch } from '@/components/ui/switch';
+import { RefreshCw } from 'lucide-react';
 
 import {
   Search,
@@ -289,6 +291,8 @@ export function TicketsView() {
     filterStatus, setFilterStatus,
     filterPriority, setFilterPriority,
     filterCategory, setFilterCategory,
+    ticketSource, setTicketSource,
+    ticketBranch, setTicketBranch,
     getFilteredTickets,
     setSelectedTicket,
     setCurrentView,
@@ -314,9 +318,42 @@ export function TicketsView() {
           <h2 className="text-lg font-semibold text-foreground">Tickets</h2>
           <p className="text-sm text-text-muted mt-0.5">{filteredTickets.length} tickets across all projects</p>
         </div>
-        <Badge variant="outline" className="border-border text-text-muted text-xs">
-          f-rr-d &middot; Live
-        </Badge>
+        <div className="flex items-center gap-3">
+          <Badge variant="outline" className="border-border text-text-muted text-xs">
+            f-rr-d &middot; {ticketSource === 'github' ? 'GitHub' : 'Local'}
+            {ticketSource === 'github' && <span className="ml-1">({ticketBranch})</span>}
+          </Badge>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-text-muted">Local</span>
+            <Switch
+              checked={ticketSource === 'github'}
+              onCheckedChange={(checked) => setTicketSource(checked ? 'github' : 'local')}
+            />
+            <span className="text-xs text-text-muted">GitHub</span>
+          </div>
+          {ticketSource === 'github' && (
+            <>
+              <Select value={ticketBranch} onValueChange={setTicketBranch}>
+                <SelectTrigger className="w-[140px] bg-surface border-border-strong text-foreground h-7 text-xs">
+                  <SelectValue placeholder="Branch" />
+                </SelectTrigger>
+                <SelectContent className="bg-card border-border">
+                  <SelectItem value="main">main</SelectItem>
+                  <SelectItem value="develop">develop</SelectItem>
+                  <SelectItem value="staging">staging</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => useDashboardStore.getState().fetchData()}
+                className="h-7 px-2"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+              </Button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Filters */}

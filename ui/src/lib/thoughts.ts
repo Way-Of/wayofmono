@@ -1,9 +1,19 @@
 import fs from 'fs/promises';
 import path from 'path';
+import fetch from 'node-fetch';
 
 const THOUGHTS_ROOT = process.env.THOUGHTS_ROOT || path.join(process.cwd(), '..', 'thoughts');
 const PROJECTS = ['wayofmono', 'wow', 'opticat'] as const;
 type ProjectSlug = (typeof PROJECTS)[number];
+
+const GITHUB_REPO = 'Way-Of/f-rr-d';
+const GITHUB_BRANCH = 'main';
+const GITHUB_API_BASE = 'https://api.github.com';
+const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com';
+
+// Simple in-memory cache for GitHub fetches (5 min TTL)
+const GITHUB_CACHE_TTL = 5 * 60 * 1000;
+let githubCache: { tickets: Record<string, unknown>[]; timestamp: number; branch: string } | null = null;
 
 interface Frontmatter {
   [key: string]: unknown;
@@ -104,15 +114,42 @@ export async function getDevelopers() {
   return devs;
 }
 
-export async function getTickets() {
+export async function getTickets(source: 'local' | 'github' = 'local', branch = GITHUB_BRANCH) {
   const tickets: Record<string, unknown>[] = [];
   const seenIds = new Set<string>();
 
-  for (const project of PROJECTS) {
-    const ticketsDir = path.join(THOUGHTS_ROOT, project, 'shared', 'tickets');
-    try {
-      await walkDir(ticketsDir, tickets, seenIds, project);
-    } catch { /* no tickets dir */ }
+  if (source === 'local') {
+    for (const project of PROJECTS) {
+      const ticketsDir = path.join(THOUGHTS_ROOT, project, 'shared', 'tickets');
+      try {
+        await walkDir(ticketsDir, tickets, seenIds, project);
+      } catch { /* no tickets dir */ }
+    }
+  } else {
+    // Check cache first (invalidate if branch changed)
+    const now = Date.now();
+    if (githubCache && githubCache.branch === branch && (now - githubCache.timestamp) < GITHUB_CACHE_TTL) {
+      console.log('Using cached GitHub tickets for branch:', branch);
+      return githubCache.tickets;
+    }
+    
+    await walkGitHubDir(GITHUB_API_BASE, GITHUB_REPO, branch, tickets, seenIds);
+    
+    // Cache the results
+    if (tickets.length > 0) {
+      githubCache = { tickets: [...tickets], timestamp: now, branch };
+    }
+    
+    // Fallback to local if GitHub returns no tickets
+    if (tickets.length === 0) {
+      console.warn('GitHub returned no tickets, falling back to local');
+      for (const project of PROJECTS) {
+        const ticketsDir = path.join(THOUGHTS_ROOT, project, 'shared', 'tickets');
+        try {
+          await walkDir(ticketsDir, tickets, seenIds, project);
+        } catch { /* no tickets dir */ }
+      }
+    }
   }
 
   return tickets;
@@ -138,6 +175,87 @@ async function walkDir(dir: string, result: Record<string, unknown>[], seenIds: 
       result.push({
         id,
         title: frontmatter['title'] || entry.name,
+        type: frontmatter['type'] || 'Task',
+        priority: frontmatter['priority'] || 'Medium',
+        status: frontmatter['status'] || 'Backlog',
+        assignee: String(frontmatter['assignee'] || '').replace('@', ''),
+        reporter: String(frontmatter['reporter'] || '').replace('@', ''),
+        project,
+        namespace: frontmatter['namespace'] || '',
+        category: frontmatter['category'] || '',
+        parentTicket: frontmatter['parent_ticket'] || '',
+        sharedTickets: Array.isArray(frontmatter['shared_tickets']) ? frontmatter['shared_tickets'] : [],
+        prUrl: frontmatter['pr_url'] || '',
+        githubIssue: frontmatter['github_issue'] || '',
+        created: frontmatter['created'] || '',
+        updated: frontmatter['updated'] || '',
+        reviewedBy: frontmatter['reviewed_by'] || '',
+        reviewedAt: frontmatter['reviewed_at'] || '',
+        reviewStatus: frontmatter['review_status'] || 'Pending',
+        reviewComments: frontmatter['review_comments'] || '',
+        description: body,
+        personalBreakdown: [],
+        linkedDocs: [],
+      });
+    }
+  }
+}
+
+async function walkGitHubDir(apiBase: string, repo: string, branch: string, result: Record<string, unknown>[], seenIds: Set<string>, path = 'thoughts') {
+  const treeUrl = `${apiBase}/repos/${repo}/git/trees/${branch}:${path}?recursive=1`;
+  let treeData;
+  
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  
+  try {
+    const response = await fetch(treeUrl, { signal: controller.signal });
+    clearTimeout(timeoutId);
+    if (!response.ok) {
+      if (response.status === 404) return;
+      throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+    }
+    treeData = await response.json();
+  } catch (error) {
+    clearTimeout(timeoutId);
+    console.error('Failed to fetch GitHub tree:', error);
+    return;
+  }
+
+  for (const item of treeData.tree) {
+    if (item.type === 'tree') {
+      await walkGitHubDir(apiBase, repo, branch, result, seenIds, item.path);
+    } else if (item.type === 'blob' && item.path.endsWith('.md') && !item.path.endsWith('personal-ticket-template.md')) {
+      const rawUrl = `${GITHUB_RAW_BASE}/${repo}/${branch}/${item.path}`;
+      let content;
+      
+      const fileController = new AbortController();
+      const fileTimeoutId = setTimeout(() => fileController.abort(), 5000);
+      
+      try {
+        const response = await fetch(rawUrl, { signal: fileController.signal });
+        clearTimeout(fileTimeoutId);
+        if (!response.ok) throw new Error(`Failed to fetch ${item.path}: ${response.status}`);
+        content = await response.text();
+      } catch (error) {
+        clearTimeout(fileTimeoutId);
+        console.error(`Failed to fetch GitHub file ${item.path}:`, error);
+        continue;
+      }
+
+      const { frontmatter, body } = parseFrontmatter(content);
+      
+      const id = item.path.split('/').pop()?.replace(/\.md$/, '') || '';
+      if (!id || seenIds.has(id)) continue;
+      seenIds.add(id);
+
+      const project = item.path.includes('wayofmono') ? 'wayofmono' :
+                      item.path.includes('wow') ? 'wow' :
+                      item.path.includes('opticat') ? 'opticat' : 'wayofmono';
+
+      result.push({
+        id,
+        title: frontmatter['title'] || id,
         type: frontmatter['type'] || 'Task',
         priority: frontmatter['priority'] || 'Medium',
         status: frontmatter['status'] || 'Backlog',
@@ -218,7 +336,14 @@ export async function getSkills() {
     { name: 'Antigravity', path: path.join(homedir, '.antigravity', 'skills') },
   ];
 
-  const results = [];
+  const results: {
+    name: string;
+    path: string;
+    exists: boolean;
+    skillCount: number;
+    skills: Record<string, unknown>[];
+    health: string;
+  }[] = [];
 
   for (const tool of dirs) {
     let exists = false;

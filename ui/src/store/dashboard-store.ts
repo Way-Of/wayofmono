@@ -25,6 +25,8 @@ interface DashboardState {
   filterStatus: string;
   filterPriority: string;
   filterCategory: string;
+  ticketSource: 'local' | 'github';
+  ticketBranch: string;
   setCurrentView: (view: ViewMode) => void;
   goBack: () => void;
   setSelectedDeveloper: (id: string | null) => void;
@@ -36,6 +38,8 @@ interface DashboardState {
   setFilterStatus: (s: string) => void;
   setFilterPriority: (p: string) => void;
   setFilterCategory: (c: string) => void;
+  setTicketSource: (source: 'local' | 'github') => void;
+  setTicketBranch: (branch: string) => void;
   ideas: Idea[];
   addIdea: (idea: { title: string; description: string; author: string }) => void;
   updateIdeaPriority: (id: string, priority: number) => void;
@@ -81,6 +85,8 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   filterStatus: 'all',
   filterPriority: 'all',
   filterCategory: 'all',
+  ticketSource: 'github',
+  ticketBranch: 'main',
   setCurrentView: (view) => {
     const prev = get().currentView;
     if (prev !== view) {
@@ -186,6 +192,14 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   setFilterStatus: (s) => set({ filterStatus: s }),
   setFilterPriority: (p) => set({ filterPriority: p }),
   setFilterCategory: (c) => set({ filterCategory: c }),
+  setTicketSource: (source) => {
+    set({ ticketSource: source });
+    get().fetchData();
+  },
+  setTicketBranch: (branch) => {
+    set({ ticketBranch: branch });
+    get().fetchData();
+  },
   getFilteredTickets: () => {
     const { tickets, searchQuery, filterProject, filterStatus, filterPriority, filterCategory } = get();
     return tickets.filter(t => {
@@ -207,8 +221,9 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   },
   fetchData: async () => {
     try {
+      const { ticketSource, ticketBranch } = get();
       const [ticketsRes, devsRes, docsRes, ideasRes, newsRes] = await Promise.all([
-        fetch('/api?type=tickets'),
+        fetch(`/api?type=tickets&source=${ticketSource}&branch=${ticketBranch}`),
         fetch('/api?type=developers'),
         fetch('/api?type=docs'),
         fetch('/api?type=ideas').catch(() => new Response('[]')),
