@@ -124,7 +124,7 @@ Creates config folders in your home directory:
 - `~/.pi/agent/` — Pi config + 85 skills
 - `~/.codex/` — Codex config + 90 skills
 - `~/.antigravity/` — Antigravity config + 89 skills
-- `~/.wocoder/` — Wo Coder config + 85 skills
+- `~/.wocode/` — Wo Coder config + 85 skills
 
 Each folder contains: `skills/`, `agents/`, `prompts/`, `commands/`, `settings.json`
 
@@ -135,7 +135,7 @@ Each folder contains: `skills/`, `agents/`, `prompts/`, `commands/`, `settings.j
 **Use this if you only want specific tools instead of all 7.**
 
 **What each tool does:**
-- **wocoder** — Wo Coder, our primary high-performance coding agent (recommended)
+- **wocode** — Wo Coder, our primary high-performance coding agent (recommended)
 - **pi** — Pi Agent, lightweight agent standard
 - **opencode** — Open-source TUI (terminal UI) coding agent
 - **claude** — Anthropic's Claude Code (requires Anthropic API key)
@@ -147,7 +147,7 @@ Each folder contains: `skills/`, `agents/`, `prompts/`, `commands/`, `settings.j
 
 ```bash
 # Wo Coder — our primary coding agent (recommended starting point)
-ai-harness --tool=wocoder --yes
+ai-harness --tool=wocode --yes
 ```
 
 ```bash
@@ -184,7 +184,7 @@ ai-harness --tool=codex --yes
 
 ```powershell
 # Wo Coder
-.\install.ps1 -Tool wocoder -Yes
+.\install.ps1 -Tool wocode -Yes
 ```
 
 ```powershell
@@ -257,17 +257,17 @@ ai-harness --tool=opencode --skill=skills,commands,themes --yes
 .\install.ps1 -Tool opencode -Skill "skills,agents" -DryRun
 ```
 
-### Step 3d: Install wocoder via npm/pnpm (Alternative)
+### Step 3d: Install wocode via npm/pnpm (Alternative)
 
-**Use this if you want to install wocoder directly as an npm package in your project, without the harness CLI.**
+**Use this if you want to install wocode directly as an npm package in your project, without the harness CLI.**
 
 **What's the difference?**
-- **Harness CLI method (Steps 1-3)**: Installs configs globally to `~/.wocoder/` — shared across all projects
-- **npm/pnpm method**: Installs wocoder as a dependency in your project's `node_modules/` — project-specific
+- **Harness CLI method (Steps 1-3)**: Installs configs globally to `~/.wocode/` — shared across all projects
+- **npm/pnpm method**: Installs wocode as a dependency in your project's `node_modules/` — project-specific
 
 **When to use which?**
 - **Harness CLI**: You want the same setup across all projects, easy updates with `ai-harness --update`
-- **npm/pnpm**: You want wocoder bundled with your project, version-locked in `package.json`, CI/CD friendly
+- **npm/pnpm**: You want wocode bundled with your project, version-locked in `package.json`, CI/CD friendly
 
 ---
 
@@ -286,7 +286,7 @@ npx wocode --init
 ```bash
 ./wocode
 ```
-> Starts the wocoder agent
+> Starts the wocode agent
 
 ```bash
 # Update later: pnpm update @wayofmono/wo-coding-agent
@@ -376,7 +376,7 @@ pnpm wouser --init
 **Use this to install tool configs directly in your project folder (not globally).**
 
 **Why use `--local`?**
-- **Global install (default)**: Configs go to `~/.claude/`, `~/.wocoder/`, etc. — shared across all projects
+- **Global install (default)**: Configs go to `~/.claude/`, `~/.wocode/`, etc. — shared across all projects
 - **Local install (`--local`)**: Configs go to `./.claude/`, `./.wo/`, etc. in your current project folder
 - **Use case**: Team sharing (commit `.claude/` to git), project-specific settings, CI/CD pipelines
 
@@ -399,8 +399,8 @@ your-project/
 **macOS / Linux / Windows (bash):**
 
 ```bash
-# Install wocoder config locally
-ai-harness --tool=wocoder --local --yes
+# Install wocode config locally
+ai-harness --tool=wocode --local --yes
 ```
 
 ```bash
@@ -417,8 +417,8 @@ ai-harness --tool=all --local --yes
 **Windows (PowerShell wrapper):**
 
 ```powershell
-# Install wocoder config locally
-.\install.ps1 -Tool wocoder -Local -Yes
+# Install wocode config locally
+.\install.ps1 -Tool wocode -Local -Yes
 ```
 
 ```powershell
@@ -705,7 +705,7 @@ ai-harness --mode=repo --dest=~/.ai-engineering-harness
 | Parameter | Description |
 |-----------|-------------|
 | `-InstallCli` | Install/update CLI binary |
-| `-Tool <name>` | Install tool config (claude, opencode, gemini, pi, wocoder, antigravity, codex, all) |
+| `-Tool <name>` | Install tool config (claude, opencode, gemini, pi, wocode, antigravity, codex, all) |
 | `-Update` | Full harness sync: CLI + docs + all tools + compliance |
 | `-Compliance` | Validate all installed files match manifest |
 | `-Check` | Compare installed versions against manifest |
@@ -792,7 +792,7 @@ packages/@aiengineeringharness/     → 1,226 files
 ├── pi/          → ~/.pi/agent/         # 174 files, 85 SKILL.md
 ├── codex/       → ~/.codex/            # 186 files, 90 SKILL.md
 ├── antigravity/ → ~/.antigravity/      # 146 files, 89 SKILL.md
-└── wocoder/     → ~/.wocoder/          # 182 files, 85 SKILL.md
+└── wocode/     → ~/.wocode/          # 182 files, 85 SKILL.md
 ```
 
 ### Shared Resources
@@ -811,7 +811,7 @@ Each agent frontend loads skills from specific directories. The AI Engineering H
 
 | Tool | Global Skill Directory | Project-Local Skill Directory |
 |------|------------------------|-------------------------------|
-| **Wo Coder (wocode)** | `~/.wocoder/agent/skills/` | `.wo/agent/skills/` |
+| **Wo Coder (wocode)** | `~/.wocode/agent/skills/` | `.wo/agent/skills/` |
 | **Pi** | `~/.pi/agent/skills/` | `.pi/agent/skills/` |
 | **OpenCode** | `~/.config/opencode/skills/` | `.config/opencode/skills/` |
 | **Claude Code** | `~/.claude/skills/` | `.claude/skills/` |
@@ -894,7 +894,7 @@ ollama pull qwen3.5:32b
 ```
 
 **Configure a different model:**
-Edit `~/.wocoder/agent/settings.json` or `.wo/settings.json`:
+Edit `~/.wocode/agent/settings.json` or `.wo/settings.json`:
 ```json
 {
   "model": "codellama:13b"
@@ -1064,7 +1064,7 @@ ai-harness --tool=antigravity
 
 ```bash
 # Wo Coder — our primary agent (recommended)
-ai-harness --tool=wocoder
+ai-harness --tool=wocode
 ```
 
 ```bash
@@ -1095,7 +1095,7 @@ ai-harness --update --skip-binary
 # Check for updates without installing
 ai-harness --check
 ```
-> Shows: `wocoder: UPDATE AVAILABLE v1.1.0 → v1.2.0`
+> Shows: `wocode: UPDATE AVAILABLE v1.1.0 → v1.2.0`
 
 ```bash
 # Validate all installed files match manifest
@@ -1189,7 +1189,7 @@ ai-harness --tool=claude --local --yes
 | Flag | Alias | Description |
 |------|-------|-------------|
 | `--install-cli` | | Install/update CLI binary |
-| `--tool=<name>` | | Install tool config (claude, opencode, gemini, pi, wocoder, antigravity, codex, all) |
+| `--tool=<name>` | | Install tool config (claude, opencode, gemini, pi, wocode, antigravity, codex, all) |
 | `--update` | | Full harness sync: CLI + docs + all tools + compliance |
 | `--compliance` | | Validate all installed files match manifest |
 | `--check` | | Compare installed versions against manifest |
@@ -1235,7 +1235,7 @@ Each command separate copy-paste:
 ```
 
 ```bash
-./packages/@aiengineeringharness/setup.sh wocoder
+./packages/@aiengineeringharness/setup.sh wocode
 ```
 
 ```bash
@@ -1269,7 +1269,7 @@ A high-performance CLI coding agent for automated engineering, refactoring, and 
 **Installation methods:**
 | Method | Best for | Config location |
 |--------|----------|-----------------|
-| **Harness CLI** (Steps 1-3) | Shared config across projects | `~/.wocoder/` |
+| **Harness CLI** (Steps 1-3) | Shared config across projects | `~/.wocode/` |
 | **npm/pnpm** (below) | Per-project, version-locked, CI/CD | `./.wo/` |
 
 ---
@@ -1576,7 +1576,7 @@ All 13 packages published under `@wayofmono` scope at [npmjs.com/settings/wayofm
 | View | Description | Best For |
 |------|-------------|----------|
 | **Overview** | Ticket stats, velocity, blockers | Quick team health check |
-| **Tickets** | Full Kanban with filters, review queue | Project managers, leads |
+| **Tickets** | Full Kanban with filters, review queue, **GitHub/Local source switch + branch selector** | Project managers, leads |
 | **Standup** | Daily check-ins (yesterday/today/blockers) | Async standups, remote teams |
 | **Skills** | Real-time skill health across all machines | Ensuring team has latest skills |
 | **Ideas** | Prioritized idea board with voting | Product planning, RFCs |
@@ -1614,18 +1614,32 @@ cd ui && pnpm install && pnpm dev
 | GET | `/api/skills/report` | Skills health report |
 | POST | `/api/skills/report` | Submit skills report (from `ai-harness --report-skills`) |
 
-### API Endpoints
+### GitHub Authentication (Private Repo Access)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/health` | Health check |
-| GET | `/api` | List tickets, developers, docs |
-| POST | `/api/ideas` | Create new idea |
-| POST | `/api/standup` | Create standup entry |
-| POST | `/api/news` | Create news item |
-| GET | `/api/news` | List news items |
-| GET | `/api/skills/report` | Skills health report |
-| POST | `/api/skills/report` | Submit skills report |
+The CTO Dashboard can fetch tickets from the private `f-rr-d` GitHub repository using GitHub OAuth.
+
+**Setup:**
+1. Create a GitHub OAuth App at https://github.com/settings/developers
+2. Set Authorization callback URL: `https://your-domain.com/api/auth/callback/github`
+3. Add environment variables to your deployment:
+   ```bash
+   GITHUB_CLIENT_ID=your_github_client_id
+   GITHUB_CLIENT_SECRET=your_github_client_secret
+   NEXTAUTH_SECRET=your_random_secret (generate with: openssl rand -base64 32)
+   ```
+
+**How it works:**
+- User clicks "Sign in with GitHub" on login page
+- OAuth flow redirects to GitHub, then back to `/api/auth/callback/github`
+- NextAuth.js validates user against `thoughts/` developer list
+- JWT session includes GitHub access token for authenticated API calls
+- Ticket source switch (Local/GitHub) in Tickets view uses authenticated requests
+
+**Required OAuth scopes:** `read:user user:email repo` (for private repo access)
+
+**Ticket source API:** `/api?type=tickets&source=github&branch=main` (auto-includes auth token when logged in)
+
+**Local fallback:** If GitHub is unavailable or user not authenticated, falls back to local `thoughts/` filesystem.
 
 ## 🔧 Pipeline Tools (each command separate copy-paste)
 
@@ -1970,7 +1984,7 @@ cd ui && pnpm build
 │   │   ├── pi/          → ~/.pi/agent/           # 174 files
 │   │   ├── codex/       → ~/.codex/              # 186 files
 │   │   ├── antigravity/ → ~/.antigravity/        # 146 files
-│   │   └── wocoder/     → ~/.wocoder/            # 182 files
+│   │   └── wocode/     → ~/.wocode/            # 182 files
 │   │
 │   ├── @wayofmono/                 # 13 NPM packages
 │   │   ├── wo-ai/                  # 4.0M — Multi-Provider LLM API
