@@ -119,7 +119,17 @@ After any skill/command/agent change:
 2. Run `python3 packages/@aiengineeringharness/config-manifest/validate.py` to check config
 3. Run `python3 packages/@aiengineeringharness/config-manifest/compile.py` to regenerate `manifest.json`
 4. Run `python3 packages/@aiengineeringharness/config-manifest/scripts/run-all-tests.py` to verify everything
-
 ### CI/CD Gate
+
 The test suite at `config-manifest/scripts/` is the CI/CD gate. Any PR modifying tool configs must pass all tests.
+
+## Assets
+
+| Asset | Description |
+|-------|-------------|
+| `assets/compliance-fix.ts` | Auto-fix script for all 7 tools — fixes WRONG_TOOL_CASE, UNSUPPORTED_FRONTMATTER, BODY_WRONG_TOOL_CASE, YAML errors. Run: `deno run -A assets/compliance-fix.ts` |
+| `scripts/` | Test suite and skill update scripts: `test-yamls.py`, `test-manifest.py`, `test-skills.py`, `run-all-tests.py`, plus 7 per-tool skill update scripts |
+| `scripts/compliance-check.ts` | Compliance checker for all 7 tools |
+| `scripts/compliance-fix.ts` | Auto-fix script for cross-tool compliance issues |
+| `scripts/run-all-tests.py` | Test suite orchestrator with `--tool=<name>` support |
 
