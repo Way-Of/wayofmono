@@ -30,7 +30,7 @@ deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@ai
 deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=antigravity --yes
 
 # Wo Coder
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=wocoder --yes
+deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=wocode --yes
 ```
 
 ## Update Harness

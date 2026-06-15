@@ -108,8 +108,8 @@ const TOOLS: Record<string, ToolConfig> = {
     stripFields: ["docs-url"],
     toolNames: { ...CANONICAL_TOOL_NAMES },
   },
-  wocoder: {
-    dir: "packages/@aiengineeringharness/wocoder",
+  wocode: {
+    dir: "packages/@aiengineeringharness/wocode",
     skillDir: "skills",
     naming: "snake",
     stripFields: ["docs-url"],

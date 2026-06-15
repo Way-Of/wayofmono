@@ -94,6 +94,6 @@ npm install @wayofmono/wo-agent
 
 ## Related
 
-- [Wo Coder Installation](guides/wocoder/#installation)
+- [Wo Coder Installation](guides/wocode/#installation)
 - [Wo User Installation](guides/wouser/#installation)
 - [Packages Overview](packages.md)

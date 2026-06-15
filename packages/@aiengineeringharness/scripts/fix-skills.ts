@@ -41,7 +41,7 @@ const TOOL_SPECS: Record<string, { naming: "snake" | "kebab"; allowedTools: stri
     naming: "snake",
     allowedTools: ["read_file", "write_file", "run_shell_command", "glob", "grep", "web_fetch", "web_search", "bash", "edit", "read", "write"],
   },
-  wocoder: {
+  wocode: {
     naming: "snake",
     allowedTools: ["read", "write", "bash", "edit", "grep", "glob", "skill", "todowrite", "webfetch", "websearch", "question"],
   },

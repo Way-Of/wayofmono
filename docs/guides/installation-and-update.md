@@ -67,7 +67,7 @@ ai-harness --tool=gemini
 ai-harness --tool=pi
 ai-harness --tool=codex
 ai-harness --tool=antigravity
-ai-harness --tool=wocoder
+ai-harness --tool=wocode
 ```
 
 ### Direct Run (No CLI install)

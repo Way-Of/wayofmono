@@ -151,7 +151,7 @@ Load skills from filesystem:
 import { loadSkills } from '@wayofmono/wo-agent-core';
 
 const skills = await loadSkills([
-  '~/.wocoder/agent/skills',
+  '~/.wocode/agent/skills',
   '.wo/agent/skills',
   './my-skills'
 ]);
@@ -219,7 +219,7 @@ npx wouser --init
 ## Related
 
 - [Wo User Guide](guides/wouser/)
-- [Wo Coder Guide](guides/wocoder/)
+- [Wo Coder Guide](guides/wocode/)
 - [Custom Provider](custom-provider.md)
 - [Models](models.md)
 - [Packages](packages.md)

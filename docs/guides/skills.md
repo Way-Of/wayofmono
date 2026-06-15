@@ -26,7 +26,7 @@ Skills are modular instruction packages that extend Wo with specific capabilitie
 ### In Wo Coder / Other Tools
 Skills auto-load from tool-specific directories:
 ```
-~/.wocoder/agent/skills/        # Wo Coder
+~/.wocode/agent/skills/        # Wo Coder
 ~/.config/opencode/skills/      # OpenCode
 ~/.claude/skills/               # Claude Code
 ~/.gemini/skills/               # Gemini CLI
@@ -115,5 +115,5 @@ ai-harness --tool=opencode --skill=skills --dry-run
 ## References
 
 - [AI Engineering Harness Guide](ai-harness/) — Core skill management
-- [Wo Coder Guide](wocoder/) — Using skills in Wo Coder
+- [Wo Coder Guide](wocode/) — Using skills in Wo Coder
 - [Wo User Guide](wouser/) — Using skills in your app

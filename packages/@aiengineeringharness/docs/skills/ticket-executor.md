@@ -4,7 +4,7 @@ description: "Execute approved plans in phases, validating telemetry and committ
 version: 1.0.0
 namespace: core
 tools: read, write, grep, glob, WebSearch
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
+platforms: [claude, opencode, gemini, pi, wocode, antigravity, codex]
 allowed-tools: [read, write, grep, glob, web_search]
 dependencies: [ticket-manager]
 ---

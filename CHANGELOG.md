@@ -56,9 +56,9 @@
 
 ### WOMONO-063 — Phase 3 Complete: Consolidated build_tool Skill
 - **Created `scripts/deploy-build-tool.ts`** — generates per-tool SKILL.md from canonical template with correct naming, casing, and frontmatter
-- **Deployed `build_tool` to all 7 harness dirs** — opencode, claude, gemini, pi (build-tool), antigravity, codex, wocoder
+- **Deployed `build_tool` to all 7 harness dirs** — opencode, claude, gemini, pi (build-tool), antigravity, codex, wocode
 - **Comprehensive skill content**: covers all 8 component types (skills, agents, commands, extensions, configs, keybindings, themes, TUI) across all 7 tools with per-tool format tables
-- **Zero compliance errors** on deployment — caught and fixed wocoder casing mismatch during deploy
+- **Zero compliance errors** on deployment — caught and fixed wocode casing mismatch during deploy
 
 ### WOMONO-063 — Phase 4 Complete: `--update` Comprehensive Sync
 - **Rewrote `--update` flow**: CLI + docs + tool install + stale cleanup + auto-validate in one command
@@ -237,7 +237,7 @@
 - **Tested**: All commands working, personal ticket ZERWIZ-001 created for WOMONO-021
 
 ### Codex Platform — First-Class Support Complete
-- **Skill sync across 7 platforms** (claude, opencode, gemini, pi, wocoder, antigravity, codex):
+- **Skill sync across 7 platforms** (claude, opencode, gemini, pi, wocode, antigravity, codex):
   - Removed 82 duplicate skills with incorrect naming conventions
   - Fixed naming: pi uses kebab-case, other 6 platforms use snake_case
   - Core skills (auto-ticket-creator, cto-dashboard, docs-sync-updater, help-command, skill-adapter, skill-auto-update, ticket-manager) use hyphens on ALL platforms
@@ -309,8 +309,8 @@
 - `pi-themes` — Pi themes: JSON format, 51 color tokens, vars system, hex/256-color values
 - `pi-tui` — Pi TUI: built-in components, custom components, keyboard input, widgets, overlays
 
-All 10 skills deployed across all 5 frontends (opencode, claude, gemini, pi, wocoder) with correct naming:
-- opencode/claude/wocoder: kebab-case directory names
+All 10 skills deployed across all 5 frontends (opencode, claude, gemini, pi, wocode) with correct naming:
+- opencode/claude/wocode: kebab-case directory names
 - gemini: snake_case directory names
 - pi: kebab-case (native format)
 

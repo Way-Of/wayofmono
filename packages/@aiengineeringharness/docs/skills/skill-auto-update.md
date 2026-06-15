@@ -4,7 +4,7 @@ description: "Auto-update harness skills from upstream changes, sync documentati
 version: 1.0.0
 namespace: core
 tools: read, write, fetch
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
+platforms: [claude, opencode, gemini, pi, wocode, antigravity, codex]
 allowed-tools: [read, write, fetch]
 dependencies: [auto-ticket-creator]
 ---

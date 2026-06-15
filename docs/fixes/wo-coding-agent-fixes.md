@@ -5,17 +5,17 @@
 ### Enhanced: Init command success message
 - **Files**: `src/main.ts` (init command)
 - **Added**: Clear guidance showing config file locations and Ollama setup steps
-- **Output**: Shows `.wocoder/models.json`, `.wocoder/settings.json` locations
+- **Output**: Shows `.wocode/models.json`, `.wocode/settings.json` locations
 - **Added**: Step-by-step Ollama installation instructions
 
 ### Fixed: Wocoder skill directories renamed to kebab-case (matches Pi convention)
 - **Files**: 
-  - `packages/@aiengineeringharness/wocoder/agent/skills/` - all 81 directories renamed
+  - `packages/@aiengineeringharness/wocode/agent/skills/` - all 81 directories renamed
   - `packages/@aiengineeringharness/manifest.json` - all skill entries updated
-  - `packages/@aiengineeringharness/wocoder/agent/skills/*/SKILL.md` - name fields updated
+  - `packages/@aiengineeringharness/wocode/agent/skills/*/SKILL.md` - name fields updated
 - **Change**: snake_case → kebab-case (e.g., `auto_ticket_creator` → `auto-ticket-creator`)
 - **Reason**: Matches Pi's kebab-case convention; fixes "name contains invalid characters" validation errors
-- **Impact**: All 81 skills now use consistent kebab-case naming across Pi and wocoder
+- **Impact**: All 81 skills now use consistent kebab-case naming across Pi and wocode
 
 ---
 
@@ -32,11 +32,11 @@
 ## v1.0.9 — 2026-06-14
 
 ### Fixed: CONFIG_DIR_NAME separation
-- **Changed**: `.wo` → `.wocoder`
+- **Changed**: `.wo` → `.wocode`
 - **Reason**: Separate config directories for different tools:
   - **wouser** (user agent): `~/.wo/agent/`
-  - **wocode** (coding agent): `~/.wocoder/agent/`
-- **Impact**: Windows user was getting `.wo` (wouser config) instead of `.wocoder`
+  - **wocode** (coding agent): `~/.wocode/agent/`
+- **Impact**: Windows user was getting `.wo` (wouser config) instead of `.wocode`
 
 ### Updated: Environment variables
 - `WOCODE_CODING_AGENT_DIR` (was `WO_CODING_AGENT_DIR`)
@@ -84,7 +84,7 @@
 | Version | Date | Key Fix |
 |---------|------|---------|
 | 1.0.9 | 2026-06-14 | Added docs folder, Ollama defaults |
-| 1.0.8 | 2026-06-14 | CONFIG_DIR_NAME: .wo → .wocoder |
+| 1.0.8 | 2026-06-14 | CONFIG_DIR_NAME: .wo → .wocode |
 | 1.0.7 | 2026-06-14 | npm workspace deps → explicit versions |
 | 1.0.6 | 2026-06-14 | Removed link: protocol |
 | 1.0.5 | 2026-06-10 | Pre-fix baseline |
@@ -97,13 +97,13 @@
 ```bash
 npm install -g @wayofmono/wo-coding-agent
 wocode --init
-# Creates .wocoder/ with models.json (Ollama), settings.json
+# Creates .wocode/ with models.json (Ollama), settings.json
 wocode --no-skills --print "test"
 ```
 
 ### ✅ Config Directory Structure
 ```
-~/.wocoder/
+~/.wocode/
 ├── agent/
 │   ├── models.json      # Ollama default: qwen3.5:9b
 │   ├── settings.json    # Default provider: ollama
@@ -116,7 +116,7 @@ wocode --no-skills --print "test"
 ```
 
 ### ❌ Still Missing (Future Work)
-- Harness skills installation via `ai-harness --tool=wocoder` (only 25/81 skills in manifest)
+- Harness skills installation via `ai-harness --tool=wocode` (only 25/81 skills in manifest)
 - Extensions, prompts, themes from harness
 - Skills in `/skill:` commands and system prompt
 

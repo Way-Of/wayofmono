@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Wo Coder Skill Updater — wocoder/agent/skills
+Wo Coder Skill Updater — wocode/agent/skills
 
 Ensures all skills use correct:
   - Directory naming: snake_case
@@ -10,18 +10,18 @@ Ensures all skills use correct:
   - Frontmatter fields: name, description, allowed-tools, platforms, disable-model-invocation
 
 Usage:
-    python3 scripts/wocoder-skill-update.py --validate
-    python3 scripts/wocoder-skill-update.py --fix
-    python3 scripts/wocoder-skill-update.py --add <name> --desc "..."
-    python3 scripts/wocoder-skill-update.py --sync-yaml
-    python3 scripts/wocoder-skill-update.py --all
+    python3 scripts/wocode-skill-update.py --validate
+    python3 scripts/wocode-skill-update.py --fix
+    python3 scripts/wocode-skill-update.py --add <name> --desc "..."
+    python3 scripts/wocode-skill-update.py --sync-yaml
+    python3 scripts/wocode-skill-update.py --all
 """
 
 import os, sys, re, json, yaml
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-SKILL_DIR = os.path.join(REPO_ROOT, "wocoder/agent/skills")
-CONFIG_YAML = os.path.join(REPO_ROOT, "config-manifest/tools/wocoder.yaml")
+SKILL_DIR = os.path.join(REPO_ROOT, "wocode/agent/skills")
+CONFIG_YAML = os.path.join(REPO_ROOT, "config-manifest/tools/wocode.yaml")
 
 TOOL_NAME = "Wo Coder"
 SKILL_FILE = "SKILL.md"
@@ -279,7 +279,7 @@ def cmd_sync_yaml():
                 skills_on_disk.add(entry)
     components = config.get("components", {})
     yaml_skills = set()
-    prefix = "wocoder/agent/skills/"
+    prefix = "wocode/agent/skills/"
     for key, comp in components.items():
         src = comp.get("src", "") if isinstance(comp, dict) else ""
         if src.startswith(prefix):
@@ -298,11 +298,11 @@ def cmd_sync_yaml():
 def print_help():
     print("Wo Coder Skill Updater")
     print("Usage:")
-    print(f"  python3 scripts/wocoder-skill-update.py --validate    Validate all skills")
-    print(f"  python3 scripts/wocoder-skill-update.py --fix         Auto-fix issues")
-    print(f"  python3 scripts/wocoder-skill-update.py --add NAME    Scaffold new skill")
-    print(f"  python3 scripts/wocoder-skill-update.py --sync-yaml   Sync YAML config")
-    print(f"  python3 scripts/wocoder-skill-update.py --all         Fix + sync-yaml")
+    print(f"  python3 scripts/wocode-skill-update.py --validate    Validate all skills")
+    print(f"  python3 scripts/wocode-skill-update.py --fix         Auto-fix issues")
+    print(f"  python3 scripts/wocode-skill-update.py --add NAME    Scaffold new skill")
+    print(f"  python3 scripts/wocode-skill-update.py --sync-yaml   Sync YAML config")
+    print(f"  python3 scripts/wocode-skill-update.py --all         Fix + sync-yaml")
 
 
 if __name__ == "__main__":

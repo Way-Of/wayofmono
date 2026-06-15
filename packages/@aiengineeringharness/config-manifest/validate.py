@@ -44,7 +44,7 @@ TOOL_SPECS = {
     "opencode": {
         "naming": "snake",
         "allowed_prefixes": ["opencode/"],
-        "forbidden_prefixes": ["claude/", "gemini/", "pi/", "wocoder/", "codex/", "antigravity/"],
+        "forbidden_prefixes": ["claude/", "gemini/", "pi/", "wocode/", "codex/", "antigravity/"],
         "target": "~/.config/opencode",
         "allowed_tools_case": "lowercase",
         "skill_dir_regex": r"^[a-z0-9]+(-[a-z0-9]+)*$",
@@ -53,7 +53,7 @@ TOOL_SPECS = {
     "claude": {
         "naming": "snake",
         "allowed_prefixes": ["claude/"],
-        "forbidden_prefixes": ["opencode/", "gemini/", "pi/", "wocoder/", "codex/", "antigravity/"],
+        "forbidden_prefixes": ["opencode/", "gemini/", "pi/", "wocode/", "codex/", "antigravity/"],
         "target": "~/.claude",
         "allowed_tools_case": "PascalCase",
         "skill_dir_regex": r"^[a-z0-9]+(-[a-z0-9]+)*$",
@@ -62,7 +62,7 @@ TOOL_SPECS = {
     "gemini": {
         "naming": "snake",
         "allowed_prefixes": ["gemini/"],
-        "forbidden_prefixes": ["claude/", "opencode/", "pi/", "wocoder/", "codex/", "antigravity/"],
+        "forbidden_prefixes": ["claude/", "opencode/", "pi/", "wocode/", "codex/", "antigravity/"],
         "target": "~/.gemini",
         "allowed_tools_case": "lowercase",
         "skill_dir_regex": r"^[a-z0-9]+(-[a-z0-9]+)*$",
@@ -71,17 +71,17 @@ TOOL_SPECS = {
     "pi": {
         "naming": "kebab",
         "allowed_prefixes": ["pi/agent/"],
-        "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "wocoder/", "codex/", "antigravity/"],
+        "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "wocode/", "codex/", "antigravity/"],
         "target": "~/.pi/agent",
         "allowed_tools_case": "lowercase",
         "skill_dir_regex": r"^[a-z0-9]+(-[a-z0-9]+)*$",
         "dir_naming": "kebab-case",
     },
-    "wocoder": {
+    "wocode": {
         "naming": "snake",
-        "allowed_prefixes": ["wocoder/", "wocoder/agent/"],
+        "allowed_prefixes": ["wocode/", "wocode/agent/"],
         "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "codex/", "antigravity/"],
-        "target": "~/.wocoder",
+        "target": "~/.wocode",
         "allowed_tools_case": "lowercase",
         "skill_dir_regex": r"^[a-z0-9]+(-[a-z0-9]+)*$",
         "dir_naming": "snake_case",
@@ -89,7 +89,7 @@ TOOL_SPECS = {
     "codex": {
         "naming": "snake",
         "allowed_prefixes": ["codex/"],
-        "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "wocoder/", "antigravity/"],
+        "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "wocode/", "antigravity/"],
         "target": "~/.codex",
         "allowed_tools_case": "lowercase",
         "skill_dir_regex": r"^[a-z0-9]+(-[a-z0-9]+)*$",
@@ -98,7 +98,7 @@ TOOL_SPECS = {
     "antigravity": {
         "naming": "snake",
         "allowed_prefixes": ["antigravity/"],
-        "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "wocoder/", "codex/"],
+        "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "wocode/", "codex/"],
         "target": "~/.antigravity",
         "allowed_tools_case": "lowercase",
         "skill_dir_regex": r"^[a-z0-9]+(-[a-z0-9]+)*$",

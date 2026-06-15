@@ -206,7 +206,7 @@ When the dynamic orchestration layer is stripped away, an `AGENTS.md` shifts fro
 │   ├── claude/          → ~/.claude/
 │   ├── gemini/          → ~/.gemini/
 │   ├── pi/              → ~/.pi/agent/
-│   ├── wocoder/         → ~/.wocoder/
+│   ├── wocode/         → ~/.wocode/
 │   ├── antigravity/     → ~/.antigravity/
 │   ├── codex/           → ~/.codex/
 │   └── scripts/         # Pipeline tools (docs-sync, compliance, migrate)
@@ -253,7 +253,7 @@ ai-harness --tool=gemini
 ai-harness --tool=pi
 ai-harness --tool=codex
 ai-harness --tool=antigravity
-ai-harness --tool=wocoder
+ai-harness --tool=wocode
 ai-harness --tool=all --yes
 
 # Update all
@@ -273,7 +273,7 @@ ai-harness --report-skills
 | Pi | kebab-case | `~/.pi/agent/` |
 | Codex | snake_case | `~/.codex/` |
 | Antigravity | snake_case | `~/.antigravity/` |
-| Wo Coder | snake_case | `~/.wocoder/` |
+| Wo Coder | snake_case | `~/.wocode/` |
 
 **OpenCode Critical**: Skill directory name MUST match frontmatter `name` exactly (regex `^[a-z0-9]+(-[a-z0-9]+)*$`)
 
@@ -334,7 +334,7 @@ Any AI agent working with this repo:
 - `thoughts/wayofmono/shared/tickets/ticket-template.md` — Canonical ticket template
 - `thoughts/wayofmono/docs/best-practices/` — Production-ready standards
 - `docs/ai-coding-tools/` — **Authoritative reference for all 7 AI coding tools** (install, config, extensions, MCP, subagents, commands, capabilities). Each tool has a dedicated `.md` file verified against official docs (June 2026).
-- `docs/guides/` — **Installation, commands, skills, troubleshooting, project structure** guides for the harness and tools (getting-started, installation, commands, skills, wocoder, wouser, dashboard, project-structure, troubleshooting)
+- `docs/guides/` — **Installation, commands, skills, troubleshooting, project structure** guides for the harness and tools (getting-started, installation, commands, skills, wocode, wouser, dashboard, project-structure, troubleshooting)
 - `README.md` — Complete installation guide, CLI reference, package list, dashboard, CI/CD
 - `CHANGELOG.md` — Full version history
 - `docs/fixes/` — Release notes and bug fixes for harness, wocode, wouser

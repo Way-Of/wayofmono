@@ -638,9 +638,9 @@ export class DefaultResourceLoader implements ResourceLoader {
 		];
 
 		// Also check additional tool directories from the AI Engineering Harness manifest
-		// This ensures resources from wocoder (~/.wocoder/) and pi (~/.pi/agent/) are recognized
+		// This ensures resources from wocode (~/.wocode/) and pi (~/.pi/agent/) are recognized
 		const additionalAgentDirs = [
-			join(homedir(), ".wocoder"),
+			join(homedir(), ".wocode"),
 			join(homedir(), ".pi/agent"),
 		];
 
@@ -664,7 +664,7 @@ export class DefaultResourceLoader implements ResourceLoader {
 		// Also check AI Engineering Harness directory (source location)
 		// This ensures resources from the harness source are loaded when running from the repo
 		// From dist/core, need to go up 5 levels: core -> dist -> wo-coding-agent -> @wayofmono -> packages -> repo root
-		const harnessDir = resolve(__dirname, "../../../../../packages/@aiengineeringharness/wocoder");
+		const harnessDir = resolve(__dirname, "../../../../../packages/@aiengineeringharness/wocode");
 		if (existsSync(harnessDir)) {
 			const originalAgentRootsCount = agentRoots.length;
 			agentRoots.push(

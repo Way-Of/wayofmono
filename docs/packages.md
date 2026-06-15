@@ -249,6 +249,6 @@ All packages versioned together:
 ## Related
 
 - [SDK](sdk.md)
-- [Wo Coder](guides/wocoder/)
+- [Wo Coder](guides/wocode/)
 - [Wo User](guides/wouser/)
 - [NPM Registry](https://www.npmjs.com/settings/wayofmono/packages)

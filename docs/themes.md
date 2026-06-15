@@ -90,14 +90,14 @@ themes/
 ### Via Harness
 
 ```bash
-ai-harness --tool=wocoder --skill=themes --yes
+ai-harness --tool=wocode --skill=themes --yes
 ```
 
 ### Manual
 
 ```bash
 # Copy theme file to themes directory
-cp my-theme.json ~/.wocoder/agent/themes/my-theme.json
+cp my-theme.json ~/.wocode/agent/themes/my-theme.json
 
 # Or in project
 cp my-theme.json .wo/agent/themes/my-theme.json
@@ -147,7 +147,7 @@ Used for code highlighting in TUI
 
 ## Related
 
-- [Wo Coder Guide](guides/wocoder/)
+- [Wo Coder Guide](guides/wocode/)
 - [TUI Components](tui.md)
 - [Keybindings](keybindings.md)
-- [Settings](guides/wocoder/#configuration)
+- [Settings](guides/wocode/#configuration)

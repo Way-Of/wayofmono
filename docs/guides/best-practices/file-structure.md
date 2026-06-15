@@ -86,10 +86,10 @@ antigravity/
 └── .mcp.json
 ```
 
-### Wo Coder (`~/.wocoder/`)
+### Wo Coder (`~/.wocode/`)
 
 ```
-wocoder/
+wocode/
 ├── agent/
 │   ├── skills/
 │   ├── tools/

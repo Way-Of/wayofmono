@@ -26,7 +26,7 @@ Each Skill in `packages/@aiengineeringharness/skills/<Skill>/` has:
 | `to-opencode()` | manifest.json + tool defs | `~/.config/opencode/` |
 | `to-codex()` | Skill.yaml + prompt.md | `~/.codex/` |
 | `to-antigravity()` | Gemini-compatible pass-through | `~/.antigravity/` |
-| `to-wocode()` | Node/Deno command registration | `~/.wocoder/` |
+| `to-wocode()` | Node/Deno command registration | `~/.wocode/` |
 
 ## Integration
 

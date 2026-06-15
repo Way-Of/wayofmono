@@ -12,9 +12,9 @@
 
 | Component | Package | Current Version | Config Dir |
 |-----------|---------|----------------|------------|
-| **wocode** | `@wayofmono/wo-coding-agent` | v1.0.11 | `~/.wocoder/` |
+| **wocode** | `@wayofmono/wo-coding-agent` | v1.0.11 | `~/.wocode/` |
 | **wouser** | `@wayofmono/wo-agent` | v1.0.4 | `~/.wo/` |
-| **Harness** | `@aiengineeringharness` | v1.7.0 | `~/.wocoder/`, `~/.pi/agent/`, etc. |
+| **Harness** | `@aiengineeringharness` | v1.7.0 | `~/.wocode/`, `~/.pi/agent/`, etc. |
 
 ---
 
@@ -26,7 +26,7 @@ See [wo-coding-agent-fixes.md](./wo-coding-agent-fixes.md) for detailed release 
 - v1.0.11: Enhanced init message + skill directories kebab-case (matches Pi)
 - v1.0.10: Extension errors → warnings (wocode won't crash on missing deps)
 - v1.0.9: Added docs folder, Ollama defaults
-- v1.0.8: CONFIG_DIR_NAME `.wo` → `.wocoder` (separate from wouser)
+- v1.0.8: CONFIG_DIR_NAME `.wo` → `.wocode` (separate from wouser)
 - v1.0.7: npm workspace deps → explicit versions
 - v1.0.6: Removed `link:` protocol (npm incompatible)
 
@@ -38,7 +38,7 @@ See [wo-agent-fixes.md](./wo-agent-fixes.md) for detailed release notes.
 
 **Quick Summary:**
 - v1.0.4: npm workspace deps → explicit versions, working npm global install
-- CONFIG_DIR_NAME: `~/.wo/` (separate from wocode's `~/.wocoder/`)
+- CONFIG_DIR_NAME: `~/.wo/` (separate from wocode's `~/.wocode/`)
 
 ---
 

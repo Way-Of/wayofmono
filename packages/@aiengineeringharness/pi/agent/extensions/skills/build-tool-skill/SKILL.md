@@ -59,7 +59,7 @@ You are a cross-tool skill builder. You know how to create SKILL.md files for AL
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
 - **allowed-tools**: PascalCase (`Read, Write, Edit, Bash, Grep, Glob`)
-- **Config**: `~/.wocoder/skills/`
+- **Config**: `~/.wocode/skills/`
 - **Docs**: Internal (WayOfMono monorepo)
 
 ## Common Tasks

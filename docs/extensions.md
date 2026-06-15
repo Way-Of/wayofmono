@@ -95,7 +95,7 @@ export const myTool: Tool = {
 ### Via Harness (Recommended)
 
 ```bash
-ai-harness --tool=wocoder --skill=extensions --yes
+ai-harness --tool=wocode --skill=extensions --yes
 ```
 
 ### Manual
@@ -120,7 +120,7 @@ npm install @myorg/wo-extension-example
 ## Loading Extensions
 
 Extensions are loaded from:
-1. Global: `~/.wocoder/agent/extensions/`
+1. Global: `~/.wocode/agent/extensions/`
 2. Project: `.wo/agent/extensions/`
 3. Shared: `~/.agents/extensions/`
 4. npm packages in `settings.json`
@@ -133,7 +133,7 @@ npm publish --access public
 
 ## Related
 
-- [Wo Coder Guide](guides/wocoder/)
+- [Wo Coder Guide](guides/wocode/)
 - [Skills](skills.md)
 - [TUI Components](tui.md)
 - [SDK](sdk.md)

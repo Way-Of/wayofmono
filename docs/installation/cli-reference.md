@@ -7,7 +7,7 @@ Complete flag reference for the AI Engineering Harness CLI.
 | Flag | Alias | Description |
 |------|-------|-------------|
 | `--install-cli` | | Install/update CLI binary |
-| `--tool=<name>` | | Install tool config (claude, opencode, gemini, pi, wocoder, antigravity, codex, all) |
+| `--tool=<name>` | | Install tool config (claude, opencode, gemini, pi, wocode, antigravity, codex, all) |
 | `--update` | | Full harness sync: CLI + docs + all tools + compliance |
 | `--compliance` | | Validate all installed files match manifest |
 | `--check` | | Compare installed versions against manifest |
@@ -38,7 +38,7 @@ Complete flag reference for the AI Engineering Harness CLI.
 | `pi` | Pi Agent |
 | `codex` | Codex (OpenAI) |
 | `antigravity` | Antigravity platform |
-| `wocoder` | Wo Coder (primary interface) |
+| `wocode` | Wo Coder (primary interface) |
 | `all` | All 7 tools |
 
 ## Component Names (--skill)
@@ -70,7 +70,7 @@ ai-harness --tool=claude --skill=skills,agents --dry-run
 ai-harness --tool=claude --interactive
 
 # Project-local install
-ai-harness --tool=wocoder --local --yes
+ai-harness --tool=wocode --local --yes
 
 # Full update with compliance check
 ai-harness --update

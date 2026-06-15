@@ -176,7 +176,7 @@ function Show-Help {
   Write-Host ""
   Write-Host "  PARAMETERS:" -ForegroundColor White
   Write-Host "    -InstallCli       Install/update ai-harness CLI binary"
-  Write-Host "    -Tool <name>      Install tool config (claude, opencode, gemini, pi, wocoder, antigravity, codex, all)"
+   Write-Host "    -Tool <name>      Install tool config (claude, opencode, gemini, pi, wocode, antigravity, codex, all)"
   Write-Host "    -Update           Full harness sync: CLI + docs + all tools + compliance"
   Write-Host "    -Compliance       Validate all installed files match manifest"
   Write-Host "    -Check            Compare installed versions against manifest"

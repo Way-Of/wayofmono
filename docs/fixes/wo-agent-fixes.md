@@ -47,6 +47,6 @@ wouser --init
 | Tool | Package | Config Dir | Purpose |
 |------|---------|------------|---------|
 | **wouser** | `@wayofmono/wo-agent` | `~/.wo/` | General-purpose user agent (SDK + CLI) |
-| **wocode** | `@wayofmono/wo-coding-agent` | `~/.wocoder/` | Coding-specific CLI assistant |
+| **wocode** | `@wayofmono/wo-coding-agent` | `~/.wocode/` | Coding-specific CLI assistant |
 
 These are SEPARATE tools with separate configs - do NOT conflate them.

@@ -78,7 +78,7 @@ Wo, show me the project structure
 Reusable instruction sets synced by the Harness to all 7 tools:
 - `~/.config/opencode/skills/` (OpenCode)
 - `~/.claude/skills/` (Claude)
-- `~/.wocoder/agent/skills/` (Wo Coder)
+- `~/.wocode/agent/skills/` (Wo Coder)
 - etc.
 
 ### Tickets
@@ -108,7 +108,7 @@ Built-in slash commands (work in all tools):
 
 | Guide | Description |
 |-------|-------------|
-| [Wo Coder (wocode)](wocoder/) | CLI coding assistant for engineers |
+| [Wo Coder (wocode)](wocode/) | CLI coding assistant for engineers |
 | [Wo User (wouser)](wouser/) | SDK for embedding agent in your app |
 | [AI Engineering Harness](ai-harness/) | Core skill/agent management for 7 tools |
 | [Installation & Update](installation-and-update.md) | Detailed install instructions |

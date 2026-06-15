@@ -4,7 +4,7 @@ description: "Auto-create skills with proper documentation, prompts, keybindings
 version: 1.0.0
 namespace: tools
 tools: codegen, write, file
-platforms: [claude, opencode, gemini, pi, wocoder, antigravity, codex]
+platforms: [claude, opencode, gemini, pi, wocode, antigravity, codex]
 allowed-tools: [codegen, write, file]
 dependencies: [ticket-manager]
 ---

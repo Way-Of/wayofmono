@@ -19,7 +19,7 @@ Complete directory tree for WayOfMono monorepo.
 │   │   ├── pi/          → ~/.pi/agent/           # 174 files
 │   │   ├── codex/       → ~/.codex/              # 186 files
 │   │   ├── antigravity/ → ~/.antigravity/        # 146 files
-│   │   └── wocoder/     → ~/.wocoder/            # 182 files
+│   │   └── wocode/     → ~/.wocode/            # 182 files
 │   │
 │   ├── @wayofmono/                 # 13 NPM packages
 │   │   ├── wo-ai/                  # 4.0M — Multi-Provider LLM API

@@ -7,7 +7,7 @@ WayOfMono's own AI coding CLI. Native monorepo tool, synthesized from Pi codebas
 | Attribute | Value |
 |-----------|-------|
 | **Binary** | `wocode` |
-| **Config dir** | `~/.wocoder/` |
+| **Config dir** | `~/.wocode/` |
 | **Workspace dir** | `.wo/` |
 | **Package** | `@wayofmono/wo-coding-agent` (binary `wocode`) |
 | **Also** | `@wayofmono/wo-agent` (binary `wouser` — general-purpose agent) |
@@ -15,7 +15,7 @@ WayOfMono's own AI coding CLI. Native monorepo tool, synthesized from Pi codebas
 | **Core** | `@wayofmono/wo-agent-core` |
 | **Install** | `npm install -D @wayofmono/wo-coding-agent` |
 | **Init** | `pnpm wocode --init` (generates local `./wocode` launcher) |
-| **Config** | `~/.wocoder/wocoder.json` |
+| **Config** | `~/.wocode/wocode.json` |
 | **Workspace config** | `.wo/config.yaml` |
 | **Project memory** | `AGENTS.md` |
 | **Auth** | API key (monorepo JWT) |
@@ -34,7 +34,7 @@ Three-layer architecture shared between `wocode` (coding agent) and `wouser` (us
 | **wo-coding-agent** | `@wayofmono/wo-coding-agent` | Coding agent — binary `wocode` |
 
 ### Harness Integration
-The AI Engineering Harness at `packages/@aiengineeringharness/wocoder/` deploys to `~/.wocoder/`:
+The AI Engineering Harness at `packages/@aiengineeringharness/wocode/` deploys to `~/.wocode/`:
 
 | Component | Location | Description |
 |-----------|----------|-------------|
@@ -42,11 +42,11 @@ The AI Engineering Harness at `packages/@aiengineeringharness/wocoder/` deploys 
 | **Commands** | `commands/` | 11 Markdown slash commands (identical to OpenCode set) |
 | **Skills** | `skills/` | 25+ auto-triggered skills (SKILL.md format) |
 | **Extensions** | `extensions/` | TS/JS extensions (Pi-compatible API): includes `subagent` extension for multi-agent workflows |
-| **Config** | `wocoder.json` | MCP configuration (OpenCode-compatible schema) |
+| **Config** | `wocode.json` | MCP configuration (OpenCode-compatible schema) |
 
 ### Skill Locations
 Skills are loaded from three sources:
-1. **Global**: `~/.wocoder/skills/` (via `getAgentDir()`)
+1. **Global**: `~/.wocode/skills/` (via `getAgentDir()`)
 2. **Project**: `<cwd>/.wo/skills/`
 3. **Explicit**: From CLI `--skills` flag, extension events, or package manifests
 
@@ -55,7 +55,7 @@ Skills are loaded from three sources:
 - **Agent naming**: snake_case
 - **Commands**: Markdown in `commands/` directory
 - **Project memory**: `AGENTS.md`
-- **Config location**: `~/.wocoder/` (global), `.wo/` (workspace)
+- **Config location**: `~/.wocode/` (global), `.wo/` (workspace)
 - **MCP config**: OpenCode-compatible schema (`$schema: https://opencode.ai/config.json`)
 
 ### Key Differences from Antigravity / Gemini CLI
@@ -71,7 +71,7 @@ Wo Coder is a **rebrand + tweak** of the Pi codebase:
 
 ## Configuration
 
-### `wocoder.json`
+### `wocode.json`
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
@@ -95,7 +95,7 @@ Disable syntax: `"enabled": false` (same as OpenCode).
 Priority for finding agent directory:
 1. Environment variable (e.g. `WOCODE_CODING_AGENT_DIR`)
 2. Walk up from CWD looking for a `.wo/` directory containing `agent/` subdirectory
-3. Fallback: `~/.wocoder/agent/`
+3. Fallback: `~/.wocode/agent/`
 
 ## Resource Loading Pipeline
 
@@ -130,7 +130,7 @@ The runtime loading pipeline (`DefaultResourceLoader.reload()`) runs in this ord
 ### Skill Source Tagging
 | Source | Scope | Location |
 |--------|-------|----------|
-| `"user"` | `local.user` | `~/.wocoder/agent/skills/` |
+| `"user"` | `local.user` | `~/.wocode/agent/skills/` |
 | `"project"` | `local.project` | `<cwd>/.wo/skills/` |
 | `"path"` | `local` | Explicit path (CLI, extension) |
 | `"package"` | `package` | From npm/git/local package |
@@ -155,13 +155,13 @@ Same API as Pi:
 - Format: `SKILL.md` with YAML frontmatter
 - Naming: snake_case directory names
 - YAML frontmatter: name, description, allowed-tools, platforms
-- Platforms array (from harness convention): `[claude, opencode, gemini, pi, wocoder, antigravity, codex]`
+- Platforms array (from harness convention): `[claude, opencode, gemini, pi, wocode, antigravity, codex]`
 - Tool names: kebab-case (unlike Pi's Title Case)
 - Auto-triggered or manual (via `disable-model-invocation`)
 - Skills injected into system prompt as XML block per Agent Skills standard
 
 ### Harness Pre-built Skills
-The AI Engineering Harness provides 25 pre-built skills deployed to `~/.wocoder/skills/`:
+The AI Engineering Harness provides 25 pre-built skills deployed to `~/.wocode/skills/`:
 ticket-manager, team-setup, skill-auto-update, auto-ticket-creator, docs-sync-updater, cto-dashboard, skill-adapter, help-command, observability-driven-development, git-commit-helper, pr-description-generator, experimental-pr-workflow, interview, improve-codebase-architecture, prd-to-issues, tdd, write-a-prd, plus 10 Pi expert skills (build-pi-agent, pi-cli, pi-config, build-pi-extension, pi-keybindings, pi-orchestrate, pi-prompts, build-pi-skill, pi-themes, pi-tui)
 
 ## Features
@@ -171,7 +171,7 @@ ticket-manager, team-setup, skill-auto-update, auto-ticket-creator, docs-sync-up
 - **Human-in-the-loop**: Writes to `thoughts/shared/pending-review/` (WOW-010)
 - **Multi-surface**: Terminal and WoW Chat UI
 - **Ticket-aware**: Integrates with backlog and tickets workflow
-- **Zero global pollution**: All config via `~/.wocoder/` + local `.wo/`
+- **Zero global pollution**: All config via `~/.wocode/` + local `.wo/`
 - **OpenCode-compatible MCP schema**
 - **Pi-compatible extension API**
 - **OpenTelemetry instrumentation**

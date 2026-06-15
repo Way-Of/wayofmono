@@ -639,7 +639,7 @@ async function printOnboarding(format: "text" | "json" | "markdown"): Promise<vo
     console.log(JSON.stringify({
       steps: [
         "Install the harness: ai-harness --tool=<name>",
-        "Pick your tool(s): claude, opencode, gemini, pi, wocoder, antigravity, codex",
+        "Pick your tool(s): claude, opencode, gemini, pi, wocode, antigravity, codex",
         "Run update: ai-harness --update",
         "Report skills: ai-harness --report-skills",
         "Create first ticket: use ticket_manager skill",
@@ -661,7 +661,7 @@ async function printOnboarding(format: "text" | "json" | "markdown"): Promise<vo
     console.log("deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli");
     console.log("```\n");
     console.log("## 2. Pick Your Tools\n");
-    console.log("Supported tools: claude, opencode, gemini, pi, wocoder, antigravity, codex\n");
+    console.log("Supported tools: claude, opencode, gemini, pi, wocode, antigravity, codex\n");
     console.log("```bash");
     console.log("ai-harness --tool=claude");
     console.log("ai-harness --tool=opencode");
@@ -711,7 +711,7 @@ async function printOnboarding(format: "text" | "json" | "markdown"): Promise<vo
   console.log();
 
   console.log(`${CYAN}2.${RESET} ${BOLD}Pick Your Tools${RESET}`);
-  console.log(`   Supported: claude, opencode, gemini, pi, wocoder, antigravity, codex`);
+  console.log(`   Supported: claude, opencode, gemini, pi, wocode, antigravity, codex`);
   console.log(`   ai-harness --tool=claude`);
   console.log(`   ai-harness --tool=all`);
   console.log();

@@ -39,7 +39,7 @@ npx wocode --init
 
 ### Skills System
 Loads skills from:
-- `~/.wocoder/agent/skills/` (global)
+- `~/.wocode/agent/skills/` (global)
 - `.wo/agent/skills/` (project-local)
 - `~/.agents/skills/` (shared cross-tool)
 
@@ -47,7 +47,7 @@ Loads skills from:
 
 ```bash
 # Via harness (recommended)
-ai-harness --tool=wocoder --yes
+ai-harness --tool=wocode --yes
 
 # Direct npm
 npm install --save-dev @wayofmono/wo-coding-agent

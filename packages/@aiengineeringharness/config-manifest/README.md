@@ -16,7 +16,7 @@ config-manifest/
 │   ├── gemini.yaml
 │   ├── opencode.yaml
 │   ├── pi.yaml
-│   └── wocoder.yaml
+│   └── wocode.yaml
 └── README.md
 ```
 
@@ -28,7 +28,7 @@ config-manifest/
 | Claude Code | snake_case | PascalCase | SKILL.md (`disable-model-invocation` for commands) | `~/.claude/` |
 | Gemini CLI | snake_case | lowercase | SKILL.md + TOML commands/ | `~/.gemini/` |
 | Pi | kebab-case | lowercase | SKILL.md + prompts/ | `~/.pi/agent/` |
-| Wo Coder | snake_case | lowercase | SKILL.md + commands/ | `~/.wocoder/` |
+| Wo Coder | snake_case | lowercase | SKILL.md + commands/ | `~/.wocode/` |
 | Codex CLI | snake_case | lowercase | skill.yaml + prompt.md | `~/.codex/` |
 | Antigravity | snake_case | lowercase | SKILL.md + TOML commands/ | `~/.antigravity/` |
 
