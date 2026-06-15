@@ -36,3 +36,21 @@ Each skill in `packages/@aiengineeringharness/skills/<skill>/` has:
 ## Integration
 
 Called by `skill-auto-update` during `--sync-skills` to generate platform-specific output before installation.
+
+
+## Config-Manifest Integration
+
+The `config-manifest/` directory at `packages/@aiengineeringharness/config-manifest/` is the new source of truth for per-tool configuration:
+
+- **`base_manifest.yaml`** — Global metadata and shared configuration anchors
+- **`tools/<tool>.yaml`** — Per-tool config (skills, commands, prompts, extensions, agents, sidecars)
+- **`compile.py`** — Merges base + per-tool YAMLs into `manifest.json` (backward compatible)
+- **`validate.py`** — Validates per-tool YAMLs against format specs from `docs/ai-coding-tools/`
+
+The compiled `manifest.json` is consumed by `install.ts` for deployment. The per-tool YAMLs replace the previously monolithic `manifest.json` — each tool's config is now independently maintainable.
+
+When adding a new skill/command/agent to all tools:
+1. Deploy the skill files to each tool's `skills/` directory
+2. Add the entry to each tool's YAML at `config-manifest/tools/<tool>.yaml`
+3. Run `compile.py` to regenerate `manifest.json`
+

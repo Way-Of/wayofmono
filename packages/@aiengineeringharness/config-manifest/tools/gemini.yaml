@@ -1,0 +1,651 @@
+name: gemini
+version: 1.0.0
+target: ~/.gemini
+components:
+  settings:
+    description: Gemini global configuration
+    files:
+    - src: gemini/README.md
+      dest: README.md
+  agents:
+    description: Specialized subagents for Gemini
+    files:
+    - src: gemini/agents/README.md
+      dest: agents/README.md
+    - src: gemini/agents/codebase_investigator.md
+      dest: agents/codebase_investigator.md
+    - src: gemini/agents/codebase_locator.md
+      dest: agents/codebase_locator.md
+    - src: gemini/agents/codebase_pattern_finder.md
+      dest: agents/codebase_pattern_finder.md
+    - src: gemini/agents/thoughts_analyzer.md
+      dest: agents/thoughts_analyzer.md
+    - src: gemini/agents/thoughts_locator.md
+      dest: agents/thoughts_locator.md
+    - src: gemini/agents/web_search_researcher.md
+      dest: agents/web_search_researcher.md
+  sidecars:
+    description: Gemini sidecars
+    files:
+    - src: gemini/sidecars/README.md
+      dest: sidecars/README.md
+  hooks:
+    description: Gemini hooks
+    files:
+    - src: gemini/hooks/README.md
+      dest: hooks/README.md
+  plugins:
+    description: Gemini plugins
+    files:
+    - src: gemini/plugins/README.md
+      dest: plugins/README.md
+  commands:
+    description: Gemini commands
+    files:
+    - src: gemini/commands/run-commit.toml
+      dest: commands/commit.toml
+    - src: gemini/commands/run-create_plan.toml
+      dest: commands/create-plan.toml
+    - src: gemini/commands/run-debug-k8s.toml
+      dest: commands/debug-k8s.toml
+    - src: gemini/commands/run-debug.toml
+      dest: commands/debug.toml
+    - src: gemini/commands/run-experimental-pr-workflow.toml
+      dest: commands/experimental-pr-workflow.toml
+    - src: gemini/commands/run-git_commit_helper.toml
+      dest: commands/git-commit-helper.toml
+    - src: gemini/commands/run-implement_plan.toml
+      dest: commands/implement-plan.toml
+    - src: gemini/commands/run-init_harness.toml
+      dest: commands/init-harness.toml
+    - src: gemini/commands/run-otel_instrument.toml
+      dest: commands/otel-instrument.toml
+    - src: gemini/commands/run-pr_description_generator.toml
+      dest: commands/pr-description-generator.toml
+    - src: gemini/commands/run-research_codebase.toml
+      dest: commands/research-codebase.toml
+    - src: gemini/commands/run-validate_plan.toml
+      dest: commands/validate-plan.toml
+    - src: gemini/commands/run-validate_telemetry.toml
+      dest: commands/validate-telemetry.toml
+    - src: gemini/commands/run-worktree.toml
+      dest: commands/worktree.toml
+  command/commit:
+    description: Commit command
+    files:
+    - src: gemini/commands/run-commit.toml
+      dest: commands/commit.toml
+  command/create_plan:
+    description: Create Plan command
+    files:
+    - src: gemini/commands/run-create_plan.toml
+      dest: commands/create-plan.toml
+  command/debug_k8s:
+    description: Debug K8s command
+    files:
+    - src: gemini/commands/run-debug-k8s.toml
+      dest: commands/debug-k8s.toml
+  command/debug:
+    description: Debug command
+    files:
+    - src: gemini/commands/run-debug.toml
+      dest: commands/debug.toml
+  command/experimental-pr-workflow:
+    description: Experimental Pr Workflow command
+    files:
+    - src: gemini/commands/run-experimental-pr-workflow.toml
+      dest: commands/experimental-pr-workflow.toml
+  command/git_commit_helper:
+    description: Git Commit Helper command
+    files:
+    - src: gemini/commands/run-git_commit_helper.toml
+      dest: commands/git-commit-helper.toml
+  command/implement_plan:
+    description: Implement Plan command
+    files:
+    - src: gemini/commands/run-implement_plan.toml
+      dest: commands/implement-plan.toml
+  command/init_harness:
+    description: Init Harness command
+    files:
+    - src: gemini/commands/run-init_harness.toml
+      dest: commands/init-harness.toml
+  command/otel_instrument:
+    description: Otel Instrument command
+    files:
+    - src: gemini/commands/run-otel_instrument.toml
+      dest: commands/otel-instrument.toml
+  command/pr_description_generator:
+    description: Pr Description Generator command
+    files:
+    - src: gemini/commands/run-pr_description_generator.toml
+      dest: commands/pr-description-generator.toml
+  command/research_codebase:
+    description: Research Codebase command
+    files:
+    - src: gemini/commands/run-research_codebase.toml
+      dest: commands/research-codebase.toml
+  command/validate_plan:
+    description: Validate Plan command
+    files:
+    - src: gemini/commands/run-validate_plan.toml
+      dest: commands/validate-plan.toml
+  command/validate_telemetry:
+    description: Validate Telemetry command
+    files:
+    - src: gemini/commands/run-validate_telemetry.toml
+      dest: commands/validate-telemetry.toml
+  command/worktree:
+    description: Worktree command
+    files:
+    - src: gemini/commands/run-worktree.toml
+      dest: commands/worktree.toml
+  skills:
+    description: Gemini skills reference
+    files:
+    - src: gemini/skills/README.md
+      dest: skills/README.md
+  skill/create-plan:
+    description: Create Plan skill
+    files:
+    - src: gemini/skills/create-plan/SKILL.md
+      dest: skills/create-plan/SKILL.md
+  skill/debug:
+    description: Debug skill
+    files:
+    - src: gemini/skills/debug/SKILL.md
+      dest: skills/debug/SKILL.md
+  skill/debug-k8s:
+    description: Debug K8s skill
+    files:
+    - src: gemini/skills/debug-k8s/SKILL.md
+      dest: skills/debug-k8s/SKILL.md
+  skill/experimental-pr-workflow:
+    description: Experimental Pr Workflow skill
+    files:
+    - src: gemini/skills/experimental-pr-workflow/SKILL.md
+      dest: skills/experimental-pr-workflow/SKILL.md
+  skill/git-commit-helper:
+    description: Git Commit Helper skill
+    files:
+    - src: gemini/skills/git-commit-helper/SKILL.md
+      dest: skills/git-commit-helper/SKILL.md
+  skill/implement-plan:
+    description: Implement Plan skill
+    files:
+    - src: gemini/skills/implement-plan/SKILL.md
+      dest: skills/implement-plan/SKILL.md
+  skill/improve-codebase-architecture:
+    description: Improve Codebase Architecture skill
+    files:
+    - src: gemini/skills/improve-codebase-architecture/REFERENCE.md
+      dest: skills/improve-codebase-architecture/REFERENCE.md
+    - src: gemini/skills/improve-codebase-architecture/SKILL.md
+      dest: skills/improve-codebase-architecture/SKILL.md
+  skill/init-harness:
+    description: Init Harness skill
+    files:
+    - src: gemini/skills/init-harness/SKILL.md
+      dest: skills/init-harness/SKILL.md
+  skill/interview:
+    description: Interview skill
+    files:
+    - src: gemini/skills/interview/SKILL.md
+      dest: skills/interview/SKILL.md
+  skill/observability-driven-development:
+    description: Observability Driven Development skill
+    files:
+    - src: gemini/skills/observability-driven-development/SKILL.md
+      dest: skills/observability-driven-development/SKILL.md
+    - src: gemini/skills/observability-driven-development/local-setup.md
+      dest: skills/observability-driven-development/local-setup.md
+    - src: gemini/skills/observability-driven-development/loop.md
+      dest: skills/observability-driven-development/loop.md
+    - src: gemini/skills/observability-driven-development/narrative.md
+      dest: skills/observability-driven-development/narrative.md
+  skill/otel-collector:
+    description: Otel Collector skill
+    files:
+    - src: gemini/skills/otel-collector/SKILL.md
+      dest: skills/otel-collector/SKILL.md
+  skill/otel-instrument:
+    description: Otel Instrument skill
+    files:
+    - src: gemini/skills/otel-instrument/SKILL.md
+      dest: skills/otel-instrument/SKILL.md
+  skill/otel-instrumentation:
+    description: Otel Instrumentation skill
+    files:
+    - src: gemini/skills/otel-instrumentation/SKILL.md
+      dest: skills/otel-instrumentation/SKILL.md
+  skill/otel-ottl:
+    description: Otel Ottl skill
+    files:
+    - src: gemini/skills/otel-ottl/SKILL.md
+      dest: skills/otel-ottl/SKILL.md
+  skill/otel-semantic-conventions:
+    description: Otel Semantic Conventions skill
+    files:
+    - src: gemini/skills/otel-semantic-conventions/SKILL.md
+      dest: skills/otel-semantic-conventions/SKILL.md
+  skill/pr-description-generator:
+    description: Pr Description Generator skill
+    files:
+    - src: gemini/skills/pr-description-generator/SKILL.md
+      dest: skills/pr-description-generator/SKILL.md
+  skill/prd-to-issues:
+    description: Prd To Issues skill
+    files:
+    - src: gemini/skills/prd-to-issues/SKILL.md
+      dest: skills/prd-to-issues/SKILL.md
+  skill/research-codebase:
+    description: Research Codebase skill
+    files:
+    - src: gemini/skills/research-codebase/SKILL.md
+      dest: skills/research-codebase/SKILL.md
+  skill/tdd:
+    description: Tdd skill
+    files:
+    - src: gemini/skills/tdd/SKILL.md
+      dest: skills/tdd/SKILL.md
+    - src: gemini/skills/tdd/deep-modules.md
+      dest: skills/tdd/deep-modules.md
+    - src: gemini/skills/tdd/interface-design.md
+      dest: skills/tdd/interface-design.md
+    - src: gemini/skills/tdd/mocking.md
+      dest: skills/tdd/mocking.md
+    - src: gemini/skills/tdd/refactoring.md
+      dest: skills/tdd/refactoring.md
+    - src: gemini/skills/tdd/tests.md
+      dest: skills/tdd/tests.md
+  skill/validate-plan:
+    description: Validate Plan skill
+    files:
+    - src: gemini/skills/validate-plan/SKILL.md
+      dest: skills/validate-plan/SKILL.md
+  skill/worktree:
+    description: Worktree skill
+    files:
+    - src: gemini/skills/worktree/SKILL.md
+      dest: skills/worktree/SKILL.md
+  skill/write-a-prd:
+    description: Write A Prd skill
+    files:
+    - src: gemini/skills/write-a-prd/SKILL.md
+      dest: skills/write-a-prd/SKILL.md
+  skill/auto-ticket-creator:
+    description: Auto Ticket Creator skill
+    files:
+    - src: gemini/skills/auto-ticket-creator/SKILL.md
+      dest: skills/auto-ticket-creator/SKILL.md
+  skill/backlog-groomer:
+    description: Backlog Groomer skill
+    files:
+    - src: gemini/skills/backlog-groomer/SKILL.md
+      dest: skills/backlog-groomer/SKILL.md
+  skill/cto-dashboard:
+    description: Cto Dashboard skill
+    files:
+    - src: gemini/skills/cto-dashboard/SKILL.md
+      dest: skills/cto-dashboard/SKILL.md
+  skill/docs-sync-updater:
+    description: Docs Sync Updater skill
+    files:
+    - src: gemini/skills/docs-sync-updater/SKILL.md
+      dest: skills/docs-sync-updater/SKILL.md
+  skill/document-generation:
+    description: Document Generation skill
+    files:
+    - src: gemini/skills/document-generation/SKILL.md
+      dest: skills/document-generation/SKILL.md
+  skill/help-command:
+    description: Help Command skill
+    files:
+    - src: gemini/skills/help-command/SKILL.md
+      dest: skills/help-command/SKILL.md
+  skill/opticat-backend-integrator:
+    description: Opticat Backend Integrator skill
+    files:
+    - src: gemini/skills/opticat-backend-integrator/SKILL.md
+      dest: skills/opticat-backend-integrator/SKILL.md
+  skill/opticat-simulator:
+    description: Opticat Simulator skill
+    files:
+    - src: gemini/skills/opticat-simulator/SKILL.md
+      dest: skills/opticat-simulator/SKILL.md
+  skill/opticat-ui-builder:
+    description: Opticat Ui Builder skill
+    files:
+    - src: gemini/skills/opticat-ui-builder/SKILL.md
+      dest: skills/opticat-ui-builder/SKILL.md
+  skill/skill-adapter:
+    description: Skill Adapter skill
+    files:
+    - src: gemini/skills/skill-adapter/SKILL.md
+      dest: skills/skill-adapter/SKILL.md
+  skill/skill-auto-update:
+    description: Skill Auto Update skill
+    files:
+    - src: gemini/skills/skill-auto-update/SKILL.md
+      dest: skills/skill-auto-update/SKILL.md
+  skill/team-setup:
+    description: Team Setup skill
+    files:
+    - src: gemini/skills/team-setup/SKILL.md
+      dest: skills/team-setup/SKILL.md
+  skill/ticket-context:
+    description: Ticket Context skill
+    files:
+    - src: gemini/skills/ticket-context/SKILL.md
+      dest: skills/ticket-context/SKILL.md
+  skill/ticket-manager:
+    description: Ticket Manager skill
+    files:
+    - src: gemini/skills/ticket-manager/SKILL.md
+      dest: skills/ticket-manager/SKILL.md
+  skill/usage-rules:
+    description: Usage Rules skill
+    files:
+    - src: gemini/skills/usage-rules/SKILL.md
+      dest: skills/usage-rules/SKILL.md
+  skill/validate-telemetry:
+    description: Validate Telemetry skill
+    files:
+    - src: gemini/skills/validate-telemetry/SKILL.md
+      dest: skills/validate-telemetry/SKILL.md
+  skill/wow-access-control:
+    description: Wow Access Control skill
+    files:
+    - src: gemini/skills/wow-access-control/SKILL.md
+      dest: skills/wow-access-control/SKILL.md
+  skill/wow-agent-dev:
+    description: Wow Agent Dev skill
+    files:
+    - src: gemini/skills/wow-agent-dev/SKILL.md
+      dest: skills/wow-agent-dev/SKILL.md
+  skill/wow-backend-dev:
+    description: Wow Backend Dev skill
+    files:
+    - src: gemini/skills/wow-backend-dev/SKILL.md
+      dest: skills/wow-backend-dev/SKILL.md
+  skill/wow-communications:
+    description: Wow Communications skill
+    files:
+    - src: gemini/skills/wow-communications/SKILL.md
+      dest: skills/wow-communications/SKILL.md
+  skill/wow-core-architecture:
+    description: Wow Core Architecture skill
+    files:
+    - src: gemini/skills/wow-core-architecture/SKILL.md
+      dest: skills/wow-core-architecture/SKILL.md
+  skill/wow-frontend-dev:
+    description: Wow Frontend Dev skill
+    files:
+    - src: gemini/skills/wow-frontend-dev/SKILL.md
+      dest: skills/wow-frontend-dev/SKILL.md
+  skill/wow-human-in-the-loop:
+    description: Wow Human In The Loop skill
+    files:
+    - src: gemini/skills/wow-human-in-the-loop/SKILL.md
+      dest: skills/wow-human-in-the-loop/SKILL.md
+  skill/wow-skill-creator:
+    description: Wow Skill Creator skill
+    files:
+    - src: gemini/skills/wow-skill-creator/SKILL.md
+      dest: skills/wow-skill-creator/SKILL.md
+  skill/wow-tickets:
+    description: Wow Tickets skill
+    files:
+    - src: gemini/skills/wow-tickets/SKILL.md
+      dest: skills/wow-tickets/SKILL.md
+  skill/wow-ui-surfaces:
+    description: Wow Ui Surfaces skill
+    files:
+    - src: gemini/skills/wow-ui-surfaces/SKILL.md
+      dest: skills/wow-ui-surfaces/SKILL.md
+  skill/womono-practices-guide:
+    description: Wow Practices Guide
+    files:
+    - src: gemini/skills/womono-practices-guide/SKILL.md
+      dest: skills/womono-practices-guide/SKILL.md
+  skill/womono-practices-audit:
+    description: Wow Practices Audit
+    files:
+    - src: gemini/skills/womono-practices-audit/SKILL.md
+      dest: skills/womono-practices-audit/SKILL.md
+  skill/womono-practices-backlog:
+    description: Wow Practices Backlog
+    files:
+    - src: gemini/skills/womono-practices-backlog/SKILL.md
+      dest: skills/womono-practices-backlog/SKILL.md
+  skill/build-tool:
+    description: Universal component builder for all 7 AI coding tools
+    files:
+    - src: gemini/skills/build-tool/SKILL.md
+      dest: skills/build-tool/SKILL.md
+  skill/build-tool-skill:
+    description: Unified skill builder for all 7 tools — deployed to Gemini CLI
+    files:
+    - src: gemini/skills/build-tool-skill/SKILL.md
+      dest: skills/build-tool-skill/SKILL.md
+  skill/build-tool-agent:
+    description: Unified agent builder for all 7 tools — deployed to Gemini CLI
+    files:
+    - src: gemini/skills/build-tool-agent/SKILL.md
+      dest: skills/build-tool-agent/SKILL.md
+  skill/build-tool-extension:
+    description: Unified extension/plugin builder for all 7 tools — deployed to Gemini
+      CLI
+    files:
+    - src: gemini/skills/build-tool-extension/SKILL.md
+      dest: skills/build-tool-extension/SKILL.md
+  skill/build-tool-tui:
+    description: Unified TUI component builder for all 7 tools — deployed to Gemini
+      CLI
+    files:
+    - src: gemini/skills/build-tool-tui/SKILL.md
+      dest: skills/build-tool-tui/SKILL.md
+  skill/build-tool-cli:
+    description: Unified CLI reference for all 7 tools — deployed to Gemini CLI
+    files:
+    - src: gemini/skills/build-tool-cli/SKILL.md
+      dest: skills/build-tool-cli/SKILL.md
+  skill/build-tool-themes:
+    description: Unified theme builder for all 7 tools — deployed to Gemini CLI
+    files:
+    - src: gemini/skills/build-tool-themes/SKILL.md
+      dest: skills/build-tool-themes/SKILL.md
+  skill/build-tool-prompts:
+    description: Unified prompt template builder for all 7 tools — deployed to Gemini
+      CLI
+    files:
+    - src: gemini/skills/build-tool-prompts/SKILL.md
+      dest: skills/build-tool-prompts/SKILL.md
+  skill/build-tool-keybindings:
+    description: Unified keybinding reference for all 7 tools — deployed to Gemini
+      CLI
+    files:
+    - src: gemini/skills/build-tool-keybindings/SKILL.md
+      dest: skills/build-tool-keybindings/SKILL.md
+  skill/build-tool-config:
+    description: Unified configuration reference for all 7 tools — deployed to Gemini
+      CLI
+    files:
+    - src: gemini/skills/build-tool-config/SKILL.md
+      dest: skills/build-tool-config/SKILL.md
+  skill/build-tool-orchestrate:
+    description: Unified orchestration coordinator for all 7 tools — deployed to Gemini
+      CLI
+    files:
+    - src: gemini/skills/build-tool-orchestrate/SKILL.md
+      dest: skills/build-tool-orchestrate/SKILL.md
+  skill/investor-ready-doc-gen:
+    description: Generate investor-ready documentation for any project
+    files:
+    - src: gemini/skills/investor-ready-doc-gen/SKILL.md
+      dest: skills/investor-ready-doc-gen/SKILL.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/verticals/VERTICAL_TEMPLATE.yaml
+      dest: skills/investor-ready-doc-gen/assets/verticals/VERTICAL_TEMPLATE.yaml
+    - src: gemini/skills/investor-ready-doc-gen/assets/verticals/hvac_optimization/market_reference.yaml
+      dest: skills/investor-ready-doc-gen/assets/verticals/hvac_optimization/market_reference.yaml
+    - src: gemini/skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml
+      dest: skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml
+    - src: gemini/skills/investor-ready-doc-gen/assets/pdf/investor-theme.css
+      dest: skills/investor-ready-doc-gen/assets/pdf/investor-theme.css
+    - src: gemini/skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml
+      dest: skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml
+    - src: gemini/skills/investor-ready-doc-gen/assets/examples/wow_config.yaml
+      dest: skills/investor-ready-doc-gen/assets/examples/wow_config.yaml
+    - src: gemini/skills/investor-ready-doc-gen/assets/examples/opticat_config.yaml
+      dest: skills/investor-ready-doc-gen/assets/examples/opticat_config.yaml
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/todo.md
+      dest: skills/investor-ready-doc-gen/assets/templates/todo.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/changelog.md
+      dest: skills/investor-ready-doc-gen/assets/templates/changelog.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/index.md
+      dest: skills/investor-ready-doc-gen/assets/templates/index.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/costs/cloud_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/cloud_costs.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/costs/hardware_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/hardware_costs.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/costs/setup_legal_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/setup_legal_costs.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/costs/detailed_breakdown.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/detailed_breakdown.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/costs/cost_analysis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/cost_analysis.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/costs/team_tooling_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/team_tooling_costs.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/costs/alignment_summary.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/alignment_summary.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/technical/demo_script.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_script.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/technical/product_functionality.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/product_functionality.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/technical/demo_presentation_slides.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_presentation_slides.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/technical/technical_overview.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/technical_overview.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/technical/demo_video_links.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_video_links.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/technical/demo_use_case_scenarios.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_use_case_scenarios.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/company/company_overview.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/company_overview.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/company/team_values.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/team_values.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/company/organizational_chart.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/organizational_chart.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/company/business_plan.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/business_plan.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/company/team_bios.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/team_bios.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/venture_studio/README.md
+      dest: skills/investor-ready-doc-gen/assets/templates/venture_studio/README.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/venture_studio/venture_studio_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/venture_studio/venture_studio_strategy.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/pitch_deck/send_ahead_deck.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/send_ahead_deck.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/pitch_deck/pitch_script.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/pitch_script.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/pitch_deck/supporting_slides.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/supporting_slides.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/pitch_deck/master_deck.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/master_deck.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/pitch_deck/one_pager.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/one_pager.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/operations/kpi_dashboard.md
+      dest: skills/investor-ready-doc-gen/assets/templates/operations/kpi_dashboard.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/operations/client_overview.md
+      dest: skills/investor-ready-doc-gen/assets/templates/operations/client_overview.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/operations/venture_studio_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/operations/venture_studio_strategy.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/financial/master_financial_model.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/master_financial_model.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/financial/README.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/README.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/financial/seed_allocation_plan.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/seed_allocation_plan.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/financial/cost_analysis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/cost_analysis.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/financial/revenue_model.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/revenue_model.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/financial/historical_financials.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/historical_financials.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/financial/cap_table.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/cap_table.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/legal/intellectual_property.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/intellectual_property.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/legal/shareholder_agreement.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/shareholder_agreement.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/legal/vc_investor_contract.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/vc_investor_contract.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/legal/advisor_board_contract.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/advisor_board_contract.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/legal/angel_investor_contract.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/angel_investor_contract.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/executive/executive_summary.md
+      dest: skills/investor-ready-doc-gen/assets/templates/executive/executive_summary.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/executive/white_paper.md
+      dest: skills/investor-ready-doc-gen/assets/templates/executive/white_paper.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/executive/investment_thesis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/executive/investment_thesis.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/market/research_prompt.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/research_prompt.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/market/market_research.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/market_research.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/market/product_roadmap.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/product_roadmap.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/market/README.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/README.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/market/go_to_market_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/go_to_market_strategy.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/market/deep_research.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/deep_research.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/market/partnership_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/partnership_strategy.md
+    - src: gemini/skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
+  skill/build-auto-ticket-creator:
+    description: Monitor codebase, dependencies, and external sources to auto-create
+      tickets for agent updates, skill updates, dep updates, security advisories
+    files:
+    - src: gemini/skills/build-auto-ticket-creator/SKILL.md
+      dest: skills/build-auto-ticket-creator/SKILL.md
+  skill/build-backlog-groomer:
+    description: Product & Ticket Manager. Helps transform ideas/plans into structured
+      tickets in thoughts/shared/tickets/ and maintains the project backlog.
+    files:
+    - src: gemini/skills/build-backlog-groomer/SKILL.md
+      dest: skills/build-backlog-groomer/SKILL.md
+  skill/build-skill-adapter:
+    description: Adapts skills between different AI coding tool formats and conventions
+    files:
+    - src: gemini/skills/build-skill-adapter/SKILL.md
+      dest: skills/build-skill-adapter/SKILL.md
+  skill/build-skill-auto-update:
+    description: Automatically updates skills when dependencies or APIs change
+    files:
+    - src: gemini/skills/build-skill-auto-update/SKILL.md
+      dest: skills/build-skill-auto-update/SKILL.md
+  skill/skill-compliance-checker:
+    description: Validates skills against production-ready standards and best practices
+    files:
+    - src: gemini/skills/skill-compliance-checker/SKILL.md
+      dest: skills/skill-compliance-checker/SKILL.md
+  skill/ticket-executor:
+    description: Execute approved plans in phases, validating telemetry and committing
+      changes after each phase completes successfully
+    files:
+    - src: gemini/skills/ticket-executor/SKILL.md
+      dest: skills/ticket-executor/SKILL.md
+  skill/validate-podman:
+    description: Validate Podman/Quadlet configurations on Fedora
+    files:
+    - src: gemini/skills/validate-podman/SKILL.md
+      dest: skills/validate-podman/SKILL.md
+  skill/womono-version-updater:
+    description: Bump WoM harness version across all files and tools
+    files:
+    - src: gemini/skills/womono-version-updater/SKILL.md
+      dest: skills/womono-version-updater/SKILL.md

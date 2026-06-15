@@ -1,0 +1,566 @@
+name: opencode
+version: 1.0.0
+target: ~/.config/opencode
+components:
+  settings:
+    description: OpenCode global configuration
+    files:
+    - src: opencode/opencode.json
+      dest: opencode.json
+  agents:
+    description: Specialized subagents for OpenCode
+    files:
+    - src: opencode/agents/codebase_analyzer.md
+      dest: agents/codebase_analyzer.md
+    - src: opencode/agents/codebase_locator.md
+      dest: agents/codebase_locator.md
+    - src: opencode/agents/codebase_pattern_finder.md
+      dest: agents/codebase_pattern_finder.md
+    - src: opencode/agents/thoughts_analyzer.md
+      dest: agents/thoughts_analyzer.md
+    - src: opencode/agents/thoughts_locator.md
+      dest: agents/thoughts_locator.md
+    - src: opencode/agents/web_search_researcher.md
+      dest: agents/web_search_researcher.md
+    - src: opencode/agents/README.md
+      dest: agents/README.md
+  command/commit:
+    description: Git commit workflow command
+    files:
+    - src: opencode/commands/commit.md
+      dest: commands/commit.md
+  command/create_plan:
+    description: Create implementation plans command
+    files:
+    - src: opencode/commands/create_plan.md
+      dest: commands/create-plan.md
+  command/debug:
+    description: Debugging investigation command
+    files:
+    - src: opencode/commands/debug.md
+      dest: commands/debug.md
+  command/debug_k8s:
+    description: Kubernetes cluster debugging command
+    files:
+    - src: opencode/commands/debug-k8s.md
+      dest: commands/debug-k8s.md
+  command/implement_plan:
+    description: Execute an approved plan command
+    files:
+    - src: opencode/commands/implement_plan.md
+      dest: commands/implement-plan.md
+  command/init_harness:
+    description: Initialize harness in a new repository command
+    files:
+    - src: opencode/commands/init_harness.md
+      dest: commands/init-harness.md
+  command/research_codebase:
+    description: Comprehensive codebase research command
+    files:
+    - src: opencode/commands/research_codebase.md
+      dest: commands/research-codebase.md
+  command/validate_plan:
+    description: Validate implementation against plan command
+    files:
+    - src: opencode/commands/validate_plan.md
+      dest: commands/validate-plan.md
+  command/validate_telemetry:
+    description: Validate local telemetry against a narrative spec command
+    files:
+    - src: opencode/commands/validate_telemetry.md
+      dest: commands/validate-telemetry.md
+  skill/init-harness:
+    description: Initialize harness skill
+    files:
+    - src: opencode/skills/init-harness/SKILL.md
+      dest: skills/init-harness/SKILL.md
+  command/worktree:
+    description: Git worktree manager command
+    files:
+    - src: opencode/commands/worktree.md
+      dest: commands/worktree.md
+  skill/interview:
+    description: Stress-test plans via relentless user interview skill
+    files:
+    - src: opencode/skills/interview/SKILL.md
+      dest: skills/interview/SKILL.md
+  skill/tdd:
+    description: Test-driven development with red-green-refactor loop skill
+    files:
+    - src: opencode/skills/tdd/SKILL.md
+      dest: skills/tdd/SKILL.md
+    - src: opencode/skills/tdd/tests.md
+      dest: skills/tdd/tests.md
+    - src: opencode/skills/tdd/mocking.md
+      dest: skills/tdd/mocking.md
+    - src: opencode/skills/tdd/deep-modules.md
+      dest: skills/tdd/deep-modules.md
+    - src: opencode/skills/tdd/interface-design.md
+      dest: skills/tdd/interface-design.md
+    - src: opencode/skills/tdd/refactoring.md
+      dest: skills/tdd/refactoring.md
+  skill/auto-ticket-creator:
+    description: Auto Ticket Creator skill
+    files:
+    - src: opencode/skills/auto-ticket-creator/SKILL.md
+      dest: skills/auto-ticket-creator/SKILL.md
+  skill/backlog-groomer:
+    description: Backlog Groomer skill
+    files:
+    - src: opencode/skills/backlog-groomer/SKILL.md
+      dest: skills/backlog-groomer/SKILL.md
+  skill/create-plan:
+    description: Create Plan skill
+    files:
+    - src: opencode/skills/create-plan/SKILL.md
+      dest: skills/create-plan/SKILL.md
+  skill/cto-dashboard:
+    description: Cto Dashboard skill
+    files:
+    - src: opencode/skills/cto-dashboard/SKILL.md
+      dest: skills/cto-dashboard/SKILL.md
+  skill/debug:
+    description: Debug skill
+    files:
+    - src: opencode/skills/debug/SKILL.md
+      dest: skills/debug/SKILL.md
+  skill/debug-k8s:
+    description: Debug K8S skill
+    files:
+    - src: opencode/skills/debug-k8s/SKILL.md
+      dest: skills/debug-k8s/SKILL.md
+  skill/docs-sync-updater:
+    description: Docs Sync Updater skill
+    files:
+    - src: opencode/skills/docs-sync-updater/SKILL.md
+      dest: skills/docs-sync-updater/SKILL.md
+  skill/document-generation:
+    description: Document Generation skill
+    files:
+    - src: opencode/skills/document-generation/SKILL.md
+      dest: skills/document-generation/SKILL.md
+  skill/experimental-pr-workflow:
+    description: Experimental Pr Workflow skill
+    files:
+    - src: opencode/skills/experimental-pr-workflow/SKILL.md
+      dest: skills/experimental-pr-workflow/SKILL.md
+  skill/git-commit-helper:
+    description: Git Commit Helper skill
+    files:
+    - src: opencode/skills/git-commit-helper/SKILL.md
+      dest: skills/git-commit-helper/SKILL.md
+  skill/help-command:
+    description: Help Command skill
+    files:
+    - src: opencode/skills/help-command/SKILL.md
+      dest: skills/help-command/SKILL.md
+  skill/implement-plan:
+    description: Implement Plan skill
+    files:
+    - src: opencode/skills/implement-plan/SKILL.md
+      dest: skills/implement-plan/SKILL.md
+  skill/improve-codebase-architecture:
+    description: Improve Codebase Architecture skill
+    files:
+    - src: opencode/skills/improve-codebase-architecture/SKILL.md
+      dest: skills/improve-codebase-architecture/SKILL.md
+  skill/observability-driven-development:
+    description: Observability Driven Development skill
+    files:
+    - src: opencode/skills/observability-driven-development/SKILL.md
+      dest: skills/observability-driven-development/SKILL.md
+  skill/opticat-backend-integrator:
+    description: Opticat Backend Integrator skill
+    files:
+    - src: opencode/skills/opticat-backend-integrator/SKILL.md
+      dest: skills/opticat-backend-integrator/SKILL.md
+  skill/opticat-simulator:
+    description: Opticat Simulator skill
+    files:
+    - src: opencode/skills/opticat-simulator/SKILL.md
+      dest: skills/opticat-simulator/SKILL.md
+  skill/opticat-ui-builder:
+    description: Opticat Ui Builder skill
+    files:
+    - src: opencode/skills/opticat-ui-builder/SKILL.md
+      dest: skills/opticat-ui-builder/SKILL.md
+  skill/otel-collector:
+    description: Otel Collector skill
+    files:
+    - src: opencode/skills/otel-collector/SKILL.md
+      dest: skills/otel-collector/SKILL.md
+  skill/otel-instrument:
+    description: Otel Instrument skill
+    files:
+    - src: opencode/skills/otel-instrument/SKILL.md
+      dest: skills/otel-instrument/SKILL.md
+  skill/otel-instrumentation:
+    description: Otel Instrumentation skill
+    files:
+    - src: opencode/skills/otel-instrumentation/SKILL.md
+      dest: skills/otel-instrumentation/SKILL.md
+  skill/otel-ottl:
+    description: Otel Ottl skill
+    files:
+    - src: opencode/skills/otel-ottl/SKILL.md
+      dest: skills/otel-ottl/SKILL.md
+  skill/otel-semantic-conventions:
+    description: Otel Semantic Conventions skill
+    files:
+    - src: opencode/skills/otel-semantic-conventions/SKILL.md
+      dest: skills/otel-semantic-conventions/SKILL.md
+  skill/pr-description-generator:
+    description: Pr Description Generator skill
+    files:
+    - src: opencode/skills/pr-description-generator/SKILL.md
+      dest: skills/pr-description-generator/SKILL.md
+  skill/prd-to-issues:
+    description: Prd To Issues skill
+    files:
+    - src: opencode/skills/prd-to-issues/SKILL.md
+      dest: skills/prd-to-issues/SKILL.md
+  skill/research-codebase:
+    description: Research Codebase skill
+    files:
+    - src: opencode/skills/research-codebase/SKILL.md
+      dest: skills/research-codebase/SKILL.md
+  skill/skill-adapter:
+    description: Skill Adapter skill
+    files:
+    - src: opencode/skills/skill-adapter/SKILL.md
+      dest: skills/skill-adapter/SKILL.md
+  skill/skill-auto-update:
+    description: Skill Auto Update skill
+    files:
+    - src: opencode/skills/skill-auto-update/SKILL.md
+      dest: skills/skill-auto-update/SKILL.md
+  skill/team-setup:
+    description: Team Setup skill
+    files:
+    - src: opencode/skills/team-setup/SKILL.md
+      dest: skills/team-setup/SKILL.md
+  skill/ticket-context:
+    description: Ticket Context skill
+    files:
+    - src: opencode/skills/ticket-context/SKILL.md
+      dest: skills/ticket-context/SKILL.md
+  skill/ticket-manager:
+    description: Ticket Manager skill
+    files:
+    - src: opencode/skills/ticket-manager/SKILL.md
+      dest: skills/ticket-manager/SKILL.md
+  skill/usage-rules:
+    description: Usage Rules skill
+    files:
+    - src: opencode/skills/usage-rules/SKILL.md
+      dest: skills/usage-rules/SKILL.md
+  skill/validate-plan:
+    description: Validate Plan skill
+    files:
+    - src: opencode/skills/validate-plan/SKILL.md
+      dest: skills/validate-plan/SKILL.md
+  skill/validate-telemetry:
+    description: Validate Telemetry skill
+    files:
+    - src: opencode/skills/validate-telemetry/SKILL.md
+      dest: skills/validate-telemetry/SKILL.md
+  skill/worktree:
+    description: Worktree skill
+    files:
+    - src: opencode/skills/worktree/SKILL.md
+      dest: skills/worktree/SKILL.md
+  skill/wow-access-control:
+    description: Wow Access Control skill
+    files:
+    - src: opencode/skills/wow-access-control/SKILL.md
+      dest: skills/wow-access-control/SKILL.md
+  skill/wow-agent-dev:
+    description: Wow Agent Dev skill
+    files:
+    - src: opencode/skills/wow-agent-dev/SKILL.md
+      dest: skills/wow-agent-dev/SKILL.md
+  skill/wow-backend-dev:
+    description: Wow Backend Dev skill
+    files:
+    - src: opencode/skills/wow-backend-dev/SKILL.md
+      dest: skills/wow-backend-dev/SKILL.md
+  skill/wow-communications:
+    description: Wow Communications skill
+    files:
+    - src: opencode/skills/wow-communications/SKILL.md
+      dest: skills/wow-communications/SKILL.md
+  skill/wow-core-architecture:
+    description: Wow Core Architecture skill
+    files:
+    - src: opencode/skills/wow-core-architecture/SKILL.md
+      dest: skills/wow-core-architecture/SKILL.md
+  skill/wow-frontend-dev:
+    description: Wow Frontend Dev skill
+    files:
+    - src: opencode/skills/wow-frontend-dev/SKILL.md
+      dest: skills/wow-frontend-dev/SKILL.md
+  skill/wow-human-in-the-loop:
+    description: Wow Human In The Loop skill
+    files:
+    - src: opencode/skills/wow-human-in-the-loop/SKILL.md
+      dest: skills/wow-human-in-the-loop/SKILL.md
+  skill/wow-skill-creator:
+    description: Wow Skill Creator skill
+    files:
+    - src: opencode/skills/wow-skill-creator/SKILL.md
+      dest: skills/wow-skill-creator/SKILL.md
+  skill/wow-tickets:
+    description: Wow Tickets skill
+    files:
+    - src: opencode/skills/wow-tickets/SKILL.md
+      dest: skills/wow-tickets/SKILL.md
+  skill/wow-ui-surfaces:
+    description: Wow Ui Surfaces skill
+    files:
+    - src: opencode/skills/wow-ui-surfaces/SKILL.md
+      dest: skills/wow-ui-surfaces/SKILL.md
+  skill/write-a-prd:
+    description: Write A Prd skill
+    files:
+    - src: opencode/skills/write-a-prd/SKILL.md
+      dest: skills/write-a-prd/SKILL.md
+  skill/womono-practices-guide:
+    description: Wow Practices Guide
+    files:
+    - src: opencode/skills/womono-practices-guide/SKILL.md
+      dest: skills/womono-practices-guide/SKILL.md
+  skill/womono-practices-audit:
+    description: Wow Practices Audit
+    files:
+    - src: opencode/skills/womono-practices-audit/SKILL.md
+      dest: skills/womono-practices-audit/SKILL.md
+  skill/womono-practices-backlog:
+    description: Wow Practices Backlog
+    files:
+    - src: opencode/skills/womono-practices-backlog/SKILL.md
+      dest: skills/womono-practices-backlog/SKILL.md
+  skill/build-tool:
+    description: Universal component builder for all 7 AI coding tools
+    files:
+    - src: opencode/skills/build-tool/SKILL.md
+      dest: skills/build-tool/SKILL.md
+  skill/build-tool-skill:
+    description: Unified skill builder for all 7 tools — deployed to OpenCode
+    files:
+    - src: opencode/skills/build-tool-skill/SKILL.md
+      dest: skills/build-tool-skill/SKILL.md
+  skill/build-tool-agent:
+    description: Unified agent builder for all 7 tools — deployed to OpenCode
+    files:
+    - src: opencode/skills/build-tool-agent/SKILL.md
+      dest: skills/build-tool-agent/SKILL.md
+  skill/build-tool-extension:
+    description: Unified extension/plugin builder for all 7 tools — deployed to OpenCode
+    files:
+    - src: opencode/skills/build-tool-extension/SKILL.md
+      dest: skills/build-tool-extension/SKILL.md
+  skill/build-tool-tui:
+    description: Unified TUI component builder for all 7 tools — deployed to OpenCode
+    files:
+    - src: opencode/skills/build-tool-tui/SKILL.md
+      dest: skills/build-tool-tui/SKILL.md
+  skill/build-tool-cli:
+    description: Unified CLI reference for all 7 tools — deployed to OpenCode
+    files:
+    - src: opencode/skills/build-tool-cli/SKILL.md
+      dest: skills/build-tool-cli/SKILL.md
+  skill/build-tool-themes:
+    description: Unified theme builder for all 7 tools — deployed to OpenCode
+    files:
+    - src: opencode/skills/build-tool-themes/SKILL.md
+      dest: skills/build-tool-themes/SKILL.md
+  skill/build-tool-prompts:
+    description: Unified prompt template builder for all 7 tools — deployed to OpenCode
+    files:
+    - src: opencode/skills/build-tool-prompts/SKILL.md
+      dest: skills/build-tool-prompts/SKILL.md
+  skill/build-tool-keybindings:
+    description: Unified keybinding reference for all 7 tools — deployed to OpenCode
+    files:
+    - src: opencode/skills/build-tool-keybindings/SKILL.md
+      dest: skills/build-tool-keybindings/SKILL.md
+  skill/build-tool-config:
+    description: Unified configuration reference for all 7 tools — deployed to OpenCode
+    files:
+    - src: opencode/skills/build-tool-config/SKILL.md
+      dest: skills/build-tool-config/SKILL.md
+  skill/build-tool-orchestrate:
+    description: Unified orchestration coordinator for all 7 tools — deployed to OpenCode
+    files:
+    - src: opencode/skills/build-tool-orchestrate/SKILL.md
+      dest: skills/build-tool-orchestrate/SKILL.md
+  skill/investor-ready-doc-gen:
+    description: Generate investor-ready documentation for any project
+    files:
+    - src: opencode/skills/investor-ready-doc-gen/SKILL.md
+      dest: skills/investor-ready-doc-gen/SKILL.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/verticals/VERTICAL_TEMPLATE.yaml
+      dest: skills/investor-ready-doc-gen/assets/verticals/VERTICAL_TEMPLATE.yaml
+    - src: opencode/skills/investor-ready-doc-gen/assets/verticals/hvac_optimization/market_reference.yaml
+      dest: skills/investor-ready-doc-gen/assets/verticals/hvac_optimization/market_reference.yaml
+    - src: opencode/skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml
+      dest: skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml
+    - src: opencode/skills/investor-ready-doc-gen/assets/pdf/investor-theme.css
+      dest: skills/investor-ready-doc-gen/assets/pdf/investor-theme.css
+    - src: opencode/skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml
+      dest: skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml
+    - src: opencode/skills/investor-ready-doc-gen/assets/examples/wow_config.yaml
+      dest: skills/investor-ready-doc-gen/assets/examples/wow_config.yaml
+    - src: opencode/skills/investor-ready-doc-gen/assets/examples/opticat_config.yaml
+      dest: skills/investor-ready-doc-gen/assets/examples/opticat_config.yaml
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/todo.md
+      dest: skills/investor-ready-doc-gen/assets/templates/todo.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/changelog.md
+      dest: skills/investor-ready-doc-gen/assets/templates/changelog.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/index.md
+      dest: skills/investor-ready-doc-gen/assets/templates/index.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/costs/cloud_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/cloud_costs.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/costs/hardware_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/hardware_costs.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/costs/setup_legal_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/setup_legal_costs.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/costs/detailed_breakdown.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/detailed_breakdown.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/costs/cost_analysis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/cost_analysis.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/costs/team_tooling_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/team_tooling_costs.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/costs/alignment_summary.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/alignment_summary.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/technical/demo_script.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_script.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/technical/product_functionality.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/product_functionality.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/technical/demo_presentation_slides.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_presentation_slides.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/technical/technical_overview.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/technical_overview.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/technical/demo_video_links.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_video_links.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/technical/demo_use_case_scenarios.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_use_case_scenarios.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/company/company_overview.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/company_overview.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/company/team_values.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/team_values.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/company/organizational_chart.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/organizational_chart.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/company/business_plan.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/business_plan.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/company/team_bios.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/team_bios.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/venture_studio/README.md
+      dest: skills/investor-ready-doc-gen/assets/templates/venture_studio/README.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/venture_studio/venture_studio_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/venture_studio/venture_studio_strategy.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/pitch_deck/send_ahead_deck.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/send_ahead_deck.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/pitch_deck/pitch_script.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/pitch_script.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/pitch_deck/supporting_slides.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/supporting_slides.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/pitch_deck/master_deck.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/master_deck.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/pitch_deck/one_pager.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/one_pager.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/operations/kpi_dashboard.md
+      dest: skills/investor-ready-doc-gen/assets/templates/operations/kpi_dashboard.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/operations/client_overview.md
+      dest: skills/investor-ready-doc-gen/assets/templates/operations/client_overview.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/operations/venture_studio_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/operations/venture_studio_strategy.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/financial/master_financial_model.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/master_financial_model.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/financial/README.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/README.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/financial/seed_allocation_plan.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/seed_allocation_plan.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/financial/cost_analysis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/cost_analysis.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/financial/revenue_model.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/revenue_model.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/financial/historical_financials.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/historical_financials.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/financial/cap_table.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/cap_table.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/legal/intellectual_property.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/intellectual_property.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/legal/shareholder_agreement.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/shareholder_agreement.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/legal/vc_investor_contract.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/vc_investor_contract.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/legal/advisor_board_contract.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/advisor_board_contract.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/legal/angel_investor_contract.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/angel_investor_contract.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/executive/executive_summary.md
+      dest: skills/investor-ready-doc-gen/assets/templates/executive/executive_summary.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/executive/white_paper.md
+      dest: skills/investor-ready-doc-gen/assets/templates/executive/white_paper.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/executive/investment_thesis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/executive/investment_thesis.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/market/research_prompt.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/research_prompt.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/market/market_research.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/market_research.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/market/product_roadmap.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/product_roadmap.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/market/README.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/README.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/market/go_to_market_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/go_to_market_strategy.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/market/deep_research.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/deep_research.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/market/partnership_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/partnership_strategy.md
+    - src: opencode/skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
+  skill/build-auto-ticket-creator:
+    description: Monitor codebase, dependencies, and external sources to auto-create
+      tickets for agent updates, skill updates, dep updates, security advisories
+    files:
+    - src: opencode/skills/build-auto-ticket-creator/SKILL.md
+      dest: skills/build-auto-ticket-creator/SKILL.md
+  skill/build-backlog-groomer:
+    description: Product & Ticket Manager. Helps transform ideas/plans into structured
+      tickets in thoughts/shared/tickets/ and maintains the project backlog.
+    files:
+    - src: opencode/skills/build-backlog-groomer/SKILL.md
+      dest: skills/build-backlog-groomer/SKILL.md
+  skill/build-skill-adapter:
+    description: Adapts skills between different AI coding tool formats and conventions
+    files:
+    - src: opencode/skills/build-skill-adapter/SKILL.md
+      dest: skills/build-skill-adapter/SKILL.md
+  skill/build-skill-auto-update:
+    description: Automatically updates skills when dependencies or APIs change
+    files:
+    - src: opencode/skills/build-skill-auto-update/SKILL.md
+      dest: skills/build-skill-auto-update/SKILL.md
+  skill/skill-compliance-checker:
+    description: Validates skills against production-ready standards and best practices
+    files:
+    - src: opencode/skills/skill-compliance-checker/SKILL.md
+      dest: skills/skill-compliance-checker/SKILL.md
+  skill/ticket-executor:
+    description: Execute approved plans in phases, validating telemetry and committing
+      changes after each phase completes successfully
+    files:
+    - src: opencode/skills/ticket-executor/SKILL.md
+      dest: skills/ticket-executor/SKILL.md
+  skill/validate-podman:
+    description: Validate Podman/Quadlet configurations on Fedora
+    files:
+    - src: opencode/skills/validate-podman/SKILL.md
+      dest: skills/validate-podman/SKILL.md
+  skill/womono-version-updater:
+    description: Bump WoM harness version across all files and tools
+    files:
+    - src: opencode/skills/womono-version-updater/SKILL.md
+      dest: skills/womono-version-updater/SKILL.md

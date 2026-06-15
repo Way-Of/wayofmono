@@ -40,3 +40,21 @@ After each update:
 - Preserve user modifications (`.wo/` files)
 - Update harness-specific SKILL.md
 - Sync only canonical changes
+
+
+## Config-Manifest Sync
+
+After skill changes, the manifest must be recompiled and validated:
+
+```bash
+# Recompile manifest.json from YAMLs
+python3 packages/@aiengineeringharness/config-manifest/compile.py
+
+# Validate post-sync YAMLs + manifest
+python3 packages/@aiengineeringharness/config-manifest/validate.py
+```
+
+The `config-manifest/` directory at `packages/@aiengineeringharness/config-manifest/` holds per-tool YAML configs that are the **source of truth** for `manifest.json`. Any skill addition/removal must:
+1. Update the corresponding tool YAML at `config-manifest/tools/<tool>.yaml`
+2. Recompile via `compile.py`
+3. Validate via `validate.py` or `python3 config-manifest/scripts/run-all-tests.py`

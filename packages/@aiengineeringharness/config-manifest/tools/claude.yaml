@@ -1,0 +1,525 @@
+name: claude
+version: 1.0.0
+target: ~/.claude
+components:
+  settings:
+    description: Claude global configuration
+    files:
+    - src: claude/README.md
+      dest: README.md
+  agents:
+    description: Specialized subagents for Claude
+    files:
+    - src: claude/agents/codebase_analyzer.md
+      dest: agents/codebase_analyzer.md
+    - src: claude/agents/codebase_locator.md
+      dest: agents/codebase_locator.md
+    - src: claude/agents/codebase_pattern_finder.md
+      dest: agents/codebase_pattern_finder.md
+    - src: claude/agents/thoughts_analyzer.md
+      dest: agents/thoughts_analyzer.md
+    - src: claude/agents/thoughts_locator.md
+      dest: agents/thoughts_locator.md
+    - src: claude/agents/web_search_researcher.md
+      dest: agents/web_search_researcher.md
+  skills:
+    description: Claude skills reference
+    files:
+    - src: claude/skills/README.md
+      dest: skills/README.md
+  skill/create-plan:
+    description: Create Plan skill
+    files:
+    - src: claude/skills/create-plan/SKILL.md
+      dest: skills/create-plan/SKILL.md
+  skill/debug:
+    description: Debug skill
+    files:
+    - src: claude/skills/debug/SKILL.md
+      dest: skills/debug/SKILL.md
+  skill/implement-plan:
+    description: Implement Plan skill
+    files:
+    - src: claude/skills/implement-plan/SKILL.md
+      dest: skills/implement-plan/SKILL.md
+  skill/init-harness:
+    description: Init Harness skill
+    files:
+    - src: claude/skills/init-harness/SKILL.md
+      dest: skills/init-harness/SKILL.md
+  skill/interview:
+    description: Interview skill
+    files:
+    - src: claude/skills/interview/SKILL.md
+      dest: skills/interview/SKILL.md
+  skill/otel-collector:
+    description: Otel Collector skill
+    files:
+    - src: claude/skills/otel-collector/SKILL.md
+      dest: skills/otel-collector/SKILL.md
+  skill/otel-instrument:
+    description: Otel Instrument skill
+    files:
+    - src: claude/skills/otel-instrument/SKILL.md
+      dest: skills/otel-instrument/SKILL.md
+  skill/otel-instrumentation:
+    description: Otel Instrumentation skill
+    files:
+    - src: claude/skills/otel-instrumentation/SKILL.md
+      dest: skills/otel-instrumentation/SKILL.md
+  skill/otel-ottl:
+    description: Otel Ottl skill
+    files:
+    - src: claude/skills/otel-ottl/SKILL.md
+      dest: skills/otel-ottl/SKILL.md
+  skill/otel-semantic-conventions:
+    description: Otel Semantic Conventions skill
+    files:
+    - src: claude/skills/otel-semantic-conventions/SKILL.md
+      dest: skills/otel-semantic-conventions/SKILL.md
+  skill/research-codebase:
+    description: Research Codebase skill
+    files:
+    - src: claude/skills/research-codebase/SKILL.md
+      dest: skills/research-codebase/SKILL.md
+  skill/tdd:
+    description: Tdd skill
+    files:
+    - src: claude/skills/tdd/SKILL.md
+      dest: skills/tdd/SKILL.md
+    - src: claude/skills/tdd/deep-modules.md
+      dest: skills/tdd/deep-modules.md
+    - src: claude/skills/tdd/interface-design.md
+      dest: skills/tdd/interface-design.md
+    - src: claude/skills/tdd/mocking.md
+      dest: skills/tdd/mocking.md
+    - src: claude/skills/tdd/refactoring.md
+      dest: skills/tdd/refactoring.md
+    - src: claude/skills/tdd/tests.md
+      dest: skills/tdd/tests.md
+  skill/validate-plan:
+    description: Validate Plan skill
+    files:
+    - src: claude/skills/validate-plan/SKILL.md
+      dest: skills/validate-plan/SKILL.md
+  skill/validate-telemetry:
+    description: Validate Telemetry skill
+    files:
+    - src: claude/skills/validate-telemetry/SKILL.md
+      dest: skills/validate-telemetry/SKILL.md
+  skill/worktree:
+    description: Worktree skill
+    files:
+    - src: claude/skills/worktree/SKILL.md
+      dest: skills/worktree/SKILL.md
+  skill/auto-ticket-creator:
+    description: Auto Ticket Creator skill
+    files:
+    - src: claude/skills/auto-ticket-creator/SKILL.md
+      dest: skills/auto-ticket-creator/SKILL.md
+  skill/backlog-groomer:
+    description: Backlog Groomer skill
+    files:
+    - src: claude/skills/backlog-groomer/SKILL.md
+      dest: skills/backlog-groomer/SKILL.md
+  skill/cto-dashboard:
+    description: Cto Dashboard skill
+    files:
+    - src: claude/skills/cto-dashboard/SKILL.md
+      dest: skills/cto-dashboard/SKILL.md
+  skill/debug-k8s:
+    description: Debug K8S skill
+    files:
+    - src: claude/skills/debug-k8s/SKILL.md
+      dest: skills/debug-k8s/SKILL.md
+  skill/docs-sync-updater:
+    description: Docs Sync Updater skill
+    files:
+    - src: claude/skills/docs-sync-updater/SKILL.md
+      dest: skills/docs-sync-updater/SKILL.md
+  skill/document-generation:
+    description: Document Generation skill
+    files:
+    - src: claude/skills/document-generation/SKILL.md
+      dest: skills/document-generation/SKILL.md
+  skill/experimental-pr-workflow:
+    description: Experimental Pr Workflow skill
+    files:
+    - src: claude/skills/experimental-pr-workflow/SKILL.md
+      dest: skills/experimental-pr-workflow/SKILL.md
+  skill/git-commit-helper:
+    description: Git Commit Helper skill
+    files:
+    - src: claude/skills/git-commit-helper/SKILL.md
+      dest: skills/git-commit-helper/SKILL.md
+  skill/help-command:
+    description: Help Command skill
+    files:
+    - src: claude/skills/help-command/SKILL.md
+      dest: skills/help-command/SKILL.md
+  skill/improve-codebase-architecture:
+    description: Improve Codebase Architecture skill
+    files:
+    - src: claude/skills/improve-codebase-architecture/SKILL.md
+      dest: skills/improve-codebase-architecture/SKILL.md
+  skill/observability-driven-development:
+    description: Observability Driven Development skill
+    files:
+    - src: claude/skills/observability-driven-development/SKILL.md
+      dest: skills/observability-driven-development/SKILL.md
+  skill/opticat-backend-integrator:
+    description: Opticat Backend Integrator skill
+    files:
+    - src: claude/skills/opticat-backend-integrator/SKILL.md
+      dest: skills/opticat-backend-integrator/SKILL.md
+  skill/opticat-simulator:
+    description: Opticat Simulator skill
+    files:
+    - src: claude/skills/opticat-simulator/SKILL.md
+      dest: skills/opticat-simulator/SKILL.md
+  skill/opticat-ui-builder:
+    description: Opticat Ui Builder skill
+    files:
+    - src: claude/skills/opticat-ui-builder/SKILL.md
+      dest: skills/opticat-ui-builder/SKILL.md
+  skill/pr-description-generator:
+    description: Pr Description Generator skill
+    files:
+    - src: claude/skills/pr-description-generator/SKILL.md
+      dest: skills/pr-description-generator/SKILL.md
+  skill/prd-to-issues:
+    description: Prd To Issues skill
+    files:
+    - src: claude/skills/prd-to-issues/SKILL.md
+      dest: skills/prd-to-issues/SKILL.md
+  skill/skill-adapter:
+    description: Skill Adapter skill
+    files:
+    - src: claude/skills/skill-adapter/SKILL.md
+      dest: skills/skill-adapter/SKILL.md
+  skill/skill-auto-update:
+    description: Skill Auto Update skill
+    files:
+    - src: claude/skills/skill-auto-update/SKILL.md
+      dest: skills/skill-auto-update/SKILL.md
+  skill/team-setup:
+    description: Team Setup skill
+    files:
+    - src: claude/skills/team-setup/SKILL.md
+      dest: skills/team-setup/SKILL.md
+  skill/ticket-context:
+    description: Ticket Context skill
+    files:
+    - src: claude/skills/ticket-context/SKILL.md
+      dest: skills/ticket-context/SKILL.md
+  skill/ticket-manager:
+    description: Ticket Manager skill
+    files:
+    - src: claude/skills/ticket-manager/SKILL.md
+      dest: skills/ticket-manager/SKILL.md
+  skill/usage-rules:
+    description: Usage Rules skill
+    files:
+    - src: claude/skills/usage-rules/SKILL.md
+      dest: skills/usage-rules/SKILL.md
+  skill/wow-access-control:
+    description: Wow Access Control skill
+    files:
+    - src: claude/skills/wow-access-control/SKILL.md
+      dest: skills/wow-access-control/SKILL.md
+  skill/wow-agent-dev:
+    description: Wow Agent Dev skill
+    files:
+    - src: claude/skills/wow-agent-dev/SKILL.md
+      dest: skills/wow-agent-dev/SKILL.md
+  skill/wow-backend-dev:
+    description: Wow Backend Dev skill
+    files:
+    - src: claude/skills/wow-backend-dev/SKILL.md
+      dest: skills/wow-backend-dev/SKILL.md
+  skill/wow-communications:
+    description: Wow Communications skill
+    files:
+    - src: claude/skills/wow-communications/SKILL.md
+      dest: skills/wow-communications/SKILL.md
+  skill/wow-core-architecture:
+    description: Wow Core Architecture skill
+    files:
+    - src: claude/skills/wow-core-architecture/SKILL.md
+      dest: skills/wow-core-architecture/SKILL.md
+  skill/wow-frontend-dev:
+    description: Wow Frontend Dev skill
+    files:
+    - src: claude/skills/wow-frontend-dev/SKILL.md
+      dest: skills/wow-frontend-dev/SKILL.md
+  skill/wow-human-in-the-loop:
+    description: Wow Human In The Loop skill
+    files:
+    - src: claude/skills/wow-human-in-the-loop/SKILL.md
+      dest: skills/wow-human-in-the-loop/SKILL.md
+  skill/wow-skill-creator:
+    description: Wow Skill Creator skill
+    files:
+    - src: claude/skills/wow-skill-creator/SKILL.md
+      dest: skills/wow-skill-creator/SKILL.md
+  skill/wow-tickets:
+    description: Wow Tickets skill
+    files:
+    - src: claude/skills/wow-tickets/SKILL.md
+      dest: skills/wow-tickets/SKILL.md
+  skill/wow-ui-surfaces:
+    description: Wow Ui Surfaces skill
+    files:
+    - src: claude/skills/wow-ui-surfaces/SKILL.md
+      dest: skills/wow-ui-surfaces/SKILL.md
+  skill/write-a-prd:
+    description: Write A Prd skill
+    files:
+    - src: claude/skills/write-a-prd/SKILL.md
+      dest: skills/write-a-prd/SKILL.md
+  skill/womono-practices-guide:
+    description: Wow Practices Guide
+    files:
+    - src: claude/skills/womono-practices-guide/SKILL.md
+      dest: skills/womono-practices-guide/SKILL.md
+  skill/womono-practices-audit:
+    description: Wow Practices Audit
+    files:
+    - src: claude/skills/womono-practices-audit/SKILL.md
+      dest: skills/womono-practices-audit/SKILL.md
+  skill/womono-practices-backlog:
+    description: Wow Practices Backlog
+    files:
+    - src: claude/skills/womono-practices-backlog/SKILL.md
+      dest: skills/womono-practices-backlog/SKILL.md
+  skill/build-tool:
+    description: Universal component builder for all 7 AI coding tools
+    files:
+    - src: claude/skills/build-tool/SKILL.md
+      dest: skills/build-tool/SKILL.md
+  skill/build-tool-skill:
+    description: Unified skill builder for all 7 tools — deployed to Claude Code
+    files:
+    - src: claude/skills/build-tool-skill/SKILL.md
+      dest: skills/build-tool-skill/SKILL.md
+  skill/build-tool-agent:
+    description: Unified agent builder for all 7 tools — deployed to Claude Code
+    files:
+    - src: claude/skills/build-tool-agent/SKILL.md
+      dest: skills/build-tool-agent/SKILL.md
+  skill/build-tool-extension:
+    description: Unified extension/plugin builder for all 7 tools — deployed to Claude
+      Code
+    files:
+    - src: claude/skills/build-tool-extension/SKILL.md
+      dest: skills/build-tool-extension/SKILL.md
+  skill/build-tool-tui:
+    description: Unified TUI component builder for all 7 tools — deployed to Claude
+      Code
+    files:
+    - src: claude/skills/build-tool-tui/SKILL.md
+      dest: skills/build-tool-tui/SKILL.md
+  skill/build-tool-cli:
+    description: Unified CLI reference for all 7 tools — deployed to Claude Code
+    files:
+    - src: claude/skills/build-tool-cli/SKILL.md
+      dest: skills/build-tool-cli/SKILL.md
+  skill/build-tool-themes:
+    description: Unified theme builder for all 7 tools — deployed to Claude Code
+    files:
+    - src: claude/skills/build-tool-themes/SKILL.md
+      dest: skills/build-tool-themes/SKILL.md
+  skill/build-tool-prompts:
+    description: Unified prompt template builder for all 7 tools — deployed to Claude
+      Code
+    files:
+    - src: claude/skills/build-tool-prompts/SKILL.md
+      dest: skills/build-tool-prompts/SKILL.md
+  skill/build-tool-keybindings:
+    description: Unified keybinding reference for all 7 tools — deployed to Claude
+      Code
+    files:
+    - src: claude/skills/build-tool-keybindings/SKILL.md
+      dest: skills/build-tool-keybindings/SKILL.md
+  skill/build-tool-config:
+    description: Unified configuration reference for all 7 tools — deployed to Claude
+      Code
+    files:
+    - src: claude/skills/build-tool-config/SKILL.md
+      dest: skills/build-tool-config/SKILL.md
+  skill/build-tool-orchestrate:
+    description: Unified orchestration coordinator for all 7 tools — deployed to Claude
+      Code
+    files:
+    - src: claude/skills/build-tool-orchestrate/SKILL.md
+      dest: skills/build-tool-orchestrate/SKILL.md
+  skill/investor-ready-doc-gen:
+    description: Generate investor-ready documentation for any project
+    files:
+    - src: claude/skills/investor-ready-doc-gen/SKILL.md
+      dest: skills/investor-ready-doc-gen/SKILL.md
+    - src: claude/skills/investor-ready-doc-gen/assets/verticals/VERTICAL_TEMPLATE.yaml
+      dest: skills/investor-ready-doc-gen/assets/verticals/VERTICAL_TEMPLATE.yaml
+    - src: claude/skills/investor-ready-doc-gen/assets/verticals/hvac_optimization/market_reference.yaml
+      dest: skills/investor-ready-doc-gen/assets/verticals/hvac_optimization/market_reference.yaml
+    - src: claude/skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml
+      dest: skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml
+    - src: claude/skills/investor-ready-doc-gen/assets/pdf/investor-theme.css
+      dest: skills/investor-ready-doc-gen/assets/pdf/investor-theme.css
+    - src: claude/skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml
+      dest: skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml
+    - src: claude/skills/investor-ready-doc-gen/assets/examples/wow_config.yaml
+      dest: skills/investor-ready-doc-gen/assets/examples/wow_config.yaml
+    - src: claude/skills/investor-ready-doc-gen/assets/examples/opticat_config.yaml
+      dest: skills/investor-ready-doc-gen/assets/examples/opticat_config.yaml
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/todo.md
+      dest: skills/investor-ready-doc-gen/assets/templates/todo.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/changelog.md
+      dest: skills/investor-ready-doc-gen/assets/templates/changelog.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/index.md
+      dest: skills/investor-ready-doc-gen/assets/templates/index.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/costs/cloud_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/cloud_costs.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/costs/hardware_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/hardware_costs.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/costs/setup_legal_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/setup_legal_costs.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/costs/detailed_breakdown.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/detailed_breakdown.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/costs/cost_analysis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/cost_analysis.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/costs/team_tooling_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/team_tooling_costs.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/costs/alignment_summary.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/alignment_summary.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/technical/demo_script.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_script.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/technical/product_functionality.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/product_functionality.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/technical/demo_presentation_slides.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_presentation_slides.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/technical/technical_overview.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/technical_overview.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/technical/demo_video_links.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_video_links.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/technical/demo_use_case_scenarios.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_use_case_scenarios.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/company/company_overview.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/company_overview.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/company/team_values.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/team_values.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/company/organizational_chart.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/organizational_chart.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/company/business_plan.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/business_plan.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/company/team_bios.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/team_bios.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/venture_studio/README.md
+      dest: skills/investor-ready-doc-gen/assets/templates/venture_studio/README.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/venture_studio/venture_studio_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/venture_studio/venture_studio_strategy.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/pitch_deck/send_ahead_deck.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/send_ahead_deck.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/pitch_deck/pitch_script.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/pitch_script.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/pitch_deck/supporting_slides.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/supporting_slides.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/pitch_deck/master_deck.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/master_deck.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/pitch_deck/one_pager.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/one_pager.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/operations/kpi_dashboard.md
+      dest: skills/investor-ready-doc-gen/assets/templates/operations/kpi_dashboard.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/operations/client_overview.md
+      dest: skills/investor-ready-doc-gen/assets/templates/operations/client_overview.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/operations/venture_studio_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/operations/venture_studio_strategy.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/financial/master_financial_model.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/master_financial_model.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/financial/README.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/README.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/financial/seed_allocation_plan.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/seed_allocation_plan.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/financial/cost_analysis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/cost_analysis.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/financial/revenue_model.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/revenue_model.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/financial/historical_financials.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/historical_financials.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/financial/cap_table.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/cap_table.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/legal/intellectual_property.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/intellectual_property.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/legal/shareholder_agreement.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/shareholder_agreement.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/legal/vc_investor_contract.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/vc_investor_contract.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/legal/advisor_board_contract.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/advisor_board_contract.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/legal/angel_investor_contract.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/angel_investor_contract.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/executive/executive_summary.md
+      dest: skills/investor-ready-doc-gen/assets/templates/executive/executive_summary.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/executive/white_paper.md
+      dest: skills/investor-ready-doc-gen/assets/templates/executive/white_paper.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/executive/investment_thesis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/executive/investment_thesis.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/market/research_prompt.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/research_prompt.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/market/market_research.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/market_research.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/market/product_roadmap.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/product_roadmap.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/market/README.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/README.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/market/go_to_market_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/go_to_market_strategy.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/market/deep_research.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/deep_research.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/market/partnership_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/partnership_strategy.md
+    - src: claude/skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
+  skill/build-auto-ticket-creator:
+    description: Monitor codebase, dependencies, and external sources to auto-create
+      tickets for agent updates, skill updates, dep updates, security advisories
+    files:
+    - src: claude/skills/build-auto-ticket-creator/SKILL.md
+      dest: skills/build-auto-ticket-creator/SKILL.md
+  skill/build-backlog-groomer:
+    description: Product & Ticket Manager. Helps transform ideas/plans into structured
+      tickets in thoughts/shared/tickets/ and maintains the project backlog.
+    files:
+    - src: claude/skills/build-backlog-groomer/SKILL.md
+      dest: skills/build-backlog-groomer/SKILL.md
+  skill/build-skill-adapter:
+    description: Adapts skills between different AI coding tool formats and conventions
+    files:
+    - src: claude/skills/build-skill-adapter/SKILL.md
+      dest: skills/build-skill-adapter/SKILL.md
+  skill/build-skill-auto-update:
+    description: Automatically updates skills when dependencies or APIs change
+    files:
+    - src: claude/skills/build-skill-auto-update/SKILL.md
+      dest: skills/build-skill-auto-update/SKILL.md
+  skill/skill-compliance-checker:
+    description: Validates skills against production-ready standards and best practices
+    files:
+    - src: claude/skills/skill-compliance-checker/SKILL.md
+      dest: skills/skill-compliance-checker/SKILL.md
+  skill/ticket-executor:
+    description: Execute approved plans in phases, validating telemetry and committing
+      changes after each phase completes successfully
+    files:
+    - src: claude/skills/ticket-executor/SKILL.md
+      dest: skills/ticket-executor/SKILL.md
+  skill/validate-podman:
+    description: Validate Podman/Quadlet configurations on Fedora
+    files:
+    - src: claude/skills/validate-podman/SKILL.md
+      dest: skills/validate-podman/SKILL.md
+  skill/womono-version-updater:
+    description: Bump WoM harness version across all files and tools
+    files:
+    - src: claude/skills/womono-version-updater/SKILL.md
+      dest: skills/womono-version-updater/SKILL.md

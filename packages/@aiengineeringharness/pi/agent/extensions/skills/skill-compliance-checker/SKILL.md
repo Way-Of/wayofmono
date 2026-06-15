@@ -89,3 +89,40 @@ Tool specs are defined in `scripts/compliance-check.ts` at lines 60-138. Key rul
 - **opencode/gemini/antigravity/codex**: lowercase allowed-tools (`read, write, bash`), snake_case dirs
 - **claude/pi/wocoder**: PascalCase allowed-tools (`Read, Write, Bash`), snake_case dirs (claude/wocoder) or kebab-case (pi)
 - **codex**: lowercase allowed-tools (`read_file, write_file, run_shell_command`)
+
+
+## Config-Manifest Validation
+
+The new `config-manifest/` at `packages/@aiengineeringharness/config-manifest/` provides modular per-tool YAML configs plus validation:
+
+```bash
+# Validate per-tool YAML configs
+python3 packages/@aiengineeringharness/config-manifest/validate.py
+
+# Compile YAMLs into manifest.json
+python3 packages/@aiengineeringharness/config-manifest/compile.py
+
+# Run full test suite (YAML + manifest + on-disk skills)
+python3 packages/@aiengineeringharness/config-manifest/scripts/run-all-tests.py
+
+# Per-tool YAML check
+python3 packages/@aiengineeringharness/config-manifest/validate.py --tool=opencode
+```
+
+### What This Validates
+- **Per-tool YAML syntax** — each `config-manifest/tools/<tool>.yaml` is valid YAML
+- **Cross-contamination** — no tool references another tool's paths
+- **Path prefix validity** — `src` paths match their tool prefix
+- **Source file existence** — all referenced files exist on disk
+- **Manifest integrity** — compiled `manifest.json` matches YAML source definitions
+
+### Pipeline
+After any skill/command/agent change:
+1. Update the corresponding `config-manifest/tools/<tool>.yaml`
+2. Run `python3 packages/@aiengineeringharness/config-manifest/validate.py` to check config
+3. Run `python3 packages/@aiengineeringharness/config-manifest/compile.py` to regenerate `manifest.json`
+4. Run `python3 packages/@aiengineeringharness/config-manifest/scripts/run-all-tests.py` to verify everything
+
+### CI/CD Gate
+The test suite at `config-manifest/scripts/` is the CI/CD gate. Any PR modifying tool configs must pass all tests.
+
