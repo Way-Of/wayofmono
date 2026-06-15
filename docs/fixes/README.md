@@ -4,6 +4,7 @@
 
 - [wo-coding-agent Fixes](./wo-coding-agent-fixes.md) — CLI coding agent (wocode) v1.0.6+
 - [wouser (wo-agent) Fixes](./wo-agent-fixes.md) — General-purpose user agent v1.0.4+
+- [CTO Dashboard Fixes](./cto-dashboard-fixes.md) — Dashboard (Next.js) v0.2.1+
 - [AI Engineering Harness Fixes](./ai-engineering-harness-fixes.md) — Core harness v1.7.0+
 
 ---
