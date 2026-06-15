@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { useAuthStore, useDashboardStore } from '@/store/dashboard-store';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { AlertCircle, Loader2, KeyRound } from 'lucide-react';
+import { AlertCircle, Loader2, KeyRound, Github } from 'lucide-react';
+import { signIn } from 'next-auth/react';
 
 export function LoginPage() {
   const login = useAuthStore((s) => s.login);
@@ -28,6 +29,10 @@ export function LoginPage() {
     else setError('Unrecognized developer');
   };
 
+  const handleGitHubLogin = () => {
+    signIn('github', { callbackUrl: '/' });
+  };
+
   const isDisabled = loading && developers.length === 0;
 
   return (
@@ -42,6 +47,27 @@ export function LoginPage() {
         </div>
 
         <div className="bg-card border border-border rounded-xl p-6">
+          {/* GitHub OAuth Sign In */}
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full mb-4"
+            onClick={handleGitHubLogin}
+            disabled={isDisabled}
+          >
+            <Github className="w-4 h-4 mr-2" />
+            Sign in with GitHub
+          </Button>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="bg-card px-2 text-text-muted">or use pincode</span>
+            </div>
+          </div>
+
           <form onSubmit={handleSubmit}>
             <div className="space-y-3">
               <div>

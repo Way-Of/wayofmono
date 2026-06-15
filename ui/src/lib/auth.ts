@@ -2,6 +2,12 @@ import { NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
 import { getDevelopers } from './thoughts';
 
+interface GitHubProfile {
+  login: string;
+  email?: string;
+  name?: string;
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     GitHubProvider({
@@ -18,8 +24,9 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account, profile }) {
       if (account?.provider === 'github') {
         const devs = await getDevelopers();
+        const ghProfile = profile as GitHubProfile;
         const dev = devs.find(d => d.githubUsername.toLowerCase() === (user.email || '').toLowerCase() || 
-                                  d.githubUsername.toLowerCase() === (profile?.login || '').toLowerCase());
+                                  d.githubUsername.toLowerCase() === (ghProfile?.login || '').toLowerCase());
         if (dev) {
           (user as any).devId = dev.id;
           (user as any).devRole = dev.role;
