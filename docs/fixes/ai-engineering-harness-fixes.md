@@ -1,5 +1,56 @@
 # AI Engineering Harness Fixes & Release Notes
 
+## v1.7.0 — 2026-06-15
+
+### Config-Manifest Modularization
+
+**Problem**: The monolithic `manifest.json` had cross-tool path contamination, was hard to maintain, and had no validation that per-tool skill formatting was correct.
+
+**Solution**: Broke `manifest.json` into modular per-tool YAML files with a compilation pipeline:
+
+- `config-manifest/tools/{tool}.yaml` — one YAML per tool (7 files)
+- `config-manifest/compile.py` — merges YAMLs → backward-compatible `manifest.json`
+- `config-manifest/validate.py` — per-tool format validation against specs
+- `config-manifest/scripts/` — test suite + skill update scripts
+
+### Per-Tool Skill Update Scripts (7 scripts)
+
+Each tool now has its own format enforcer that validates and fixes:
+- Directory naming (snake_case vs kebab-case per tool)
+- `allowed-tools` casing (PascalCase for Claude, lowercase for others)
+- `allowed-tools` format (space-delimited string vs YAML list)
+- Frontmatter field requirements
+- Dual-file format for Codex (`skill.yaml` + `prompt.md`)
+
+Scripts: `{tool}-skill-update.py` with `--validate`, `--fix`, `--add <name>`, `--sync-yaml`, `--all`
+
+### Test Suite (4 scripts)
+
+- `test-yamls.py` — validates YAML syntax, cross-contamination, path prefixes
+- `test-manifest.py` — validates compiled manifest.json structure
+- `test-skills.py` — validates on-disk skill files per format spec
+- `run-all-tests.py` — orchestrator with `--tool=<name>` support
+
+### Sidecar Support Documented
+
+Created `docs/guides/sidecars.md` covering background process support per tool:
+- Antigravity: native sidecars (sidecar.json + cron + agentapi)
+- Claude: session-scoped Monitor/CronCreate
+- Others: systemd/cron/containers
+
+### Skills Updated with Config-Manifest Knowledge
+
+- `skill-compliance-checker` — validation pipeline section
+- `skill-adapter` — YAML→manifest.json pipeline
+- `skill-auto-update` — recompile steps 6-7 post-sync
+
+### New Skills Deployed to All 7 Tools
+
+- `self-documentation` — enables tools to answer "How do I...?" questions locally
+- `validate-manifest` — validates skill manifest against standards
+
+---
+
 ## v1.6.1 — 2026-06-14
 
 ### Command/Skill Conflicts Resolved
@@ -45,7 +96,7 @@ Auto-triggered skill that knows how to bump the harness version across all files
 
 ## Installation Verification
 
-### ✅ Working (v1.6.1+)
+### ✅ Working (v1.7.0+)
 ```bash
 # Install all tools
 ai-harness --tool=all --yes

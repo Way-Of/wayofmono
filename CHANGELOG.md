@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.7.0] - 2026-06-15
+
+### Added
+- **Config-Manifest modularization**: Broke monolithic `manifest.json` into per-tool YAML files at `config-manifest/tools/{tool}.yaml`
+- **Compilation pipeline**: `config-manifest/compile.py` merges YAMLs → backward-compatible `manifest.json`
+- **Validation pipeline**: `config-manifest/validate.py` checks per-tool formatting against tool specs
+- **7 per-tool skill update scripts**: `{tool}-skill-update.py` with `--validate`, `--fix`, `--add`, `--sync-yaml`, `--all`
+- **Test suite (4 scripts)**: `test-yamls.py`, `test-manifest.py`, `test-skills.py`, `run-all-tests.py` — all with `--tool=<name>` support
+- **Sidecar support doc**: `docs/guides/sidecars.md` — per-tool background process analysis
+- **New skills deployed to all 7 tools**: `self-documentation`, `validate-manifest`
+- **Config-manifest knowledge in 3 skills**: `skill-compliance-checker`, `skill-adapter`, `skill-auto-update`
+
+### Fixed
+- `test-manifest.py` `--tool` filtering (was exit-code-only, now filters per-tool validation)
+- Cross-tool path contamination in manifests detected via new validation
+
 ## [1.6.1] - 2026-06-14
 
 ### Fixed

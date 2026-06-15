@@ -4,7 +4,7 @@
 
 - [wo-coding-agent Fixes](./wo-coding-agent-fixes.md) — CLI coding agent (wocode) v1.0.6+
 - [wouser (wo-agent) Fixes](./wo-agent-fixes.md) — General-purpose user agent v1.0.4+
-- [AI Engineering Harness Fixes](./ai-engineering-harness-fixes.md) — Core harness v1.6.1+
+- [AI Engineering Harness Fixes](./ai-engineering-harness-fixes.md) — Core harness v1.7.0+
 
 ---
 
@@ -14,7 +14,7 @@
 |-----------|---------|----------------|------------|
 | **wocode** | `@wayofmono/wo-coding-agent` | v1.0.11 | `~/.wocoder/` |
 | **wouser** | `@wayofmono/wo-agent` | v1.0.4 | `~/.wo/` |
-| **Harness** | `@aiengineeringharness` | v1.6.1 | `~/.wocoder/`, `~/.pi/agent/`, etc. |
+| **Harness** | `@aiengineeringharness` | v1.7.0 | `~/.wocoder/`, `~/.pi/agent/`, etc. |
 
 ---
 
@@ -46,7 +46,14 @@ See [wo-agent-fixes.md](./wo-agent-fixes.md) for detailed release notes.
 
 See [ai-engineering-harness-fixes.md](./ai-engineering-harness-fixes.md) for detailed release notes.
 
-**Quick Summary (v1.6.1):**
+**Quick Summary (v1.7.0):**
+- Config-Manifest modularization: per-tool YAMLs + compile/validate pipeline
+- 7 per-tool skill update scripts with format enforcement
+- Test suite (4 scripts): YAML, manifest, on-disk skill validation
+- Sidecar support documented per tool
+- New skills: self-documentation, validate-manifest (deployed to all 7 tools)
+
+**Previous (v1.6.1):**
 - Command/skill conflicts resolved (run- prefix for Gemini, Antigravity)
 - WoCoder cleanup (removed duplicate commands dir)
 - New skill: womono_version_updater
