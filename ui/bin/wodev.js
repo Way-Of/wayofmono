@@ -138,11 +138,11 @@ function runNext(cmd, extraArgs = []) {
 
   if (cmd !== 'build') {
     const messages = [
-      `${od('🔥')}  ${C.bold}Welcome, fearless CTO!${C.reset}  ${od('Your dashboard of absolute power awaits.')}`,
-      `${od('🎩')}  ${C.bold}Ah, there you are.${C.reset}  ${od('The tickets? Still open. The builds? Let\'s find out.')}`,
-      `${od('🚀')}  ${C.bold}Wo CTO Dashboard${C.reset}  ${od('— because staring at spreadsheets is so 2024.')}`,
-      `${od('👑')}  ${C.bold}Your throne is ready.${C.reset}  ${od('Pull requests don\'t review themselves (yet).')}`,
-      `${od('☕')}  ${C.bold}Dashboard online.${C.reset}  ${od('Coffee not included, but strongly recommended.')}`,
+      `${od('🤖')}  ${C.bold}Yo! I\'m Wodev — your deploy dashboard.${C.reset}  ${od('I know all your builds, tickets, and deploys. Just don\'t ask me to code.')}`,
+      `${od('🔥')}  ${C.bold}Wodev here.${C.reset}  ${od('Your PR queue is glowing. Your tickets are waiting. Your builds are... well, let\'s check.')}`,
+      `${od('🎩')}  ${C.bold}Ah, the CTO arrives.${C.reset}  ${od('I\'ve kept the seat warm. Tickets: still open. Builds: let\'s find out if they passed.')}`,
+      `${od('☕')}  ${C.bold}Wodev online.${C.reset}  ${od('I handle the deploys so you can handle the important stuff. Like naming that branch.')}`,
+      `${od('🚀')}  ${C.bold}Ship it!${C.reset}  ${od('Oh wait, that\'s my line. Wodev ready — point me at a build.')}`,
     ];
     const msg = messages[Math.floor(Math.random() * messages.length)];
     console.log(`  ${msg}`);
@@ -158,8 +158,13 @@ function runNext(cmd, extraArgs = []) {
   // Pre-build steps for global installs
   if (cmd === 'build') {
     try {
-      execSync('npx prisma generate', { cwd: projectRoot, stdio: 'pipe' });
-    } catch {}
+      const prismaBin = createRequire(import.meta.url).resolve('prisma/build/index.js');
+      execSync(`node "${prismaBin}" generate`, { cwd: projectRoot, stdio: 'pipe' });
+    } catch {
+      try {
+        execSync('npx --yes prisma generate', { cwd: projectRoot, stdio: 'pipe' });
+      } catch {}
+    }
   }
 
   let nextBin;
@@ -234,20 +239,23 @@ if (args.includes('--uninstall')) {
 
 if (args.includes('--build') || args.includes('-b')) {
   runNext('build');
-  process.exit(0);
-}
-
-if (args.includes('--dev') || args.includes('-d')) {
+} else if (args.includes('--dev') || args.includes('-d')) {
   runNext('dev', ['--turbopack']);
-  process.exit(0);
-}
-
-// Default: production mode (next start — read-only, no .next writes)
+} else {
 const nextDir = path.join(projectRoot, '.next');
 try {
   accessSync(nextDir, constants.R_OK);
 } catch {
   printLogo();
+  const msgs = [
+    `${od('🤖')}  ${C.bold}Yo! I\'m Wodev — your deploy dashboard.${C.reset}  ${od('I know all your builds, tickets, and deploys. Just don\'t ask me to code.')}`,
+    `${od('🔥')}  ${C.bold}Wodev here.${C.reset}  ${od('Your PR queue is glowing. Your tickets are waiting. Your builds are... well, let\'s check.')}`,
+    `${od('🎩')}  ${C.bold}Ah, the CTO arrives.${C.reset}  ${od('I\'ve kept the seat warm. Tickets: still open. Builds: let\'s find out if they passed.')}`,
+    `${od('☕')}  ${C.bold}Wodev online.${C.reset}  ${od('I handle the deploys so you can handle the important stuff. Like naming that branch.')}`,
+    `${od('🚀')}  ${C.bold}Ship it!${C.reset}  ${od('Oh wait, that\'s my line. Wodev ready — point me at a build.')}`,
+  ];
+  console.log(`  ${msgs[Math.floor(Math.random() * msgs.length)]}`);
+  console.log();
   console.log(`  ${yellow('⚠')}  ${C.bold}No production build found.${C.reset}`);
   console.log(`     ${od('Run')} ${C.bold}wodev --build${C.reset} ${od('first, or use')} ${C.bold}wodev --dev${C.reset} ${od('for development.')}`);
   console.log();
@@ -261,6 +269,6 @@ try {
   console.log(`  ${o('└')}${od('─'.repeat(48))}${o('┘')}`);
   console.log();
   process.exit(1);
+  }
+  runNext('start');
 }
-
-runNext('start');

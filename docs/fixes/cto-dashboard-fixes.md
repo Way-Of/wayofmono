@@ -1,5 +1,50 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.7 (2026-06-16) — Wodev Character + Process Exit Fix
+
+### Fixes
+- **Build no longer killed immediately**: Removed `process.exit(0)` after `runNext('build')` — was terminating the parent Node.js process right after spawning the child, killing `next build` before it could run
+- **Same fix for `wodev --dev`**: Removed premature `process.exit(0)`
+- **`npx prisma generate` no longer hangs**: Uses direct prisma binary path via `require.resolve()` first, falls back to `npx --yes`
+
+### Features
+- **Wodev character greeting**: Rotating welcome messages on startup, matching WoCode's "Yo! I'm Wo" style:
+  - 🤖 "Yo! I'm Wodev — your deploy dashboard..."
+  - ☕ "Wodev online. I handle the deploys so you can handle the important stuff..."
+  - 🚀 "Ship it! Oh wait, that's my line..."
+  - 🎩 "Ah, the CTO arrives..."
+  - 🔥 "Wodev here. Your PR queue is glowing..."
+- Funny messages now appear in ALL modes: production, dev, and the "no build found" hint screen
+
+### Migration from v0.4.6
+```bash
+sudo npm install -g @wayofmono/wo-cto-dashboard@0.4.7
+sudo wodev --build
+wodev
+```
+
+---
+
+## v0.4.6 (2026-06-16) — [BROKEN - do not use] Syntax Error
+
+### Known Issues
+- Syntax error: missing closing brace in `bin/wodev.js` — crashes on startup
+- Use v0.4.7 instead
+
+---
+
+## v0.4.5 (2026-06-16) — Welcome Messages (First Attempt)
+
+### Features
+- Welcome messages on startup (non-build modes)
+
+### Known Issues
+- Messages were one-liners, not character-style like WoCode
+- `process.exit(0)` after `runNext()` killed child processes immediately
+- Use v0.4.7 instead
+
+---
+
 ## v0.4.4 (2026-06-16) — Prisma Generate Fix
 
 ### Fixes
