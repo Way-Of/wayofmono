@@ -93,9 +93,8 @@ function showHelp() {
 
   console.log(`  ${o('┌')}${od('─'.repeat(48))}${o('┐')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev${C.reset}              Electron app (default)             ${o('│')}`);
+  console.log(`  ${o('│')}  ${C.bold}wodev --web${C.reset}         Web server (production)            ${o('│')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev --dev${C.reset}         Dev server (hot reload, web)       ${o('│')}`);
-  console.log(`  ${o('│')}  ${C.bold}wodev --electron${C.reset}       Electron app (explicit)            ${o('│')}`);
-  console.log(`  ${o('│')}  ${C.bold}wodev --electron --dev${C.reset} Dev Electron app                   ${o('│')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev --build${C.reset}       Build for production               ${o('│')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev --update${C.reset}      Update to latest npm version       ${o('│')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev --uninstall${C.reset}    Remove dashboard globally           ${o('│')}`);
@@ -363,7 +362,7 @@ if (args.includes('--uninstall')) {
   process.exit(0);
 }
 
-const useElectron = args.includes('--electron') || args.includes('-e');
+const useWeb = args.includes('--web') || args.includes('-w');
 
 if (args.includes('--setup')) {
   setupDashboard();
@@ -400,9 +399,9 @@ if (args.includes('--setup')) {
     console.log();
     process.exit(1);
   }
-  if (useElectron) {
-    runElectron();
-  } else {
+  if (useWeb) {
     runNext('start');
+  } else {
+    runElectron(false);
   }
 }
