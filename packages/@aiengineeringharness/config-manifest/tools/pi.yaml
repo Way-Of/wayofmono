@@ -676,6 +676,16 @@ components:
       dest: skills/skill-compliance-checker/scripts
     - src: pi/agent/skills/skill-compliance-checker/assets/compliance-fix.ts
       dest: skills/skill-compliance-checker/assets/compliance-fix.ts
+  skill/self-documentation:
+    description: Enables Wo to answer How do I...? and What's the command for...? questions by searching its own commands, skills, and documentation locally
+    files:
+    - src: pi/agent/skills/self-documentation/SKILL.md
+      dest: skills/self-documentation/SKILL.md
+  skill/validate-manifest:
+    description: Validate skill manifest against production-ready standards and conventions
+    files:
+    - src: pi/agent/skills/validate-manifest/SKILL.md
+      dest: skills/validate-manifest/SKILL.md
   skill/ticket-executor:
     description: Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully
     files:

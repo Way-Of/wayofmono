@@ -1,5 +1,117 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.1 (2026-06-16) — Build Flag Fix + ASCII Art Logo
+
+### Fixes
+- `wodev --build` no longer passes `-p` flag to `next build` (which doesn't accept it) — build now actually runs
+- Build was silently failing because `next build -p 6969` doesn't recognize `-p`
+
+### Features
+- **Orange ASCII art logo**: WODEV banner displayed on startup (matching harness install.ts orange theme)
+- **Colorful terminal output**: Orange, green, yellow, dim ANSI helpers throughout all messages
+- **Better error messages**: Boxed hints with sudo vs local-prefix guidance
+
+### Migration from v0.4.0
+```bash
+sudo npm update -g @wayofmono/wo-cto-dashboard
+sudo wodev --build    # actually works now
+wodev
+```
+
+---
+
+## v0.4.0 (2026-06-16) — Production Mode Fix
+
+### Breaking Changes
+- `wodev` now defaults to **production mode** (`next start`, read-only) instead of dev mode
+- `wodev --dev` required for development server with hot reload
+
+### Features
+- **Production mode**: `wodev` runs `next start` — no `.next` writes, works as normal user after sudo install
+- **`wodev --build`**: One-time production build (`next build`, needs write access)
+- **`wodev --dev`**: Dev server with Turbopack hot reload (`next dev --turbopack`)
+- **Build check**: Detects missing `.next/` and prompts user to run `wodev --build` first
+- **Recommended install**: `npm config set prefix ~/.npm-global` — no sudo at all, everything writable by user
+
+### Fixes
+- EACCES error when running `wodev` after `sudo npm install -g` (`.next/` was root-owned)
+  - Workflow: `sudo npm install -g` → `sudo wodev --build` → `wodev` (as user)
+  - Better: use local prefix install (no sudo)
+
+### Migration from v0.3.x
+```bash
+# Update
+sudo npm update -g @wayofmono/wo-cto-dashboard
+
+# If using sudo install, rebuild:
+sudo wodev --build
+
+# Then run as normal user:
+wodev
+```
+
+---
+
+## v0.3.1 (2026-06-16) — npm Registry Propagation Fix + Self-Update
+
+### Features
+- **`wodev --update`**: Self-update command that runs `npm update -g @wayofmono/wo-cto-dashboard`
+
+### Fixes
+- Resolved npm registry CDN cache propagation issue after initial v0.3.0 publish
+- Package now immediately visible via `npm view` and installable worldwide
+
+### Known Issues
+- `npm install -g` may fail with EACCES on systems without write access to `/usr/lib/node_modules/`
+  - Fix: `sudo npm install -g @wayofmono/wo-cto-dashboard`
+  - Fix: `npm config set prefix ~/.npm-global && export PATH=$PATH:~/.npm-global/bin`
+- Both READMEs updated with EACCES workaround instructions (`npx` preferred, or sudo/local-prefix)
+
+---
+
+## v0.3.0 (2026-06-16) — Standalone npm Package + Port Change
+
+### Breaking Changes
+- **Port changed**: 3000 → 6969 (uncommon port, avoids conflicts with common dev servers)
+
+### Features
+- **npm Package**: Published `@wayofmono/wo-cto-dashboard@0.3.0` on npm registry
+- **Standalone Repo**: UI extracted to `github.com/Way-Of/wayofdev` (128 files)
+- **CLI Entry Point**: `wodev` command via `npx @wayofmono/wo-cto-dashboard` or `npm install -g @wayofmono/wo-cto-dashboard`
+- **Zero bun dependency**: `wodev` uses node + next from node_modules instead of bun
+
+### Files Changed
+- `package.json` - name: `@wayofmono/wo-cto-dashboard`, version 0.3.0, private:false, type:module, added files[] field
+- `bin/wodev.js` - rewritten to use `process.execPath` + `require.resolve('next/dist/bin/next')` instead of bun
+- `.gitignore` - fixed to not ignore project's own docs/ and .env.example
+- `.env.example` - port updated to 6969
+- `electron/main.ts` - port updated to 6969
+- `Dockerfile`, `Caddyfile`, `docker-compose.yml` - port updated to 6969
+- All scripts (dev.sh, .zscripts/) - port updated to 6969
+- `README.md` - all port references updated to 6969
+- All docs - port references updated to 6969
+
+### Installation
+```bash
+# Global install
+npm install -g @wayofmono/wo-cto-dashboard
+wodev
+
+# Or npx
+npx @wayofmono/wo-cto-dashboard
+
+# From source (GitHub)
+git clone https://github.com/Way-Of/wayofdev.git
+cd wayofdev
+npm install
+npm run dev
+```
+
+### New Files
+- `bin/wodev.js` — CLI entry point
+
+---
+
 ## v0.2.1 (2026-06-16) — GitHub Ticket Source & Authentication
 
 ### Features

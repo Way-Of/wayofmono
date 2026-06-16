@@ -809,9 +809,10 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
     console.log(`  ${od("(dry run — no files will be written)")}\n`);
   }
 
-  let installed = 0;
-  let skipped = 0;
+  let newCount = 0;
+  let updatedCount = 0;
   let unchanged = 0;
+  let skipped = 0;
 
   for (const comp of selectedComponents) {
     // Warn before installing user-specific config files in the default flow
@@ -846,13 +847,13 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
         // Handle directory: copy recursively
         const destDir = destPath;
         if (opts.dryRun) {
-          console.log(`  ${o("+")} ${"create".padEnd(9)}  ${fileEntry.dest}/`);
-          installed++;
+          console.log(`  ${o("+")} ${"NEW".padEnd(9)}  ${fileEntry.dest}/`);
+          newCount++;
           continue;
         }
         await copyDirRecursive(srcPath, destDir);
-        console.log(`  ${o("✧")} ${"installed".padEnd(9)}  ${fileEntry.dest}/`);
-        installed++;
+        console.log(`  ${o("✧")} ${"NEW".padEnd(9)}  ${fileEntry.dest}/`);
+        newCount++;
         continue;
       }
 
@@ -898,21 +899,21 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
       }
 
       if (opts.dryRun) {
-        const action = existingContent === null ? "create" : "overwrite";
+        const action = existingContent === null ? "NEW" : "UPDATED";
         console.log(`  ${o("+")} ${action.padEnd(9)}  ${fileEntry.dest}`);
-        installed++;
+        if (existingContent === null) newCount++; else updatedCount++;
         continue;
       }
 
       await ensureDir(dirname(destPath));
       await Deno.writeTextFile(destPath, srcContent);
-      const action = existingContent === null ? "installed" : "updated";
+      const action = existingContent === null ? "NEW" : "UPDATED";
       console.log(`  ${o("✧")} ${action.padEnd(9)}  ${od(fileEntry.dest)}`);
-      installed++;
+      if (existingContent === null) newCount++; else updatedCount++;
     }
   }
 
-  console.log(`\n  ${o("└")} ${od(toolName)}: ${green(String(installed))} changed, ${od(String(unchanged) + " ok")}, ${yellow(String(skipped) + " skipped")}`);
+  console.log(`\n  ${o("└")} ${od(toolName)}: ${green(String(newCount))} NEW, ${green(String(updatedCount))} UPDATED, ${od(String(unchanged))} UNCHANGED, ${yellow(String(skipped))} SKIPPED`);
 
   // Remove stale files not in manifest (only for full installs)
   if (opts.skills.length === 0 && !opts.interactive) {

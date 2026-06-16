@@ -12,7 +12,7 @@ services:
     container_name: wayofmono-nextjs
     restart: unless-stopped
     expose:
-      - "3000"
+      - "6969"
     env_file:
       - .env
     environment:
@@ -25,7 +25,7 @@ services:
       - internal
     logging: *default-logging
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', r => { process.exit(r.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"]
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:6969/api/health', r => { process.exit(r.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"]
       interval: 30s
       timeout: 5s
       retries: 3

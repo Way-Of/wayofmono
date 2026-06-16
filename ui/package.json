@@ -1,24 +1,48 @@
 {
-  "name": "wo-cto-dashboard",
-  "version": "0.2.0",
-  "private": true,
-  "main": "electron/main.js",
+  "name": "@wayofmono/wo-cto-dashboard",
+  "version": "0.4.1",
+  "private": false,
+  "type": "module",
+  "main": "bin/wodev.js",
+  "description": "CTO Dashboard & Developer Portal for Way-Of projects",
+  "files": [
+    "bin/",
+    "src/",
+    "prisma/",
+    "public/",
+    "electron/",
+    "next.config.ts",
+    "tsconfig.json",
+    "postcss.config.mjs",
+    "tailwind.config.ts",
+    "components.json",
+    ".env.example",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Way-Of/wayofdev.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Way-Of/wayofdev/issues"
+  },
+  "homepage": "https://github.com/Way-Of/wayofdev#readme",
   "bin": {
     "wodev": "./bin/wodev.js"
   },
   "scripts": {
-    "dev": "next dev -p ${PORT:-3000} 2>&1 | tee dev.log",
-    "build": "next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
-    "start": "NODE_ENV=production bun .next/standalone/server.js 2>&1 | tee server.log",
+    "dev": "next dev -p ${PORT:-6969}",
+    "build": "next build",
+    "start": "NODE_ENV=production node .next/standalone/server.js",
     "lint": "eslint .",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:reset": "prisma migrate reset",
-    "electron:dev": "concurrently -k \"bun dev\" \"wait-on http://localhost:${PORT:-3000} && cross-env NODE_ENV=development electron .\"",
+    "electron:dev": "concurrently -k \"bun dev\" \"wait-on http://localhost:${PORT:-6969} && cross-env NODE_ENV=development electron .\"",
     "electron:build": "bun run build && electron-builder",
     "electron:dist": "bun run build && electron-builder --publish=never",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "node -e \"try{require('electron-builder')}catch(e){process.exit(0)}\" && electron-builder install-app-deps || true"
   },
   "dependencies": {
     "electron": "^30.0.0",
@@ -127,7 +151,9 @@
       {
         "from": "electron",
         "to": "electron",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "mac": {
@@ -135,7 +161,10 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ],
       "icon": "electron/build/icon.icns"
@@ -144,11 +173,17 @@
       "target": [
         {
           "target": "AppImage",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         },
         {
           "target": "deb",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ],
       "category": "Development",
@@ -158,7 +193,10 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ],
       "icon": "electron/build/icon.ico"

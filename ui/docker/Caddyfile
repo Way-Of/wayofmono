@@ -1,5 +1,5 @@
 :81 {
-	reverse_proxy nextjs:3000 {
+	reverse_proxy nextjs:6969 {
 		header_up Host {host}
 		header_up X-Forwarded-For {remote_host}
 		header_up X-Forwarded-Proto {scheme}
