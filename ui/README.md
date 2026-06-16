@@ -44,6 +44,8 @@ pnpm dev
 | `wodev --dev` | development | Starts dev server with hot reload (writes .next/) |
 | `wodev --build` | build | Builds for production (writes .next/) |
 | `wodev --update` | — | Updates to latest npm version |
+| `wodev --setup` | — | Configure GitHub OAuth (per-user, one-time) |
+| `wodev --uninstall` | — | Remove dashboard globally |
 | `wodev --version` | — | Prints version |
 | `wodev --help` | — | Shows help |
 
@@ -61,24 +63,41 @@ Port: **http://localhost:6969** (override with `PORT=8080 wodev`)
 | **Developers** | Workflow and assignment tracking |
 | **Docs** | Architecture docs and decision records |
 
-## 🔐 GitHub Authentication (Private Repo Access)
+## 🔐 GitHub Authentication
 
-For private `f-rr-d` repo access (5000 req/hr vs 60 unauthenticated):
+**Optional** — the dashboard works with pincode login alone. GitHub login is only
+needed for authenticated API calls (private repo ticket fetching, 5000 req/hr vs 60).
 
-1. Create GitHub OAuth App at https://github.com/settings/developers
-2. Set callback: `http://localhost:6969/api/auth/callback/github`
-3. Copy `.env.example` to `.env` and fill in:
+### Per-User Setup
+
+Each user needs their **own** GitHub OAuth App because the callback URL is
+tied to your machine's `localhost`. No shared credentials.
 
 ```bash
-cp .env.example .env
-# Edit .env with:
-# GITHUB_CLIENT_ID=xxx
-# GITHUB_CLIENT_SECRET=xxx
-# NEXTAUTH_SECRET=xxx (generate: openssl rand -base64 32)
-# NEXTAUTH_URL=http://localhost:6969
+# 1. Create your OAuth App at https://github.com/settings/developers
+#    Callback URL: http://localhost:6969/api/auth/callback/github
+
+# 2. Run the setup wizard
+wodev --setup
+# Enter your Client ID and Client Secret when prompted
+
+# 3. Rebuild & enjoy
+sudo wodev --build
+wodev
 ```
 
-4. Click "Sign in with GitHub" on login page
+Credentials are saved to `~/.config/wodev/.env` and auto-loaded on every run.
+
+### How Developer Mapping Works
+
+When you sign in with GitHub, the dashboard looks up your GitHub username in
+the team's developer list (`thoughts/` repo). If your GitHub username matches
+a registered developer, you're recognized with your role and permissions.
+
+### Without GitHub Auth
+
+Use the **pincode login** with your GitHub username + team pincode. All features
+work normally; only the "GitHub source" ticket switcher requires OAuth.
 
 ## 📦 Data Source
 
@@ -175,13 +194,13 @@ Built with electron-builder, publishes to GitHub Releases on `wayofdev` repo.
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `GITHUB_CLIENT_ID` | Yes* | GitHub OAuth App Client ID |
-| `GITHUB_CLIENT_SECRET` | Yes* | GitHub OAuth App Secret |
-| `NEXTAUTH_SECRET` | Yes | `openssl rand -base64 32` |
-| `NEXTAUTH_URL` | Yes | `http://localhost:6969` or prod URL |
+| `GITHUB_CLIENT_ID` | No* | GitHub OAuth App Client ID (set via `wodev --setup`) |
+| `GITHUB_CLIENT_SECRET` | No* | GitHub OAuth App Secret (set via `wodev --setup`) |
+| `NEXTAUTH_SECRET` | No | Auto-generated as random hex |
+| `NEXTAUTH_URL` | No | Auto-set to `http://localhost:{PORT}` |
 | `DATABASE_URL` | No | SQLite: `file:./dev.db` |
 
-*Required for private repo access
+*Only needed for private GitHub repo access
 
 ## 🤝 Contributing
 
