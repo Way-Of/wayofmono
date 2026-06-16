@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/wo-cto-dashboard",
-  "version": "0.4.21",
+  "version": "0.4.22",
   "private": false,
   "type": "module",
   "main": "bin/wodev.js",
