@@ -4,10 +4,30 @@ import { spawn, execSync } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
-import { readFileSync, accessSync, constants } from 'fs';
+import { readFileSync, accessSync, constants, existsSync, appendFileSync, mkdirSync } from 'fs';
+import crypto from 'crypto';
+import readline from 'readline';
+import os from 'os';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.join(__dirname, '..');
+
+// Load user config from ~/.config/wodev/.env
+const userConfigDir = path.join(os.homedir(), '.config', 'wodev');
+const userEnvPath = path.join(userConfigDir, '.env');
+if (existsSync(userEnvPath)) {
+  const envContent = readFileSync(userEnvPath, 'utf-8');
+  for (const line of envContent.split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eq = trimmed.indexOf('=');
+    if (eq > 0) {
+      const key = trimmed.slice(0, eq).trim();
+      const val = trimmed.slice(eq + 1).trim().replace(/^["']|["']$/g, '');
+      if (!process.env[key]) process.env[key] = val;
+    }
+  }
+}
 
 const isWin = process.platform === 'win32';
 const args = process.argv.slice(2);
@@ -77,6 +97,7 @@ function showHelp() {
   console.log(`  ${o('│')}  ${C.bold}wodev --build${C.reset}       Build for production               ${o('│')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev --update${C.reset}      Update to latest npm version       ${o('│')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev --uninstall${C.reset}    Remove dashboard globally           ${o('│')}`);
+  console.log(`  ${o('│')}  ${C.bold}wodev --setup${C.reset}       Configure GitHub OAuth credentials  ${o('│')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev --version${C.reset}     Show version                       ${o('│')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev --help${C.reset}        Show this help                     ${o('│')}`);
   console.log(`  ${o('└')}${od('─'.repeat(48))}${o('┘')}`);
@@ -129,6 +150,40 @@ function uninstallDashboard() {
   console.log();
 }
 
+function setupDashboard() {
+  printLogo();
+  console.log(`  ${ob('⟡ SETUP')}  ${od('configure GitHub OAuth')}  ${od('─'.repeat(13))}`);
+  console.log();
+  console.log(`  ${od('Create an OAuth App at:')}`);
+  console.log(`  ${cyan('https://github.com/settings/developers')}`);
+  console.log(`  ${od('Callback URL:')} ${C.bold}http://localhost:6969/api/auth/callback/github${C.reset}`);
+  console.log();
+
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+
+  const ask = (q) => new Promise(r => rl.question(`  ${ob('?')} ${q}: `, r));
+
+  (async () => {
+    const clientId = await ask('GitHub Client ID');
+    const clientSecret = await ask('GitHub Client Secret');
+    rl.close();
+
+    if (!clientId || !clientSecret) {
+      console.log(`\n  ${yellow('⚠')}  Both fields required. Setup cancelled.`);
+      process.exit(1);
+    }
+
+    try {
+      mkdirSync(userConfigDir, { recursive: true });
+      appendFileSync(userEnvPath, `\n# GitHub OAuth (added by wodev --setup)\nGITHUB_CLIENT_ID=${clientId}\nGITHUB_CLIENT_SECRET=${clientSecret}\n`);
+      console.log(`\n  ${green('✓')} ${C.bold}Saved to ${userEnvPath}${C.reset}`);
+    } catch (e) {
+      console.log(`\n  ${red('✗')} Failed to write config: ${e.message}`);
+    }
+    process.exit(0);
+  })();
+}
+
 function runNext(cmd, extraArgs = []) {
   const port = process.env.PORT || '6969';
 
@@ -153,6 +208,8 @@ function runNext(cmd, extraArgs = []) {
     ...process.env,
     PORT: port,
     NODE_ENV: cmd === 'dev' ? 'development' : 'production',
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || crypto.randomBytes(32).toString('hex'),
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL || `http://localhost:${port}`,
   };
 
   // Pre-build steps for global installs
@@ -237,7 +294,9 @@ if (args.includes('--uninstall')) {
   process.exit(0);
 }
 
-if (args.includes('--build') || args.includes('-b')) {
+if (args.includes('--setup')) {
+  setupDashboard();
+} else if (args.includes('--build') || args.includes('-b')) {
   runNext('build');
 } else if (args.includes('--dev') || args.includes('-d')) {
   runNext('dev', ['--turbopack']);
