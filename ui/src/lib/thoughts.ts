@@ -48,7 +48,7 @@ function parseFrontmatter(content: string): { frontmatter: Frontmatter; body: st
   return { frontmatter, body };
 }
 
-export async function getDevelopers(source: 'local' | 'github' = 'local', branch = GITHUB_BRANCH) {
+export async function getDevelopers(source: 'local' | 'github' = 'local', branch = GITHUB_BRANCH, accessToken?: string) {
   const devs: {
     id: string;
     githubUsername: string;
@@ -107,9 +107,12 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
       const devsPath = `thoughts/${project}`;
       const treeUrl = `${GITHUB_API_BASE}/repos/${GITHUB_REPO}/git/trees/${branch}:${devsPath}?recursive=1`;
       
+      const headers: Record<string, string> = {};
+      if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
+      
       let treeData;
       try {
-        const response = await fetch(treeUrl, { signal: AbortSignal.timeout(10000) });
+        const response = await fetch(treeUrl, { signal: AbortSignal.timeout(10000), headers });
         if (!response.ok) continue;
         treeData = await response.json();
       } catch { continue; }
@@ -136,7 +139,9 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
         let pincode = '';
         try {
           const rawUrl = `${GITHUB_RAW_BASE}/${GITHUB_REPO}/${branch}/thoughts/${project}/${devName}/config.md`;
-          const response = await fetch(rawUrl, { signal: AbortSignal.timeout(5000) });
+          const rawHeaders: Record<string, string> = {};
+          if (accessToken) rawHeaders['Authorization'] = `Bearer ${accessToken}`;
+          const response = await fetch(rawUrl, { signal: AbortSignal.timeout(5000), headers: rawHeaders });
           if (response.ok) {
             const content = await response.text();
             const { frontmatter } = parseFrontmatter(content);
@@ -184,7 +189,7 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
   return devs;
 }
 
-export async function getTickets(source: 'local' | 'github' = 'local', branch = GITHUB_BRANCH) {
+export async function getTickets(source: 'local' | 'github' = 'local', branch = GITHUB_BRANCH, accessToken?: string) {
   const tickets: Record<string, unknown>[] = [];
   const seenIds = new Set<string>();
 
@@ -203,7 +208,7 @@ export async function getTickets(source: 'local' | 'github' = 'local', branch = 
       return githubCache.tickets;
     }
     
-    await walkGitHubDir(GITHUB_API_BASE, GITHUB_REPO, branch, tickets, seenIds);
+    await walkGitHubDir(GITHUB_API_BASE, GITHUB_REPO, branch, tickets, seenIds, 'thoughts', accessToken);
     
     // Cache the results
     if (tickets.length > 0) {
@@ -271,15 +276,21 @@ async function walkDir(dir: string, result: Record<string, unknown>[], seenIds: 
   }
 }
 
-async function walkGitHubDir(apiBase: string, repo: string, branch: string, result: Record<string, unknown>[], seenIds: Set<string>, path = 'thoughts') {
+async function walkGitHubDir(apiBase: string, repo: string, branch: string, result: Record<string, unknown>[], seenIds: Set<string>, path = 'thoughts', accessToken?: string) {
   const treeUrl = `${apiBase}/repos/${repo}/git/trees/${branch}:${path}?recursive=1`;
   let treeData;
   
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 10000);
   
+  const headers: Record<string, string> = {};
+  if (accessToken) {
+    headers['Authorization'] = `Bearer ${accessToken}`;
+    headers['Accept'] = 'application/vnd.github+json';
+  }
+  
   try {
-    const response = await fetch(treeUrl, { signal: controller.signal });
+    const response = await fetch(treeUrl, { signal: controller.signal, headers });
     clearTimeout(timeoutId);
     if (!response.ok) {
       if (response.status === 404) return;
@@ -294,7 +305,7 @@ async function walkGitHubDir(apiBase: string, repo: string, branch: string, resu
 
   for (const item of treeData.tree) {
     if (item.type === 'tree') {
-      await walkGitHubDir(apiBase, repo, branch, result, seenIds, item.path);
+      await walkGitHubDir(apiBase, repo, branch, result, seenIds, item.path, accessToken);
     } else if (item.type === 'blob' && item.path.endsWith('.md') && !item.path.endsWith('personal-ticket-template.md')) {
       const rawUrl = `${GITHUB_RAW_BASE}/${repo}/${branch}/${item.path}`;
       let content;
@@ -303,7 +314,7 @@ async function walkGitHubDir(apiBase: string, repo: string, branch: string, resu
       const fileTimeoutId = setTimeout(() => fileController.abort(), 5000);
       
       try {
-        const response = await fetch(rawUrl, { signal: fileController.signal });
+        const response = await fetch(rawUrl, { signal: fileController.signal, headers });
         clearTimeout(fileTimeoutId);
         if (!response.ok) throw new Error(`Failed to fetch ${item.path}: ${response.status}`);
         content = await response.text();

@@ -292,6 +292,16 @@ components:
       dest: skills/skill-auto-update/scripts/run-all-tests.py
     - src: opencode/skills/skill-auto-update/scripts/antigravity-skill-update.py
       dest: skills/skill-auto-update/scripts/antigravity-skill-update.py
+  skill/self-documentation:
+    description: Enables Wo to answer How do I...? and What's the command for...? questions by searching its own commands, skills, and documentation locally
+    files:
+    - src: opencode/skills/self-documentation/SKILL.md
+      dest: skills/self-documentation/SKILL.md
+  skill/validate-manifest:
+    description: Validate skill manifest against production-ready standards and conventions
+    files:
+    - src: opencode/skills/validate-manifest/SKILL.md
+      dest: skills/validate-manifest/SKILL.md
   skill/team-setup:
     description: Team Setup skill
     files:
