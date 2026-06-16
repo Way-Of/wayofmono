@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account, profile }) {
       if (account?.provider === 'github') {
-        const devs = await getDevelopers();
+        const devs = await getDevelopers('github', 'main');
         const ghProfile = profile as GitHubProfile;
         const dev = devs.find(d => d.githubUsername.toLowerCase() === (user.email || '').toLowerCase() || 
                                   d.githubUsername.toLowerCase() === (ghProfile?.login || '').toLowerCase());

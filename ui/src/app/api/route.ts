@@ -2,22 +2,28 @@ import { NextRequest, NextResponse } from "next/server";
 import { getDevelopers, getTickets, getDocs, getDashboardStats, getSkills } from "@/lib/thoughts";
 import fs from "fs/promises";
 import path from "path";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 const IDEAS_FILE = path.join(process.cwd(), "..", "thoughts", "shared", "ideas.json");
 
 export async function GET(request: NextRequest) {
   const type = request.nextUrl.searchParams.get('type') || 'dashboard';
+  const source = request.nextUrl.searchParams.get('source') || 'local';
+  const branch = request.nextUrl.searchParams.get('branch') || 'main';
+  
+  // Get session for authenticated GitHub API calls
+  const session = await getServerSession(authOptions);
+  const accessToken = (session as any)?.accessToken;
 
   try {
     switch (type) {
       case 'developers': {
-        const devs = await getDevelopers();
+        const devs = await getDevelopers(source as 'local' | 'github', branch, accessToken);
         return NextResponse.json(devs);
       }
       case 'tickets': {
-        const source = request.nextUrl.searchParams.get('source') || 'local';
-        const branch = request.nextUrl.searchParams.get('branch') || 'main';
-        const tickets = await getTickets(source as 'local' | 'github', branch);
+        const tickets = await getTickets(source as 'local' | 'github', branch, accessToken);
         return NextResponse.json(tickets);
       }
       case 'docs': {
@@ -25,7 +31,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json(docs);
       }
       case 'dashboard': {
-        const [stats, tickets] = await Promise.all([getDashboardStats(), getTickets()]);
+        const [stats, tickets] = await Promise.all([getDashboardStats(), getTickets(source as 'local' | 'github', branch, accessToken)]);
         return NextResponse.json({ stats, tickets });
       }
       case 'skills': {

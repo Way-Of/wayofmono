@@ -256,8 +256,8 @@ components:
       dest: skills/skill-auto-update/scripts/claude-skill-update.py
     - src: pi/agent/skills/skill-auto-update/scripts/test-manifest.py
       dest: skills/skill-auto-update/scripts/test-manifest.py
-    - src: pi/agent/skills/skill-auto-update/scripts/wocoder-skill-update.py
-      dest: skills/skill-auto-update/scripts/wocoder-skill-update.py
+    - src: pi/agent/skills/skill-auto-update/scripts/wocode-skill-update.py
+      dest: skills/skill-auto-update/scripts/wocode-skill-update.py
     - src: pi/agent/skills/skill-auto-update/scripts/codex-skill-update.py
       dest: skills/skill-auto-update/scripts/codex-skill-update.py
     - src: pi/agent/skills/skill-auto-update/scripts/pi-skill-update.py
@@ -304,8 +304,8 @@ components:
       dest: skills/skill-adapter/scripts/claude-skill-update.py
     - src: pi/agent/skills/skill-adapter/scripts/test-manifest.py
       dest: skills/skill-adapter/scripts/test-manifest.py
-    - src: pi/agent/skills/skill-adapter/scripts/wocoder-skill-update.py
-      dest: skills/skill-adapter/scripts/wocoder-skill-update.py
+    - src: pi/agent/skills/skill-adapter/scripts/wocode-skill-update.py
+      dest: skills/skill-adapter/scripts/wocode-skill-update.py
     - src: pi/agent/skills/skill-adapter/scripts/codex-skill-update.py
       dest: skills/skill-adapter/scripts/codex-skill-update.py
     - src: pi/agent/skills/skill-adapter/scripts/pi-skill-update.py

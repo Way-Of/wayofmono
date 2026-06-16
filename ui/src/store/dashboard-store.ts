@@ -224,7 +224,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
       const { ticketSource, ticketBranch } = get();
       const [ticketsRes, devsRes, docsRes, ideasRes, newsRes] = await Promise.all([
         fetch(`/api?type=tickets&source=${ticketSource}&branch=${ticketBranch}`),
-        fetch('/api?type=developers'),
+        fetch(`/api?type=developers&source=${ticketSource}&branch=${ticketBranch}`),
         fetch('/api?type=docs'),
         fetch('/api?type=ideas').catch(() => new Response('[]')),
         fetch('/api/news').catch(() => new Response('[]')),

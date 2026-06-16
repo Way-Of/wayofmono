@@ -3,6 +3,9 @@
   "version": "0.2.0",
   "private": true,
   "main": "electron/main.js",
+  "bin": {
+    "wodev": "./bin/wodev.js"
+  },
   "scripts": {
     "dev": "next dev -p ${PORT:-3000} 2>&1 | tee dev.log",
     "build": "next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
@@ -169,7 +172,7 @@
     "publish": {
       "provider": "github",
       "owner": "Way-Of",
-      "repo": "wayofmono"
+      "repo": "wayofdev"
     }
   }
 }

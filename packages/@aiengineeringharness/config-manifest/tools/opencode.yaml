@@ -243,8 +243,8 @@ components:
       dest: skills/skill-adapter/scripts/claude-skill-update.py
     - src: opencode/skills/skill-adapter/scripts/test-manifest.py
       dest: skills/skill-adapter/scripts/test-manifest.py
-    - src: opencode/skills/skill-adapter/scripts/wocoder-skill-update.py
-      dest: skills/skill-adapter/scripts/wocoder-skill-update.py
+    - src: opencode/skills/skill-adapter/scripts/wocode-skill-update.py
+      dest: skills/skill-adapter/scripts/wocode-skill-update.py
     - src: opencode/skills/skill-adapter/scripts/codex-skill-update.py
       dest: skills/skill-adapter/scripts/codex-skill-update.py
     - src: opencode/skills/skill-adapter/scripts/pi-skill-update.py
@@ -278,8 +278,8 @@ components:
       dest: skills/skill-auto-update/scripts/claude-skill-update.py
     - src: opencode/skills/skill-auto-update/scripts/test-manifest.py
       dest: skills/skill-auto-update/scripts/test-manifest.py
-    - src: opencode/skills/skill-auto-update/scripts/wocoder-skill-update.py
-      dest: skills/skill-auto-update/scripts/wocoder-skill-update.py
+    - src: opencode/skills/skill-auto-update/scripts/wocode-skill-update.py
+      dest: skills/skill-auto-update/scripts/wocode-skill-update.py
     - src: opencode/skills/skill-auto-update/scripts/codex-skill-update.py
       dest: skills/skill-auto-update/scripts/codex-skill-update.py
     - src: opencode/skills/skill-auto-update/scripts/pi-skill-update.py
@@ -292,6 +292,16 @@ components:
       dest: skills/skill-auto-update/scripts/run-all-tests.py
     - src: opencode/skills/skill-auto-update/scripts/antigravity-skill-update.py
       dest: skills/skill-auto-update/scripts/antigravity-skill-update.py
+  skill/self-documentation:
+    description: Enables Wo to answer How do I...? and What's the command for...? questions by searching its own commands, skills, and documentation locally
+    files:
+    - src: opencode/skills/self-documentation/SKILL.md
+      dest: skills/self-documentation/SKILL.md
+  skill/validate-manifest:
+    description: Validate skill manifest against production-ready standards and conventions
+    files:
+    - src: opencode/skills/validate-manifest/SKILL.md
+      dest: skills/validate-manifest/SKILL.md
   skill/team-setup:
     description: Team Setup skill
     files:
@@ -618,8 +628,8 @@ components:
       dest: skills/skill-compliance-checker/scripts/claude-skill-update.py
     - src: opencode/skills/skill-compliance-checker/scripts/test-manifest.py
       dest: skills/skill-compliance-checker/scripts/test-manifest.py
-    - src: opencode/skills/skill-compliance-checker/scripts/wocoder-skill-update.py
-      dest: skills/skill-compliance-checker/scripts/wocoder-skill-update.py
+    - src: opencode/skills/skill-compliance-checker/scripts/wocode-skill-update.py
+      dest: skills/skill-compliance-checker/scripts/wocode-skill-update.py
     - src: opencode/skills/skill-compliance-checker/scripts/codex-skill-update.py
       dest: skills/skill-compliance-checker/scripts/codex-skill-update.py
     - src: opencode/skills/skill-compliance-checker/scripts/pi-skill-update.py

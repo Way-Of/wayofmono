@@ -48,7 +48,7 @@ function parseFrontmatter(content: string): { frontmatter: Frontmatter; body: st
   return { frontmatter, body };
 }
 
-export async function getDevelopers() {
+export async function getDevelopers(source: 'local' | 'github' = 'local', branch = GITHUB_BRANCH, accessToken?: string) {
   const devs: {
     id: string;
     githubUsername: string;
@@ -61,27 +61,98 @@ export async function getDevelopers() {
   }[] = [];
   const seen = new Set<string>();
 
-  for (const project of PROJECTS) {
-    const projectPath = path.join(THOUGHTS_ROOT, project);
-    try {
-      const entries = await fs.readdir(projectPath, { withFileTypes: true });
-      for (const entry of entries) {
-        if (!entry.isDirectory() || entry.name.startsWith('.') || entry.name === 'global' || entry.name === 'shared' || entry.name === 'docs') continue;
-        if (seen.has(entry.name)) continue;
-        seen.add(entry.name);
+  if (source === 'local') {
+    for (const project of PROJECTS) {
+      const projectPath = path.join(THOUGHTS_ROOT, project);
+      try {
+        const entries = await fs.readdir(projectPath, { withFileTypes: true });
+        for (const entry of entries) {
+          if (!entry.isDirectory() || entry.name.startsWith('.') || entry.name === 'global' || entry.name === 'shared' || entry.name === 'docs' || entry.name === 'ticket-executor' || entry.name === 'enforcement-ticket' || entry.name === 'installation-tickets') continue;
+          if (seen.has(entry.name)) continue;
+          seen.add(entry.name);
+
+          let pincode = '';
+          try {
+            const configPath = path.join(projectPath, entry.name, 'config.md');
+            const configContent = await fs.readFile(configPath, 'utf8');
+            const { frontmatter } = parseFrontmatter(configContent);
+            pincode = String(frontmatter['pincode'] || '');
+          } catch { /* no config */ }
+
+          devs.push({
+            id: entry.name,
+            githubUsername: entry.name,
+            displayName: entry.name.charAt(0).toUpperCase() + entry.name.slice(1),
+            role: 'Developer',
+            pincode,
+            avatarUrl: '',
+            projects: [project],
+            isActive: true,
+          });
+        }
+      } catch { /* no project dir */ }
+    }
+
+    for (const dev of devs) {
+      dev.projects = [...new Set(PROJECTS.filter(p => {
+        try { fs.access(path.join(THOUGHTS_ROOT, p, dev.id)); return true; }
+        catch { return false; }
+      }))];
+    }
+  } else {
+    // Fetch developers from GitHub by reading config.md files from each developer folder
+    const projects = PROJECTS;
+    
+    for (const project of projects) {
+      const devsPath = `thoughts/${project}`;
+      const treeUrl = `${GITHUB_API_BASE}/repos/${GITHUB_REPO}/git/trees/${branch}:${devsPath}?recursive=1`;
+      
+      const headers: Record<string, string> = {};
+      if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
+      
+      let treeData;
+      try {
+        const response = await fetch(treeUrl, { signal: AbortSignal.timeout(10000), headers });
+        if (!response.ok) continue;
+        treeData = await response.json();
+      } catch { continue; }
+
+      // Find developer directories (not global, shared, docs)
+      const devDirs = new Set<string>();
+      for (const item of treeData.tree || []) {
+        if (item.type === 'tree') {
+          const parts = item.path.split('/');
+          if (parts.length === 3 && parts[0] === 'thoughts' && parts[1] === project) {
+            const dirName = parts[2];
+            if (!dirName.startsWith('.') && dirName !== 'global' && dirName !== 'shared' && dirName !== 'docs') {
+              devDirs.add(dirName);
+            }
+          }
+        }
+      }
+
+      // For each developer dir, try to read config.md
+      for (const devName of devDirs) {
+        if (seen.has(devName)) continue;
+        seen.add(devName);
 
         let pincode = '';
         try {
-          const configPath = path.join(projectPath, entry.name, 'config.md');
-          const configContent = await fs.readFile(configPath, 'utf8');
-          const { frontmatter } = parseFrontmatter(configContent);
-          pincode = String(frontmatter['pincode'] || '');
-        } catch { /* no config */ }
+          const rawUrl = `${GITHUB_RAW_BASE}/${GITHUB_REPO}/${branch}/thoughts/${project}/${devName}/config.md`;
+          const rawHeaders: Record<string, string> = {};
+          if (accessToken) rawHeaders['Authorization'] = `Bearer ${accessToken}`;
+          const response = await fetch(rawUrl, { signal: AbortSignal.timeout(5000), headers: rawHeaders });
+          if (response.ok) {
+            const content = await response.text();
+            const { frontmatter } = parseFrontmatter(content);
+            pincode = String(frontmatter['pincode'] || '');
+          }
+        } catch { /* no config or failed */ }
 
         devs.push({
-          id: entry.name,
-          githubUsername: entry.name,
-          displayName: entry.name.charAt(0).toUpperCase() + entry.name.slice(1),
+          id: devName,
+          githubUsername: devName,
+          displayName: devName.charAt(0).toUpperCase() + devName.slice(1),
           role: 'Developer',
           pincode,
           avatarUrl: '',
@@ -89,32 +160,36 @@ export async function getDevelopers() {
           isActive: true,
         });
       }
-    } catch { /* no project dir */ }
-  }
+    }
 
-  const craig = devs.find(d => d.id === 'craig');
-  if (craig) { craig.role = 'CTO'; craig.githubUsername = 'craigmartin'; }
+    // Apply known role overrides
+    const craig = devs.find(d => d.id === 'craig');
+    if (craig) { craig.role = 'CTO'; craig.githubUsername = 'craigmartin'; }
 
-  const zerwiz = devs.find(d => d.id === 'zerwiz');
-  if (zerwiz) { zerwiz.role = 'Lead'; zerwiz.githubUsername = 'zerwiz'; }
+    const zerwiz = devs.find(d => d.id === 'zerwiz');
+    if (zerwiz) { zerwiz.role = 'Lead'; zerwiz.githubUsername = 'zerwiz'; }
 
-  const andre = devs.find(d => d.id === 'andre');
-  if (andre) { andre.role = 'Senior'; andre.githubUsername = 'Epileptickk'; }
+    const andre = devs.find(d => d.id === 'andre');
+    if (andre) { andre.role = 'Senior'; andre.githubUsername = 'Epileptickk'; }
 
-  const tomas = devs.find(d => d.id === 'tomas');
-  if (tomas) { tomas.role = 'Developer'; tomas.githubUsername = 'tomchi-debug'; }
+    const tomas = devs.find(d => d.id === 'tomas');
+    if (tomas) { tomas.role = 'Developer'; tomas.githubUsername = 'tomchi-debug'; }
 
-  for (const dev of devs) {
-    dev.projects = [...new Set(PROJECTS.filter(p => {
-      try { fs.access(path.join(THOUGHTS_ROOT, p, dev.id)); return true; }
-      catch { return false; }
-    }))];
+    // Add all projects for each dev (from GitHub tree)
+    for (const dev of devs) {
+      dev.projects = [...new Set(PROJECTS.filter(p => {
+        try { 
+          // We can't easily check without another API call, so include all
+          return true; 
+        } catch { return false; }
+      }))];
+    }
   }
 
   return devs;
 }
 
-export async function getTickets(source: 'local' | 'github' = 'local', branch = GITHUB_BRANCH) {
+export async function getTickets(source: 'local' | 'github' = 'local', branch = GITHUB_BRANCH, accessToken?: string) {
   const tickets: Record<string, unknown>[] = [];
   const seenIds = new Set<string>();
 
@@ -133,7 +208,7 @@ export async function getTickets(source: 'local' | 'github' = 'local', branch = 
       return githubCache.tickets;
     }
     
-    await walkGitHubDir(GITHUB_API_BASE, GITHUB_REPO, branch, tickets, seenIds);
+    await walkGitHubDir(GITHUB_API_BASE, GITHUB_REPO, branch, tickets, seenIds, 'thoughts', accessToken);
     
     // Cache the results
     if (tickets.length > 0) {
@@ -201,15 +276,21 @@ async function walkDir(dir: string, result: Record<string, unknown>[], seenIds: 
   }
 }
 
-async function walkGitHubDir(apiBase: string, repo: string, branch: string, result: Record<string, unknown>[], seenIds: Set<string>, path = 'thoughts') {
+async function walkGitHubDir(apiBase: string, repo: string, branch: string, result: Record<string, unknown>[], seenIds: Set<string>, path = 'thoughts', accessToken?: string) {
   const treeUrl = `${apiBase}/repos/${repo}/git/trees/${branch}:${path}?recursive=1`;
   let treeData;
   
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 10000);
   
+  const headers: Record<string, string> = {};
+  if (accessToken) {
+    headers['Authorization'] = `Bearer ${accessToken}`;
+    headers['Accept'] = 'application/vnd.github+json';
+  }
+  
   try {
-    const response = await fetch(treeUrl, { signal: controller.signal });
+    const response = await fetch(treeUrl, { signal: controller.signal, headers });
     clearTimeout(timeoutId);
     if (!response.ok) {
       if (response.status === 404) return;
@@ -224,7 +305,7 @@ async function walkGitHubDir(apiBase: string, repo: string, branch: string, resu
 
   for (const item of treeData.tree) {
     if (item.type === 'tree') {
-      await walkGitHubDir(apiBase, repo, branch, result, seenIds, item.path);
+      await walkGitHubDir(apiBase, repo, branch, result, seenIds, item.path, accessToken);
     } else if (item.type === 'blob' && item.path.endsWith('.md') && !item.path.endsWith('personal-ticket-template.md')) {
       const rawUrl = `${GITHUB_RAW_BASE}/${repo}/${branch}/${item.path}`;
       let content;
@@ -233,7 +314,7 @@ async function walkGitHubDir(apiBase: string, repo: string, branch: string, resu
       const fileTimeoutId = setTimeout(() => fileController.abort(), 5000);
       
       try {
-        const response = await fetch(rawUrl, { signal: fileController.signal });
+        const response = await fetch(rawUrl, { signal: fileController.signal, headers });
         clearTimeout(fileTimeoutId);
         if (!response.ok) throw new Error(`Failed to fetch ${item.path}: ${response.status}`);
         content = await response.text();
