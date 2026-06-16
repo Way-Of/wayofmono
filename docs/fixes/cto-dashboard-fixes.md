@@ -1,5 +1,147 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.11 (2026-06-16) — Zero-Setup GitHub OAuth + Embedded Credentials
+
+### Features
+- **Pre-embedded Way-Of OAuth credentials**: Shared OAuth App under Way-Of org works for all developers out of the box
+- **Zero-setup GitHub login**: `npm install -g @wayofmono/wo-cto-dashboard && wodev` → click "Sign in with GitHub"
+- **`wodev --setup` only for custom orgs**: Pre-configured defaults overrideable via `~/.config/wodev/.env` or env vars
+
+### Migration from v0.4.10
+```bash
+sudo npm update -g @wayofmono/wo-cto-dashboard
+wodev   # GitHub login just works, no --setup needed
+```
+
+---
+
+## v0.4.10 (2026-06-16) — Setup Command Refactor
+
+### Features
+- **`wodev --setup`**: Interactive wizard to configure GitHub OAuth Client ID and Secret
+- **Auto-loads `~/.config/wodev/.env`**: User config persists across npm updates
+- **`NEXTAUTH_URL` auto-set**: Defaults to `http://localhost:{PORT}`, no manual config needed
+- **`NEXTAUTH_SECRET` auto-generated**: Random 32-byte hex, no `openssl rand` needed
+
+### Setup
+```bash
+wodev --setup
+# Enter your GitHub Client ID and Client Secret
+# Callback URL: http://localhost:6969/api/auth/callback/github
+```
+
+### Migration from v0.4.9
+```bash
+sudo npm install -g @wayofmono/wo-cto-dashboard
+wodev --setup     # requires Client ID + Secret from GitHub OAuth App
+sudo wodev --build
+wodev
+```
+
+---
+
+## v0.4.9 (2026-06-16) — GitHub OAuth Setup Wizard
+
+### Features
+- `NEXTAUTH_SECRET` auto-generated via `crypto.randomBytes(32)` when not set
+
+### Migration from v0.4.7
+```bash
+sudo npm install -g @wayofmono/wo-cto-dashboard@0.4.8
+sudo wodev --build
+wodev
+```
+
+---
+
+## v0.4.7 (2026-06-16) — Wodev Character + Process Exit Fix
+
+### Fixes
+- **Build no longer killed immediately**: Removed `process.exit(0)` after `runNext('build')` — was terminating the parent Node.js process right after spawning the child, killing `next build` before it could run
+- **Same fix for `wodev --dev`**: Removed premature `process.exit(0)`
+- **`npx prisma generate` no longer hangs**: Uses direct prisma binary path via `require.resolve()` first, falls back to `npx --yes`
+
+### Features
+- **Wodev character greeting**: Rotating welcome messages on startup, matching WoCode's "Yo! I'm Wo" style:
+  - 🤖 "Yo! I'm Wodev — your deploy dashboard..."
+  - ☕ "Wodev online. I handle the deploys so you can handle the important stuff..."
+  - 🚀 "Ship it! Oh wait, that's my line..."
+  - 🎩 "Ah, the CTO arrives..."
+  - 🔥 "Wodev here. Your PR queue is glowing..."
+- Funny messages now appear in ALL modes: production, dev, and the "no build found" hint screen
+
+### Migration from v0.4.6
+```bash
+sudo npm install -g @wayofmono/wo-cto-dashboard@0.4.7
+sudo wodev --build
+wodev
+```
+
+---
+
+## v0.4.6 (2026-06-16) — [BROKEN - do not use] Syntax Error
+
+### Known Issues
+- Syntax error: missing closing brace in `bin/wodev.js` — crashes on startup
+- Use v0.4.7 instead
+
+---
+
+## v0.4.5 (2026-06-16) — Welcome Messages (First Attempt)
+
+### Features
+- Welcome messages on startup (non-build modes)
+
+### Known Issues
+- Messages were one-liners, not character-style like WoCode
+- `process.exit(0)` after `runNext()` killed child processes immediately
+- Use v0.4.7 instead
+
+---
+
+## v0.4.4 (2026-06-16) — Prisma Generate Fix
+
+### Fixes
+- `wodev --build` now runs `npx prisma generate` before `next build` (required for global installs where Prisma client is not pre-generated)
+- `postinstall` script now runs `prisma generate` + `electron-builder install-app-deps` (gracefully handles missing electron-builder)
+
+### Migration from v0.4.3
+```bash
+sudo npm install -g @wayofmono/wo-cto-dashboard@0.4.4
+sudo wodev --build
+wodev
+```
+
+---
+
+## v0.4.3 (2026-06-16) — Dependency Fix
+
+### Fixes
+- `@tailwindcss/postcss`, `tailwindcss`, `tw-animate-css`, `typescript`, `@types/react`, `@types/react-dom` moved from `devDependencies` → `dependencies` so global npm installs can build
+
+### Migration from v0.4.2
+```bash
+sudo npm install -g @wayofmono/wo-cto-dashboard@0.4.3
+sudo wodev --build
+wodev
+```
+
+---
+
+## v0.4.2 (2026-06-16) — node-fetch Removal
+
+### Fixes
+- Removed `import fetch from 'node-fetch'` in `src/lib/thoughts.ts` — uses global `fetch` (Node 18+) instead
+
+### Migration from v0.4.1
+```bash
+sudo npm install -g @wayofmono/wo-cto-dashboard@0.4.2
+sudo wodev --build
+wodev
+```
+
+---
+
 ## v0.4.1 (2026-06-16) — Build Flag Fix + ASCII Art Logo
 
 ### Fixes

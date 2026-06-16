@@ -1,6 +1,5 @@
 import fs from 'fs/promises';
 import path from 'path';
-import fetch from 'node-fetch';
 
 const THOUGHTS_ROOT = process.env.THOUGHTS_ROOT || path.join(process.cwd(), '..', 'thoughts');
 const PROJECTS = ['wayofmono', 'wow', 'opticat'] as const;

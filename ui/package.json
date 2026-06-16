@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/wo-cto-dashboard",
-  "version": "0.4.1",
+  "version": "0.4.13",
   "private": false,
   "type": "module",
   "main": "bin/wodev.js",
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/Way-Of/wayofdev#readme",
   "bin": {
-    "wodev": "./bin/wodev.js"
+    "wodev": "bin/wodev.js"
   },
   "scripts": {
     "dev": "next dev -p ${PORT:-6969}",
@@ -42,7 +42,7 @@
     "electron:dev": "concurrently -k \"bun dev\" \"wait-on http://localhost:${PORT:-6969} && cross-env NODE_ENV=development electron .\"",
     "electron:build": "bun run build && electron-builder",
     "electron:dist": "bun run build && electron-builder --publish=never",
-    "postinstall": "node -e \"try{require('electron-builder')}catch(e){process.exit(0)}\" && electron-builder install-app-deps || true"
+    "postinstall": "prisma generate && node -e \"try{require('electron-builder')}catch(e){process.exit(0)}\" && electron-builder install-app-deps || true"
   },
   "dependencies": {
     "electron": "^30.0.0",
@@ -111,6 +111,12 @@
     "sonner": "^2.0.6",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
+    "tailwindcss": "^4",
+    "tw-animate-css": "^1.3.5",
+    "typescript": "^5",
+    "@tailwindcss/postcss": "^4",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "uuid": "^11.1.0",
     "vaul": "^1.1.2",
     "z-ai-web-dev-sdk": "^0.0.17",
@@ -118,18 +124,12 @@
     "zustand": "^5.0.6"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
     "bun-types": "^1.3.4",
     "concurrently": "^9.0.0",
     "cross-env": "^7.0.3",
     "electron-builder": "^25.0.0",
     "eslint": "^9",
     "eslint-config-next": "^16.1.1",
-    "tailwindcss": "^4",
-    "tw-animate-css": "^1.3.5",
-    "typescript": "^5",
     "wait-on": "^8.0.0"
   },
   "build": {

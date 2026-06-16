@@ -657,3 +657,9 @@ components:
     files:
     - src: opencode/skills/womono-version-updater/SKILL.md
       dest: skills/womono-version-updater/SKILL.md
+
+  skill/womonodeploy:
+    description: Release and deploy WoM npm packages to production
+    files:
+    - src: opencode/skills/womonodeploy/SKILL.md
+      dest: skills/womonodeploy/SKILL.md

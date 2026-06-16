@@ -8,8 +8,10 @@ interface GitHubProfile {
   name?: string;
 }
 
-export const authOptions: NextAuthOptions = {
-  providers: [
+const providers: NextAuthOptions['providers'] = [];
+
+if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
+  providers.push(
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
@@ -18,19 +20,27 @@ export const authOptions: NextAuthOptions = {
           scope: 'read:user user:email repo',
         },
       },
-    }),
-  ],
+    })
+  );
+}
+
+export const authOptions: NextAuthOptions = {
+  providers,
   callbacks: {
     async signIn({ user, account, profile }) {
       if (account?.provider === 'github') {
-        const devs = await getDevelopers('github', 'main');
-        const ghProfile = profile as GitHubProfile;
-        const dev = devs.find(d => d.githubUsername.toLowerCase() === (user.email || '').toLowerCase() || 
-                                  d.githubUsername.toLowerCase() === (ghProfile?.login || '').toLowerCase());
-        if (dev) {
-          (user as any).devId = dev.id;
-          (user as any).devRole = dev.role;
-          (user as any).devPincode = dev.pincode;
+        try {
+          const devs = await getDevelopers('github', 'main');
+          const ghProfile = profile as GitHubProfile;
+          const dev = devs.find(d => d.githubUsername.toLowerCase() === (user.email || '').toLowerCase() || 
+                                    d.githubUsername.toLowerCase() === (ghProfile?.login || '').toLowerCase());
+          if (dev) {
+            (user as any).devId = dev.id;
+            (user as any).devRole = dev.role;
+            (user as any).devPincode = dev.pincode;
+          }
+        } catch {
+          // GitHub fetch failed — proceed without developer mapping
         }
       }
       return true;

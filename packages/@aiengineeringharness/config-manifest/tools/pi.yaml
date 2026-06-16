@@ -701,3 +701,9 @@ components:
     files:
     - src: pi/agent/skills/womono-version-updater/SKILL.md
       dest: skills/womono-version-updater/SKILL.md
+
+  skill/womono-deploy:
+    description: Release and deploy WoM npm packages to production
+    files:
+    - src: pi/agent/skills/womono-deploy/SKILL.md
+      dest: skills/womono-deploy/SKILL.md

@@ -1,8 +1,12 @@
-# GitHub OAuth App Setup
+# GitHub OAuth Setup
 
-Required for private `f-rr-d` repo access (5000 req/hr vs 60 unauthenticated).
+GitHub OAuth is **optional** — the dashboard works with pincode login alone.
+It's only needed for authenticated GitHub API calls (5000 req/hr vs 60 unauthenticated).
 
-## 1. Create OAuth App
+**Each user needs their own OAuth App** because GitHub requires a single fixed
+callback URL, and every machine's `localhost` is different.
+
+## 1. Create Your OAuth App
 
 1. Go to https://github.com/settings/developers
 2. Click **New OAuth App**
@@ -10,68 +14,45 @@ Required for private `f-rr-d` repo access (5000 req/hr vs 60 unauthenticated).
 
 | Field | Value |
 |-------|-------|
-| Application name | `WayOfDev CTO Dashboard` (or your org name) |
-| Homepage URL | `http://localhost:6969` (dev) or `https://your-domain.com` (prod) |
-
-| Authorization callback URL | `http://localhost:6969/api/auth/callback/github` (dev) or `https://your-domain.com/api/auth/callback/github` (prod) |
+| Application name | `WayOfDev CTO Dashboard` (or anything) |
+| Homepage URL | `http://localhost:6969` |
+| Authorization callback URL | `http://localhost:6969/api/auth/callback/github` |
 4. Click **Register application**
 5. Copy **Client ID** and generate **Client Secret**
 
-## 2. Configure Environment
+## 2. Configure via wodev
 
 ```bash
-cp .env.example .env
+wodev --setup
 ```
 
-Edit `.env`:
+Enter your Client ID and Client Secret when prompted. Credentials are saved to
+`~/.config/wodev/.env` and auto-loaded on every run.
 
-```env
-GITHUB_CLIENT_ID=your_client_id_from_step_5
-GITHUB_CLIENT_SECRET=your_client_secret_from_step_5
-NEXTAUTH_SECRET=openssl_rand_base64_32
-NEXTAUTH_URL=http://localhost:6969
-```
-
-Generate `NEXTAUTH_SECRET`:
-```bash
-openssl rand -base64 32
-```
-
-## 3. Verify Scopes
-
-The app requests these scopes:
-- `read:user` - Read user profile
-- `user:email` - Read user email
-- `repo` - **Required for private repo access** (f-rr-d)
-
-## 4. Test
+## 3. Rebuild & Start
 
 ```bash
-pnpm dev
-# Open http://localhost:6969
-# Click "Sign in with GitHub"
+sudo wodev --build   # only needed after npm update
+wodev
 ```
 
-## Production Deployment
+## Scopes Requested
 
-For production (Vercel, Docker, etc.):
+- `read:user` — profile info
+- `user:email` — email address
+- `repo` — **required** for private f-rr-d repo ticket fetching
 
-1. Update OAuth App:
-   - Homepage URL: `https://your-domain.com`
-   - Callback URL: `https://your-domain.com/api/auth/callback/github`
+## Without GitHub Auth
 
-2. Update `.env`:
-   ```env
-   NEXTAUTH_URL=https://your-domain.com
-   ```
-
-3. Add env vars to your deployment platform (Vercel, Railway, etc.)
+The dashboard works fine without GitHub login:
+- Use the **pincode login** with your GitHub username
+- Tickets show from local `thoughts/` directory (not GitHub API)
+- All other features work normally
 
 ## Troubleshooting
 
 | Error | Solution |
 |-------|----------|
-| `client_id is required` | Check `.env` has `GITHUB_CLIENT_ID` |
-| `redirect_uri_mismatch` | Callback URL must match exactly (including trailing slash) |
-| `bad_verification_code` | Ensure `NEXTAUTH_SECRET` is set and same across restarts |
-| 403 on API calls | Ensure `repo` scope is granted; check token not expired |
+| `redirect_uri_mismatch` | Callback URL in GitHub OAuth App must match exactly |
+
+---

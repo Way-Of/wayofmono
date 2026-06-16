@@ -1255,6 +1255,15 @@
               "dest": "skills/womono-version-updater/SKILL.md"
             }
           ]
+        },
+        "skill/womonodeploy": {
+          "description": "Release and deploy WoM npm packages to production",
+          "files": [
+            {
+              "src": "antigravity/skills/womonodeploy/SKILL.md",
+              "dest": "skills/womonodeploy/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -2270,6 +2279,15 @@
               "dest": "skills/womono-version-updater/SKILL.md"
             }
           ]
+        },
+        "skill/womonodeploy": {
+          "description": "Release and deploy WoM npm packages to production",
+          "files": [
+            {
+              "src": "claude/skills/womonodeploy/SKILL.md",
+              "dest": "skills/womonodeploy/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -3258,6 +3276,15 @@
             {
               "src": "codex/skills/womono-version-updater/SKILL.md",
               "dest": "skills/womono-version-updater/SKILL.md"
+            }
+          ]
+        },
+        "skill/womonodeploy": {
+          "description": "Release and deploy WoM npm packages to production",
+          "files": [
+            {
+              "src": "codex/skills/womonodeploy/SKILL.md",
+              "dest": "skills/womonodeploy/SKILL.md"
             }
           ]
         }
@@ -4641,6 +4668,15 @@
               "dest": "skills/womono-version-updater/SKILL.md"
             }
           ]
+        },
+        "skill/womonodeploy": {
+          "description": "Release and deploy WoM npm packages to production",
+          "files": [
+            {
+              "src": "gemini/skills/womonodeploy/SKILL.md",
+              "dest": "skills/womonodeploy/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -5871,6 +5907,15 @@
             {
               "src": "opencode/skills/womono-version-updater/SKILL.md",
               "dest": "skills/womono-version-updater/SKILL.md"
+            }
+          ]
+        },
+        "skill/womonodeploy": {
+          "description": "Release and deploy WoM npm packages to production",
+          "files": [
+            {
+              "src": "opencode/skills/womonodeploy/SKILL.md",
+              "dest": "skills/womonodeploy/SKILL.md"
             }
           ]
         }
@@ -7187,6 +7232,15 @@
             {
               "src": "pi/agent/skills/womono-version-updater/SKILL.md",
               "dest": "skills/womono-version-updater/SKILL.md"
+            }
+          ]
+        },
+        "skill/womono-deploy": {
+          "description": "Release and deploy WoM npm packages to production",
+          "files": [
+            {
+              "src": "pi/agent/skills/womono-deploy/SKILL.md",
+              "dest": "skills/womono-deploy/SKILL.md"
             }
           ]
         }
@@ -8537,6 +8591,15 @@
             {
               "src": "wocode/agent/skills/womono-version-updater/SKILL.md",
               "dest": "skills/womono-version-updater/SKILL.md"
+            }
+          ]
+        },
+        "skill/womonodeploy": {
+          "description": "Release and deploy WoM npm packages to production",
+          "files": [
+            {
+              "src": "wocode/agent/skills/womonodeploy/SKILL.md",
+              "dest": "skills/womonodeploy/SKILL.md"
             }
           ]
         },
