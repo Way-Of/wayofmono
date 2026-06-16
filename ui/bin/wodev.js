@@ -211,11 +211,14 @@ function runNext(cmd, extraArgs = []) {
     console.log();
   }
 
+  // Fixed NEXTAUTH_SECRET (deterministic from version) - same across all runs
+  const fixedSecret = crypto.createHash('sha256').update(`wo-cto-dashboard-${getVersion()}`).digest('hex');
+
   const env = {
     ...process.env,
     PORT: port,
     NODE_ENV: cmd === 'dev' ? 'development' : 'production',
-    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || crypto.randomBytes(32).toString('hex'),
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || fixedSecret,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL || `http://localhost:${port}`,
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || 'Ov23liy3r3AGOFaXT6YV',
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || '9a6410416575e390ac9253a41f64a8a46af7d7a5',
@@ -306,11 +309,13 @@ function runElectron(isDev = false) {
     process.exit(1);
   }
 
+  const fixedSecret = crypto.createHash('sha256').update(`wo-cto-dashboard-${getVersion()}`).digest('hex');
+
   const env = {
     ...process.env,
     PORT: port,
     NODE_ENV: isDev ? 'development' : 'production',
-    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || crypto.randomBytes(32).toString('hex'),
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || fixedSecret,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL || `http://localhost:${port}`,
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || 'Ov23liy3r3AGOFaXT6YV',
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || '9a6410416575e390ac9253a41f64a8a46af7d7a5',

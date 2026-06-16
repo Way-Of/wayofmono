@@ -1,5 +1,20 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.19 (2026-06-16) — Fixed NEXTAUTH_SECRET Consistency
+
+### Fixes
+- **Fixed JWT decryption errors**: NEXTAUTH_SECRET is now deterministic (SHA256 of version) instead of random per-run
+- **Session persistence**: Login sessions survive app restarts and rebuilds
+- **Same secret across Electron/web**: Both modes use identical secret
+
+### Migration
+```bash
+sudo npm update -g @wayofmono/wo-cto-dashboard
+wodev   # GitHub OAuth + sessions work correctly
+```
+
+---
+
 ## v0.4.18 (2026-06-16) — Electron Production Mode Fixed
 
 ### Fixes
