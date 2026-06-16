@@ -1,5 +1,25 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.1 (2026-06-16) — Build Flag Fix + ASCII Art Logo
+
+### Fixes
+- `wodev --build` no longer passes `-p` flag to `next build` (which doesn't accept it) — build now actually runs
+- Build was silently failing because `next build -p 6969` doesn't recognize `-p`
+
+### Features
+- **Orange ASCII art logo**: WODEV banner displayed on startup (matching harness install.ts orange theme)
+- **Colorful terminal output**: Orange, green, yellow, dim ANSI helpers throughout all messages
+- **Better error messages**: Boxed hints with sudo vs local-prefix guidance
+
+### Migration from v0.4.0
+```bash
+sudo npm update -g @wayofmono/wo-cto-dashboard
+sudo wodev --build    # actually works now
+wodev
+```
+
+---
+
 ## v0.4.0 (2026-06-16) — Production Mode Fix
 
 ### Breaking Changes

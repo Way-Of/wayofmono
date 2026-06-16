@@ -12,6 +12,46 @@ const projectRoot = path.join(__dirname, '..');
 const isWin = process.platform === 'win32';
 const args = process.argv.slice(2);
 
+// ---------------------------------------------------------------------------
+// ANSI colors — orange theme
+// ---------------------------------------------------------------------------
+
+const C = {
+  orange: '\x1b[38;5;208m',
+  bold: '\x1b[1m',
+  dim: '\x1b[2m',
+  reset: '\x1b[0m',
+  green: '\x1b[38;5;82m',
+  red: '\x1b[38;5;196m',
+  yellow: '\x1b[38;5;226m',
+  cyan: '\x1b[38;5;51m',
+};
+
+function o(s) { return `${C.orange}${s}${C.reset}`; }
+function ob(s) { return `${C.bold}${C.orange}${s}${C.reset}`; }
+function od(s) { return `${C.dim}${C.orange}${s}${C.reset}`; }
+function green(s) { return `${C.green}${s}${C.reset}`; }
+function red(s) { return `${C.red}${s}${C.reset}`; }
+function yellow(s) { return `${C.yellow}${s}${C.reset}`; }
+function cyan(s) { return `${C.cyan}${s}${C.reset}`; }
+
+// ---------------------------------------------------------------------------
+// WODEV ASCII logo
+// ---------------------------------------------------------------------------
+
+const WODEV_LOGO = [
+  '██╗    ██╗ ██████╗ ██████╗ ███████╗██╗   ██╗',
+  '██║    ██║██╔═══██╗██╔══██╗██╔════╝██║   ██║',
+  '██║ █╗ ██║██║   ██║██║  ██║█████╗  ██║   ██║',
+  '██║███╗██║██║   ██║██║  ██║██╔══╝  ╚██╗ ██╔╝',
+  '╚███╔███╔╝╚██████╔╝██████╔╝███████╗ ╚████╔╝ ',
+  ' ╚══╝╚══╝  ╚═════╝ ╚═════╝ ╚══════╝  ╚═══╝  ',
+];
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
 function getVersion() {
   try {
     const pkg = JSON.parse(readFileSync(path.join(projectRoot, 'package.json'), 'utf-8'));
@@ -21,58 +61,60 @@ function getVersion() {
   }
 }
 
+function printLogo() {
+  for (const line of WODEV_LOGO) console.log(o(`  ${line}`));
+  console.log();
+  console.log(`  ${ob('⟡ CTO DASHBOARD')}  ${od('wodev — release & deploy')}  ${od('─'.repeat(20))}`);
+  console.log();
+}
+
 function showHelp() {
-  console.log(`
-🚀 WayOfMono CTO Dashboard - wodev v${getVersion()}
+  printLogo();
 
-Usage:
-  wodev              Start production server on port ${process.env.PORT || '6969'}
-  wodev --dev        Start development server with hot reload
-  wodev --build      Build for production (requires write access)
-  wodev --update     Update to latest version from npm
-  wodev --version    Show version
-  wodev --help       Show this help
+  console.log(`  ${o('┌')}${od('─'.repeat(48))}${o('┐')}`);
+  console.log(`  ${o('│')}  ${C.bold}wodev${C.reset}              Start production server            ${o('│')}`);
+  console.log(`  ${o('│')}  ${C.bold}wodev --dev${C.reset}         Development server (hot reload)    ${o('│')}`);
+  console.log(`  ${o('│')}  ${C.bold}wodev --build${C.reset}       Build for production               ${o('│')}`);
+  console.log(`  ${o('│')}  ${C.bold}wodev --update${C.reset}      Update to latest npm version       ${o('│')}`);
+  console.log(`  ${o('│')}  ${C.bold}wodev --version${C.reset}     Show version                       ${o('│')}`);
+  console.log(`  ${o('│')}  ${C.bold}wodev --help${C.reset}        Show this help                     ${o('│')}`);
+  console.log(`  ${o('└')}${od('─'.repeat(48))}${o('┘')}`);
 
-Examples:
-  ${isWin ? 'set PORT=8080 && wodev' : 'PORT=8080 wodev'}      Custom port
-  npx @wayofmono/wo-cto-dashboard           Run without installing
-
-Note:
-  After "sudo npm install -g", run "sudo wodev --build" once
-  to create the production build. Then "wodev" works as normal user.
-`);
+  console.log();
+  console.log(`  ${ob('⟡ EXAMPLES')}`);
+  console.log(`  ${od('─'.repeat(40))}`);
+  console.log(`  ${isWin ? 'set PORT=8080 && wodev' : 'PORT=8080 wodev'}`);
+  console.log(`  npx @wayofmono/wo-cto-dashboard`);
+  console.log();
+  console.log(`  ${od('Port')} ${od('→')} ${cyan('6969')} ${od('(default, override with PORT=)')}`);
+  console.log();
 }
 
 function updateDashboard() {
-  console.log('🔄 Checking for updates...');
+  printLogo();
+  console.log(`  ${ob('⟡ UPDATE')}  ${od('checking npm registry')}  ${od('─'.repeat(15))}`);
+  console.log();
   try {
     execSync('npm update -g @wayofmono/wo-cto-dashboard', { stdio: 'inherit' });
-    console.log('✅ Dashboard updated to latest version');
+    console.log(`  ${green('✓')} ${C.bold}Dashboard updated${C.reset} to latest version`);
   } catch {
-    console.log('');
-    console.log('⚠️  Could not update automatically.');
+    console.log();
+    console.log(`  ${yellow('⚠')}  Could not update automatically.`);
     if (isWin) {
-      console.log('   Try running as Administrator.');
+      console.log(`     ${od('Try running as Administrator.')}`);
     } else {
-      console.log('   Try: sudo npm update -g @wayofmono/wo-cto-dashboard');
+      console.log(`     ${od('Try:')} ${C.bold}sudo npm update -g @wayofmono/wo-cto-dashboard${C.reset}`);
     }
   }
-}
-
-function canWrite(dir) {
-  try {
-    accessSync(dir, constants.W_OK);
-    return true;
-  } catch {
-    return false;
-  }
+  console.log();
 }
 
 function runNext(cmd, extraArgs = []) {
   const port = process.env.PORT || '6969';
 
-  console.log(`🚀 WayOfMono CTO Dashboard - wodev v${getVersion()}`);
-  console.log(`🌐 Port: ${port}`);
+  printLogo();
+  console.log(`  ${ob('⟡ ' + (cmd === 'dev' ? 'DEV SERVER' : cmd === 'build' ? 'BUILD' : 'PRODUCTION'))}  ${od('port ' + port)}  ${od('─'.repeat(20))}`);
+  console.log();
 
   const env = {
     ...process.env,
@@ -87,7 +129,8 @@ function runNext(cmd, extraArgs = []) {
     nextBin = 'next';
   }
 
-  const spawnArgs = [nextBin, cmd, '-p', port, ...extraArgs];
+  const portArgs = cmd !== 'build' ? ['-p', port] : [];
+  const spawnArgs = [nextBin, cmd, ...portArgs, ...extraArgs];
   const child = spawn(process.execPath, spawnArgs, {
     cwd: projectRoot,
     env,
@@ -95,29 +138,33 @@ function runNext(cmd, extraArgs = []) {
   });
 
   child.on('error', (err) => {
-    console.error('❌ Failed to start:', err.message);
+    console.error(`  ${red('✗')} Failed to start: ${err.message}`);
     process.exit(1);
   });
 
   child.on('close', (code) => {
     if (code !== 0 && code !== null) {
-      console.error(`❌ Process exited with code ${code}`);
+      console.error(`  ${red('✗')} Process exited with code ${code}`);
     }
     process.exit(code || 0);
   });
 
   process.on('SIGINT', () => {
-    console.log('\n🛑 Shutting down...');
+    console.log(`\n  ${od('🛑 Shutting down...')}`);
     child.kill('SIGINT');
   });
 
   if (!isWin) {
     process.on('SIGTERM', () => {
-      console.log('\n🛑 Shutting down...');
+      console.log(`\n  ${od('🛑 Shutting down...')}`);
       child.kill('SIGTERM');
     });
   }
 }
+
+// ---------------------------------------------------------------------------
+// CLI dispatch
+// ---------------------------------------------------------------------------
 
 if (args.includes('--help') || args.includes('-h')) {
   showHelp();
@@ -144,18 +191,24 @@ if (args.includes('--dev') || args.includes('-d')) {
   process.exit(0);
 }
 
-// Default: production mode (next start - read-only, no .next writes)
+// Default: production mode (next start — read-only, no .next writes)
 const nextDir = path.join(projectRoot, '.next');
 try {
   accessSync(nextDir, constants.R_OK);
 } catch {
-  console.log('');
-  console.log('⚠️  No production build found. Run "wodev --build" first.');
-  console.log('   Or use "wodev --dev" for development mode with hot reload.');
-  console.log('');
-  console.log('   After sudo install: sudo wodev --build  (one-time)');
-  console.log('   Then:               wodev               (as normal user)');
-  console.log('');
+  printLogo();
+  console.log(`  ${yellow('⚠')}  ${C.bold}No production build found.${C.reset}`);
+  console.log(`     ${od('Run')} ${C.bold}wodev --build${C.reset} ${od('first, or use')} ${C.bold}wodev --dev${C.reset} ${od('for development.')}`);
+  console.log();
+  console.log(`  ${o('┌')}${od('─'.repeat(48))}${o('┐')}`);
+  console.log(`  ${o('│')}  ${od('After sudo install:')}                         ${o('│')}`);
+  console.log(`  ${o('│')}  ${C.bold}  sudo wodev --build${C.reset}  ${od('(one-time)')}           ${o('│')}`);
+  console.log(`  ${o('│')}  ${C.bold}  wodev${C.reset}              ${od('(as normal user)')}      ${o('│')}`);
+  console.log(`  ${o('│')}                                         ${o('│')}`);
+  console.log(`  ${o('│')}  ${od('Better: install without sudo:')}               ${o('│')}`);
+  console.log(`  ${o('│')}  ${C.bold}  npm config set prefix ~/.npm-global${C.reset}       ${o('│')}`);
+  console.log(`  ${o('└')}${od('─'.repeat(48))}${o('┘')}`);
+  console.log();
   process.exit(1);
 }
 
