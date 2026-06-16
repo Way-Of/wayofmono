@@ -136,6 +136,19 @@ function runNext(cmd, extraArgs = []) {
   console.log(`  ${ob('⟡ ' + (cmd === 'dev' ? 'DEV SERVER' : cmd === 'build' ? 'BUILD' : 'PRODUCTION'))}  ${od('port ' + port)}  ${od('─'.repeat(20))}`);
   console.log();
 
+  if (cmd !== 'build') {
+    const messages = [
+      `${od('🔥')}  ${C.bold}Welcome, fearless CTO!${C.reset}  ${od('Your dashboard of absolute power awaits.')}`,
+      `${od('🎩')}  ${C.bold}Ah, there you are.${C.reset}  ${od('The tickets? Still open. The builds? Let\'s find out.')}`,
+      `${od('🚀')}  ${C.bold}Wo CTO Dashboard${C.reset}  ${od('— because staring at spreadsheets is so 2024.')}`,
+      `${od('👑')}  ${C.bold}Your throne is ready.${C.reset}  ${od('Pull requests don\'t review themselves (yet).')}`,
+      `${od('☕')}  ${C.bold}Dashboard online.${C.reset}  ${od('Coffee not included, but strongly recommended.')}`,
+    ];
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    console.log(`  ${msg}`);
+    console.log();
+  }
+
   const env = {
     ...process.env,
     PORT: port,
