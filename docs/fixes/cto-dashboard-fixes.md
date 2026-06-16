@@ -1,6 +1,28 @@
 # CTO Dashboard Fixes & Release Notes
 
-## v0.4.19 (2026-06-16) — Fixed NEXTAUTH_SECRET Consistency
+## v0.4.21 (2026-06-16) — Electron Production UI Fixed
+
+### Fixes
+- **Removed `output: "standalone"`**: Was baking NEXTAUTH_SECRET at build time, causing JWT decryption errors at runtime
+- **Electron uses `next start`**: Reads env vars (NEXTAUTH_SECRET, OAuth credentials) at runtime — same as web server
+- **Consistent secret**: Deterministic SHA256 secret works across Electron + web
+- **CSS/Tailwind loads correctly**: Regular Next.js server serves static assets properly
+
+### Result
+- Electron desktop app matches web UI exactly (colors, layout, buttons responsive)
+- GitHub OAuth login works in Electron
+- Sessions persist across restarts
+
+### Migration
+```bash
+sudo npm update -g @wayofmono/wo-cto-dashboard
+sudo wodev --build
+wodev   # Electron desktop app with full UI + working OAuth
+```
+
+---
+
+## v0.4.20 (2026-06-16) — Removed Standalone Output
 
 ### Fixes
 - **Fixed JWT decryption errors**: NEXTAUTH_SECRET is now deterministic (SHA256 of version) instead of random per-run
