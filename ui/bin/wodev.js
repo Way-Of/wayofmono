@@ -76,6 +76,7 @@ function showHelp() {
   console.log(`  ${o('│')}  ${C.bold}wodev --dev${C.reset}         Development server (hot reload)    ${o('│')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev --build${C.reset}       Build for production               ${o('│')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev --update${C.reset}      Update to latest npm version       ${o('│')}`);
+  console.log(`  ${o('│')}  ${C.bold}wodev --uninstall${C.reset}    Remove dashboard globally           ${o('│')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev --version${C.reset}     Show version                       ${o('│')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev --help${C.reset}        Show this help                     ${o('│')}`);
   console.log(`  ${o('└')}${od('─'.repeat(48))}${o('┘')}`);
@@ -109,6 +110,25 @@ function updateDashboard() {
   console.log();
 }
 
+function uninstallDashboard() {
+  printLogo();
+  console.log(`  ${ob('⟡ UNINSTALL')}  ${od('removing dashboard')}  ${od('─'.repeat(14))}`);
+  console.log();
+  try {
+    execSync('npm uninstall -g @wayofmono/wo-cto-dashboard', { stdio: 'inherit' });
+    console.log(`  ${green('✓')} ${C.bold}Dashboard uninstalled${C.reset}`);
+  } catch {
+    console.log();
+    console.log(`  ${yellow('⚠')}  Could not uninstall automatically.`);
+    if (isWin) {
+      console.log(`     ${od('Try running as Administrator.')}`);
+    } else {
+      console.log(`     ${od('Try:')} ${C.bold}sudo npm uninstall -g @wayofmono/wo-cto-dashboard${C.reset}`);
+    }
+  }
+  console.log();
+}
+
 function runNext(cmd, extraArgs = []) {
   const port = process.env.PORT || '6969';
 
@@ -121,6 +141,13 @@ function runNext(cmd, extraArgs = []) {
     PORT: port,
     NODE_ENV: cmd === 'dev' ? 'development' : 'production',
   };
+
+  // Pre-build steps for global installs
+  if (cmd === 'build') {
+    try {
+      execSync('npx prisma generate', { cwd: projectRoot, stdio: 'pipe' });
+    } catch {}
+  }
 
   let nextBin;
   try {
@@ -145,6 +172,12 @@ function runNext(cmd, extraArgs = []) {
   child.on('close', (code) => {
     if (code !== 0 && code !== null) {
       console.error(`  ${red('✗')} Process exited with code ${code}`);
+    }
+    // After build, ensure .next/ is world-readable (sudo installs make files root-owned)
+    if (cmd === 'build' && (code === 0 || code === null)) {
+      try {
+        execSync(`chmod -R o+rX "${path.join(projectRoot, '.next')}"`, { stdio: 'ignore' });
+      } catch {}
     }
     process.exit(code || 0);
   });
@@ -178,6 +211,11 @@ if (args.includes('--version') || args.includes('-v')) {
 
 if (args.includes('--update') || args.includes('-u')) {
   updateDashboard();
+  process.exit(0);
+}
+
+if (args.includes('--uninstall')) {
+  uninstallDashboard();
   process.exit(0);
 }
 

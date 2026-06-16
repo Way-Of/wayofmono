@@ -1,5 +1,48 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.4 (2026-06-16) — Prisma Generate Fix
+
+### Fixes
+- `wodev --build` now runs `npx prisma generate` before `next build` (required for global installs where Prisma client is not pre-generated)
+- `postinstall` script now runs `prisma generate` + `electron-builder install-app-deps` (gracefully handles missing electron-builder)
+
+### Migration from v0.4.3
+```bash
+sudo npm install -g @wayofmono/wo-cto-dashboard@0.4.4
+sudo wodev --build
+wodev
+```
+
+---
+
+## v0.4.3 (2026-06-16) — Dependency Fix
+
+### Fixes
+- `@tailwindcss/postcss`, `tailwindcss`, `tw-animate-css`, `typescript`, `@types/react`, `@types/react-dom` moved from `devDependencies` → `dependencies` so global npm installs can build
+
+### Migration from v0.4.2
+```bash
+sudo npm install -g @wayofmono/wo-cto-dashboard@0.4.3
+sudo wodev --build
+wodev
+```
+
+---
+
+## v0.4.2 (2026-06-16) — node-fetch Removal
+
+### Fixes
+- Removed `import fetch from 'node-fetch'` in `src/lib/thoughts.ts` — uses global `fetch` (Node 18+) instead
+
+### Migration from v0.4.1
+```bash
+sudo npm install -g @wayofmono/wo-cto-dashboard@0.4.2
+sudo wodev --build
+wodev
+```
+
+---
+
 ## v0.4.1 (2026-06-16) — Build Flag Fix + ASCII Art Logo
 
 ### Fixes
