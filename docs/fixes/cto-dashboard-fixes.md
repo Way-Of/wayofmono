@@ -1,6 +1,32 @@
 # CTO Dashboard Fixes & Release Notes
 
-## v0.4.21 (2026-06-16) — Electron Production UI Fixed
+## v0.4.25 (2026-06-16) — Electron App Icons for All Platforms
+
+### Features
+- **Windows**: `.ico` multi-size (16, 32, 48, 64, 128, 256, 512px)
+- **Linux**: `.png` 512px for AppImage/deb packages
+- **Mac**: `.icns` ready for DMG (icon source SVG included)
+- **Auto-installed** with npm package at `~/.config/wodev/electron/build/`
+- **Orange WO branding** with circuit accents matching CLI theme
+
+### Migration
+```bash
+sudo npm update -g @wayofmono/wo-cto-dashboard
+wodev   # Electron app shows branded icon in dock/taskbar
+```
+
+---
+
+## v0.4.24 (2026-06-16) — Electron App Icons Added
+
+### Features
+- **Custom app icons** for Windows/Linux/Mac
+- **SVG source** for easy future edits
+- **PNG/ICO/ICNS** generated at build time
+
+---
+
+## v0.4.23 (2026-06-16) — Fixed NEXTAUTH_SECRET Constant for Cookie Persistence
 
 ### Fixes
 - **Removed `output: "standalone"`**: Was baking NEXTAUTH_SECRET at build time, causing JWT decryption errors at runtime
