@@ -211,9 +211,10 @@ function runNext(cmd, extraArgs = []) {
     console.log();
   }
 
-  // Fixed NEXTAUTH_SECRET - NEVER CHANGE (must stay constant for JWT cookie decryption)
-  // This exact string ensures old cookies always decrypt correctly
-  const fixedSecret = 'a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456';
+  // Fixed NEXTAUTH_SECRET - MUST MATCH v0.4.21 SECRET for old cookie decryption
+  // This is SHA256("wo-cto-dashboard-0.4.21") - the last working version
+  // NEVER CHANGE THIS or old cookies will fail to decrypt
+  const fixedSecret = '68870c1363f4721bf3a154d3e524b54a34ac5eb683e4d7dc53c426edc10e41d7';
 
   const env = {
     ...process.env,
@@ -292,7 +293,8 @@ function runElectron(isDev = false) {
   console.log(`  ${ob('⟡ ELECTRON APP')}  ${od(isDev ? 'development' : 'production')}  ${od('─'.repeat(18))}`);
   console.log();
 
-  const fixedSecret = crypto.createHash('sha256').update(`wo-cto-dashboard-${getVersion()}`).digest('hex');
+  // Fixed NEXTAUTH_SECRET - MUST MATCH v0.4.21 SECRET for old cookie decryption
+  const fixedSecret = '68870c1363f4721bf3a154d3e524b54a34ac5eb683e4d7dc53c426edc10e41d7';
 
   const env = {
     ...process.env,

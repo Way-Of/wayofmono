@@ -32,8 +32,23 @@ export function LoginPage() {
         useAuthStore.getState().login(devId, '');
         router.push('/');
       }
+    } else if (status === 'unauthenticated') {
+      // Clear any stale state
+      useAuthStore.getState().logout();
     }
   }, [session, status, router]);
+
+  // Debug: log session status
+  useEffect(() => {
+    console.log('[LoginPage] Session status:', status, session ? 'data present' : 'no data');
+    if (session) {
+      console.log('[LoginPage] Session data:', {
+        devId: (session as any).devId,
+        devRole: (session as any).devRole,
+        user: session.user
+      });
+    }
+  }, [session, status]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

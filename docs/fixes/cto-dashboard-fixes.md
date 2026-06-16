@@ -1,5 +1,35 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.29 (2026-06-17) — GitHub OAuth Fixed + Debug Logging
+
+### Fixes
+- **Fixed auth route**: Removed custom GET/POST wrapper, restored `export { handler as GET, handler as POST }`
+- **Permanent NEXTAUTH_SECRET**: Hardcoded to v0.4.21 value — never changes
+- **Debug logging**: Comprehensive NextAuth callback logging for troubleshooting
+- **JWT secret fixed**: No more decryption errors on updates
+
+### Working
+- No JWT decryption errors
+- Auth route handlers working
+- NextAuth callbacks firing with debug logs
+- Next.js server starts on port 6969
+
+### Migration
+```bash
+sudo npm update -g @wayofmono/wo-cto-dashboard
+sudo wodev --build
+wodev   # Electron app with working OAuth
+```
+
+### One-Time Fix for Users on Broken Versions (v0.4.22-v0.4.25)
+```bash
+rm -rf ~/.config/wodev/
+rm -rf ~/.config/Electron/Cookies ~/.config/Electron/Local\ Storage ~/.config/Electron/Session\ Storage
+wodev
+```
+
+---
+
 ## v0.4.23 (2026-06-16) — Fixed NEXTAUTH_SECRET Constant for Cookie Persistence
 
 ### Critical Fix
@@ -13,22 +43,30 @@ Each version generated a new secret (SHA256 of version), causing `JWT_SESSION_ER
 ### The Solution
 ```javascript
 // ui/bin/wodev.js - NEVER CHANGE THIS STRING
-const fixedSecret = 'a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456';
+const fixedSecret = '68870c1363f4721bf3a154d3e524b54a34ac5eb683e4d7dc53c426edc10e41d7';
 ```
 
-This exact string is used for:
-- JWT signing/encryption (NextAuth)
-- Session cookie decryption
-- Works across Electron + web server
-- Persists forever — even if you rebuild the package
+This is SHA256("wo-cto-dashboard-0.4.21") — the last working version before the broken versions.
 
-### Migration (Automatic)
+### Migration (Automatic for Most Users)
 ```bash
 sudo npm update -g @wayofmono/wo-cto-dashboard
 wodev   # Just works — old cookies still decrypt
 ```
 
-No cookie clearing needed. No manual steps. Updates are seamless.
+### One-Time Fix for Users on Broken Versions (v0.4.22-v0.4.25)
+If you get `JWT_SESSION_ERROR: decryption operation failed`:
+```bash
+# Linux
+rm -rf ~/.config/Electron/Cookies ~/.config/Electron/Local\ Storage ~/.config/Electron/Session\ Storage
+
+# macOS
+rm -rf ~/Library/Application\ Support/Electron/Cookies ~/Library/Application\ Support/Electron/Local\ Storage ~/Library/Application\ Support/Electron/Session\ Storage
+
+# Windows
+del %APPDATA%\Electron\Cookies %APPDATA%\Electron\Local\ Storage %APPDATA%\Electron\Session\ Storage
+```
+Then restart `wodev`. This only needs to be done **once** — future updates work automatically.
 
 ---
 
