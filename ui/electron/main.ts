@@ -45,7 +45,7 @@ function createWindow() {
 
   if (isDev) {
     startNextDevServer().then(() => {
-      mainWindow?.loadURL('http://localhost:3000');
+      mainWindow?.loadURL('http://localhost:6969');
       mainWindow?.webContents.openDevTools({ mode: 'detach' });
     });
   } else {
@@ -57,7 +57,7 @@ async function startNextDevServer(): Promise<void> {
   return new Promise((resolve) => {
     nextServer = spawn('bun', ['dev'], {
       cwd: join(__dirname, '..'),
-      env: { ...process.env, PORT: '3000', NODE_ENV: 'development' },
+      env: { ...process.env, PORT: '6969', NODE_ENV: 'development' },
       stdio: ['ignore', 'pipe', 'pipe'],
       shell: true,
     });

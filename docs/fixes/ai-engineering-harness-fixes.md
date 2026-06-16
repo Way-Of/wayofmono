@@ -1,5 +1,44 @@
 # AI Engineering Harness Fixes & Release Notes
 
+## v1.7.1 — 2026-06-16
+
+### Installer Status Reporting Fixed
+
+**Problem**: Installer showed "changed" and "ok" in summary line instead of per-file "NEW" vs "UPDATED" labels.
+
+**Fix**: Modified `packages/@aiengineeringharness/install.ts`:
+- Added `newCount`, `updatedCount`, `unchanged`, `skipped` counters
+- Per-file output now shows `NEW`, `UPDATED`, `UNCHANGED (ok)` labels
+- Summary line format: `X NEW, Y UPDATED, Z UNCHANGED, W SKIPPED`
+
+**Verified**: Clean install → 145 NEW for opencode; modified file → 1 UPDATED; subsequent reinstall → 0 UPDATED, 194 UNCHANGED.
+
+### Stale File Removal Fixed
+
+**Problem**: Stale cleanup removed `wocode-skill-update.py` scripts that were in manifest but didn't exist on disk (still named `wocoder-skill-update.py`).
+
+**Fix**: Renamed 12 `wocoder-skill-update.py` → `wocode-skill-update.py` across:
+- `opencode/skills/{skill-compliance-checker,skill-adapter,skill-auto-update}/scripts/`
+- `gemini/skills/{skill-compliance-checker,skill-adapter,skill-auto-update}/scripts/`
+- `pi/agent/skills/{skill-adapter,skill-auto-update}/scripts/`
+- `wocode/agent/skills/{skill-compliance-checker,skill-adapter,skill-auto-update}/scripts/`
+- `config-manifest/scripts/`
+
+Compile now clean (0 errors). Clean reinstall finds all 7 scripts per tool.
+
+### Skill Parity Achieved: 73/73 Across All 7 Tools
+
+**Problem**: After adding `self-documentation` and `validate-manifest` to 6 non-wocode YAMLs, codex was missing SKILL.md files (dual-file format requires SKILL.md too).
+
+**Fix**: Created missing codex SKILL.md files. Clean reinstall verified identical 73 skills:
+- opencode: 73 | claude: 73 | gemini: 73 | pi: 73 | wocode: 73 | codex: 73 | antigravity: 73
+
+### Womono Version Bumped to 1.7.1
+
+All core files updated: manifest.json, CHANGELOG.md, README.md, install.ts, setup.sh, install.ps1.
+
+---
+
 ## v1.7.0 — 2026-06-15
 
 ### Config-Manifest Modularization

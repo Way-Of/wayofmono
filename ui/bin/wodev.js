@@ -3,14 +3,16 @@
 import { spawn } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.join(__dirname, '..');
 
-const port = process.env.PORT || '3000';
+const require = createRequire(import.meta.url);
+
+const port = process.env.PORT || '6969';
 
 console.log('🚀 Starting WayOfMono CTO Dashboard...');
-console.log(`📍 Project root: ${projectRoot}`);
 console.log(`🌐 Port: ${port}`);
 
 const env = {
@@ -19,7 +21,14 @@ const env = {
   NODE_ENV: 'development',
 };
 
-const child = spawn('bun', ['run', 'dev'], {
+let nextBin;
+try {
+  nextBin = require.resolve('next/dist/bin/next');
+} catch {
+  nextBin = 'next';
+}
+
+const child = spawn(process.execPath, [nextBin, 'dev', '-p', port], {
   cwd: projectRoot,
   env,
   stdio: 'inherit',
@@ -43,7 +52,7 @@ process.on('SIGINT', () => {
   child.kill('SIGINT');
 });
 
-process.on('SIGTERM = () => {
+process.on('SIGTERM', () => {
   console.log('\n🛑 Shutting down...');
   child.kill('SIGTERM');
-};
+});

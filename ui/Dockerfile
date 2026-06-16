@@ -19,7 +19,7 @@ RUN apk add --no-cache openssl ca-certificates && \
     npm install -g prisma@^6.11.1
 
 ENV NODE_ENV=production
-ENV PORT=3000
+ENV PORT=6969
 ENV HOSTNAME=0.0.0.0
 ENV THOUGHTS_ROOT=/thoughts
 
@@ -29,6 +29,6 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY docker/entrypoint.sh ./entrypoint.sh
 
-EXPOSE 3000
+EXPOSE 6969
 
 ENTRYPOINT ["./entrypoint.sh"]

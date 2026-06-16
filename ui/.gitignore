@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -56,16 +57,9 @@ server.log
 # Parent monorepo (wayofmono) - ignore when UI is in own repo
 /thoughts/
 /packages/
-/docs/
 /scripts/
 /.agent/
 /.claude/
-*.md
-!README.md
-!CHANGELOG.md
-!LICENSE*
-!.github/
-!*.md
 
 # OS
 Thumbs.db

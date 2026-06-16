@@ -137,12 +137,12 @@ DEV_PID=$!
 log_step_end "Starting Next.js dev server"
 
 log_step_start "Waiting for Next.js dev server"
-wait_for_service "localhost" "3000" "Next.js dev server"
+wait_for_service "localhost" "6969" "Next.js dev server"
 log_step_end "Waiting for Next.js dev server"
 
 log_step_start "Health check"
 echo "[BUN] Performing health check..."
-curl -fsS localhost:3000 >/dev/null
+curl -fsS localhost:6969 >/dev/null
 echo "[BUN] Health check passed"
 log_step_end "Health check"
 

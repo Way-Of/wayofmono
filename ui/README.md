@@ -12,7 +12,7 @@ pnpm install
 pnpm dev
 ```
 
-Opens at **http://localhost:3000**
+Opens at **http://localhost:6969**
 
 ## 📋 Features
 
@@ -31,7 +31,7 @@ Opens at **http://localhost:3000**
 For private `f-rr-d` repo access (5000 req/hr vs 60 unauthenticated):
 
 1. Create GitHub OAuth App at https://github.com/settings/developers
-2. Set callback: `http://localhost:3000/api/auth/callback/github`
+2. Set callback: `http://localhost:6969/api/auth/callback/github`
 3. Copy `.env.example` to `.env` and fill in:
 
 ```bash
@@ -40,7 +40,7 @@ cp .env.example .env
 # GITHUB_CLIENT_ID=xxx
 # GITHUB_CLIENT_SECRET=xxx
 # NEXTAUTH_SECRET=xxx (generate: openssl rand -base64 32)
-# NEXTAUTH_URL=http://localhost:3000
+# NEXTAUTH_URL=http://localhost:6969
 ```
 
 4. Click "Sign in with GitHub" on login page
@@ -56,7 +56,7 @@ Tickets loaded from **f-rr-d** (förråd) GitHub repo: https://github.com/Way-Of
 ## 🛠️ Commands
 
 ```bash
-pnpm dev          # Start dev server (port 3000)
+pnpm dev          # Start dev server (port 6969)
 pnpm build        # Production build
 pnpm start        # Run production build
 pnpm lint         # Run ESLint
@@ -116,7 +116,7 @@ Add env vars in Vercel dashboard.
 ### Docker
 ```bash
 docker build -t wayofdev .
-docker run -p 3000:3000 --env-file .env wayofdev
+docker run -p 6969:6969 --env-file .env wayofdev
 ```
 
 ### Electron Auto-Updates
@@ -143,7 +143,7 @@ Built with electron-builder, publishes to GitHub Releases on `wayofdev` repo.
 | `GITHUB_CLIENT_ID` | Yes* | GitHub OAuth App Client ID |
 | `GITHUB_CLIENT_SECRET` | Yes* | GitHub OAuth App Secret |
 | `NEXTAUTH_SECRET` | Yes | `openssl rand -base64 32` |
-| `NEXTAUTH_URL` | Yes | `http://localhost:3000` or prod URL |
+| `NEXTAUTH_URL` | Yes | `http://localhost:6969` or prod URL |
 | `DATABASE_URL` | No | SQLite: `file:./dev.db` |
 
 *Required for private repo access
