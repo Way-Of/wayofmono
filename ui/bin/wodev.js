@@ -231,6 +231,15 @@ function runNext(cmd, extraArgs = []) {
         execSync('npx --yes prisma generate', { cwd: projectRoot, stdio: 'pipe' });
       } catch {}
     }
+    // Compile Electron main process TypeScript to JavaScript
+    try {
+      const mainTs = path.join(projectRoot, 'electron', 'main.ts');
+      const mainJs = path.join(projectRoot, 'electron', 'main.js');
+      // Use esbuild to compile
+      try {
+        execSync(`npx --yes esbuild ${mainTs} --platform=node --format=esm --outfile=${mainJs} --external:electron`, { cwd: projectRoot, stdio: 'pipe' });
+      } catch {}
+    } catch {}
   }
 
   let nextBin;
@@ -279,12 +288,12 @@ function runNext(cmd, extraArgs = []) {
   }
 }
 
-function runElectron() {
-  const isDev = args.includes('--dev') || args.includes('-d');
+function runElectron(isDev = false) {
   const standaloneDir = path.join(projectRoot, '.next', 'standalone');
   const hasStandalone = existsSync(path.join(standaloneDir, 'server.js'));
   const electronBin = path.join(projectRoot, 'node_modules', '.bin', 'electron');
-  const mainPath = path.join(projectRoot, 'electron', 'main.ts');
+  const mainPath = path.join(projectRoot, 'electron', isDev ? 'main.ts' : 'main.js');
+  const port = process.env.PORT || '6969';
 
   printLogo();
   console.log(`  ${ob('⟡ ELECTRON APP')}  ${od(isDev ? 'development' : 'production')}  ${od('─'.repeat(18))}`);

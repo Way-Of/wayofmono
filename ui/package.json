@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/wo-cto-dashboard",
-  "version": "0.4.13",
+  "version": "0.4.18",
   "private": false,
   "type": "module",
   "main": "bin/wodev.js",
@@ -42,6 +42,7 @@
     "electron:dev": "concurrently -k \"bun dev\" \"wait-on http://localhost:${PORT:-6969} && cross-env NODE_ENV=development electron .\"",
     "electron:build": "bun run build && electron-builder",
     "electron:dist": "bun run build && electron-builder --publish=never",
+    "prepublishOnly": "npx esbuild electron/main.ts --platform=node --format=esm --outfile=electron/main.js --external:electron --bundle",
     "postinstall": "prisma generate && node -e \"try{require('electron-builder')}catch(e){process.exit(0)}\" && electron-builder install-app-deps || true"
   },
   "dependencies": {
@@ -130,6 +131,7 @@
     "electron-builder": "^25.0.0",
     "eslint": "^9",
     "eslint-config-next": "^16.1.1",
+    "esbuild": "^0.24.0",
     "wait-on": "^8.0.0"
   },
   "build": {

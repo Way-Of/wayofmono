@@ -1,6 +1,67 @@
 # CTO Dashboard Fixes & Release Notes
 
-## v0.4.11 (2026-06-16) — Zero-Setup GitHub OAuth + Embedded Credentials
+## v0.4.18 (2026-06-16) — Electron Production Mode Fixed
+
+### Fixes
+- **Electron production mode**: Fixed `wodev` (default) to launch Electron app with standalone Next.js server
+- **Standalone server in Electron**: Added `startNextProdServer()` to spawn `node .next/standalone/server.js` in production
+- **Dev/Prod detection**: `isDev = !app.isPackaged && process.env.NODE_ENV !== 'production'` for correct mode
+- **GPU errors in CI**: Xvfb virtual display GPU warnings are non-fatal
+
+### Features
+- **Default is Electron app**: `wodev` launches desktop app, `wodev --web` for web server
+- **Embedded OAuth credentials**: Works out of the box for Way-Of team
+
+### Migration
+```bash
+sudo npm update -g @wayofmono/wo-cto-dashboard
+sudo wodev --build    # one-time build
+wodev                 # launches Electron desktop app
+```
+
+---
+
+## v0.4.17 (2026-06-16) — Electron main.ts Compilation
+
+### Fixes
+- **ESBuild compilation**: Added `prepublishOnly` script to compile `electron/main.ts` → `electron/main.js`
+- **Electron entry point**: Fixed `ERR_UNKNOWN_FILE_EXTENSION` for `.ts` in production
+
+---
+
+## v0.4.16 (2026-06-16) — Electron Default Launch
+
+### Features
+- **Default command is Electron**: `wodev` (no args) launches desktop app
+- **`--web` flag**: `wodev --web` runs production web server
+- **`--dev` flag**: `wodev --dev` runs dev web server with hot reload
+- **Version display**: Build output now shows version
+
+### Migration
+```bash
+wodev              # Electron app (default)
+wodev --web        # Web server
+wodev --dev        # Dev server
+wodev --build      # Build
+```
+
+---
+
+## v0.4.15 (2026-06-16) — Electron TypeScript Fix
+
+### Fixes
+- **TypeScript compilation**: Added esbuild to compile electron/main.ts for production
+
+---
+
+## v0.4.14 (2026-06-16) — runElectron Port Bug Fix
+
+### Fixes
+- **Fixed `port is not defined`**: `runElectron()` now defines `port` locally
+
+---
+
+## v0.4.13 (2026-06-16) — Zero-Setup GitHub OAuth
 
 ### Features
 - **Pre-embedded Way-Of OAuth credentials**: Shared OAuth App under Way-Of org works for all developers out of the box
