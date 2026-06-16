@@ -211,8 +211,9 @@ function runNext(cmd, extraArgs = []) {
     console.log();
   }
 
-  // Fixed NEXTAUTH_SECRET (deterministic from version) - same across all runs
-  const fixedSecret = crypto.createHash('sha256').update(`wo-cto-dashboard-${getVersion()}`).digest('hex');
+  // Fixed NEXTAUTH_SECRET - NEVER CHANGE (must stay constant for JWT cookie decryption)
+  // This exact string ensures old cookies always decrypt correctly
+  const fixedSecret = 'a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456';
 
   const env = {
     ...process.env,

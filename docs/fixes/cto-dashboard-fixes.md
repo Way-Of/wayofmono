@@ -1,32 +1,59 @@
 # CTO Dashboard Fixes & Release Notes
 
-## v0.4.25 (2026-06-16) — Electron App Icons for All Platforms
+## v0.4.23 (2026-06-16) — Fixed NEXTAUTH_SECRET Constant for Cookie Persistence
 
-### Features
-- **Windows**: `.ico` multi-size (16, 32, 48, 64, 128, 256, 512px)
-- **Linux**: `.png` 512px for AppImage/deb packages
-- **Mac**: `.icns` ready for DMG (icon source SVG included)
-- **Auto-installed** with npm package at `~/.config/wodev/electron/build/`
-- **Orange WO branding** with circuit accents matching CLI theme
+### Critical Fix
+- **JWT secret now hardcoded constant** — never changes across versions
+- **Old cookies decrypt correctly** on `npm update` — users don't need to clear cookies
+- **Works automatically** on updates — zero user intervention
+
+### The Problem
+Each version generated a new secret (SHA256 of version), causing `JWT_SESSION_ERROR: decryption operation failed` on every update because old JWT cookies couldn't be decrypted with the new secret.
+
+### The Solution
+```javascript
+// ui/bin/wodev.js - NEVER CHANGE THIS STRING
+const fixedSecret = 'a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456';
+```
+
+This exact string is used for:
+- JWT signing/encryption (NextAuth)
+- Session cookie decryption
+- Works across Electron + web server
+- Persists forever — even if you rebuild the package
+
+### Migration (Automatic)
+```bash
+sudo npm update -g @wayofmono/wo-cto-dashboard
+wodev   # Just works — old cookies still decrypt
+```
+
+No cookie clearing needed. No manual steps. Updates are seamless.
+
+---
+
+## v0.4.22 (2026-06-16) — Auto-Login After GitHub OAuth Callback
+
+### Fixes
+- **LoginPage auto-detects NextAuth session** after GitHub OAuth redirect
+- **Syncs session data** (devId, devRole, accessToken) with auth store
+- **Auto-redirects to dashboard** instead of staying on login page
+
+### Flow
+1. User clicks "Sign in with GitHub" → GitHub authorization
+2. User completes GitHub mobile 2FA → redirects to `/api/auth/callback/github` → `/`
+3. LoginPage detects authenticated session → logs in user → redirects to dashboard
 
 ### Migration
 ```bash
 sudo npm update -g @wayofmono/wo-cto-dashboard
-wodev   # Electron app shows branded icon in dock/taskbar
+sudo wodev --build
+wodev
 ```
 
 ---
 
-## v0.4.24 (2026-06-16) — Electron App Icons Added
-
-### Features
-- **Custom app icons** for Windows/Linux/Mac
-- **SVG source** for easy future edits
-- **PNG/ICO/ICNS** generated at build time
-
----
-
-## v0.4.23 (2026-06-16) — Fixed NEXTAUTH_SECRET Constant for Cookie Persistence
+## v0.4.21 (2026-06-16) — Electron Production UI Fixed
 
 ### Fixes
 - **Removed `output: "standalone"`**: Was baking NEXTAUTH_SECRET at build time, causing JWT decryption errors at runtime
