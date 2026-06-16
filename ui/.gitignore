@@ -52,3 +52,28 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# Parent monorepo (wayofmono) - ignore when UI is in own repo
+/thoughts/
+/packages/
+/docs/
+/scripts/
+/.agent/
+/.claude/
+*.md
+!README.md
+!CHANGELOG.md
+!LICENSE*
+!.github/
+!*.md
+
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

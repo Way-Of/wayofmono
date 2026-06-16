@@ -1,0 +1,161 @@
+# WayOfDev CTO Dashboard
+
+> Production CTO Dashboard & Developer Portal for Way-Of projects (WayOfMono, WayOfWork, OptiCat)
+
+## 🚀 Quick Start
+
+```bash
+# Clone and run
+git clone https://github.com/Way-Of/wayofdev.git
+cd wayofdev
+pnpm install
+pnpm dev
+```
+
+Opens at **http://localhost:3000**
+
+## 📋 Features
+
+| View | Description |
+|------|-------------|
+| **Overview** | Ticket stats, velocity, blockers |
+| **Tickets** | Kanban with filters, review queue, **GitHub/Local source switch + branch selector** |
+| **Standup** | Daily async check-ins (yesterday/today/blockers) |
+| **Skills** | Real-time skill health across all machines |
+| **Ideas** | Prioritized idea board with voting |
+| **Developers** | Workflow and assignment tracking |
+| **Docs** | Architecture docs and decision records |
+
+## 🔐 GitHub Authentication (Private Repo Access)
+
+For private `f-rr-d` repo access (5000 req/hr vs 60 unauthenticated):
+
+1. Create GitHub OAuth App at https://github.com/settings/developers
+2. Set callback: `http://localhost:3000/api/auth/callback/github`
+3. Copy `.env.example` to `.env` and fill in:
+
+```bash
+cp .env.example .env
+# Edit .env with:
+# GITHUB_CLIENT_ID=xxx
+# GITHUB_CLIENT_SECRET=xxx
+# NEXTAUTH_SECRET=xxx (generate: openssl rand -base64 32)
+# NEXTAUTH_URL=http://localhost:3000
+```
+
+4. Click "Sign in with GitHub" on login page
+
+## 📦 Data Source
+
+Tickets loaded from **f-rr-d** (förråd) GitHub repo: https://github.com/Way-Of/f-rr-d
+
+- **Projects**: WayOfMono (WOMONO), WayOfWork (WOW), OptiCat (OPT)
+- **Source switch**: Local filesystem ↔ GitHub (main/develop/staging branches)
+- **Fallback**: Auto-falls back to local if GitHub unavailable
+
+## 🛠️ Commands
+
+```bash
+pnpm dev          # Start dev server (port 3000)
+pnpm build        # Production build
+pnpm start        # Run production build
+pnpm lint         # Run ESLint
+pnpm db:push      # Push Prisma schema to SQLite
+```
+
+## 🖥️ Electron App
+
+```bash
+pnpm electron:dev    # Dev with Electron wrapper
+pnpm electron:build  # Build distributable
+pnpm electron:dist   # Build + package (no publish)
+```
+
+## 📁 Project Structure
+
+```
+wayofdev/
+├── src/
+│   ├── app/              # Next.js 16 App Router
+│   │   ├── api/          # API routes (tickets, developers, docs, auth)
+│   │   └── page.tsx      # Login page
+│   ├── components/
+│   │   ├── dashboard/    # Dashboard views
+│   │   └── ui/           # Radix UI components
+│   ├── lib/
+│   │   ├── auth.ts       # NextAuth.js GitHub provider
+│   │   ├── thoughts.ts   # f-rr-d data fetching (GitHub API)
+│   │   └── types.ts      # TypeScript types
+│   └── store/
+│       └── dashboard-store.ts  # Zustand state
+├── prisma/
+│   └── schema.prisma     # SQLite schema
+├── electron/             # Electron main/preload
+├── public/               # Static assets
+└── .github/workflows/    # CI/CD
+```
+
+## 🔧 Tech Stack
+
+- **Framework**: Next.js 16 (App Router, Turbopack)
+- **Auth**: NextAuth.js (GitHub OAuth)
+- **Database**: Prisma + SQLite (dev), PostgreSQL (prod)
+- **State**: Zustand
+- **UI**: Radix UI + Tailwind CSS
+- **Icons**: Lucide React
+- **Desktop**: Electron 30
+
+## 🌐 Deployment
+
+### Vercel (Recommended)
+```bash
+vercel --prod
+```
+Add env vars in Vercel dashboard.
+
+### Docker
+```bash
+docker build -t wayofdev .
+docker run -p 3000:3000 --env-file .env wayofdev
+```
+
+### Electron Auto-Updates
+Built with electron-builder, publishes to GitHub Releases on `wayofdev` repo.
+
+## 📊 API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/health` | Health check |
+| GET | `/api` | Dashboard data (tickets, devs, docs) |
+| GET | `/api?type=tickets&source=github&branch=main` | Tickets from GitHub |
+| GET | `/api?type=developers&source=github` | Developers from GitHub |
+| GET | `/api?type=docs` | Documentation |
+| POST | `/api/ideas` | Create idea |
+| POST | `/api/standup` | Create standup entry |
+| POST | `/api/news` | Create news item |
+| GET | `/api/skills/report` | Skills health |
+
+## 📝 Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GITHUB_CLIENT_ID` | Yes* | GitHub OAuth App Client ID |
+| `GITHUB_CLIENT_SECRET` | Yes* | GitHub OAuth App Secret |
+| `NEXTAUTH_SECRET` | Yes | `openssl rand -base64 32` |
+| `NEXTAUTH_URL` | Yes | `http://localhost:3000` or prod URL |
+| `DATABASE_URL` | No | SQLite: `file:./dev.db` |
+
+*Required for private repo access
+
+## 🤝 Contributing
+
+1. Fork the repo
+2. Create feature branch
+3. Make changes
+4. Run `pnpm lint` and `pnpm build`
+5. Open PR
+
+## 📄 License
+
+MIT © Way-Of
