@@ -1,5 +1,30 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.31 (2026-06-17) — GitHub OAuth: Fixed Developer Fetching with Access Token
+
+### Fixes
+- **getDevelopers uses access_token**: OAuth callback passes access_token to fetch developers from GitHub
+- **Debug logging**: Full trace of GitHub API calls, config parsing, developer matching
+- **Reads githubUsername from config.md**: Matches GitHub OAuth user to f-rr-d developer
+- **Known role overrides**: Maps local usernames to GitHub usernames (craig→craigmartin, etc.)
+
+### GitHub Org OAuth App Restriction (Known Issue)
+The Way-Of organization has **OAuth App access restrictions enabled**, causing 403 errors when fetching developers/tickets from GitHub API.
+
+**To fix:** Org admin must approve the OAuth App at:
+```
+https://github.com/organizations/Way-Of/settings/oauth_application_policy
+```
+Find Client ID `Ov23liy3r3AGOFaXT6YV` and click "Approve".
+
+### Working
+- Pincode login works (no GitHub API needed)
+- JWT secret fixed (no decryption errors)
+- Auth route working
+- Debug logging active
+
+---
+
 ## v0.4.29 (2026-06-17) — GitHub OAuth Fixed + Debug Logging
 
 ### Fixes

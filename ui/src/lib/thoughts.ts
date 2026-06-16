@@ -111,10 +111,20 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
       
       let treeData;
       try {
+        console.log('[thoughts] Fetching GitHub tree:', treeUrl);
         const response = await fetch(treeUrl, { signal: AbortSignal.timeout(10000), headers });
-        if (!response.ok) continue;
+        console.log('[thoughts] GitHub tree response status:', response.status);
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.log('[thoughts] GitHub tree error:', errorText);
+          continue;
+        }
         treeData = await response.json();
-      } catch { continue; }
+        console.log('[thoughts] GitHub tree items:', treeData.tree?.length || 0);
+      } catch (e) {
+        console.error('[thoughts] GitHub tree fetch error:', e);
+        continue;
+      }
 
       // Find developer directories (not global, shared, docs)
       const devDirs = new Set<string>();
@@ -129,6 +139,7 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
           }
         }
       }
+      console.log('[thoughts] Found dev dirs:', Array.from(devDirs));
 
       // For each developer dir, try to read config.md
       for (const devName of devDirs) {
@@ -136,23 +147,36 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
         seen.add(devName);
 
         let pincode = '';
+        let githubUsername = devName;
+        let displayName = devName.charAt(0).toUpperCase() + devName.slice(1);
+        let role = 'Developer';
+        let email = '';
         try {
           const rawUrl = `${GITHUB_RAW_BASE}/${GITHUB_REPO}/${branch}/thoughts/${project}/${devName}/config.md`;
           const rawHeaders: Record<string, string> = {};
           if (accessToken) rawHeaders['Authorization'] = `Bearer ${accessToken}`;
+          console.log('[thoughts] Fetching config:', rawUrl);
           const response = await fetch(rawUrl, { signal: AbortSignal.timeout(5000), headers: rawHeaders });
+          console.log('[thoughts] Config response status:', response.status);
           if (response.ok) {
             const content = await response.text();
             const { frontmatter } = parseFrontmatter(content);
             pincode = String(frontmatter['pincode'] || '');
+            githubUsername = String(frontmatter['githubUsername'] || devName);
+            displayName = String(frontmatter['displayName'] || devName.charAt(0).toUpperCase() + devName.slice(1));
+            role = String(frontmatter['role'] || 'Developer');
+            email = String(frontmatter['email'] || '');
+            console.log('[thoughts] Config parsed:', { githubUsername, displayName, role });
           }
-        } catch { /* no config or failed */ }
+        } catch (e) {
+          console.error('[thoughts] Config fetch error:', e);
+        }
 
         devs.push({
           id: devName,
-          githubUsername: devName,
-          displayName: devName.charAt(0).toUpperCase() + devName.slice(1),
-          role: 'Developer',
+          githubUsername,
+          displayName,
+          role,
           pincode,
           avatarUrl: '',
           projects: [project],
@@ -161,7 +185,7 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
       }
     }
 
-    // Apply known role overrides
+    // Apply known role overrides (match by directory name / local username)
     const craig = devs.find(d => d.id === 'craig');
     if (craig) { craig.role = 'CTO'; craig.githubUsername = 'craigmartin'; }
 
