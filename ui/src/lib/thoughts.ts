@@ -48,7 +48,7 @@ function parseFrontmatter(content: string): { frontmatter: Frontmatter; body: st
   return { frontmatter, body };
 }
 
-export async function getDevelopers() {
+export async function getDevelopers(source: 'local' | 'github' = 'local', branch = GITHUB_BRANCH) {
   const devs: {
     id: string;
     githubUsername: string;
@@ -61,27 +61,93 @@ export async function getDevelopers() {
   }[] = [];
   const seen = new Set<string>();
 
-  for (const project of PROJECTS) {
-    const projectPath = path.join(THOUGHTS_ROOT, project);
-    try {
-      const entries = await fs.readdir(projectPath, { withFileTypes: true });
-      for (const entry of entries) {
-        if (!entry.isDirectory() || entry.name.startsWith('.') || entry.name === 'global' || entry.name === 'shared' || entry.name === 'docs') continue;
-        if (seen.has(entry.name)) continue;
-        seen.add(entry.name);
+  if (source === 'local') {
+    for (const project of PROJECTS) {
+      const projectPath = path.join(THOUGHTS_ROOT, project);
+      try {
+        const entries = await fs.readdir(projectPath, { withFileTypes: true });
+        for (const entry of entries) {
+          if (!entry.isDirectory() || entry.name.startsWith('.') || entry.name === 'global' || entry.name === 'shared' || entry.name === 'docs' || entry.name === 'ticket-executor' || entry.name === 'enforcement-ticket' || entry.name === 'installation-tickets') continue;
+          if (seen.has(entry.name)) continue;
+          seen.add(entry.name);
+
+          let pincode = '';
+          try {
+            const configPath = path.join(projectPath, entry.name, 'config.md');
+            const configContent = await fs.readFile(configPath, 'utf8');
+            const { frontmatter } = parseFrontmatter(configContent);
+            pincode = String(frontmatter['pincode'] || '');
+          } catch { /* no config */ }
+
+          devs.push({
+            id: entry.name,
+            githubUsername: entry.name,
+            displayName: entry.name.charAt(0).toUpperCase() + entry.name.slice(1),
+            role: 'Developer',
+            pincode,
+            avatarUrl: '',
+            projects: [project],
+            isActive: true,
+          });
+        }
+      } catch { /* no project dir */ }
+    }
+
+    for (const dev of devs) {
+      dev.projects = [...new Set(PROJECTS.filter(p => {
+        try { fs.access(path.join(THOUGHTS_ROOT, p, dev.id)); return true; }
+        catch { return false; }
+      }))];
+    }
+  } else {
+    // Fetch developers from GitHub by reading config.md files from each developer folder
+    const projects = PROJECTS;
+    
+    for (const project of projects) {
+      const devsPath = `thoughts/${project}`;
+      const treeUrl = `${GITHUB_API_BASE}/repos/${GITHUB_REPO}/git/trees/${branch}:${devsPath}?recursive=1`;
+      
+      let treeData;
+      try {
+        const response = await fetch(treeUrl, { signal: AbortSignal.timeout(10000) });
+        if (!response.ok) continue;
+        treeData = await response.json();
+      } catch { continue; }
+
+      // Find developer directories (not global, shared, docs)
+      const devDirs = new Set<string>();
+      for (const item of treeData.tree || []) {
+        if (item.type === 'tree') {
+          const parts = item.path.split('/');
+          if (parts.length === 3 && parts[0] === 'thoughts' && parts[1] === project) {
+            const dirName = parts[2];
+            if (!dirName.startsWith('.') && dirName !== 'global' && dirName !== 'shared' && dirName !== 'docs') {
+              devDirs.add(dirName);
+            }
+          }
+        }
+      }
+
+      // For each developer dir, try to read config.md
+      for (const devName of devDirs) {
+        if (seen.has(devName)) continue;
+        seen.add(devName);
 
         let pincode = '';
         try {
-          const configPath = path.join(projectPath, entry.name, 'config.md');
-          const configContent = await fs.readFile(configPath, 'utf8');
-          const { frontmatter } = parseFrontmatter(configContent);
-          pincode = String(frontmatter['pincode'] || '');
-        } catch { /* no config */ }
+          const rawUrl = `${GITHUB_RAW_BASE}/${GITHUB_REPO}/${branch}/thoughts/${project}/${devName}/config.md`;
+          const response = await fetch(rawUrl, { signal: AbortSignal.timeout(5000) });
+          if (response.ok) {
+            const content = await response.text();
+            const { frontmatter } = parseFrontmatter(content);
+            pincode = String(frontmatter['pincode'] || '');
+          }
+        } catch { /* no config or failed */ }
 
         devs.push({
-          id: entry.name,
-          githubUsername: entry.name,
-          displayName: entry.name.charAt(0).toUpperCase() + entry.name.slice(1),
+          id: devName,
+          githubUsername: devName,
+          displayName: devName.charAt(0).toUpperCase() + devName.slice(1),
           role: 'Developer',
           pincode,
           avatarUrl: '',
@@ -89,26 +155,30 @@ export async function getDevelopers() {
           isActive: true,
         });
       }
-    } catch { /* no project dir */ }
-  }
+    }
 
-  const craig = devs.find(d => d.id === 'craig');
-  if (craig) { craig.role = 'CTO'; craig.githubUsername = 'craigmartin'; }
+    // Apply known role overrides
+    const craig = devs.find(d => d.id === 'craig');
+    if (craig) { craig.role = 'CTO'; craig.githubUsername = 'craigmartin'; }
 
-  const zerwiz = devs.find(d => d.id === 'zerwiz');
-  if (zerwiz) { zerwiz.role = 'Lead'; zerwiz.githubUsername = 'zerwiz'; }
+    const zerwiz = devs.find(d => d.id === 'zerwiz');
+    if (zerwiz) { zerwiz.role = 'Lead'; zerwiz.githubUsername = 'zerwiz'; }
 
-  const andre = devs.find(d => d.id === 'andre');
-  if (andre) { andre.role = 'Senior'; andre.githubUsername = 'Epileptickk'; }
+    const andre = devs.find(d => d.id === 'andre');
+    if (andre) { andre.role = 'Senior'; andre.githubUsername = 'Epileptickk'; }
 
-  const tomas = devs.find(d => d.id === 'tomas');
-  if (tomas) { tomas.role = 'Developer'; tomas.githubUsername = 'tomchi-debug'; }
+    const tomas = devs.find(d => d.id === 'tomas');
+    if (tomas) { tomas.role = 'Developer'; tomas.githubUsername = 'tomchi-debug'; }
 
-  for (const dev of devs) {
-    dev.projects = [...new Set(PROJECTS.filter(p => {
-      try { fs.access(path.join(THOUGHTS_ROOT, p, dev.id)); return true; }
-      catch { return false; }
-    }))];
+    // Add all projects for each dev (from GitHub tree)
+    for (const dev of devs) {
+      dev.projects = [...new Set(PROJECTS.filter(p => {
+        try { 
+          // We can't easily check without another API call, so include all
+          return true; 
+        } catch { return false; }
+      }))];
+    }
   }
 
   return devs;
