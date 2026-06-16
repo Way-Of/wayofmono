@@ -30,7 +30,9 @@ export function LoginPage() {
   };
 
   const handleGitHubLogin = () => {
-    signIn('github', { callbackUrl: '/' });
+    signIn('github', { callbackUrl: '/' }).catch(() => {
+      setError('GitHub OAuth not configured. Run wodev --setup or use pincode login below.');
+    });
   };
 
   const isDisabled = loading && developers.length === 0;

@@ -154,9 +154,13 @@ function setupDashboard() {
   printLogo();
   console.log(`  ${ob('⟡ SETUP')}  ${od('configure GitHub OAuth')}  ${od('─'.repeat(13))}`);
   console.log();
-  console.log(`  ${od('Create an OAuth App at:')}`);
-  console.log(`  ${cyan('https://github.com/settings/developers')}`);
-  console.log(`  ${od('Callback URL:')} ${C.bold}http://localhost:6969/api/auth/callback/github${C.reset}`);
+  console.log(`  ${od('Every user needs their own GitHub OAuth App')}  ${od('(one-time per machine).')}`);
+  console.log();
+  console.log(`  ${od('1. Go to:')}  ${cyan('https://github.com/settings/developers')}`);
+  console.log(`  ${od('2. Create an OAuth App with callback URL:')}`);
+  console.log(`     ${C.bold}http://localhost:6969/api/auth/callback/github${C.reset}`);
+  console.log(`  ${od('3. Copy the Client ID and generate a Client Secret')}`);
+  console.log(`  ${od('4. Enter them below:')}`);
   console.log();
 
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
