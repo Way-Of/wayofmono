@@ -13,6 +13,7 @@
 - `npm install -g` may fail with EACCES on systems without write access to `/usr/lib/node_modules/`
   - Fix: `sudo npm install -g @wayofmono/wo-cto-dashboard`
   - Fix: `npm config set prefix ~/.npm-global && export PATH=$PATH:~/.npm-global/bin`
+- Both READMEs updated with EACCES workaround instructions (`npx` preferred, or sudo/local-prefix)
 
 ---
 
