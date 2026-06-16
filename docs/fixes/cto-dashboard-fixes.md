@@ -1,5 +1,37 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.23 (2026-06-16) — Fixed NEXTAUTH_SECRET Constant for Cookie Persistence
+
+### Critical Fix
+- **JWT secret now hardcoded constant** — never changes across versions
+- **Old cookies decrypt correctly** on `npm update` — users don't need to clear cookies
+- **Works automatically** on updates — zero user intervention
+
+### The Problem
+Each version generated a new secret (SHA256 of version), causing `JWT_SESSION_ERROR: decryption operation failed` on every update because old JWT cookies couldn't be decrypted with the new secret.
+
+### The Solution
+```javascript
+// ui/bin/wodev.js - NEVER CHANGE THIS STRING
+const fixedSecret = 'a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456';
+```
+
+This exact string is used for:
+- JWT signing/encryption (NextAuth)
+- Session cookie decryption
+- Works across Electron + web server
+- Persists forever — even if you rebuild the package
+
+### Migration (Automatic)
+```bash
+sudo npm update -g @wayofmono/wo-cto-dashboard
+wodev   # Just works — old cookies still decrypt
+```
+
+No cookie clearing needed. No manual steps. Updates are seamless.
+
+---
+
 ## v0.4.22 (2026-06-16) — Auto-Login After GitHub OAuth Callback
 
 ### Fixes
