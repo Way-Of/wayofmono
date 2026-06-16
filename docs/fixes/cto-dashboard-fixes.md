@@ -1,5 +1,44 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.9 (2026-06-16) — GitHub OAuth Setup Wizard
+
+### Features
+- **`wodev --setup`**: Interactive wizard to configure GitHub OAuth Client ID and Secret
+- **Auto-loads `~/.config/wodev/.env`**: User config persists across npm updates
+- **`NEXTAUTH_URL` auto-set**: Defaults to `http://localhost:{PORT}`, no manual config needed
+- **`NEXTAUTH_SECRET` auto-generated**: Random 32-byte hex, no `openssl rand` needed
+
+### Setup
+```bash
+wodev --setup
+# Enter your GitHub Client ID and Client Secret
+# Callback URL: http://localhost:6969/api/auth/callback/github
+```
+
+### Migration from v0.4.8
+```bash
+sudo npm install -g @wayofmono/wo-cto-dashboard
+wodev --setup     # requires Client ID + Secret from GitHub OAuth App
+sudo wodev --build
+wodev
+```
+
+---
+
+## v0.4.8 (2026-06-16) — NEXTAUTH_SECRET Auto-Gen
+
+### Features
+- `NEXTAUTH_SECRET` auto-generated via `crypto.randomBytes(32)` when not set
+
+### Migration from v0.4.7
+```bash
+sudo npm install -g @wayofmono/wo-cto-dashboard@0.4.8
+sudo wodev --build
+wodev
+```
+
+---
+
 ## v0.4.7 (2026-06-16) — Wodev Character + Process Exit Fix
 
 ### Fixes
