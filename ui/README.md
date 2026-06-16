@@ -68,25 +68,32 @@ Port: **http://localhost:6969** (override with `PORT=8080 wodev`)
 **Optional** — the dashboard works with pincode login alone. GitHub login is only
 needed for authenticated API calls (private repo ticket fetching, 5000 req/hr vs 60).
 
-### Per-User Setup
+### Pre-Configured (Zero Setup)
 
-Each user needs their **own** GitHub OAuth App because the callback URL is
-tied to your machine's `localhost`. No shared credentials.
+The npm package ships with the **Way-Of org's shared OAuth App** pre-embedded.
+Just run `wodev` and click "Sign in with GitHub" — no setup required.
 
 ```bash
-# 1. Create your OAuth App at https://github.com/settings/developers
-#    Callback URL: http://localhost:6969/api/auth/callback/github
+npm install -g @wayofmono/wo-cto-dashboard
+wodev
+# Open http://localhost:6969 → click "Sign in with GitHub"
+```
 
-# 2. Run the setup wizard
+### Custom OAuth (For Other Orgs)
+
+If you're using the dashboard for your own organization, run `wodev --setup` to
+configure your own OAuth App:
+
+```bash
 wodev --setup
-# Enter your Client ID and Client Secret when prompted
-
-# 3. Rebuild & enjoy
+# Creates OAuth at https://github.com/settings/developers
+# Callback: http://localhost:6969/api/auth/callback/github
+# Enter your Client ID + Secret
 sudo wodev --build
 wodev
 ```
 
-Credentials are saved to `~/.config/wodev/.env` and auto-loaded on every run.
+Credentials are saved to `~/.config/wodev/.env` and auto-loaded (overrides embedded defaults).
 
 ### How Developer Mapping Works
 

@@ -154,13 +154,15 @@ function setupDashboard() {
   printLogo();
   console.log(`  ${ob('⟡ SETUP')}  ${od('configure GitHub OAuth')}  ${od('─'.repeat(13))}`);
   console.log();
-  console.log(`  ${od('Every user needs their own GitHub OAuth App')}  ${od('(one-time per machine).')}`);
+  console.log(`  ${od('Pre-configured with Way-Of org OAuth — just run wodev and sign in with GitHub.')}`);
   console.log();
-  console.log(`  ${od('1. Go to:')}  ${cyan('https://github.com/settings/developers')}`);
-  console.log(`  ${od('2. Create an OAuth App with callback URL:')}`);
-  console.log(`     ${C.bold}http://localhost:6969/api/auth/callback/github${C.reset}`);
-  console.log(`  ${od('3. Copy the Client ID and generate a Client Secret')}`);
-  console.log(`  ${od('4. Enter them below:')}`);
+  console.log(`  ${od('Use --setup only if you need a custom OAuth App for your own org:')}`);
+  console.log();
+  console.log(`  ${C.bold}  1)${C.reset}  Open ${cyan('https://github.com/settings/developers')} → "New OAuth App"`);
+  console.log(`     ${od('App name:')} ${C.bold}WayOfDev CTO Dashboard${C.reset}  ${od('·')}  ${od('Callback:')} ${cyan('http://localhost:6969/api/auth/callback/github')}`);
+  console.log(`     ${od('Homepage:')} ${cyan('http://localhost:6969')}`);
+  console.log();
+  console.log(`  ${C.bold}  2)${C.reset}  Copy the ${yellow('Client ID')} and ${yellow('Client Secret')}, paste below:`);
   console.log();
 
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
@@ -214,6 +216,8 @@ function runNext(cmd, extraArgs = []) {
     NODE_ENV: cmd === 'dev' ? 'development' : 'production',
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || crypto.randomBytes(32).toString('hex'),
     NEXTAUTH_URL: process.env.NEXTAUTH_URL || `http://localhost:${port}`,
+    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || 'Ov23liy3r3AGOFaXT6YV',
+    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || '9a6410416575e390ac9253a41f64a8a46af7d7a5',
   };
 
   // Pre-build steps for global installs
