@@ -4,15 +4,26 @@
 
 ## 🚀 Quick Start
 
+### One-liner (no clone needed)
 ```bash
-# Clone and run
+npx @wayofmono/wo-cto-dashboard
+```
+
+### Global install (use `wodev` anywhere)
+```bash
+npm install -g @wayofmono/wo-cto-dashboard
+wodev
+```
+
+### Clone and run (full source)
+```bash
 git clone https://github.com/Way-Of/wayofdev.git
 cd wayofdev
 pnpm install
 pnpm dev
 ```
 
-Opens at **http://localhost:6969**
+All methods open at **http://localhost:6969**
 
 ## 📋 Features
 
