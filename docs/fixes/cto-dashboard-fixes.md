@@ -1,5 +1,21 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.3.1 (2026-06-16) — npm Registry Propagation Fix + Self-Update
+
+### Features
+- **`wodev --update`**: Self-update command that runs `npm update -g @wayofmono/wo-cto-dashboard`
+
+### Fixes
+- Resolved npm registry CDN cache propagation issue after initial v0.3.0 publish
+- Package now immediately visible via `npm view` and installable worldwide
+
+### Known Issues
+- `npm install -g` may fail with EACCES on systems without write access to `/usr/lib/node_modules/`
+  - Fix: `sudo npm install -g @wayofmono/wo-cto-dashboard`
+  - Fix: `npm config set prefix ~/.npm-global && export PATH=$PATH:~/.npm-global/bin`
+
+---
+
 ## v0.3.0 (2026-06-16) — Standalone npm Package + Port Change
 
 ### Breaking Changes
