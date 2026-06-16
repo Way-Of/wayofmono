@@ -5,18 +5,35 @@ import { useAuthStore, useDashboardStore } from '@/store/dashboard-store';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AlertCircle, Loader2, KeyRound, Github } from 'lucide-react';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export function LoginPage() {
   const login = useAuthStore((s) => s.login);
   const developers = useDashboardStore((s) => s.developers);
   const loading = useDashboardStore((s) => s.loading);
   const fetchData = useDashboardStore((s) => s.fetchData);
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [pincode, setPincode] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => { fetchData(); }, [fetchData]);
+
+  // Auto-redirect if already authenticated via NextAuth (after GitHub OAuth callback)
+  useEffect(() => {
+    if (status === 'authenticated' && session) {
+      const devId = (session as any).devId;
+      const devRole = (session as any).devRole;
+      if (devId) {
+        const isCTO = devRole === 'CTO';
+        const canReview = devRole === 'CTO' || devRole === 'Lead' || devRole === 'Senior';
+        useAuthStore.getState().login(devId, '');
+        router.push('/');
+      }
+    }
+  }, [session, status, router]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
