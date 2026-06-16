@@ -76,8 +76,8 @@ async function startNextDevServer() {
 }
 async function startNextProdServer() {
   return new Promise((resolve) => {
-    const standaloneServer = join(__dirname, "..", ".next", "standalone", "server.js");
-    nextServer = spawn(process.execPath, [standaloneServer], {
+    const nextBin = join(__dirname, "..", "node_modules", ".bin", "next");
+    nextServer = spawn(nextBin, ["start"], {
       cwd: join(__dirname, ".."),
       env: { ...process.env, PORT: "6969", NODE_ENV: "production" },
       stdio: ["ignore", "pipe", "pipe"]

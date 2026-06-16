@@ -234,15 +234,6 @@ function runNext(cmd, extraArgs = []) {
         execSync('npx --yes prisma generate', { cwd: projectRoot, stdio: 'pipe' });
       } catch {}
     }
-    // Compile Electron main process TypeScript to JavaScript
-    try {
-      const mainTs = path.join(projectRoot, 'electron', 'main.ts');
-      const mainJs = path.join(projectRoot, 'electron', 'main.js');
-      // Use esbuild to compile
-      try {
-        execSync(`npx --yes esbuild ${mainTs} --platform=node --format=esm --outfile=${mainJs} --external:electron`, { cwd: projectRoot, stdio: 'pipe' });
-      } catch {}
-    } catch {}
   }
 
   let nextBin;
@@ -292,8 +283,6 @@ function runNext(cmd, extraArgs = []) {
 }
 
 function runElectron(isDev = false) {
-  const standaloneDir = path.join(projectRoot, '.next', 'standalone');
-  const hasStandalone = existsSync(path.join(standaloneDir, 'server.js'));
   const electronBin = path.join(projectRoot, 'node_modules', '.bin', 'electron');
   const mainPath = path.join(projectRoot, 'electron', isDev ? 'main.ts' : 'main.js');
   const port = process.env.PORT || '6969';
@@ -301,13 +290,6 @@ function runElectron(isDev = false) {
   printLogo();
   console.log(`  ${ob('⟡ ELECTRON APP')}  ${od(isDev ? 'development' : 'production')}  ${od('─'.repeat(18))}`);
   console.log();
-
-  if (!isDev && !hasStandalone) {
-    console.log(`  ${yellow('⚠')}  ${C.bold}No production build found.${C.reset}`);
-    console.log(`     ${od('Run')} ${C.bold}wodev --build${C.reset} ${od('first.')}`);
-    console.log();
-    process.exit(1);
-  }
 
   const fixedSecret = crypto.createHash('sha256').update(`wo-cto-dashboard-${getVersion()}`).digest('hex');
 
