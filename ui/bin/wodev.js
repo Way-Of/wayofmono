@@ -211,11 +211,14 @@ function runNext(cmd, extraArgs = []) {
     console.log();
   }
 
+  // Fixed NEXTAUTH_SECRET (deterministic from version) - same across all runs
+  const fixedSecret = crypto.createHash('sha256').update(`wo-cto-dashboard-${getVersion()}`).digest('hex');
+
   const env = {
     ...process.env,
     PORT: port,
     NODE_ENV: cmd === 'dev' ? 'development' : 'production',
-    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || crypto.randomBytes(32).toString('hex'),
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || fixedSecret,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL || `http://localhost:${port}`,
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || 'Ov23liy3r3AGOFaXT6YV',
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || '9a6410416575e390ac9253a41f64a8a46af7d7a5',
@@ -231,6 +234,15 @@ function runNext(cmd, extraArgs = []) {
         execSync('npx --yes prisma generate', { cwd: projectRoot, stdio: 'pipe' });
       } catch {}
     }
+    // Compile Electron main process TypeScript to JavaScript
+    try {
+      const mainTs = path.join(projectRoot, 'electron', 'main.ts');
+      const mainJs = path.join(projectRoot, 'electron', 'main.js');
+      // Use esbuild to compile
+      try {
+        execSync(`npx --yes esbuild ${mainTs} --platform=node --format=esm --outfile=${mainJs} --external:electron`, { cwd: projectRoot, stdio: 'pipe' });
+      } catch {}
+    } catch {}
   }
 
   let nextBin;
@@ -279,12 +291,12 @@ function runNext(cmd, extraArgs = []) {
   }
 }
 
-function runElectron() {
-  const isDev = args.includes('--dev') || args.includes('-d');
+function runElectron(isDev = false) {
   const standaloneDir = path.join(projectRoot, '.next', 'standalone');
   const hasStandalone = existsSync(path.join(standaloneDir, 'server.js'));
   const electronBin = path.join(projectRoot, 'node_modules', '.bin', 'electron');
-  const mainPath = path.join(projectRoot, 'electron', 'main.ts');
+  const mainPath = path.join(projectRoot, 'electron', isDev ? 'main.ts' : 'main.js');
+  const port = process.env.PORT || '6969';
 
   printLogo();
   console.log(`  ${ob('⟡ ELECTRON APP')}  ${od(isDev ? 'development' : 'production')}  ${od('─'.repeat(18))}`);
@@ -297,11 +309,13 @@ function runElectron() {
     process.exit(1);
   }
 
+  const fixedSecret = crypto.createHash('sha256').update(`wo-cto-dashboard-${getVersion()}`).digest('hex');
+
   const env = {
     ...process.env,
     PORT: port,
     NODE_ENV: isDev ? 'development' : 'production',
-    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || crypto.randomBytes(32).toString('hex'),
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || fixedSecret,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL || `http://localhost:${port}`,
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || 'Ov23liy3r3AGOFaXT6YV',
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || '9a6410416575e390ac9253a41f64a8a46af7d7a5',

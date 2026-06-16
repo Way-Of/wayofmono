@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import { spawn, ChildProcess } from 'child_process';
 
 const __dirname = join(fileURLToPath(import.meta.url), '..');
-const isDev = !app.isPackaged;
+const isDev = !app.isPackaged && process.env.NODE_ENV !== 'production';
 
 let mainWindow: BrowserWindow | null = null;
 let nextServer: ChildProcess | null = null;
@@ -49,7 +49,10 @@ function createWindow() {
       mainWindow?.webContents.openDevTools({ mode: 'detach' });
     });
   } else {
-    mainWindow.loadFile(join(__dirname, '..', '.next', 'standalone', 'index.html'));
+    // Production: start standalone server and load it
+    startNextProdServer().then(() => {
+      mainWindow?.loadURL('http://localhost:6969');
+    });
   }
 }
 
@@ -60,6 +63,36 @@ async function startNextDevServer(): Promise<void> {
       env: { ...process.env, PORT: '6969', NODE_ENV: 'development' },
       stdio: ['ignore', 'pipe', 'pipe'],
       shell: true,
+    });
+
+    nextServer.stdout?.on('data', (data) => {
+      const output = data.toString();
+      console.log(`[Next.js] ${output}`);
+      if (!serverReady && (output.includes('Ready in') || output.includes('started on') || output.includes('Local:'))) {
+        serverReady = true;
+        setTimeout(resolve, 1000);
+      }
+    });
+
+    nextServer.stderr?.on('data', (data) => {
+      console.error(`[Next.js Error] ${data}`);
+    });
+
+    nextServer.on('close', (code) => {
+      console.log(`Next.js server exited with code ${code}`);
+      nextServer = null;
+      serverReady = false;
+    });
+  });
+}
+
+async function startNextProdServer(): Promise<void> {
+  return new Promise((resolve) => {
+    const standaloneServer = join(__dirname, '..', '.next', 'standalone', 'server.js');
+    nextServer = spawn(process.execPath, [standaloneServer], {
+      cwd: join(__dirname, '..'),
+      env: { ...process.env, PORT: '6969', NODE_ENV: 'production' },
+      stdio: ['ignore', 'pipe', 'pipe'],
     });
 
     nextServer.stdout?.on('data', (data) => {
