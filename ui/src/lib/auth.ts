@@ -36,7 +36,9 @@ export const authOptions: NextAuthOptions = {
           profileLogin: (profile as any)?.login
         });
         try {
-          const devs = await getDevelopers('github', 'main');
+          // Use the OAuth access token directly since session not created yet
+          const accessToken = account?.access_token;
+          const devs = await getDevelopers('github', 'main', accessToken);
           const ghProfile = profile as GitHubProfile;
           const dev = devs.find(d => d.githubUsername.toLowerCase() === (user.email || '').toLowerCase() || 
                                     d.githubUsername.toLowerCase() === (ghProfile?.login || '').toLowerCase());
@@ -47,6 +49,7 @@ export const authOptions: NextAuthOptions = {
             (user as any).devPincode = dev.pincode;
           } else {
             console.log('[NextAuth] No developer matched for GitHub user:', ghProfile?.login);
+            console.log('[NextAuth] Available developers:', devs.map(d => ({ id: d.id, githubUsername: d.githubUsername })));
           }
         } catch (e) {
           console.error('[NextAuth] Error fetching developers:', e);
