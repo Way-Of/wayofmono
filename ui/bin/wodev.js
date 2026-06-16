@@ -92,8 +92,10 @@ function showHelp() {
   printLogo();
 
   console.log(`  ${o('┌')}${od('─'.repeat(48))}${o('┐')}`);
-  console.log(`  ${o('│')}  ${C.bold}wodev${C.reset}              Start production server            ${o('│')}`);
-  console.log(`  ${o('│')}  ${C.bold}wodev --dev${C.reset}         Development server (hot reload)    ${o('│')}`);
+  console.log(`  ${o('│')}  ${C.bold}wodev${C.reset}              Electron app (default)             ${o('│')}`);
+  console.log(`  ${o('│')}  ${C.bold}wodev --dev${C.reset}         Dev server (hot reload, web)       ${o('│')}`);
+  console.log(`  ${o('│')}  ${C.bold}wodev --electron${C.reset}       Electron app (explicit)            ${o('│')}`);
+  console.log(`  ${o('│')}  ${C.bold}wodev --electron --dev${C.reset} Dev Electron app                   ${o('│')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev --build${C.reset}       Build for production               ${o('│')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev --update${C.reset}      Update to latest npm version       ${o('│')}`);
   console.log(`  ${o('│')}  ${C.bold}wodev --uninstall${C.reset}    Remove dashboard globally           ${o('│')}`);
@@ -278,6 +280,65 @@ function runNext(cmd, extraArgs = []) {
   }
 }
 
+function runElectron() {
+  const isDev = args.includes('--dev') || args.includes('-d');
+  const standaloneDir = path.join(projectRoot, '.next', 'standalone');
+  const hasStandalone = existsSync(path.join(standaloneDir, 'server.js'));
+  const electronBin = path.join(projectRoot, 'node_modules', '.bin', 'electron');
+  const mainPath = path.join(projectRoot, 'electron', 'main.ts');
+
+  printLogo();
+  console.log(`  ${ob('⟡ ELECTRON APP')}  ${od(isDev ? 'development' : 'production')}  ${od('─'.repeat(18))}`);
+  console.log();
+
+  if (!isDev && !hasStandalone) {
+    console.log(`  ${yellow('⚠')}  ${C.bold}No production build found.${C.reset}`);
+    console.log(`     ${od('Run')} ${C.bold}wodev --build${C.reset} ${od('first.')}`);
+    console.log();
+    process.exit(1);
+  }
+
+  const env = {
+    ...process.env,
+    PORT: port,
+    NODE_ENV: isDev ? 'development' : 'production',
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || crypto.randomBytes(32).toString('hex'),
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL || `http://localhost:${port}`,
+    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || 'Ov23liy3r3AGOFaXT6YV',
+    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || '9a6410416575e390ac9253a41f64a8a46af7d7a5',
+  };
+
+  const child = spawn(isDev ? 'bun' : electronBin, isDev ? ['dev'] : [mainPath], {
+    cwd: projectRoot,
+    env,
+    stdio: 'inherit',
+  });
+
+  child.on('error', (err) => {
+    console.error(`  ${red('✗')} Failed to start Electron: ${err.message}`);
+    process.exit(1);
+  });
+
+  child.on('close', (code) => {
+    if (code !== 0 && code !== null) {
+      console.error(`  ${red('✗')} Electron exited with code ${code}`);
+    }
+    process.exit(code || 0);
+  });
+
+  process.on('SIGINT', () => {
+    console.log(`\n  ${od('🛑 Shutting down...')}`);
+    child.kill('SIGINT');
+  });
+
+  if (!isWin) {
+    process.on('SIGTERM', () => {
+      console.log(`\n  ${od('🛑 Shutting down...')}`);
+      child.kill('SIGTERM');
+    });
+  }
+}
+
 // ---------------------------------------------------------------------------
 // CLI dispatch
 // ---------------------------------------------------------------------------
@@ -302,6 +363,8 @@ if (args.includes('--uninstall')) {
   process.exit(0);
 }
 
+const useElectron = args.includes('--electron') || args.includes('-e');
+
 if (args.includes('--setup')) {
   setupDashboard();
 } else if (args.includes('--build') || args.includes('-b')) {
@@ -309,33 +372,37 @@ if (args.includes('--setup')) {
 } else if (args.includes('--dev') || args.includes('-d')) {
   runNext('dev', ['--turbopack']);
 } else {
-const nextDir = path.join(projectRoot, '.next');
-try {
-  accessSync(nextDir, constants.R_OK);
-} catch {
-  printLogo();
-  const msgs = [
-    `${od('🤖')}  ${C.bold}Yo! I\'m Wodev — your deploy dashboard.${C.reset}  ${od('I know all your builds, tickets, and deploys. Just don\'t ask me to code.')}`,
-    `${od('🔥')}  ${C.bold}Wodev here.${C.reset}  ${od('Your PR queue is glowing. Your tickets are waiting. Your builds are... well, let\'s check.')}`,
-    `${od('🎩')}  ${C.bold}Ah, the CTO arrives.${C.reset}  ${od('I\'ve kept the seat warm. Tickets: still open. Builds: let\'s find out if they passed.')}`,
-    `${od('☕')}  ${C.bold}Wodev online.${C.reset}  ${od('I handle the deploys so you can handle the important stuff. Like naming that branch.')}`,
-    `${od('🚀')}  ${C.bold}Ship it!${C.reset}  ${od('Oh wait, that\'s my line. Wodev ready — point me at a build.')}`,
-  ];
-  console.log(`  ${msgs[Math.floor(Math.random() * msgs.length)]}`);
-  console.log();
-  console.log(`  ${yellow('⚠')}  ${C.bold}No production build found.${C.reset}`);
-  console.log(`     ${od('Run')} ${C.bold}wodev --build${C.reset} ${od('first, or use')} ${C.bold}wodev --dev${C.reset} ${od('for development.')}`);
-  console.log();
-  console.log(`  ${o('┌')}${od('─'.repeat(48))}${o('┐')}`);
-  console.log(`  ${o('│')}  ${od('After sudo install:')}                         ${o('│')}`);
-  console.log(`  ${o('│')}  ${C.bold}  sudo wodev --build${C.reset}  ${od('(one-time)')}           ${o('│')}`);
-  console.log(`  ${o('│')}  ${C.bold}  wodev${C.reset}              ${od('(as normal user)')}      ${o('│')}`);
-  console.log(`  ${o('│')}                                         ${o('│')}`);
-  console.log(`  ${o('│')}  ${od('Better: install without sudo:')}               ${o('│')}`);
-  console.log(`  ${o('│')}  ${C.bold}  npm config set prefix ~/.npm-global${C.reset}       ${o('│')}`);
-  console.log(`  ${o('└')}${od('─'.repeat(48))}${o('┘')}`);
-  console.log();
-  process.exit(1);
+  const nextDir = path.join(projectRoot, '.next');
+  try {
+    accessSync(nextDir, constants.R_OK);
+  } catch {
+    printLogo();
+    const msgs = [
+      `${od('🤖')}  ${C.bold}Yo! I\'m Wodev — your deploy dashboard.${C.reset}  ${od('I know all your builds, tickets, and deploys. Just don\'t ask me to code.')}`,
+      `${od('🔥')}  ${C.bold}Wodev here.${C.reset}  ${od('Your PR queue is glowing. Your tickets are waiting. Your builds are... well, let\'s check.')}`,
+      `${od('🎩')}  ${C.bold}Ah, the CTO arrives.${C.reset}  ${od('I\'ve kept the seat warm. Tickets: still open. Builds: let\'s find out if they passed.')}`,
+      `${od('☕')}  ${C.bold}Wodev online.${C.reset}  ${od('I handle the deploys so you can handle the important stuff. Like naming that branch.')}`,
+      `${od('🚀')}  ${C.bold}Ship it!${C.reset}  ${od('Oh wait, that\'s my line. Wodev ready — point me at a build.')}`,
+    ];
+    console.log(`  ${msgs[Math.floor(Math.random() * msgs.length)]}`);
+    console.log();
+    console.log(`  ${yellow('⚠')}  ${C.bold}No production build found.${C.reset}`);
+    console.log(`     ${od('Run')} ${C.bold}wodev --build${C.reset} ${od('first, or use')} ${C.bold}wodev --dev${C.reset} ${od('for development.')}`);
+    console.log();
+    console.log(`  ${o('┌')}${od('─'.repeat(48))}${o('┐')}`);
+    console.log(`  ${o('│')}  ${od('After sudo install:')}                         ${o('│')}`);
+    console.log(`  ${o('│')}  ${C.bold}  sudo wodev --build${C.reset}  ${od('(one-time)')}           ${o('│')}`);
+    console.log(`  ${o('│')}  ${C.bold}  wodev${C.reset}              ${od('(as normal user)')}      ${o('│')}`);
+    console.log(`  ${o('│')}                                         ${o('│')}`);
+    console.log(`  ${o('│')}  ${od('Better: install without sudo:')}               ${o('│')}`);
+    console.log(`  ${o('│')}  ${C.bold}  npm config set prefix ~/.npm-global${C.reset}       ${o('│')}`);
+    console.log(`  ${o('└')}${od('─'.repeat(48))}${o('┘')}`);
+    console.log();
+    process.exit(1);
   }
-  runNext('start');
+  if (useElectron) {
+    runElectron();
+  } else {
+    runNext('start');
+  }
 }
