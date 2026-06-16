@@ -1596,6 +1596,15 @@ npm install -g @wayofmono/wo-cto-dashboard
 wodev
 ```
 
+> **EACCES on Linux?** Use `npx` (above) instead, or:
+> ```bash
+> sudo npm install -g @wayofmono/wo-cto-dashboard   # option A
+> npm config set prefix ~/.npm-global                # option B (no sudo forever)
+> echo 'export PATH="$PATH:~/.npm-global/bin"' >> ~/.bashrc
+> source ~/.bashrc && npm install -g @wayofmono/wo-cto-dashboard
+> ```
+> On Windows, run terminal as Administrator for global install.
+
 **From source (clone):**
 ```bash
 git clone https://github.com/Way-Of/wayofdev.git
