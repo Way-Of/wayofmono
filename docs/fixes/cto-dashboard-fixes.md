@@ -1,5 +1,26 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.22 (2026-06-16) — Auto-Login After GitHub OAuth Callback
+
+### Fixes
+- **LoginPage auto-detects NextAuth session** after GitHub OAuth redirect
+- **Syncs session data** (devId, devRole, accessToken) with auth store
+- **Auto-redirects to dashboard** instead of staying on login page
+
+### Flow
+1. User clicks "Sign in with GitHub" → GitHub authorization
+2. User completes GitHub mobile 2FA → redirects to `/api/auth/callback/github` → `/`
+3. LoginPage detects authenticated session → logs in user → redirects to dashboard
+
+### Migration
+```bash
+sudo npm update -g @wayofmono/wo-cto-dashboard
+sudo wodev --build
+wodev
+```
+
+---
+
 ## v0.4.21 (2026-06-16) — Electron Production UI Fixed
 
 ### Fixes
