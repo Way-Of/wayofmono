@@ -761,7 +761,7 @@ brew install stow
 | Files in harness | **1,226** |
 | Files in docs | **173** |
 | Files in thoughts | **115** |
-| Dashboard version | **0.3.1** (Next.js 16) |
+| Dashboard version | **0.4.0** (Next.js 16) |
 | Total repo size | **1.4 GB** (excluding node_modules) |
 
 ## 🎛️ Multi-Interface Architecture
@@ -1562,7 +1562,7 @@ All 13 packages published under `@wayofmono` scope at [npmjs.com/settings/wayofm
 
 ## 📊 CTO Dashboard
 
-**Production dashboard**: https://cto.wayof.work (v0.3.1, Next.js 16, Prisma/SQLite)
+**Production dashboard**: https://cto.wayof.work (v0.4.0, Next.js 16, Prisma/SQLite)
 
 **What it does:**
 - **Team visibility**: See all tickets, velocity, blockers across projects
@@ -1585,25 +1585,35 @@ All 13 packages published under `@wayofmono` scope at [npmjs.com/settings/wayofm
 
 ### Install & Run
 
-**Quick one-liner (no clone):**
+**Quick one-liner (no clone, no install):**
 ```bash
 npx @wayofmono/wo-cto-dashboard
 ```
 
-**Global CLI (use `wodev` anywhere):**
+**Global CLI (use `wodev` anywhere) — choose one:**
+
 ```bash
+# Option A: local prefix (recommended — no sudo, everything works)
+npm config set prefix ~/.npm-global
+echo 'export PATH="$PATH:~/.npm-global/bin"' >> ~/.bashrc
+source ~/.bashrc
 npm install -g @wayofmono/wo-cto-dashboard
 wodev
+
+# Option B: sudo global install (run --build once with sudo)
+sudo npm install -g @wayofmono/wo-cto-dashboard
+sudo wodev --build    # one-time build (needs root to write .next/)
+wodev                 # production server (read-only, works as user)
 ```
 
-> **EACCES on Linux?** Use `npx` (above) instead, or:
-> ```bash
-> sudo npm install -g @wayofmono/wo-cto-dashboard   # option A
-> npm config set prefix ~/.npm-global                # option B (no sudo forever)
-> echo 'export PATH="$PATH:~/.npm-global/bin"' >> ~/.bashrc
-> source ~/.bashrc && npm install -g @wayofmono/wo-cto-dashboard
-> ```
-> On Windows, run terminal as Administrator for global install.
+| Command | What it does |
+|---------|-------------|
+| `wodev` | Production server (read-only, requires build first) |
+| `wodev --dev` | Dev server with hot reload |
+| `wodev --build` | One-time production build |
+| `wodev --update` | Update to latest npm version |
+
+Port: **http://localhost:6969** (`PORT=8080 wodev` to override)
 
 **From source (clone):**
 ```bash
@@ -1612,8 +1622,6 @@ cd wayofdev
 pnpm install
 pnpm dev
 ```
-
-All methods open at **http://localhost:6969**
 
 ### Run from Monorepo
 
@@ -2017,7 +2025,7 @@ cd ui && pnpm build
 │   │   ├── telegram/               # 88K — Telegram bot
 │   │   └── whatsapp/               # 88K — WhatsApp bot
 │   │
-│   └── ui/                         # CTO Dashboard (v0.3.1, standalone npm package → wayofdev repo)
+│   └── ui/                         # CTO Dashboard (v0.4.0, standalone npm package → wayofdev repo)
 │       ├── src/app/                # Next.js App Router
 │       │   ├── api/                # API routes (health, ideas, news, standup, skills)
 │       │   └── page.tsx            # Main page

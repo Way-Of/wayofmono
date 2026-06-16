@@ -4,27 +4,31 @@
 
 ## 🚀 Quick Start
 
-### One-liner (no clone needed)
+### One-liner (no clone, no install)
 ```bash
 npx @wayofmono/wo-cto-dashboard
 ```
 
 ### Global install (use `wodev` anywhere)
+
 ```bash
+# Option A: local prefix (recommended — no sudo, everything works)
+npm config set prefix ~/.npm-global
+echo 'export PATH="$PATH:~/.npm-global/bin"' >> ~/.bashrc
+source ~/.bashrc
 npm install -g @wayofmono/wo-cto-dashboard
-wodev
+wodev                      # production server (default)
+
+# Option B: sudo global install
+sudo npm install -g @wayofmono/wo-cto-dashboard
+sudo wodev --build         # one-time build (needs root for .next/)
+wodev                      # production server (read-only, works as user)
+
+# Option C: development mode (hot reload)
+wodev --dev
 ```
 
-> **EACCES on Linux?** Use `npx` (above) instead, or:
-> ```bash
-> sudo npm install -g @wayofmono/wo-cto-dashboard   # option A
-> npm config set prefix ~/.npm-global                # option B (no sudo)
-> echo 'export PATH="$PATH:~/.npm-global/bin"' >> ~/.bashrc
-> source ~/.bashrc && npm install -g @wayofmono/wo-cto-dashboard
-> ```
-> On Windows, run terminal as Administrator for global install.
-
-### Clone and run (full source)
+### From source (clone)
 ```bash
 git clone https://github.com/Way-Of/wayofdev.git
 cd wayofdev
@@ -32,7 +36,18 @@ pnpm install
 pnpm dev
 ```
 
-All methods open at **http://localhost:6969**
+### CLI Reference
+
+| Command | Mode | Description |
+|---------|------|-------------|
+| `wodev` | production | Starts production server (read-only, requires build) |
+| `wodev --dev` | development | Starts dev server with hot reload (writes .next/) |
+| `wodev --build` | build | Builds for production (writes .next/) |
+| `wodev --update` | — | Updates to latest npm version |
+| `wodev --version` | — | Prints version |
+| `wodev --help` | — | Shows help |
+
+Port: **http://localhost:6969** (override with `PORT=8080 wodev`)
 
 ## 📋 Features
 

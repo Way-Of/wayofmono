@@ -1,5 +1,37 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.0 (2026-06-16) — Production Mode Fix
+
+### Breaking Changes
+- `wodev` now defaults to **production mode** (`next start`, read-only) instead of dev mode
+- `wodev --dev` required for development server with hot reload
+
+### Features
+- **Production mode**: `wodev` runs `next start` — no `.next` writes, works as normal user after sudo install
+- **`wodev --build`**: One-time production build (`next build`, needs write access)
+- **`wodev --dev`**: Dev server with Turbopack hot reload (`next dev --turbopack`)
+- **Build check**: Detects missing `.next/` and prompts user to run `wodev --build` first
+- **Recommended install**: `npm config set prefix ~/.npm-global` — no sudo at all, everything writable by user
+
+### Fixes
+- EACCES error when running `wodev` after `sudo npm install -g` (`.next/` was root-owned)
+  - Workflow: `sudo npm install -g` → `sudo wodev --build` → `wodev` (as user)
+  - Better: use local prefix install (no sudo)
+
+### Migration from v0.3.x
+```bash
+# Update
+sudo npm update -g @wayofmono/wo-cto-dashboard
+
+# If using sudo install, rebuild:
+sudo wodev --build
+
+# Then run as normal user:
+wodev
+```
+
+---
+
 ## v0.3.1 (2026-06-16) — npm Registry Propagation Fix + Self-Update
 
 ### Features

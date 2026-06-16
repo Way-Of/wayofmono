@@ -4,7 +4,7 @@ import { spawn, execSync } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
-import { readFileSync } from 'fs';
+import { readFileSync, accessSync, constants } from 'fs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.join(__dirname, '..');
@@ -26,14 +26,20 @@ function showHelp() {
 🚀 WayOfMono CTO Dashboard - wodev v${getVersion()}
 
 Usage:
-  wodev              Start dev server on port ${process.env.PORT || '6969'}
+  wodev              Start production server on port ${process.env.PORT || '6969'}
+  wodev --dev        Start development server with hot reload
+  wodev --build      Build for production (requires write access)
   wodev --update     Update to latest version from npm
   wodev --version    Show version
   wodev --help       Show this help
 
 Examples:
-  ${isWin ? 'set PORT=8080 && wodev' : 'PORT=8080 wodev'}    Start on custom port
-  npx @wayofmono/wo-cto-dashboard                            Run without installing
+  ${isWin ? 'set PORT=8080 && wodev' : 'PORT=8080 wodev'}      Custom port
+  npx @wayofmono/wo-cto-dashboard           Run without installing
+
+Note:
+  After "sudo npm install -g", run "sudo wodev --build" once
+  to create the production build. Then "wodev" works as normal user.
 `);
 }
 
@@ -53,6 +59,66 @@ function updateDashboard() {
   }
 }
 
+function canWrite(dir) {
+  try {
+    accessSync(dir, constants.W_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function runNext(cmd, extraArgs = []) {
+  const port = process.env.PORT || '6969';
+
+  console.log(`🚀 WayOfMono CTO Dashboard - wodev v${getVersion()}`);
+  console.log(`🌐 Port: ${port}`);
+
+  const env = {
+    ...process.env,
+    PORT: port,
+    NODE_ENV: cmd === 'dev' ? 'development' : 'production',
+  };
+
+  let nextBin;
+  try {
+    nextBin = createRequire(import.meta.url).resolve('next/dist/bin/next');
+  } catch {
+    nextBin = 'next';
+  }
+
+  const spawnArgs = [nextBin, cmd, '-p', port, ...extraArgs];
+  const child = spawn(process.execPath, spawnArgs, {
+    cwd: projectRoot,
+    env,
+    stdio: 'inherit',
+  });
+
+  child.on('error', (err) => {
+    console.error('❌ Failed to start:', err.message);
+    process.exit(1);
+  });
+
+  child.on('close', (code) => {
+    if (code !== 0 && code !== null) {
+      console.error(`❌ Process exited with code ${code}`);
+    }
+    process.exit(code || 0);
+  });
+
+  process.on('SIGINT', () => {
+    console.log('\n🛑 Shutting down...');
+    child.kill('SIGINT');
+  });
+
+  if (!isWin) {
+    process.on('SIGTERM', () => {
+      console.log('\n🛑 Shutting down...');
+      child.kill('SIGTERM');
+    });
+  }
+}
+
 if (args.includes('--help') || args.includes('-h')) {
   showHelp();
   process.exit(0);
@@ -68,50 +134,29 @@ if (args.includes('--update') || args.includes('-u')) {
   process.exit(0);
 }
 
-const port = process.env.PORT || '6969';
+if (args.includes('--build') || args.includes('-b')) {
+  runNext('build');
+  process.exit(0);
+}
 
-console.log('🚀 Starting WayOfMono CTO Dashboard...');
-console.log(`🌐 Port: ${port}`);
+if (args.includes('--dev') || args.includes('-d')) {
+  runNext('dev', ['--turbopack']);
+  process.exit(0);
+}
 
-const env = {
-  ...process.env,
-  PORT: port,
-  NODE_ENV: 'development',
-};
-
-let nextBin;
+// Default: production mode (next start - read-only, no .next writes)
+const nextDir = path.join(projectRoot, '.next');
 try {
-  nextBin = createRequire(import.meta.url).resolve('next/dist/bin/next');
+  accessSync(nextDir, constants.R_OK);
 } catch {
-  nextBin = 'next';
-}
-
-const child = spawn(process.execPath, [nextBin, 'dev', '-p', port], {
-  cwd: projectRoot,
-  env,
-  stdio: 'inherit',
-});
-
-child.on('error', (err) => {
-  console.error('❌ Failed to start:', err.message);
+  console.log('');
+  console.log('⚠️  No production build found. Run "wodev --build" first.');
+  console.log('   Or use "wodev --dev" for development mode with hot reload.');
+  console.log('');
+  console.log('   After sudo install: sudo wodev --build  (one-time)');
+  console.log('   Then:               wodev               (as normal user)');
+  console.log('');
   process.exit(1);
-});
-
-child.on('close', (code) => {
-  if (code !== 0) {
-    console.error(`❌ Process exited with code ${code}`);
-  }
-  process.exit(code || 0);
-});
-
-process.on('SIGINT', () => {
-  console.log('\n🛑 Shutting down...');
-  child.kill('SIGINT');
-});
-
-if (!isWin) {
-  process.on('SIGTERM', () => {
-    console.log('\n🛑 Shutting down...');
-    child.kill('SIGTERM');
-  });
 }
+
+runNext('start');
