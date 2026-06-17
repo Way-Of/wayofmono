@@ -75,29 +75,19 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
         `}
       >
         {/* Header */}
-        <div className={`flex items-center h-14 px-3 border-b border-sidebar-border ${collapsed ? 'justify-center' : ''}`}>
-          <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
-            <span className="text-xs font-bold text-primary-foreground">WO</span>
-          </div>
+        <div className={`flex items-center h-14 px-4 border-b border-sidebar-border ${collapsed ? 'justify-center' : 'gap-3'}`}>
           {!collapsed && (
-            <span className="font-semibold text-sm text-sidebar-foreground ml-2 flex-1 min-w-0">WayOfMono</span>
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
+                <span className="text-xs font-bold text-primary-foreground">WO</span>
+              </div>
+              <span className="font-semibold text-sm text-sidebar-foreground">WayOfMono</span>
+            </div>
           )}
-          {!collapsed ? (
-            <button
-              onClick={onToggle}
-              className="w-5 h-5 rounded flex items-center justify-center text-sidebar-foreground/30 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all flex-shrink-0"
-              title="Collapse sidebar"
-            >
-              <ChevronLeft className="w-3.5 h-3.5" />
-            </button>
-          ) : (
-            <button
-              onClick={onToggle}
-              className="w-5 h-5 rounded flex items-center justify-center text-sidebar-foreground/30 hover:text-sidebar-foreground transition-all flex-shrink-0 ml-1"
-              title="Expand sidebar"
-            >
-              <ChevronLeft className="w-3.5 h-3.5 rotate-180" />
-            </button>
+          {collapsed && (
+            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
+              <span className="text-xs font-bold text-primary-foreground">WO</span>
+            </div>
           )}
         </div>
 
@@ -146,6 +136,25 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             return btn;
           })}
         </nav>
+
+        {/* Collapse/expand toggle */}
+        {!collapsed ? (
+          <button
+            onClick={onToggle}
+            className="flex items-center gap-3 px-3 py-2.5 mx-2 mb-1 rounded-lg text-sm font-medium text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            <span>Collapse</span>
+          </button>
+        ) : (
+          <button
+            onClick={onToggle}
+            className="mx-auto mb-1 p-2 rounded-lg text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all"
+            title="Expand sidebar"
+          >
+            <ChevronLeft className="w-4 h-4 rotate-180" />
+          </button>
+        )}
 
         {/* Sync button */}
         <div className="px-2 mb-2">
@@ -198,6 +207,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             <LogOut className="w-4 h-4" />
           </Button>
         </div>
+      </aside>
     </TooltipProvider>
   );
 }

@@ -1,5 +1,38 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.34 (2026-06-17) — In-Sidebar Collapse Toggle + Pincode-to-GitHub Account Merging
+
+### Changes
+- **In-sidebar collapse toggle**: Collapse/expand button is at the bottom of the nav area (just above sync) — shows `[<] Collapse` when expanded, `[>]` icon when collapsed. No more fixed-position button outside causing overlap/click-through crashes with the header Back button
+- **Back button crash fixed**: Removed the old fixed `z-50` collapse toggle — it was overlapping the header back button area in certain sidebar states
+
+### Features
+- **Pincode users can connect GitHub**: Profile GitHub Connection section is now dynamic:
+  - GitHub OAuth users: green check + "Connected as @username" (unchanged)
+  - Pincode users: "Connect GitHub" button → enter GitHub username → saves link mapping → signs in via GitHub OAuth → account is merged
+  - After linking, users can sign in with either pincode or GitHub
+  - Link mappings stored in `~/.config/wodev/github-links.json`
+- **NextAuth signIn checks link mappings**: When a GitHub user doesn't match any developer's `githubUsername`, the signIn callback falls back to checking pincode link mappings in `github-links.json`
+- **`authMethod` tracking**: Auth store now tracks whether user authenticated via `'github'` or `'pincode'` — drives dynamic Profile UI
+- **Logout uses `signOut()` from next-auth/react**: Sidebar logout now clears the NextAuth JWT cookie properly (was using store's local `logout()` which left stale sessions)
+
+### New Files
+- `ui/src/app/api/link-github/route.ts` — CRUD API for pincode-to-GitHub link mappings (POST/GET/DELETE)
+
+### Files Changed
+- `ui/src/store/dashboard-store.ts` — Added `authMethod`, `setFromSession` implementation
+- `ui/src/components/dashboard/sidebar.tsx` — Collapse toggle at bottom of nav (not header), Profile/Settings nav items restored, user section clickable → Profile
+- `ui/src/components/dashboard/profile-view.tsx` — Dynamic GitHub connection section with linking UI
+- `ui/src/components/dashboard/login-page.tsx` — Clears pending link from localStorage after OAuth redirect
+- `ui/src/lib/auth.ts` — signIn callback checks `github-links.json` for pincode mappings
+
+### Migration
+```bash
+sudo wodev --build && wodev
+```
+
+---
+
 ## v0.4.32 (2026-06-17) — Structure-Agnostic Developer Discovery + Git Tree API Fix
 
 ### Fixes
