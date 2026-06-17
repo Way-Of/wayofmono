@@ -746,6 +746,36 @@ brew install stow
 ./packages/@aiengineeringharness/setup.sh all
 ```
 
+### Step 4: Install CTO Dashboard (Optional)
+
+**Quick one-liner (no install):**
+```bash
+npx @wayofmono/wo-cto-dashboard
+```
+
+**Global CLI (use `wodev` anywhere):**
+```bash
+npm install -g @wayofmono/wo-cto-dashboard
+sudo wodev --build    # one-time build
+wodev                 # launch dashboard
+```
+
+**Update to latest version:**
+```bash
+wodev --update
+# or manually:
+sudo npm update -g @wayofmono/wo-cto-dashboard && sudo wodev --build
+```
+
+| Command | What it does |
+|---------|-------------|
+| `wodev` | Production server |
+| `wodev --dev` | Dev server with hot reload |
+| `wodev --build` | One-time build |
+| `wodev --update` | Update npm package |
+
+Opens at **http://localhost:6969**
+
 ## 📊 Real Stats
 
 | Metric | Value |
@@ -761,7 +791,7 @@ brew install stow
 | Files in harness | **1,226** |
 | Files in docs | **173** |
 | Files in thoughts | **115** |
-| Dashboard version | **0.4.0** (Next.js 16) |
+| Dashboard version | **0.4.34** (Next.js 16) |
 | Total repo size | **1.4 GB** (excluding node_modules) |
 
 ## 🎛️ Multi-Interface Architecture
@@ -1562,7 +1592,7 @@ All 13 packages published under `@wayofmono` scope at [npmjs.com/settings/wayofm
 
 ## 📊 CTO Dashboard
 
-**Production dashboard**: https://cto.wayof.work (v0.4.0, Next.js 16, Prisma/SQLite)
+**Production dashboard**: https://cto.wayof.work (v0.4.34, Next.js 16, Prisma/SQLite)
 
 **What it does:**
 - **Team visibility**: See all tickets, velocity, blockers across projects
@@ -1637,6 +1667,9 @@ pnpm dev
 | GET | `/api/news` | List news items |
 | GET | `/api/skills/report` | Skills health report |
 | POST | `/api/skills/report` | Submit skills report (from `ai-harness --report-skills`) |
+| POST | `/api/link-github` | Link pincode dev ID to GitHub username |
+| GET | `/api/link-github` | Get link mapping for a dev ID |
+| DELETE | `/api/link-github` | Remove link mapping |
 
 ### GitHub Authentication (Private Repo Access)
 
