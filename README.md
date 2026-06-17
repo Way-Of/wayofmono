@@ -843,6 +843,31 @@ wodev --update
 sudo npm update -g @wayofmono/wo-cto-dashboard && sudo wodev --build
 ```
 
+**Windows (PowerShell — run as Administrator):**
+```powershell
+# Install globally
+npm install -g @wayofmono/wo-cto-dashboard
+```
+
+```powershell
+# One-time build
+wodev --build
+```
+
+```powershell
+# Launch dashboard
+wodev
+```
+
+```powershell
+# Update later
+wodev --update
+```
+```powershell
+# or manually:
+npm update -g @wayofmono/wo-cto-dashboard && wodev --build
+```
+
 | Command | What it does |
 |---------|-------------|
 | `wodev` | Production server |

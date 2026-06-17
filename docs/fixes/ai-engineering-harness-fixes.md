@@ -95,7 +95,36 @@ All core files updated: manifest.json, CHANGELOG.md, README.md, install.ts, setu
 
 **Verified**: Remote install now skips directory entries and continues with individual files.
 
+### Skill Assets/Scripts Installation Fixed (v1.7.1)
+
+**Problem**: Skills `skill-adapter`, `skill-auto-update`, and `skill-compliance-checker` were missing their `assets/` and `scripts/` directories when installed. The installer showed:
+```
+· skills/skill-adapter/assets  (skipped - likely a directory, not in remote manifest)
+· skills/skill-adapter/scripts  (skipped - likely a directory, not in remote manifest)
+```
+These directories contain critical scripts (10 Python scripts per skill for skill-adapter, skill-auto-update, skill-compliance-checker) and assets (compliance-fix.ts, skillsrules.md) that skills need at runtime.
+
+**Root Cause**: The YAML source files in `config-manifest/tools/*.yaml` had redundant directory entries (src ending in `/assets` or `/scripts`) alongside individual file entries. These directory entries don't exist as files on GitHub, causing 404 errors during remote fetch.
+
+**Fix**: Removed all 42 redundant directory entries from the 7 tool YAML configs:
+- `antigravity.yaml`: 6 entries removed
+- `claude.yaml`: 6 entries removed
+- `codex.yaml`: 6 entries removed
+- `gemini.yaml`: 6 entries removed
+- `opencode.yaml`: 6 entries removed
+- `pi.yaml`: 6 entries removed
+- `wocode.yaml`: 6 entries removed
+
+Then recompiled `manifest.json` via `python3 config-manifest/compile.py`. The individual files were already listed, so directories are created automatically when files are copied.
+
+**Verified**: All 7 tools now have complete directory structures:
+- `~/.config/opencode/skills/skill-adapter/{assets,scripts}/` (11 files)
+- `~/.config/opencode/skills/skill-auto-update/{assets,scripts}/` (12 files)
+- `~/.config/opencode/skills/skill-compliance-checker/{assets,scripts}/` (11 files)
+- Same for antigravity, claude, codex, gemini, pi, wocode
+
 ---
+
 
 ## v1.7.0 — 2026-06-15
 
