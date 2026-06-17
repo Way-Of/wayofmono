@@ -1,5 +1,14 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.5.1 (2026-06-17) — WO Icon Update
+
+### Fixes
+- **WO icon**: Updated Electron/web icons to new "WO" text logo (dark brown background #241a14, orange "WO" text #ff6624) replacing the previous black box icon
+- Regenerated all PNG sizes (16, 32, 48, 64, 128, 256, 512), .ico, and .iconset
+- Updated `public/favicon.ico` and `public/icon.png` for web version
+
+---
+
 ## v0.5.0 (2026-06-17) — Platform-Aware Installer + Major Dashboard Updates
 
 ### Major Features
