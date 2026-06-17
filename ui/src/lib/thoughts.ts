@@ -1,18 +1,21 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { getConfig } from './env';
 
-const THOUGHTS_ROOT = process.env.THOUGHTS_ROOT || path.join(process.cwd(), '..', 'thoughts');
-const PROJECTS = ['wayofmono', 'wow', 'opticat'] as const;
-type ProjectSlug = (typeof PROJECTS)[number];
+const config = getConfig();
+const THOUGHTS_ROOT = config.thoughtsRoot;
+const PROJECTS = config.projects;
+type ProjectSlug = string;
 
-const GITHUB_REPO = 'Way-Of/f-rr-d';
-const GITHUB_BRANCH = 'main';
-const GITHUB_API_BASE = 'https://api.github.com';
-const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com';
+const GITHUB_REPO = config.github.repo;
+const GITHUB_BRANCH = config.github.branch;
+const GITHUB_API_BASE = config.github.apiBase;
+const GITHUB_RAW_BASE = config.github.rawBase;
 
-// Simple in-memory cache for GitHub fetches (5 min TTL)
-const GITHUB_CACHE_TTL = 5 * 60 * 1000;
+const GITHUB_CACHE_TTL = config.github.cacheTtlMs;
 let githubCache: { tickets: Record<string, unknown>[]; timestamp: number; branch: string } | null = null;
+
+const SKIP_DIRS = config.skipDirs;
 
 interface Frontmatter {
   [key: string]: unknown;
@@ -99,88 +102,64 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
       }))];
     }
   } else {
-    // Fetch developers from GitHub by reading config.md files from each developer folder
-    const projects = PROJECTS;
+    // Fetch the full recursive tree once — structure-agnostic
+    const treeUrl = `${GITHUB_API_BASE}/repos/${GITHUB_REPO}/git/trees/${branch}?recursive=1`;
     
-    for (const project of projects) {
-      const treeUrl = `${GITHUB_API_BASE}/repos/${GITHUB_REPO}/git/trees/${branch}?recursive=1`;
+    const headers: Record<string, string> = {};
+    if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
+    
+    let treeData;
+    try {
+      console.log('[thoughts] Fetching GitHub tree:', treeUrl);
+      const response = await fetch(treeUrl, { signal: AbortSignal.timeout(10000), headers });
+      console.log('[thoughts] GitHub tree response status:', response.status);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.log('[thoughts] GitHub tree error:', errorText);
+        return devs;
+      }
+      treeData = await response.json();
+      console.log('[thoughts] GitHub tree items:', treeData.tree?.length || 0);
+    } catch (e) {
+      console.error('[thoughts] GitHub tree fetch error:', e);
+      return devs;
+    }
+
+    // Find all config.md files — any directory containing one is a developer
+    for (const item of treeData.tree || []) {
+      if (item.type !== 'blob' || !item.path.endsWith('config.md')) continue;
       
-      const headers: Record<string, string> = {};
-      if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
+      const parts = item.path.split('/');
+      const devName = parts[parts.length - 2];
+      if (!devName || devName.startsWith('.') || devName === 'global' || devName === 'shared' || devName === 'docs') continue;
+      if (seen.has(devName)) continue;
+      seen.add(devName);
+
+      const project = parts.length >= 3 ? parts[parts.length - 3] : 'wayofmono';
       
-      let treeData;
       try {
-        console.log('[thoughts] Fetching GitHub tree:', treeUrl);
-        const response = await fetch(treeUrl, { signal: AbortSignal.timeout(10000), headers });
-        console.log('[thoughts] GitHub tree response status:', response.status);
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.log('[thoughts] GitHub tree error:', errorText);
-          continue;
+        const rawUrl = `${GITHUB_RAW_BASE}/${GITHUB_REPO}/${branch}/${item.path}`;
+        const rawHeaders: Record<string, string> = {};
+        if (accessToken) rawHeaders['Authorization'] = `Bearer ${accessToken}`;
+        console.log('[thoughts] Fetching config:', rawUrl);
+        const response = await fetch(rawUrl, { signal: AbortSignal.timeout(5000), headers: rawHeaders });
+        if (response.ok) {
+          const content = await response.text();
+          const { frontmatter } = parseFrontmatter(content);
+          devs.push({
+            id: devName,
+            githubUsername: String(frontmatter['githubUsername'] || devName),
+            displayName: String(frontmatter['displayName'] || devName.charAt(0).toUpperCase() + devName.slice(1)),
+            role: String(frontmatter['role'] || 'Developer'),
+            pincode: String(frontmatter['pincode'] || ''),
+            avatarUrl: String(frontmatter['avatarUrl'] || ''),
+            projects: (frontmatter['projects'] as string[]) || [project],
+            isActive: frontmatter['isActive'] !== false,
+          });
+          console.log('[thoughts] Config parsed:', { githubUsername: frontmatter['githubUsername'], displayName: frontmatter['displayName'], role: frontmatter['role'] });
         }
-        treeData = await response.json();
-        console.log('[thoughts] GitHub tree items:', treeData.tree?.length || 0);
       } catch (e) {
-        console.error('[thoughts] GitHub tree fetch error:', e);
-        continue;
-      }
-
-      // Find developer directories (not global, shared, docs)
-      const devDirs = new Set<string>();
-      for (const item of treeData.tree || []) {
-        if (item.type === 'tree') {
-          const parts = item.path.split('/');
-          if (parts.length === 2 && parts[0] === project) {
-            const dirName = parts[2];
-            if (!dirName.startsWith('.') && dirName !== 'global' && dirName !== 'shared' && dirName !== 'docs') {
-              devDirs.add(dirName);
-            }
-          }
-        }
-      }
-      console.log('[thoughts] Found dev dirs:', Array.from(devDirs));
-
-      // For each developer dir, try to read config.md
-      for (const devName of devDirs) {
-        if (seen.has(devName)) continue;
-        seen.add(devName);
-
-        let pincode = '';
-        let githubUsername = devName;
-        let displayName = devName.charAt(0).toUpperCase() + devName.slice(1);
-        let role = 'Developer';
-        let email = '';
-        try {
-          const rawUrl = `${GITHUB_RAW_BASE}/${GITHUB_REPO}/${branch}/${project}/${devName}/config.md`;
-          const rawHeaders: Record<string, string> = {};
-          if (accessToken) rawHeaders['Authorization'] = `Bearer ${accessToken}`;
-          console.log('[thoughts] Fetching config:', rawUrl);
-          const response = await fetch(rawUrl, { signal: AbortSignal.timeout(5000), headers: rawHeaders });
-          console.log('[thoughts] Config response status:', response.status);
-          if (response.ok) {
-            const content = await response.text();
-            const { frontmatter } = parseFrontmatter(content);
-            pincode = String(frontmatter['pincode'] || '');
-            githubUsername = String(frontmatter['githubUsername'] || devName);
-            displayName = String(frontmatter['displayName'] || devName.charAt(0).toUpperCase() + devName.slice(1));
-            role = String(frontmatter['role'] || 'Developer');
-            email = String(frontmatter['email'] || '');
-            console.log('[thoughts] Config parsed:', { githubUsername, displayName, role });
-          }
-        } catch (e) {
-          console.error('[thoughts] Config fetch error:', e);
-        }
-
-        devs.push({
-          id: devName,
-          githubUsername,
-          displayName,
-          role,
-          pincode,
-          avatarUrl: '',
-          projects: [project],
-          isActive: true,
-        });
+        console.error('[thoughts] Config fetch error:', e);
       }
     }
 

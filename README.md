@@ -757,7 +757,7 @@ brew install stow
 | Subagents | **6** |
 | Active developers | **4** (craig, tomas, andre, zerwiz) |
 | Active tickets | **29+** (WOMONO, WOW, OPT namespaces) |
-| Harness version | **1.7.0** |
+| Harness version | **1.7.1** |
 | Files in harness | **1,226** |
 | Files in docs | **173** |
 | Files in thoughts | **115** |
@@ -782,7 +782,7 @@ WayOfMono is built on an **Interface-Agnostic Philosophy** — core logic and to
 
 ```
 packages/@aiengineeringharness/     → 1,226 files
-├── manifest.json                   # Source of truth (v1.3.0)
+├── manifest.json                   # Source of truth (v1.7.1)
 ├── install.ts                      # Deno CLI installer
 ├── setup.sh                        # GNU Stow installer
 ├── scripts/                        # 14 pipeline scripts

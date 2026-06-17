@@ -861,7 +861,16 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
       // Get source content
       let srcContent: string;
       if (opts.sd.startsWith("http://") || opts.sd.startsWith("https://")) {
-        srcContent = await fetchRemoteFile(opts.sd, fileEntry.src, opts.token);
+        try {
+          srcContent = await fetchRemoteFile(opts.sd, fileEntry.src, opts.token);
+        } catch (err) {
+          if (err instanceof Error && err.message.includes("404")) {
+            console.log(`  ${od("·")} ${fileEntry.dest}  ${od("(skipped - likely a directory, not in remote manifest)")}`);
+            skipped++;
+            continue;
+          }
+          throw err;
+        }
       } else {
         if (!srcStat) {
           console.error(`  ${o("✗")} Source not found: ${fileEntry.src}`);

@@ -4,17 +4,19 @@ import { useState, useEffect } from 'react';
 import { useAuthStore, useDashboardStore } from '@/store/dashboard-store';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { AlertCircle, Loader2, KeyRound, Github } from 'lucide-react';
+import { AlertCircle, Loader2, KeyRound, Github, ArrowLeftRight } from 'lucide-react';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 export function LoginPage() {
+  const setFromSession = useAuthStore((s) => s.setFromSession);
   const login = useAuthStore((s) => s.login);
   const developers = useDashboardStore((s) => s.developers);
   const loading = useDashboardStore((s) => s.loading);
   const fetchData = useDashboardStore((s) => s.fetchData);
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [mode, setMode] = useState<'github' | 'pincode'>('github');
   const [username, setUsername] = useState('');
   const [pincode, setPincode] = useState('');
   const [error, setError] = useState('');
@@ -27,18 +29,14 @@ export function LoginPage() {
       const devId = (session as any).devId;
       const devRole = (session as any).devRole;
       if (devId) {
-        const isCTO = devRole === 'CTO';
-        const canReview = devRole === 'CTO' || devRole === 'Lead' || devRole === 'Senior';
-        useAuthStore.getState().login(devId, '');
+        setFromSession(devId, devRole);
         router.push('/');
       }
     } else if (status === 'unauthenticated') {
-      // Clear any stale state
       useAuthStore.getState().logout();
     }
-  }, [session, status, router]);
+  }, [session, status, router, setFromSession]);
 
-  // Debug: log session status
   useEffect(() => {
     console.log('[LoginPage] Session status:', status, session ? 'data present' : 'no data');
     if (session) {
@@ -81,29 +79,65 @@ export function LoginPage() {
         </div>
 
         <div className="bg-card border border-border rounded-xl p-6">
-          {/* GitHub OAuth Sign In */}
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full mb-4"
-            onClick={handleGitHubLogin}
-            disabled={isDisabled}
-          >
-            <Github className="w-4 h-4 mr-2" />
-            Sign in with GitHub
-          </Button>
-
-          <div className="relative my-4">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs">
-              <span className="bg-card px-2 text-text-muted">or use pincode</span>
-            </div>
+          {/* Mode toggle */}
+          <div className="flex rounded-lg bg-surface p-1 mb-6">
+            <button
+              type="button"
+              onClick={() => { setMode('github'); setError(''); }}
+              className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                mode === 'github'
+                  ? 'bg-card text-foreground shadow-sm'
+                  : 'text-text-muted hover:text-foreground'
+              }`}
+            >
+              <Github className="w-4 h-4" />
+              GitHub
+            </button>
+            <button
+              type="button"
+              onClick={() => { setMode('pincode'); setError(''); }}
+              className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                mode === 'pincode'
+                  ? 'bg-card text-foreground shadow-sm'
+                  : 'text-text-muted hover:text-foreground'
+              }`}
+            >
+              <KeyRound className="w-4 h-4" />
+              Pincode
+            </button>
           </div>
 
-          <form onSubmit={handleSubmit}>
-            <div className="space-y-3">
+          {/* GitHub mode */}
+          {mode === 'github' && (
+            <div className="space-y-4">
+              <p className="text-sm text-text-secondary text-center">
+                Sign in with your GitHub account to access the dashboard
+              </p>
+              <Button
+                type="button"
+                variant="default"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                onClick={handleGitHubLogin}
+                disabled={isDisabled}
+              >
+                {isDisabled ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <><Github className="w-4 h-4 mr-2" /> Sign in with GitHub</>
+                )}
+              </Button>
+              {error && (
+                <div className="flex items-center gap-2 text-destructive text-sm">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  {error}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Pincode mode */}
+          {mode === 'pincode' && (
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1.5">GitHub username</label>
                 <Input
@@ -126,21 +160,19 @@ export function LoginPage() {
                   disabled={isDisabled}
                 />
               </div>
-            </div>
 
-            <Button type="submit" className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground" disabled={isDisabled}>
-              {isDisabled ? <Loader2 className="w-4 h-4 animate-spin" /> : <><KeyRound className="w-4 h-4 mr-1.5" /> Sign In</>}
-            </Button>
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" disabled={isDisabled}>
+                {isDisabled ? <Loader2 className="w-4 h-4 animate-spin" /> : <><KeyRound className="w-4 h-4 mr-1.5" /> Sign In</>}
+              </Button>
 
-            {error && (
-              <div className="flex items-center gap-2 mt-3 text-destructive text-sm">
-                <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                {error}
-              </div>
-            )}
-          </form>
-
-
+              {error && (
+                <div className="flex items-center gap-2 text-destructive text-sm">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  {error}
+                </div>
+              )}
+            </form>
+          )}
         </div>
 
         <p className="text-center text-text-muted text-xs mt-6">

@@ -1,5 +1,28 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.32 (2026-06-17) — Structure-Agnostic Developer Discovery + Git Tree API Fix
+
+### Fixes
+- **Git Trees API URL fixed**: Removed `{branch}:{path}` pattern — just uses `{branch}` (branch name works as tree SHA)
+- **f-rr-d paths fixed**: Removed hardcoded `thoughts/` prefix — all paths relative to repo root
+- **walkGitHubDir non-recursive**: Single `recursive=1` tree API call instead of per-directory recursion
+- **parts[2]→parts[1] index bug**: `getDevelopers` path parsing assumed 3-part paths, now uses 2-part
+
+### Refactored
+- **getDevelopers GitHub mode is structure-agnostic**: Scans tree for `config.md` at **any depth** — parent directory = dev name, grandparent = project. Handles any f-rr-d repo structure change without code changes.
+- **Auth fallback**: Falls back to local source when no access token is available
+- **Token debug logging**: Added token presence logging to NextAuth signIn/session callbacks
+
+### Key Design Decision
+The old code assumed `thoughts/<project>/<developer>/config.md` (fixed 3-level depth). Now it recursively scans the entire tree for `config.md` files and infers the developer name (parent dir) and project (grandparent dir) automatically. This makes it resilient to any structural change in the f-rr-d repo.
+
+### Migration
+```bash
+sudo wodev --build && wodev
+```
+
+---
+
 ## v0.4.31 (2026-06-17) — GitHub OAuth: Fixed Developer Fetching with Access Token
 
 ### Fixes

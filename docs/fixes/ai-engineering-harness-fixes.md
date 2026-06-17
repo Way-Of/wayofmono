@@ -37,6 +37,14 @@ Compile now clean (0 errors). Clean reinstall finds all 7 scripts per tool.
 
 All core files updated: manifest.json, CHANGELOG.md, README.md, install.ts, setup.sh, install.ps1.
 
+### Remote Install: Directory Entries in Manifest Fixed (v1.7.1)
+
+**Problem**: When installing from remote (`ai-harness --tool=antigravity`), the installer failed with `Failed to fetch antigravity/skills/skill-adapter/assets (404)` because the manifest includes directory entries (e.g., `antigravity/skills/skill-adapter/assets`) that work locally but don't exist as files on raw.githubusercontent.com.
+
+**Fix**: Modified `packages/@aiengineeringharness/install.ts` (lines 863-873) to catch 404 errors during remote fetch and skip those entries gracefully, logging them as "likely a directory, not in remote manifest". Individual files within those directories (e.g., `assets/compliance-fix.ts`) are still fetched correctly.
+
+**Verified**: Remote install now skips directory entries and continues with individual files.
+
 ---
 
 ## v1.7.0 — 2026-06-15
