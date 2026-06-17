@@ -841,11 +841,11 @@ Opens at **http://localhost:6969**
 | Subagents | **6** |
 | Active developers | **4** (craig, tomas, andre, zerwiz) |
 | Active tickets | **29+** (WOMONO, WOW, OPT namespaces) |
-| Harness version | **1.7.1** |
+| Harness version | **1.7.2** |
 | Files in harness | **1,226** |
 | Files in docs | **173** |
 | Files in thoughts | **115** |
-| Dashboard version | **0.4.34** (Next.js 16) |
+| Dashboard version | **0.5.0** (Next.js 16) |
 | Total repo size | **1.4 GB** (excluding node_modules) |
 
 ## 🎛️ Multi-Interface Architecture

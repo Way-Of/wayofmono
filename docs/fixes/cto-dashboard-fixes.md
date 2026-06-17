@@ -1,5 +1,29 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.5.0 (2026-06-17) — Platform-Aware Installer + Major Dashboard Updates
+
+### Major Features
+- **Platform-aware harness installer (WOMONO-094)**: Complete detection + adaptation layer for OS, arch, tools, runtime, desktop, hardware, terminal, network, security, permissions
+- **11 detection modules**: `os`, `arch`, `tools`, `runtime`, `desktop`, `hardware`, `terminal`, `network`, `security`, `permissions`, `locale` (cached, with confidence levels)
+- **4 adaptation modules**: `paths` (XDG), `formats` (snake_case/kebab-case), `deps` (apt/dnf/brew/winget), `desktop` (.desktop files, clipboard, xdg-open)
+- **Supporting modules**: `logger.ts` (persistent log with secret redaction), `transaction.ts` (atomic installs, rollback, file locking), `report.ts` (JSON report, PII sanitization, dashboard push)
+- **CLI flags**: `--detect` (system report), `--tool=auto` (install only detected tools), `--no-report`/`WOMONO_DO_NOT_TRACK` (telemetry opt-out), `--debug` (verbose logging)
+- **Dotfile hygiene**: `# BEGIN/END WOMONO HARNESS` comment blocks for idempotent shell config injection
+- **Supply-chain security**: Optional `sha256` field in manifest.json FileEntry; installer verifies checksums on remote downloads
+
+### Dashboard Features (v0.4.35 carried forward)
+- **Interactive Docs File Tree**: Dynamic clickable file tree built from actual `docs[]` data. Folders expand/collapse, files are clickable.
+- **Doc Markdown Preview**: Doc cards and file tree entries open a full MarkdownPreview dialog with rendered markdown + raw mode toggle.
+- **Profile/Settings views now render**: Added `case 'profile'` and `case 'settings'` to `renderView()` switch in `page.tsx`, added imports, added labels, added to `ViewMode` type.
+- **Electron taskbar icon**: Fixed icon path from non-existent `public/favicon.ico` to `electron/build/icon.png` via `nativeImage.createFromPath()`. Added `mainWindow.setIcon()`, `app.setAppUserModelId()`, `app.setName()`. Added `registerLinuxIcon()` in `wodev.js` that creates `~/.local/share/applications/wayofmono-cto-dashboard.desktop` (proper Linux way for taskbar icons across GNOME/KDE/etc).
+- **public/favicon.ico**: Created from electron/build/icon.png so web version also has icon.
+- **Version in banner**: Now displays `v0.5.0` in CLI logo next to "⟡ CTO DASHBOARD" and build/production headers.
+
+### New Directories
+- `thoughts/shared/news/`, `thoughts/shared/standups/`, `thoughts/shared/ideas/` for future per-entry persistence.
+
+---
+
 ## v0.4.36 (2026-06-17) — wodev.js crash fix
 
 ### Fixes
