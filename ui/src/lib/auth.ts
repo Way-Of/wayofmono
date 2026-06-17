@@ -36,12 +36,18 @@ export const authOptions: NextAuthOptions = {
           profileLogin: (profile as any)?.login
         });
         try {
-          // Use the OAuth access token directly since session not created yet
           const accessToken = account?.access_token;
+          console.log('[NextAuth] Testing token:', { hasToken: !!accessToken, tokenPrefix: accessToken?.slice(0, 8) });
+          if (accessToken) {
+            const testResp = await fetch('https://api.github.com/user', { headers: { Authorization: `Bearer ${accessToken}` } });
+            const testData = await testResp.json();
+            console.log('[NextAuth] Token test /user:', { status: testResp.status, login: testData.login });
+            const repoResp = await fetch('https://api.github.com/repos/Way-Of/f-rr-d', { headers: { Authorization: `Bearer ${accessToken}` } });
+            console.log('[NextAuth] Token test /repo:', { status: repoResp.status });
+          }
           const devs = await getDevelopers('github', 'main', accessToken);
           const ghProfile = profile as GitHubProfile;
-          const dev = devs.find(d => d.githubUsername.toLowerCase() === (user.email || '').toLowerCase() || 
-                                    d.githubUsername.toLowerCase() === (ghProfile?.login || '').toLowerCase());
+          const dev = devs.find(d => d.githubUsername.toLowerCase() === (ghProfile?.login || '').toLowerCase());
           if (dev) {
             console.log('[NextAuth] Developer matched:', { devId: dev.id, role: dev.role, githubUsername: dev.githubUsername });
             (user as any).devId = dev.id;

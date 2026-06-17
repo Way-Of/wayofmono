@@ -103,8 +103,7 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
     const projects = PROJECTS;
     
     for (const project of projects) {
-      const devsPath = `thoughts/${project}`;
-      const treeUrl = `${GITHUB_API_BASE}/repos/${GITHUB_REPO}/git/trees/${branch}:${devsPath}?recursive=1`;
+      const treeUrl = `${GITHUB_API_BASE}/repos/${GITHUB_REPO}/git/trees/${branch}?recursive=1`;
       
       const headers: Record<string, string> = {};
       if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
@@ -300,11 +299,8 @@ async function walkDir(dir: string, result: Record<string, unknown>[], seenIds: 
 }
 
 async function walkGitHubDir(apiBase: string, repo: string, branch: string, result: Record<string, unknown>[], seenIds: Set<string>, path = 'thoughts', accessToken?: string) {
-  const treeUrl = `${apiBase}/repos/${repo}/git/trees/${branch}:${path}?recursive=1`;
+  const treeUrl = `${apiBase}/repos/${repo}/git/trees/${branch}?recursive=1`;
   let treeData;
-  
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000);
   
   const headers: Record<string, string> = {};
   if (accessToken) {
@@ -313,23 +309,21 @@ async function walkGitHubDir(apiBase: string, repo: string, branch: string, resu
   }
   
   try {
-    const response = await fetch(treeUrl, { signal: controller.signal, headers });
-    clearTimeout(timeoutId);
+    const response = await fetch(treeUrl, { signal: AbortSignal.timeout(10000), headers });
     if (!response.ok) {
       if (response.status === 404) return;
       throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
     }
     treeData = await response.json();
   } catch (error) {
-    clearTimeout(timeoutId);
     console.error('Failed to fetch GitHub tree:', error);
     return;
   }
 
+  const prefix = path + '/';
   for (const item of treeData.tree) {
-    if (item.type === 'tree') {
-      await walkGitHubDir(apiBase, repo, branch, result, seenIds, item.path, accessToken);
-    } else if (item.type === 'blob' && item.path.endsWith('.md') && !item.path.endsWith('personal-ticket-template.md')) {
+    if (!item.path.startsWith(prefix)) continue;
+    if (item.type === 'blob' && item.path.endsWith('.md') && !item.path.endsWith('personal-ticket-template.md')) {
       const rawUrl = `${GITHUB_RAW_BASE}/${repo}/${branch}/${item.path}`;
       let content;
       

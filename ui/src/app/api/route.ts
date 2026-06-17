@@ -19,11 +19,13 @@ export async function GET(request: NextRequest) {
   try {
     switch (type) {
       case 'developers': {
-        const devs = await getDevelopers(source as 'local' | 'github', branch, accessToken);
+        const effectiveSource = source === 'github' && !accessToken ? 'local' : source;
+        const devs = await getDevelopers(effectiveSource as 'local' | 'github', branch, accessToken);
         return NextResponse.json(devs);
       }
       case 'tickets': {
-        const tickets = await getTickets(source as 'local' | 'github', branch, accessToken);
+        const effectiveSource = source === 'github' && !accessToken ? 'local' : source;
+        const tickets = await getTickets(effectiveSource as 'local' | 'github', branch, accessToken);
         return NextResponse.json(tickets);
       }
       case 'docs': {
@@ -31,7 +33,8 @@ export async function GET(request: NextRequest) {
         return NextResponse.json(docs);
       }
       case 'dashboard': {
-        const [stats, tickets] = await Promise.all([getDashboardStats(), getTickets(source as 'local' | 'github', branch, accessToken)]);
+        const effectiveSource = source === 'github' && !accessToken ? 'local' : source;
+        const [stats, tickets] = await Promise.all([getDashboardStats(), getTickets(effectiveSource as 'local' | 'github', branch, accessToken)]);
         return NextResponse.json({ stats, tickets });
       }
       case 'skills': {
