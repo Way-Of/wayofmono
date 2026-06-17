@@ -6,6 +6,7 @@
 - **Installer status reporting**: Per-file `NEW`/`UPDATED`/`UNCHANGED`/`SKIPPED` labels; summary shows `X NEW, Y UPDATED, Z UNCHANGED, W SKIPPED` (was "changed"/"ok")
 - **Stale file removal**: Renamed 12 `wocoder-skill-update.py` → `wocode-skill-update.py` across opencode, gemini, pi, wocode, config-manifest; clean reinstall finds all scripts
 - **Skill parity**: All 7 tools now have identical 73 skills (opencode, claude, gemini, pi, wocode, codex, antigravity). Added missing `self-documentation` and `validate-manifest` to 6 non-wocode YAMLs; created codex SKILL.md files.
+- **Remote install directory entries**: Fixed 404 errors when manifest contains directory entries (e.g., `antigravity/skills/skill-adapter/assets`) during remote install from raw.githubusercontent.com. Installer now catches 404 and skips gracefully.
 
 ### Changed
 - Version bumped to 1.7.1 across manifest.json, CHANGELOG.md, README.md, install.ts, setup.sh, install.ps1
