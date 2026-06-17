@@ -30,6 +30,8 @@ export function LoginPage() {
       const devRole = (session as any).devRole;
       if (devId) {
         setFromSession(devId, devRole);
+        // Clear any pending pincode→GitHub link mapping after successful OAuth
+        localStorage.removeItem('pending_link_dev_id');
         router.push('/');
       }
     } else if (status === 'unauthenticated') {

@@ -16,7 +16,10 @@ import {
   RefreshCw,
   MessageSquareText,
   Newspaper,
+  Settings,
+  UserCog,
 } from 'lucide-react';
+import { signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
@@ -44,10 +47,12 @@ const navItems: { id: ViewMode; label: string; icon: React.ElementType; ctoOnly?
   { id: 'news', label: 'News', icon: Newspaper },
   { id: 'standup', label: 'Standup', icon: MessageSquareText },
   { id: 'skills', label: 'Skills', icon: Cpu, reviewOnly: true },
+  { id: 'profile', label: 'Profile', icon: UserCog },
+  { id: 'settings', label: 'Settings', icon: Settings },
 ];
 
 export function Sidebar({ collapsed, onToggle }: SidebarProps) {
-  const { currentUser, canReview, logout } = useAuthStore();
+  const { currentUser, canReview } = useAuthStore();
   const { currentView, setCurrentView } = useDashboardStore();
   const tickets = useDashboardStore((s) => s.tickets);
   const reviewCount = tickets.filter(t => t.status === 'In Review' && t.reviewStatus === 'Pending').length;
@@ -70,19 +75,29 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
         `}
       >
         {/* Header */}
-        <div className={`flex items-center h-14 px-4 border-b border-sidebar-border ${collapsed ? 'justify-center' : 'gap-3'}`}>
+        <div className={`flex items-center h-14 px-3 border-b border-sidebar-border ${collapsed ? 'justify-center' : ''}`}>
+          <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
+            <span className="text-xs font-bold text-primary-foreground">WO</span>
+          </div>
           {!collapsed && (
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-xs font-bold text-primary-foreground">WO</span>
-              </div>
-              <span className="font-semibold text-sm text-sidebar-foreground">WayOfMono</span>
-            </div>
+            <span className="font-semibold text-sm text-sidebar-foreground ml-2 flex-1 min-w-0">WayOfMono</span>
           )}
-          {collapsed && (
-            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-xs font-bold text-primary-foreground">WO</span>
-            </div>
+          {!collapsed ? (
+            <button
+              onClick={onToggle}
+              className="w-5 h-5 rounded flex items-center justify-center text-sidebar-foreground/30 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-all flex-shrink-0"
+              title="Collapse sidebar"
+            >
+              <ChevronLeft className="w-3.5 h-3.5" />
+            </button>
+          ) : (
+            <button
+              onClick={onToggle}
+              className="w-5 h-5 rounded flex items-center justify-center text-sidebar-foreground/30 hover:text-sidebar-foreground transition-all flex-shrink-0 ml-1"
+              title="Expand sidebar"
+            >
+              <ChevronLeft className="w-3.5 h-3.5 rotate-180" />
+            </button>
           )}
         </div>
 
@@ -149,55 +164,40 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
         {/* User section */}
         <div className={`flex items-center h-14 px-3 ${collapsed ? 'justify-center' : 'gap-3'}`}>
           {!collapsed && dev && (
-            <>
+            <button
+              onClick={() => setCurrentView('profile')}
+              className="flex items-center gap-3 flex-1 min-w-0 text-left"
+            >
               <Avatar className="w-8 h-8">
                 <AvatarFallback className="bg-primary/20 text-primary text-xs font-semibold">
                   {dev.displayName.charAt(0)}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-sidebar-foreground truncate">{dev.displayName}</p>
+                <p className="text-sm font-medium text-sidebar-foreground truncate hover:text-primary transition-colors">{dev.displayName}</p>
                 <p className="text-xs text-sidebar-foreground/50">@{dev.githubUsername}</p>
               </div>
-            </>
+            </button>
           )}
           {collapsed && dev && (
-            <Avatar className="w-8 h-8">
-              <AvatarFallback className="bg-primary/20 text-primary text-xs font-semibold">
-                {dev.displayName.charAt(0)}
-              </AvatarFallback>
-            </Avatar>
+            <button onClick={() => setCurrentView('profile')}>
+              <Avatar className="w-8 h-8 hover:ring-2 hover:ring-primary transition-all">
+                <AvatarFallback className="bg-primary/20 text-primary text-xs font-semibold">
+                  {dev.displayName.charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+            </button>
           )}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 text-sidebar-foreground/50 hover:text-destructive"
-                onClick={logout}
-              >
-                <LogOut className="w-4 h-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side={collapsed ? 'right' : 'top'} className="bg-surface-elevated text-foreground border-border">
-              Sign out
-            </TooltipContent>
-          </Tooltip>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-sidebar-foreground/50 hover:text-destructive"
+            onClick={() => signOut({ callbackUrl: '/' })}
+            title="Sign out"
+          >
+            <LogOut className="w-4 h-4" />
+          </Button>
         </div>
-      </aside>
-
-      {/* Collapse toggle */}
-      <button
-        onClick={onToggle}
-        className={`
-          fixed top-4 z-50 w-6 h-6 rounded-full bg-card border border-border
-          flex items-center justify-center text-text-muted hover:text-foreground
-          transition-all hover:border-border-strong
-          ${collapsed ? 'left-[72px]' : 'left-[248px]'}
-        `}
-      >
-        <ChevronLeft className={`w-3 h-3 transition-transform ${collapsed ? 'rotate-180' : ''}`} />
-      </button>
     </TooltipProvider>
   );
 }

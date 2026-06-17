@@ -1,11 +1,26 @@
 import { NextAuthOptions } from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
 import { getDevelopers } from './thoughts';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
 
 interface GitHubProfile {
   login: string;
   email?: string;
   name?: string;
+}
+
+const LINKS_FILE = path.join(os.homedir(), '.config', 'wodev', 'github-links.json');
+
+function loadLinkMappings(): Record<string, string> {
+  try {
+    const raw = fs.readFileSync(LINKS_FILE, 'utf8');
+    const data = JSON.parse(raw);
+    return data.links || {};
+  } catch {
+    return {};
+  }
 }
 
 const providers: NextAuthOptions['providers'] = [];
@@ -47,7 +62,25 @@ export const authOptions: NextAuthOptions = {
           }
           const devs = await getDevelopers('github', 'main', accessToken);
           const ghProfile = profile as GitHubProfile;
-          const dev = devs.find(d => d.githubUsername.toLowerCase() === (ghProfile?.login || '').toLowerCase());
+          const ghLogin = (ghProfile?.login || '').toLowerCase();
+
+          // Try matching by githubUsername
+          let dev = devs.find(d => d.githubUsername.toLowerCase() === ghLogin);
+
+          // Fallback: check pincode link mappings
+          if (!dev) {
+            const links = loadLinkMappings();
+            const linkedDevId = Object.keys(links).find(
+              devId => links[devId].toLowerCase() === ghLogin
+            );
+            if (linkedDevId) {
+              dev = devs.find(d => d.id === linkedDevId);
+              if (dev) {
+                console.log('[NextAuth] Linked via pincode mapping:', { devId: dev.id, ghLogin, linkedDevId });
+              }
+            }
+          }
+
           if (dev) {
             console.log('[NextAuth] Developer matched:', { devId: dev.id, role: dev.role, githubUsername: dev.githubUsername });
             (user as any).devId = dev.id;

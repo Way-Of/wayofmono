@@ -7,6 +7,7 @@ interface AuthState {
   currentUser: string | null;
   isCTO: boolean;
   canReview: boolean;
+  authMethod: 'github' | 'pincode' | null;
   login: (username: string, pincode?: string) => LoginResult;
   setFromSession: (devId: string, devRole: string) => void;
   logout: () => void;
@@ -56,6 +57,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   currentUser: null,
   isCTO: false,
   canReview: false,
+  authMethod: null,
   login: (username: string, pincode?: string): LoginResult => {
     const devs = useDashboardStore.getState().developers;
     if (devs.length === 0) return { success: false, reason: 'loading' };
@@ -64,15 +66,16 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (dev.pincode && dev.pincode !== pincode) return { success: false, reason: 'wrong_pincode' };
     const isCTO = dev.role === 'CTO';
     const canReview = dev.role === 'CTO' || dev.role === 'Lead' || dev.role === 'Senior';
-    set({ currentUser: dev.id, isCTO, canReview });
+    set({ currentUser: dev.id, isCTO, canReview, authMethod: 'pincode' });
     return { success: true };
   },
-  logout: () => set({ currentUser: null, isCTO: false, canReview: false }),
+  logout: () => set({ currentUser: null, isCTO: false, canReview: false, authMethod: null }),
   setFromSession: (devId: string, devRole: string) => {
     set({
       currentUser: devId,
       isCTO: devRole === 'CTO',
       canReview: devRole === 'CTO' || devRole === 'Lead' || devRole === 'Senior',
+      authMethod: 'github',
     });
   },
 }));
