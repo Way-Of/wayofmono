@@ -1,5 +1,55 @@
 # AI Engineering Harness Fixes & Release Notes
 
+## v1.7.2 — 2026-06-17
+
+### Platform-Aware Harness Installer (WOMONO-094)
+
+**Problem**: The `ai-harness` installer installed skills/agents/commands uniformly without detecting the user's platform, hardware, chat frontend, runtime environment, or desktop configuration — leading to broken integrations (missing `.desktop` file on Linux, wrong icon paths, incompatible Node.js version, missing system deps, no dotfile idempotency).
+
+**Fix**: Complete rewrite of detection + adaptation layer in `packages/@aiengineeringharness/`:
+
+**Detection Modules (11):**
+- `detect/os.ts` — OS, distro, WSL, container detection
+- `detect/arch.ts` — CPU architecture (x86_64, arm64, etc.)
+- `detect/tools.ts` — Detects 7 AI coding tools via config dirs + PATH
+- `detect/runtime.ts` — Deno, Node, Python, pnpm/npm/yarn, Git (user/signing key)
+- `detect/desktop.ts` — DE (GNOME/KDE/etc), display server (X11/Wayland), Nerd Font, XDG paths
+- `detect/hardware.ts` — CPU cores/model, RAM, GPU (NVIDIA/AMD/Intel/Apple), disk, battery
+- `detect/terminal.ts` — Shell, terminal emulator, color depth, tmux, locale/UTF-8
+- `detect/network.ts` — Proxy, GitHub token, connectivity, npm registry
+- `detect/security.ts` — SSH agent, GPG keys, keychain, SELinux, AppArmor
+- `detect/permissions.ts` — Root/Admin, macOS Gatekeeper, Windows ExecutionPolicy, Homebrew path
+- `detect/index.ts` — Aggregate cache + system report builder
+
+**Adaptation Modules (4):**
+- `adapt/paths.ts` — XDG-compliant paths per OS (Linux/macOS/Windows)
+- `adapt/formats.ts` — Tool-specific skill naming (snake_case vs kebab-case)
+- `adapt/deps.ts` — OS-specific dependency install commands (apt/dnf/brew/winget)
+- `adapt/desktop.ts` — `.desktop` file generation, clipboard, xdg-open per platform
+
+**Supporting Modules:**
+- `logger.ts` — Persistent install log with secret redaction
+- `transaction.ts` — Atomic installs with write-ahead log, rollback, file locking
+- `report.ts` — JSON system report + PII sanitization + dashboard push
+
+**CLI Flags Added:**
+- `--detect` — Print full platform-aware system report
+- `--tool=auto` — Install only detected tools (auto-detects via config dirs + PATH)
+- `--no-report` / `WOMONO_DO_NOT_TRACK` — Opt-out of telemetry
+- `--debug` — Verbose logging to OS-standard state directory
+- Dotfile block wrapping (`# BEGIN/END WOMONO HARNESS`) for idempotent PATH/alias injection
+
+**Supply-Chain Security:**
+- Optional `sha256` field in manifest.json FileEntry
+- Installer verifies SHA-256 checksum on remote downloads before placement
+
+**Verified:**
+- `deno run -A install.ts --detect` outputs complete system report
+- `deno run -A install.ts --tool=auto --dry-run` auto-detects all 7 tools, runs full dry-run
+- TypeScript compiles cleanly
+
+---
+
 ## v1.7.1 — 2026-06-16
 
 ### Installer Status Reporting Fixed

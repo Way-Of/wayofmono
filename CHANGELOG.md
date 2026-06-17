@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.7.2] - 2026-06-17
+
+### Added
+- **Platform-aware harness installer (WOMONO-094)**: Complete detection + adaptation layer for OS, arch, tools, runtime, desktop, hardware, terminal, network, security, permissions
+- **11 detection modules**: `os`, `arch`, `tools`, `runtime`, `desktop`, `hardware`, `terminal`, `network`, `security`, `permissions`, `locale` (cached, with confidence levels)
+- **4 adaptation modules**: `paths` (XDG), `formats` (snake_case/kebab-case), `deps` (apt/dnf/brew/winget), `desktop` (.desktop files, clipboard, xdg-open)
+- **Supporting modules**: `logger.ts` (persistent log with secret redaction), `transaction.ts` (atomic installs, rollback, file locking), `report.ts` (JSON report, PII sanitization, dashboard push)
+- **CLI flags**: `--detect` (system report), `--tool=auto` (install only detected tools), `--no-report`/`WOMONO_DO_NOT_TRACK` (telemetry opt-out), `--debug` (verbose logging)
+- **Dotfile hygiene**: `# BEGIN/END WOMONO HARNESS` comment blocks for idempotent shell config injection
+- **Supply-chain security**: Optional `sha256` field in manifest.json FileEntry; installer verifies checksums on remote downloads
+
+### Fixed
+- Installer now adapts to platform: skips `.desktop` on WSL/headless, uses correct clipboard tool (wl-copy vs xclip), respects locale for UTF-8/ASCII output
+- Root/Admin warning when running without `--force`
+- macOS Gatekeeper quarantine removal on downloaded binaries
+- Windows PowerShell ExecutionPolicy detection
+
+---
+
 ## [1.7.1] - 2026-06-16
 
 ### Fixed

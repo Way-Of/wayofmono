@@ -724,9 +724,54 @@ ai-harness --mode=repo --dest=~/.ai-engineering-harness
 | `-Mode <mode>` | Show clone + stow instructions (repo) |
 | `-Dest <path>` | Clone destination for --mode=repo |
 | `-SkipBinary` | Skip CLI binary update in --update |
+| `-Detect` | Print platform-aware system report (OS, tools, runtime, hardware, terminal) |
+| `-Tool auto` | Auto-detect installed AI tools and install only to those |
+| `-NoReport` | Disable telemetry/dashboard reporting |
+| `-Debug` | Enable verbose debug logging to `~/.local/state/womono/install.log` |
 | `-Help` | Show help |
 
 > **Note**: PowerShell uses full parameter names (no single-letter aliases). The underlying Deno script supports `-y`, `-n`, `-i`, `-l`, `-h` as aliases.
+
+### Platform-Aware Installation (New in v1.7.1)
+
+The installer now auto-detects your environment and adapts:
+
+**Auto-detect tools:**
+```bash
+# Install only to AI tools that are actually installed on this machine
+ai-harness --tool=auto --yes
+```
+Detects: OpenCode, Claude Code, Gemini CLI, Pi, Codex, Antigravity, Wo Coder — by checking config dirs and PATH.
+
+**System report (`--detect`):**
+```bash
+# Print full platform detection results
+ai-harness --detect
+```
+Shows: OS/distro/WSL/container, CPU/arch/RAM/GPU/disk, desktop env/display server/Nerd Fonts, terminal/shell/color/locale, runtime versions (Deno/Node/Python/Git), network/proxy/registry, security (SSH/GPG/SELinux), permissions (root/Admin/Gatekeeper).
+
+**Privacy controls:**
+```bash
+# Disable dashboard reporting for this run
+ai-harness --report-skills --no-report
+
+# Or persistently via env var
+export WOMONO_DO_NOT_TRACK=1
+```
+
+**Debug logging:**
+```bash
+# Verbose output + persistent log file
+ai-harness --tool=all --debug
+```
+Log written to `~/.local/state/womono/install.log` (Linux), `~/Library/Logs/com.wayofmono.harness/install.log` (macOS), `%LOCALAPPDATA%\WayOfMono\Harness\Logs\install.log` (Windows). Safe to share in bug reports — secrets are redacted.
+
+**Supply-chain security (SHA-256):**
+```bash
+# Manifest entries can now include sha256 for remote files
+# Installer verifies checksum before writing downloaded content
+```
+Add `"sha256": "..."` to any file entry in `manifest.json` for binary downloads.
 
 ### GNU Stow (Optional — symlink-based updates, macOS/Linux only)
 
@@ -1228,7 +1273,7 @@ ai-harness --tool=claude --local --yes
 | Flag | Alias | Description |
 |------|-------|-------------|
 | `--install-cli` | | Install/update CLI binary |
-| `--tool=<name>` | | Install tool config (claude, opencode, gemini, pi, wocode, antigravity, codex, all) |
+| `--tool=<name>` | | Install tool config (claude, opencode, gemini, pi, wocode, antigravity, codex, all, auto) |
 | `--update` | | Full harness sync: CLI + docs + all tools + compliance |
 | `--compliance` | | Validate all installed files match manifest |
 | `--check` | | Compare installed versions against manifest |
@@ -1247,6 +1292,9 @@ ai-harness --tool=claude --local --yes
 | `--mode=<mode>` | | Show clone + stow instructions (repo) |
 | `--dest=<path>` | | Clone destination for --mode=repo |
 | `--skip-binary` | | Skip CLI binary update in --update |
+| `--detect` | | Print platform-aware system report |
+| `--no-report` | | Disable telemetry/dashboard reporting |
+| `--debug` | | Enable verbose debug logging |
 | `--help` | `-h` | Show help |
 
 ### GNU Stow Mode (Symlink-based)

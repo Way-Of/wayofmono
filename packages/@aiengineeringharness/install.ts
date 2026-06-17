@@ -23,6 +23,23 @@ import { ensureDir } from "jsr:@std/fs@1/ensure-dir";
 import { join } from "jsr:@std/path@1/join";
 import { dirname } from "jsr:@std/path@1/dirname";
 import { relative } from "jsr:@std/path@1/relative";
+async function readLine(): Promise<string> {
+  const decoder = new TextDecoder();
+  const buf = new Uint8Array(1024);
+  const n = await Deno.stdin.read(buf);
+  if (n === null) return "";
+  return decoder.decode(buf.subarray(0, n)).trimEnd();
+}
+
+// Platform-aware detection modules
+import { detectAll, buildSystemReport, clearCache, type SystemReport, type DetectionCache, type OsInfo, type ToolsInfo } from "./detect/index.ts";
+import { resolvePlatformPaths, sentinelPath, lockFilePath } from "./adapt/paths.ts";
+import { getToolFormat, selectToolsToInstall } from "./adapt/formats.ts";
+import { getDepSuggestion, runtimeInstallSuggestion } from "./adapt/deps.ts";
+import { generateDesktopFile } from "./adapt/desktop.ts";
+import { initLogger, log, logDetect, getLogPath } from "./logger.ts";
+import { Transaction } from "./transaction.ts";
+import { generateReport, generateSanitizedReport, printReport, pushReport } from "./report.ts";
 
 function normalizeSlashes(p: string): string {
   if (Deno.build.os === "windows") return p.replace(/\\/g, "/");
@@ -36,6 +53,7 @@ function normalizeSlashes(p: string): string {
 interface FileEntry {
   src: string;
   dest: string;
+  sha256?: string;
 }
 
 interface Component {
@@ -121,6 +139,34 @@ function fetchWithAuth(url: string, token: string | null): Promise<Response> {
 }
 
 const HARNESS_VERSION_FILENAME = ".harness-version";
+
+// Lazy-initialized detection cache
+let _detection: DetectionCache | null = null;
+
+function getDetection(): DetectionCache {
+  if (!_detection) {
+    _detection = detectAll();
+    logDetect("os", _detection.os);
+    logDetect("arch", _detection.arch);
+    logDetect("tools", _detection.tools);
+    logDetect("runtime", _detection.runtime);
+    logDetect("desktop", _detection.desktop);
+    logDetect("hardware", _detection.hardware);
+    logDetect("terminal", _detection.terminal);
+    logDetect("network", _detection.network);
+    logDetect("security", _detection.security);
+    logDetect("permissions", _detection.permissions);
+  }
+  return _detection;
+}
+
+function getOs(): OsInfo {
+  return getDetection().os.value;
+}
+
+function getTools(): ToolsInfo {
+  return getDetection().tools.value;
+}
 
 // ---------------------------------------------------------------------------
 // Version / update tracking
@@ -246,7 +292,7 @@ async function readFileIfExists(path: string): Promise<string | null> {
   }
 }
 
-async function fetchRemoteFile(baseUrl: string, src: string, token: string | null): Promise<string> {
+async function fetchRemoteFile(baseUrl: string, src: string, token: string | null, expectedSha256?: string): Promise<string> {
   const url = `${baseUrl}${src}`;
   const resp = await fetchWithAuth(url, token);
   if (!resp.ok) {
@@ -257,7 +303,15 @@ async function fetchRemoteFile(baseUrl: string, src: string, token: string | nul
     }
     throw new Error(`Failed to fetch ${url}: ${resp.status} ${resp.statusText}`);
   }
-  return resp.text();
+  const content = await resp.text();
+  if (expectedSha256) {
+    const actual = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(content));
+    const actualHex = Array.from(new Uint8Array(actual)).map((b) => b.toString(16).padStart(2, "0")).join("");
+    if (actualHex !== expectedSha256) {
+      throw new Error(`SHA-256 mismatch for ${src}: expected ${expectedSha256}, got ${actualHex}`);
+    }
+  }
+  return content;
 }
 
 /**
@@ -743,6 +797,47 @@ function getProjectLocalTarget(tool: string): string {
   }
 }
 
+// Shell config detection and idempotent block wrapping
+const DOTFILE_BLOCK_START = "# BEGIN WOMONO HARNESS";
+const DOTFILE_BLOCK_END = "# END WOMONO HARNESS";
+
+function detectShellConfig(): string | null {
+  const home = Deno.env.get("HOME") ?? Deno.env.get("USERPROFILE") ?? "";
+  const shell = Deno.env.get("SHELL") || "";
+  if (shell.includes("fish")) return `${home}/.config/fish/config.fish`;
+  if (shell.includes("zsh")) return `${home}/.zshrc`;
+  if (shell.includes("bash")) return `${home}/.bashrc`;
+  return null;
+}
+
+async function wrapDotfileBlock(configPath: string, blockContent: string): Promise<void> {
+  const fullBlock = `${DOTFILE_BLOCK_START}\n${blockContent.trim()}\n${DOTFILE_BLOCK_END}\n`;
+  try {
+    const existing = await Deno.readTextFile(configPath);
+    if (existing.includes(DOTFILE_BLOCK_START)) {
+      // Already present — do nothing (idempotent)
+      return;
+    }
+    await Deno.writeTextFile(configPath, existing + "\n" + fullBlock);
+  } catch {
+    // File doesn't exist — create with block
+    await Deno.writeTextFile(configPath, fullBlock);
+  }
+}
+
+async function removeDotfileBlock(configPath: string): Promise<void> {
+  try {
+    const existing = await Deno.readTextFile(configPath);
+    const startIdx = existing.indexOf(DOTFILE_BLOCK_START);
+    const endIdx = existing.indexOf(DOTFILE_BLOCK_END);
+    if (startIdx >= 0 && endIdx >= 0) {
+      const before = existing.slice(0, startIdx);
+      const after = existing.slice(endIdx + DOTFILE_BLOCK_END.length);
+      await Deno.writeTextFile(configPath, (before + after).trim() + "\n");
+    }
+  } catch {}
+}
+
 // Recursively copy directory contents
 async function copyDirRecursive(srcDir: string, destDir: string): Promise<void> {
   await ensureDir(destDir);
@@ -764,7 +859,37 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
     Deno.exit(1);
   }
 
+  // Use detection for platform-aware paths
+  const os = getOs();
+  const tools = getTools();
+  const detection = getDetection();
   const targetDir = opts.local ? getProjectLocalTarget(toolName) : expandHome(toolConfig.target);
+
+  // Warn about missing system deps based on detected platform
+  if (!opts.dryRun && os.isLinux) {
+    const neededDeps: string[] = [];
+    if (os.distro === "ubuntu" || os.distro === "debian" || !os.distro) {
+      neededDeps.push("libwebkit2gtk-4.1-dev");
+    }
+    for (const dep of neededDeps) {
+      const suggestion = getDepSuggestion(os, dep);
+      if (suggestion) {
+        log("deps", `${dep} may be needed: ${suggestion.installCommand}`);
+        console.log(`  ${"\x1b[38;5;226m\u26a0\x1b[0m"} ${od("missing dep:")} ${dep}`);
+        console.log(`    ${od("install:")} ${"\x1b[38;5;51m" + suggestion.installCommand + "\x1b[0m"}`);
+      }
+    }
+  }
+
+  // Warn if running as root
+  if (detection.permissions.value.isRoot) {
+    console.log(`  ${"\x1b[38;5;196m\u26a0\x1b[0m"} Running as ROOT — this is not recommended. Use --force to continue.`);
+  }
+
+  // Check locale for Unicode safety
+  if (!detection.terminal.value.isUtf8) {
+    console.log(`  ${"\x1b[38;5;226m\u26a0\x1b[0m"} Non-UTF-8 locale detected (${detection.terminal.value.locale}). Output may show garbled text.`);
+  }
 
   // Show version info
   await checkForUpdates(manifest, targetDir, toolName);
@@ -862,10 +987,15 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
       let srcContent: string;
       if (opts.sd.startsWith("http://") || opts.sd.startsWith("https://")) {
         try {
-          srcContent = await fetchRemoteFile(opts.sd, fileEntry.src, opts.token);
+          srcContent = await fetchRemoteFile(opts.sd, fileEntry.src, opts.token, (fileEntry as any).sha256);
         } catch (err) {
           if (err instanceof Error && err.message.includes("404")) {
             console.log(`  ${od("·")} ${fileEntry.dest}  ${od("(skipped - likely a directory, not in remote manifest)")}`);
+            skipped++;
+            continue;
+          }
+          if (err instanceof Error && err.message.includes("SHA-256 mismatch")) {
+            console.log(`  ${cross()} ${fileEntry.dest}  ${red("checksum mismatch")} ${od(err.message)}`);
             skipped++;
             continue;
           }
@@ -894,7 +1024,7 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
         if (!opts.yes) {
           if (opts.dryRun) {
             console.log(`  ${od("[dry-run]")} would overwrite`);
-            installed++;
+            updatedCount++;
             continue;
           }
 
@@ -950,7 +1080,7 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 
 const args = parseArgs(Deno.args, {
   string: ["tool", "skill", "dest", "mode", "report-url", "uninstall"],
-  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs", "report-skills", "update", "no-validate", "prune", "install-cli", "compliance"],
+  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs", "report-skills", "update", "no-validate", "prune", "install-cli", "compliance", "detect", "no-report", "debug"],
   alias: { h: "help", n: "dry-run", y: "yes", i: "interactive", l: "local" },
 });
 
@@ -959,8 +1089,34 @@ if (args.help) {
   Deno.exit(0);
 }
 
+// Initialize sd, token, manifest early for handlers that need them
+const sd = scriptDir();
+const token = resolveToken();
+const manifest = await loadManifest(sd, token);
+
+// Initialize logger in debug mode if --debug
+if (args.debug) {
+  const osDetect = detectAll().os;
+  const desktopDetect = detectAll().desktop;
+  initLogger(osDetect, desktopDetect, true);
+}
+
+// --detect: print platform-aware system report
+if (args.detect) {
+  const report = await buildSystemReport();
+  printReport(report);
+  Deno.exit(0);
+}
+
+// --no-report check
+const noReport = Boolean(args["no-report"]) || Deno.env.get("WOMONO_DO_NOT_TRACK") === "1";
+
 // --report-skills: scan local skills and report to dashboard telemetry API
 if (args["report-skills"]) {
+  if (noReport) {
+    console.log("  Telemetry disabled (--no-report or WOMONO_DO_NOT_TRACK=1)");
+    Deno.exit(0);
+  }
   const reportUrl = (args["report-url"] as string) ?? "https://cto.wayof.work";
   const homedir = Deno.env.get("HOME") ?? "";
   const dirs = [
@@ -1691,9 +1847,10 @@ if (!args.tool && !args.uninstall) {
   Deno.exit(1);
 }
 
-const sd = scriptDir();
-const token = resolveToken();
-const manifest = await loadManifest(sd, token);
+// These are already declared at top level for handlers
+// const sd = scriptDir();
+// const token = resolveToken();
+// const manifest = await loadManifest(sd, token);
 
 const skillFilter: string[] = args.skill
   ? String(args.skill).split(",").map((s: string) => s.trim()).filter(Boolean)
@@ -1710,8 +1867,38 @@ const installOpts: InstallOptions = {
   local: Boolean(args.local),
 };
 
+// Platform-aware tool selection for --tool=auto
 const toolArg = String(args.tool);
-const toolsToInstall = toolArg === "all" ? Object.keys(manifest.tools) : [toolArg];
+let toolsToInstall: string[];
+if (toolArg === "auto") {
+  const detectedTools = getTools();
+  toolsToInstall = selectToolsToInstall(detectedTools);
+  console.log(`  ${od("auto-detected tools:")} ${toolsToInstall.join(", ") || "(none — installing all)"}`);
+  if (toolsToInstall.length === 0) {
+    toolsToInstall = Object.keys(manifest.tools);
+  }
+} else if (toolArg === "all") {
+  toolsToInstall = Object.keys(manifest.tools);
+} else {
+  toolsToInstall = [toolArg];
+}
+
+// Initialize logger for this run
+const osDetect = getDetection().os;
+const desktopDetect = getDetection().desktop;
+const logPath = initLogger(osDetect, desktopDetect, Boolean(args.debug));
+if (args.debug) {
+  console.log(`  ${od("log file:")} ${logPath}`);
+}
+
+// Create transaction for atomic installs
+const transaction = new Transaction(osDetect, desktopDetect);
+if (!Boolean(args["dry-run"]) && toolsToInstall.length > 0) {
+  if (!(await transaction.acquireLock())) {
+    console.error(`  ${cross()} Could not acquire install lock. Another install may be running.`);
+    Deno.exit(1);
+  }
+}
 
 // Matrix-style header
 const logo = [
@@ -1726,11 +1913,25 @@ for (const line of logo) console.log(o(`  ${line}`));
 console.log();
 console.log(`  ${ob("⟡ HARNESS INSTALL")}  ${od("v" + manifest.version)}  ${od("─".repeat(30))}\n`);
 
-for (const tool of toolsToInstall) {
-  await installTool(manifest, tool, installOpts);
+try {
+  for (const tool of toolsToInstall) {
+    await installTool(manifest, tool, installOpts);
+  }
+
+  // Patch wrapper to embed --reload so future updates bypass Deno cache
+  patchDenoWrapperReload();
+
+  // Commit transaction
+  if (!Boolean(args["dry-run"]) && toolsToInstall.length > 0) {
+    transaction.writeSentinel(manifest.version);
+    transaction.commit();
+  }
+
+  console.log(`\n  ${ob("⟡ INSTALL COMPLETE")}  ${check()}\n`);
+} catch (err) {
+  console.error(`  ${cross()} Install failed: ${err}`);
+  if (!Boolean(args["dry-run"])) {
+    transaction.rollback();
+  }
+  Deno.exit(1);
 }
-
-// Patch wrapper to embed --reload so future updates bypass Deno cache
-patchDenoWrapperReload();
-
-console.log(`\n  ${ob("⟡ INSTALL COMPLETE")}  ${check()}\n`);
