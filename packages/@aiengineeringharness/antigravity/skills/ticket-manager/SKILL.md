@@ -23,6 +23,24 @@ Backlog → Planned → Ready → In Progress → Submitted for Review → Appro
                                           ↘ Changes Requested → In Progress
 ```
 
+## CTO Dashboard UI Integration
+
+The CTO Dashboard (Next.js 16) provides a visual ticket management interface with interactive status selection:
+
+- **Ticket List View**: Each ticket row has a dropdown `Select` component for status changes
+- **Ticket Detail View**: Status dropdown in the header with color-coded options
+- **Status Options**: Backlog, In Progress, In Review, Done, Blocked
+- **Colors**: Backlog=gray, In Progress=blue, In Review=yellow, Done=green, Blocked=red
+- **Integration**: Uses `updateTicketStatus` action from dashboard store to update tickets locally and persist to `thoughts/` filesystem
+
+When ticket status is changed via the UI:
+1. Status updates immediately in the dashboard state
+2. `updated` timestamp is set to current date
+3. Changes sync to the f-rr-d repository via GitHub API or local filesystem
+4. The ticket file frontmatter `status` field is updated
+
+Agents can also change ticket status programmatically using the `update_ticket` tool with `status` parameter.
+
 ## Ticket Naming Convention
 
 ### File Name
@@ -155,6 +173,20 @@ Parameters:
 - `action` (required): "approve" | "request-changes" | "reject"
 - `comments` (optional): Review comments
 
+### CTO Review Flow (Dashboard Integration)
+
+The CTO Dashboard provides a dedicated **Review Queue** view for tickets awaiting CTO review:
+
+1. **Submit for Review**: When developer sets status to "In Review" (or uses `/complete` which auto-submits if review required), ticket appears in Review Queue
+2. **CTO Notification**: CTO sees ticket in Review Queue with "Approve", "Request Changes", "Reject" buttons
+3. **Review Actions**:
+   - **Approve**: Status → "Approved" → Auto-transition to "Done"
+   - **Request Changes**: Status → "Changes Requested" → Auto-transition back to "In Progress"
+   - **Reject**: Status → "Blocked" with review comments as reason
+4. **Review Comments**: CTO can add comments that are stored in ticket frontmatter (`reviewComments`, `reviewedBy`, `reviewedAt`)
+
+The dashboard store has `updateTicketReview` action that handles this flow.
+
 ### `sync_personal_todos`
 Regenerate personal TODO.md for all developers from shared ticket assignments.
 
@@ -171,3 +203,25 @@ Each ticket follows the template in `thoughts/shared/tickets/ticket-template.md`
 - Personal tickets reference parent shared ticket via `parent_ticket` frontmatter
 - Shared tickets reference personal sub-tasks via `sub_tasks` array
 - Personal TODO.md auto-generates from assigned shared tickets
+
+## Notification Integration
+
+When updating ticket status or managing tickets, mark related CTO Dashboard notifications as read via the notification API:
+
+```bash
+# Mark review notification as read after review action
+curl -X POST http://localhost:6969/api/notifications \
+  -H "Content-Type: application/json" \
+  -d '{"action": "mark-read", "notificationId": "review-<TICKET_ID>"}'
+
+# Mark update notification as read after status change
+curl -X POST http://localhost:6969/api/notifications \
+  -H "Content-Type: application/json" \
+  -d '{"action": "mark-read", "notificationId": "update-<TICKET_ID>"}'
+```
+
+The notification IDs follow the format:
+- `review-<TICKET_ID>` — for tickets in review queue
+- `update-<TICKET_ID>` — for ticket status updates
+
+This ensures the CTO Dashboard bell badge reflects only genuinely unread notifications.

@@ -226,6 +226,31 @@ When the dynamic orchestration layer is stripped away, an `AGENTS.md` shifts fro
 Ticket → /create_plan → /implement_plan → /validate_plan → /validate_telemetry → /commit
 ```
 
+## Ticket Status Flow (Extended)
+
+The ticket system uses the following statuses that must be reflected in the CTO Dashboard UI and all ticket skills:
+
+```
+Backlog → Planned → Ready → In Progress → Submitted for Review → In Review → Approved → Done
+                                           ↘ Changes Requested → In Progress
+                                           ↘ Reject → Blocked
+```
+
+| Status | Color | Description |
+|--------|-------|-------------|
+| **Backlog** | Gray | Initial state, not yet planned |
+| **Planned** | Blue-gray | Planned for upcoming sprint |
+| **Ready** | Light blue | Ready to be picked up |
+| **In Progress** | Blue | Currently being worked on |
+| **Submitted for Review** | Yellow | Awaiting CTO/Lead review |
+| **In Review** | Yellow | Under active review |
+| **Approved** | Green | Review passed, ready for done |
+| **Done** | Green | Completed and merged |
+| **Blocked** | Red | Blocked by dependency/issue |
+| **Changes Requested** | Orange | Review requested changes, back to work |
+
+The CTO Dashboard provides interactive status dropdowns in both ticket list and detail views. The Review Queue view shows tickets with "Submitted for Review" and "In Review" statuses. CTOs can approve, request changes, or reject tickets from the review queue.
+
 ### Built-in Slash Commands
 
 | Command | Description |
@@ -326,6 +351,24 @@ Any AI agent working with this repo:
 2. **Write to correct project folder**: `thoughts/<project>/shared/tickets/` for tickets
 3. **Commit + push after write**: Use semantic branch names
 4. **Never store skills/agents here** — wrong repo (they live in `packages/@aiengineeringharness/`)
+
+## Notification Integration for Ticket Skills
+
+When working with tickets via `ticket-manager`, `ticket-executor`, or `validate-plan` skills, mark CTO Dashboard notifications as read:
+
+```bash
+# Mark review notification as read
+curl -X POST http://localhost:6969/api/notifications \
+  -H "Content-Type: application/json" \
+  -d '{"action": "mark-read", "notificationId": "review-<TICKET_ID>"}'
+
+# Mark update notification as read
+curl -X POST http://localhost:6969/api/notifications \
+  -H "Content-Type: application/json" \
+  -d '{"action": "mark-read", "notificationId": "update-<TICKET_ID>"}'
+```
+
+Notification IDs: `review-<TICKET_ID>` (review queue), `update-<TICKET_ID>` (status updates)
 
 ## Critical Files
 

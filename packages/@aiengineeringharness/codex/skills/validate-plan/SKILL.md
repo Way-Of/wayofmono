@@ -80,3 +80,25 @@ Recommended workflow:
 3. **Verify Comprehensively** - Run all automated checks
 4. **Communicate Clearly** - Provide specific file references
 5. **Think Long-term** - Consider maintainability
+
+## Notification Integration
+
+When validating plans or marking validation complete, mark related CTO Dashboard notifications as read via the notification API:
+
+```bash
+# Mark validation notification as read after validation complete
+curl -X POST http://localhost:6969/api/notifications \
+  -H "Content-Type: application/json" \
+  -d '{"action": "mark-read", "notificationId": "review-<TICKET_ID>"}'
+
+# Mark update notification as read after validation
+curl -X POST http://localhost:6969/api/notifications \
+  -H "Content-Type: application/json" \
+  -d '{"action": "mark-read", "notificationId": "update-<TICKET_ID>"}'
+```
+
+The notification IDs follow the format:
+- `review-<TICKET_ID>` — for tickets in review queue
+- `update-<TICKET_ID>` — for ticket status updates
+
+This ensures the CTO Dashboard bell badge reflects only genuinely unread notifications.

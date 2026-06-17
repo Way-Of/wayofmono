@@ -1,4 +1,4 @@
-export type TicketStatus = 'Backlog' | 'In Progress' | 'In Review' | 'Done' | 'Blocked';
+export type TicketStatus = 'Backlog' | 'Planned' | 'Ready' | 'In Progress' | 'Submitted for Review' | 'In Review' | 'Approved' | 'Done' | 'Blocked' | 'Changes Requested';
 export type TicketPriority = 'Critical' | 'High' | 'Medium' | 'Low';
 export type TicketType = 'Feature' | 'Bug' | 'Task' | 'Research' | 'Refactor' | 'Docs';
 export type ReviewStatus = 'Pending' | 'Approved' | 'Changes Requested';

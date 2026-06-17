@@ -48,10 +48,15 @@ import {
 
 const statusColors: Record<TicketStatus, string> = {
   'Backlog': 'bg-status-backlog text-white',
+  'Planned': 'bg-status-planned text-white',
+  'Ready': 'bg-status-ready text-white',
   'In Progress': 'bg-status-inprogress text-white',
+  'Submitted for Review': 'bg-status-review text-black',
   'In Review': 'bg-status-review text-black',
+  'Approved': 'bg-status-approved text-white',
   'Done': 'bg-status-done text-white',
   'Blocked': 'bg-status-blocked text-white',
+  'Changes Requested': 'bg-status-changes text-white',
 };
 
 const priorityConfig: Record<TicketPriority, { color: string; order: number }> = {

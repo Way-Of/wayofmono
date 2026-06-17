@@ -177,3 +177,25 @@ Each ticket follows the template in `thoughts/shared/tickets/ticket-template.md`
 - Personal tickets reference parent shared ticket via `parent_ticket` frontmatter
 - Shared tickets reference personal sub-tasks via `sub_tasks` array
 - Personal TODO.md auto-generates from assigned shared tickets
+
+## Notification Integration
+
+When updating ticket status or managing tickets, mark related CTO Dashboard notifications as read via the notification API:
+
+```bash
+# Mark review notification as read after review action
+curl -X POST http://localhost:6969/api/notifications \
+  -H "Content-Type: application/json" \
+  -d '{"action": "mark-read", "notificationId": "review-<TICKET_ID>"}'
+
+# Mark update notification as read after status change
+curl -X POST http://localhost:6969/api/notifications \
+  -H "Content-Type: application/json" \
+  -d '{"action": "mark-read", "notificationId": "update-<TICKET_ID>"}'
+```
+
+The notification IDs follow the format:
+- `review-<TICKET_ID>` — for tickets in review queue
+- `update-<TICKET_ID>` — for ticket status updates
+
+This ensures the CTO Dashboard bell badge reflects only genuinely unread notifications.
