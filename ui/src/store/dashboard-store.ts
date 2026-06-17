@@ -1,6 +1,14 @@
 import { create } from 'zustand';
 import { ViewMode, Ticket, ReviewStatus, Developer, ProjectDoc, Idea, IdeaStatus, NewsItem } from '@/lib/types';
 
+interface NotificationState {
+  readNotificationIds: Set<string>;
+  markAsRead: (id: string) => void;
+  markAllAsRead: (ids: string[]) => void;
+  isRead: (id: string) => boolean;
+  loadReadState: () => Promise<void>;
+}
+
 type LoginResult = { success: true } | { success: false; reason: 'loading' | 'unrecognized' | 'wrong_pincode' };
 
 interface AuthState {
@@ -80,6 +88,20 @@ export const useAuthStore = create<AuthState>((set) => ({
       canReview: devRole === 'CTO' || devRole === 'Lead' || devRole === 'Senior',
       authMethod: 'github',
     });
+  },
+}));
+
+export const useNotificationStore = create<NotificationState>((set, get) => ({
+  readNotificationIds: new Set(),
+  markAsRead: (id: string) => set(state => ({ readNotificationIds: new Set([...state.readNotificationIds, id]) })),
+  markAllAsRead: (ids: string[]) => set(state => ({ readNotificationIds: new Set([...state.readNotificationIds, ...ids]) })),
+  isRead: (id: string) => get().readNotificationIds.has(id),
+  loadReadState: async () => {
+    try {
+      const res = await fetch('/api/notifications?userId=current');
+      const data = await res.json();
+      if (data.readIds) set({ readNotificationIds: new Set(data.readIds) });
+    } catch {}
   },
 }));
 

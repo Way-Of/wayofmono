@@ -2,6 +2,19 @@
 
 ## [1.7.2] - 2026-06-17
 
+### Dashboard (wo-cto-dashboard v0.5.2)
+- **Notification read state tracking (WOMONO-095)**: Per-notification read/unread tracking with persistent storage
+  - Unread badge count in bell (not total)
+  - Visual indicators: blue ring on unread reviews, blue dot on unread updates
+  - Section "X new" badges, "All caught up" state
+  - Click to mark read, persistent storage to `~/.config/wodev/notifications/read.json`
+  - API: `GET/POST /api/notifications`
+  - Files: `useNotificationStore`, `/api/notifications`, updated bell dropdown UI
+
+---
+
+## [1.7.2] - 2026-06-17
+
 ### Added
 - **Platform-aware harness installer (WOMONO-094)**: Complete detection + adaptation layer for OS, arch, tools, runtime, desktop, hardware, terminal, network, security, permissions
 - **11 detection modules**: `os`, `arch`, `tools`, `runtime`, `desktop`, `hardware`, `terminal`, `network`, `security`, `permissions`, `locale` (cached, with confidence levels)

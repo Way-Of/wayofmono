@@ -1,15 +1,28 @@
 # CTO Dashboard Fixes & Release Notes
 
-## v0.5.1 (2026-06-17) — WO Icon Update
+## v0.5.2 (2026-06-17) — Notification Read State Tracking (WOMONO-095)
 
-### Fixes
-- **WO icon**: Updated Electron/web icons to new "WO" text logo (dark brown background #241a14, orange "WO" text #ff6624) replacing the previous black box icon
-- Regenerated all PNG sizes (16, 32, 48, 64, 128, 256, 512), .ico, and .iconset
-- Updated `public/favicon.ico` and `public/icon.png` for web version
+### Features
+- **Notification read state tracking**: Per-notification read/unread tracking with persistent storage
+- **Unread badge count**: Bell badge now shows only unread count (not total)
+- **Visual indicators**: Blue ring on unread review items, blue dot on unread updates
+- **Section "new" badges**: Review queue and recent updates show "X new" counts
+- **All caught up state**: Shows "All caught up" when no unread notifications
+- **Click to mark read**: Opening a ticket marks related notifications as read
+- **Persistent storage**: Read state saved to `~/.config/wodev/notifications/read.json`
+
+### API
+- `GET /api/notifications` - returns read notification IDs
+- `POST /api/notifications` - mark notifications as read (`action: "mark-read"`, `notificationId`)
+
+### Files
+- `ui/src/store/dashboard-store.ts` - Added `useNotificationStore` with read state management
+- `ui/src/app/api/notifications/route.ts` - New API endpoint for read state
+- `ui/src/app/page.tsx` - Updated bell badge, dropdown UI, read state loading
 
 ---
 
-## v0.5.0 (2026-06-17) — Platform-Aware Installer + Major Dashboard Updates
+## v0.5.1 (2026-06-17) — WO Icon Update (2026-06-17) — Platform-Aware Installer + Major Dashboard Updates
 
 ### Major Features
 - **Platform-aware harness installer (WOMONO-094)**: Complete detection + adaptation layer for OS, arch, tools, runtime, desktop, hardware, terminal, network, security, permissions

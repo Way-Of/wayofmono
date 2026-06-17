@@ -20,7 +20,16 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, Plus } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 
 import {
   Search,
@@ -68,6 +77,8 @@ function TicketRow({ ticket, onClick }: { ticket: Ticket; onClick: () => void })
   const pCfg = priorityConfig[ticket.priority] || defaultPriorityConfig;
   const dev = useDashboardStore.getState().developers.find(d => d.id === ticket.assignee);
   const desc = ticket.description?.replace(/^#.*$/m, '').trim().slice(0, 120);
+  const updateTicketStatus = useDashboardStore.getState().updateTicketStatus;
+  const statusOptions: TicketStatus[] = ['Backlog', 'In Progress', 'In Review', 'Done', 'Blocked'];
 
   return (
     <div
@@ -109,9 +120,18 @@ function TicketRow({ ticket, onClick }: { ticket: Ticket; onClick: () => void })
       </span>
 
       {/* Status */}
-      <Badge className={`${statusColors[ticket.status]} text-[10px] px-2 py-0.5 h-6 flex-shrink-0`}>
-        {ticket.status}
-      </Badge>
+      <Select value={ticket.status} onValueChange={(status) => updateTicketStatus(ticket.id, status)}>
+        <SelectTrigger className={`${statusColors[ticket.status]} text-white text-[10px] px-2 py-0.5 h-6 flex-shrink-0 w-auto min-w-[100px]`}>
+          <SelectValue placeholder="Status" />
+        </SelectTrigger>
+        <SelectContent className="bg-card border-border">
+          {statusOptions.map(s => (
+            <SelectItem key={s} value={s} className={statusColors[s] + ' text-white text-xs'}>
+              {s}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
       {/* PR link */}
       {ticket.prUrl && (
@@ -132,12 +152,15 @@ function TicketRow({ ticket, onClick }: { ticket: Ticket; onClick: () => void })
 export function TicketDetailView() {
   const ticket = useDashboardStore(s => s.selectedTicket);
   const developers = useDashboardStore(s => s.developers);
+  const updateTicketStatus = useDashboardStore(s => s.updateTicketStatus);
   const goBack = useDashboardStore(s => s.goBack);
   const [expanded, setExpanded] = useState(false);
   if (!ticket) return <div className="text-center py-16 text-text-muted">No ticket selected</div>;
   const pCfg = priorityConfig[ticket.priority] || defaultPriorityConfig;
   const reporter = developers.find(d => d.id === ticket.reporter);
   const assignee = developers.find(d => d.id === ticket.assignee);
+
+  const statusOptions: TicketStatus[] = ['Backlog', 'In Progress', 'In Review', 'Done', 'Blocked'];
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
@@ -154,7 +177,18 @@ export function TicketDetailView() {
           <Badge variant="outline" className="font-mono text-xs border-border-strong text-text-muted">
             {ticket.id}
           </Badge>
-          <Badge className={`${statusColors[ticket.status]} text-[10px]`}>{ticket.status}</Badge>
+          <Select value={ticket.status} onValueChange={(status) => updateTicketStatus(ticket.id, status)}>
+            <SelectTrigger className={`h-7 w-auto min-w-[120px] ${statusColors[ticket.status]} text-white text-[10px]`}>
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent className="bg-card border-border">
+              {statusOptions.map(s => (
+                <SelectItem key={s} value={s} className={statusColors[s] + ' text-white text-xs'}>
+                  {s}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Badge variant="outline" className="text-[10px] border-border-strong text-text-muted">{ticket.type}</Badge>
         </div>
         <h1 className="text-xl font-bold text-foreground">{ticket.title}</h1>
@@ -353,6 +387,7 @@ export function TicketsView() {
               </Button>
             </>
           )}
+          <CreateTicketDialog />
         </div>
       </div>
 

@@ -14,6 +14,7 @@ export interface WodevConfig {
     cacheTtlMs: number;
   };
   port: number;
+  databaseUrl: string;
 }
 
 const DEFAULTS: WodevConfig = {
@@ -28,6 +29,7 @@ const DEFAULTS: WodevConfig = {
     cacheTtlMs: 5 * 60 * 1000,
   },
   port: 6969,
+  databaseUrl: path.join(os.homedir(), '.config', 'wodev', 'dashboard.db'),
 };
 
 function loadJsonConfig(path: string): Partial<WodevConfig> | null {
@@ -86,6 +88,7 @@ export function getConfig(): WodevConfig {
   if (process.env.GITHUB_RAW_BASE) config.github.rawBase = process.env.GITHUB_RAW_BASE;
   if (process.env.GITHUB_CACHE_TTL) config.github.cacheTtlMs = parseInt(process.env.GITHUB_CACHE_TTL, 10);
   if (process.env.PORT) config.port = parseInt(process.env.PORT, 10);
+  if (process.env.DATABASE_URL) config.databaseUrl = process.env.DATABASE_URL;
 
   cachedConfig = config;
   return config;
