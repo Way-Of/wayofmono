@@ -61,7 +61,10 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: (username: string, pincode?: string): LoginResult => {
     const devs = useDashboardStore.getState().developers;
     if (devs.length === 0) return { success: false, reason: 'loading' };
-    const dev = devs.find(d => d.githubUsername.toLowerCase() === username.toLowerCase());
+    const dev = devs.find(d =>
+      d.githubUsername.toLowerCase() === username.toLowerCase() ||
+      d.id.toLowerCase() === username.toLowerCase()
+    );
     if (!dev) return { success: false, reason: 'unrecognized' };
     if (dev.pincode && dev.pincode !== pincode) return { success: false, reason: 'wrong_pincode' };
     const isCTO = dev.role === 'CTO';
