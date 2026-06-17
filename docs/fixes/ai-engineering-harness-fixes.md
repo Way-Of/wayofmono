@@ -1,5 +1,27 @@
 # AI Engineering Harness Fixes & Release Notes
 
+## v1.7.3 — 2026-06-17 — Ticket Skill Notification Integration + Deprecated Skill Cleanup
+
+### Features
+- **Ticket skill notification integration**: `ticket-manager`, `ticket-executor`, `validate-plan` skills now mark CTO Dashboard notifications as read via API
+  - `ticket-manager`: Marks `review-<TICKET_ID>` after review actions, `update-<TICKET_ID>` after status changes
+  - `ticket-executor`: Marks notifications as read after phase completion
+  - `validate-plan`: Marks notifications as read after validation
+- **Notification API integration**: All 3 ticket skills updated across all 7 tools (opencode, claude, gemini, pi, wocode, antigravity, codex)
+- **AGENTS.md updated**: Added ticket lifecycle, namespaces, notification integration docs
+- **Deprecated skill removed**: `wow-tickets` skill removed from all 7 tools (replaced by namespace-agnostic `ticket-manager`)
+- **Manifest.json cleaned**: Removed all `wow-tickets` entries from manifest (8 tools × 1 entry each)
+
+### Files
+- `packages/@aiengineeringharness/*/skills/ticket-manager/SKILL.md` (7 tools + pi extension)
+- `packages/@aiengineeringharness/*/skills/ticket-executor/SKILL.md` (7 tools + pi extension)
+- `packages/@aiengineeringharness/*/skills/validate-plan/SKILL.md` (7 tools + pi extension)
+- `AGENTS.md` - Added ticket lifecycle, namespaces, notification integration docs
+- `packages/@aiengineeringharness/manifest.json` - Removed all wow-tickets entries
+- Deleted: `packages/@aiengineeringharness/*/skills/wow-tickets/` (8 directories)
+
+---
+
 ## v1.7.2 — 2026-06-17
 
 ### Platform-Aware Harness Installer (WOMONO-094)
@@ -123,7 +145,36 @@ Then recompiled `manifest.json` via `python3 config-manifest/compile.py`. The in
 - `~/.config/opencode/skills/skill-compliance-checker/{assets,scripts}/` (11 files)
 - Same for antigravity, claude, codex, gemini, pi, wocode
 
+### Ticket Status Selection & CTO Review Integration (v1.7.1)
+
+**Problem**: The CTO Dashboard only showed static status badges for tickets. No interactive way to change status, submit tickets, and no CTO review workflow.
+
+**Fix**: 
+1. **Extended TicketStatus type** in `ui/src/lib/types.ts` to include all 10 statuses
+2. **Added interactive Select dropdowns** in `ui/src/components/dashboard/tickets-view.tsx`:
+   - TicketRow (list view) - status dropdown with color-coded options
+   - TicketDetailView (detail view) - status dropdown in header
+3. **Added statusColors mapping** for all 10 statuses with consistent theme colors
+4. **Updated ticket-manager, ticket-context, ticket-executor skills** across all 7 tools with:
+   - Extended status flow documentation
+   - CTO Dashboard integration details
+   - Review Queue workflow (submit → In Review → Approve/Request Changes/Reject)
+5. **Updated ticket-template.md** with all statuses and action table
+
+**New Status Flow**:
+```
+Backlog → Planned → Ready → In Progress → Submitted for Review → In Review → Approved → Done
+                                           ↘ Changes Requested → In Progress
+                                           ↘ Reject → Blocked
+```
+
+**Dashboard Integration**:
+- **Review Queue view**: Shows "Submitted for Review" and "In Review" tickets
+- **CTO Actions**: Approve → "Approved" → "Done"; Request Changes → "Changes Requested" → "In Progress"; Reject → "Blocked"
+- **Status Filter**: All 10 statuses available in filter dropdown
+
 ---
+
 
 
 ## v1.7.0 — 2026-06-15

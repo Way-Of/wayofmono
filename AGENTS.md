@@ -352,7 +352,38 @@ Any AI agent working with this repo:
 3. **Commit + push after write**: Use semantic branch names
 4. **Never store skills/agents here** — wrong repo (they live in `packages/@aiengineeringharness/`)
 
-## Notification Integration for Ticket Skills
+## Ticket Management Knowledge
+
+### Ticket Lifecycle
+```
+Backlog → Planned → Ready → In Progress → Submitted for Review → In Review → Approved → Done
+                                           ↘ Changes Requested → In Progress
+                                           ↘ Reject → Blocked
+```
+
+### Ticket Namespaces
+| Prefix | Project | Namespace | Folder |
+|--------|---------|-----------|--------|
+| WOMONO | wayofmono | womono | `thoughts/wayofmono/shared/tickets/` |
+| WOW | wow | wow | `thoughts/wow/shared/tickets/` |
+| OPT | opticat | opticat | `thoughts/opticat/shared/tickets/` |
+
+### Ticket Format
+`<PREFIX>-<NNN>-<UPPERCASE-DASHED-DESC>.md`
+
+### Status Colors (CTO Dashboard)
+- **Backlog**: Gray
+- **Planned**: Blue-gray
+- **Ready**: Light blue
+- **In Progress**: Blue
+- **Submitted for Review**: Yellow
+- **In Review**: Yellow
+- **Approved**: Green
+- **Done**: Green
+- **Blocked**: Red
+- **Changes Requested**: Orange
+
+### Notification Integration for Ticket Skills
 
 When working with tickets via `ticket-manager`, `ticket-executor`, or `validate-plan` skills, mark CTO Dashboard notifications as read:
 
@@ -369,6 +400,15 @@ curl -X POST http://localhost:6969/api/notifications \
 ```
 
 Notification IDs: `review-<TICKET_ID>` (review queue), `update-<TICKET_ID>` (status updates)
+
+### Ticket Skills (Canonical: `packages/@aiengineeringharness/pi/agent/skills/`)
+- **`ticket-manager`** — Full lifecycle management (create, update, review, sync)
+- **`ticket-executor`** — Phase-by-phase implementation with validation
+- **`validate-plan`** — Verify implementation against plan
+- **`ticket-context`** — Associate work with ticket ID for compliance
+
+### Deprecated Skills (Removed)
+- `wow-tickets` — Replaced by `ticket-manager` (namespace-agnostic)
 
 ## Critical Files
 

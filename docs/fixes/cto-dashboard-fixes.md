@@ -1,28 +1,28 @@
 # CTO Dashboard Fixes & Release Notes
 
-## v0.5.2 (2026-06-17) — Notification Read State Tracking (WOMONO-095)
+## v0.5.3 (2026-06-17) — Ticket Skill Notification Integration + Deprecated Skill Cleanup
 
 ### Features
-- **Notification read state tracking**: Per-notification read/unread tracking with persistent storage
-- **Unread badge count**: Bell badge now shows only unread count (not total)
-- **Visual indicators**: Blue ring on unread review items, blue dot on unread updates
-- **Section "new" badges**: Review queue and recent updates show "X new" counts
-- **All caught up state**: Shows "All caught up" when no unread notifications
-- **Click to mark read**: Opening a ticket marks related notifications as read
-- **Persistent storage**: Read state saved to `~/.config/wodev/notifications/read.json`
-
-### API
-- `GET /api/notifications` - returns read notification IDs
-- `POST /api/notifications` - mark notifications as read (`action: "mark-read"`, `notificationId`)
+- **Ticket skill notification integration**: `ticket-manager`, `ticket-executor`, `validate-plan` skills now mark CTO Dashboard notifications as read via API
+  - `ticket-manager`: Marks `review-<TICKET_ID>` after review actions, `update-<TICKET_ID>` after status changes
+  - `ticket-executor`: Marks notifications as read after phase completion
+  - `validate-plan`: Marks notifications as read after validation
+- **Notification API integration**: All 3 ticket skills updated across all 7 tools (opencode, claude, gemini, pi, wocode, antigravity, codex)
+- **AGENTS.md updated**: Added ticket lifecycle, namespaces, notification integration docs
+- **Deprecated skill removed**: `wow-tickets` skill removed from all 7 tools (replaced by namespace-agnostic `ticket-manager`)
+- **Manifest.json cleaned**: Removed all `wow-tickets` entries from manifest
 
 ### Files
-- `ui/src/store/dashboard-store.ts` - Added `useNotificationStore` with read state management
-- `ui/src/app/api/notifications/route.ts` - New API endpoint for read state
-- `ui/src/app/page.tsx` - Updated bell badge, dropdown UI, read state loading
+- `packages/@aiengineeringharness/*/skills/ticket-manager/SKILL.md` (7 tools + pi extension)
+- `packages/@aiengineeringharness/*/skills/ticket-executor/SKILL.md` (7 tools + pi extension)
+- `packages/@aiengineeringharness/*/skills/validate-plan/SKILL.md` (7 tools + pi extension)
+- `AGENTS.md` - Added ticket lifecycle, namespaces, notification integration docs
+- `packages/@aiengineeringharness/manifest.json` - Removed all wow-tickets entries
+- Deleted: `packages/@aiengineeringharness/*/skills/wow-tickets/` (8 directories)
 
 ---
 
-## v0.5.1 (2026-06-17) — WO Icon Update (2026-06-17) — Platform-Aware Installer + Major Dashboard Updates
+## v0.5.2 (2026-06-17) — Notification Read State Tracking (WOMONO-095) (2026-06-17) — Platform-Aware Installer + Major Dashboard Updates
 
 ### Major Features
 - **Platform-aware harness installer (WOMONO-094)**: Complete detection + adaptation layer for OS, arch, tools, runtime, desktop, hardware, terminal, network, security, permissions
