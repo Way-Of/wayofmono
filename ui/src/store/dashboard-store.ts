@@ -8,6 +8,7 @@ interface AuthState {
   isCTO: boolean;
   canReview: boolean;
   login: (username: string, pincode?: string) => LoginResult;
+  setFromSession: (devId: string, devRole: string) => void;
   logout: () => void;
 }
 
@@ -67,6 +68,13 @@ export const useAuthStore = create<AuthState>((set) => ({
     return { success: true };
   },
   logout: () => set({ currentUser: null, isCTO: false, canReview: false }),
+  setFromSession: (devId: string, devRole: string) => {
+    set({
+      currentUser: devId,
+      isCTO: devRole === 'CTO',
+      canReview: devRole === 'CTO' || devRole === 'Lead' || devRole === 'Senior',
+    });
+  },
 }));
 
 export const useDashboardStore = create<DashboardState>((set, get) => ({
