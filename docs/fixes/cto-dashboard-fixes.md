@@ -1,5 +1,34 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.35 (2026-06-17) — Interactive Docs View + Profile/Settings Routing Fix + Linux Taskbar Icon
+
+### Features
+- **Interactive Docs File Tree**: Replaced static ASCII tree with dynamic clickable file tree built from actual `docs[]` data. Folders expand/collapse, files are clickable.
+- **Doc Markdown Preview**: Doc cards and file tree entries open a full MarkdownPreview dialog with rendered markdown + raw mode toggle.
+- **Version in banner**: `v0.4.34` now displayed in CLI logo next to "⟡ CTO DASHBOARD" and build/production headers.
+
+### Fixes
+- **Profile/Settings views now render**: Added `case 'profile'` and `case 'settings'` to `renderView()` switch in `page.tsx`, added imports, added labels, added to `ViewMode` type. Previously clicking Profile/Settings in sidebar silently showed Overview.
+- **Electron taskbar icon**: Fixed icon path from non-existent `public/favicon.ico` to `electron/build/icon.png` via `nativeImage.createFromPath()`. Added `mainWindow.setIcon()`, `app.setAppUserModelId()`, `app.setName()`. Added `registerLinuxIcon()` in `wodev.js` that creates `~/.local/share/applications/wayofmono-cto-dashboard.desktop` (proper Linux way for taskbar icons across GNOME/KDE/etc).
+- **public/favicon.ico**: Created from electron/build/icon.png so web version also has icon.
+
+### New
+- `thoughts/shared/news/`, `thoughts/shared/standups/`, `thoughts/shared/ideas/` directories created for future per-entry persistence.
+
+### Files Changed
+- `ui/src/components/dashboard/docs-view.tsx` — Full rewrite: FileTree component, buildTree utility, preview dialog state
+- `ui/src/app/page.tsx` — Added ProfileView/SettingsView imports, labels, renderView cases
+- `ui/src/lib/types.ts` — Added 'profile' and 'settings' to ViewMode
+- `ui/electron/main.ts`, `ui/electron/main.js` — nativeImage icon, setIcon(), setAppUserModelId(), setName()
+- `ui/bin/wodev.js` — registerLinuxIcon() for Linux desktop file, version in banner
+
+### Migration
+```bash
+sudo wodev --build && wodev
+```
+
+---
+
 ## v0.4.34 (2026-06-17) — In-Sidebar Collapse Toggle + Pincode-to-GitHub Account Merging
 
 ### Changes
