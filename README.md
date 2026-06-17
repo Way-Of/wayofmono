@@ -800,23 +800,45 @@ npx @wayofmono/wo-cto-dashboard
 
 **Global CLI (use `wodev` anywhere) — choose one:**
 
+**Option A: Local prefix (recommended — no sudo, everything works)**
 ```bash
-# Option A: local prefix (recommended — no sudo, everything works)
 npm config set prefix ~/.npm-global
-echo 'export PATH="$PATH:~/.npm-global/bin"' >> ~/.bashrc
-source ~/.bashrc
-npm install -g @wayofmono/wo-cto-dashboard
-wodev
+```
 
-# Option B: sudo global install (run --build once with sudo)
+```bash
+echo 'export PATH="$PATH:~/.npm-global/bin"' >> ~/.bashrc
+```
+
+```bash
+source ~/.bashrc
+```
+
+```bash
+npm install -g @wayofmono/wo-cto-dashboard
+```
+
+```bash
+wodev
+```
+
+**Option B: Sudo global install (run --build once with sudo)**
+```bash
 sudo npm install -g @wayofmono/wo-cto-dashboard
+```
+
+```bash
 sudo wodev --build    # one-time build
+```
+
+```bash
 wodev                 # launch dashboard
 ```
 
 **Update to latest version:**
 ```bash
 wodev --update
+```
+```bash
 # or manually:
 sudo npm update -g @wayofmono/wo-cto-dashboard && sudo wodev --build
 ```

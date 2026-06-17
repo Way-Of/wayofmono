@@ -323,10 +323,6 @@ components:
     files:
     - src: gemini/skills/skill-adapter/SKILL.md
       dest: skills/skill-adapter/SKILL.md
-    - src: gemini/skills/skill-adapter/assets
-      dest: skills/skill-adapter/assets
-    - src: gemini/skills/skill-adapter/scripts
-      dest: skills/skill-adapter/scripts
     - src: gemini/skills/skill-adapter/assets/compliance-fix.ts
       dest: skills/skill-adapter/assets/compliance-fix.ts
     - src: gemini/skills/skill-adapter/scripts/gemini-skill-update.py
@@ -356,10 +352,6 @@ components:
     files:
     - src: gemini/skills/skill-auto-update/SKILL.md
       dest: skills/skill-auto-update/SKILL.md
-    - src: gemini/skills/skill-auto-update/assets
-      dest: skills/skill-auto-update/assets
-    - src: gemini/skills/skill-auto-update/scripts
-      dest: skills/skill-auto-update/scripts
     - src: gemini/skills/skill-auto-update/assets/compliance-fix.ts
       dest: skills/skill-auto-update/assets/compliance-fix.ts
     - src: gemini/skills/skill-auto-update/assets/skillsrules.md
@@ -482,52 +474,62 @@ components:
     - src: gemini/skills/build-tool/SKILL.md
       dest: skills/build-tool/SKILL.md
   skill/build-tool-skill:
-    description: "Unified skill builder for all 7 tools \u2014 deployed to Gemini CLI"
+    description: "Unified skill builder for all 7 tools \u2014 deployed to Gemini\
+      \ CLI"
     files:
     - src: gemini/skills/build-tool-skill/SKILL.md
       dest: skills/build-tool-skill/SKILL.md
   skill/build-tool-agent:
-    description: "Unified agent builder for all 7 tools \u2014 deployed to Gemini CLI"
+    description: "Unified agent builder for all 7 tools \u2014 deployed to Gemini\
+      \ CLI"
     files:
     - src: gemini/skills/build-tool-agent/SKILL.md
       dest: skills/build-tool-agent/SKILL.md
   skill/build-tool-extension:
-    description: "Unified extension/plugin builder for all 7 tools \u2014 deployed to Gemini CLI"
+    description: "Unified extension/plugin builder for all 7 tools \u2014 deployed\
+      \ to Gemini CLI"
     files:
     - src: gemini/skills/build-tool-extension/SKILL.md
       dest: skills/build-tool-extension/SKILL.md
   skill/build-tool-tui:
-    description: "Unified TUI component builder for all 7 tools \u2014 deployed to Gemini CLI"
+    description: "Unified TUI component builder for all 7 tools \u2014 deployed to\
+      \ Gemini CLI"
     files:
     - src: gemini/skills/build-tool-tui/SKILL.md
       dest: skills/build-tool-tui/SKILL.md
   skill/build-tool-cli:
-    description: "Unified CLI reference for all 7 tools \u2014 deployed to Gemini CLI"
+    description: "Unified CLI reference for all 7 tools \u2014 deployed to Gemini\
+      \ CLI"
     files:
     - src: gemini/skills/build-tool-cli/SKILL.md
       dest: skills/build-tool-cli/SKILL.md
   skill/build-tool-themes:
-    description: "Unified theme builder for all 7 tools \u2014 deployed to Gemini CLI"
+    description: "Unified theme builder for all 7 tools \u2014 deployed to Gemini\
+      \ CLI"
     files:
     - src: gemini/skills/build-tool-themes/SKILL.md
       dest: skills/build-tool-themes/SKILL.md
   skill/build-tool-prompts:
-    description: "Unified prompt template builder for all 7 tools \u2014 deployed to Gemini CLI"
+    description: "Unified prompt template builder for all 7 tools \u2014 deployed\
+      \ to Gemini CLI"
     files:
     - src: gemini/skills/build-tool-prompts/SKILL.md
       dest: skills/build-tool-prompts/SKILL.md
   skill/build-tool-keybindings:
-    description: "Unified keybinding reference for all 7 tools \u2014 deployed to Gemini CLI"
+    description: "Unified keybinding reference for all 7 tools \u2014 deployed to\
+      \ Gemini CLI"
     files:
     - src: gemini/skills/build-tool-keybindings/SKILL.md
       dest: skills/build-tool-keybindings/SKILL.md
   skill/build-tool-config:
-    description: "Unified configuration reference for all 7 tools \u2014 deployed to Gemini CLI"
+    description: "Unified configuration reference for all 7 tools \u2014 deployed\
+      \ to Gemini CLI"
     files:
     - src: gemini/skills/build-tool-config/SKILL.md
       dest: skills/build-tool-config/SKILL.md
   skill/build-tool-orchestrate:
-    description: "Unified orchestration coordinator for all 7 tools \u2014 deployed to Gemini CLI"
+    description: "Unified orchestration coordinator for all 7 tools \u2014 deployed\
+      \ to Gemini CLI"
     files:
     - src: gemini/skills/build-tool-orchestrate/SKILL.md
       dest: skills/build-tool-orchestrate/SKILL.md
@@ -659,12 +661,14 @@ components:
     - src: gemini/skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
       dest: skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
   skill/build-auto-ticket-creator:
-    description: Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories
+    description: Monitor codebase, dependencies, and external sources to auto-create
+      tickets for agent updates, skill updates, dep updates, security advisories
     files:
     - src: gemini/skills/build-auto-ticket-creator/SKILL.md
       dest: skills/build-auto-ticket-creator/SKILL.md
   skill/build-backlog-groomer:
-    description: Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.
+    description: Product & Ticket Manager. Helps transform ideas/plans into structured
+      tickets in thoughts/shared/tickets/ and maintains the project backlog.
     files:
     - src: gemini/skills/build-backlog-groomer/SKILL.md
       dest: skills/build-backlog-groomer/SKILL.md
@@ -683,10 +687,6 @@ components:
     files:
     - src: gemini/skills/skill-compliance-checker/SKILL.md
       dest: skills/skill-compliance-checker/SKILL.md
-    - src: gemini/skills/skill-compliance-checker/assets
-      dest: skills/skill-compliance-checker/assets
-    - src: gemini/skills/skill-compliance-checker/scripts
-      dest: skills/skill-compliance-checker/scripts
     - src: gemini/skills/skill-compliance-checker/assets/compliance-fix.ts
       dest: skills/skill-compliance-checker/assets/compliance-fix.ts
     - src: gemini/skills/skill-compliance-checker/scripts/gemini-skill-update.py
@@ -712,7 +712,8 @@ components:
     - src: gemini/skills/skill-compliance-checker/scripts/antigravity-skill-update.py
       dest: skills/skill-compliance-checker/scripts/antigravity-skill-update.py
   skill/self-documentation:
-    description: Enables Wo to answer How do I...? and What's the command for...? questions by searching its own commands, skills, and documentation locally
+    description: Enables Wo to answer How do I...? and What's the command for...?
+      questions by searching its own commands, skills, and documentation locally
     files:
     - src: gemini/skills/self-documentation/SKILL.md
       dest: skills/self-documentation/SKILL.md
@@ -722,7 +723,8 @@ components:
     - src: gemini/skills/validate-manifest/SKILL.md
       dest: skills/validate-manifest/SKILL.md
   skill/ticket-executor:
-    description: Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully
+    description: Execute approved plans in phases, validating telemetry and committing
+      changes after each phase completes successfully
     files:
     - src: gemini/skills/ticket-executor/SKILL.md
       dest: skills/ticket-executor/SKILL.md
@@ -736,7 +738,6 @@ components:
     files:
     - src: gemini/skills/womono-version-updater/SKILL.md
       dest: skills/womono-version-updater/SKILL.md
-
   skill/womonodeploy:
     description: Release and deploy WoM npm packages to production
     files:

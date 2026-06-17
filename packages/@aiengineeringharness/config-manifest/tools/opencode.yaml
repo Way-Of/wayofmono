@@ -229,10 +229,6 @@ components:
     files:
     - src: opencode/skills/skill-adapter/SKILL.md
       dest: skills/skill-adapter/SKILL.md
-    - src: opencode/skills/skill-adapter/assets
-      dest: skills/skill-adapter/assets
-    - src: opencode/skills/skill-adapter/scripts
-      dest: skills/skill-adapter/scripts
     - src: opencode/skills/skill-adapter/assets/compliance-fix.ts
       dest: skills/skill-adapter/assets/compliance-fix.ts
     - src: opencode/skills/skill-adapter/scripts/gemini-skill-update.py
@@ -262,10 +258,6 @@ components:
     files:
     - src: opencode/skills/skill-auto-update/SKILL.md
       dest: skills/skill-auto-update/SKILL.md
-    - src: opencode/skills/skill-auto-update/assets
-      dest: skills/skill-auto-update/assets
-    - src: opencode/skills/skill-auto-update/scripts
-      dest: skills/skill-auto-update/scripts
     - src: opencode/skills/skill-auto-update/assets/compliance-fix.ts
       dest: skills/skill-auto-update/assets/compliance-fix.ts
     - src: opencode/skills/skill-auto-update/assets/skillsrules.md
@@ -293,7 +285,8 @@ components:
     - src: opencode/skills/skill-auto-update/scripts/antigravity-skill-update.py
       dest: skills/skill-auto-update/scripts/antigravity-skill-update.py
   skill/self-documentation:
-    description: Enables Wo to answer How do I...? and What's the command for...? questions by searching its own commands, skills, and documentation locally
+    description: Enables Wo to answer How do I...? and What's the command for...?
+      questions by searching its own commands, skills, and documentation locally
     files:
     - src: opencode/skills/self-documentation/SKILL.md
       dest: skills/self-documentation/SKILL.md
@@ -423,12 +416,14 @@ components:
     - src: opencode/skills/build-tool-agent/SKILL.md
       dest: skills/build-tool-agent/SKILL.md
   skill/build-tool-extension:
-    description: "Unified extension/plugin builder for all 7 tools \u2014 deployed to OpenCode"
+    description: "Unified extension/plugin builder for all 7 tools \u2014 deployed\
+      \ to OpenCode"
     files:
     - src: opencode/skills/build-tool-extension/SKILL.md
       dest: skills/build-tool-extension/SKILL.md
   skill/build-tool-tui:
-    description: "Unified TUI component builder for all 7 tools \u2014 deployed to OpenCode"
+    description: "Unified TUI component builder for all 7 tools \u2014 deployed to\
+      \ OpenCode"
     files:
     - src: opencode/skills/build-tool-tui/SKILL.md
       dest: skills/build-tool-tui/SKILL.md
@@ -443,22 +438,26 @@ components:
     - src: opencode/skills/build-tool-themes/SKILL.md
       dest: skills/build-tool-themes/SKILL.md
   skill/build-tool-prompts:
-    description: "Unified prompt template builder for all 7 tools \u2014 deployed to OpenCode"
+    description: "Unified prompt template builder for all 7 tools \u2014 deployed\
+      \ to OpenCode"
     files:
     - src: opencode/skills/build-tool-prompts/SKILL.md
       dest: skills/build-tool-prompts/SKILL.md
   skill/build-tool-keybindings:
-    description: "Unified keybinding reference for all 7 tools \u2014 deployed to OpenCode"
+    description: "Unified keybinding reference for all 7 tools \u2014 deployed to\
+      \ OpenCode"
     files:
     - src: opencode/skills/build-tool-keybindings/SKILL.md
       dest: skills/build-tool-keybindings/SKILL.md
   skill/build-tool-config:
-    description: "Unified configuration reference for all 7 tools \u2014 deployed to OpenCode"
+    description: "Unified configuration reference for all 7 tools \u2014 deployed\
+      \ to OpenCode"
     files:
     - src: opencode/skills/build-tool-config/SKILL.md
       dest: skills/build-tool-config/SKILL.md
   skill/build-tool-orchestrate:
-    description: "Unified orchestration coordinator for all 7 tools \u2014 deployed to OpenCode"
+    description: "Unified orchestration coordinator for all 7 tools \u2014 deployed\
+      \ to OpenCode"
     files:
     - src: opencode/skills/build-tool-orchestrate/SKILL.md
       dest: skills/build-tool-orchestrate/SKILL.md
@@ -590,12 +589,14 @@ components:
     - src: opencode/skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
       dest: skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
   skill/build-auto-ticket-creator:
-    description: Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories
+    description: Monitor codebase, dependencies, and external sources to auto-create
+      tickets for agent updates, skill updates, dep updates, security advisories
     files:
     - src: opencode/skills/build-auto-ticket-creator/SKILL.md
       dest: skills/build-auto-ticket-creator/SKILL.md
   skill/build-backlog-groomer:
-    description: Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.
+    description: Product & Ticket Manager. Helps transform ideas/plans into structured
+      tickets in thoughts/shared/tickets/ and maintains the project backlog.
     files:
     - src: opencode/skills/build-backlog-groomer/SKILL.md
       dest: skills/build-backlog-groomer/SKILL.md
@@ -614,10 +615,6 @@ components:
     files:
     - src: opencode/skills/skill-compliance-checker/SKILL.md
       dest: skills/skill-compliance-checker/SKILL.md
-    - src: opencode/skills/skill-compliance-checker/assets
-      dest: skills/skill-compliance-checker/assets
-    - src: opencode/skills/skill-compliance-checker/scripts
-      dest: skills/skill-compliance-checker/scripts
     - src: opencode/skills/skill-compliance-checker/assets/compliance-fix.ts
       dest: skills/skill-compliance-checker/assets/compliance-fix.ts
     - src: opencode/skills/skill-compliance-checker/scripts/gemini-skill-update.py
@@ -643,7 +640,8 @@ components:
     - src: opencode/skills/skill-compliance-checker/scripts/antigravity-skill-update.py
       dest: skills/skill-compliance-checker/scripts/antigravity-skill-update.py
   skill/ticket-executor:
-    description: Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully
+    description: Execute approved plans in phases, validating telemetry and committing
+      changes after each phase completes successfully
     files:
     - src: opencode/skills/ticket-executor/SKILL.md
       dest: skills/ticket-executor/SKILL.md
@@ -657,7 +655,6 @@ components:
     files:
     - src: opencode/skills/womono-version-updater/SKILL.md
       dest: skills/womono-version-updater/SKILL.md
-
   skill/womonodeploy:
     description: Release and deploy WoM npm packages to production
     files:
