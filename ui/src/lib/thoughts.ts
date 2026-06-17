@@ -130,7 +130,7 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
       for (const item of treeData.tree || []) {
         if (item.type === 'tree') {
           const parts = item.path.split('/');
-          if (parts.length === 3 && parts[0] === 'thoughts' && parts[1] === project) {
+          if (parts.length === 2 && parts[0] === project) {
             const dirName = parts[2];
             if (!dirName.startsWith('.') && dirName !== 'global' && dirName !== 'shared' && dirName !== 'docs') {
               devDirs.add(dirName);
@@ -151,7 +151,7 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
         let role = 'Developer';
         let email = '';
         try {
-          const rawUrl = `${GITHUB_RAW_BASE}/${GITHUB_REPO}/${branch}/thoughts/${project}/${devName}/config.md`;
+          const rawUrl = `${GITHUB_RAW_BASE}/${GITHUB_REPO}/${branch}/${project}/${devName}/config.md`;
           const rawHeaders: Record<string, string> = {};
           if (accessToken) rawHeaders['Authorization'] = `Bearer ${accessToken}`;
           console.log('[thoughts] Fetching config:', rawUrl);
@@ -230,7 +230,7 @@ export async function getTickets(source: 'local' | 'github' = 'local', branch = 
       return githubCache.tickets;
     }
     
-    await walkGitHubDir(GITHUB_API_BASE, GITHUB_REPO, branch, tickets, seenIds, 'thoughts', accessToken);
+    await walkGitHubDir(GITHUB_API_BASE, GITHUB_REPO, branch, tickets, seenIds, '', accessToken);
     
     // Cache the results
     if (tickets.length > 0) {
@@ -320,9 +320,9 @@ async function walkGitHubDir(apiBase: string, repo: string, branch: string, resu
     return;
   }
 
-  const prefix = path + '/';
+  const prefix = path ? path + '/' : '';
   for (const item of treeData.tree) {
-    if (!item.path.startsWith(prefix)) continue;
+    if (prefix && !item.path.startsWith(prefix)) continue;
     if (item.type === 'blob' && item.path.endsWith('.md') && !item.path.endsWith('personal-ticket-template.md')) {
       const rawUrl = `${GITHUB_RAW_BASE}/${repo}/${branch}/${item.path}`;
       let content;
