@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell, nativeTheme } from 'electron';
+import { app, BrowserWindow, ipcMain, shell, nativeTheme, nativeImage } from 'electron';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { spawn, ChildProcess } from 'child_process';
@@ -10,6 +10,12 @@ let mainWindow: BrowserWindow | null = null;
 let nextServer: ChildProcess | null = null;
 let serverReady = false;
 
+app.setAppUserModelId('wayofmono.cto.dashboard');
+app.setName('WayOfMono CTO Dashboard');
+
+const iconPath = join(__dirname, 'build', process.platform === 'win32' ? 'icon.ico' : 'icon.png');
+const appIcon = nativeImage.createFromPath(iconPath);
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1400,
@@ -17,7 +23,7 @@ function createWindow() {
     minWidth: 1000,
     minHeight: 600,
     title: 'WayOfMono CTO Dashboard',
-    icon: join(__dirname, '..', 'public', 'favicon.ico'),
+    icon: appIcon,
     webPreferences: {
       preload: join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -28,6 +34,8 @@ function createWindow() {
     show: false,
     backgroundColor: '#0f172a',
   });
+
+  mainWindow.setIcon(appIcon);
 
   mainWindow.once('ready-to-show', () => {
     mainWindow?.show();

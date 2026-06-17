@@ -21,10 +21,12 @@ import {
   BookOpen,
   Bookmark,
   Search,
-  FolderOpen,
-  FolderTree,
+  ChevronRight,
+  ChevronDown,
+  File,
+  Folder,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { MarkdownPreview } from './markdown-preview';
 
 type DocTypeConfig = {
@@ -41,7 +43,145 @@ const typeConfig: Record<string, DocTypeConfig> = {
   readme: { icon: FileText, label: 'README', color: 'text-foreground' },
 };
 
-function DocCard({ doc, excludeReadme = false }: { doc: ProjectDoc; excludeReadme?: boolean }) {
+type TreeNode = {
+  name: string;
+  type: 'folder' | 'file';
+  children: TreeNode[];
+  doc?: ProjectDoc;
+  count?: number;
+};
+
+function buildTree(docs: ProjectDoc[]): TreeNode[] {
+  const root: TreeNode[] = [];
+  for (const doc of docs) {
+    const parts = doc.path.split('/');
+    let current = root;
+    for (let i = 0; i < parts.length - 1; i++) {
+      let existing = current.find(n => n.name === parts[i] && n.type === 'folder');
+      if (!existing) {
+        existing = { name: parts[i], type: 'folder', children: [] };
+        current.push(existing);
+      }
+      current = existing.children;
+    }
+    const fileName = parts[parts.length - 1];
+    current.push({ name: fileName, type: 'file', children: [], doc });
+  }
+  const countDocs = (nodes: TreeNode[]): number => {
+    let c = 0;
+    for (const n of nodes) {
+      if (n.type === 'file') c++;
+      c += countDocs(n.children);
+    }
+    return c;
+  };
+  const addCounts = (nodes: TreeNode[]) => {
+    for (const n of nodes) {
+      if (n.type === 'folder') {
+        addCounts(n.children);
+        n.count = countDocs(n.children);
+      }
+    }
+  };
+  addCounts(root);
+  return root;
+}
+
+function FileTree({
+  nodes,
+  depth = 0,
+  filterProject,
+  filterType,
+  onOpenDoc,
+}: {
+  nodes: TreeNode[];
+  depth?: number;
+  filterProject: string;
+  filterType: string;
+  onOpenDoc: (doc: ProjectDoc) => void;
+}) {
+  const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
+
+  const toggle = (key: string) => {
+    setCollapsed(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
+  const matchesFilter = (doc: ProjectDoc) => {
+    if (filterProject !== 'all' && doc.project !== filterProject) return false;
+    if (filterType !== 'all' && doc.type !== filterType) return false;
+    return true;
+  };
+
+  return (
+    <div className="font-mono text-xs">
+      {nodes.map((node, i) => {
+        const key = `${depth}-${i}-${node.name}`;
+        const isCollapsed = collapsed.has(key);
+
+        if (node.type === 'folder') {
+          const hasVisibleDocs = node.children.some(
+            n => n.doc && matchesFilter(n.doc)
+          ) || node.children.some(
+            n => n.type === 'folder' && n.children.some(c => c.doc && matchesFilter(c.doc))
+          );
+          if (!hasVisibleDocs && filterProject !== 'all') return null;
+
+          return (
+            <div key={key}>
+              <button
+                onClick={() => toggle(key)}
+                className="flex items-center gap-1 py-0.5 hover:text-foreground transition-colors w-full text-left"
+              >
+                <span className="w-4 flex-shrink-0">
+                  {isCollapsed ? <ChevronRight className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                </span>
+                <Folder className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
+                <span className="text-text-secondary">{node.name}/</span>
+                {node.count !== undefined && (
+                  <span className="text-text-muted ml-1">
+                    ({node.count} doc{node.count !== 1 ? 's' : ''})
+                  </span>
+                )}
+              </button>
+              {!isCollapsed && (
+                <div className="pl-4">
+                  <FileTree
+                    nodes={node.children}
+                    depth={depth + 1}
+                    filterProject={filterProject}
+                    filterType={filterType}
+                    onOpenDoc={onOpenDoc}
+                  />
+                </div>
+              )}
+            </div>
+          );
+        }
+
+        if (node.doc && !matchesFilter(node.doc)) return null;
+
+        return (
+          <button
+            key={key}
+            onClick={() => node.doc && onOpenDoc(node.doc)}
+            className="flex items-center gap-1 py-0.5 hover:text-foreground transition-colors w-full text-left"
+          >
+            <span className="w-4 flex-shrink-0" />
+            <File className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
+            <span className="text-text-secondary truncate">{node.name}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function DocCard({ doc, onOpen }: { doc: ProjectDoc; onOpen: (doc: ProjectDoc) => void }) {
   const cfg = typeConfig[doc.type] || typeConfig.readme;
   const Icon = cfg.icon;
   const label = cfg.label;
@@ -52,53 +192,41 @@ function DocCard({ doc, excludeReadme = false }: { doc: ProjectDoc; excludeReadm
   );
 
   return (
-    <>
-      <div
-        className="kanban-card p-4 rounded-lg bg-card border border-border hover:border-border-strong transition-colors cursor-pointer"
-        onClick={() => {}}
-      >
-        <div className="flex items-start gap-3">
-          <div className={`w-9 h-9 rounded-lg bg-accent flex items-center justify-center flex-shrink-0 mt-0.5`}>
-            <Icon className={`w-4.5 h-4.5 ${color}`} />
+    <div
+      className="kanban-card p-4 rounded-lg bg-card border border-border hover:border-border-strong transition-colors cursor-pointer"
+      onClick={() => onOpen(doc)}
+    >
+      <div className="flex items-start gap-3">
+        <div className="w-9 h-9 rounded-lg bg-accent flex items-center justify-center flex-shrink-0 mt-0.5">
+          <Icon className={`w-4.5 h-4.5 ${color}`} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <Badge variant="outline" className="text-[10px] h-5 border-border text-text-muted px-1.5 font-mono">
+              {doc.project}
+            </Badge>
+            <Badge className={`${color} bg-accent text-[10px] px-1.5 py-0 h-5 border-0`}>
+              {label}
+            </Badge>
           </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <Badge variant="outline" className="text-[10px] h-5 border-border text-text-muted px-1.5 font-mono">
-                {doc.project}
-              </Badge>
-              <Badge className={`${color} bg-accent text-[10px] px-1.5 py-0 h-5 border-0`}>
-                {label}
-              </Badge>
-            </div>
-            <h4 className="text-sm font-medium text-foreground mb-1">{doc.title}</h4>
-            <p className="text-xs text-text-secondary leading-relaxed line-clamp-2">
-              {doc.summary || doc.body?.slice(0, 100)}
-            </p>
-            <div className="flex items-center gap-3 mt-2 text-[10px] text-text-muted">
-              <span>@{doc.author} {author ? `(${author.displayName})` : ''}</span>
-              <span>&middot;</span>
-              <span>{doc.updated}</span>
-              {tickets.length > 0 && (
-                <>
-                  <span>&middot;</span>
-                  <span className="text-primary">{tickets.length} linked ticket{tickets.length !== 1 ? 's' : ''}</span>
-                </>
-              )}
-            </div>
+          <h4 className="text-sm font-medium text-foreground mb-1">{doc.title}</h4>
+          <p className="text-xs text-text-secondary leading-relaxed line-clamp-2">
+            {doc.summary || doc.body?.slice(0, 100)}
+          </p>
+          <div className="flex items-center gap-3 mt-2 text-[10px] text-text-muted">
+            <span>@{doc.author} {author ? `(${author.displayName})` : ''}</span>
+            <span>&middot;</span>
+            <span>{doc.updated}</span>
+            {tickets.length > 0 && (
+              <>
+                <span>&middot;</span>
+                <span className="text-primary">{tickets.length} linked ticket{tickets.length !== 1 ? 's' : ''}</span>
+              </>
+            )}
           </div>
         </div>
       </div>
-      <MarkdownPreview
-        title={doc.title}
-        body={doc.body || doc.summary}
-        type={doc.type}
-        project={doc.project}
-        author={doc.author}
-        updated={doc.updated}
-        open={false}
-        onClose={() => {}}
-      />
-    </>
+    </div>
   );
 }
 
@@ -107,6 +235,7 @@ export function DocsView() {
   const [search, setSearch] = useState('');
   const [filterProject, setFilterProject] = useState('all');
   const [filterType, setFilterType] = useState('all');
+  const [previewDoc, setPreviewDoc] = useState<ProjectDoc | null>(null);
 
   const filtered = docs.filter(d => {
     if (filterProject !== 'all' && d.project !== filterProject) return false;
@@ -118,23 +247,22 @@ export function DocsView() {
     return true;
   });
 
-  // Group by project
-  const grouped = filtered.reduce<Record<string, ProjectDoc[]>>((acc, doc) => {
-    if (!acc[doc.project]) acc[doc.project] = [];
-    acc[doc.project].push(doc);
-    return acc;
-  }, {});
+  const grouped = useMemo(() => {
+    const seen = new Set<string>();
+    const result = filtered.reduce<Record<string, ProjectDoc[]>>((acc, doc) => {
+      const key = `${doc.project}::${doc.id}`;
+      if (seen.has(key)) return acc;
+      seen.add(key);
+      if (!acc[doc.project]) acc[doc.project] = [];
+      acc[doc.project].push(doc);
+      return acc;
+    }, {});
+    return result;
+  }, [filtered]);
 
-  // Check for duplicates and warn
-  const seenDocs = new Set<string>();
-  const groupedWithoutDuplicates = filtered.reduce<Record<string, ProjectDoc[]>>((acc, doc) => {
-    const docKey = `${doc.project}::${doc.id}`;
-    if (seenDocs.has(docKey)) return acc;
-    seenDocs.add(docKey);
-    if (!acc[doc.project]) acc[doc.project] = [];
-    acc[doc.project].push(doc);
-    return acc;
-  }, {});
+  const tree = useMemo(() => buildTree(filtered), [filtered]);
+
+  const openDoc = (doc: ProjectDoc) => setPreviewDoc(doc);
 
   return (
     <div className="space-y-4">
@@ -186,60 +314,59 @@ export function DocsView() {
         </CardContent>
       </Card>
 
-      {/* Directory structure */}
-      <Card className="bg-card border-border">
-        <CardContent className="p-3">
-          <div className="flex items-center gap-2 mb-2">
-            <FolderTree className="w-4 h-4 text-text-muted" />
-            <span className="text-xs font-medium text-text-muted">f-rr-d structure</span>
-          </div>
-          <pre className="text-xs text-text-secondary font-mono bg-surface p-3 rounded-lg leading-relaxed overflow-x-auto">
-{`thoughts/
-  wayofmono/
-    docs/
-      architecture/    (2 docs)
-      decisions/       (2 ADRs)
-      guides/
-      references/
-    shared/
-    zerwiz/
-    global/
-  wow/
-    docs/
-      architecture/    (1 doc)
-      guides/          (1 guide)
-      decisions/
-      references/
-    shared/
-    andre/
-  opticat/
-    docs/
-      architecture/    (2 docs)
-      decisions/       (1 ADR)
-      guides/
-      references/
-    tomas/`}
-          </pre>
-        </CardContent>
-      </Card>
-
-      {/* Docs by project */}
-      {Object.keys(groupedWithoutDuplicates).length === 0 ? (
-        <div className="text-center py-12 text-text-muted">
-          <FileText className="w-8 h-8 mx-auto mb-2 opacity-50" />
-          <p className="text-sm">No documents match your filters</p>
-        </div>
-      ) : (
-        Object.entries(groupedWithoutDuplicates).map(([project, projectDocs]) => (
-          <div key={project}>
-            <h3 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wider">{project}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {projectDocs.map(doc => (
-                <DocCard key={doc.id} doc={doc} />
-              ))}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* Interactive file tree */}
+        <Card className="bg-card border-border lg:col-span-1">
+          <CardContent className="p-3">
+            <div className="flex items-center gap-2 mb-2">
+              <Folder className="w-4 h-4 text-text-muted" />
+              <span className="text-xs font-medium text-text-muted">f-rr-d structure</span>
             </div>
-          </div>
-        ))
+            <div className="bg-surface p-3 rounded-lg max-h-[500px] overflow-y-auto">
+              <FileTree
+                nodes={tree}
+                filterProject={filterProject}
+                filterType={filterType}
+                onOpenDoc={openDoc}
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Docs by project */}
+        <div className="lg:col-span-2">
+          {Object.keys(grouped).length === 0 ? (
+            <div className="text-center py-12 text-text-muted">
+              <FileText className="w-8 h-8 mx-auto mb-2 opacity-50" />
+              <p className="text-sm">No documents match your filters</p>
+            </div>
+          ) : (
+            Object.entries(grouped).map(([project, projectDocs]) => (
+              <div key={project} className="mb-6">
+                <h3 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wider">{project}</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {projectDocs.map(doc => (
+                    <DocCard key={doc.id} doc={doc} onOpen={openDoc} />
+                  ))}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* Markdown preview dialog */}
+      {previewDoc && (
+        <MarkdownPreview
+          title={previewDoc.title}
+          body={previewDoc.body || previewDoc.summary || ''}
+          type={previewDoc.type}
+          project={previewDoc.project}
+          author={previewDoc.author}
+          updated={previewDoc.updated}
+          open={true}
+          onClose={() => setPreviewDoc(null)}
+        />
       )}
     </div>
   );

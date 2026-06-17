@@ -14,6 +14,8 @@ import { SkillsView } from '@/components/dashboard/skills-view';
 import { IdeasView } from '@/components/dashboard/ideas-view';
 import { StandupView } from '@/components/dashboard/standup-view';
 import { NewsView } from '@/components/dashboard/news-view';
+import { ProfileView } from '@/components/dashboard/profile-view';
+import { SettingsView } from '@/components/dashboard/settings-view';
 import { Badge } from '@/components/ui/badge';
 import { Bell, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -30,6 +32,8 @@ const viewLabels: Record<string, string> = {
   ideas: 'Ideas & Prioritization',
   standup: 'Daily Standup',
   news: 'News',
+  profile: 'Profile',
+  settings: 'Settings',
 };
 
 export default function DashboardPage() {
@@ -107,6 +111,8 @@ export default function DashboardPage() {
       case 'standup': return <StandupView />;
       case 'news': return <NewsView />;
       case 'ticket-detail': return <TicketDetailView />;
+      case 'profile': return <ProfileView />;
+      case 'settings': return <SettingsView />;
       default: return <OverviewView />;
     }
   };

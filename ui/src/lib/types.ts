@@ -91,7 +91,7 @@ export interface Idea {
 
 export type IdeaStatus = 'proposed' | 'under-review' | 'accepted' | 'implemented' | 'declined';
 
-export type ViewMode = 'overview' | 'tickets' | 'developers' | 'review' | 'docs' | 'my-view' | 'skills' | 'ticket-detail' | 'ideas' | 'standup' | 'news';
+export type ViewMode = 'overview' | 'tickets' | 'developers' | 'review' | 'docs' | 'my-view' | 'skills' | 'ticket-detail' | 'ideas' | 'standup' | 'news' | 'profile' | 'settings';
 export type TicketSource = 'local' | 'github';
 
 export interface NewsItem {

@@ -84,7 +84,7 @@ function getVersion() {
 function printLogo() {
   for (const line of WODEV_LOGO) console.log(o(`  ${line}`));
   console.log();
-  console.log(`  ${ob('⟡ CTO DASHBOARD')}  ${od('wodev — release & deploy')}  ${od('─'.repeat(20))}`);
+  console.log(`  ${ob('⟡ CTO DASHBOARD')}  v${getVersion()}  ${od('wodev — release & deploy')}  ${od('─'.repeat(20))}`);
   console.log();
 }
 
@@ -195,7 +195,7 @@ function runNext(cmd, extraArgs = []) {
   const port = process.env.PORT || '6969';
 
   printLogo();
-  console.log(`  ${ob('⟡ ' + (cmd === 'dev' ? 'DEV SERVER' : cmd === 'build' ? 'BUILD' : 'PRODUCTION'))}  ${od('port ' + port)}  ${od('─'.repeat(20))}`);
+  console.log(`  ${ob('⟡ ' + (cmd === 'dev' ? 'DEV SERVER' : cmd === 'build' ? 'BUILD' : 'PRODUCTION'))}  v${getVersion()}  ${od('port ' + port)}  ${od('─'.repeat(20))}`);
   console.log();
 
   if (cmd !== 'build') {
@@ -284,11 +284,34 @@ function runNext(cmd, extraArgs = []) {
   }
 }
 
+function registerLinuxIcon() {
+  if (process.platform !== 'linux') return;
+  const iconSrc = path.join(projectRoot, 'electron', 'build', 'icon.png');
+  if (!fs.existsSync(iconSrc)) return;
+  const appsDir = path.join(os.homedir(), '.local', 'share', 'applications');
+  const desktopFile = path.join(appsDir, 'wayofmono-cto-dashboard.desktop');
+  try {
+    fs.mkdirSync(appsDir, { recursive: true });
+    const content = `[Desktop Entry]
+Type=Application
+Name=WayOfMono CTO Dashboard
+Comment=Release & Deploy Dashboard
+Exec=${process.execPath} ${path.join(projectRoot, 'bin', 'wodev.js')}
+Icon=${iconSrc}
+Terminal=false
+Categories=Development;Utility;
+StartupWMClass=wayofmono-cto-dashboard
+`;
+    fs.writeFileSync(desktopFile, content, 'utf-8');
+  } catch {}
+}
+
 function runElectron(isDev = false) {
   const electronBin = path.join(projectRoot, 'node_modules', '.bin', 'electron');
   const mainPath = path.join(projectRoot, 'electron', isDev ? 'main.ts' : 'main.js');
   const port = process.env.PORT || '6969';
 
+  registerLinuxIcon();
   printLogo();
   console.log(`  ${ob('⟡ ELECTRON APP')}  ${od(isDev ? 'development' : 'production')}  ${od('─'.repeat(18))}`);
   console.log();

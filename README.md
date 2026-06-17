@@ -753,9 +753,18 @@ brew install stow
 npx @wayofmono/wo-cto-dashboard
 ```
 
-**Global CLI (use `wodev` anywhere):**
+**Global CLI (use `wodev` anywhere) — choose one:**
+
 ```bash
+# Option A: local prefix (recommended — no sudo, everything works)
+npm config set prefix ~/.npm-global
+echo 'export PATH="$PATH:~/.npm-global/bin"' >> ~/.bashrc
+source ~/.bashrc
 npm install -g @wayofmono/wo-cto-dashboard
+wodev
+
+# Option B: sudo global install (run --build once with sudo)
+sudo npm install -g @wayofmono/wo-cto-dashboard
 sudo wodev --build    # one-time build
 wodev                 # launch dashboard
 ```
