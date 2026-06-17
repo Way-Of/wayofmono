@@ -1,5 +1,12 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.4.36 (2026-06-17) — wodev.js crash fix
+
+### Fixes
+- **`fs` is not defined in `registerLinuxIcon()`**: Added `writeFileSync` to the named import from `'fs'` and replaced `fs.xxx` calls with bare function names (`existsSync`, `mkdirSync`, `writeFileSync`) to match the ESM named-import pattern. wodev.js previously crashed at startup with `ReferenceError: fs is not defined`.
+
+---
+
 ## v0.4.35 (2026-06-17) — Interactive Docs View + Profile/Settings Routing Fix + Linux Taskbar Icon
 
 ### Features

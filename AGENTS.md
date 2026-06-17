@@ -337,7 +337,7 @@ Any AI agent working with this repo:
 - `docs/guides/` — **Installation, commands, skills, troubleshooting, project structure** guides for the harness and tools (getting-started, installation, commands, skills, wocode, wouser, dashboard, project-structure, troubleshooting)
 - `README.md` — Complete installation guide, CLI reference, package list, dashboard, CI/CD
 - `CHANGELOG.md` — Full version history
-- `docs/fixes/` — Release notes and bug fixes for harness, wocode, wouser
+- `docs/fixes/` — **Release notes and bug fixes for harness, wocode, wouser, CTO Dashboard** (`ai-engineering-harness-fixes.md`, `wocode-fixes.md`, `wouser-fixes.md`, `cto-dashboard-fixes.md`). Read the relevant fixes file before working on any component — it's the authoritative per-component changelog.
 - `docs/extensions.md` — Extension system documentation
 - `docs/packages.md` — NPM package details
 - `docs/themes.md` — Theme system
@@ -363,7 +363,7 @@ All code must be:
 |----------|---------|
 | `README.md` | Complete installation guide, CLI reference, package list, dashboard, CI/CD |
 | `CHANGELOG.md` | Full version history |
-| `docs/fixes/` | Release notes and bug fixes for harness, wocode, wouser |
+| `docs/fixes/` | Release notes and bug fixes for harness, wocode, wouser, CTO Dashboard (`ai-engineering-harness-fixes.md`, `wocode-fixes.md`, `wouser-fixes.md`, `cto-dashboard-fixes.md`). Read before working on any component. |
 | `docs/extensions.md` | Extension system documentation |
 | `docs/packages.md` | NPM package details |
 | `docs/themes.md` | Theme system |

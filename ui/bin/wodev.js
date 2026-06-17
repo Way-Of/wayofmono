@@ -4,7 +4,7 @@ import { spawn, execSync } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
-import { readFileSync, accessSync, constants, existsSync, appendFileSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, accessSync, constants, existsSync, appendFileSync, mkdirSync } from 'fs';
 import crypto from 'crypto';
 import readline from 'readline';
 import os from 'os';
@@ -287,11 +287,11 @@ function runNext(cmd, extraArgs = []) {
 function registerLinuxIcon() {
   if (process.platform !== 'linux') return;
   const iconSrc = path.join(projectRoot, 'electron', 'build', 'icon.png');
-  if (!fs.existsSync(iconSrc)) return;
+  if (!existsSync(iconSrc)) return;
   const appsDir = path.join(os.homedir(), '.local', 'share', 'applications');
   const desktopFile = path.join(appsDir, 'wayofmono-cto-dashboard.desktop');
   try {
-    fs.mkdirSync(appsDir, { recursive: true });
+    mkdirSync(appsDir, { recursive: true });
     const content = `[Desktop Entry]
 Type=Application
 Name=WayOfMono CTO Dashboard
@@ -302,7 +302,7 @@ Terminal=false
 Categories=Development;Utility;
 StartupWMClass=wayofmono-cto-dashboard
 `;
-    fs.writeFileSync(desktopFile, content, 'utf-8');
+    writeFileSync(desktopFile, content, 'utf-8');
   } catch {}
 }
 
