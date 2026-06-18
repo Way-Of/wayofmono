@@ -15,6 +15,11 @@ const GITHUB_RAW_BASE = config.github.rawBase;
 const GITHUB_CACHE_TTL = config.github.cacheTtlMs;
 let githubCache: { tickets: Record<string, unknown>[]; timestamp: number; branch: string } | null = null;
 
+/** Get the best available token: session accessToken > GITHUB_TOKEN env > null */
+function getEffectiveToken(accessToken?: string): string | null {
+  return accessToken || process.env.GITHUB_TOKEN || null;
+}
+
 const SKIP_DIRS = config.skipDirs;
 
 interface Frontmatter {
@@ -105,8 +110,7 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
     // Fetch the full recursive tree once — structure-agnostic
     const treeUrl = `${GITHUB_API_BASE}/repos/${GITHUB_REPO}/git/trees/${branch}?recursive=1`;
     
-    const headers: Record<string, string> = {};
-    if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
+    const headers = gitHubHeaders(accessToken);
     
     let treeData;
     try {
@@ -138,13 +142,13 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
       const project = parts.length >= 3 ? parts[parts.length - 3] : 'wayofmono';
       
       try {
-        const rawUrl = `${GITHUB_RAW_BASE}/${GITHUB_REPO}/${branch}/${item.path}`;
-        const rawHeaders: Record<string, string> = {};
-        if (accessToken) rawHeaders['Authorization'] = `Bearer ${accessToken}`;
-        console.log('[thoughts] Fetching config:', rawUrl);
-        const response = await fetch(rawUrl, { signal: AbortSignal.timeout(5000), headers: rawHeaders });
+        const contentsUrl = `${GITHUB_API_BASE}/repos/${GITHUB_REPO}/contents/${item.path}?ref=${branch}`;
+        const rawHeaders = gitHubHeaders(accessToken);
+        console.log('[thoughts] Fetching config:', contentsUrl);
+        const response = await fetch(contentsUrl, { signal: AbortSignal.timeout(10000), headers: rawHeaders });
         if (response.ok) {
-          const content = await response.text();
+          const contentsData = await response.json();
+          const content = Buffer.from(contentsData.content, 'base64').toString('utf-8');
           const { frontmatter } = parseFrontmatter(content);
           devs.push({
             id: devName,
@@ -190,11 +194,32 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
   return devs;
 }
 
-export async function getTickets(source: 'local' | 'github' = 'local', branch = GITHUB_BRANCH, accessToken?: string) {
+export interface SourceInfo {
+  requested: 'local' | 'github';
+  actual: 'local' | 'github' | 'github-unauth' | 'github-token';
+  tokenAvailable: boolean;
+  tokenSource: 'oauth' | 'env' | null;
+  reason: string;
+}
+
+export async function getTickets(source: 'local' | 'github' = 'local', branch = GITHUB_BRANCH, accessToken?: string): Promise<{ tickets: Record<string, unknown>[]; sourceInfo: SourceInfo }> {
   const tickets: Record<string, unknown>[] = [];
   const seenIds = new Set<string>();
 
+  const effectiveToken = getEffectiveToken(accessToken);
+  const tokenSource = accessToken ? 'oauth' : (process.env.GITHUB_TOKEN ? 'env' : null);
+
+  const sourceInfo: SourceInfo = {
+    requested: source,
+    actual: 'local',
+    tokenAvailable: !!effectiveToken,
+    tokenSource,
+    reason: '',
+  };
+
   if (source === 'local') {
+    sourceInfo.actual = 'local';
+    sourceInfo.reason = 'Local filesystem source selected';
     for (const project of PROJECTS) {
       const ticketsDir = path.join(THOUGHTS_ROOT, project, 'shared', 'tickets');
       try {
@@ -202,11 +227,23 @@ export async function getTickets(source: 'local' | 'github' = 'local', branch = 
       } catch { /* no tickets dir */ }
     }
   } else {
+    // Determine actual auth mode
+    if (effectiveToken) {
+      sourceInfo.actual = tokenSource === 'env' ? 'github-token' : 'github';
+      sourceInfo.reason = tokenSource === 'env'
+        ? `GitHub API (using GITHUB_TOKEN env var)`
+        : `GitHub API (using OAuth session)`;
+    } else {
+      sourceInfo.actual = 'github-unauth';
+      sourceInfo.reason = 'GitHub API (unauthenticated — rate limited to 60 req/hr)';
+    }
+
     // Check cache first (invalidate if branch changed)
     const now = Date.now();
     if (githubCache && githubCache.branch === branch && (now - githubCache.timestamp) < GITHUB_CACHE_TTL) {
       console.log('Using cached GitHub tickets for branch:', branch);
-      return githubCache.tickets;
+      sourceInfo.reason += ' (cached)';
+      return { tickets: githubCache.tickets, sourceInfo };
     }
     
     await walkGitHubDir(GITHUB_API_BASE, GITHUB_REPO, branch, tickets, seenIds, '', accessToken);
@@ -219,16 +256,22 @@ export async function getTickets(source: 'local' | 'github' = 'local', branch = 
     // Fallback to local if GitHub returns no tickets
     if (tickets.length === 0) {
       console.warn('GitHub returned no tickets, falling back to local');
+      sourceInfo.actual = 'local';
+      sourceInfo.reason = effectiveToken
+        ? `GitHub API returned 0 tickets (check repo access) — fallback to local`
+        : 'No GitHub authentication available — fallback to local';
       for (const project of PROJECTS) {
         const ticketsDir = path.join(THOUGHTS_ROOT, project, 'shared', 'tickets');
         try {
           await walkDir(ticketsDir, tickets, seenIds, project);
         } catch { /* no tickets dir */ }
       }
+    } else {
+      sourceInfo.reason += ` (${tickets.length} tickets)`;
     }
   }
 
-  return tickets;
+  return { tickets, sourceInfo };
 }
 
 async function walkDir(dir: string, result: Record<string, unknown>[], seenIds: Set<string>, project: string) {
@@ -277,15 +320,19 @@ async function walkDir(dir: string, result: Record<string, unknown>[], seenIds: 
   }
 }
 
+/** Build auth headers for GitHub API — tries OAuth token, then GITHUB_TOKEN, then unauthenticated */
+function gitHubHeaders(accessToken?: string): Record<string, string> {
+  const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
+  const token = getEffectiveToken(accessToken);
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  return headers;
+}
+
 async function walkGitHubDir(apiBase: string, repo: string, branch: string, result: Record<string, unknown>[], seenIds: Set<string>, path = 'thoughts', accessToken?: string) {
   const treeUrl = `${apiBase}/repos/${repo}/git/trees/${branch}?recursive=1`;
   let treeData;
   
-  const headers: Record<string, string> = {};
-  if (accessToken) {
-    headers['Authorization'] = `Bearer ${accessToken}`;
-    headers['Accept'] = 'application/vnd.github+json';
-  }
+  const headers = gitHubHeaders(accessToken);
   
   try {
     const response = await fetch(treeUrl, { signal: AbortSignal.timeout(10000), headers });
@@ -303,17 +350,21 @@ async function walkGitHubDir(apiBase: string, repo: string, branch: string, resu
   for (const item of treeData.tree) {
     if (prefix && !item.path.startsWith(prefix)) continue;
     if (item.type === 'blob' && item.path.endsWith('.md') && !item.path.endsWith('personal-ticket-template.md')) {
-      const rawUrl = `${GITHUB_RAW_BASE}/${repo}/${branch}/${item.path}`;
       let content;
       
       const fileController = new AbortController();
-      const fileTimeoutId = setTimeout(() => fileController.abort(), 5000);
+      const fileTimeoutId = setTimeout(() => fileController.abort(), 10000);
       
       try {
-        const response = await fetch(rawUrl, { signal: fileController.signal, headers });
+        // Use GitHub Contents API — works for both public and private repos
+        // raw.githubusercontent.com returns 404 for private repos
+        const contentsUrl = `${apiBase}/repos/${repo}/contents/${item.path}?ref=${branch}`;
+        const response = await fetch(contentsUrl, { signal: fileController.signal, headers });
         clearTimeout(fileTimeoutId);
         if (!response.ok) throw new Error(`Failed to fetch ${item.path}: ${response.status}`);
-        content = await response.text();
+        const contentsData = await response.json();
+        // Contents API returns base64-encoded content
+        content = Buffer.from(contentsData.content, 'base64').toString('utf-8');
       } catch (error) {
         clearTimeout(fileTimeoutId);
         console.error(`Failed to fetch GitHub file ${item.path}:`, error);
@@ -473,7 +524,7 @@ export async function getSkills() {
 }
 
 export async function getDashboardStats() {
-  const tickets = await getTickets();
+  const { tickets } = await getTickets();
   const weekAgo = new Date();
   weekAgo.setDate(weekAgo.getDate() - 7);
 

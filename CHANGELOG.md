@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.7.3] - 2026-06-18
+
+### Dashboard (wo-cto-dashboard v0.5.3)
+- **Update f-rr-d button**: New button in header pulls latest main from the thoughts (f-rr-d) git repo
+  - `POST /api/update-forrad` endpoint with `/api/update-forrad` route
+  - Auto-detects thoughts repo via config system (supports `THOUGHTS_ROOT` env, `~/.config/wodev/config.json`, auto-detect)
+  - Spinner state during sync, success/error message, auto-refresh after update
+  - Switches to `main` branch if on another branch, then `git pull --ff-only origin main`
+- **Thoughts root auto-detection**: `env.ts` now detects thoughts repo location across multiple standard paths
+  - Checks: CWD-relative, `~/wayofmono/thoughts`, `~/.config/wodev/thoughts`, `~/src/wayofmono/thoughts`
+  - Falls back gracefully with helpful error message
+  - Ensures local ticket source works from installed npm package
+
 ## [1.7.2] - 2026-06-17
 
 ### Dashboard (wo-cto-dashboard v0.5.2)

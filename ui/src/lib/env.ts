@@ -17,8 +17,24 @@ export interface WodevConfig {
   databaseUrl: string;
 }
 
+function detectThoughtsRoot(): string {
+  const candidates = [
+    path.join(process.cwd(), '..', 'thoughts'),
+    path.join(os.homedir(), 'wayofmono', 'thoughts'),
+    path.join(os.homedir(), '.config', 'wodev', 'thoughts'),
+    path.join(os.homedir(), 'src', 'wayofmono', 'thoughts'),
+  ];
+  for (const p of candidates) {
+    try {
+      if (fs.existsSync(path.join(p, '.git'))) return p;
+      if (fs.existsSync(path.join(p, 'shared'))) return p;
+    } catch {}
+  }
+  return candidates[0];
+}
+
 const DEFAULTS: WodevConfig = {
-  thoughtsRoot: path.join(process.cwd(), '..', 'thoughts'),
+  thoughtsRoot: detectThoughtsRoot(),
   projects: ['wayofmono', 'wow', 'opticat'],
   skipDirs: ['.git', 'global', 'shared', 'docs', 'ticket-executor', 'enforcement-ticket', 'installation-tickets', 'old tickets'],
   github: {
@@ -87,6 +103,10 @@ export function getConfig(): WodevConfig {
   if (process.env.GITHUB_API_BASE) config.github.apiBase = process.env.GITHUB_API_BASE;
   if (process.env.GITHUB_RAW_BASE) config.github.rawBase = process.env.GITHUB_RAW_BASE;
   if (process.env.GITHUB_CACHE_TTL) config.github.cacheTtlMs = parseInt(process.env.GITHUB_CACHE_TTL, 10);
+  if (process.env.GITHUB_TOKEN) {
+    // GITHUB_TOKEN is consumed directly by thoughts.ts via process.env
+    // No config field needed, but we document it here for reference
+  }
   if (process.env.PORT) config.port = parseInt(process.env.PORT, 10);
   if (process.env.DATABASE_URL) config.databaseUrl = process.env.DATABASE_URL;
 

@@ -17,7 +17,7 @@ import { NewsView } from '@/components/dashboard/news-view';
 import { ProfileView } from '@/components/dashboard/profile-view';
 import { SettingsView } from '@/components/dashboard/settings-view';
 import { Badge } from '@/components/ui/badge';
-import { Bell, ArrowLeft } from 'lucide-react';
+import { RefreshCw, Bell, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const viewLabels: Record<string, string> = {
@@ -38,9 +38,11 @@ const viewLabels: Record<string, string> = {
 
 export default function DashboardPage() {
   const { currentUser, canReview } = useAuthStore();
-  const { currentView, tickets, viewHistory, goBack, fetchData, setSelectedTicket, setCurrentView } = useDashboardStore();
+  const { currentView, tickets, viewHistory, goBack, fetchData, setSelectedTicket, setCurrentView, actualSource } = useDashboardStore();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [bellOpen, setBellOpen] = useState(false);
+  const [updating, setUpdating] = useState(false);
+  const [updateMessage, setUpdateMessage] = useState<string | null>(null);
   const fromPop = useRef(false);
   const bellRef = useRef<HTMLDivElement>(null);
 
@@ -91,6 +93,24 @@ export default function DashboardPage() {
     .sort((a, b) => new Date(b.updated).getTime() - new Date(a.updated).getTime());
 
   const totalNotifications = reviewCount + recentTickets.length;
+
+  const handleUpdateForrad = async () => {
+    setUpdating(true);
+    setUpdateMessage(null);
+    try {
+      const res = await fetch('/api/update-forrad', { method: 'POST' });
+      const data = await res.json();
+      setUpdateMessage(data.message);
+      if (data.success) {
+        fetchData();
+      }
+    } catch {
+      setUpdateMessage('Failed to update f-rr-d');
+    } finally {
+      setUpdating(false);
+      setTimeout(() => setUpdateMessage(null), 5000);
+    }
+  };
 
   const openTicket = (ticket: typeof tickets[0]) => {
     setSelectedTicket(ticket);
@@ -238,12 +258,41 @@ export default function DashboardPage() {
                 </div>
               )}
             </div>
-            <div className="flex items-center gap-1.5 text-text-muted">
-              <div className="w-1.5 h-1.5 rounded-full bg-status-done" />
-              <span className="text-[10px]">Live</span>
+            <div className="flex items-center gap-2">
+              {updateMessage && (
+                <span className="text-[10px] text-text-muted max-w-40 truncate">{updateMessage}</span>
+              )}
+              <Button
+                variant="ghost"
+                size="sm"
+                disabled={updating}
+                onClick={handleUpdateForrad}
+                className="h-7 text-[10px] gap-1 text-text-muted hover:text-foreground px-2"
+              >
+                <RefreshCw className={`w-3 h-3 ${updating ? 'animate-spin' : ''}`} />
+                {updating ? 'Syncing...' : 'Update'}
+              </Button>
+              <div className="flex items-center gap-1.5 text-text-muted">
+                <div className="w-1.5 h-1.5 rounded-full bg-status-done" />
+                <span className="text-[10px]">Live</span>
+              </div>
             </div>
           </div>
         </header>
+
+        {/* Source info banner — shows when actual source differs from requested or is unauthenticated */}
+        {actualSource && (actualSource.actual !== actualSource.requested || actualSource.actual === 'github-unauth') && (
+          <div className={`px-6 py-1.5 flex items-center gap-2 text-[11px] border-b ${
+            actualSource.actual === 'local'
+              ? 'bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400'
+              : 'bg-blue-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400'
+          }`}>
+            <span className="font-medium">
+              {actualSource.actual === 'local' ? '⚠️ FALLBACK' : 'ℹ️ GitHub (unauthenticated)'}
+            </span>
+            <span className="opacity-80">&mdash; {actualSource.reason}</span>
+          </div>
+        )}
 
         <div className="p-6">{renderView()}</div>
       </main>

@@ -1,5 +1,37 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.5.4 (2026-06-18) — Update f-rr-d Button & Thoughts Root Auto-Detection
+
+### Features
+- **Update f-rr-d button**: Header button that pulls latest main from thoughts repo via `POST /api/update-forrad`
+  - Spinner animation during sync, success/error feedback, auto-refreshes tickets after update
+  - Switches from any branch to `main` before pulling (`git pull --ff-only origin main`)
+  - Returns before/after commit hashes and pull output
+- **Thoughts root auto-detection**: Finds thoughts repo across multiple standard paths
+  - CWD-relative (`../thoughts`), `~/wayofmono/thoughts`, `~/.config/wodev/thoughts`, `~/src/wayofmono/thoughts`
+  - Checks for `.git` directory or `shared` subdirectory
+  - Falls back gracefully with configurable error message pointing to docs
+- **Config layer support**: Uses same `getConfig()` system as rest of dashboard
+  - `THOUGHTS_ROOT` env var
+  - `~/.config/wodev/config.json` with `thoughtsRoot` key
+  - `~/.config/wodev/.env` (loaded by wodev.js)
+  - Auto-detection fallback
+- **Local ticket source fixed**: Installed npm package now correctly finds thoughts repo for local ticket reading
+
+### Files
+- `ui/src/app/api/update-forrad/route.ts` — New API endpoint
+- `ui/src/app/page.tsx` — Update button in header with loading/feedback
+- `ui/src/lib/env.ts` — `detectThoughtsRoot()` auto-detection
+
+### Verified
+- Tickets API returns 152 tickets (was `[]` before fix)
+- Update endpoint returns `"success":true` and `"Already up to date."` on re-run
+- Auto-detection finds thoughts repo at `~/wayofmono/thoughts` from installed package CWD
+- Pull switches from any branch to `main` before fetching
+- Button shows spinner while syncing, auto-refreshes tickets on success
+- Works without any manual config — zero-setup for devs with standard `~/wayofmono/` layout
+- Configurable via `THOUGHTS_ROOT` env, `~/.config/wodev/config.json`, or `.env`
+
 ## v0.5.3 (2026-06-17) — Ticket Skill Notification Integration + Deprecated Skill Cleanup
 
 ### Features

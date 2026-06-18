@@ -216,6 +216,12 @@ function runNext(cmd, extraArgs = []) {
   // NEVER CHANGE THIS or old cookies will fail to decrypt
   const fixedSecret = '68870c1363f4721bf3a154d3e524b54a34ac5eb683e4d7dc53c426edc10e41d7';
 
+  const userConfigDir = path.join(os.homedir(), '.config', 'wodev');
+  if (!existsSync(userConfigDir)) {
+    mkdirSync(userConfigDir, { recursive: true });
+  }
+  const dbPath = process.env.DATABASE_URL || `file:${path.join(userConfigDir, 'dashboard.db')}`;
+
   const env = {
     ...process.env,
     PORT: port,
@@ -223,18 +229,43 @@ function runNext(cmd, extraArgs = []) {
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || fixedSecret,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL || `http://localhost:${port}`,
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || 'Ov23liy3r3AGOFaXT6YV',
-    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || '9a6410416575e390ac9253a41f64a8a46af7d7a5',
+    GITHUB_TOKEN: process.env.GITHUB_TOKEN || '',
+    DATABASE_URL: dbPath,
   };
 
-  // Pre-build steps for global installs
-  if (cmd === 'build') {
+  // Pre-build / startup steps for global installs
+  const isBuild = cmd === 'build';
+  if (isBuild || cmd === 'start') {
     try {
       const prismaBin = createRequire(import.meta.url).resolve('prisma/build/index.js');
+      // Generate Prisma client
       execSync(`node "${prismaBin}" generate`, { cwd: projectRoot, stdio: 'pipe' });
     } catch {
       try {
         execSync('npx --yes prisma generate', { cwd: projectRoot, stdio: 'pipe' });
       } catch {}
+    }
+  }
+
+  // Ensure DB schema exists — push on first startup
+  if (!isBuild) {
+    try {
+      const prismaBin = createRequire(import.meta.url).resolve('prisma/build/index.js');
+      execSync(`node "${prismaBin}" db push --skip-generate --accept-data-loss`, {
+        cwd: projectRoot,
+        stdio: 'pipe',
+        timeout: 30000,
+      });
+    } catch {
+      try {
+        execSync('npx --yes prisma db push --skip-generate --accept-data-loss', {
+          cwd: projectRoot,
+          stdio: 'pipe',
+          timeout: 30000,
+        });
+      } catch (e) {
+        console.warn(`  ${yellow('⚠')}  Prisma schema push warning (DB may already exist): ${e.message.split('\n')[0]}`);
+      }
     }
   }
 
@@ -326,7 +357,7 @@ function runElectron(isDev = false) {
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || fixedSecret,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL || `http://localhost:${port}`,
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || 'Ov23liy3r3AGOFaXT6YV',
-    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || '9a6410416575e390ac9253a41f64a8a46af7d7a5',
+    GITHUB_TOKEN: process.env.GITHUB_TOKEN || '',
   };
 
   const child = spawn(isDev ? 'bun' : electronBin, isDev ? ['dev'] : [mainPath], {

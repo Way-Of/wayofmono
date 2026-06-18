@@ -24,18 +24,17 @@ export async function GET(request: NextRequest) {
         return NextResponse.json(devs);
       }
       case 'tickets': {
-        const effectiveSource = source === 'github' && !accessToken ? 'local' : source;
-        const tickets = await getTickets(effectiveSource as 'local' | 'github', branch, accessToken);
-        return NextResponse.json(tickets);
+        const { tickets, sourceInfo } = await getTickets(source as 'local' | 'github', branch, accessToken);
+        return NextResponse.json({ tickets, sourceInfo });
       }
       case 'docs': {
         const docs = await getDocs();
         return NextResponse.json(docs);
       }
       case 'dashboard': {
-        const effectiveSource = source === 'github' && !accessToken ? 'local' : source;
-        const [stats, tickets] = await Promise.all([getDashboardStats(), getTickets(effectiveSource as 'local' | 'github', branch, accessToken)]);
-        return NextResponse.json({ stats, tickets });
+        const { tickets, sourceInfo } = await getTickets(source as 'local' | 'github', branch, accessToken);
+        const stats = await getDashboardStats();
+        return NextResponse.json({ stats, tickets, sourceInfo });
       }
       case 'skills': {
         const skills = await getSkills();

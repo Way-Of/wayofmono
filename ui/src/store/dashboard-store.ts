@@ -21,6 +21,14 @@ interface AuthState {
   logout: () => void;
 }
 
+interface SourceInfo {
+  requested: string;
+  actual: string;
+  tokenAvailable: boolean;
+  tokenSource: string | null;
+  reason: string;
+}
+
 interface DashboardState {
   currentView: ViewMode;
   viewHistory: ViewMode[];
@@ -37,6 +45,7 @@ interface DashboardState {
   filterCategory: string;
   ticketSource: 'local' | 'github';
   ticketBranch: string;
+  actualSource: SourceInfo | null;
   setCurrentView: (view: ViewMode) => void;
   goBack: () => void;
   setSelectedDeveloper: (id: string | null) => void;
@@ -123,6 +132,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   filterCategory: 'all',
   ticketSource: 'github',
   ticketBranch: 'main',
+  actualSource: null,
   setCurrentView: (view) => {
     const prev = get().currentView;
     if (prev !== view) {
@@ -265,14 +275,17 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
         fetch('/api?type=ideas').catch(() => new Response('[]')),
         fetch('/api/news').catch(() => new Response('[]')),
       ]);
-      const [tickets, developers, docs, ideas, newsItems] = await Promise.all([
-        ticketsRes.json(),
-        devsRes.json(),
-        docsRes.json(),
-        ideasRes.json().catch(() => []),
-        newsRes.json().catch(() => []),
-      ]);
-      set({ tickets, developers, docs, ideas, newsItems, loading: false });
+      const ticketsData = await ticketsRes.json();
+      const developers = await devsRes.json();
+      const docs = await docsRes.json();
+      const ideas = await ideasRes.json().catch(() => []);
+      const newsItems = await newsRes.json().catch(() => []);
+      
+      // Extract source info from new API format or use legacy format
+      const tickets = Array.isArray(ticketsData) ? ticketsData : (ticketsData.tickets || []);
+      const actualSource = ticketsData.sourceInfo || null;
+      
+      set({ tickets, developers, docs, ideas, newsItems, actualSource, loading: false });
     } catch (err) {
       console.error('Failed to fetch data:', err);
       set({ loading: false });
