@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.8.1] - 2026-06-19
+
+### Dashboard (wo-cto-dashboard v0.6.1)
+- **Fix missing DATABASE_URL in Electron mode**: `runElectron()` env block was missing `DATABASE_URL` — caused `PrismaClientInitializationError: Environment variable not found`. Now correctly sets `DATABASE_URL` from same logic as `runNext()`.
+
 ## [1.8.0] - 2026-06-19
 
 ### Dashboard (wo-cto-dashboard v0.6.0) — Markdown-First Ticket Storage with SQLite Read-Cache (WOMONO-098)

@@ -1,5 +1,18 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.6.1 (2026-06-19) — Fix DATABASE_URL in Electron Mode
+
+### Fixes
+- **Missing DATABASE_URL in Electron mode**: `runElectron()` was setting `NEXTAUTH_SECRET`, `PORT`, etc. but not `DATABASE_URL`. This caused `PrismaClientInitializationError: Environment variable not found` when the dashboard ran via `wodev` (Electron). Now correctly derives `DATABASE_URL` from the same logic as `runNext()` (defaults to `file:~/.config/wodev/dashboard.db`).
+
+### Files Changed
+- `ui/bin/wodev.js` — Added `userConfigDir` lookup + `DATABASE_URL` derivation in `runElectron()`
+
+### Migration
+```bash
+npm update -g @wayofmono/wo-cto-dashboard && wodev --build
+```
+
 ## v0.6.0 (2026-06-19) — Markdown-First Ticket Storage with SQLite Read-Cache (WOMONO-098)
 
 ### Architecture
