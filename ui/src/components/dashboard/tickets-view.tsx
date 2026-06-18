@@ -486,3 +486,128 @@ export function TicketsView() {
     </div>
   );
 }
+
+function CreateTicketDialog() {
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [project, setProject] = useState('wayofmono');
+  const [type, setType] = useState<TicketType>('Task');
+  const [priority, setPriority] = useState<TicketPriority>('Medium');
+
+  const handleCreate = () => {
+    if (!title) return;
+    const ticketId = `${project === 'wayofmono' ? 'WOMONO' : project === 'wow' ? 'WOW' : 'OPT'}-${String(Date.now()).slice(-3)}-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 40)}`;
+    const ticket: Ticket = {
+      id: ticketId,
+      title,
+      description,
+      type,
+      priority,
+      status: 'Backlog',
+      assignee: '',
+      reporter: '',
+      project,
+      namespace: project === 'wayofmono' ? 'womono' : project === 'wow' ? 'wow' : 'opticat',
+      category: '',
+      parentTicket: '',
+      sharedTickets: [],
+      prUrl: '',
+      githubIssue: '',
+      created: new Date().toISOString().slice(0, 10),
+      updated: new Date().toISOString().slice(0, 10),
+      reviewedBy: '',
+      reviewedAt: '',
+      reviewStatus: 'Pending',
+      reviewComments: '',
+      description: '',
+      personalBreakdown: [],
+      linkedDocs: [],
+    };
+    useDashboardStore.setState(s => ({ tickets: [ticket, ...s.tickets] }));
+    setOpen(false);
+    setTitle('');
+    setDescription('');
+    setType('Task');
+    setPriority('Medium');
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm" className="h-7 gap-1 text-xs">
+          <Plus className="w-3.5 h-3.5" />
+          New Ticket
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="bg-card border-border sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="text-foreground">Create Ticket</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label className="text-text-secondary text-xs">Title</Label>
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Ticket title..."
+              className="bg-surface border-border-strong text-foreground h-9"
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            <div className="space-y-2">
+              <Label className="text-text-secondary text-xs">Project</Label>
+              <Select value={project} onValueChange={setProject}>
+                <SelectTrigger className="bg-surface border-border-strong h-9 text-xs"><SelectValue /></SelectTrigger>
+                <SelectContent className="bg-card border-border">
+                  <SelectItem value="wayofmono">WayOfMono</SelectItem>
+                  <SelectItem value="wow">WoW</SelectItem>
+                  <SelectItem value="opticat">OptiCat</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label className="text-text-secondary text-xs">Type</Label>
+              <Select value={type} onValueChange={(v) => setType(v as TicketType)}>
+                <SelectTrigger className="bg-surface border-border-strong h-9 text-xs"><SelectValue /></SelectTrigger>
+                <SelectContent className="bg-card border-border">
+                  <SelectItem value="Feature">Feature</SelectItem>
+                  <SelectItem value="Bug">Bug</SelectItem>
+                  <SelectItem value="Task">Task</SelectItem>
+                  <SelectItem value="Research">Research</SelectItem>
+                  <SelectItem value="Refactor">Refactor</SelectItem>
+                  <SelectItem value="Docs">Docs</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label className="text-text-secondary text-xs">Priority</Label>
+              <Select value={priority} onValueChange={(v) => setPriority(v as TicketPriority)}>
+                <SelectTrigger className="bg-surface border-border-strong h-9 text-xs"><SelectValue /></SelectTrigger>
+                <SelectContent className="bg-card border-border">
+                  <SelectItem value="Critical">Critical</SelectItem>
+                  <SelectItem value="High">High</SelectItem>
+                  <SelectItem value="Medium">Medium</SelectItem>
+                  <SelectItem value="Low">Low</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label className="text-text-secondary text-xs">Description</Label>
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Optional description..."
+              className="bg-surface border-border-strong text-foreground min-h-[80px] text-sm"
+            />
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" size="sm" onClick={() => setOpen(false)} className="text-xs">Cancel</Button>
+            <Button size="sm" onClick={handleCreate} disabled={!title} className="text-xs">Create</Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}

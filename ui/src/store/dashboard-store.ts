@@ -130,7 +130,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   filterStatus: 'all',
   filterPriority: 'all',
   filterCategory: 'all',
-  ticketSource: 'github',
+  ticketSource: 'local',
   ticketBranch: 'main',
   actualSource: null,
   setCurrentView: (view) => {

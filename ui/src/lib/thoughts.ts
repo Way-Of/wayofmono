@@ -15,11 +15,6 @@ const GITHUB_RAW_BASE = config.github.rawBase;
 const GITHUB_CACHE_TTL = config.github.cacheTtlMs;
 let githubCache: { tickets: Record<string, unknown>[]; timestamp: number; branch: string } | null = null;
 
-/** Get the best available token: session accessToken > GITHUB_TOKEN env > null */
-function getEffectiveToken(accessToken?: string): string | null {
-  return accessToken || process.env.GITHUB_TOKEN || null;
-}
-
 const SKIP_DIRS = config.skipDirs;
 
 interface Frontmatter {
@@ -107,32 +102,24 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
       }))];
     }
   } else {
-    // Fetch the full recursive tree once — structure-agnostic
     const treeUrl = `${GITHUB_API_BASE}/repos/${GITHUB_REPO}/git/trees/${branch}?recursive=1`;
-    
-    const headers = gitHubHeaders(accessToken);
-    
+
+    const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
+    const effectiveToken = accessToken || process.env.GITHUB_TOKEN || null;
+    if (effectiveToken) headers['Authorization'] = `Bearer ${effectiveToken}`;
+
     let treeData;
     try {
-      console.log('[thoughts] Fetching GitHub tree:', treeUrl);
-      const response = await fetch(treeUrl, { signal: AbortSignal.timeout(10000), headers });
-      console.log('[thoughts] GitHub tree response status:', response.status);
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.log('[thoughts] GitHub tree error:', errorText);
-        return devs;
-      }
+      const response = await fetch(treeUrl, { signal: AbortSignal.timeout(15000), headers });
+      if (!response.ok) return devs;
       treeData = await response.json();
-      console.log('[thoughts] GitHub tree items:', treeData.tree?.length || 0);
-    } catch (e) {
-      console.error('[thoughts] GitHub tree fetch error:', e);
+    } catch {
       return devs;
     }
 
-    // Find all config.md files — any directory containing one is a developer
     for (const item of treeData.tree || []) {
       if (item.type !== 'blob' || !item.path.endsWith('config.md')) continue;
-      
+
       const parts = item.path.split('/');
       const devName = parts[parts.length - 2];
       if (!devName || devName.startsWith('.') || devName === 'global' || devName === 'shared' || devName === 'docs') continue;
@@ -140,15 +127,12 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
       seen.add(devName);
 
       const project = parts.length >= 3 ? parts[parts.length - 3] : 'wayofmono';
-      
+
       try {
-        const contentsUrl = `${GITHUB_API_BASE}/repos/${GITHUB_REPO}/contents/${item.path}?ref=${branch}`;
-        const rawHeaders = gitHubHeaders(accessToken);
-        console.log('[thoughts] Fetching config:', contentsUrl);
-        const response = await fetch(contentsUrl, { signal: AbortSignal.timeout(10000), headers: rawHeaders });
+        const rawUrl = `${GITHUB_RAW_BASE}/${GITHUB_REPO}/${branch}/${item.path}`;
+        const response = await fetch(rawUrl, { signal: AbortSignal.timeout(10000), headers });
         if (response.ok) {
-          const contentsData = await response.json();
-          const content = Buffer.from(contentsData.content, 'base64').toString('utf-8');
+          const content = await response.text();
           const { frontmatter } = parseFrontmatter(content);
           devs.push({
             id: devName,
@@ -160,14 +144,10 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
             projects: (frontmatter['projects'] as string[]) || [project],
             isActive: frontmatter['isActive'] !== false,
           });
-          console.log('[thoughts] Config parsed:', { githubUsername: frontmatter['githubUsername'], displayName: frontmatter['displayName'], role: frontmatter['role'] });
         }
-      } catch (e) {
-        console.error('[thoughts] Config fetch error:', e);
-      }
+      } catch { /* skip */ }
     }
 
-    // Apply known role overrides (match by directory name / local username)
     const craig = devs.find(d => d.id === 'craig');
     if (craig) { craig.role = 'CTO'; craig.githubUsername = 'craigmartin'; }
 
@@ -180,14 +160,8 @@ export async function getDevelopers(source: 'local' | 'github' = 'local', branch
     const tomas = devs.find(d => d.id === 'tomas');
     if (tomas) { tomas.role = 'Developer'; tomas.githubUsername = 'tomchi-debug'; }
 
-    // Add all projects for each dev (from GitHub tree)
     for (const dev of devs) {
-      dev.projects = [...new Set(PROJECTS.filter(p => {
-        try { 
-          // We can't easily check without another API call, so include all
-          return true; 
-        } catch { return false; }
-      }))];
+      dev.projects = [...new Set(PROJECTS)];
     }
   }
 
@@ -206,7 +180,7 @@ export async function getTickets(source: 'local' | 'github' = 'local', branch = 
   const tickets: Record<string, unknown>[] = [];
   const seenIds = new Set<string>();
 
-  const effectiveToken = getEffectiveToken(accessToken);
+  const effectiveToken = accessToken || process.env.GITHUB_TOKEN || null;
   const tokenSource = accessToken ? 'oauth' : (process.env.GITHUB_TOKEN ? 'env' : null);
 
   const sourceInfo: SourceInfo = {
@@ -227,7 +201,6 @@ export async function getTickets(source: 'local' | 'github' = 'local', branch = 
       } catch { /* no tickets dir */ }
     }
   } else {
-    // Determine actual auth mode
     if (effectiveToken) {
       sourceInfo.actual = tokenSource === 'env' ? 'github-token' : 'github';
       sourceInfo.reason = tokenSource === 'env'
@@ -238,24 +211,19 @@ export async function getTickets(source: 'local' | 'github' = 'local', branch = 
       sourceInfo.reason = 'GitHub API (unauthenticated — rate limited to 60 req/hr)';
     }
 
-    // Check cache first (invalidate if branch changed)
     const now = Date.now();
     if (githubCache && githubCache.branch === branch && (now - githubCache.timestamp) < GITHUB_CACHE_TTL) {
-      console.log('Using cached GitHub tickets for branch:', branch);
       sourceInfo.reason += ' (cached)';
       return { tickets: githubCache.tickets, sourceInfo };
     }
-    
+
     await walkGitHubDir(GITHUB_API_BASE, GITHUB_REPO, branch, tickets, seenIds, '', accessToken);
-    
-    // Cache the results
+
     if (tickets.length > 0) {
       githubCache = { tickets: [...tickets], timestamp: now, branch };
     }
-    
-    // Fallback to local if GitHub returns no tickets
+
     if (tickets.length === 0) {
-      console.warn('GitHub returned no tickets, falling back to local');
       sourceInfo.actual = 'local';
       sourceInfo.reason = effectiveToken
         ? `GitHub API returned 0 tickets (check repo access) — fallback to local`
@@ -320,29 +288,22 @@ async function walkDir(dir: string, result: Record<string, unknown>[], seenIds: 
   }
 }
 
-/** Build auth headers for GitHub API — tries OAuth token, then GITHUB_TOKEN, then unauthenticated */
-function gitHubHeaders(accessToken?: string): Record<string, string> {
-  const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
-  const token = getEffectiveToken(accessToken);
-  if (token) headers['Authorization'] = `Bearer ${token}`;
-  return headers;
-}
-
 async function walkGitHubDir(apiBase: string, repo: string, branch: string, result: Record<string, unknown>[], seenIds: Set<string>, path = 'thoughts', accessToken?: string) {
   const treeUrl = `${apiBase}/repos/${repo}/git/trees/${branch}?recursive=1`;
+
+  const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
+  const effectiveToken = accessToken || process.env.GITHUB_TOKEN || null;
+  if (effectiveToken) headers['Authorization'] = `Bearer ${effectiveToken}`;
+
   let treeData;
-  
-  const headers = gitHubHeaders(accessToken);
-  
   try {
-    const response = await fetch(treeUrl, { signal: AbortSignal.timeout(10000), headers });
+    const response = await fetch(treeUrl, { signal: AbortSignal.timeout(15000), headers });
     if (!response.ok) {
       if (response.status === 404) return;
-      throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+      return;
     }
     treeData = await response.json();
-  } catch (error) {
-    console.error('Failed to fetch GitHub tree:', error);
+  } catch {
     return;
   }
 
@@ -350,29 +311,24 @@ async function walkGitHubDir(apiBase: string, repo: string, branch: string, resu
   for (const item of treeData.tree) {
     if (prefix && !item.path.startsWith(prefix)) continue;
     if (item.type === 'blob' && item.path.endsWith('.md') && !item.path.endsWith('personal-ticket-template.md')) {
+      const rawUrl = `${GITHUB_RAW_BASE}/${repo}/${branch}/${item.path}`;
       let content;
-      
+
       const fileController = new AbortController();
       const fileTimeoutId = setTimeout(() => fileController.abort(), 10000);
-      
+
       try {
-        // Use GitHub Contents API — works for both public and private repos
-        // raw.githubusercontent.com returns 404 for private repos
-        const contentsUrl = `${apiBase}/repos/${repo}/contents/${item.path}?ref=${branch}`;
-        const response = await fetch(contentsUrl, { signal: fileController.signal, headers });
+        const response = await fetch(rawUrl, { signal: fileController.signal, headers });
         clearTimeout(fileTimeoutId);
         if (!response.ok) throw new Error(`Failed to fetch ${item.path}: ${response.status}`);
-        const contentsData = await response.json();
-        // Contents API returns base64-encoded content
-        content = Buffer.from(contentsData.content, 'base64').toString('utf-8');
+        content = await response.text();
       } catch (error) {
         clearTimeout(fileTimeoutId);
-        console.error(`Failed to fetch GitHub file ${item.path}:`, error);
         continue;
       }
 
       const { frontmatter, body } = parseFrontmatter(content);
-      
+
       const id = item.path.split('/').pop()?.replace(/\.md$/, '') || '';
       if (!id || seenIds.has(id)) continue;
       seenIds.add(id);
@@ -523,8 +479,11 @@ export async function getSkills() {
   return results;
 }
 
-export async function getDashboardStats() {
-  const { tickets } = await getTickets();
+export async function getDashboardStats(tickets?: Record<string, unknown>[]) {
+  if (!tickets) {
+    const result = await getTickets();
+    tickets = result.tickets;
+  }
   const weekAgo = new Date();
   weekAgo.setDate(weekAgo.getDate() - 7);
 

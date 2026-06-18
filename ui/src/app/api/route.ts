@@ -24,7 +24,8 @@ export async function GET(request: NextRequest) {
         return NextResponse.json(devs);
       }
       case 'tickets': {
-        const { tickets, sourceInfo } = await getTickets(source as 'local' | 'github', branch, accessToken);
+        const effectiveSource = source === 'github' && !accessToken && !process.env.GITHUB_TOKEN ? 'local' : source;
+        const { tickets, sourceInfo } = await getTickets(effectiveSource as 'local' | 'github', branch, accessToken);
         return NextResponse.json({ tickets, sourceInfo });
       }
       case 'docs': {
@@ -32,8 +33,9 @@ export async function GET(request: NextRequest) {
         return NextResponse.json(docs);
       }
       case 'dashboard': {
-        const { tickets, sourceInfo } = await getTickets(source as 'local' | 'github', branch, accessToken);
-        const stats = await getDashboardStats();
+        const effectiveSource = source === 'github' && !accessToken && !process.env.GITHUB_TOKEN ? 'local' : source;
+        const { tickets, sourceInfo } = await getTickets(effectiveSource as 'local' | 'github', branch, accessToken);
+        const stats = await getDashboardStats(tickets);
         return NextResponse.json({ stats, tickets, sourceInfo });
       }
       case 'skills': {
