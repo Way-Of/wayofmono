@@ -1,5 +1,93 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.6.0 (2026-06-19) — Markdown-First Ticket Storage with SQLite Read-Cache (WOMONO-098)
+
+### Architecture
+
+Tickets are now **persisted to disk**. The old 100% in-memory system (lost all status/review changes on refresh) is replaced with a markdown-first architecture:
+
+- **`.md` files are source of truth** — AI tools (Claude Code, OpenCode, Gemini CLI, Pi, Codex, Antigravity, woCoder) read/write them as before
+- **SQLite via Prisma is a read-cache** — Dashboard reads tickets from DB (~20ms vs ~200ms file scan)
+- **File watcher** — chokidar detects AI tool edits and upserts to DB automatically
+- **API fast-tracks DB writes** — When dashboard changes a status, it writes .md then immediately upserts DB (no stale-read latency)
+- **No two-way sync** — DB never writes to files. No race conditions, no sync loops.
+
+### New Dependencies
+- `gray-matter` — Proper YAML frontmatter parsing (handles colons, quotes, arrays, multiline)
+- `chokidar` — File system watching for AI tool ticket changes
+
+### New Files
+- `ui/prisma/schema.prisma` — `Ticket` model added (18 fields: id, title, type, priority, status, assignee, reporter, project, namespace, category, parentTicket, sharedTickets, prUrl, githubIssue, created, updated, reviewedBy, reviewedAt, reviewStatus, reviewComments, description, personalBreakdown, linkedDocs, filePath + timestamps)
+- `ui/src/lib/prisma.ts` — Prisma client singleton (pattern: globalThis for dev hot-reload safety)
+- `ui/src/lib/tickets-db.ts` — DB operations: `getAllTickets()`, `upsertTicket()`, `deleteTicket()`, `getTicketById()`, `bootstrapTicketsFromFiles()`, `getTicketCount()`
+- `ui/src/lib/tickets-fs.ts` — Filesystem operations: `parseTicketFile()` (gray-matter), `writeTicketFile()` (matter.stringify), `findTicketPathById()`, `walkAllTicketFiles()`, `buildPathIndex()` (in-memory path index for fast lookups)
+- `ui/src/app/api/tickets/route.ts` — RESTful API:
+  - `GET` — Paginated, filtered by status/project/priority, returns sourceInfo for UI
+  - `PATCH` — Accepts `{ id, updatedFields }`, writes .md with gray-matter, upserts DB, auto-sets status for Approved/Changes Requested
+  - `POST` — Creates new .md ticket file + DB record with full frontmatter
+- `ui/scripts/sync.ts` — chokidar watcher with debounce (300ms) + MD5 hash guard (skips redundant upserts from API writes)
+- `ui/scripts/bootstrap-db.ts` — One-time migration: walks 154 ticket .md files, parses frontmatter with gray-matter, upserts to SQLite. `--force` flag to re-import.
+
+### Changed Files
+- `ui/src/app/api/route.ts` — `GET /api?type=tickets` now reads from Prisma (auto-bootstraps from filesystem if DB is empty). `GET /api?type=dashboard` also reads from Prisma.
+- `ui/src/store/dashboard-store.ts` — `updateTicketStatus()` fires `PATCH /api/tickets` after optimistic update. `updateTicketReview()` same pattern + auto-sets status for approval/rejection.
+- `ui/bin/wodev.js` — Dev mode (`wodev --dev`) spawns `scripts/sync.ts` as child process alongside Next.js. Clean shutdown of both processes on SIGINT/SIGTERM.
+- `ui/package.json` — v0.5.5 → v0.6.0, added `gray-matter` + `chokidar` to dependencies
+
+### Schema Changes
+```prisma
+model Ticket {
+  id                String    @id
+  title             String
+  type              String
+  priority          String
+  status            String
+  assignee          String?
+  reporter          String?
+  project           String
+  namespace         String?
+  category          String?
+  parentTicket      String?
+  sharedTickets     String    @default("[]")
+  prUrl             String?
+  githubIssue       String?
+  created           String?
+  updated           String?
+  reviewedBy        String?
+  reviewedAt        String?
+  reviewStatus      String?
+  reviewComments    String?
+  description       String
+  personalBreakdown String    @default("[]")
+  linkedDocs        String    @default("[]")
+  filePath          String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  completedAt       DateTime?
+}
+```
+
+### Migration
+```bash
+# 1. Update npm packages
+cd ui
+npm install
+
+# 2. (Optional) Pre-import tickets before starting
+npx tsx scripts/bootstrap-db.ts
+
+# 3. Start dashboard (auto-imports if DB empty)
+wodev --dev
+```
+
+### Verified
+- 154 tickets imported from filesystem → SQLite
+- `GET /api?type=tickets` returns tickets from Prisma (source: "Prisma/SQLite read-cache")
+- `GET /api/tickets` returns paginated results (50/page default)
+- Template file (`ticket-template.md`) skipped gracefully (invalid YAML pipe syntax)
+- Next.js build passes with all new routes
+- Sync watcher starts and watches correct path
+
 ## v0.5.5 (2026-06-18) — Local-First Ticket Source + CreateTicketDialog Fix
 
 ### Fixes

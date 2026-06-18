@@ -1,16 +1,10 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL") // Default: file:~/.config/wodev/dashboard.db
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -38,4 +32,35 @@ model SkillReport {
   count     Int
   skills    String   @default("[]")
   createdAt DateTime @default(now())
+}
+
+model Ticket {
+  id                String    @id
+  title             String
+  type              String
+  priority          String
+  status            String
+  assignee          String?
+  reporter          String?
+  project           String
+  namespace         String?
+  category          String?
+  parentTicket      String?
+  sharedTickets     String    @default("[]")
+  prUrl             String?
+  githubIssue       String?
+  created           String?
+  updated           String?
+  reviewedBy        String?
+  reviewedAt        String?
+  reviewStatus      String?
+  reviewComments    String?
+  description       String
+  personalBreakdown String    @default("[]")
+  linkedDocs        String    @default("[]")
+  filePath          String?
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  completedAt       DateTime?
 }

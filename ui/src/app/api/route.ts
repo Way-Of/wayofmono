@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDevelopers, getTickets, getDocs, getDashboardStats, getSkills } from "@/lib/thoughts";
+import { getDevelopers, getDocs, getDashboardStats, getSkills } from "@/lib/thoughts";
+import { getAllTickets, getTicketCount, bootstrapTicketsFromFiles } from "@/lib/tickets-db";
+import { walkAllTicketFiles } from "@/lib/tickets-fs";
 import fs from "fs/promises";
 import path from "path";
 import { getServerSession } from "next-auth";
@@ -11,8 +13,7 @@ export async function GET(request: NextRequest) {
   const type = request.nextUrl.searchParams.get('type') || 'dashboard';
   const source = request.nextUrl.searchParams.get('source') || 'local';
   const branch = request.nextUrl.searchParams.get('branch') || 'main';
-  
-  // Get session for authenticated GitHub API calls
+
   const session = await getServerSession(authOptions);
   const accessToken = (session as any)?.accessToken;
 
@@ -24,19 +25,37 @@ export async function GET(request: NextRequest) {
         return NextResponse.json(devs);
       }
       case 'tickets': {
-        const effectiveSource = source === 'github' && !accessToken && !process.env.GITHUB_TOKEN ? 'local' : source;
-        const { tickets, sourceInfo } = await getTickets(effectiveSource as 'local' | 'github', branch, accessToken);
-        return NextResponse.json({ tickets, sourceInfo });
+        const count = await getTicketCount();
+        if (count === 0) {
+          const imported = await bootstrapTicketsFromFiles(walkAllTicketFiles);
+          console.log(`[api] Bootstrapped ${imported} tickets from filesystem`);
+        }
+        const tickets = await getAllTickets();
+        return NextResponse.json({
+          tickets,
+          sourceInfo: {
+            requested: source,
+            actual: 'local',
+            tokenAvailable: false,
+            tokenSource: null,
+            reason: 'Prisma/SQLite read-cache',
+          },
+        });
       }
       case 'docs': {
         const docs = await getDocs();
         return NextResponse.json(docs);
       }
       case 'dashboard': {
-        const effectiveSource = source === 'github' && !accessToken && !process.env.GITHUB_TOKEN ? 'local' : source;
-        const { tickets, sourceInfo } = await getTickets(effectiveSource as 'local' | 'github', branch, accessToken);
+        const tickets = await getAllTickets();
         const stats = await getDashboardStats(tickets);
-        return NextResponse.json({ stats, tickets, sourceInfo });
+        return NextResponse.json({ stats, tickets, sourceInfo: {
+          requested: source,
+          actual: 'local',
+          tokenAvailable: false,
+          tokenSource: null,
+          reason: 'Prisma/SQLite read-cache',
+        }});
       }
       case 'skills': {
         const skills = await getSkills();

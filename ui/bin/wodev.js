@@ -269,6 +269,36 @@ function runNext(cmd, extraArgs = []) {
     }
   }
 
+  let syncChild = null;
+  if (cmd === 'dev') {
+    const syncScript = path.join(projectRoot, 'scripts', 'sync.ts');
+    if (existsSync(syncScript)) {
+      let tsxBin;
+      try {
+        tsxBin = createRequire(import.meta.url).resolve('tsx/dist/cli.mjs');
+      } catch {
+        try {
+          tsxBin = createRequire(import.meta.url).resolve('tsx/dist/cli.js');
+        } catch {
+          tsxBin = null;
+        }
+      }
+      if (tsxBin) {
+        console.log(`  ${od('⟡ SYNC WATCHER')}  ${od('watching ticket files')}  ${od('─'.repeat(13))}`);
+        syncChild = spawn(process.execPath, [tsxBin, syncScript], {
+          cwd: projectRoot,
+          env: { ...env, NODE_ENV: 'development' },
+          stdio: 'inherit',
+        });
+        syncChild.on('error', (err) => {
+          console.warn(`  ${yellow('⚠')}  Sync watcher failed: ${err.message}`);
+        });
+      } else {
+        console.log(`  ${yellow('⚠')}  tsx not found — ticket sync watcher disabled`);
+      }
+    }
+  }
+
   let nextBin;
   try {
     nextBin = createRequire(import.meta.url).resolve('next/dist/bin/next');
@@ -284,8 +314,15 @@ function runNext(cmd, extraArgs = []) {
     stdio: 'inherit',
   });
 
+  const cleanup = () => {
+    if (syncChild) {
+      syncChild.kill('SIGINT');
+    }
+  };
+
   child.on('error', (err) => {
     console.error(`  ${red('✗')} Failed to start: ${err.message}`);
+    cleanup();
     process.exit(1);
   });
 
@@ -299,17 +336,20 @@ function runNext(cmd, extraArgs = []) {
         execSync(`chmod -R o+rX "${path.join(projectRoot, '.next')}"`, { stdio: 'ignore' });
       } catch {}
     }
+    cleanup();
     process.exit(code || 0);
   });
 
   process.on('SIGINT', () => {
     console.log(`\n  ${od('🛑 Shutting down...')}`);
+    cleanup();
     child.kill('SIGINT');
   });
 
   if (!isWin) {
     process.on('SIGTERM', () => {
       console.log(`\n  ${od('🛑 Shutting down...')}`);
+      cleanup();
       child.kill('SIGTERM');
     });
   }

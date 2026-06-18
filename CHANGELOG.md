@@ -1,5 +1,39 @@
 # Changelog
 
+## [1.8.0] - 2026-06-19
+
+### Dashboard (wo-cto-dashboard v0.6.0) — Markdown-First Ticket Storage with SQLite Read-Cache (WOMONO-098)
+
+#### Architecture
+- **Markdown-first + SQLite read-cache**: Tickets are now persisted. `.md` files remain the source of truth; SQLite via Prisma is a fast read-cache.
+  - `gray-matter` replaces fragile `parseFrontmatter()` — handles colons, quotes, arrays, proper YAML
+  - `chokidar` file watcher detects AI tool edits and upserts to DB automatically
+  - API fast-tracks DB writes after file writes — no stale-read latency
+  - DB is passive projection — file timestamp always wins (no sync loops)
+
+#### New Files
+- `ui/prisma/schema.prisma` — `Ticket` model with 18 fields + filePath for fast writes
+- `ui/src/lib/prisma.ts` — Prisma client singleton
+- `ui/src/lib/tickets-db.ts` — DB CRUD operations (getAll, upsert, delete, bootstrap)
+- `ui/src/lib/tickets-fs.ts` — Filesystem .md read/write with gray-matter + path index
+- `ui/src/app/api/tickets/route.ts` — RESTful GET (paginated/filtered), PATCH (status/review → .md + DB), POST (create)
+- `ui/scripts/sync.ts` — chokidar file watcher with debounce + hash guard
+- `ui/scripts/bootstrap-db.ts` — One-time migration script (walks all .md files → SQLite)
+
+#### Changed Files
+- `ui/src/app/api/route.ts` — `GET /api?type=tickets` reads from Prisma (auto-bootstraps if empty)
+- `ui/src/store/dashboard-store.ts` — `updateTicketStatus` + `updateTicketReview` call `PATCH /api/tickets`
+- `ui/bin/wodev.js` — Dev mode spawns sync watcher alongside Next.js server
+- `ui/package.json` — Added `gray-matter` + `chokidar` deps, bumped to v0.6.0
+
+#### Migration
+```bash
+cd ui
+npm install                    # gets gray-matter + chokidar
+npx tsx scripts/bootstrap-db.ts  # imports existing tickets into SQLite
+wodev --dev                    # starts Next.js + file watcher
+```
+
 ## [1.7.3] - 2026-06-18
 
 ### Dashboard (wo-cto-dashboard v0.5.3)

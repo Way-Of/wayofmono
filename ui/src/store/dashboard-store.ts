@@ -214,6 +214,11 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
         t.id === ticketId ? { ...t, status: status as Ticket['status'], updated: new Date().toISOString().slice(0, 10) } : t
       ),
     }));
+    fetch('/api/tickets', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: ticketId, updatedFields: { status } }),
+    }).catch(err => console.error('Failed to persist ticket status:', err));
   },
   updateTicketReview: (ticketId, reviewStatus, comments) => {
     const currentUser = useAuthStore.getState().currentUser || '';
@@ -232,6 +237,22 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
           : t
       ),
     }));
+    const updatedFields: Record<string, string> = {
+      reviewStatus,
+      reviewComments: comments,
+      reviewedBy: currentUser,
+    };
+    if (reviewStatus === 'Approved') {
+      updatedFields.status = 'Done';
+    }
+    if (reviewStatus === 'Changes Requested') {
+      updatedFields.status = 'Changes Requested';
+    }
+    fetch('/api/tickets', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: ticketId, updatedFields }),
+    }).catch(err => console.error('Failed to persist ticket review:', err));
   },
   setSearchQuery: (q) => set({ searchQuery: q }),
   setFilterProject: (p) => set({ filterProject: p }),
