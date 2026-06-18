@@ -390,6 +390,12 @@ function runElectron(isDev = false) {
   // Fixed NEXTAUTH_SECRET - MUST MATCH v0.4.21 SECRET for old cookie decryption
   const fixedSecret = '68870c1363f4721bf3a154d3e524b54a34ac5eb683e4d7dc53c426edc10e41d7';
 
+  const userConfigDir = path.join(os.homedir(), '.config', 'wodev');
+  if (!existsSync(userConfigDir)) {
+    mkdirSync(userConfigDir, { recursive: true });
+  }
+  const dbPath = process.env.DATABASE_URL || `file:${path.join(userConfigDir, 'dashboard.db')}`;
+
   const env = {
     ...process.env,
     PORT: port,
@@ -398,6 +404,7 @@ function runElectron(isDev = false) {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL || `http://localhost:${port}`,
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || 'Ov23liy3r3AGOFaXT6YV',
     GITHUB_TOKEN: process.env.GITHUB_TOKEN || '',
+    DATABASE_URL: dbPath,
   };
 
   const child = spawn(isDev ? 'bun' : electronBin, isDev ? ['dev'] : [mainPath], {
