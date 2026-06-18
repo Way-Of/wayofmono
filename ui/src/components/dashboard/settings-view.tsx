@@ -68,14 +68,14 @@ export function SettingsView() {
                   : 'text-text-muted hover:text-foreground'
               }`}
             >
-              <Server className="w-4 h-4 inline mr-1.5" />
-              Local
+              <Database className="w-4 h-4 inline mr-1.5" />
+              DB
             </button>
           </div>
           <p className="text-xs text-text-muted mt-1.5">
             {ticketSource === 'github'
               ? 'Fetches tickets and developers from the f-rr-d GitHub repository'
-              : 'Reads from the local thoughts/ directory on disk'}
+              : 'Reads from local SQLite database (synced from .md files)'}
           </p>
         </div>
       </div>
@@ -171,7 +171,7 @@ export function SettingsView() {
           </div>
           <div>
             <label className="text-xs text-text-muted block mb-1">Data Source</label>
-            <p className="text-foreground font-mono text-xs break-all">{ticketSource === 'github' ? 'GitHub (api.github.com)' : 'Local (thoughts/)'}</p>
+            <p className="text-foreground font-mono text-xs break-all">{ticketSource === 'github' ? 'GitHub (api.github.com)' : 'DB (SQLite — synced from .md files)'}</p>
           </div>
           <div>
             <label className="text-xs text-text-muted block mb-1">Config File</label>

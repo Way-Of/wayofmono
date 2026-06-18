@@ -359,11 +359,11 @@ export function TicketsView() {
         </div>
         <div className="flex items-center gap-3">
           <Badge variant="outline" className="border-border text-text-muted text-xs">
-            f-rr-d &middot; {ticketSource === 'github' ? 'GitHub' : 'Local'}
+            f-rr-d &middot; {ticketSource === 'github' ? 'GitHub' : 'DB'}
             {ticketSource === 'github' && <span className="ml-1">({ticketBranch})</span>}
           </Badge>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-text-muted">Local</span>
+            <span className="text-xs text-text-muted">DB</span>
             <Switch
               checked={ticketSource === 'github'}
               onCheckedChange={(checked) => setTicketSource(checked ? 'github' : 'local')}
