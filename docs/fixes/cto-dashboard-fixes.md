@@ -1,5 +1,21 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.5.5 (2026-06-18) — Local-First Ticket Source + CreateTicketDialog Fix
+
+### Fixes
+- **Local-first ticket source**: Changed default `ticketSource` from `'github'` to `'local'` — app no longer tries GitHub (private repo, no token) on every load. Short-circuits in API route when no GITHUB_TOKEN is available. Tickets load ~140ms instead of ~500ms.
+- **Missing `CreateTicketDialog` component**: Added inline dialog component that was referenced but never defined — caused `ReferenceError: CreateTicketDialog is not defined`. Includes title, project, type, priority, description fields and creates tickets in-memory via zustand store.
+
+### Files Changed
+- `ui/src/store/dashboard-store.ts` — Default `ticketSource: 'local'`
+- `ui/src/app/api/route.ts` — Short-circuit GitHub when no token
+- `ui/src/components/dashboard/tickets-view.tsx` — Added `CreateTicketDialog` component
+
+### Migration
+```bash
+sudo npm update -g @wayofmono/wo-cto-dashboard
+```
+
 ## v0.5.4 (2026-06-18) — Update f-rr-d Button & Thoughts Root Auto-Detection
 
 ### Features
