@@ -1,11 +1,7 @@
 ---
-name: build-skill-auto-update
+name: build_skill_auto_update
 description: Auto-update harness skills from upstream changes, sync documentation, and apply patches
-allowed-tools:
-  - bash
-  - write
-  - read
-  - webfetch
+allowed-tools: read, write, bash, webfetch
 ---
 
 # skill Auto-Update skill
@@ -40,7 +36,6 @@ After each update:
 - Preserve user modifications (`.wo/` files)
 - Update harness-specific SKILL.md
 - Sync only canonical changes
-
 
 ## Config-Manifest Sync
 

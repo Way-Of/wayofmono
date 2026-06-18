@@ -1,5 +1,5 @@
 ---
-name: wow-backend-dev
+name: wow_backend_dev
 description: Comprehensive guide for developing backend APIs, database interactions, and security protocols in the Way of Work (WoW) project. Use when working on server routes, database schemas, or API logic.
 ---
 

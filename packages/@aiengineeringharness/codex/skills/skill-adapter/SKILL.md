@@ -59,13 +59,3 @@ When adding a new skill/command/agent to all tools:
 | `scripts/compliance-fix.ts` | Auto-fix script for cross-tool compliance issues |
 | `scripts/run-all-tests.py` | Test suite orchestrator with `--tool=<name>` support |
 
-
-## Assets
-
-| Asset | Description |
-|-------|-------------|
-| `scripts/` | Test suite and skill update scripts: `test-yamls.py`, `test-manifest.py`, `test-skills.py`, `run-all-tests.py`, plus 7 per-tool skill update scripts |
-| `scripts/compliance-check.ts` | Compliance checker for all 7 tools |
-| `scripts/compliance-fix.ts` | Auto-fix script for cross-tool compliance issues |
-| `scripts/run-all-tests.py` | Test suite orchestrator with `--tool=<name>` support |
-

@@ -1,12 +1,7 @@
 ---
-name: skill-adapter
+name: skill_adapter
 description: Platform-specific skill/agent loading and format adapters for all 7 frontends
-allowed-tools:
-  - glob
-  - grep
-  - write
-  - read
-  - bash
+allowed-tools: read, write, glob, bash, grep
 ---
 
 # Platform-Specific skill Loading & Format Adapters
@@ -59,8 +54,8 @@ When adding a new skill/command/agent to all tools:
 
 | Asset | Description |
 |-------|-------------|
-| `assets/compliance-fix.ts` | Cross-tool compliance auto-fix script. Run: `deno run -A assets/compliance-fix.ts` |
 | `scripts/` | Test suite and skill update scripts: `test-yamls.py`, `test-manifest.py`, `test-skills.py`, `run-all-tests.py`, plus 7 per-tool skill update scripts |
 | `scripts/compliance-check.ts` | Compliance checker for all 7 tools |
 | `scripts/compliance-fix.ts` | Auto-fix script for cross-tool compliance issues |
 | `scripts/run-all-tests.py` | Test suite orchestrator with `--tool=<name>` support |
+

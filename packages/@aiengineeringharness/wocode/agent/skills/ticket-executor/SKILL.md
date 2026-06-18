@@ -26,6 +26,14 @@ Ticket → /create_plan → /implement_plan → /validate_plan → /validate_tel
 - Track error rates
 - Compare against plan expectations
 
+## Audit Utility
+
+A ticket audit script is bundled at `assets/audit-tickets.js`. Run it after executing plan phases to verify ticket frontmatter integrity:
+
+```bash
+deno run -A assets/audit-tickets.js
+```
+
 ## CTO Dashboard UI Integration
 
 The CTO Dashboard status dropdown affects execution workflow:

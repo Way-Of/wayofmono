@@ -1,55 +1,48 @@
 ---
-name: build-tool-skill
-description: Build skills for all 7 AI coding tools — knows SKILL.md format, frontmatter, naming conventions, allowed-tools casing, and directory rules.
-allowed-tools:
-  - read
-  - write
-  - edit
-  - bash
-  - grep
-  - glob
-  - webfetch
-  - websearch
+name: build_tool_skill
+description: Build skills for all 7 AI coding tools — knows SKILL.md format, frontmatter, naming conventions, allowed-tools, directory rules.
+allowed-tools: read, write, edit, bash, grep, glob, websearch
 ---
 
 # build_tool_skill — Unified skill Builder
 
-You are a cross-tool skill builder. You know how to create skill definitions for ALL 7 AI coding tools. Load this skill when the user wants to create or modify a skill for any tool.
+You are a cross-tool skill builder. You know how to create SKILL.md files for ALL 7 AI coding tools. Load this skill when the user wants to create or modify a skill for any tool.
 
 ## Tool Format Reference
 
 ### OpenCode
 - **Directory naming**: snake_case
-- **Name field**: snake_case, matches directory name, regex `^[a-z0-9]+(-[a-z0-9]+)*$`
-- **allowed-tools**: lowercase (`read, write, edit, bash, grep, glob, webfetch, websearch, question, todowrite, skill`)
-- **Config**: `~/.config/opencode/skills/`
+- **Name field**: snake_case, matches directory name
+- **allowed-tools**: lowercase (`read, write, edit, bash, grep, glob`)
+- **Config**: `~/.config/opencode/`
 - **Docs**: https://opencode.ai/docs/
 
 ### Claude Code
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob, webfetch, websearch, Web`)
+- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.claude/skills/`
 - **Docs**: https://code.claude.com/docs/en/overview
 
 ### Gemini CLI
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: lowercase (`read, write, bash, glob, grep, web, code`)
+- **Format**: TOML files (not YAML frontmatter)
+- **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, glob, grep`)
 - **Config**: `~/.gemini/skills/`
 - **Docs**: https://cloud.google.com/gemini-cli/docs
 
 ### Pi
 - **Directory naming**: kebab-case
 - **Name field**: kebab-case, matches directory name
-- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob, webfetch, websearch`)
+- **allowed-tools**: PascalCase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.pi/agent/skills/`
 - **Docs**: https://pi.dev/
 
 ### Antigravity
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
-- **allowed-tools**: lowercase (`read, write, edit, bash, grep, glob, webfetch, websearch`)
+- **allowed-tools**: lowercase (`read, write, edit, bash, grep, glob`)
 - **Config**: `~/.antigravity/skills/`
 - **Docs**: https://antigravity.sh/docs
 
@@ -68,53 +61,22 @@ You are a cross-tool skill builder. You know how to create skill definitions for
 - **Config**: `~/.wocode/skills/`
 - **Docs**: Internal (WayOfMono monorepo)
 
-## skill Formats Per Tool
+## Common Tasks
 
-### OpenCode / Claude / Antigravity / Wo Coder
-- Format: Markdown with YAML frontmatter
-- Required fields: `name`, `description`, `allowed-tools` (optional)
-- Location: `skills/` directory
-- Auto-trigger: via frontmatter `on` keywords or name matching
+### Create a New skill
+1. Determine target tool (or cross-tool)
+2. Create directory: `<tool>/skills/<name>/`
+3. Create `SKILL.md` with frontmatter matching tool's format
+4. Body: markdown with instructions, references, examples
+5. For Codex: create `skill.yaml` + `prompt.md`
 
-### Pi
-- Format: Markdown with YAML frontmatter
-- Required fields: `name` (kebab-case), `description`, `allowed-tools`, `tools` (alias)
-- Location: `skills/` directory
-- Also serves as subagent delegation targets
-
-### Gemini CLI
-- Format: TOML files
-- Location: `skills/` directory
-- Fields match TOML schema
-
-### Codex
-- Format: Two files per skill - `skill.yaml` (metadata) + `prompt.md` (instructions)
-- Location: `skills/` directory
-
-## Allowed Frontmatter Fields Per Tool
-
-| Tool | Required | Optional | Forbidden |
-|------|----------|----------|-----------|
-| OpenCode | name, description | allowed-tools, docs-url, disable-model-invocation, on | All others |
-| Claude | name, description | allowed-tools, disable-model-invocation, on | All others |
-| Gemini | name, description | allowed-tools, disable-model-invocation, on | All others |
-| Pi | name, description, allowed-tools/tools | docs-url, disable-model-invocation, on | All others |
-| Antigravity | name, description | allowed-tools, docs-url, disable-model-invocation, on | All others |
-| Codex | name, description (in skill.yaml) | allowed-tools, docs-url, disable-model-invocation, on | All others |
-| Wo Coder | name, description | allowed-tools, docs-url, disable-model-invocation, on | All others |
-
-## Generation Workflow
-
-1. **Identify target tool** — Ask user which of 7 tools the skill is for
-2. **Fetch latest docs** — read `thoughts/global/docs/ai-coding-tools/<tool>.md` AND fetch official docs URL
-3. **Determine naming** — snake_case or kebab-case per tool
-4. **Set allowed-tools** — Must match per-tool casing exactly
-5. **Validate frontmatter** — Only include fields supported by target tool
-6. **write to correct directory** — Place in harness dir or user config dir per tool
-7. **Run compliance check** — `deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts` to validate
+### Validate skill Format
+- Name must match directory name
+- allowed-tools must use correct casing for target tool
+- Frontmatter must be valid YAML (or TOML for Gemini)
+- Pi names must be kebab-case
 
 ## Online Sources
-
 Always fetch the latest docs before building:
 - OpenCode: https://opencode.ai/docs/
 - Claude Code: https://code.claude.com/docs/en/overview

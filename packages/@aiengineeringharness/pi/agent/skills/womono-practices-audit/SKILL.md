@@ -1,5 +1,5 @@
 ---
-name: womono-practices-audit
+name: womono_practices_audit
 description: Validates existing code and infrastructure against WoM best practices from thoughts/wayofmono/docs/best-practices/. Run this to find compliance gaps and generate a report.
 ---
 

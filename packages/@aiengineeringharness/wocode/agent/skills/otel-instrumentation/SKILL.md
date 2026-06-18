@@ -1,5 +1,5 @@
 ---
-name: otel-instrumentation
+name: otel_instrumentation
 description: >
   Application-side OpenTelemetry SDK setup — traces, metrics, structured
   logging across Node.js, Go, Python, Java, .NET, Ruby. Prescriptive

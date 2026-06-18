@@ -1,5 +1,5 @@
 ---
-name: ticket-context
+name: ticket_context
 description: Associates work with a specific ticket ID across all WoM projects (WOMONO, WOW, OPT). Use when initiating new work to ensure compliance and production-ready standards.
 ---
 
@@ -37,4 +37,23 @@ This skill ensures all work is linked to an approved ticket from the correct nam
 *   Tickets are stored at `thoughts/<project-slug>/shared/tickets/<PREFIX>-<NNN>-<DESCRIPTION>.md`.
 *   New tickets follow the naming convention and template in `thoughts/shared/tickets/ticket-template.md`.
 *   The `ticket_manager` skill has full lifecycle management. This skill ensures adherence to the process.
+
+## Audit Utility
+
+A ticket audit script is bundled at `assets/audit-tickets.js`. Run it to validate ticket frontmatter compliance before associating work with a ticket:
+
+```bash
+deno run -A assets/audit-tickets.js
+```
+
+## CTO Dashboard UI Integration
+
+The CTO Dashboard provides interactive ticket status management:
+
+- **Status Dropdown**: Both ticket list and detail views have a `Select` dropdown for status
+- **Available Statuses**: Backlog, In Progress, In Review, Done, Blocked
+- **Visual Indicators**: Color-coded badges matching status (gray/blue/yellow/green/red)
+- **Real-time Updates**: Status changes update immediately in UI and sync to f-rr-d repository
+
+When working on a ticket, the current status from the UI/dashboard is the source of truth. Agents can also update status using `update_ticket` tool with `status` parameter.
 

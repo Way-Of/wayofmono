@@ -1,13 +1,7 @@
 ---
-name: pr-description-generator
+name: pr_description_generator
 description: Generates comprehensive pull request descriptions following repository templates. Utilizes Gemini CLI tools including `run_shell_command` for `git` and `gh` commands.
-allowed-tools:
-  - grep
-  - write
-  - replace
-  - bash
-  - read
-  - glob
+allowed-tools: read, bash, grep, glob, replace, write
 ---
 
 # PR Description Generator

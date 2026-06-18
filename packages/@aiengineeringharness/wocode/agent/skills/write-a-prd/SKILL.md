@@ -1,5 +1,5 @@
 ---
-name: write-a-prd
+name: write_a_prd
 description: Generate a PRD from a client brief and write it as issues/prd.md. Interviews the user about problem and solution, sketches deep modules, and writes a structured PRD. Use when the user wants to turn a client request or rough idea into a structured PRD.
 allowed-tools: read, bash, glob, write
 ---

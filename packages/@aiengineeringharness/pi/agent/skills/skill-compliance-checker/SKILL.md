@@ -1,10 +1,7 @@
 ---
-name: skill-compliance-checker
+name: skill_compliance_checker
 description: Validate all skill SKILL.md files across all 7 tool harnesses for correct frontmatter, naming, allowed-tools casing, and format compliance. Use when the user asks to check compliance, validate skills, run compliance check, or verify skill formatting.
-allowed-tools:
-  - bash
-  - write
-  - read
+allowed-tools: read, write, bash
 ---
 
 # skill Compliance Checker
@@ -122,10 +119,9 @@ After any skill/command/agent change:
 2. Run `python3 packages/@aiengineeringharness/config-manifest/validate.py` to check config
 3. Run `python3 packages/@aiengineeringharness/config-manifest/compile.py` to regenerate `manifest.json`
 4. Run `python3 packages/@aiengineeringharness/config-manifest/scripts/run-all-tests.py` to verify everything
-
 ### CI/CD Gate
-The test suite at `config-manifest/scripts/` is the CI/CD gate. Any PR modifying tool configs must pass all tests.
 
+The test suite at `config-manifest/scripts/` is the CI/CD gate. Any PR modifying tool configs must pass all tests.
 
 ## Assets
 
@@ -136,3 +132,4 @@ The test suite at `config-manifest/scripts/` is the CI/CD gate. Any PR modifying
 | `scripts/compliance-check.ts` | Compliance checker for all 7 tools |
 | `scripts/compliance-fix.ts` | Auto-fix script for cross-tool compliance issues |
 | `scripts/run-all-tests.py` | Test suite orchestrator with `--tool=<name>` support |
+

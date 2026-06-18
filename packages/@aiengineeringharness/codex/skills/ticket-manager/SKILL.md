@@ -88,6 +88,16 @@ github_issue: ""
 
 Use `thoughts/shared/tickets/ticket-template.md`.
 
+## Audit Utility
+
+A ticket audit script is bundled at `assets/audit-tickets.js`. Run it to validate all tickets across WOMONO, WOW, and OPT for frontmatter compliance:
+
+```bash
+deno run -A assets/audit-tickets.js
+```
+
+This checks every ticket file for required frontmatter fields, correct formatting, and file naming. Use it before submitting tickets for review or after batch operations.
+
 ## Production-Ready Standard
 
 Every ticket's acceptance criteria **must** include:
