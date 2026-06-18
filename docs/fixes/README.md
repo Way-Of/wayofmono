@@ -16,7 +16,7 @@
 | **wocode** | `@wayofmono/wo-coding-agent` | v1.0.11 | `~/.wocode/` |
 | **wouser** | `@wayofmono/wo-agent` | v1.0.4 | `~/.wo/` |
 | **Harness** | `@aiengineeringharness` | v1.7.0 | `~/.wocode/`, `~/.pi/agent/`, etc. |
-| **Dashboard** | `@wayofmono/wo-cto-dashboard` | v0.6.2 | `~/.config/wodev/` |
+| **Dashboard** | `@wayofmono/wo-cto-dashboard` | v0.6.3 | `~/.config/wodev/` |
 
 ---
 

@@ -1,5 +1,26 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.6.3 (2026-06-19) — Wire Notification Read-State Tracking (WOMONO-095)
+
+### Fixes
+- **Badge now shows unread count only** — filtered by `readNotificationIds` instead of showing total ticket count
+- **Opening bell marks all as read** — calls `markAllAsRead()` client-side + POST to API for persistence
+- **Clicking a ticket marks it read** — calls `markAsRead()` + POST for that specific notification
+- **Visual unread indicator** — unread ticket items have a blue ring (`ring-1 ring-primary/30`)
+- **"All caught up"** when all notifications have been read
+- **Sidebar review badge** also filtered by read state
+- **`mark-all-read` API handler** now persists all notification IDs (was a no-op stub)
+
+### Files Changed
+- `ui/src/app/page.tsx` — Imported `useNotificationStore`, wired `loadReadState()`, `markAsRead()`, `markAllAsRead()` to bell/ticket interactions
+- `ui/src/components/dashboard/sidebar.tsx` — Review badge filters by `readNotificationIds.has(\`review-${t.id}\`)`
+- `ui/src/app/api/notifications/route.ts` — Fixed `mark-all-read` handler to accept and persist `notificationIds` array
+
+### Migration
+```bash
+npm update -g @wayofmono/wo-cto-dashboard && wodev --build
+```
+
 ## v0.6.2 (2026-06-19) — Rename Local→DB in Ticket Source UI
 
 ### Changed Files

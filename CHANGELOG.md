@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.8.3] - 2026-06-19
+
+### Dashboard (wo-cto-dashboard v0.6.3)
+- **Wire notification read-state tracking (WOMONO-095)**: Badge now shows unread count only (filtered by `readNotificationIds`). Opening bell or clicking a notification marks it read. Visual indicators (blue ring) for unread items. "All caught up" when nothing to see. Sidebar review badge also respects read state. `mark-all-read` API handler fixed to persist all IDs.
+
 ## [1.8.2] - 2026-06-19
 
 ### Dashboard (wo-cto-dashboard v0.6.2)
