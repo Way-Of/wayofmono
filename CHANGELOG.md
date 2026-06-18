@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.8.2] - 2026-06-19
+
+### Dashboard (wo-cto-dashboard v0.6.2)
+- **Rename Local→DB in ticket source UI**: Updated all UI references from "Local" to "DB" to reflect SQLite read-cache architecture.
+
 ## [1.8.1] - 2026-06-19
 
 ### Dashboard (wo-cto-dashboard v0.6.1)
