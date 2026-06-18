@@ -231,6 +231,9 @@ components:
     files:
     - src: pi/agent/skills/ticket-manager/SKILL.md
       dest: skills/ticket-manager/SKILL.md
+
+    - src: pi/agent/skills/ticket-manager/assets/audit-tickets.js
+      dest: skills/ticket-manager/assets/audit-tickets.js
   skill/team-setup:
     description: Team Setup - initialize and manage team configuration
     files:
@@ -371,6 +374,9 @@ components:
     files:
     - src: pi/agent/skills/ticket-context/SKILL.md
       dest: skills/ticket-context/SKILL.md
+
+    - src: pi/agent/skills/ticket-context/assets/audit-tickets.js
+      dest: skills/ticket-context/assets/audit-tickets.js
   skill/usage-rules:
     description: Usage Rules skill
     files:
@@ -690,6 +696,9 @@ components:
     files:
     - src: pi/agent/skills/ticket-executor/SKILL.md
       dest: skills/ticket-executor/SKILL.md
+
+    - src: pi/agent/skills/ticket-executor/assets/audit-tickets.js
+      dest: skills/ticket-executor/assets/audit-tickets.js
   skill/validate-podman:
     description: Validate Podman/Quadlet configurations on Fedora
     files:
