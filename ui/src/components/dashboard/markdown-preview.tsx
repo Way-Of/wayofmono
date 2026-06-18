@@ -33,7 +33,7 @@ export function MarkdownPreview({ title, body, type, project, author, updated, o
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="!p-0 max-w-5xl max-h-[90vh] overflow-hidden" showCloseButton={false}>
+      <DialogContent className="!p-0 !w-[90vw] !max-w-[90vw] !max-h-[90vh]" showCloseButton={false}>
         <div className="bg-background rounded-lg flex flex-col max-h-[90vh] relative">
           {/* Close button */}
           <button
