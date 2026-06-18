@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useAuthStore, useDashboardStore } from '@/store/dashboard-store';
+import { useAuthStore, useDashboardStore, useNotificationStore } from '@/store/dashboard-store';
 import { LoginPage } from '@/components/dashboard/login-page';
 import { Sidebar } from '@/components/dashboard/sidebar';
 import { OverviewView } from '@/components/dashboard/overview-view';
@@ -39,6 +39,7 @@ const viewLabels: Record<string, string> = {
 export default function DashboardPage() {
   const { currentUser, canReview } = useAuthStore();
   const { currentView, tickets, viewHistory, goBack, fetchData, setSelectedTicket, setCurrentView, actualSource } = useDashboardStore();
+  const { readNotificationIds, markAsRead, markAllAsRead } = useNotificationStore();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [bellOpen, setBellOpen] = useState(false);
   const [updating, setUpdating] = useState(false);
@@ -47,6 +48,8 @@ export default function DashboardPage() {
   const bellRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { fetchData(); }, [fetchData]);
+
+  useEffect(() => { useNotificationStore.getState().loadReadState(); }, []);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -82,8 +85,11 @@ export default function DashboardPage() {
   const weekAgo = new Date();
   weekAgo.setDate(weekAgo.getDate() - 7);
 
+  const notifId = (t: typeof tickets[0], isReview: boolean) => isReview ? `review-${t.id}` : `update-${t.id}`;
+  const isUnread = (t: typeof tickets[0], isReview: boolean) => !readNotificationIds.has(notifId(t, isReview));
+
   const reviewQueue = tickets.filter(t => t.status === 'In Review' && t.reviewStatus === 'Pending');
-  const reviewCount = canReview ? reviewQueue.length : 0;
+  const unreadReviewCount = canReview ? reviewQueue.filter(t => isUnread(t, true)).length : 0;
 
   const recentTickets = tickets.filter(t => {
     if (!t.updated) return false;
@@ -92,7 +98,10 @@ export default function DashboardPage() {
   }).filter(t => !(canReview && t.status === 'In Review' && t.reviewStatus === 'Pending'))
     .sort((a, b) => new Date(b.updated).getTime() - new Date(a.updated).getTime());
 
-  const totalNotifications = reviewCount + recentTickets.length;
+  const unreadRecentCount = recentTickets.filter(t => isUnread(t, false)).length;
+  const totalUnreadNotifications = unreadReviewCount + unreadRecentCount;
+
+  const allNotifIds = (t: typeof tickets[0]) => notifId(t, t.status === 'In Review' && t.reviewStatus === 'Pending');
 
   const handleUpdateForrad = async () => {
     setUpdating(true);
@@ -113,6 +122,13 @@ export default function DashboardPage() {
   };
 
   const openTicket = (ticket: typeof tickets[0]) => {
+    const id = notifId(ticket, ticket.status === 'In Review' && ticket.reviewStatus === 'Pending');
+    markAsRead(id);
+    fetch('/api/notifications', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'mark-read', notificationId: id }),
+    }).catch(() => {});
     setSelectedTicket(ticket);
     setCurrentView('ticket-detail');
     setBellOpen(false);
@@ -158,12 +174,21 @@ export default function DashboardPage() {
                 variant="ghost"
                 size="icon"
                 className="relative h-8 w-8 text-text-muted hover:text-foreground"
-                onClick={() => setBellOpen(!bellOpen)}
+                onClick={() => {
+                  const ids = [...reviewQueue, ...recentTickets].map(t => allNotifIds(t));
+                  markAllAsRead(ids);
+                  fetch('/api/notifications', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'mark-all-read', notificationIds: ids }),
+                  }).catch(() => {});
+                  setBellOpen(!bellOpen);
+                }}
               >
                 <Bell className="w-4 h-4" />
-                {totalNotifications > 0 && (
+                {totalUnreadNotifications > 0 && (
                   <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
-                    {totalNotifications > 9 ? '9+' : totalNotifications}
+                    {totalUnreadNotifications > 9 ? '9+' : totalUnreadNotifications}
                   </span>
                 )}
               </Button>
@@ -173,7 +198,12 @@ export default function DashboardPage() {
                   {recentTickets.length > 0 && (
                     <>
                       <div className="p-3 border-b border-border">
-                        <p className="text-xs font-semibold text-foreground">Recent Updates</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs font-semibold text-foreground">Recent Updates</p>
+                          {unreadRecentCount > 0 && (
+                            <span className="text-[10px] font-medium text-primary">{unreadRecentCount} new</span>
+                          )}
+                        </div>
                         <p className="text-[10px] text-text-muted">{recentTickets.length} ticket{recentTickets.length !== 1 ? 's' : ''} updated this week</p>
                       </div>
                       <div className="max-h-48 overflow-y-auto divide-y divide-border">
@@ -181,7 +211,7 @@ export default function DashboardPage() {
                           <button
                             key={t.id}
                             onClick={() => openTicket(t)}
-                            className="w-full text-left p-2.5 hover:bg-surface transition-colors"
+                            className={`w-full text-left p-2.5 transition-colors ${isUnread(t, false) ? 'ring-1 ring-primary/30 bg-primary/5' : 'hover:bg-surface'}`}
                           >
                             <div className="flex items-start gap-2">
                               <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${
@@ -207,15 +237,20 @@ export default function DashboardPage() {
                   {canReview && reviewQueue.length > 0 && (
                     <>
                       <div className="p-3 border-b border-border">
-                        <p className="text-xs font-semibold text-foreground">Pending Reviews</p>
-                        <p className="text-[10px] text-text-muted">{reviewCount} ticket{reviewCount !== 1 ? 's' : ''} awaiting review</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs font-semibold text-foreground">Pending Reviews</p>
+                          {unreadReviewCount > 0 && (
+                            <span className="text-[10px] font-medium text-primary">{unreadReviewCount} new</span>
+                          )}
+                        </div>
+                        <p className="text-[10px] text-text-muted">{reviewQueue.length} ticket{reviewQueue.length !== 1 ? 's' : ''} awaiting review</p>
                       </div>
                       <div className="max-h-48 overflow-y-auto divide-y divide-border">
                         {reviewQueue.map(t => (
                           <button
                             key={t.id}
                             onClick={() => openTicket(t)}
-                            className="w-full text-left p-2.5 hover:bg-surface transition-colors"
+                            className={`w-full text-left p-2.5 transition-colors ${isUnread(t, true) ? 'ring-1 ring-primary/30 bg-primary/5' : 'hover:bg-surface'}`}
                           >
                             <div className="flex items-start gap-2">
                               <div className="w-1.5 h-1.5 rounded-full bg-status-review mt-1.5 flex-shrink-0" />
@@ -233,8 +268,8 @@ export default function DashboardPage() {
                     </>
                   )}
 
-                  {totalNotifications === 0 && (
-                    <div className="p-6 text-center text-text-muted text-sm">No notifications</div>
+                  {totalUnreadNotifications === 0 && (
+                    <div className="p-6 text-center text-text-muted text-sm">All caught up</div>
                   )}
 
                   <div className="p-2 border-t border-border bg-surface flex gap-2">

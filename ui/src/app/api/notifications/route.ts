@@ -108,8 +108,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true });
     }
     
-    if (action === 'mark-all-read') {
-      // Mark all current notifications as read - would need current notification IDs
+    if (action === 'mark-all-read' && Array.isArray(body.notificationIds)) {
+      const readSet = await getReadSet();
+      for (const id of body.notificationIds) readSet.add(id);
+      await saveReadSet(readSet);
       return NextResponse.json({ success: true });
     }
     

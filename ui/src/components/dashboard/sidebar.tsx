@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuthStore, useDashboardStore } from '@/store/dashboard-store';
+import { useAuthStore, useDashboardStore, useNotificationStore } from '@/store/dashboard-store';
 import { ViewMode } from '@/lib/types';
 import {
   LayoutDashboard,
@@ -55,7 +55,8 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const { currentUser, canReview } = useAuthStore();
   const { currentView, setCurrentView } = useDashboardStore();
   const tickets = useDashboardStore((s) => s.tickets);
-  const reviewCount = tickets.filter(t => t.status === 'In Review' && t.reviewStatus === 'Pending').length;
+  const readNotificationIds = useNotificationStore((s) => s.readNotificationIds);
+  const reviewCount = tickets.filter(t => t.status === 'In Review' && t.reviewStatus === 'Pending' && !readNotificationIds.has(`review-${t.id}`)).length;
 
   const developers = useDashboardStore(s => s.developers);
   const dev = developers.find(d => d.id === currentUser);
