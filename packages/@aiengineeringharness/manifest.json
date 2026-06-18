@@ -648,6 +648,10 @@
             {
               "src": "antigravity/skills/ticket-context/SKILL.md",
               "dest": "skills/ticket-context/SKILL.md"
+            },
+            {
+              "src": "antigravity/skills/ticket-context/assets/audit-tickets.js",
+              "dest": "skills/ticket-context/assets/audit-tickets.js"
             }
           ]
         },
@@ -657,6 +661,10 @@
             {
               "src": "antigravity/skills/ticket-manager/SKILL.md",
               "dest": "skills/ticket-manager/SKILL.md"
+            },
+            {
+              "src": "antigravity/skills/ticket-manager/assets/audit-tickets.js",
+              "dest": "skills/ticket-manager/assets/audit-tickets.js"
             }
           ]
         },
@@ -1211,6 +1219,10 @@
             {
               "src": "antigravity/skills/ticket-executor/SKILL.md",
               "dest": "skills/ticket-executor/SKILL.md"
+            },
+            {
+              "src": "antigravity/skills/ticket-executor/assets/audit-tickets.js",
+              "dest": "skills/ticket-executor/assets/audit-tickets.js"
             }
           ]
         },
@@ -1693,6 +1705,10 @@
             {
               "src": "claude/skills/ticket-context/SKILL.md",
               "dest": "skills/ticket-context/SKILL.md"
+            },
+            {
+              "src": "claude/skills/ticket-context/assets/audit-tickets.js",
+              "dest": "skills/ticket-context/assets/audit-tickets.js"
             }
           ]
         },
@@ -1702,6 +1718,10 @@
             {
               "src": "claude/skills/ticket-manager/SKILL.md",
               "dest": "skills/ticket-manager/SKILL.md"
+            },
+            {
+              "src": "claude/skills/ticket-manager/assets/audit-tickets.js",
+              "dest": "skills/ticket-manager/assets/audit-tickets.js"
             }
           ]
         },
@@ -2265,6 +2285,10 @@
             {
               "src": "claude/skills/ticket-executor/SKILL.md",
               "dest": "skills/ticket-executor/SKILL.md"
+            },
+            {
+              "src": "claude/skills/ticket-executor/assets/audit-tickets.js",
+              "dest": "skills/ticket-executor/assets/audit-tickets.js"
             }
           ]
         },
@@ -2695,6 +2719,10 @@
             {
               "src": "codex/skills/ticket-context/SKILL.md",
               "dest": "skills/ticket-context/SKILL.md"
+            },
+            {
+              "src": "codex/skills/ticket-context/assets/audit-tickets.js",
+              "dest": "skills/ticket-context/assets/audit-tickets.js"
             }
           ]
         },
@@ -2704,6 +2732,10 @@
             {
               "src": "codex/skills/ticket-manager/SKILL.md",
               "dest": "skills/ticket-manager/SKILL.md"
+            },
+            {
+              "src": "codex/skills/ticket-manager/assets/audit-tickets.js",
+              "dest": "skills/ticket-manager/assets/audit-tickets.js"
             }
           ]
         },
@@ -3294,6 +3326,10 @@
             {
               "src": "codex/skills/ticket-executor/SKILL.md",
               "dest": "skills/ticket-executor/SKILL.md"
+            },
+            {
+              "src": "codex/skills/ticket-executor/assets/audit-tickets.js",
+              "dest": "skills/ticket-executor/assets/audit-tickets.js"
             }
           ]
         },
@@ -4098,6 +4134,10 @@
             {
               "src": "gemini/skills/ticket-context/SKILL.md",
               "dest": "skills/ticket-context/SKILL.md"
+            },
+            {
+              "src": "gemini/skills/ticket-context/assets/audit-tickets.js",
+              "dest": "skills/ticket-context/assets/audit-tickets.js"
             }
           ]
         },
@@ -4107,6 +4147,10 @@
             {
               "src": "gemini/skills/ticket-manager/SKILL.md",
               "dest": "skills/ticket-manager/SKILL.md"
+            },
+            {
+              "src": "gemini/skills/ticket-manager/assets/audit-tickets.js",
+              "dest": "skills/ticket-manager/assets/audit-tickets.js"
             }
           ]
         },
@@ -4714,6 +4758,10 @@
             {
               "src": "gemini/skills/ticket-executor/SKILL.md",
               "dest": "skills/ticket-executor/SKILL.md"
+            },
+            {
+              "src": "gemini/skills/ticket-executor/assets/audit-tickets.js",
+              "dest": "skills/ticket-executor/assets/audit-tickets.js"
             }
           ]
         },
@@ -5360,6 +5408,10 @@
             {
               "src": "opencode/skills/ticket-context/SKILL.md",
               "dest": "skills/ticket-context/SKILL.md"
+            },
+            {
+              "src": "opencode/skills/ticket-context/assets/audit-tickets.js",
+              "dest": "skills/ticket-context/assets/audit-tickets.js"
             }
           ]
         },
@@ -5369,6 +5421,10 @@
             {
               "src": "opencode/skills/ticket-manager/SKILL.md",
               "dest": "skills/ticket-manager/SKILL.md"
+            },
+            {
+              "src": "opencode/skills/ticket-manager/assets/audit-tickets.js",
+              "dest": "skills/ticket-manager/assets/audit-tickets.js"
             }
           ]
         },
@@ -5985,6 +6041,10 @@
             {
               "src": "opencode/skills/ticket-executor/SKILL.md",
               "dest": "skills/ticket-executor/SKILL.md"
+            },
+            {
+              "src": "opencode/skills/ticket-executor/assets/audit-tickets.js",
+              "dest": "skills/ticket-executor/assets/audit-tickets.js"
             }
           ]
         },
@@ -6497,6 +6557,10 @@
             {
               "src": "pi/agent/skills/ticket-manager/SKILL.md",
               "dest": "skills/ticket-manager/SKILL.md"
+            },
+            {
+              "src": "pi/agent/skills/ticket-manager/assets/audit-tickets.js",
+              "dest": "skills/ticket-manager/assets/audit-tickets.js"
             }
           ]
         },
@@ -6759,6 +6823,10 @@
             {
               "src": "pi/agent/skills/ticket-context/SKILL.md",
               "dest": "skills/ticket-context/SKILL.md"
+            },
+            {
+              "src": "pi/agent/skills/ticket-context/assets/audit-tickets.js",
+              "dest": "skills/ticket-context/assets/audit-tickets.js"
             }
           ]
         },
@@ -7340,6 +7408,10 @@
             {
               "src": "pi/agent/skills/ticket-executor/SKILL.md",
               "dest": "skills/ticket-executor/SKILL.md"
+            },
+            {
+              "src": "pi/agent/skills/ticket-executor/assets/audit-tickets.js",
+              "dest": "skills/ticket-executor/assets/audit-tickets.js"
             }
           ]
         },
@@ -8095,6 +8167,10 @@
             {
               "src": "wocode/agent/skills/ticket-context/SKILL.md",
               "dest": "skills/ticket-context/SKILL.md"
+            },
+            {
+              "src": "wocode/agent/skills/ticket-context/assets/audit-tickets.js",
+              "dest": "skills/ticket-context/assets/audit-tickets.js"
             }
           ]
         },
@@ -8104,6 +8180,10 @@
             {
               "src": "wocode/agent/skills/ticket-manager/SKILL.md",
               "dest": "skills/ticket-manager/SKILL.md"
+            },
+            {
+              "src": "wocode/agent/skills/ticket-manager/assets/audit-tickets.js",
+              "dest": "skills/ticket-manager/assets/audit-tickets.js"
             }
           ]
         },
@@ -8720,6 +8800,10 @@
             {
               "src": "wocode/agent/skills/ticket-executor/SKILL.md",
               "dest": "skills/ticket-executor/SKILL.md"
+            },
+            {
+              "src": "wocode/agent/skills/ticket-executor/assets/audit-tickets.js",
+              "dest": "skills/ticket-executor/assets/audit-tickets.js"
             }
           ]
         },

@@ -356,11 +356,17 @@ components:
     files:
     - src: wocode/agent/skills/ticket-context/SKILL.md
       dest: skills/ticket-context/SKILL.md
+
+    - src: wocode/agent/skills/ticket-context/assets/audit-tickets.js
+      dest: skills/ticket-context/assets/audit-tickets.js
   skill/ticket-manager:
     description: Ticket Manager skill
     files:
     - src: wocode/agent/skills/ticket-manager/SKILL.md
       dest: skills/ticket-manager/SKILL.md
+
+    - src: wocode/agent/skills/ticket-manager/assets/audit-tickets.js
+      dest: skills/ticket-manager/assets/audit-tickets.js
   skill/usage-rules:
     description: Usage Rules skill
     files:
@@ -696,6 +702,9 @@ components:
     files:
     - src: wocode/agent/skills/ticket-executor/SKILL.md
       dest: skills/ticket-executor/SKILL.md
+
+    - src: wocode/agent/skills/ticket-executor/assets/audit-tickets.js
+      dest: skills/ticket-executor/assets/audit-tickets.js
   skill/self-documentation:
     description: Enables Wo to answer How do I...? and What's the command for...?
       questions by searching its own commands, skills, and documentation locally

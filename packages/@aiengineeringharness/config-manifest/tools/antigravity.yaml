@@ -353,11 +353,17 @@ components:
     files:
     - src: antigravity/skills/ticket-context/SKILL.md
       dest: skills/ticket-context/SKILL.md
+
+    - src: antigravity/skills/ticket-context/assets/audit-tickets.js
+      dest: skills/ticket-context/assets/audit-tickets.js
   skill/ticket-manager:
     description: Ticket Manager skill
     files:
     - src: antigravity/skills/ticket-manager/SKILL.md
       dest: skills/ticket-manager/SKILL.md
+
+    - src: antigravity/skills/ticket-manager/assets/audit-tickets.js
+      dest: skills/ticket-manager/assets/audit-tickets.js
   skill/validate-telemetry:
     description: Validate Telemetry skill
     files:
@@ -662,6 +668,9 @@ components:
     files:
     - src: antigravity/skills/ticket-executor/SKILL.md
       dest: skills/ticket-executor/SKILL.md
+
+    - src: antigravity/skills/ticket-executor/assets/audit-tickets.js
+      dest: skills/ticket-executor/assets/audit-tickets.js
   skill/validate-podman:
     description: Validate Podman/Quadlet configurations on Fedora
     files:

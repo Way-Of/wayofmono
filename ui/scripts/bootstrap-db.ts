@@ -99,6 +99,10 @@ async function bootstrap() {
             val = String(val).replace(/^@/, '')
           }
 
+          if (val instanceof Date) {
+            val = val.toISOString().split('T')[0]
+          }
+
           if (ARRAY_FIELDS.has(camelKey)) {
             ticket[camelKey] = Array.isArray(val) ? val : []
           } else {

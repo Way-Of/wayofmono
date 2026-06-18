@@ -305,11 +305,17 @@ components:
     files:
     - src: opencode/skills/ticket-context/SKILL.md
       dest: skills/ticket-context/SKILL.md
+
+    - src: opencode/skills/ticket-context/assets/audit-tickets.js
+      dest: skills/ticket-context/assets/audit-tickets.js
   skill/ticket-manager:
     description: Ticket Manager skill
     files:
     - src: opencode/skills/ticket-manager/SKILL.md
       dest: skills/ticket-manager/SKILL.md
+
+    - src: opencode/skills/ticket-manager/assets/audit-tickets.js
+      dest: skills/ticket-manager/assets/audit-tickets.js
   skill/usage-rules:
     description: Usage Rules skill
     files:
@@ -645,6 +651,9 @@ components:
     files:
     - src: opencode/skills/ticket-executor/SKILL.md
       dest: skills/ticket-executor/SKILL.md
+
+    - src: opencode/skills/ticket-executor/assets/audit-tickets.js
+      dest: skills/ticket-executor/assets/audit-tickets.js
   skill/validate-podman:
     description: Validate Podman/Quadlet configurations on Fedora
     files:
