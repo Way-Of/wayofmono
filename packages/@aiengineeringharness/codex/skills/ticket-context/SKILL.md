@@ -38,6 +38,14 @@ This skill ensures all work is linked to an approved ticket from the correct nam
 *   New tickets follow the naming convention and template in `thoughts/shared/tickets/ticket-template.md`.
 *   The `ticket_manager` skill has full lifecycle management. This skill ensures adherence to the process.
 
+## Audit Utility
+
+A ticket audit script is bundled at `assets/audit-tickets.js`. Run it to validate ticket frontmatter compliance before associating work with a ticket:
+
+```bash
+deno run -A assets/audit-tickets.js
+```
+
 ## CTO Dashboard UI Integration
 
 The CTO Dashboard provides interactive ticket status management:

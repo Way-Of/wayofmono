@@ -1,16 +1,10 @@
 ---
-name: ticket-manager
+name: ticket_manager
 description: "Manage tickets across all namespaces (WOMONO, WOW, OPT) with proper naming, numbering, and storage. Enforces production-ready standard: no mock data, enterprise grade."
-allowed-tools:
-  - glob
-  - edit
-  - write
-  - grep
-  - read
-  - bash
+allowed-tools: Read, Grep, Glob, Bash, Write, Edit
 ---
 
-# Ticket Manager skill
+# Ticket Manager Skill
 
 You are the Ticket Manager for the AI Engineering Harness. Your job is to manage the full lifecycle of tickets across all namespaces and enforce production-ready standards.
 
@@ -25,9 +19,23 @@ You are the Ticket Manager for the AI Engineering Harness. Your job is to manage
 ## Ticket Status Flow
 
 ```
-Backlog → Planned → Ready → In Progress → Submitted for Review → Approved → Done
-                                          ↘ Changes Requested → In Progress
+Backlog → Planned → Ready → In Progress → Submitted for Review → In Review → Approved → Done
+                                           ↘ Changes Requested → In Progress
+                                           ↘ Reject → Blocked
 ```
+
+| Status | Color | Description |
+|--------|-------|-------------|
+| **Backlog** | Gray | Initial state, not yet planned |
+| **Planned** | Blue-gray | Planned for upcoming sprint |
+| **Ready** | Light blue | Ready to be picked up |
+| **In Progress** | Blue | Currently being worked on |
+| **Submitted for Review** | Yellow | Awaiting CTO/Lead review |
+| **In Review** | Yellow | Under active review |
+| **Approved** | Green | Review passed, ready for done |
+| **Done** | Green | Completed and merged |
+| **Blocked** | Red | Blocked by dependency/issue |
+| **Changes Requested** | Orange | Review requested changes, back to work |
 
 ## Ticket Naming Convention
 
@@ -45,7 +53,7 @@ Examples:
 
 ### Finding the Next Number
 
-```bash
+```Bash
 ls thoughts/<project-slug>/shared/tickets/<PREFIX>-*.md
 ```
 
@@ -63,7 +71,7 @@ Take the highest number, increment by 1. If no tickets exist, start at `001`.
 title: "[<PREFIX>-<NNN>] <Descriptive Title>"
 type: "Feature" | "Bug" | "TechDebt" | "Epic" | "Improvement"
 priority: "Critical" | "High" | "Medium" | "Low"
-status: "Backlog" | "Planned" | "Ready" | "In Progress" | "Submitted for Review" | "Approved" | "Done"
+status: "Backlog" | "Planned" | "Ready" | "In Progress" | "Submitted for Review" | "In Review" | "Approved" | "Done" | "Blocked" | "Changes Requested"
 assignee: ""
 reporter: "@username"
 project: "WOMONO" | "WOW" | "OPT"
@@ -79,6 +87,16 @@ github_issue: ""
 ### Template
 
 Use `thoughts/shared/tickets/ticket-template.md`.
+
+## Audit Utility
+
+A ticket audit script is bundled at `assets/audit-tickets.js`. Run it to validate all tickets across WOMONO, WOW, and OPT for frontmatter compliance:
+
+```bash
+deno run -A assets/audit-tickets.js
+```
+
+This checks every ticket file for required frontmatter fields, correct formatting, and file naming. Use it before submitting tickets for review or after batch operations.
 
 ## Production-Ready Standard
 
@@ -155,11 +173,26 @@ Parameters:
 - `pr_url` (optional): GitHub PR URL
 
 ### `cto_review_action`
+_review_action
 CTO reviews submitted work.
 Parameters:
 - `ticket_id` (required): The ticket ID
 - `action` (required): "approve" | "request-changes" | "reject"
 - `comments` (optional): Review comments
+
+### CTO Review Flow (Dashboard Integration)
+
+The CTO Dashboard provides a dedicated **Review Queue** view for tickets awaiting CTO review:
+
+1. **Submit for Review**: When developer sets status to "In Review" (or uses `/complete` which auto-submits if review required), ticket appears in Review Queue
+2. **CTO Notification**: CTO sees ticket in Review Queue with "Approve", "Request Changes", "Reject" buttons
+3. **Review Actions**:
+   - **Approve**: Status → "Approved" → Auto-transition to "Done"
+   - **Request Changes**: Status → "Changes Requested" → Auto-transition back to "In Progress"
+   - **Reject**: Status → "Blocked" with review comments as reason
+4. **Review Comments**: CTO can add comments that are stored in ticket frontmatter (`reviewComments`, `reviewedBy`, `reviewedAt`)
+
+The dashboard store has `updateTicketReview` action that handles this flow.
 
 ### `sync_personal_todos`
 Regenerate personal TODO.md for all developers from shared ticket assignments.

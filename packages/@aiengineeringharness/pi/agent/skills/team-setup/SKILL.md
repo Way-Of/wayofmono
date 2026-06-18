@@ -1,12 +1,7 @@
 ---
-name: team-setup
+name: team_setup
 description: "Initialize and manage team configuration: developers, roles, projects, and ticket assignments"
-allowed-tools:
-  - grep
-  - bash
-  - write
-  - read
-  - glob
+allowed-tools: read, write, grep, glob, bash
 ---
 
 # Team Setup skill

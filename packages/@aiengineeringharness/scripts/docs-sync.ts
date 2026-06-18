@@ -39,7 +39,7 @@ const CANONICAL_TOOL_NAMES: Record<string, string> = {
 const TOOLS: Record<string, ToolConfig> = {
   pi: {
     dir: "packages/@aiengineeringharness/pi",
-    skillDir: "skills",
+    skillDir: "agent/skills",
     naming: "kebab",
     stripFields: ["docs-url"],
     toolNames: {
@@ -56,7 +56,7 @@ const TOOLS: Record<string, ToolConfig> = {
   opencode: {
     dir: "packages/@aiengineeringharness/opencode",
     skillDir: "skills",
-    naming: "snake",
+    naming: "kebab",
     stripFields: ["docs-url"],
     toolNames: {
       read_file: "read",
@@ -72,7 +72,7 @@ const TOOLS: Record<string, ToolConfig> = {
   claude: {
     dir: "packages/@aiengineeringharness/claude",
     skillDir: "skills",
-    naming: "snake",
+    naming: "kebab",
     stripFields: ["docs-url"],
     toolNames: {
       read_file: "Read",
@@ -88,7 +88,7 @@ const TOOLS: Record<string, ToolConfig> = {
   gemini: {
     dir: "packages/@aiengineeringharness/gemini",
     skillDir: "skills",
-    naming: "snake",
+    naming: "kebab",
     stripFields: ["docs-url"],
     toolNames: {
       read_file: "read",
@@ -104,14 +104,14 @@ const TOOLS: Record<string, ToolConfig> = {
   codex: {
     dir: "packages/@aiengineeringharness/codex",
     skillDir: "skills",
-    naming: "snake",
+    naming: "kebab",
     stripFields: ["docs-url"],
     toolNames: { ...CANONICAL_TOOL_NAMES },
   },
   wocode: {
     dir: "packages/@aiengineeringharness/wocode",
-    skillDir: "skills",
-    naming: "snake",
+    skillDir: "agent/skills",
+    naming: "kebab",
     stripFields: ["docs-url"],
     toolNames: {
       read_file: "Read",
@@ -127,7 +127,7 @@ const TOOLS: Record<string, ToolConfig> = {
   antigravity: {
     dir: "packages/@aiengineeringharness/antigravity",
     skillDir: "skills",
-    naming: "snake",
+    naming: "kebab",
     stripFields: ["docs-url"],
     toolNames: {
       read_file: "read",

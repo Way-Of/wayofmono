@@ -1,12 +1,7 @@
 ---
-name: build-tool-extension
+name: build_tool_extension
 description: Build extensions/plugins for all 7 AI coding tools — knows extension API, lifecycle hooks, custom tools, event handlers.
-allowed-tools:
-  - edit
-  - run_shell_command
-  - grep
-  - write
-  - read - bash - websearch
+allowed-tools: read, write, edit, bash, grep, glob, websearch
 ---
 
 # build_tool_extension — Unified Extension Builder

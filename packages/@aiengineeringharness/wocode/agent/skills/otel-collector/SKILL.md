@@ -1,5 +1,5 @@
 ---
-name: otel-collector
+name: otel_collector
 description: >
   OpenTelemetry Collector configuration — receivers, processors, exporters,
   pipelines, sampling, deployment. Covers OTLP, Prometheus, filelog,

@@ -1,10 +1,10 @@
 ---
 name: ticket_manager
 description: "Manage tickets across all namespaces (WOMONO, WOW, OPT) with proper naming, numbering, and storage. Enforces production-ready standard: no mock data, enterprise grade."
-allowed-tools: read, grep, glob, bash, write, edit
+allowed-tools: Read, Grep, Glob, Bash, Write, Edit
 ---
 
-# Ticket Manager skill
+# Ticket Manager Skill
 
 You are the Ticket Manager for the AI Engineering Harness. Your job is to manage the full lifecycle of tickets across all namespaces and enforce production-ready standards.
 
@@ -19,27 +19,23 @@ You are the Ticket Manager for the AI Engineering Harness. Your job is to manage
 ## Ticket Status Flow
 
 ```
-Backlog → Planned → Ready → In Progress → Submitted for Review → Approved → Done
-                                          ↘ Changes Requested → In Progress
+Backlog → Planned → Ready → In Progress → Submitted for Review → In Review → Approved → Done
+                                           ↘ Changes Requested → In Progress
+                                           ↘ Reject → Blocked
 ```
 
-## CTO Dashboard UI Integration
-
-The CTO Dashboard (Next.js 16) provides a visual ticket management interface with interactive status selection:
-
-- **Ticket List View**: Each ticket row has a dropdown `Select` component for status changes
-- **Ticket Detail View**: Status dropdown in the header with color-coded options
-- **Status Options**: Backlog, In Progress, In Review, Done, Blocked
-- **Colors**: Backlog=gray, In Progress=blue, In Review=yellow, Done=green, Blocked=red
-- **Integration**: Uses `updateTicketStatus` action from dashboard store to update tickets locally and persist to `thoughts/` filesystem
-
-When ticket status is changed via the UI:
-1. Status updates immediately in the dashboard state
-2. `updated` timestamp is set to current date
-3. Changes sync to the f-rr-d repository via GitHub API or local filesystem
-4. The ticket file frontmatter `status` field is updated
-
-Agents can also change ticket status programmatically using the `update_ticket` tool with `status` parameter.
+| Status | Color | Description |
+|--------|-------|-------------|
+| **Backlog** | Gray | Initial state, not yet planned |
+| **Planned** | Blue-gray | Planned for upcoming sprint |
+| **Ready** | Light blue | Ready to be picked up |
+| **In Progress** | Blue | Currently being worked on |
+| **Submitted for Review** | Yellow | Awaiting CTO/Lead review |
+| **In Review** | Yellow | Under active review |
+| **Approved** | Green | Review passed, ready for done |
+| **Done** | Green | Completed and merged |
+| **Blocked** | Red | Blocked by dependency/issue |
+| **Changes Requested** | Orange | Review requested changes, back to work |
 
 ## Ticket Naming Convention
 
@@ -57,7 +53,7 @@ Examples:
 
 ### Finding the Next Number
 
-```bash
+```Bash
 ls thoughts/<project-slug>/shared/tickets/<PREFIX>-*.md
 ```
 
@@ -75,7 +71,7 @@ Take the highest number, increment by 1. If no tickets exist, start at `001`.
 title: "[<PREFIX>-<NNN>] <Descriptive Title>"
 type: "Feature" | "Bug" | "TechDebt" | "Epic" | "Improvement"
 priority: "Critical" | "High" | "Medium" | "Low"
-status: "Backlog" | "Planned" | "Ready" | "In Progress" | "Submitted for Review" | "Approved" | "Done"
+status: "Backlog" | "Planned" | "Ready" | "In Progress" | "Submitted for Review" | "In Review" | "Approved" | "Done" | "Blocked" | "Changes Requested"
 assignee: ""
 reporter: "@username"
 project: "WOMONO" | "WOW" | "OPT"
@@ -91,6 +87,16 @@ github_issue: ""
 ### Template
 
 Use `thoughts/shared/tickets/ticket-template.md`.
+
+## Audit Utility
+
+A ticket audit script is bundled at `assets/audit-tickets.js`. Run it to validate all tickets across WOMONO, WOW, and OPT for frontmatter compliance:
+
+```bash
+deno run -A assets/audit-tickets.js
+```
+
+This checks every ticket file for required frontmatter fields, correct formatting, and file naming. Use it before submitting tickets for review or after batch operations.
 
 ## Production-Ready Standard
 
@@ -167,6 +173,7 @@ Parameters:
 - `pr_url` (optional): GitHub PR URL
 
 ### `cto_review_action`
+_review_action
 CTO reviews submitted work.
 Parameters:
 - `ticket_id` (required): The ticket ID

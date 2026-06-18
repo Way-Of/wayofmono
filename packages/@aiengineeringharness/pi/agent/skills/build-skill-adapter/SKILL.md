@@ -1,12 +1,7 @@
 ---
-name: build-skill-adapter
+name: build_skill_adapter
 description: Connect and sync skills, agents, and projects with other harness, git repos, and platforms
-allowed-tools:
-  - bash
-  - glob
-  - write
-  - read
-  - grep
+allowed-tools: read, write, bash, grep, glob
 ---
 
 # skill Adapter skill
