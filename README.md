@@ -892,7 +892,7 @@ Opens at **http://localhost:6969**
 | Files in harness | **1,226** |
 | Files in docs | **173** |
 | Files in thoughts | **115** |
-| Dashboard version | **0.5.0** (Next.js 16) |
+| Dashboard package | [@wayofmono/wo-cto-dashboard](https://www.npmjs.com/package/@wayofmono/wo-cto-dashboard) |
 | Total repo size | **1.4 GB** (excluding node_modules) |
 
 ## 🎛️ Multi-Interface Architecture
@@ -1696,7 +1696,7 @@ All 13 packages published under `@wayofmono` scope at [npmjs.com/settings/wayofm
 
 ## 📊 CTO Dashboard
 
-**Production dashboard**: https://cto.wayof.work (v0.4.34, Next.js 16, Prisma/SQLite)
+**Production dashboard**: https://cto.wayof.work ([@wayofmono/wo-cto-dashboard](https://www.npmjs.com/package/@wayofmono/wo-cto-dashboard), Next.js 16, Prisma/SQLite)
 
 **What it does:**
 - **Team visibility**: See all tickets, velocity, blockers across projects
@@ -2162,7 +2162,7 @@ cd ui && pnpm build
 │   │   ├── telegram/               # 88K — Telegram bot
 │   │   └── whatsapp/               # 88K — WhatsApp bot
 │   │
-│   └── ui/                         # CTO Dashboard (v0.4.0, standalone npm package → wayofdev repo)
+│   └── ui/                         # CTO Dashboard ([@wayofmono/wo-cto-dashboard](https://www.npmjs.com/package/@wayofmono/wo-cto-dashboard))
 │       ├── src/app/                # Next.js App Router
 │       │   ├── api/                # API routes (health, ideas, news, standup, skills)
 │       │   └── page.tsx            # Main page

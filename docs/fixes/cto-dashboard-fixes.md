@@ -1,5 +1,16 @@
 # CTO Dashboard Fixes & Release Notes
 
+## v0.6.2 (2026-06-19) — Rename Local→DB in Ticket Source UI
+
+### Changed Files
+- `ui/src/components/dashboard/tickets-view.tsx` — Badge changed from "Local" to "DB", toggle label changed from "Local" to "DB"
+- `ui/src/components/dashboard/settings-view.tsx` — Button label "Local" → "DB" with Database icon, description updated, data source shows "DB (SQLite — synced from .md files)"
+
+### Migration
+```bash
+npm update -g @wayofmono/wo-cto-dashboard && wodev --build
+```
+
 ## v0.6.1 (2026-06-19) — Fix DATABASE_URL in Electron Mode
 
 ### Fixes
