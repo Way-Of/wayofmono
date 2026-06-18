@@ -546,6 +546,36 @@ components:
     files:
     - src: claude/skills/womono-version-updater/SKILL.md
       dest: skills/womono-version-updater/SKILL.md
+  skill/github-branch:
+    description: Create and manage GitHub feature branches from tickets with proper naming and protection
+    files:
+    - src: claude/skills/github-branch/SKILL.md
+      dest: skills/github-branch/SKILL.md
+  skill/github-pr:
+    description: Create, manage, and review GitHub Pull Requests with ticket linking and template support
+    files:
+    - src: claude/skills/github-pr/SKILL.md
+      dest: skills/github-pr/SKILL.md
+  skill/github-review:
+    description: Review GitHub Pull Requests with structured feedback and CTO Dashboard integration
+    files:
+    - src: claude/skills/github-review/SKILL.md
+      dest: skills/github-review/SKILL.md
+  skill/github-sync:
+    description: Sync feature branches with base branch, resolve conflicts, manage branch lifecycle
+    files:
+    - src: claude/skills/github-sync/SKILL.md
+      dest: skills/github-sync/SKILL.md
+  skill/github-release:
+    description: Create GitHub releases with changelog generation, version tagging, and automated publishing
+    files:
+    - src: claude/skills/github-release/SKILL.md
+      dest: skills/github-release/SKILL.md
+  skill/github-issue:
+    description: Create, manage, and link GitHub Issues with tickets, bi-directional sync
+    files:
+    - src: claude/skills/github-issue/SKILL.md
+      dest: skills/github-issue/SKILL.md
   skill/womonodeploy:
     description: Release and deploy WoM npm packages to production
     files:

@@ -173,6 +173,27 @@ Backlog → Planned → Ready → In Progress → Submitted for Review → In Re
 - **CTO Actions**: Approve → "Approved" → "Done"; Request Changes → "Changes Requested" → "In Progress"; Reject → "Blocked"
 - **Status Filter**: All 10 statuses available in filter dropdown
 
+### 6 New GitHub Skills Added (v1.7.1)
+
+Added comprehensive GitHub integration skills across all 7 tools:
+
+| Skill | Purpose | Key Tools |
+|-------|---------|-----------|
+| `github-branch` | Branch naming, creation, protection | `create_branch`, `protect_branch`, `cleanup_branches` |
+| `github-pr` | PR creation, management, linking | `create_pr`, `update_pr`, `merge_pr`, `link_pr_to_ticket` |
+| `github-review` | Code review workflow, CTO actions | `start_review`, `add_review_comment`, `submit_review_decision` |
+| `github-sync` | Branch sync, conflict resolution | `sync_branch`, `check_branch_status`, `resolve_conflicts` |
+| `github-release` | Release creation, changelog, publishing | `prepare_release`, `generate_changelog`, `create_release` |
+| `github-issue` | Issue management, bi-directional ticket sync | `create_issue_from_ticket`, `link_issue_to_ticket`, `sync_issue_to_ticket` |
+
+**Features**:
+- Bi-directional sync between f-rr-d tickets and GitHub Issues/PRs
+- CTO Review Queue in Dashboard with Approve/Request Changes/Reject
+- Branch protection rules enforcement
+- Conventional commits for automated versioning
+- Automated changelog generation
+- Release artifact publishing
+
 ---
 
 
