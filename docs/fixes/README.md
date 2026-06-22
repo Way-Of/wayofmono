@@ -15,7 +15,7 @@
 |-----------|---------|----------------|------------|
 | **wocode** | `@wayofmono/wo-coding-agent` | v1.0.11 | `~/.wocode/` |
 | **wouser** | `@wayofmono/wo-agent` | v1.0.4 | `~/.wo/` |
-| **Harness** | `@aiengineeringharness` | v1.7.4 | `~/.wocode/`, `~/.pi/agent/`, etc. |
+| **Harness** | `@aiengineeringharness` | v1.7.5 | `~/.wocode/`, `~/.pi/agent/`, etc. |
 | **Dashboard** | `@wayofmono/wo-cto-dashboard` | v0.6.3 | `~/.config/wodev/` |
 
 ---
@@ -48,11 +48,9 @@ See [wo-agent-fixes.md](./wo-agent-fixes.md) for detailed release notes.
 
 See [ai-engineering-harness-fixes.md](./ai-engineering-harness-fixes.md) for detailed release notes.
 
-**Quick Summary (v1.7.4):**
-- OpenCode skills renamed to kebab-case (74 SKILL.md frontmatter + directories fixed)
-- Deprecated `wow-tickets` fully removed from manifest.json + all config YAMLs
-- Duplicate `init_harness` dirs cleaned across 5 tools (WOMONO-074)
-- `docs/ai-coding-tools/opencode.md` naming convention corrected
+**Quick Summary (v1.7.5):**
+- Stale lock detection: auto-recovers from crashed installer processes
+- System deps auto-installed when `--yes` is passed (e.g., `libwebkit2gtk-4.1-dev`)
 
 **Previous (v1.7.1–v1.7.3):**
 - Ticket skill notification integration + deprecated skill cleanup (v1.7.3)

@@ -1,5 +1,21 @@
 # AI Engineering Harness Fixes & Release Notes
 
+## v1.7.5 — 2026-06-22 — Stale Lock Detection + Auto-Install System Deps
+
+### Features
+- **Stale lock auto-recovery**: `transaction.ts::acquireLock` now detects stale lock files by checking if the holding PID is still alive (`/proc/<pid>` on Linux, `kill -0` on macOS). Dead process locks are automatically removed and retried instead of waiting forever.
+- **Auto-install system deps with `--yes`**: `install.ts::installTool` now runs `sudo apt install -y <dep>` automatically when `--yes` is passed, instead of only warning. Without `--yes`, behavior is unchanged (warning only).
+
+### Files
+- `packages/@aiengineeringharness/transaction.ts` — Added `isProcessAlive()` helper (L4-17); stale lock check in `acquireLock()` (L90-98)
+- `packages/@aiengineeringharness/install.ts` — Dep check now auto-installs when `opts.yes` is true (L877-885)
+
+### Standard Procedure
+- **Version bumps must update all 8 version fields in `manifest.json`**: 1 top-level + 7 per-tool entries (antigravity, claude, codex, gemini, opencode, pi, wocode)
+- **Also update**: `CHANGELOG.md`, `README.md`, `docs/fixes/ai-engineering-harness-fixes.md`, `docs/fixes/README.md`
+
+---
+
 ## v1.7.4 — 2026-06-22 — OpenCode Skills Kebab-Case Naming (WOMONO-073, WOMONO-074)
 
 ### Features

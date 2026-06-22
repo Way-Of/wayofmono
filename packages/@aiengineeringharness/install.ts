@@ -865,7 +865,7 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
   const detection = getDetection();
   const targetDir = opts.local ? getProjectLocalTarget(toolName) : expandHome(toolConfig.target);
 
-  // Warn about missing system deps based on detected platform
+  // Install or warn about missing system deps based on detected platform
   if (!opts.dryRun && os.isLinux) {
     const neededDeps: string[] = [];
     if (os.distro === "ubuntu" || os.distro === "debian" || !os.distro) {
@@ -874,9 +874,20 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
     for (const dep of neededDeps) {
       const suggestion = getDepSuggestion(os, dep);
       if (suggestion) {
-        log("deps", `${dep} may be needed: ${suggestion.installCommand}`);
-        console.log(`  ${"\x1b[38;5;226m\u26a0\x1b[0m"} ${od("missing dep:")} ${dep}`);
-        console.log(`    ${od("install:")} ${"\x1b[38;5;51m" + suggestion.installCommand + "\x1b[0m"}`);
+        if (opts.yes) {
+          log("deps", `installing ${dep}: ${suggestion.installCommand}`);
+          console.log(`  ${"\x1b[38;5;226m\u26a0\x1b[0m"} ${od("installing dep:")} ${dep}...`);
+          const cmdParts = suggestion.installCommand.split(" ");
+          const result = await new Deno.Command(cmdParts[0], {
+            args: cmdParts.slice(1),
+            stdout: "null",
+            stderr: "null",
+          }).output();
+        } else {
+          log("deps", `${dep} may be needed: ${suggestion.installCommand}`);
+          console.log(`  ${"\x1b[38;5;226m\u26a0\x1b[0m"} ${od("missing dep:")} ${dep}`);
+          console.log(`    ${od("install:")} ${"\x1b[38;5;51m" + suggestion.installCommand + "\x1b[0m"}`);
+        }
       }
     }
   }
