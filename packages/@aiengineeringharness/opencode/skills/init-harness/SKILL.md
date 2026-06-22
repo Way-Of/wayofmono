@@ -43,6 +43,38 @@ The `thoughts/` folder is **not** part of your project's git history. It is a st
 - The `.gitignore` entry is **critical** — without it, CI/CD and GitHub Actions workflows may break by pushing f-rr-d content to the wrong remote
 - All ticket, plan, and research operations happen inside `thoughts/` and sync exclusively with f-rr-d
 
+### Multi-Machine Sync (f-rr-d)
+
+The f-rr-d repo is shared across multiple machines (developer laptops, CI, agent environments). Always follow this workflow to avoid conflicts:
+
+**Pull before every session:**
+```bash
+git -C thoughts/ pull --ff-only
+```
+If this fails (branch diverged):
+```bash
+git -C thoughts/ pull --rebase
+```
+
+**Push after every write:**
+```bash
+git -C thoughts/ add <file>
+git -C thoughts/ commit -m "<PREFIX>-<NNN>: <description>"
+git -C thoughts/ push origin main
+```
+
+**If push is rejected (remote has new commits from another machine):**
+```bash
+git -C thoughts/ pull --rebase    # replay local commits on top of remote
+git -C thoughts/ push origin main
+```
+Never force-push.
+
+**Avoid conflicts by:**
+- Working on different files per machine
+- Appending-only for existing files (create new, never modify existing tickets)
+- Committing often to keep divergence small
+
 ## Prerequisites
 
 - Git installed and configured
