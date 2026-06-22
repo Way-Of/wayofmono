@@ -1517,29 +1517,31 @@ if (args["install-cli"]) {
 
   const mf = await loadManifest(scriptDir(), resolveToken());
   console.log(`\n  ${check()} ${C.bold}ai-harness${C.reset} CLI installed  ${od("v" + mf.version)}`);
+
+  // On Windows, auto-add .deno/bin to user PATH + spawn next step from full path
   if (Deno.build.os === "windows") {
-    const userDir = Deno.env.get("USERPROFILE") || Deno.env.get("HOME") || "%USERPROFILE%";
+    const userDir = Deno.env.get("USERPROFILE") || Deno.env.get("HOME") || "";
     const binPath = userDir + "\\.deno\\bin";
-    // Auto-add to user PATH permanently (does not require admin)
     try {
-      const addCmd = new Deno.Command("powershell", {
+      const psCmd = new Deno.Command("powershell", {
         args: [
           "-NoProfile", "-Command",
-          `$p=[Environment]::GetEnvironmentVariable("Path","User"); if($p -split ";" -notcontains "${binPath}"){ [Environment]::SetEnvironmentVariable("Path",$p+";${binPath}","User"); exit(0) } exit(1)`,
+          `$p=[Environment]::GetEnvironmentVariable("Path","User"); if($p -split ";" -notcontains "${binPath}"){ [Environment]::SetEnvironmentVariable("Path",$p+";${binPath}","User") }`,
         ],
-        stdout: "null",
-        stderr: "null",
+        stdout: "null", stderr: "null",
       });
-      const addResult = await addCmd.output();
-      if (addResult.success) {
-        console.log(`  ${check()} ${od("Auto-added .deno/bin to user PATH")}`);
-        console.log(`         ${od("Restart terminal or run: set PATH=%PATH%;" + binPath)}`);
-      }
-    } catch {
-      console.log(`  ${warn()} ${C.bold}Windows:${C.reset} Could not auto-add .deno/bin to PATH.`);
-      console.log(`         Run manually: ${od('[Environment]::SetEnvironmentVariable("Path", $env:Path + ";' + binPath + '", "User")')}`);
-    }
+      await psCmd.output();
+    } catch { /* non-admin — proceed anyway */ }
+    // Spawn next step directly via full path (bypasses PATH issue)
+    console.log(`  ${o("►")} ${C.bold}Running ai-harness --tool=all --yes...${C.reset}\n`);
+    const spawnCmd = new Deno.Command(binPath + "\\ai-harness.cmd", {
+      args: ["--tool=all", "--yes"],
+      stdin: "inherit", stdout: "inherit", stderr: "inherit",
+    });
+    const spawnResult = await spawnCmd.output();
+    Deno.exit(spawnResult.success ? 0 : 1);
   }
+
   console.log(`  ${o("►")} Next: ${C.bold}ai-harness --tool=all --yes${C.reset}`);
   console.log(`  ${o("►")} Update: ${C.bold}ai-harness --update${C.reset}`);
   console.log();
