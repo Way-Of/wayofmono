@@ -16,10 +16,11 @@ Initialize the AI Engineering Harness in this repository.
 ## What This Command Does
 
 1. Runs the tool's project memory init to generate project memory file
-2. Clones the shared `f-rr-d` repo into `thoughts/` with full branch tracking
-3. Creates the project's subfolder inside `thoughts/` with standard structure
-4. Creates personal thoughts directories for developers
-5. Adds `thoughts/` to `.gitignore` to prevent accidental commits
+2. Discovers all installed skills and commands and writes them into the project memory file
+3. Clones the shared `f-rr-d` repo into `thoughts/` with full branch tracking
+4. Creates the project's subfolder inside `thoughts/` with standard structure
+5. Creates personal thoughts directories for developers
+6. Adds `thoughts/` to `.gitignore` to prevent accidental commits
 
 ## Critical Rules — f-rr-d is Append-Only
 
@@ -33,10 +34,22 @@ The `thoughts/` directory is a clone of `github.com/Way-Of/f-rr-d`. It must be t
 
 This is the shared knowledge base across all projects. Deleting or renaming content in one project silently breaks references for all others.
 
+### thoughts/ is Exclusively Managed by f-rr-d
+
+The `thoughts/` folder is **not** part of your project's git history. It is a standalone clone of `github.com/Way-Of/f-rr-d`:
+
+- **Never commit** `thoughts/` to your project's repository
+- **Only push/pull** `thoughts/` to/from `github.com/Way-Of/f-rr-d`
+- The `.gitignore` entry is **critical** — without it, CI/CD and GitHub Actions workflows may break by pushing f-rr-d content to the wrong remote
+- All ticket, plan, and research operations happen inside `thoughts/` and sync exclusively with f-rr-d
+
 ## Prerequisites
 
 - Git installed and configured
-- Access to `github.com/Way-Of/f-rr-d` (public — no auth needed for clone; push requires auth)
+- **GitHub authentication configured for push access**:
+  - `gh auth login` (GitHub CLI) or
+  - `git config --global credential.helper store` with a personal access token
+- `thoughts/` must **never** be committed to the project repo — it is `.gitignore`d and managed by f-rr-d exclusively
 
 ## Instructions
 
@@ -54,6 +67,34 @@ Set `PROJECT_NAME` to the project name and `PROJECT_SLUG` to the slug.
 
 Check if the project memory file already exists. If it does, keep it and skip this step.
 If not, run the tool's `/init` command. If this tool has no `/init`, create the project memory file manually with the standard format for this tool.
+
+#### Step 2a: Discover and Append AI Engineering Harness Skills & Commands Reference
+
+After the project memory file is created (or if it already exists), append a reference section listing all skills and commands installed by the AI Engineering Harness.
+
+Determine the tool's config directory installed by the harness (e.g., `~/.config/opencode/`, `~/.claude/`, `~/.gemini/`, `~/.pi/agent/`, `~/.wocode/`, `~/.antigravity/`, `~/.codex/`). Then discover skills and commands:
+
+```bash
+# List all installed skill names from the AI Engineering Harness
+ls -d <TOOL_CONFIG_DIR>/skills/*/ 2>/dev/null | xargs -n1 basename | sort
+
+# List all installed command names (if tool has a commands/ dir from the harness)
+ls <TOOL_CONFIG_DIR>/commands/ 2>/dev/null | sed 's/\.md$//' | sort
+```
+
+Append the following section to the project memory file:
+
+```markdown
+## Available Skills & Commands
+
+### Skills (auto-triggered by the AI Engineering Harness)
+<list each skill name from the discovery above, one per line>
+
+### Commands (slash commands from the AI Engineering Harness)
+<list each command name from the discovery above, one per line>
+```
+
+If the tool does not have a `commands/` directory (e.g., Claude, Codex), omit the Commands section.
 
 ### Step 3: Clone the Shared f-rr-d Repo
 
@@ -120,12 +161,17 @@ mkdir -p thoughts/${PROJECT_SLUG}/$(whoami)
 
 Create directories for any known team members the user mentions. Personal dirs contain tickets, plans, and research files directly — no subfolder structure needed.
 
-### Step 6: Add thoughts/ to .gitignore
+### Step 6: Add thoughts/ to .gitignore (Critical)
+
+This step is **critical** — without it, GitHub Actions and CI/CD pipelines may push f-rr-d content to the wrong remote. The `thoughts/` directory must **never** be committed to the project repo.
 
 ```bash
+# CRITICAL: ensure thoughts/ is gitignored — prevents f-rr-d content from polluting project repo
 grep -q '^thoughts/' .gitignore 2>/dev/null || echo '# Centralized in Way-Of/f-rr-d' >> .gitignore
 grep -q '^thoughts/' .gitignore 2>/dev/null || echo 'thoughts/' >> .gitignore
 ```
+
+**Verify the entry exists** — if `.gitignore` did not exist before, create it and add the entry. After adding, confirm with `grep '^thoughts/' .gitignore`.
 
 ### Step 7: Output Success Message
 
@@ -135,16 +181,19 @@ Print the following summary:
 ## Harness Initialized Successfully
 
 ### Created
-- <project-memory-file> — Project memory for AI agents
+- <project-memory-file> — Project memory for AI agents (includes skills & commands reference)
 - thoughts/ — Centralized f-rr-d repository for tickets, plans, research
 - thoughts/${PROJECT_SLUG}/ — This project's workspace
 
 ### Next Steps
-1. Create your first ticket:
+1. **Set up GitHub auth for f-rr-d** (if not done):
+   - `gh auth login` or configure a personal access token
+   - Required for pushing tickets, plans, and research to f-rr-d
+2. Create your first ticket:
    cp thoughts/shared/tickets/ticket-template.md thoughts/${PROJECT_SLUG}/shared/tickets/PROJ-001-my-feature.md
-2. Generate a plan: /create_plan ...
-3. Implement: /implement_plan ...
-4. Commit: /commit
+3. Generate a plan: /create_plan ...
+4. Implement: /implement_plan ...
+5. Commit: /commit
 
 ### Workflow
 Ticket → /create_plan → /implement_plan → /validate_plan → /commit
@@ -167,3 +216,11 @@ If `git clone` fails (network error, no access, etc.), remove the partially-crea
 ### Project Memory File Already Exists
 
 Keep the existing file. Only regenerate if the user explicitly asks.
+
+### Missing GitHub Auth for f-rr-d Push
+
+If the user tries to push to f-rr-d and gets an authentication error, guide them to set up auth:
+- `gh auth login` — interactive GitHub CLI login
+- Or create a personal access token and store it: `git config --global credential.helper store`
+
+Without auth, cloning works (public repo) but pushing tickets/plans/research will fail.
