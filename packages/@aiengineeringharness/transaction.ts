@@ -1,6 +1,21 @@
 import { type OsInfo, type DesktopInfo, type DetectResult } from "./detect/types.ts";
 import { resolvePlatformPaths, lockFilePath, sentinelPath } from "./adapt/paths.ts";
 
+function isProcessAlive(pid: number): boolean {
+  try {
+    if (Deno.build.os === "linux") {
+      // Check if /proc/<pid> exists — cheapest cross-check
+      Deno.statSync(`/proc/${pid}/stat`);
+      return true;
+    }
+    // macOS/others: send signal 0 via SIGCONT; if process doesn't exist, throws
+    Deno.kill(pid, "SIGCONT");
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 interface Operation {
   type: "write" | "mkdir" | "symlink" | "download" | "remove";
   path: string;
@@ -73,9 +88,14 @@ export class Transaction {
         this.lockFd = fd;
         return true;
       } catch {
-        // Lock held by another process
+        // Lock held by another process (or stale)
         try {
           const pid = parseInt(Deno.readTextFileSync(this.lockFile).trim());
+          if (!isProcessAlive(pid)) {
+            // Stale lock from a dead process — remove and retry
+            try { Deno.removeSync(this.lockFile); } catch {}
+            continue;
+          }
           console.log(`  ${"\x1b[38;5;226m\u26a0\x1b[0m"} Install lock held by PID ${pid}, waiting...`);
         } catch {}
         await new Promise((r) => setTimeout(r, 2000));

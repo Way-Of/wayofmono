@@ -73,7 +73,6 @@ deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@ai
 ```powershell
 deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 ```
-> `--reload` forces Deno to re-download the script. **Required on first run on Windows** due to Deno's caching. Later updates work without it.
 
 **Alternative (PowerShell wrapper — easier for Windows):**
 ```powershell
@@ -81,6 +80,14 @@ iex (iwr https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aieng
 install.ps1 -InstallCli
 ```
 > Downloads a wrapper script that provides a friendlier interface. `-useb` = UseBasicParsing.
+
+#### Reinstalling / Updating the CLI
+
+Deno caches remote scripts after the first download. To force re-download of the latest version, add `--reload`:
+
+- **Windows**: Always use `--reload` (required even on first install)
+- **macOS / Linux**: Use `--reload` when re-installing to pick up changes
+- Subsequent updates via `ai-harness --update` do **not** need `--reload`
 
 **Verify CLI works:**
 ```bash
