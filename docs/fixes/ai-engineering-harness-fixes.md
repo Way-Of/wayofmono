@@ -31,18 +31,21 @@
 
 ---
 
-## v1.7.6 — 2026-06-22 — init_harness GitHub Skill Agent Definitions
+## v1.7.6 — 2026-06-22 — init_harness GitHub Skills + Dep Check + Windows PATH
 
 ### Features
 - **init_harness generates GitHub skill agent definitions**: Step 2a now appends structured agent definitions (identifier, responsibility, inputs/outputs, constraints) for all 6 GitHub skills to the project memory file — `github-branch`, `github-issue`, `github-pr`, `github-release`, `github-review`, `github-sync`.
 - **GitHub Workflow pattern added**: Generated AGENTS.md now includes the workflow sequence `github-branch → github-pr → github-review → github-sync → github-release → github-issue` so agents always use the correct skill at each step.
 - **Monorepo AGENTS.md**: Added Agent Directory entries for all 6 GitHub skills with the same structured format as existing agents (harness-installer, ticket-manager, etc.).
 - **init_harness command updated**: OpenCode's `/init_harness` command now documents that it appends GitHub skill agent definitions and the GitHub Workflow pattern.
+- **Skip dep install if already installed**: `install.ts::installTool` now checks `dpkg -s` before adding `libwebkit2gtk-4.1-dev` to needed deps — avoids sudo password prompt on every run when the package is already present on Debian/Ubuntu.
+- **Clearer Windows PATH hint**: After `--install-cli`, Windows users now see an explicit reminder to open a new terminal or run `set PATH=%PATH%;%USERPROFILE%\.deno\bin` before using `ai-harness`.
 
 ### Files
 - `packages/@aiengineeringharness/{opencode,antigravity,claude,codex,gemini,pi}/skills/init-harness/SKILL.md` — 6 copies with Step 2a extended to generate GitHub skill agent definitions + workflow
 - `AGENTS.md` — Added Agent Directory entries for 6 GitHub skills + GitHub Workflow section
 - `packages/@aiengineeringharness/opencode/commands/init_harness.md` — Updated description, quick reference, and workflow sections
+- `packages/@aiengineeringharness/install.ts` — dpkg check before dep install (L871-880); Windows PATH hint after --install-cli
 
 ---
 
