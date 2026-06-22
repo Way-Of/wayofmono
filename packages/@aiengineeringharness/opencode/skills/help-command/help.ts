@@ -367,15 +367,15 @@ const COMMANDS = [
   { cmd: "/implement_plan", desc: "Execute approved plan phase-by-phase" },
   { cmd: "/validate_plan", desc: "Verify implementation against plan" },
   { cmd: "/validate_telemetry", desc: "Verify telemetry against a narrative spec" },
-  { cmd: "/commit", desc: "Create well-structured git commits", skill: "git_commit_helper" },
+  { cmd: "/commit", desc: "Create well-structured git commits", skill: "git-commit-helper" },
   { cmd: "/debug", desc: "Investigate issues during testing" },
   { cmd: "/debug_k8s", desc: "Debug Kubernetes (MCP or kubectl)" },
   { cmd: "/research_codebase", desc: "Comprehensive codebase research" },
-  { cmd: "/work <ticket-id>", desc: "Start working on a ticket", skill: "ticket_manager" },
-  { cmd: "/complete <ticket-id>", desc: "Complete a ticket, syncs status", skill: "ticket_manager" },
-  { cmd: "/sync team", desc: "Show team dashboard", skill: "cto_dashboard" },
-  { cmd: "/sync skills", desc: "Sync skills across frontends", skill: "skill_auto_update" },
-  { cmd: "/help", desc: "Show this help", skill: "help_command" },
+  { cmd: "/work <ticket-id>", desc: "Start working on a ticket", skill: "ticket-manager" },
+  { cmd: "/complete <ticket-id>", desc: "Complete a ticket, syncs status", skill: "ticket-manager" },
+  { cmd: "/sync team", desc: "Show team dashboard", skill: "cto-dashboard" },
+  { cmd: "/sync skills", desc: "Sync skills across frontends", skill: "skill-auto-update" },
+  { cmd: "/help", desc: "Show this help", skill: "help-command" },
 ];
 
 async function printCommands(format: "text" | "json" | "markdown"): Promise<void> {
@@ -864,7 +864,7 @@ async function printDashboard(format: "text" | "json" | "markdown"): Promise<voi
         "deno run -A packages/@aiengineeringharness/skills/cto-dashboard/dashboard.ts --aging",
         "deno run -A packages/@aiengineeringharness/skills/cto-dashboard/dashboard.ts --json",
       ],
-      skill: "cto_dashboard",
+      skill: "cto-dashboard",
     }, null, 2));
     return;
   }

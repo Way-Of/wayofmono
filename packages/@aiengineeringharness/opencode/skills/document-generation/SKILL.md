@@ -1,5 +1,5 @@
 ---
-name: document_generation
+name: document-generation
 description: Generates various types of documents, including offers, invoices, reports, and templates, often based on structured data.
 ---
 

@@ -749,15 +749,6 @@
             }
           ]
         },
-        "skill/wow-tickets": {
-          "description": "Wow Tickets skill",
-          "files": [
-            {
-              "src": "antigravity/skills/wow-tickets/SKILL.md",
-              "dest": "skills/wow-tickets/SKILL.md"
-            }
-          ]
-        },
         "skill/wow-ui-surfaces": {
           "description": "Wow Ui Surfaces skill",
           "files": [
@@ -1806,15 +1797,6 @@
             }
           ]
         },
-        "skill/wow-tickets": {
-          "description": "Wow Tickets skill",
-          "files": [
-            {
-              "src": "claude/skills/wow-tickets/SKILL.md",
-              "dest": "skills/wow-tickets/SKILL.md"
-            }
-          ]
-        },
         "skill/wow-ui-surfaces": {
           "description": "Wow Ui Surfaces skill",
           "files": [
@@ -2844,15 +2826,6 @@
             {
               "src": "codex/skills/wow-skill-creator/SKILL.md",
               "dest": "skills/wow-skill-creator/SKILL.md"
-            }
-          ]
-        },
-        "skill/wow-tickets": {
-          "description": "Wow Tickets skill",
-          "files": [
-            {
-              "src": "codex/skills/wow-tickets/SKILL.md",
-              "dest": "skills/wow-tickets/SKILL.md"
             }
           ]
         },
@@ -4244,15 +4217,6 @@
             }
           ]
         },
-        "skill/wow-tickets": {
-          "description": "Wow Tickets skill",
-          "files": [
-            {
-              "src": "gemini/skills/wow-tickets/SKILL.md",
-              "dest": "skills/wow-tickets/SKILL.md"
-            }
-          ]
-        },
         "skill/wow-ui-surfaces": {
           "description": "Wow Ui Surfaces skill",
           "files": [
@@ -5533,15 +5497,6 @@
             {
               "src": "opencode/skills/wow-skill-creator/SKILL.md",
               "dest": "skills/wow-skill-creator/SKILL.md"
-            }
-          ]
-        },
-        "skill/wow-tickets": {
-          "description": "Wow Tickets skill",
-          "files": [
-            {
-              "src": "opencode/skills/wow-tickets/SKILL.md",
-              "dest": "skills/wow-tickets/SKILL.md"
             }
           ]
         },
@@ -6938,15 +6893,6 @@
             }
           ]
         },
-        "skill/wow-tickets": {
-          "description": "Wow Tickets skill",
-          "files": [
-            {
-              "src": "pi/agent/skills/wow-tickets/SKILL.md",
-              "dest": "skills/wow-tickets/SKILL.md"
-            }
-          ]
-        },
         "skill/wow-ui-surfaces": {
           "description": "Wow Ui Surfaces skill",
           "files": [
@@ -8292,15 +8238,6 @@
             {
               "src": "wocode/agent/skills/wow-skill-creator/SKILL.md",
               "dest": "skills/wow-skill-creator/SKILL.md"
-            }
-          ]
-        },
-        "skill/wow-tickets": {
-          "description": "Wow Tickets skill",
-          "files": [
-            {
-              "src": "wocode/agent/skills/wow-tickets/SKILL.md",
-              "dest": "skills/wow-tickets/SKILL.md"
             }
           ]
         },

@@ -437,11 +437,6 @@ components:
     files:
     - src: pi/agent/skills/wow-skill-creator/SKILL.md
       dest: skills/wow-skill-creator/SKILL.md
-  skill/wow-tickets:
-    description: Wow Tickets skill
-    files:
-    - src: pi/agent/skills/wow-tickets/SKILL.md
-      dest: skills/wow-tickets/SKILL.md
   skill/wow-ui-surfaces:
     description: Wow Ui Surfaces skill
     files:

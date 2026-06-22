@@ -1,5 +1,5 @@
 ---
-name: build_tool_extension
+name: build-tool-extension
 description: Build extensions/plugins for all 7 AI coding tools — knows extension API, lifecycle hooks, custom tools, event handlers.
 allowed-tools: read, write, edit, bash, grep, glob, websearch
 ---

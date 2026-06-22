@@ -1,5 +1,5 @@
 ---
-name: opticat_simulator
+name: opticat-simulator
 description: "Enables setup, execution, and analysis of OptiCat HVAC simulations. Use this skill for configuring simulation parameters, executing simulation runs, interpreting results, and performing what-if analysis on HVAC systems."
 ---
 
