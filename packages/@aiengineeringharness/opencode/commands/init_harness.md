@@ -7,7 +7,9 @@ Initialize the AI Engineering Harness in this repository.
 1. Runs the built-in `/init` command to generate `AGENTS.md`
 2. Creates the `thoughts/` directory structure for context engineering
 3. Adds a ticket template for consistent ticket creation
-4. Provides guidance on next steps
+4. Appends structured agent definitions for all 6 GitHub skills (github-branch, github-issue, github-pr, github-release, github-review, github-sync) so agents know when and how to use them
+5. Adds the GitHub Workflow pattern (branch → PR → review → sync → release → issue)
+6. Provides guidance on next steps
 
 ## Instructions
 
@@ -28,6 +30,7 @@ After running this command, the repository will have:
 
 ```
 AGENTS.md                           # Codebase context (from /init)
+                                    # Includes: skills, commands, GitHub skill agent definitions
 thoughts/
 ├── shared/
 │   ├── tickets/                    # Feature requests, bugs, tasks
@@ -41,4 +44,9 @@ thoughts/
 
 ```
 Ticket → /create_plan → /implement_plan → /validate_plan → /commit
+```
+
+GitHub operations use the dedicated GitHub skills:
+```
+github-branch → github-pr → github-review → github-sync → github-release → github-issue
 ```

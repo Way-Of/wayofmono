@@ -124,3 +124,4 @@ Parameters:
 - Webhook support for auto-sync (if configured)
 - CTO Dashboard shows linked issues
 - `ticket-manager` `update_ticket` syncs `github_issue` field
+

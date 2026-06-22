@@ -31,6 +31,21 @@
 
 ---
 
+## v1.7.6 — 2026-06-22 — init_harness GitHub Skill Agent Definitions
+
+### Features
+- **init_harness generates GitHub skill agent definitions**: Step 2a now appends structured agent definitions (identifier, responsibility, inputs/outputs, constraints) for all 6 GitHub skills to the project memory file — `github-branch`, `github-issue`, `github-pr`, `github-release`, `github-review`, `github-sync`.
+- **GitHub Workflow pattern added**: Generated AGENTS.md now includes the workflow sequence `github-branch → github-pr → github-review → github-sync → github-release → github-issue` so agents always use the correct skill at each step.
+- **Monorepo AGENTS.md**: Added Agent Directory entries for all 6 GitHub skills with the same structured format as existing agents (harness-installer, ticket-manager, etc.).
+- **init_harness command updated**: OpenCode's `/init_harness` command now documents that it appends GitHub skill agent definitions and the GitHub Workflow pattern.
+
+### Files
+- `packages/@aiengineeringharness/{opencode,antigravity,claude,codex,gemini,pi}/skills/init-harness/SKILL.md` — 6 copies with Step 2a extended to generate GitHub skill agent definitions + workflow
+- `AGENTS.md` — Added Agent Directory entries for 6 GitHub skills + GitHub Workflow section
+- `packages/@aiengineeringharness/opencode/commands/init_harness.md` — Updated description, quick reference, and workflow sections
+
+---
+
 ## v1.7.4 — 2026-06-22 — OpenCode Skills Kebab-Case Naming (WOMONO-073, WOMONO-074)
 
 ### Features

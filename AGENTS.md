@@ -105,6 +105,122 @@ This file follows the **Agent Ecosystem Manifest** blueprint — a runtime manif
 - Must not expose secrets in UI
 - Must validate all API inputs
 
+---
+
+#### Agent: GitHub Branch (github-branch)
+- **Identifier:** `github_branch_v1`
+- **Primary Runtime:** Platform-native
+- **Target Model:** Host tool's configured model
+
+**Core Responsibility:** Create and manage feature branches from tickets with proper naming, ticket linking, and base branch selection
+
+**Inputs & Outputs:**
+- **Upstream:** Ticket ID, branch name, namespace
+- **Downstream:** Feature branch created, pushed to origin
+
+**Constraints:**
+- Never push directly to `main`
+- Always create feature branches from tickets
+- Never force-push
+
+---
+
+#### Agent: GitHub Issue (github-issue)
+- **Identifier:** `github_issue_v1`
+- **Primary Runtime:** Platform-native
+- **Target Model:** Host tool's configured model
+
+**Core Responsibility:** Create, manage, and link GitHub Issues with f-rr-d tickets; bi-directional sync
+
+**Inputs & Outputs:**
+- **Upstream:** Ticket details, namespace, labels
+- **Downstream:** GitHub Issue created/updated, synced with f-rr-d
+
+**Constraints:**
+- Must maintain bi-directional link between GitHub Issue and f-rr-d ticket
+- Never close tickets without verification
+
+---
+
+#### Agent: GitHub PR (github-pr)
+- **Identifier:** `github_pr_v1`
+- **Primary Runtime:** Platform-native
+- **Target Model:** Host tool's configured model
+
+**Core Responsibility:** Create, manage, and review Pull Requests with ticket linking, templates, and review workflow
+
+**Inputs & Outputs:**
+- **Upstream:** Branch name, ticket reference, PR template
+- **Downstream:** PR created, linked to ticket, ready for review
+
+**Constraints:**
+- Never merge own PRs
+- Always use PR templates
+- Must reference the ticket in the PR body
+
+---
+
+#### Agent: GitHub Release (github-release)
+- **Identifier:** `github_release_v1`
+- **Primary Runtime:** Platform-native
+- **Target Model:** Host tool's configured model
+
+**Core Responsibility:** Create releases with changelog generation, version tagging, and automated publishing
+
+**Inputs & Outputs:**
+- **Upstream:** Version number, changelog entries, target branch
+- **Downstream:** GitHub Release created, tag pushed
+
+**Constraints:**
+- Must validate version is bumped in all required files
+- Never delete existing releases
+
+---
+
+#### Agent: GitHub Review (github-review)
+- **Identifier:** `github_review_v1`
+- **Primary Runtime:** Platform-native
+- **Target Model:** Host tool's configured model
+
+**Core Responsibility:** Review Pull Requests with structured feedback, approval workflow, and CTO Dashboard integration
+
+**Inputs & Outputs:**
+- **Upstream:** PR URL, review criteria
+- **Downstream:** Review submitted (approve/changes-requested/reject), CTO Dashboard notified
+
+**Constraints:**
+- Never self-review
+- Must verify against ticket acceptance criteria
+- Only CTO can dismiss reviews
+
+---
+
+#### Agent: GitHub Sync (github-sync)
+- **Identifier:** `github_sync_v1`
+- **Primary Runtime:** Platform-native
+- **Target Model:** Host tool's configured model
+
+**Core Responsibility:** Sync feature branches with base branch, resolve conflicts, and manage branch lifecycle
+
+**Inputs & Outputs:**
+- **Upstream:** Feature branch name, base branch name
+- **Downstream:** Branch synced, conflicts resolved, CI re-triggered
+
+**Constraints:**
+- Never force-push
+- Always pull --rebase before syncing
+- Must run CI after conflict resolution
+
+---
+
+### GitHub Workflow
+
+```
+github-branch → github-pr → github-review → github-sync → github-release → github-issue
+```
+
+Use the GitHub skills for all GitHub operations. Never use raw `gh` or `git` commands for operations covered by these skills.
+
 ### AGENTS.md Maintenance Protocol
 
 **Automatic Sync Verification:** The harness includes `scripts/compliance-check.ts` and `scripts/docs-sync.ts` that verify AGENTS.md content matches active code.
