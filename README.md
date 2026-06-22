@@ -81,9 +81,13 @@ install.ps1 -InstallCli
 ```
 > Downloads a wrapper script that provides a friendlier interface. `-useb` = UseBasicParsing.
 
-#### Reinstalling / Updating the CLI
+**Reinstalling / Updating the CLI**
 
 Deno caches remote scripts after the first download. To force re-download of the latest version, add `--reload`:
+
+```bash
+deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+```
 
 - **Windows**: Always use `--reload` (required even on first install)
 - **macOS / Linux**: Use `--reload` when re-installing to pick up changes
