@@ -1519,11 +1519,26 @@ if (args["install-cli"]) {
   console.log(`\n  ${check()} ${C.bold}ai-harness${C.reset} CLI installed  ${od("v" + mf.version)}`);
   if (Deno.build.os === "windows") {
     const userDir = Deno.env.get("USERPROFILE") || Deno.env.get("HOME") || "%USERPROFILE%";
-    console.log(`  ${warn()} ${C.bold}Windows:${C.reset} Add .deno/bin to your PATH:`);
-    console.log(`         ${od("Temporary (current terminal):")}`);
-    console.log(`           ${od("set PATH=%PATH%;" + userDir + "\\.deno\\bin")}`);
-    console.log(`         ${od("Permanent (PowerShell as Admin):")}`);
-    console.log(`           ${od('[Environment]::SetEnvironmentVariable("Path", $env:Path + ";' + userDir + '\\.deno\\bin", "User")')}`);
+    const binPath = userDir + "\\.deno\\bin";
+    // Auto-add to user PATH permanently (does not require admin)
+    try {
+      const addCmd = new Deno.Command("powershell", {
+        args: [
+          "-NoProfile", "-Command",
+          `$p=[Environment]::GetEnvironmentVariable("Path","User"); if($p -split ";" -notcontains "${binPath}"){ [Environment]::SetEnvironmentVariable("Path",$p+";${binPath}","User"); exit(0) } exit(1)`,
+        ],
+        stdout: "null",
+        stderr: "null",
+      });
+      const addResult = await addCmd.output();
+      if (addResult.success) {
+        console.log(`  ${check()} ${od("Auto-added .deno/bin to user PATH")}`);
+        console.log(`         ${od("Restart terminal or run: set PATH=%PATH%;" + binPath)}`);
+      }
+    } catch {
+      console.log(`  ${warn()} ${C.bold}Windows:${C.reset} Could not auto-add .deno/bin to PATH.`);
+      console.log(`         Run manually: ${od('[Environment]::SetEnvironmentVariable("Path", $env:Path + ";' + binPath + '", "User")')}`);
+    }
   }
   console.log(`  ${o("►")} Next: ${C.bold}ai-harness --tool=all --yes${C.reset}`);
   console.log(`  ${o("►")} Update: ${C.bold}ai-harness --update${C.reset}`);

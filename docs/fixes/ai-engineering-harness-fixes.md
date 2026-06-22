@@ -39,7 +39,7 @@
 - **Monorepo AGENTS.md**: Added Agent Directory entries for all 6 GitHub skills with the same structured format as existing agents (harness-installer, ticket-manager, etc.).
 - **init_harness command updated**: OpenCode's `/init_harness` command now documents that it appends GitHub skill agent definitions and the GitHub Workflow pattern.
 - **Skip dep install if already installed**: `install.ts::installTool` now checks `dpkg -s` before adding `libwebkit2gtk-4.1-dev` to needed deps — avoids sudo password prompt on every run when the package is already present on Debian/Ubuntu.
-- **Clearer Windows PATH hint**: After `--install-cli`, Windows users now see an explicit reminder to open a new terminal or run `set PATH=%PATH%;%USERPROFILE%\.deno\bin` before using `ai-harness`.
+- **Clearer Windows PATH hint**: After `--install-cli`, Windows users now see both a temporary fix (`set PATH=...`) and a permanent PowerShell fix (`[Environment]::SetEnvironmentVariable(...)`) for adding `.deno/bin` to PATH.
 
 ### Files
 - `packages/@aiengineeringharness/{opencode,antigravity,claude,codex,gemini,pi}/skills/init-harness/SKILL.md` — 6 copies with Step 2a extended to generate GitHub skill agent definitions + workflow
