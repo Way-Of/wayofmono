@@ -1517,6 +1517,11 @@ if (args["install-cli"]) {
 
   const mf = await loadManifest(scriptDir(), resolveToken());
   console.log(`\n  ${check()} ${C.bold}ai-harness${C.reset} CLI installed  ${od("v" + mf.version)}`);
+  if (Deno.build.os === "windows") {
+    const userDir = Deno.env.get("USERPROFILE") || Deno.env.get("HOME") || "%USERPROFILE%";
+    console.log(`  ${warn()} ${C.bold}Windows:${C.reset} Open a ${C.bold}new${C.reset} terminal OR run:`);
+    console.log(`         ${od("set PATH=%PATH%;" + userDir + "\\.deno\\bin")}`);
+  }
   console.log(`  ${o("►")} Next: ${C.bold}ai-harness --tool=all --yes${C.reset}`);
   console.log(`  ${o("►")} Update: ${C.bold}ai-harness --update${C.reset}`);
   console.log();
