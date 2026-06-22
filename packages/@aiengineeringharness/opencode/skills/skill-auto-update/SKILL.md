@@ -1,18 +1,7 @@
 ---
 name: skill-auto-update
 description: Auto-discover, sync, and update skills across all 7 frontends (claude, opencode, gemini, pi, wocode, antigravity, codex)
-allowed-tools: - read
-  - write
-  - bash
-  - edit
-  - grep
-  - glob
-  - skill
-  - todowrite
-  - webfetch
-  - websearch
-  - question
-  - ls
+allowed-tools: read, write, bash, edit, grep, glob, skill, todowrite, webfetch, websearch, question, ls
 ---
 
 # skill Auto-Update & Sync

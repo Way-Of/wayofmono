@@ -5,7 +5,7 @@ description: >
   telemetry levels, stability/versioning, legacy→current migration,
   and registry namespace reference.
 disable-model-invocation: true
-allowed-tools: read, bash, grep, glob
+allowed-tools: Read, Bash, Grep, Glob
 ---
 
 # OpenTelemetry Semantic Conventions

@@ -1,7 +1,7 @@
 ---
 name: github_sync
 description: "Sync feature branches with base branch, resolve conflicts, and manage branch lifecycle."
-allowed-tools: read, write, edit, bash, git
+allowed-tools: Read, Write, Edit, Bash, Git
 ---
 
 # GitHub Sync Skill

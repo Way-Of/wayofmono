@@ -1,5 +1,5 @@
 ---
-name: team_setup
+name: team-setup
 description: "Initialize and manage team configuration: developers, roles, projects, and ticket assignments"
 allowed-tools: read, write, grep, glob, bash
 ---

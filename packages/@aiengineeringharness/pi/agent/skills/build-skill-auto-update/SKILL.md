@@ -1,5 +1,5 @@
 ---
-name: build_skill_auto_update
+name: build-skill-auto-update
 description: Auto-update harness skills from upstream changes, sync documentation, and apply patches
 allowed-tools: read, write, bash, webfetch
 ---

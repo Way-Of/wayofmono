@@ -1,5 +1,5 @@
 ---
-name: build_backlog_groomer
+name: build-backlog-groomer
 description: Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.
 ---
 

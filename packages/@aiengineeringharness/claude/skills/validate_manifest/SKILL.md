@@ -1,7 +1,7 @@
 ---
 name: validate_manifest
 description: "Validate that all file paths in manifest.json exist on disk for all 7 AI coding tools. Checks for missing, stale, or incorrectly formatted entries and offers auto-fix capabilities."
-allowed-tools: read, write, bash, glob, grep
+allowed-tools: Read, Write, Bash, Glob, Grep
 ---
 
 # Validate Manifest — Manifest Integrity Validator

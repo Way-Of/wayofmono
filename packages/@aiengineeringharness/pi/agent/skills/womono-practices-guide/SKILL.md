@@ -1,5 +1,5 @@
 ---
-name: womono_practices_guide
+name: womono-practices-guide
 description: Guides development to follow WoM best practices from thoughts/wayofmono/docs/best-practices/. Load this skill at the start of any task to ensure work aligns with database, hosting, architecture, and coding standards.
 ---
 

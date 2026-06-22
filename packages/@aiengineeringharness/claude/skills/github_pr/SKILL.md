@@ -1,7 +1,7 @@
 ---
 name: github_pr
 description: "Create, manage, and review GitHub Pull Requests with ticket linking, template support, and review workflow integration."
-allowed-tools: read, write, edit, bash, git, gh
+allowed-tools: Read, Write, Edit, Bash, Git, Gh
 ---
 
 # GitHub PR Skill

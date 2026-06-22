@@ -5,15 +5,7 @@ description: >-
   bumping, README/docs updates, npm publish, git commit/push, permission
   workarounds (EACCES), and production mode configuration. Knows the full
   release workflow for @wayofmono/* packages.
-allowed-tools: - read
-  - write
-  - edit
-  - bash
-  - grep
-  - glob
-  - todowrite
-  - task
-  - question
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Todowrite, Task, Question
 ---
 
 # womonodeploy — Package Release & Deploy Skill

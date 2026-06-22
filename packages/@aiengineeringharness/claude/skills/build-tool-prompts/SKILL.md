@@ -1,7 +1,7 @@
 ---
 name: build_tool_prompts
 description: Build prompt templates for all 7 AI coding tools — knows single-file .md format, frontmatter, positional arguments, discovery locations.
-allowed-tools: read, write, edit, bash, grep, glob, websearch
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Websearch
 ---
 
 # build_tool_prompts — Unified Prompt Template Builder

@@ -1,9 +1,9 @@
 ---
-name: docs_sync_updater
+name: docs-sync-updater
 description: >-
   Fetch latest documentation from all AI tool sources and update tool reference
   docs + skills/agent configs
-allowed-tools: 'read, write, grep, web_search, web_fetch'
+allowed-tools: read, write, grep, web_search, web_fetch
 ---
 
 # Documentation Sync Updater

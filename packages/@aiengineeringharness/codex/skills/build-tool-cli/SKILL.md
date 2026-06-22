@@ -1,5 +1,5 @@
 ---
-name: build_tool_cli
+name: build-tool-cli
 description: CLI reference for all 7 AI coding tools — knows flags, subcommands, environment variables, output modes, non-interactive usage.
 allowed-tools: read, write, edit, bash, grep, glob, websearch
 ---

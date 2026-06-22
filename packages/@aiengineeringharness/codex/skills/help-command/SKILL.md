@@ -1,5 +1,5 @@
 ---
-name: help_command
+name: help-command
 description: Unified /help system — skills, commands, agents, workflows, practices, search, onboarding
 allowed-tools: read, grep, glob, bash, write
 ---
