@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.7.4] - 2026-06-22
+
+### Harness (AI Engineering Harness v1.7.4)
+- **OpenCode skills renamed to kebab-case (WOMONO-073)**: Fixed 74 SKILL.md `name:` fields and directory names from snake_case to kebab-case per official OpenCode naming regex
+- **Duplicate directories removed**: 74 snake_case directories deleted from `opencode/skills/`
+- **`wow-tickets` fully deprecated**: Removed all stale entries from `manifest.json` (7 tools × 1 entry each) and all 6 `config-manifest/tools/*.yaml` files
+- **`init_harness` duplicates cleaned (WOMONO-074)**: Removed duplicate directories from antigravity, claude, codex, gemini, wocode (opencode + pi already had kebab-case `init-harness/`)
+- **`docs/ai-coding-tools/opencode.md` fixed**: Incorrect "Skill naming: snake_case" changed to "kebab-case"
+- **Version bumped to 1.7.4**: manifest.json, CHANGELOG.md, README.md, docs/fixes/
+
 ## [1.8.3] - 2026-06-19
 
 ### Dashboard (wo-cto-dashboard v0.6.3)

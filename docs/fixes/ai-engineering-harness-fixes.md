@@ -1,5 +1,34 @@
 # AI Engineering Harness Fixes & Release Notes
 
+## v1.7.4 — 2026-06-22 — OpenCode Skills Kebab-Case Naming (WOMONO-073, WOMONO-074)
+
+### Features
+- **OpenCode skills renamed to kebab-case**: All 74 OpenCode SKILL.md `name:` fields and directory names changed from snake_case to kebab-case per official OpenCode naming regex (`^[a-z0-9]+(-[a-z0-9]+)*$`)
+- **Duplicate directories removed**: 74 snake_case directories deleted from `opencode/skills/` (kebab-case variants kept)
+- **`wow-tickets` fully deprecated**: Removed all stale entries from `manifest.json` (7 tools × 1 entry each) and all 6 `config-manifest/tools/*.yaml` files
+- **`init_harness` duplicates cleaned**: Removed duplicate `init_harness/` directories from antigravity, claude, codex, gemini, wocode (opencode + pi already had kebab-case `init-harness/`)
+- **Opencode `help.ts` updated**: Skill references changed from snake_case to kebab-case
+- **`docs/ai-coding-tools/opencode.md` fixed**: Incorrect "Skill naming: snake_case" changed to "kebab-case" (2 locations)
+- **Per-tool versions bumped to 1.7.4**: All 7 tool entries in `manifest.json` updated from `1.0.0` to `1.7.4` to match top-level harness version
+
+### Files
+- `packages/@aiengineeringharness/opencode/skills/*/SKILL.md` — 74 frontmatter name: fields fixed
+- `packages/@aiengineeringharness/opencode/skills/` — 74 snake_case directories deleted
+- `packages/@aiengineeringharness/manifest.json` — `wow-tickets` entries removed from all 7 tools
+- `packages/@aiengineeringharness/config-manifest/tools/*.yaml` — `wow-tickets` removed from 6 files
+- `packages/@aiengineeringharness/{antigravity,claude,codex,gemini,wocode}/skills/init_harness/` — 5 directories deleted
+- `packages/@aiengineeringharness/wocode/agent/skills/init_harness/` — 1 directory deleted
+- `packages/@aiengineeringharness/opencode/skills/help-command/help.ts` — references fixed
+- `docs/ai-coding-tools/opencode.md` — naming convention corrected
+- `packages/@aiengineeringharness/opencode/skills/init-harness/init_harness.md` — frontmatter name: fixed
+- `packages/@aiengineeringharness/manifest.json` — per-tool versions `1.0.0` → `1.7.4` (7 tools)
+
+### Standard Procedure
+- **Version bumps must update all 8 version fields in `manifest.json`**: 1 top-level + 7 per-tool entries (antigravity, claude, codex, gemini, opencode, pi, wocode)
+- **Also update**: `CHANGELOG.md`, `README.md`, `docs/fixes/ai-engineering-harness-fixes.md`, `docs/fixes/README.md`
+
+---
+
 ## v1.7.3 — 2026-06-17 — Ticket Skill Notification Integration + Deprecated Skill Cleanup
 
 ### Features

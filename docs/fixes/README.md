@@ -15,7 +15,7 @@
 |-----------|---------|----------------|------------|
 | **wocode** | `@wayofmono/wo-coding-agent` | v1.0.11 | `~/.wocode/` |
 | **wouser** | `@wayofmono/wo-agent` | v1.0.4 | `~/.wo/` |
-| **Harness** | `@aiengineeringharness` | v1.7.0 | `~/.wocode/`, `~/.pi/agent/`, etc. |
+| **Harness** | `@aiengineeringharness` | v1.7.4 | `~/.wocode/`, `~/.pi/agent/`, etc. |
 | **Dashboard** | `@wayofmono/wo-cto-dashboard` | v0.6.3 | `~/.config/wodev/` |
 
 ---
@@ -48,12 +48,20 @@ See [wo-agent-fixes.md](./wo-agent-fixes.md) for detailed release notes.
 
 See [ai-engineering-harness-fixes.md](./ai-engineering-harness-fixes.md) for detailed release notes.
 
-**Quick Summary (v1.7.0):**
-- Config-Manifest modularization: per-tool YAMLs + compile/validate pipeline
-- 7 per-tool skill update scripts with format enforcement
-- Test suite (4 scripts): YAML, manifest, on-disk skill validation
-- Sidecar support documented per tool
-- New skills: self-documentation, validate-manifest (deployed to all 7 tools)
+**Quick Summary (v1.7.4):**
+- OpenCode skills renamed to kebab-case (74 SKILL.md frontmatter + directories fixed)
+- Deprecated `wow-tickets` fully removed from manifest.json + all config YAMLs
+- Duplicate `init_harness` dirs cleaned across 5 tools (WOMONO-074)
+- `docs/ai-coding-tools/opencode.md` naming convention corrected
+
+**Previous (v1.7.1–v1.7.3):**
+- Ticket skill notification integration + deprecated skill cleanup (v1.7.3)
+- Platform-aware harness installer (v1.7.2): 11 detection + 4 adaptation modules
+- Config-Manifest modularization: per-tool YAMLs + compile/validate pipeline (v1.7.1)
+- 7 per-tool skill update scripts with format enforcement (v1.7.1)
+- Test suite (4 scripts): YAML, manifest, on-disk skill validation (v1.7.1)
+- Sidecar support documented per tool (v1.7.1)
+- New skills: self-documentation, validate-manifest (deployed to all 7 tools) (v1.7.1)
 
 **Previous (v1.6.1):**
 - Command/skill conflicts resolved (run- prefix for Gemini, Antigravity)

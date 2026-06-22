@@ -1,9 +1,9 @@
 {
-  "version": "1.7.1",
+  "version": "1.7.4",
   "tools": {
     "antigravity": {
       "name": "antigravity",
-      "version": "1.0.0",
+      "version": "1.7.4",
       "target": "~/.antigravity",
       "components": {
         "settings": {
@@ -1302,7 +1302,7 @@
     },
     "claude": {
       "name": "claude",
-      "version": "1.0.0",
+      "version": "1.7.4",
       "target": "~/.claude",
       "components": {
         "settings": {
@@ -2359,7 +2359,7 @@
     },
     "codex": {
       "name": "codex",
-      "version": "1.0.0",
+      "version": "1.7.4",
       "target": "~/.codex",
       "components": {
         "settings": {
@@ -3391,7 +3391,7 @@
     },
     "gemini": {
       "name": "gemini",
-      "version": "1.0.0",
+      "version": "1.7.4",
       "target": "~/.gemini",
       "components": {
         "settings": {
@@ -4814,7 +4814,7 @@
     },
     "opencode": {
       "name": "opencode",
-      "version": "1.0.0",
+      "version": "1.7.4",
       "target": "~/.config/opencode",
       "components": {
         "settings": {
@@ -6088,7 +6088,7 @@
     },
     "pi": {
       "name": "pi",
-      "version": "1.0.0",
+      "version": "1.7.4",
       "target": "~/.pi/agent",
       "components": {
         "agents": {
@@ -7446,7 +7446,7 @@
     },
     "wocode": {
       "name": "wocode",
-      "version": "1.0.0",
+      "version": "1.7.4",
       "target": "~/.wocode/agent",
       "components": {
         "settings": {
