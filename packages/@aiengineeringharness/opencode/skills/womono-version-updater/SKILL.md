@@ -1,5 +1,5 @@
 ---
-name: womono_version_updater
+name: womono-version-updater
 description: Bump the WayOfMono harness version across all files. Updates manifest.json, CHANGELOG.md, README.md, and deploys version to all 7 tools. Triggers on "bump version", "update version", "release v*", "tag version".
 allowed-tools: - read
   - write

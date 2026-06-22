@@ -1,5 +1,5 @@
 ---
-name: self_documentation
+name: self-documentation
 description: Enables Wo to answer "How do I...?" and "What's the command for...?" questions by searching its own commands, skills, and documentation locally
 allowed-tools: read, write, bash, glob, grep
 ---

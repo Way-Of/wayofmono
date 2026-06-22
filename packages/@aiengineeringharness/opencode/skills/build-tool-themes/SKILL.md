@@ -1,5 +1,5 @@
 ---
-name: build_tool_themes
+name: build-tool-themes
 description: Build themes for all 7 AI coding tools — knows JSON format, color tokens, vars system, hex/256-color values, hot reload.
 allowed-tools: read, write, edit, bash, grep, glob, websearch
 ---

@@ -1,5 +1,5 @@
 ---
-name: init_harness
+name: init-harness
 description: >-
   Initialize the AI Engineering Harness in a repository by running the tool's
   project memory init, then cloning the shared f-rr-d thoughts repo and setting

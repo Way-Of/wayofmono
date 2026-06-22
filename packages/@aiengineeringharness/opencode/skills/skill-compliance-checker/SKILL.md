@@ -1,5 +1,5 @@
 ---
-name: skill_compliance_checker
+name: skill-compliance-checker
 description: Validate all skill SKILL.md files across all 7 tool harnesses for correct frontmatter, naming, allowed-tools casing, and format compliance. Use when the user asks to check compliance, validate skills, run compliance check, or verify skill formatting.
 allowed-tools: read, write, bash
 ---

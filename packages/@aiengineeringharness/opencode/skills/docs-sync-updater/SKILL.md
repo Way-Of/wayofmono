@@ -1,5 +1,5 @@
 ---
-name: docs_sync_updater
+name: docs-sync-updater
 description: >-
   Fetch latest documentation from all AI tool sources and update tool reference
   docs + skills/agent configs

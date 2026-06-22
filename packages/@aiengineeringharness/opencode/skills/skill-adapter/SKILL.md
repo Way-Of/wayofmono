@@ -1,5 +1,5 @@
 ---
-name: skill_adapter
+name: skill-adapter
 description: Platform-specific skill/agent loading and format adapters for all 7 frontends
 allowed-tools: read, write, glob, bash, grep
 ---
