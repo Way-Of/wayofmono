@@ -1576,6 +1576,21 @@ if (args.update) {
       Deno.exit(1);
     }
 
+    // On Windows, ensure .deno/bin is in user PATH
+    if (Deno.build.os === "windows") {
+      const userDir = Deno.env.get("USERPROFILE") || Deno.env.get("HOME") || "";
+      try {
+        const psCmd = new Deno.Command("powershell", {
+          args: [
+            "-NoProfile", "-Command",
+            `$p=[Environment]::GetEnvironmentVariable("Path","User"); if($p -split ";" -notcontains "${userDir}\\.deno\\bin"){ [Environment]::SetEnvironmentVariable("Path",$p+";${userDir}\\.deno\\bin","User") }`,
+          ],
+          stdout: "null", stderr: "null",
+        });
+        await psCmd.output();
+      } catch { /* skip */ }
+    }
+
     // Patch wrapper to embed --reload so future updates bypass Deno cache
     await patchDenoWrapperReload();
 
