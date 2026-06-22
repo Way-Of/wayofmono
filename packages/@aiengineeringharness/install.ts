@@ -869,7 +869,15 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
   if (!opts.dryRun && os.isLinux) {
     const neededDeps: string[] = [];
     if (os.distro === "ubuntu" || os.distro === "debian" || !os.distro) {
-      neededDeps.push("libwebkit2gtk-4.1-dev");
+      // Check if already installed before adding — avoids sudo prompt on every run
+      const dpkgCheck = await new Deno.Command("dpkg", {
+        args: ["-s", "libwebkit2gtk-4.1-dev"],
+        stdout: "null",
+        stderr: "null",
+      }).output();
+      if (!dpkgCheck.success) {
+        neededDeps.push("libwebkit2gtk-4.1-dev");
+      }
     }
     for (const dep of neededDeps) {
       const suggestion = getDepSuggestion(os, dep);
