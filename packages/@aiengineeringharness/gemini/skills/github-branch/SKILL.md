@@ -67,6 +67,14 @@ Parameters:
 - `branch_name` (required): Branch name
 - `remote` (optional): Also delete remote (default: true)
 
+## Multi-Machine Awareness
+
+- **Never push directly to main**: Always create a new feature branch for every change — pushing directly to main is forbidden
+- **Pull before creating**: `git pull origin main` before branching to ensure you branch from the latest
+- **Push upstream**: Always push with `-u` so other machines can see and check out the branch
+- **Fetch before switch**: If branch was created on another machine, `git fetch origin && git checkout <branch>` to pull it locally
+- **Never force-push shared branches**: If a branch is used by multiple machines, use merge instead of rebase + force-push
+
 ## Integration
 
 - Uses `ticket-manager` to get ticket details

@@ -116,6 +116,14 @@ Parameters:
 - `pr_url` (required): PR URL
 - `pr_number` (required): PR number
 
+## Multi-Machine Awareness
+
+- **Always branch first, never push to main**: Changes must be on a feature branch, pushed, then merged via PR. Direct pushes to main are forbidden.
+- **PRs are remote**: PRs live on GitHub, not locally — create and manage from any machine
+- **Push changes from anywhere**: Address review comments, push from any machine to the same branch
+- **Always pull before pushing**: `git pull --rebase` before `git push` to avoid rejection if another machine pushed
+- **PR metadata is GitHub-native**: Labels, reviewers, and milestones are synced via GitHub — no local state to worry about
+
 ## Integration
 
 - Auto-links PR to ticket via `ticket-manager` `link_pr_to_ticket`

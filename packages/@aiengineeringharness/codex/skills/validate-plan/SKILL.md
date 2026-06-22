@@ -9,6 +9,15 @@ disable-model-invocation: true
 
 You are tasked with validating that an implementation plan was correctly executed, verifying all success criteria and identifying any deviations or issues.
 
+## Enforcement Ticket Check
+
+**Enforcement tickets** (in `thoughts/<project-slug>/enforcement-ticket/`) **override all other tickets**. Before validating any plan:
+
+1. Check for active enforcement tickets: `ls thoughts/<project-slug>/enforcement-ticket/*.md 2>/dev/null`
+2. If any enforcement ticket has status ≠ "Done", flag the plan as **blocked by enforcement ticket** in the validation report
+3. Validation should note: "This plan cannot proceed until enforcement ticket(s) are resolved"
+4. Enforcement ticket validation takes priority — validate enforcement ticket compliance first
+
 ## Initial Setup
 
 When invoked:

@@ -115,6 +115,14 @@ Parameters:
 - `pr_number` (required): PR number
 - `file_path` (optional): Specific file to view
 
+## Multi-Machine Awareness
+
+- **Reviews enforce the branch workflow**: PRs are the only way changes reach main — reviews verify branch changes before merge
+- **Reviews are remote**: Review from any machine — comments, approvals, and rejections all sync via GitHub
+- **Fetch PR locally to test**: Before reviewing, `gh pr checkout <number>` to pull the branch locally
+- **Update f-rr-d tickets from any machine**: After review decision, update the ticket via `ticket-manager` — pull first with `git -C thoughts/ pull --ff-only`
+- **Review state is GitHub-native**: No local lock-in — start a review on one machine, finish on another
+
 ## CTO Dashboard Integration
 
 - Review Queue shows PRs with "needs-review" label

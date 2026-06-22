@@ -5,10 +5,25 @@
 ### Features
 - **Stale lock auto-recovery**: `transaction.ts::acquireLock` now detects stale lock files by checking if the holding PID is still alive (`/proc/<pid>` on Linux, `kill -0` on macOS). Dead process locks are automatically removed and retried instead of waiting forever.
 - **Auto-install system deps with `--yes`**: `install.ts::installTool` now runs `sudo apt install -y <dep>` automatically when `--yes` is passed, instead of only warning. Without `--yes`, behavior is unchanged (warning only).
+- **Multi-Machine Awareness across all 6 GitHub skills**: Added `## Multi-Machine Awareness` sections to `github-branch`, `github-pr`, `github-review`, `github-sync`, `github-release`, and `github-issue` skills, covering pull-before-create, push-upstream, fetch-before-switch, and never-force-push rules.
+- **"Never push directly to main" rule**: Every GitHub skill involving git operations now explicitly prohibits direct pushes to `main` — all changes must go through feature branches → PR → main.
+- **`--reload` section in README**: Added dedicated header under Step 2 with full `deno run --reload -A ... --install-cli` command and clarification that `--reload` is needed on Windows always and on macOS/Linux when re-installing.
+- **init_harness skills updated**: All 9 copies updated with GitHub auth prerequisites, f-rr-d exclusivity rules, critical `.gitignore` warnings, "Discover and Append AI Engineering Harness Skills & Commands Reference" step, and multi-machine sync workflow (pull --ff-only, pull --rebase, never force-push).
+- **f-rr-d multi-machine workflow**: Updated `thoughts/AGENTS.md` and `thoughts/README.md` with multi-machine sync documentation.
+- **init_harness: always create all dev folders**: `zerwiz/`, `tomas/`, `craig/`, `andre/` are now always created for every project. `enforcement-ticket/` is a permanent folder (was conditional).
+- **Enforcement ticket priority documented**: All 3 ticket skills (`ticket-manager`, `ticket-executor`, `validate-plan`) now check for active enforcement tickets at session start and pause non-enforcement work if any exist.
+- **AGENTS.md (monorepo root)**: Updated f-rr-d structure diagram and added Enforcement Tickets section under Ticket Management Knowledge.
 
 ### Files
 - `packages/@aiengineeringharness/transaction.ts` — Added `isProcessAlive()` helper (L4-17); stale lock check in `acquireLock()` (L90-98)
 - `packages/@aiengineeringharness/install.ts` — Dep check now auto-installs when `opts.yes` is true (L877-885)
+- `packages/@aiengineeringharness/{opencode,antigravity,claude,codex,gemini,pi}/skills/github-*/SKILL.md` — 6 skills × 6 tools = 36 files with Multi-Machine Awareness sections and "never push directly to main" rule
+- `packages/@aiengineeringharness/{opencode,antigravity,claude,codex,gemini,pi,wocode}/skills/init-harness/SKILL.md` — 9 copies updated
+- `packages/@aiengineeringharness/{opencode,antigravity,claude,codex,gemini,pi}/skills/ticket-{manager,executor}/SKILL.md` — 2 skills × 6 tools = 12 files
+- `packages/@aiengineeringharness/{opencode,antigravity,claude,codex,gemini,pi}/skills/validate-plan/SKILL.md` — 6 tools
+- `AGENTS.md` — Updated f-rr-d structure diagram + Enforcement Tickets section
+- `README.md` — Added `--reload` section
+- `thoughts/AGENTS.md`, `thoughts/README.md` — Multi-machine f-rr-d workflow
 
 ### Standard Procedure
 - **Version bumps must update all 8 version fields in `manifest.json`**: 1 top-level + 7 per-tool entries (antigravity, claude, codex, gemini, opencode, pi, wocode)

@@ -110,6 +110,13 @@ List GitHub Issues linked to ticket.
 Parameters:
 - `ticket_id` (required): Ticket ID
 
+## Multi-Machine Awareness
+
+- **Issues are GitHub-native**: No local state — create, update, and close from any machine
+- **Bi-directional sync is automatic**: Ticket ↔ Issue links work regardless of which machine created them
+- **Labels are global**: Shared across all machines via GitHub
+- **f-rr-d tickets are the local concern**: Remember to `git -C thoughts/ pull --ff-only` before linking a GitHub Issue to a local ticket
+
 ## Integration
 
 - Bi-directional sync: ticket ↔ GitHub Issue

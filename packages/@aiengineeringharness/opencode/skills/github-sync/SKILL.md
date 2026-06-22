@@ -117,6 +117,14 @@ Update local base branch from remote.
 Parameters:
 - `base_branch` (optional): Base branch (default: "main")
 
+## Multi-Machine Awareness
+
+- **Never push directly to main**: All changes go through feature branches → PR → main. Syncing always happens on a feature branch, never on main.
+- **Fetch before sync**: Always `git fetch origin` before syncing to ensure you have the latest remote state
+- **Rebase for single-user branches**: Safe to rebase and force-push if you're the only one on the branch
+- **Merge for shared branches**: If multiple machines work on the same branch, use merge strategy (no force-push)
+- **After force-push on shared branch**: Coordinate with other developers — they'll need to `git fetch && git reset --hard origin/<branch>` to realign
+
 ## Integration
 
 - Called automatically before PR creation

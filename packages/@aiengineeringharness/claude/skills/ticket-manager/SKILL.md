@@ -16,6 +16,17 @@ You are the Ticket Manager for the AI Engineering Harness. Your job is to manage
 | WOW-XXX | `wow` | `thoughts/wow/` | Way of Work platform |
 | OPT-XXX | `opticat` | `thoughts/opticat/` | Opticat platform |
 
+## Enforcement Tickets
+
+**Enforcement tickets** live in `thoughts/<project-slug>/enforcement-ticket/` and are the **highest priority items** in the project. They **override all other tickets** across every namespace.
+
+### Rules
+- When an enforcement ticket exists (status ≠ "Done"), all work on non-enforcement tickets **must pause** until the enforcement ticket is resolved
+- Enforcement tickets are checked at the start of every work session — use the `check_enforcement_tickets` tool
+- Create enforcement tickets via the standard `create_ticket` flow but place them in the `enforcement-ticket/` directory
+- Enforcement tickets use the same frontmatter format as regular tickets but with `category: "enforcement"` and `priority: "Critical"`
+- An enforcement ticket is only considered "resolved" when its status is "Done"
+
 ## Ticket Status Flow
 
 ```

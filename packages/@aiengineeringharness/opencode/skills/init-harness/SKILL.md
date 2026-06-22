@@ -165,16 +165,22 @@ thoughts/${PROJECT_SLUG}/
 │   ├── guides/         # How-to guides
 │   └── references/     # Reference docs
 ├── global/             # Project-level cross-cutting concerns
+├── enforcement-ticket/ # HIGHEST PRIORITY — overrides all other tickets
+├── zerwiz/             # Developer workspace
+├── tomas/              # Developer workspace
+├── craig/              # Developer workspace
+├── andre/              # Developer workspace
 ├── TODO.md             # If the user wants one
-└── enforcement-ticket/ # If the project needs it
 ```
+
+> **Enforcement tickets** are the highest priority items in the project. They **override all other tickets** — when an enforcement ticket exists, all work on non-enforcement tickets must pause until the enforcement ticket is resolved. This includes tickets across all namespaces (WOMONO, WOW, OPT).
 
 Create the core structure:
 
 ```bash
 mkdir -p thoughts/${PROJECT_SLUG}/shared/{tickets,plans,research}
 mkdir -p thoughts/${PROJECT_SLUG}/docs/{architecture,decisions,guides,references}
-mkdir -p thoughts/${PROJECT_SLUG}/global
+mkdir -p thoughts/${PROJECT_SLUG}/{global,enforcement-ticket,zerwiz,tomas,craig,andre}
 ```
 
 Copy the ticket template from the shared location:
@@ -187,11 +193,13 @@ Additional subdirectories like `docs/best-practices/`, `docs/skills/`, `docs/too
 
 ### Step 5: Create Personal Thoughts Directories
 
+Developer directories (`zerwiz/`, `tomas/`, `craig/`, `andre/`) were already created in Step 4. These are **always** created for every project — no user input needed. If additional developers join later, create their directories manually:
+
 ```bash
-mkdir -p thoughts/${PROJECT_SLUG}/$(whoami)
+mkdir -p thoughts/${PROJECT_SLUG}/<developer-name>
 ```
 
-Create directories for any known team members the user mentions. Personal dirs contain tickets, plans, and research files directly — no subfolder structure needed.
+Personal dirs contain tickets, plans, and research files directly — no subfolder structure needed.
 
 ### Step 6: Add thoughts/ to .gitignore (Critical)
 

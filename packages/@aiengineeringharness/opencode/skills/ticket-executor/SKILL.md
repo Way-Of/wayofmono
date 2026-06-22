@@ -8,6 +8,15 @@ allowed-tools: read, write, grep, glob, web, search
 
 Executes approved plans in phases, with validation and telemetry tracking after each phase.
 
+## Enforcement Ticket Priority
+
+**Enforcement tickets** (in `thoughts/<project-slug>/enforcement-ticket/`) **override all other tickets**. Before executing any plan:
+
+1. Check for active enforcement tickets: `ls thoughts/<project-slug>/enforcement-ticket/*.md 2>/dev/null`
+2. If any enforcement ticket has status ≠ "Done", **pause non-enforcement work immediately**
+3. Switch to resolving the enforcement ticket first
+4. Only resume non-enforcement tickets after all enforcement tickets are "Done"
+
 ## Workflow
 
 ```

@@ -51,6 +51,10 @@ See [ai-engineering-harness-fixes.md](./ai-engineering-harness-fixes.md) for det
 **Quick Summary (v1.7.5):**
 - Stale lock detection: auto-recovers from crashed installer processes
 - System deps auto-installed when `--yes` is passed (e.g., `libwebkit2gtk-4.1-dev`)
+- Multi-Machine Awareness: 6 GitHub skills synced across 6 tools with "never push directly to main" workflow
+- init_harness skills: multi-machine f-rr-d sync, GitHub auth prerequisites, `.gitignore` warnings, always-create dev folders + enforcement-ticket
+- Enforcement ticket priority: all 3 ticket skills check enforcement tickets before work
+- README `--reload` section: dedicated install command for cache-busting
 
 **Previous (v1.7.1–v1.7.3):**
 - Ticket skill notification integration + deprecated skill cleanup (v1.7.3)

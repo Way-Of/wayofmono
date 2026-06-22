@@ -313,21 +313,32 @@ thoughts/
 │   └── research/
 ├── wayofmono/                 # WayOfMono (WOMONO-XXX)
 │   ├── docs/                  # Architecture, decisions, guides, references
+│   ├── global/                # Project-level cross-cutting concerns
+│   ├── enforcement-ticket/    # HIGHEST PRIORITY — overrides all other tickets
 │   ├── shared/tickets/        # WOMONO tickets
 │   ├── shared/plans/
 │   ├── shared/research/
-│   └── <developer>/
+│   ├── zerwiz/                # Developer workspace
+│   ├── tomas/                 # Developer workspace
+│   ├── craig/                 # Developer workspace
+│   └── andre/                 # Developer workspace
 ├── wow/                       # WayOfWork (WOW-XXX)
 │   ├── docs/
+│   ├── global/
+│   ├── enforcement-ticket/
 │   ├── shared/tickets/
 │   ├── shared/plans/
-│   └── <developer>/
+│   └── shared/research/
 └── opticat/                   # Opticat (OPT-XXX)
     ├── docs/
+    ├── global/
+    ├── enforcement-ticket/
     ├── shared/tickets/
     ├── shared/plans/
-    └── <developer>/
+    └── shared/research/
 ```
+
+> **Enforcement tickets** (in `enforcement-ticket/`) are the highest priority — they **override all other tickets** across every namespace. When an enforcement ticket exists with status ≠ "Done", all work on non-enforcement tickets must pause until it is resolved.
 
 ## Ticket Format
 
@@ -353,6 +364,15 @@ Any AI agent working with this repo:
 4. **Never store skills/agents here** — wrong repo (they live in `packages/@aiengineeringharness/`)
 
 ## Ticket Management Knowledge
+
+### Enforcement Tickets
+
+**Enforcement tickets** (in `thoughts/<project-slug>/enforcement-ticket/`) are the **highest priority** items — they **override all other tickets** across every namespace.
+
+- When an enforcement ticket exists with status ≠ "Done", all work on non-enforcement tickets **must pause**
+- Enforcement tickets are checked at the start of every session by `ticket-manager`, `ticket-executor`, and `validate-plan` skills
+- Create enforcement tickets with `category: "enforcement"` and `priority: "Critical"`
+- An enforcement ticket is only "resolved" when its status is "Done"
 
 ### Ticket Lifecycle
 ```
