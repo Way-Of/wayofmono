@@ -6,104 +6,82 @@ required_vars:
   - project_tagline
   - problem_statement
   - solution_description
-  - solution_highlights
-  - target_market
-  - tam_global
-  - tam_national
-  - sam
-  - som
+  - tam
   - key_metrics
-  - revenue_streams
-  - competitive_advantages
-  - team_members
   - funding_ask
-  - valuation
   - current_date
   - document_version
+  - competitive_advantages
+  - team_members
 ---
 
-# {{project_name}} — One-Pager
+<!-- _class: cover -->
 
-**Document**: Investment One-Pager
-**Version**: {{document_version}}
-**Last Updated**: {{current_date}}
-**Status**: Active
+# {{project_name}}
 
----
+<div class="accent-line"></div>
 
-## {{project_name}}
+## {{project_tagline}}
 
-**{{project_tagline}}**
-
----
-
-## The Problem
-
-{{problem_statement}}
+<p>{{current_date}} &middot; One-Pager</p>
 
 ---
 
-## The Solution
+<div class="emphasis">{{problem_statement}}</div>
 
+---
+
+<div class="callout success">
+<div class="callout-title">Solution</div>
 {{solution_description}}
+</div>
 
-**Key Differentiators**:
-{{#each solution_highlights}}
-- **{{title}}**: {{description}}
+---
+
+<!-- _class: metrics -->
+
+<div class="metric-card primary">
+<div class="metric-value">{{tam}}</div>
+<div class="metric-label">TAM</div>
+</div>
+
+<div class="metric-card success">
+<div class="metric-value">{{key_metrics.arr}}</div>
+<div class="metric-label">ARR</div>
+</div>
+
+<div class="metric-card accent">
+<div class="metric-value">{{funding_ask}}</div>
+<div class="metric-label">Ask</div>
+</div>
+
+---
+
+### Why Us
+
+{{#each competitive_advantages}}
+<div class="callout accent">
+<div class="callout-title">&#10003; {{this}}</div>
+</div>
 {{/each}}
 
 ---
 
-## Market Opportunity
+### Team
 
-| Scope | Market Size | Growth |
-|-------|-------------|--------|
-| Global | {{tam_global}} | {{global_growth_rate}} |
-| National | {{tam_national}} | {{national_growth_rate}} |
-| **SAM** | {{sam}} |
-| **SOM** | {{som}} |
-
----
-
-## Traction
-
-| Metric | Value |
-|--------|-------|
-| ARR | {{key_metrics.arr}} |
-| MRR | {{key_metrics.mrr}} |
-| Growth | {{key_metrics.growth_rate}} |
-| Customers | {{key_metrics.customers}} |
-
----
-
-## Business Model
-
-{{#each revenue_streams}}
-- {{channel}}: {{description}}
+{{#each team_members}}
+<div class="callout info">
+<div class="callout-title">{{name}}</div>
+{{role}}
+</div>
 {{/each}}
 
-**Competitive Edge**: {{#each competitive_advantages}}{{this}}{{#unless @last}} | {{/unless}}{{/each}}
-
 ---
 
-## Team
+<!-- _class: contact -->
 
-{{#each team_members}}{{name}} ({{role}}){{#unless @last}}, {{/unless}}{{/each}}
+<div class="accent-line"></div>
 
----
+# {{project_name}}
 
-## Why Now
-
-The market is ready. {{target_market}} is experiencing [key inflection point]. {{project_name}} is positioned to capture this opportunity.
-
----
-
-## Get in on the Ground Floor
-
-**Ask**: {{funding_ask}} at {{valuation}} valuation
-
----
-
-**Contact**: [Email]
-**Document Version**: {{document_version}}
-**Last Updated**: {{current_date}}
+<div class="contact-line"><strong>[Contact]</strong> &middot; [Email] &middot; [Website]</div>

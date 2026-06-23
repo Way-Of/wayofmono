@@ -1,7 +1,7 @@
 ---
-name: investor_ready_doc_gen
+name: investor-ready-doc-gen
 description: Generate complete investor-ready documentation for ANY project. Auto-fires when the user asks to generate investor docs, funding materials, pitch decks, or white papers. Uses 28+ mustache-style templates bundled as assets in the skill folder. Exports all docs as professional PDFs via Marp CLI. Project-agnostic — works for OptiCat, Way of Work, or any new project.
-allowed-tools: Read, Write, Bash, Edit, Grep, Glob, Webfetch, Websearch, Question
+allowed-tools: read, write, bash, edit, grep, glob, webfetch, websearch, question
 ---
 
 # Investor-Ready Document Generator
@@ -15,10 +15,25 @@ The skill needs a project config. Either:
 - **Config file**: User provides `investor_config.yaml` (see `assets/examples/`)
 - **Hybrid**: Start from config file, override interactively
 
+## Brand Color Detection
+
+The PDF theme automatically adapts to each project's brand identity. The skill detects brand colors during Step 1 codebase investigation and stores them in `investor_research/<project_name>/design.yaml` (separate from the project config — no mock data).
+
+The `design.yaml` follows the schema at `assets/pdf/design-template.yaml`:
+
+```yaml
+brand_colors:
+  primary: ""          # Main brand color — detected from project CSS
+  secondary: ""        # Accent/secondary color
+  accent: ""           # Highlight / CTA color
+  # ... see assets/pdf/design-template.yaml for full schema
+```
+
+All values are auto-detected — never hardcode. If only `primary` and `secondary` are found, fill those and leave the rest empty — the base theme fills missing values with professional defaults. If NO brand colors are detected, the skill falls back to a professional default palette (navy/teal/amber). The `accent` and `secondary` are the most impactful — focus on getting those right.
+
 ## Variable Reference
 
 | Variable | Type | Description | Required |
-|----------|------|-------------|----------|
 | `{{project_name}}` | string | Project/brand name | yes |
 | `{{project_tagline}}` | string | One-line value proposition | yes |
 | `{{project_description}}` | string | 2-3 paragraph overview | yes |
@@ -202,6 +217,15 @@ Before generating ANY investor docs, you MUST thoroughly investigate the applica
 5. **Document the team structure** — from code OWNERS files, commit history, project configs
 6. **Find the problem domain** — what does the application ACTUALLY do? What problems does it solve?
 7. **Capture real traction** — commit frequency, release history, issue tracker stats, user counts if available
+8. **Detect brand colors** — every project has its own brand. Find the project's visual identity to generate branded PDFs:
+   - Look for CSS custom properties: `--primary`, `--color-primary`, `--brand-primary`, `--accent`
+   - Check `tailwind.config.js` / `tailwind.config.ts` for custom color palettes
+   - Scan `theme.json`, `colors.css`, `variables.css`, or similar theme files
+   - Read the app's main CSS for dominant hex colors (most frequently used non-gray colors)
+   - Check for brand asset files: `logo.svg`, `brand-assets/`, `favicon` colors
+   - If the project has a website, fetch it and extract brand colors from the rendered CSS
+   - If no colors found, ASK the user: "What are your brand's primary/accent colors?" — provide a color picker reference
+   - Write findings to `investor_research/<project_name>/design.yaml` (copy format from `assets/pdf/design-template.yaml`)
 
 Create a structured research folder for all findings:
 
@@ -361,105 +385,201 @@ docs/Product docs/Investor Ready/
 6. Confirm **document count matches 17 categories + root files**
 7. Re-check competitor status via quick web search
 
-### Step 8: Convert to PDF (via Marp CLI)
+### Step 8: Branded PDF Conversion (via Marp CLI)
 
-All generated markdown documents can be exported to professional PDFs using Marp CLI — a zero-install Markdown-to-PDF converter (MIT license, 30K+ GitHub stars, maintained by marp-team). Marp works via `npx`, auto-caches after first run, and supports custom CSS themes.
+All generated markdown documents are exported to professionally designed, **project-branded PDFs** using Marp CLI — a zero-install Markdown-to-PDF converter (MIT license, 30K+ GitHub stars, maintained by marp-team). Marp works via `npx`, auto-caches after first run, and supports custom CSS themes.
 
+#### 8a: Ensure Marp CLI Is Available
+
+Before conversion, verify Marp CLI is installed and working. If not, install per platform:
+
+```bash
+# Test if Marp is available
+npx @marp-team/marp-cli@latest --version 2>/dev/null || {
+  echo "Marp CLI not found — installing..."
+  case "$(uname -s)" in
+    Linux*)
+      # Check Chromium dependency
+      if ! dpkg -s libwebkit2gtk-4.1-dev 2>/dev/null | grep -q "Status.*installed"; then
+        echo "Missing libwebkit2gtk-4.1-dev — installing..."
+        sudo apt update && sudo apt install -y libwebkit2gtk-4.1-dev
+      fi
+      npx @marp-team/marp-cli@latest --version
+      ;;
+    Darwin*)
+      # Check for Chromium (Puppeteer can use system Chrome)
+      if ! command -v chromium &>/dev/null && ! command -v google-chrome &>/dev/null; then
+        echo "Chromium not found — install via: brew install --cask chromium"
+        echo "Or let npx download it automatically (~75MB on first run)"
+      fi
+      npx @marp-team/marp-cli@latest --version
+      ;;
+    CYGWIN*|MINGW*|MSYS*)
+      # Windows: npx handles all deps automatically
+      npx.cmd @marp-team/marp-cli@latest --version
+      ;;
+  esac
+}
 ```
-# First run: caches Chromium (~75MB, ~8s)
-# Subsequent runs: ~1.5s per document
-npx @marp-team/marp-cli@latest <input.md> --pdf \
-  --output <output.pdf> \
-  --theme assets/pdf/investor-theme.css \
+
+Platform notes:
+- **Linux**: Requires `libwebkit2gtk-4.1-dev` for headless Chromium. Check with `dpkg -s`. Install with `sudo apt install libwebkit2gtk-4.1-dev`. Other distros: `dnf install webkit2gtk3-devel` (Fedora), `pacman -S webkit2gtk` (Arch).
+- **macOS**: npx auto-downloads Chromium. Optionally use system Chrome via `PUPPETEER_CHROMIUM_REVISION=0` or install via `brew install --cask chromium`.
+- **Windows**: npx handles everything automatically. No extra deps needed.
+
+First run downloads Chromium (~75MB, ~8s). Subsequent runs are ~1.5s per document.
+
+#### 8b: Generate Project-Specific Theme
+
+Before conversion, check if `investor_research/<project_name>/design.yaml` exists with detected brand colors. If it does, generate a project-branded CSS theme:
+
+```bash
+# Read design.yaml and generate project-branded CSS
+if [ -f "investor_research/$PROJECT_NAME/design.yaml" ]; then
+  # Parse brand colors from design.yaml
+  BRAND_PRIMARY=$(grep 'primary:' "investor_research/$PROJECT_NAME/design.yaml" | head -1 | sed 's/.*: "\(.*\)"/\1/')
+  BRAND_SECONDARY=$(grep 'secondary:' "investor_research/$PROJECT_NAME/design.yaml" | head -1 | sed 's/.*: "\(.*\)"/\1/')
+
+  # Write project-branded CSS by combining brand colors with the design system
+  cat > "$OUTPUT_DIR/project-theme.css" << CSS_HEAD
+/* @theme investor-project */
+@import 'default';
+:root {
+  --primary: $BRAND_PRIMARY;
+  --secondary: $BRAND_SECONDARY;
+}
+CSS_HEAD
+
+  # Append the full design system
+  cat assets/pdf/investor-theme.css >> "$OUTPUT_DIR/project-theme.css"
+  THEME="$OUTPUT_DIR/project-theme.css"
+else
+  THEME="assets/pdf/investor-theme.css"
+fi
+```
+
+This produces a single `project-theme.css` with the project's brand colors baked into the full design system. Only the colors that were actually detected are set — the base theme fills all missing values with professional defaults. If no `design.yaml` exists, use `assets/pdf/investor-theme.css` directly.
+
+#### 8c: Design System — Slide Classes
+
+The theme supports 12 slide types via Marp's `<!-- _class: -->` annotation. Templates already use these — the skill should also apply them intelligently during conversion:
+
+| Class | Visual | When to Apply |
+|-------|--------|---------------|
+| `cover` | Full gradient bg, centered title, accent underline, subtitle | First slide of any document |
+| `section` | Full-bleed gradient banner, large section number + title | Before major document sections (use `.section-number` div) |
+| `metrics` | Grid of colored metric cards with large values | KPI/metric summary slides |
+| `two-columns` | Side-by-side `.column` layout with divider | Comparison or paired content |
+| `quote` | Large centered quote with decorative marks, attribution | Testimonials, vision statements |
+| `table-slide` | Full-width table with gradient header, striped rows | Data tables, comparison matrices |
+| `feature` | Card grid with colored left border per card | Feature highlights, capability lists |
+| `timeline` | Horizontal timeline with years and descriptions | Roadmap, milestones |
+| `contact` | Gradient bg, centered contact info, accent line | Final/thank you slide |
+| `toc` | Numbered items with accent dots and subtitles | Table of contents |
+| `thin` | Compact spacing, smaller headings | Dense content slides |
+
+Apply classes inline in the markdown:
+
+```markdown
+<!-- _class: cover -->
+# Title
+
+<!-- _class: section -->
+<div class="section-number">01</div>
+# Section Title
+
+<!-- _class: metrics -->
+<div class="metric-card primary">
+<div class="metric-value">$10M</div>
+<div class="metric-label">ARR</div>
+</div>
+
+<!-- _class: table-slide -->
+| Header | Data |
+|--------|------|
+```
+
+#### 8d: Conversion Logic
+
+| Category | Markdown | Conversion | Output |
+|----------|----------|-----------|--------|
+| Pitch Deck (`pitch_deck/*.md`) | `<!-- _class: -->` + `---` slide breaks | Direct — templates already have all annotations | Rich multi-slide PDF |
+| Documents (all other) | continuous text with `<!-- _class: -->` | Insert `---` before each `##` heading, preserve `<!-- _class: -->` annotations | Paginated sections with styled slides |
+
+For **pitch decks**, templates already contain `---` slide separators and `<!-- _class: -->` annotations. Marp renders one styled slide per separator.
+
+For **documents**, auto-insert `---` before each `##` heading during PDF conversion (preserving original markdown). This creates natural page breaks at each section, and `<!-- _class: -->` annotations apply to the appropriate slides:
+
+```bash
+# Insert slide breaks before ## headings, preserving existing annotations
+sed 's/^## /---\n\n## /' document.md > document_for_marp.md
+npx @marp-team/marp-cli@latest document_for_marp.md --pdf \
+  --output document.pdf \
+  --theme project-theme.css \
   --allow-local-files
 ```
 
-#### PDF Output Structure
-
-Generated PDFs mirror the markdown output structure at:
-```
-docs/Product docs/Investor Ready/PDF/
-├── 01_PitchDeck/
-│   ├── Master_Deck.pdf
-│   ├── One_Pager.pdf
-│   ├── Send_Ahead_Deck.pdf
-│   └── Supporting_Slides.pdf
-├── 02_Executive_Summary/
-│   ├── Executive_Summary.pdf
-│   └── White_Paper.pdf
-├── 03_Financial_Model/
-│   ├── Master_Financial_Model.pdf
-│   ├── Cap_Table.pdf
-│   └── Seed_Allocation_Plan.pdf
-├── 04_Product_Demo/
-├── 05_Technical_Overview/
-├── 06_GoToMarket_Plan/
-├── 07_Team_Bios/
-├── ...
-└── White_Paper.pdf
-```
-
-#### Conversion Logic
-
-| Category | Markdown | Marp Mode | Output |
-|----------|----------|-----------|--------|
-| Pitch Deck (`pitch_deck/*.md`) | `---` slide breaks | default | Each `---` = new slide (templates already have these) |
-| Documents (all other) | continuous text | default + auto-`---` | Auto-insert `---` before each `##` heading for paginated sections |
-
-For **pitch decks**, templates already contain `---` slide separators — Marp renders one slide per separator.
-
-For **documents**, the skill auto-inserts `---` before each `##` heading during PDF conversion (preserving original markdown). This creates natural page breaks at each section. Example:
-
-```bash
-# Auto-insert slide breaks before ## headings for document PDFs
-sed 's/^## /---\n\n## /' document.md > document_for_marp.md
-npx @marp-team/marp-cli@latest document_for_marp.md --pdf --output document.pdf
-```
-
-#### Theme
-
-Use the bundled `assets/pdf/investor-theme.css` for branded output:
-- Professional color palette (navy/blue)
-- Clean typography (Inter/system-ui)
-- Styled tables, code blocks, blockquotes
-- Title/divider slide classes
-- Footer with page numbers
-
-Apply with `--theme assets/pdf/investor-theme.css`.
-
-#### Automation Script
+#### 8e: Automation Script
 
 For batch conversion across all generated docs:
+
 ```bash
 # From the output root:
-PDF_DIR="docs/Product docs/Investor Ready/PDF"
-find "docs/Product docs/Investor Ready" -name "*.md" \
+OUTPUT_DIR="docs/Product docs/Investor Ready"
+PDF_DIR="$OUTPUT_DIR/PDF"
+RESEARCH_DIR="investor_research/$PROJECT_NAME"
+
+# 1. Generate project-branded theme from design.yaml (if exists)
+if [ -f "$RESEARCH_DIR/design.yaml" ]; then
+  BRAND_PRIMARY=$(grep 'primary:' "$RESEARCH_DIR/design.yaml" | head -1 | sed 's/.*: "\(.*\)"/\1/')
+  BRAND_SECONDARY=$(grep 'secondary:' "$RESEARCH_DIR/design.yaml" | head -1 | sed 's/.*: "\(.*\)"/\1/')
+
+  if [ -n "$BRAND_PRIMARY" ] || [ -n "$BRAND_SECONDARY" ]; then
+    cat > "$OUTPUT_DIR/project-theme.css" << CSS_HEAD
+/* @theme investor-project */
+@import 'default';
+:root {
+  --primary: $BRAND_PRIMARY;
+  --secondary: $BRAND_SECONDARY;
+  --gradient-start: $BRAND_PRIMARY;
+  --gradient-end: $BRAND_SECONDARY;
+}
+CSS_HEAD
+    cat assets/pdf/investor-theme.css >> "$OUTPUT_DIR/project-theme.css"
+    THEME="$OUTPUT_DIR/project-theme.css"
+  else
+    THEME="assets/pdf/investor-theme.css"
+  fi
+else
+  THEME="assets/pdf/investor-theme.css"
+fi
+
+# 2. Convert all markdown to branded PDFs
+find "$OUTPUT_DIR" -name "*.md" \
   -not -path "*/PDF/*" \
   -not -name "README.md" \
   -not -name "CHANGELOG.md" \
   -not -name "TODO.md" \
   | while read md; do
-    rel="${md#docs/Product docs/Investor Ready/}"
+    rel="${md#$OUTPUT_DIR/}"
     outdir="$PDF_DIR/$(dirname "$rel")"
     mkdir -p "$outdir"
 
-    # Pitch decks already have --- separators; documents get auto-inserted
     case "$md" in
       *PitchDeck*)
         npx @marp-team/marp-cli@latest "$md" \
           --pdf \
           --output "$outdir/$(basename "${md%.md}.pdf")" \
-          --theme assets/pdf/investor-theme.css \
+          --theme "$THEME" \
           --allow-local-files
         ;;
       *)
-        # Insert --- before ## headings for document pagination
         tmp=$(mktemp)
         sed 's/^## /---\n\n## /' "$md" > "$tmp"
         npx @marp-team/marp-cli@latest "$tmp" \
           --pdf \
           --output "$outdir/$(basename "${md%.md}.pdf")" \
-          --theme assets/pdf/investor-theme.css \
+          --theme "$THEME" \
           --allow-local-files
         rm "$tmp"
         ;;
@@ -467,16 +587,18 @@ find "docs/Product docs/Investor Ready" -name "*.md" \
   done
 ```
 
-This converts every generated markdown file to PDF, skipping README/CHANGELOG/TODO.
+This converts every generated markdown file to a **project-branded PDF**, skipping README/CHANGELOG/TODO. Each PDF uses the project's own brand colors while maintaining the full professional design system.
 
-#### Validation
+#### 8f: Validation
 
 After conversion:
 1. Verify each PDF opens and renders correctly
-2. Check slide breaks in pitch decks (`---` → new slide)
-3. Confirm page count is reasonable (not 1-page PDFs from 10-page docs)
-4. Verify custom theme applied (colors, fonts, layout)
-5. Check file sizes — suspiciously small PDFs may indicate conversion failure
+2. Check cover slide has gradient background with project colors
+3. Verify metric cards, callout boxes, and section dividers use project brand colors
+4. Confirm page count is reasonable (not 1-page PDFs from 10-page docs)
+5. Verify custom theme applied (gradients, fonts, card layouts)
+6. Check file sizes — suspiciously small PDFs may indicate conversion failure
+7. Spot-check a pitch deck slide: should have cover → toc → section dividers → content → contact
 
 ### Step 9: Present Results
 Show the user:

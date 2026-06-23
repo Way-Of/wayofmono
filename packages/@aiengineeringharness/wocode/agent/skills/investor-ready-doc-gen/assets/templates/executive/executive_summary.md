@@ -32,50 +32,92 @@ required_vars:
   - document_version
 ---
 
-# {{project_name}} — Executive Summary
+<!-- _class: cover -->
 
-**Document**: Executive Summary
-**Version**: {{document_version}}
-**Last Updated**: {{current_date}}
-**Status**: Active
+# {{project_name}}
 
----
+<div class="accent-line"></div>
 
 ## Executive Summary
 
-{{project_name}} is redefining {{target_market}}. {{#if project_tagline}}**{{project_tagline}}**{{/if}} We address the critical challenge of {{problem_statement}} through {{solution_description}}.
-
-Our platform leverages {{technology_stack}} to deliver a comprehensive, integrated solution. Unlike fragmented tool stacks or generic AI, {{project_name}} provides a unified environment where {{#if solution_highlights}}{{#each solution_highlights}}{{title}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}} work together seamlessly.
-
-With a {{tam_global}} global market opportunity ({{tam_national}} in {{geography_national}} alone), growing at {{market_growth_rate}}, {{project_name}} is positioned to capture a leading share of the {{target_market}} market. We combine enterprise-grade power with accessibility and compliance, backed by a clear path to profitability.
+<p>{{current_date}} &middot; v{{document_version}}</p>
 
 ---
 
-## Problem & Solution
+{{#if project_tagline}}<div class="emphasis">{{project_tagline}}</div>{{/if}}
 
-- **Problem**: {{problem_statement}}
-- **Solution**: {{solution_description}}
+{{project_name}} is redefining {{target_market}}. We address the critical challenge of {{problem_statement}} through {{solution_description}}.
+
+Our platform leverages a modern technology stack ({{#each technology_stack}}{{category}}{{#unless @last}}, {{/unless}}{{/each}}) to deliver a comprehensive, integrated solution. Unlike fragmented tool stacks or generic AI, {{project_name}} provides a unified environment where {{#if solution_highlights}}{{#each solution_highlights}}{{title}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}} work together seamlessly.
+
+With a {{tam_global}} global market opportunity ({{tam_national}} in {{geography_national}} alone), growing at {{market_growth_rate}}, {{project_name}} is positioned to capture a leading share of the {{target_market}} market.
+
+---
+
+<!-- _class: section -->
+<div class="section-number">01</div>
+
+# Problem & Solution
+
+## What we solve & how
+
+---
+
+<div class="callout danger">
+<div class="callout-title">The Problem</div>
+{{problem_statement}}
+</div>
+
+<div class="callout success">
+<div class="callout-title">Our Solution</div>
+{{solution_description}}
+</div>
 
 {{#if competitive_advantages}}
-**Why {{project_name}}**:
+### Why {{project_name}}
+
 {{#each competitive_advantages}}
-- {{this}}
+<div class="callout accent">
+<div class="callout-title">&#10003; Advantage</div>
+{{this}}
+</div>
 {{/each}}
 {{/if}}
 
 ---
 
-## Key Features
+<!-- _class: section -->
+<div class="section-number">02</div>
+
+# Key Features
+
+## What makes us different
+
+---
 
 {{#if core_components}}
+<div class="feature-cards" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
 {{#each core_components}}
-- **{{name}}**: {{description}}
+<div class="feature-card">
+<h3>{{name}}</h3>
+<p>{{description}}</p>
+</div>
 {{/each}}
+</div>
 {{/if}}
 
 ---
 
-## Market Opportunity
+<!-- _class: section -->
+<div class="section-number">03</div>
+
+# Market Opportunity
+
+## Sizing the market
+
+---
+
+<!-- _class: table-slide -->
 
 | Scope | Metric | Value |
 |-------|--------|-------|
@@ -85,76 +127,248 @@ With a {{tam_global}} global market opportunity ({{tam_national}} in {{geography
 | | SOM | {{som}} |
 | | Growth | {{market_growth_rate}} |
 
-**Key Trends**: {{global_trends}}
+<br>
+<span class="emphasis">{{global_trends}}</span>
 
 ---
 
-## Competitive Advantage
+<!-- _class: section -->
+<div class="section-number">04</div>
+
+# Competitive Advantage
+
+## Our moats
+
+---
 
 {{#each competitive_advantages}}
-- {{this}}
+<div class="callout success">
+<div class="callout-title">&#10003; Moat</div>
+{{this}}
+</div>
 {{/each}}
 
-**Deployment Options**: [Cloud SaaS / Enterprise Cloud / Hybrid / On-Premises]
-**Compliance**: [GDPR / SOC 2 / Industry-specific standards]
-**AI Governance**: Human-in-the-Loop for all data mutations
+<br>
+
+<div class="callout info">
+<div class="callout-title">Deployment Options</div>
+Cloud SaaS / Enterprise Cloud / Hybrid / On-Premises
+</div>
+
+<div class="callout info">
+<div class="callout-title">Compliance</div>
+GDPR / SOC 2 / Industry-specific standards
+</div>
+
+<div class="callout warning">
+<div class="callout-title">AI Governance</div>
+Human-in-the-Loop for all data mutations
+</div>
 
 ---
 
-## Business Model
+<!-- _class: section -->
+<div class="section-number">05</div>
 
-- **Revenue**: {{#each revenue_streams}}{{channel}}{{#unless @last}}, {{/unless}}{{/each}}
-- **Pricing**: {{pricing_model}}
-- **Key Metrics**: ARR {{key_metrics.arr}}, MRR {{key_metrics.mrr}}, Growth {{key_metrics.growth_rate}}, Gross Margin {{key_metrics.gross_margin}}
+# Business Model
+
+## Revenue, pricing, metrics
 
 ---
 
-## Traction
+### Revenue
+
+{{#each revenue_streams}}
+<div class="callout success">
+<div class="callout-title">{{channel}}</div>
+{{description}}
+</div>
+{{/each}}
+
+<br>
+
+**Pricing**: {{pricing_model}}
+
+---
+
+<!-- _class: metrics -->
+
+<div class="metric-card primary">
+<div class="metric-value">{{key_metrics.arr}}</div>
+<div class="metric-label">ARR</div>
+</div>
+
+<div class="metric-card success">
+<div class="metric-value">{{key_metrics.mrr}}</div>
+<div class="metric-label">MRR</div>
+</div>
+
+<div class="metric-card accent">
+<div class="metric-value">{{key_metrics.growth_rate}}</div>
+<div class="metric-label">Growth</div>
+</div>
+
+<div class="metric-card warning">
+<div class="metric-value">{{key_metrics.gross_margin}}</div>
+<div class="metric-label">Gross Margin</div>
+</div>
+
+---
+
+<!-- _class: metrics -->
+
+<div class="metric-card primary">
+<div class="metric-value">{{key_metrics.cac}}</div>
+<div class="metric-label">CAC</div>
+</div>
+
+<div class="metric-card success">
+<div class="metric-value">{{key_metrics.ltv}}</div>
+<div class="metric-label">LTV</div>
+</div>
+
+---
+
+<!-- _class: section -->
+<div class="section-number">06</div>
+
+# Traction
+
+## What we've achieved
+
+---
 
 {{#each current_traction}}
-- {{this}}
+<div class="callout success">
+<div class="callout-title">&#10003; Milestone</div>
+{{this}}
+</div>
 {{/each}}
 
 ---
 
-## Team
+<!-- _class: section -->
+<div class="section-number">07</div>
+
+# Team
+
+## Who we are
+
+---
 
 {{#each team_members}}
-- **{{name}}** — {{role}}{{#if bio}}: {{bio}}{{/if}}
+<div class="callout info">
+<div class="callout-title">{{name}} &mdash; {{role}}</div>
+{{#if bio}}{{bio}}{{/if}}
+</div>
 {{/each}}
 
 ---
 
-## Financial Highlights
+<!-- _class: section -->
+<div class="section-number">08</div>
 
-- **ARR**: {{key_metrics.arr}}
-- **MRR**: {{key_metrics.mrr}}
-- **Growth Rate**: {{key_metrics.growth_rate}}
-- **Gross Margin**: {{key_metrics.gross_margin}}
-- **CAC**: {{key_metrics.cac}}
-- **LTV**: {{key_metrics.ltv}}
+# Financial Highlights
+
+## Key numbers
 
 ---
 
-## Call to Action
+<!-- _class: metrics -->
 
-{{project_name}} is seeking {{funding_ask}} to [primary use of funds]. We invite you to join us in transforming {{target_market}}.
+<div class="metric-card primary">
+<div class="metric-value">{{key_metrics.arr}}</div>
+<div class="metric-label">ARR</div>
+</div>
 
-**Next Steps**:
-1. Review the accompanying pitch deck and financial model
-2. Schedule a product demonstration
-3. Join our next investor call
+<div class="metric-card success">
+<div class="metric-value">{{key_metrics.mrr}}</div>
+<div class="metric-label">MRR</div>
+</div>
+
+<div class="metric-card accent">
+<div class="metric-value">{{key_metrics.growth_rate}}</div>
+<div class="metric-label">Growth Rate</div>
+</div>
+
+<div class="metric-card primary">
+<div class="metric-value">{{key_metrics.gross_margin}}</div>
+<div class="metric-label">Gross Margin</div>
+</div>
 
 ---
 
-## Risk Factors
+<!-- _class: metrics -->
+
+<div class="metric-card warning">
+<div class="metric-value">{{key_metrics.cac}}</div>
+<div class="metric-label">CAC</div>
+</div>
+
+<div class="metric-card success">
+<div class="metric-value">{{key_metrics.ltv}}</div>
+<div class="metric-label">LTV</div>
+</div>
+
+---
+
+<!-- _class: section -->
+<div class="section-number">09</div>
+
+# Call to Action
+
+## Join us
+
+---
+
+<div class="emphasis">{{project_name}} is seeking {{funding_ask}} to transform {{target_market}}.</div>
+
+### Next Steps
+
+<div class="callout info">
+<div class="callout-title">1</div>
+Review the accompanying pitch deck and financial model
+</div>
+
+<div class="callout info">
+<div class="callout-title">2</div>
+Schedule a product demonstration
+</div>
+
+<div class="callout info">
+<div class="callout-title">3</div>
+Join our next investor call
+</div>
+
+---
+
+<!-- _class: section -->
+<div class="section-number">10</div>
+
+# Risk Factors
+
+## What we've considered
+
+---
 
 {{#each risks}}
-- {{risk}}: {{probability}} impact {{impact}} — {{mitigation}}
+<div class="callout {{#if (eq probability 'High')}}danger{{else if (eq probability 'Medium')}}warning{{else}}info{{/if}}">
+<div class="callout-title">{{risk}} ({{probability}}, {{impact}} impact)</div>
+{{mitigation}}
+</div>
 {{/each}}
 
 ---
 
-**Contact**: [Company Contact Name] — [Email Address]
-**Document Version**: {{document_version}}
-**Last Updated**: {{current_date}}
+<!-- _class: contact -->
+
+<div class="accent-line"></div>
+
+# Thank You
+
+<div class="contact-line"><strong>[Company Contact Name]</strong></div>
+<div class="contact-line">[Email Address]</div>
+
+<div style="margin-top:40px;color:var(--text-muted);font-size:0.7em;">
+{{project_name}} &middot; v{{document_version}} &middot; {{current_date}}
+</div>

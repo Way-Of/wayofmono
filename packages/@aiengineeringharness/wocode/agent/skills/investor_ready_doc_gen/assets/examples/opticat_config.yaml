@@ -1,0 +1,372 @@
+project_name: "OptiCat"
+project_tagline: "AI-powered HVAC optimization platform"
+project_description: "OptiCat is an intelligent HVAC optimization platform that uses AI to reduce energy consumption, predict maintenance needs, and optimize building climate systems in real-time."
+
+problem_statement: "Commercial HVAC systems account for 40% of building energy use, yet most operate on reactive maintenance and static schedules. Building managers lack the tools to optimize performance, predict failures, or reduce energy costs without expensive retrofits."
+problem_details:
+  - title: "Energy Waste"
+    description: "Commercial buildings waste 30% of HVAC energy due to suboptimal scheduling and lack of real-time optimization."
+  - title: "Reactive Maintenance"
+    description: "70% of HVAC failures are unplanned, causing tenant discomfort and expensive emergency repairs."
+  - title: "Complex Controls"
+    description: "Modern HVAC systems have dozens of parameters, making manual optimization impractical."
+  - title: "No Predictive Analytics"
+    description: "Building managers lack AI-driven insights to anticipate issues before they occur."
+
+solution_description: "OptiCat connects to existing HVAC infrastructure via IoT sensors and BMS APIs, applying ML models that continuously optimize temperature setpoints, airflow, and scheduling. Our platform predicts equipment failures 7+ days in advance and provides actionable recommendations through an intuitive dashboard."
+solution_highlights:
+  - title: "AI-Driven Optimization"
+    description: "ML models continuously learn building thermal dynamics and optimize HVAC parameters in real-time."
+  - title: "Predictive Maintenance"
+    description: "Detect equipment anomalies 7+ days before failure with 95% accuracy."
+  - title: "Fault Detection"
+    description: "Automatically identify and diagnose HVAC faults, reducing diagnostic time by 80%."
+  - title: "Energy Reporting"
+    description: "Comprehensive energy analytics with automated reporting and carbon footprint tracking."
+
+target_market: "Commercial Building HVAC Optimization"
+market_category: "PropTech / Smart Buildings"
+tam: "$12B"
+sam: "$3.5B"
+som: "$450M"
+market_growth_rate: "18% CAGR (2024-2030)"
+market_trends:
+  - title: "Net Zero Building Mandates"
+    description: "EU and US regulations requiring 50% reduction in building emissions by 2030"
+    impact: "Forces adoption of optimization technology"
+    timeline: "2025-2030"
+  - title: "Rising Energy Costs"
+    description: "Commercial electricity prices up 25%+ since 2020"
+    impact: "Improves ROI of optimization solutions"
+    timeline: "Current"
+  - title: "Smart Building Adoption"
+    description: "Smart building technology market growing at 22% CAGR"
+    impact: "Increases addressable market"
+    timeline: "2024-2030"
+  - title: "AI in Building Management"
+    description: "AI-powered building management moving from early adopters to mainstream"
+    impact: "Creates market education and demand"
+    timeline: "2025-2028"
+
+customer_profiles:
+  - segment: "Commercial Property Owners"
+    characteristics: "Own 500K+ sq ft portfolios"
+    needs: "Reduce OpEx, meet sustainability targets"
+    acquisition_channel: "Direct sales, industry conferences"
+    deal_size: "$50K-200K/year"
+    sales_cycle: "3-6 months"
+  - segment: "Facility Management Companies"
+    characteristics: "Manage 20+ commercial properties"
+    needs: "Improve operational efficiency, reduce emergency calls"
+    acquisition_channel: "Partner channel, referrals"
+    deal_size: "$20K-100K/year"
+    sales_cycle: "2-4 months"
+  - segment: "Energy Service Companies (ESCOs)"
+    characteristics: "Provide energy efficiency services"
+    needs: "Differentiate offerings, improve savings guarantees"
+    acquisition_channel: "Strategic partnerships"
+    deal_size: "$10K-50K/year"
+    sales_cycle: "1-3 months"
+
+revenue_streams:
+  - channel: "SaaS Platform Subscription"
+    description: "Monthly/annual per-building subscription based on square footage"
+  - channel: "Premium Analytics"
+    description: "Advanced reporting, benchmarking, and sustainability tracking"
+  - channel: "Professional Services"
+    description: "Onboarding, integration, and custom model training"
+
+pricing_model: "Per-building subscription: $500/month base (under 100K sq ft), enterprise tiers available"
+pricing_tiers:
+  - name: "Essentials"
+    price: "$500/month"
+    features: "Core optimization, basic analytics, email reports"
+    segment: "Single buildings under 100K sq ft"
+  - name: "Professional"
+    price: "$2,000/month"
+    features: "Multi-building, predictive maintenance, API access"
+    segment: "Portfolios 3-10 buildings"
+  - name: "Enterprise"
+    price: "Custom"
+    features: "Unlimited buildings, custom models, dedicated support"
+    segment: "Large portfolios 10+ buildings"
+
+key_metrics:
+  arr: "$1.2M"
+  mrr: "$100K"
+  growth_rate: "35% MoM"
+  gross_margin: "72%"
+  cac: "$8,500"
+  ltv: "$85,000"
+  churn: "2.1% monthly"
+  burn_rate: "$180K/month"
+  runway: "14 months"
+
+unit_economics:
+  arpu: "$1,200/month"
+  gross_margin: "72%"
+  cac: "$8,500"
+  ltv: "$85,000"
+  payback_period: "7 months"
+
+technology_stack:
+  - category: "Backend"
+    items: ["Go", "Python", "PostgreSQL"]
+  - category: "ML/AI"
+    items: ["TensorFlow", "PyTorch", "scikit-learn"]
+  - category: "IoT"
+    items: ["MQTT", "Modbus", "BACnet"]
+  - category: "Frontend"
+    items: ["React", "TypeScript", "D3.js"]
+  - category: "Infrastructure"
+    items: ["AWS", "Docker", "Kubernetes"]
+
+architecture_description: "OptiCat uses a microservices architecture with event-driven data pipeline. IoT data ingestion via MQTT brokers, real-time processing with Apache Flink, ML inference via TensorFlow Serving, and REST/GraphQL API for the frontend. PostgreSQL for operational data, TimescaleDB for time-series data."
+
+core_components:
+  - name: "Data Ingestion Engine"
+    purpose: "Collect and normalize HVAC sensor data from multiple protocols"
+    description: "Connects to BMS systems via BACnet, Modbus, and IoT sensors via MQTT. Normalizes data into common schema."
+    features: ["BACnet/IP support", "MQTT broker", "Data normalization", "Edge caching"]
+    technical_details: "Go-based ingestion service handling 10K+ data points per second"
+  - name: "ML Optimization Engine"
+    purpose: "Optimize HVAC parameters using trained models"
+    description: "Continuous learning models that predict optimal setpoints based on weather, occupancy, and energy prices."
+    features: ["Reinforcement learning", "Weather integration", "Occupancy prediction", "Price optimization"]
+    technical_details: "Ensemble of XGBoost and DRL models, retrained weekly"
+  - name: "Predictive Maintenance"
+    purpose: "Predict equipment failures before they occur"
+    description: "Anomaly detection on equipment vibration, temperature, and current draw patterns."
+    features: ["7-day failure prediction", "Root cause analysis", "Maintenance scheduling"]
+    technical_details: "LSTM autoencoders with 95% failure prediction accuracy"
+  - name: "Analytics Dashboard"
+    purpose: "Visualize energy usage, savings, and recommendations"
+    description: "Real-time and historical analytics with automated reporting."
+    features: ["Energy benchmarking", "Carbon tracking", "Automated reports", "Alerting"]
+
+api_endpoints:
+  - path: "/api/v1/buildings"
+    method: "GET"
+    purpose: "List buildings and status"
+  - path: "/api/v1/optimization/params"
+    method: "POST"
+    purpose: "Set optimization parameters"
+  - path: "/api/v1/predictions/maintenance"
+    method: "GET"
+    purpose: "Get maintenance predictions"
+  - path: "/api/v1/analytics/energy"
+    method: "GET"
+    purpose: "Get energy consumption analytics"
+
+security_features:
+  - feature: "Data Encryption"
+    description: "AES-256 at rest, TLS 1.3 in transit"
+  - feature: "Access Control"
+    description: "RBAC with multi-tenant isolation"
+  - feature: "Audit Logging"
+    description: "Full audit trail for all data access and changes"
+  - feature: "Compliance"
+    description: "SOC 2 Type II, GDPR compliant"
+
+competitors:
+  - name: "Legacy BMS Vendors (Siemens, JCI)"
+    focus: "Hardware-centric building management"
+    strengths: "Established install base, hardware integration"
+    weaknesses: "Closed systems, no AI, expensive upgrades"
+    threat_level: "Low"
+  - name: "Optimum Energy"
+    focus: "HVAC optimization via cloud"
+    strengths: "Deep central plant optimization, OptiCx platform"
+    weaknesses: "Narrower scope (central plants only)"
+    threat_level: "Medium"
+  - name: "Clockworks Analytics"
+    focus: "Fault detection and diagnostics"
+    strengths: "Deep FDD capabilities"
+    weaknesses: "No real-time optimization"
+    threat_level: "Medium"
+  - name: "Gridium"
+    focus: "Energy analytics"
+    strengths: "Utility bill analytics"
+    weaknesses: "No HVAC control integration"
+    threat_level: "Low"
+
+competitive_advantages:
+  - "End-to-end solution: sensors to optimization to analytics"
+  - "Real-time ML optimization (not just analytics)"
+  - "Predictive maintenance with industry-leading accuracy"
+  - "Protocol-agnostic integration (BACnet, Modbus, MQTT)"
+  - "Fast deployment: plug-and-play with existing BMS infrastructure"
+
+competitive_matrix:
+  - feature: "Real-time Optimization"
+    us: "✅"
+    them_a: "❌"
+    them_b: "❌"
+  - feature: "Predictive Maintenance"
+    us: "✅"
+    them_a: "❌"
+    them_b: "✅"
+  - feature: "Fault Detection"
+    us: "✅"
+    them_a: "✅"
+    them_b: "✅"
+  - feature: "Multi-Protocol"
+    us: "✅"
+    them_a: "⚠️"
+    them_b: "❌"
+  - feature: "ML-Based Analytics"
+    us: "✅"
+    them_a: "❌"
+    them_b: "⚠️"
+
+team_members:
+  - name: "Andre"
+    role: "CTO"
+    bio: "10+ years in building automation systems"
+    background: "Former lead engineer at Siemens Building Technologies"
+    experience:
+      - "Built BACnet gateway processing 1M+ data points/day"
+      - "Led IoT platform serving 500+ commercial buildings"
+      - "Patent holder in HVAC optimization"
+    education: "MSc Computer Science, KTH Royal Institute of Technology"
+    role_description: "Architecture, ML models, platform development"
+    officer_role: "CTO"
+  - name: "Josef"
+    role: "CEO"
+    bio: "15 years in PropTech and energy markets"
+    background: "Former VP at energy efficiency consultancy"
+    experience:
+      - "Scaled SaaS platform from $0 to $10M ARR"
+      - "Led $20M Series B fundraise"
+      - "Board member at 3 cleantech startups"
+    education: "MBA, Stockholm School of Economics"
+    role_description: "Strategy, fundraising, partnerships"
+    officer_role: "CEO"
+
+organizational_structure: |
+  Josef (CEO) ─┬─ Andre (CTO) ─┬─ ML Team (3)
+               │               ├─ Backend Team (2)
+               │               └─ Frontend Team (1)
+               ├─ Sales (1)
+               └─ Operations (1)
+
+hiring_plan:
+  - role: "Senior ML Engineer"
+    headcount: 2
+    timeline: "Q3 2026"
+    location: "Remote"
+    status: "Open"
+  - role: "Sales Director"
+    headcount: 1
+    timeline: "Q3 2026"
+    location: "Stockholm"
+    status: "Open"
+  - role: "Customer Success Manager"
+    headcount: 1
+    timeline: "Q4 2026"
+    location: "Remote"
+    status: "Planned"
+
+revenue_projections:
+  - year: "Year 1"
+    revenue: "$1.2M"
+    growth: "-"
+    gross_margin: "72%"
+    ebitda: "-$1.8M"
+  - year: "Year 2"
+    revenue: "$4.5M"
+    growth: "275%"
+    gross_margin: "78%"
+    ebitda: "-$1.2M"
+  - year: "Year 3"
+    revenue: "$12M"
+    growth: "167%"
+    gross_margin: "82%"
+    ebitda: "$1.5M"
+  - year: "Year 4"
+    revenue: "$25M"
+    growth: "108%"
+    gross_margin: "85%"
+    ebitda: "$6M"
+  - year: "Year 5"
+    revenue: "$45M"
+    growth: "80%"
+    gross_margin: "87%"
+    ebitda: "$14M"
+
+funding_ask: "$2.5M"
+investment_type: "Seed Round (SAFE)"
+valuation: "$12M post-money"
+use_of_funds:
+  - category: "Engineering"
+    percentage: "45%"
+    description: "Core platform development, ML model improvements, IoT integrations"
+  - category: "Sales & Marketing"
+    percentage: "30%"
+    description: "Sales team expansion, demand generation, industry events"
+  - category: "Operations"
+    percentage: "15%"
+    description: "Infrastructure, compliance, legal, administration"
+  - category: "Reserve"
+    percentage: "10%"
+    description: "Working capital buffer"
+
+current_traction:
+  - "12 buildings under contract (250K+ sq ft total)"
+  - "Average 28% energy savings across all deployments"
+  - "7-day predictive maintenance at 95% accuracy"
+  - "Partnership with 2 major BMS integrators"
+  - "EU Horizon grant recipient (€500K)"
+
+roadmap_short_term:
+  - item: "Multi-site dashboard"
+    description: "Unified view across entire building portfolio"
+    impact: "Enterprise customer acquisition"
+    dependencies: "None"
+  - item: "API marketplace"
+    description: "Third-party integration platform"
+    impact: "Platform ecosystem growth"
+    dependencies: "Core platform stability"
+
+roadmap_medium_term:
+  - item: "Mobile app"
+    description: "iOS/Android app for facility managers"
+    impact: "Increased engagement and retention"
+    dependencies: "API stability"
+  - item: "Carbon tracking module"
+    description: "Automated carbon footprint reporting"
+    impact: "ESG compliance market"
+    dependencies: "Energy analytics"
+
+roadmap_long_term:
+  - item: "Autonomous HVAC control"
+    description: "Full closed-loop optimization without human intervention"
+    rationale: "Market differentiation and higher value"
+  - item: "Predictive energy procurement"
+    description: "Optimize energy buying based on consumption predictions"
+    rationale: "New revenue stream"
+
+risks:
+  - risk: "Market Adoption Risk"
+    probability: "Medium"
+    impact: "High"
+    mitigation: "Focus on early adopters with clear ROI, build case studies"
+  - risk: "Technical Integration Risk"
+    probability: "Medium"
+    impact: "Medium"
+    mitigation: "Support multiple protocols, hardware-agnostic approach"
+  - risk: "Competitive Response"
+    probability: "Low"
+    impact: "High"
+    mitigation: "First-mover advantage, patent protection, deep integrations"
+
+legal_structure: "Swedish Aktiebolag (AB)"
+incorporation_date: "2024-01-15"
+jurisdiction: "Sweden"
+registration_numbers:
+  business: "559456-7890"
+  vat: "SE559456789001"
+  address: "Stockholm, Sweden"
+
+document_version: "1.0"
+current_date: "2026-06-13"
