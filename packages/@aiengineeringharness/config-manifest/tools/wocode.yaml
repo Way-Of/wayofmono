@@ -139,8 +139,8 @@ components:
   skill/init-harness:
     description: Initialize harness skill
     files:
-    - src: wocode/agent/skills/init-harness/SKILL.md
-      dest: skills/init-harness/SKILL.md
+    - src: wocode/skills/init_harness/SKILL.md
+      dest: skills/init_harness/SKILL.md
   skill/interview:
     description: Stress-test plans via relentless user interview skill
     files:

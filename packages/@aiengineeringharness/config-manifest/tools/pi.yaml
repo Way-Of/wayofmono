@@ -734,8 +734,3 @@ components:
     files:
     - src: pi/agent/skills/github-issue/SKILL.md
       dest: skills/github-issue/SKILL.md
-  skill/womono-deploy:
-    description: Release and deploy WoM npm packages to production
-    files:
-    - src: pi/agent/skills/womono-deploy/SKILL.md
-      dest: skills/womono-deploy/SKILL.md

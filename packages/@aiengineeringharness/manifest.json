@@ -1,9 +1,9 @@
 {
-  "version": "1.7.5",
+  "version": "1.7.6",
   "tools": {
     "antigravity": {
       "name": "antigravity",
-      "version": "1.7.5",
+      "version": "1.0.0",
       "target": "~/.antigravity",
       "components": {
         "settings": {
@@ -1302,7 +1302,7 @@
     },
     "claude": {
       "name": "claude",
-      "version": "1.7.5",
+      "version": "1.0.0",
       "target": "~/.claude",
       "components": {
         "settings": {
@@ -2359,7 +2359,7 @@
     },
     "codex": {
       "name": "codex",
-      "version": "1.7.5",
+      "version": "1.0.0",
       "target": "~/.codex",
       "components": {
         "settings": {
@@ -3391,7 +3391,7 @@
     },
     "gemini": {
       "name": "gemini",
-      "version": "1.7.5",
+      "version": "1.0.0",
       "target": "~/.gemini",
       "components": {
         "settings": {
@@ -4814,7 +4814,7 @@
     },
     "opencode": {
       "name": "opencode",
-      "version": "1.7.5",
+      "version": "1.0.0",
       "target": "~/.config/opencode",
       "components": {
         "settings": {
@@ -6088,7 +6088,7 @@
     },
     "pi": {
       "name": "pi",
-      "version": "1.7.5",
+      "version": "1.0.0",
       "target": "~/.pi/agent",
       "components": {
         "agents": {
@@ -7432,21 +7432,12 @@
               "dest": "skills/github-issue/SKILL.md"
             }
           ]
-        },
-        "skill/womono-deploy": {
-          "description": "Release and deploy WoM npm packages to production",
-          "files": [
-            {
-              "src": "pi/agent/skills/womono-deploy/SKILL.md",
-              "dest": "skills/womono-deploy/SKILL.md"
-            }
-          ]
         }
       }
     },
     "wocode": {
       "name": "wocode",
-      "version": "1.7.5",
+      "version": "1.0.0",
       "target": "~/.wocode/agent",
       "components": {
         "settings": {
@@ -7712,8 +7703,8 @@
           "description": "Initialize harness skill",
           "files": [
             {
-              "src": "wocode/agent/skills/init-harness/SKILL.md",
-              "dest": "skills/init-harness/SKILL.md"
+              "src": "wocode/skills/init_harness/SKILL.md",
+              "dest": "skills/init_harness/SKILL.md"
             }
           ]
         },

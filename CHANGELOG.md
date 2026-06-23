@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.7.6] - 2026-06-23
+
+### Harness (AI Engineering Harness v1.7.6)
+- **Full skill compliance: 981→0 errors (WOMONO-076)**: Fixed 650 TOOLS_CASE, 282 NAME_CONVENTION, 40 NO_FRONTMATTER, 2 MISSING_DMI, 7 alignment errors across all 845 skills / 7 tools
+- **Pi frontmatter fixed**: 72 Pi skill files had `name` in snake_case but Pi requires kebab-case — caused real Pi startup errors. Bulk-fixed to match directory names.
+- **Claude tools casing**: 105 Claude skills changed `allowed-tools` from lowercase to PascalCase. Also fixed 50 other tool files for tool name casing consistency.
+- **Broken YAML frontmatter fixed**: 50 files had invalid YAML in `allowed-tools:` (list format `- read` on same line as key). Rewrote to comma-separated string format.
+- **Wocode spec corrected**: Changed from kebab→snake to match actual directory naming.
+- **Manifest recompiled**: Removed stale `womono-deploy` entry from pi.yaml, fixed `init_harness` path in wocode.yaml, bumped to v1.7.6.
+- **Cross-tool alignment**: Added missing `init_harness` to wocode. All 7 tools now have identical skill sets (79 normalized skills each).
+
 ## [1.7.4] - 2026-06-22
 
 ### Harness (AI Engineering Harness v1.7.4)

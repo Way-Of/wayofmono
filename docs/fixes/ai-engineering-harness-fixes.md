@@ -1,5 +1,26 @@
 # AI Engineering Harness Fixes & Release Notes
 
+## v1.7.6 — 2026-06-23 — Full Skill Compliance: 981→0 Errors Across 7 Tools
+
+### Features
+- **All 7 tools now 100% compliant**: Zero errors across 845 skills. Fixed `TOOLS_CASE` (650 → 0), `NAME_CONVENTION` (282 → 0), `NO_FRONTMATTER` (40 → 0), `MISSING_DMI` (2 → 0), and cross-tool alignment (7 → 0).
+- **Pi frontmatter fixed (WOMONO-076)**: 72 Pi skill files had `name:` field in snake_case but Pi requires kebab-case — caused real Pi startup errors ("name contains invalid characters"). Bulk-fixed to match directory names.
+- **Claude tools casing fixed**: 105 Claude skill files changed `allowed-tools` from lowercase to PascalCase (`read` → `Read`). Also fixed 11 antigravity, 11 gemini, 11 codex, 6 opencode, 6 pi, 5 wocode files for tool name casing.
+- **Broken YAML frontmatter fixed**: 50 files across 7 tools had invalid YAML in `allowed-tools:` (YAML list format `- read` on same line as colon). Rewrote to comma-separated string format matching all other skills.
+- **NAME_CONVENTION now error for kebab tools**: Validates that `name:` matches directory name; underscores trigger errors since Pi/kebab tools reject them at startup.
+- **`test-skills.py` spec fixes**: Wocode spec corrected from kebab→snake (dirs and names already match snake_case). Codex/NAME_CONVENTION now accepts name=dir match regardless of naming convention.
+
+### Files
+- `config-manifest/tools/pi.yaml` — Removed `skill/womono-deploy` entry (superseded by `womonodeploy`)
+- `config-manifest/tools/wocode.yaml` — Fixed `skill/init-harness` source path to `wocode/skills/init_harness/SKILL.md`
+- `config-manifest/base_manifest.yaml` — Bumped to v1.7.6
+- `config-manifest/scripts/test-skills.py` — Wocode spec: kebab→snake; NAME_CONVENTION: accept name=dir match; NO_FRONTMATTER: better YAML parse
+- `pi/agent/skills/*/SKILL.md` — 72 files: `name: snake_case` → `name: kebab-case`
+- `codex/skills/*/SKILL.md` — 72 files: `name: snake_case` → `name: kebab-case`
+- `{claude,antigravity,gemini,opencode,pi,wocode,codex}/skills/*/SKILL.md` — 155 files: `allowed-tools` tool name casing fix
+- `wocode/skills/init_harness/SKILL.md` — New file (was missing from wocode)
+- `claude/skills/{git-commit-helper,worktree}/SKILL.md` — Added `disable-model-invocation: true`
+
 ## v1.7.5 — 2026-06-22 — Stale Lock Detection + Auto-Install System Deps
 
 ### Features
