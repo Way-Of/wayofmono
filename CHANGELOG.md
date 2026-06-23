@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.7.7] - 2026-06-23
+
+### Harness (AI Engineering Harness v1.7.7)
+- **Per-tool naming compliance (WOMONO-076)**: Researched online docs for ALL 7 tools — OpenCode/Pi use kebab-case (hyphens), Claude/Codex/Antigravity/Wocode use snake_case. Fixed opencode-skill-update.py (snake→kebab), corrected AGENTS.md table. Deleted 72 kebab dirs from 5 tools, copied 2 kebab-only dirs to snake with corrected name. Converted 841 manifest src paths kebab→snake.
+- **investor-ready-doc-gen enhanced (WOMONO-077)**: Added brand color detection, Marp CLI platform-install guide, Mermaid charts, anti-overflow QA checklist. Synced to all 7 tools.
+
 ## [1.7.6] - 2026-06-23
 
 ### Harness (AI Engineering Harness v1.7.6)

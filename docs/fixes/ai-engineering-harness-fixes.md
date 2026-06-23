@@ -1,5 +1,27 @@
 # AI Engineering Harness Fixes & Release Notes
 
+## v1.7.7 — 2026-06-23 — Per-Tool Naming Compliance: kebab vs snake resolved across all 7 tools
+
+### Features
+- **OpenCode skill compliance fixed (WOMONO-076)**: OpenCode now 100% compliant with kebab-case naming. The opencode-skill-update.py script was fixed: DIR_CASE/NAME_CASE changed from "snake_case" → "kebab_case".
+- **Per-tool naming conventions researched from online docs**: Fetched official docs for OpenCode, Pi, Claude Code — confirmed OpenCode/Pi require kebab-case (hyphens), while Claude/Antigravity/Wocode/Codex use snake_case.
+- **AGENTS.md naming table corrected**: OpenCode row changed from `snake_case` → `kebab-case`. Added Agent naming, allowed-tools casing, and Homepage URL columns per actual online documentation.
+- **Kebab→snake conversion for 5 tools**: Deleted 72 kebab-case skill directories from Claude, Gemini, Wocode, Antigravity, Codex (kept existing snake equivalents). Copied 2 kebab-only directories (`init-harness`, `investor-ready-doc-gen`) to snake-case variants with corrected `name:` fields.
+- **Manifest.json 841 path corrections**: Converted 841 `src:` paths from kebab→snake for Claude, Gemini, Antigravity, Codex, and Wocode to match on-disk directory names.
+- **Claude `investor_ready_doc_gen` PascalCase fix**: Fixed `allowed-tools` from lowercase to PascalCase for Claude compliance.
+- **investor-ready-doc-gen enhanced (WOMONO-077)**: Added 4 web-researched sections — brand color detection pipeline, Marp CLI platform-specific install guidance, Mermaid chart generation, anti-overflow QA checklist (11-point). Synced to all 7 tool copies (identical hashes). Added missing `design-template.yaml` to Pi install copy and manifest.json.
+
+### Files
+- `config-manifest/scripts/opencode-skill-update.py` — Fixed DIR_CASE/NAME_CASE from snake_case→kebab_case
+- `AGENTS.md` — Naming conventions table updated with per-tool rules, Agent naming, allowed-tools casing, homepage URLs
+- `manifest.json` — Bumped from v1.7.6→v1.7.7; 841 paths converted kebab→snake for 5 tools; added design-template.yaml to all tools
+- `opencode/skills/investor-ready-doc-gen/SKILL.md` — Canonical source updated with 4 new sections
+- `{claude,gemini,antigravity,codex,wocode}/skills/init_harness/` — New snake_case directories (copied from kebab with corrected name)
+- `{claude,gemini,antigravity,codex,wocode,wocode/agent}/skills/investor_ready_doc_gen/` — New snake_case copies with corrected name
+- `{claude,gemini,antigravity,codex,wocode,wocode/agent}/skills/` — 72 kebab-case directories deleted (snake equivalents already existed)
+
+---
+
 ## v1.7.6 — 2026-06-23 — Full Skill Compliance: 981→0 Errors Across 7 Tools
 
 ### Features

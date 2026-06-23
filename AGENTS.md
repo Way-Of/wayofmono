@@ -404,19 +404,21 @@ ai-harness --update
 ai-harness --report-skills
 ```
 
-## Naming Conventions
+## Naming Conventions & Tool Reference
 
-| Tool | Skill/Dir Naming | Config Dir |
-|------|------------------|------------|
-| OpenCode | snake_case | `~/.config/opencode/` |
-| Claude Code | snake_case | `~/.claude/` |
-| Gemini CLI | snake_case | `~/.gemini/` |
-| Pi | kebab-case | `~/.pi/agent/` |
-| Codex | snake_case | `~/.codex/` |
-| Antigravity | snake_case | `~/.antigravity/` |
-| Wo Coder | snake_case | `~/.wocode/` |
+| Tool | Skill/Dir Naming | Agent Naming | `allowed-tools` Casing | Config Dir | Homepage |
+|------|-----------------|-------------|----------------------|------------|----------|
+| OpenCode | **kebab-case** | snake_case | lowercase | `~/.config/opencode/` | [opencode.ai](https://opencode.ai) |
+| Claude Code | **snake_case** | snake_case | PascalCase (`Read`, `Write`) | `~/.claude/` | [code.claude.com](https://code.claude.com/docs/en/overview) |
+| Gemini CLI ⚠️ | **snake_case** | snake_case | lowercase | `~/.gemini/` | Deprecated — replaced by Antigravity CLI |
+| Pi | **kebab-case** | kebab-case | Title Case | `~/.pi/agent/` | [pi.dev](https://pi.dev) |
+| Codex CLI | **snake_case** | snake_case | lowercase_snake | `~/.codex/` | [developers.openai.com/codex/cli](https://developers.openai.com/codex/cli) |
+| Antigravity CLI | **snake_case** | snake_case | lowercase | `~/.antigravity/` | [antigravity.google](https://antigravity.google/docs/cli-overview) |
+| Wo Coder | **snake_case** | snake_case | lowercase | `~/.wocode/` | [github.com/Way-Of/wayofmono](https://github.com/Way-Of/wayofmono) |
 
 **OpenCode Critical**: Skill directory name MUST match frontmatter `name` exactly (regex `^[a-z0-9]+(-[a-z0-9]+)*$`)
+
+**Source of Truth**: Per-tool naming conventions verified against official documentation in `docs/ai-coding-tools/` (June 2026). All agent/agent files should conform to these rules — run `config-manifest/scripts/*-skill-update.py --validate` to check compliance.
 
 ## f-rr-d (förråd) Structure
 

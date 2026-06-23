@@ -1,0 +1,213 @@
+project_name: "WayOfMono"
+project_tagline: "The Universal AI Coding Agent Harness — One intelligence backend, any agent frontend"
+project_description: >
+  WayOfMono is the ultimate monorepo consolidation for high-performance AI coding agents.
+  It solves the fragmentation in the AI developer tools market by providing a shared Intelligence
+  Backend (13 NPM packages, 81 battle-tested skills, 6 subagents, context engineering workflow)
+  that serves 7 distinct Agent Frontends (wocode, wouser, Claude Code, OpenCode, Gemini CLI,
+  Pi, Codex, Antigravity). Built on an Interface-Agnostic Philosophy, WayOfMono enables
+  teams to use any AI coding tool with shared skills, configurations, and memory — eliminating
+  vendor lock-in and tool fragmentation.
+
+problem_statement: >
+  The AI developer tools market has exploded — 7+ major AI coding tools, each with its own
+  configuration, skills, and memory. Developers use 2-3 tools on average (53% use 2+), but
+  there's no standardized way to share skills, agents, and configurations across them.
+  Teams face vendor lock-in, duplicated effort, no cross-tool governance, and no observability
+  into how AI tools are actually being used across the organization.
+
+problem_details:
+  - "53% of developers use 2+ AI coding tools — but none share configs or skills across them"
+  - "Enterprise teams have no visibility into which AI tools developers are using or how effectively"
+  - "Vendor lock-in: switching AI coding tools means rebuilding all skills, configs, and workflows"
+  - "No standardized context management — each session starts from scratch with no memory"
+  - "Skills and agent configurations are duplicated across every developer's machine"
+
+solution_description: >
+  WayOfMono provides a universal AI harness that sits above all AI coding tools. It installs
+  shared skills, agents, commands, and configurations across 7+ AI coding tools from a single
+  source of truth. The CTO Dashboard gives teams real-time visibility into tool adoption and
+  skill health. The f-rr-d context engineering system provides end-to-end workflow from ticket
+  creation through implementation and validation.
+
+solution_highlights:
+  - "Single command installs 81 skills across all 7 tools simultaneously"
+  - "CTO Dashboard with real-time skill health, ticket management, and review queue"
+  - "Multi-provider LLM abstraction (30+ providers) — no vendor lock-in"
+  - "Local-first with Ollama — full privacy, offline capable"
+  - "Context engineering (f-rr-d): tickets → plans → implementation → validation → commit"
+  - "Observability-Driven Development with OpenTelemetry tracing built in"
+
+target_market: "Engineering teams using AI coding tools across startups, SMBs, and enterprises"
+market_category: "ai-developer-tools"
+
+geography_national: "Global"
+geography_primary: "Global (English-first)"
+
+tam_global: "$40B"
+tam_national: "$40B"
+tam: "$40B — Total agentic AI market (Information Matters, Q1 2026)"
+sam: "$10B — Enterprise AI coding agent market (Gartner, May 2026)"
+som: "$500M — AI tool configuration and governance layer (estimate)"
+global_growth_rate: "26.23% CAGR (Mordor Intelligence, 2026-2031)"
+national_growth_rate: "26.23% CAGR (global market)"
+market_growth_rate: "26-48% CAGR depending on segment"
+
+global_trends: >
+  - Agentic workflows replacing simple autocomplete
+  - Enterprise governance becoming primary buying criteria
+  - Multi-tool adoption becoming standard (53% use 2+)
+  - AI-augmented development expanding from coding to full SDLC
+  - Consolidation toward integrated platforms
+
+revenue_streams:
+  - name: "Enterprise License (Harness + Dashboard)"
+    description: "Per-seat subscription for teams with CTO Dashboard access, priority support, custom integrations"
+    model: "Subscription (monthly/annual)"
+  - name: "Open Source Core + Paid Enterprise"
+    description: "Free open-source harness with paid enterprise features (SSO, audit logs, compliance)"
+    model: "Open core"
+  - name: "Managed Cloud Dashboard"
+    description: "Hosted CTO Dashboard SaaS with advanced analytics, team management, and integrations"
+    model: "SaaS subscription"
+  - name: "Consulting & Implementation"
+    description: "Custom integrations, on-premises deployment, enterprise onboarding"
+    model: "Services"
+
+pricing_model: "Open-source core + paid enterprise tiers + SaaS dashboard"
+pricing_tiers:
+  - name: "Community"
+    price: "Free"
+    features: "Full harness, 81 skills, 7 tool support, local-only dashboard"
+  - name: "Team"
+    price: "$19/seat/month"
+    features: "Cloud dashboard, team management, standups, review queue, skill reporting"
+  - name: "Enterprise"
+    price: "$49/seat/month"
+    features: "SSO, audit logs, custom integrations, SLA, on-premises deployment, dedicated support"
+
+key_metrics:
+  arr: "$0 (pre-revenue)"
+  mrr: "$0 (pre-revenue)"
+  total_codebase_lines: "223,697"
+  npm_packages_published: "13"
+  skill_files: "906"
+  supported_tools: "7"
+  active_tickets: "29+"
+  git_commits: "386+"
+
+technology_stack:
+  - "TypeScript (ES2024)"
+  - "Node.js 22+ / Deno 2 / Bun"
+  - "pnpm workspaces"
+  - "Next.js 16"
+  - "React 19"
+  - "Prisma / SQLite"
+  - "OpenTelemetry"
+  - "Podman / Docker"
+  - "Ollama (local LLM)"
+  - "Tailwind CSS 4"
+
+competitors:
+  - name: "GitHub Copilot"
+    strength: "Distribution (4.7M paid users, 29% workplace adoption)"
+    weakness: "Single-tool, no cross-platform, GPT-only, lowest satisfaction (52%)"
+  - name: "Cursor"
+    strength: "Revenue leader ($2B ARR), best IDE experience"
+    weakness: "IDE-locked, no multi-tool, no team governance"
+  - name: "Claude Code"
+    strength: "Satisfaction leader (46% most-loved), best agentic workflows"
+    weakness: "Anthropic-only, no team features, no cross-tool"
+  - name: "LangChain / CrewAI"
+    strength: "Popular agent frameworks"
+    weakness: "Developer libraries, not end-user products, no tool harness"
+
+competitive_advantages:
+  - "Only cross-tool AI harness (7+ tools supported)"
+  - "Multi-provider LLM abstraction (30+ providers — no lock-in)"
+  - "CTO Dashboard for enterprise governance"
+  - "Local-first (Ollama) — private, offline, air-gapped"
+  - "81 production-ready skills"
+  - "Context engineering workflow (ticket-to-commit)"
+  - "Built-in Observability-Driven Development"
+
+team_members:
+  - name: "Josef Lindbom"
+    role: "Founder & CEO"
+    bio: "Full-stack AI engineer and system architect. Built the entire WayOfMono platform architecture, 13 NPM packages, multi-provider LLM abstraction, custom TUI framework, and AI engineering harness."
+  - name: "Craig Martin"
+    role: "Co-founder, Engineering"
+    bio: "Engineering leader contributing to platform infrastructure, deployment systems, and tooling."
+
+advisors: []
+funding_ask: "$750,000"
+investment_type: "Seed (SAFE or equity)"
+valuation: "$5,000,000 pre-money"
+
+use_of_funds:
+  - category: "Engineering (2 full-time engineers)"
+    percentage: "50%"
+    amount: "$375,000"
+    details: "Product development, dashboard features, enterprise integrations, SDK improvements"
+  - category: "Go-to-Market"
+    percentage: "25%"
+    amount: "$187,500"
+    details: "Developer marketing, documentation, community building, content, events"
+  - category: "Operations & Infrastructure"
+    percentage: "15%"
+    amount: "$112,500"
+    details: "Cloud hosting, CI/CD, monitoring, developer tooling"
+  - category: "Legal & Admin"
+    percentage: "10%"
+    amount: "$75,000"
+    details: "Incorporation (US C-Corp), IP protection, compliance, accounting"
+
+current_traction:
+  - "13 NPM packages published and installable"
+  - "2 working CLI tools (wocode coding agent, wouser user assistant)"
+  - "CTO Dashboard deployed at cto.wayof.work"
+  - "AI Engineering Harness with 81 skills across 7 tools"
+  - "Active GitHub repository with 386+ commits"
+  - "External integrations with Way of Pi, Way of Work, OptiCat"
+  - "Full CI/CD pipeline with GitHub Actions"
+  - "Docker/Podman deployment infrastructure"
+  - "29+ active tickets across 3 projects"
+
+roadmap_short_term:
+  - "Enterprise SSO/SAML authentication"
+  - "Multi-workspace support for enterprise teams"
+  - "Expanded skill marketplace"
+  - "Performance optimization for large codebases"
+
+roadmap_medium_term:
+  - "AI-powered analytics in CTO Dashboard"
+  - "Custom skill builder UI"
+  - "Integration with CI/CD pipelines (GitHub Actions, GitLab CI)"
+  - "Security compliance certifications"
+
+roadmap_long_term:
+  - "Enterprise agent marketplace"
+  - "Autonomous engineering agent orchestration"
+  - "Cross-organization skill sharing"
+  - "AI governance and compliance platform"
+
+risks:
+  - name: "Market competition"
+    description: "GitHub/Microsoft, Anthropic, and well-funded startups dominate the AI coding tools market"
+    mitigation: "Focus on cross-tool orchestration — a space no competitor addresses"
+  - name: "Market consolidation"
+    description: "The market is consolidating around 3-5 major players"
+    mitigation: "Position as the universal layer that works with any tool, not competing with them"
+  - name: "Enterprise adoption"
+    description: "Enterprise sales cycles are long and require compliance certifications"
+    mitigation: "Start with developer bottoms-up adoption, build enterprise features for upselling"
+  - name: "Open-source monetization"
+    description: "Open-core model requires careful feature differentiation"
+    mitigation: "Clear free vs. paid feature split with compelling enterprise value proposition"
+
+legal_structure: "US C-Corporation"
+incorporation_date: "2026"
+jurisdiction: "Delaware, USA"
+
+current_date: "June 23, 2026"
+document_version: "1.0"

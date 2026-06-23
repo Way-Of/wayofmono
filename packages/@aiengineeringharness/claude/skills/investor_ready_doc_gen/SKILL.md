@@ -1,7 +1,7 @@
 ---
-name: investor-ready-doc-gen
-description: Generate complete investor-ready documentation for ANY project. Auto-fires when the user asks to generate investor docs, funding materials, pitch decks, or white papers. Uses 28+ mustache-style templates bundled as assets in the skill folder. Exports all docs as professional PDFs via Marp CLI. Project-agnostic — works for OptiCat, Way of Work, or any new project.
-allowed-tools: read, write, bash, edit, grep, glob, webfetch, websearch, question
+name: investor_ready_doc_gen
+description: Generate complete investor-ready documentation for ANY project with a production-quality, project-branded design system. Auto-fires when the user asks to generate investor docs, funding materials, pitch decks, or white papers. Uses 28+ mustache-style templates bundled as assets in the skill folder. Features auto brand color detection from codebase, 12+ professional slide layouts with gradients/metrics/callouts, chart.js data visualization via chartjs2img, and exports all docs as investor-grade PDFs via Marp CLI. Project-agnostic — works for OptiCat, Way of Work, or any new project.
+allowed-tools: Read, Write, Bash, Edit, Grep, Glob, WebFetch, WebSearch, Question, Fetch
 ---
 
 # Investor-Ready Document Generator
@@ -30,6 +30,37 @@ brand_colors:
 ```
 
 All values are auto-detected — never hardcode. If only `primary` and `secondary` are found, fill those and leave the rest empty — the base theme fills missing values with professional defaults. If NO brand colors are detected, the skill falls back to a professional default palette (navy/teal/amber). The `accent` and `secondary` are the most impactful — focus on getting those right.
+
+## Design Best Practices (2026 Research)
+
+The following principles are synthesized from 6 authoritative sources (OGSCapital, Infographics Agency partner interviews, Founder Pin, VC Beast, Muzli) and MUST guide all investor document generation:
+
+### Core Principles
+1. **Purpose-driven design**: A pitch deck is a decision document, not a showcase. Every design choice must accelerate investor understanding of: market size, urgency, traction, business logic, founder credibility. If it distracts from these signals, cut it.
+2. **One idea per slide**: Each slide proves exactly one thing (problem, market logic, traction). Never combine product detail, market context, and strategy on one slide.
+3. **Scan-first layout**: Investors scan before reading. Write headlines as conclusions, not labels. Disciplined subheads, clear spacing, visible difference between primary/secondary information.
+4. **15-slide consensus**: 15 slides for the visual pitch is the norm in 2026. 25+ loses attention. Longer content goes in a separate due-diligence document.
+5. **Stage-appropriate narrative**: Pre-seed → lead with founder + problem. Series A → lead with traction. Series B+ → lead with scale and defensibility.
+
+### Design System Requirements
+6. **Typography discipline**: Exactly 2 typefaces max (geometric sans-serif for headers, same or complementary for body). 3 font sizes, 2 weights, 1 family. Minimum 24-30pt body copy.
+7. **Color restraint**: 3-4 colors maximum across the deck. In charts: 2-3 colors max. Brand color for all data, neutral gray for comparison.
+8. **Grid alignment**: Professional slides follow an underlying grid. 60-80px margins (16:9 standard). Rule of thirds for key content placement.
+9. **Whitespace as hierarchy**: 1.2-1.5x leading for body text. Generous whitespace between elements. Confident use of space signals discipline.
+10. **Data clarity over impressiveness**: Charts must be readable at a glance. Always label axes. Show assumptions inline. Bottom-up market sizing > top-down.
+
+### 2026-Specific Trends
+11. **"Agentic readiness"**: For AI startups, solution slides must address autonomy level, governance/trust, operational resilience.
+12. **"The Ugly Slide"**: Include a Risk & Mitigation slide proactively. Naming bottlenecks signals a sober operator.
+13. **Radical transparency**: Hockey-stick projections without assumptions = instant credibility hit. If no real data, say so.
+14. **Bento Box layouts**: Grid-based layouts for grouping related data (team bios, feature sets).
+15. **Gradients & Depth**: Subtle 3D elements and gradient backgrounds are "in" — but only if they don't distract from data.
+
+### Quality Benchmarks
+- "When an investor reads a pitch deck for the first time, they aren't reading the words yet. They're looking at the deck the way you'd look at a stranger's home — picking up signals." — Infographics Agency
+- "A consistent layout suggests the team knows how to prioritize and present information cleanly." — OGSCapital
+- "The best decks make the product, numbers, risks, and next step easy to evaluate." — Muzli
+- "Slides with 5 words plus a strong visual signal a founder who can compress." — Infographics Agency
 
 ## Variable Reference
 
@@ -191,6 +222,22 @@ Each vertical folder contains:
    - Reference relevant regulations and compliance mandates
    - Validate project claims against known industry benchmarks
 4. Always re-verify data via web search — vertical assets are snapshots, not live
+
+### Mermaid Chart Generation
+
+The skill generates Mermaid diagrams (`gantt`, `pie`, `graph LR/TD`, `quadrantChart`) for investor docs using one of two pipelines:
+
+1. **Templates with inline `mermaid` code blocks** — rendered by Marp (Step 8). Chart data is pre-populated from config variables.
+2. **External `.mmd` files** — generated by `scripts/generate-charts.sh` (if present) for complex, data-heavy diagrams.
+
+When generating charts:
+- Always use `%%{init: {'themeVariables': {'PrimaryColor': '{{chart_primary_color}}', 'PrimaryBorderColor': '{{chart_secondary_color}}'}}}%%` for themed charts
+- Validate the diagram renders without syntax errors
+- Never embed data that belongs in a table — use tables for data, charts for trends/distribution
+
+### QA Criteria Reference
+
+These criteria are applied during Step 8f validation. See the full checklist there.
 
 ### Creating a New Vertical
 
@@ -595,10 +642,14 @@ After conversion:
 1. Verify each PDF opens and renders correctly
 2. Check cover slide has gradient background with project colors
 3. Verify metric cards, callout boxes, and section dividers use project brand colors
-4. Confirm page count is reasonable (not 1-page PDFs from 10-page docs)
-5. Verify custom theme applied (gradients, fonts, card layouts)
-6. Check file sizes — suspiciously small PDFs may indicate conversion failure
-7. Spot-check a pitch deck slide: should have cover → toc → section dividers → content → contact
+4. Verify custom theme applied (gradients, fonts, card layouts)
+5. Check file sizes — suspiciously small PDFs may indicate conversion failure
+6. **Anti-overflow check**: Verify no text overflows slide boundaries — check `marp --preview` warnings
+7. **Readability check**: ensure minimum font sizes (titles ≥36pt, body ≥18pt, footnotes ≥12pt)
+8. **Chart check**: verify all charts rendered as proper Mermaid diagrams, not broken text blocks
+9. **Asset check**: confirm all referenced images exist at their specified paths
+10. **Page check**: verify page count is reasonable (not 1-page PDFs from 10-page docs, and not 100-page PDFs from 5-page docs)
+11. Spot-check a pitch deck slide: should have cover → toc → section dividers → content → contact
 
 ### Step 9: Present Results
 Show the user:

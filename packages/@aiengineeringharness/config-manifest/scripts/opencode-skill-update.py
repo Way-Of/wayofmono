@@ -3,8 +3,8 @@
 OpenCode Skill Updater — opencode/skills
 
 Ensures all skills use correct:
-  - Directory naming: snake_case
-  - name field: snake_case
+  - Directory naming: kebab-case
+  - name field: kebab-case
   - allowed-tools casing: lowercase
   - allowed-tools format: comma_string
   - Frontmatter fields: name, description, allowed-tools, docs-url, disable-model-invocation, on
@@ -26,8 +26,8 @@ CONFIG_YAML = os.path.join(REPO_ROOT, "config-manifest/tools/opencode.yaml")
 TOOL_NAME = "OpenCode"
 SKILL_FILE = "SKILL.md"
 DUAL_FILE = None
-DIR_CASE = "snake_case"
-NAME_CASE = "snake_case"
+DIR_CASE = "kebab_case"
+NAME_CASE = "kebab_case"
 TARGET_TOOLS_CASE = "lowercase"
 TOOLS_FMT = "comma_string"
 SUPPORTED_FIELDS = ['name', 'description', 'allowed-tools', 'docs-url', 'disable-model-invocation', 'on']
