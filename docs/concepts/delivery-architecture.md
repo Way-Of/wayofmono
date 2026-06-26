@@ -152,6 +152,13 @@ Also validates cross-tool alignment — all 7 tools must have the same set of sk
 - Removes stale files not in manifest
 - Writes `.harness-version` marker for update detection
 
+### Atomic Transactions
+
+The `transaction.ts` module provides write-ahead logging, rollback, and file locking for the installer:
+- **`acquireLock()`** writes a `.lock` file with PID. If a stale lock is detected, it checks if the holding PID is alive (`/proc/<pid>` on Linux, `kill -0` on macOS) and automatically removes dead locks.
+- **`transaction.ts::rollback()`** reverts partially-installed components on failure.
+- Used by `install.ts` for all file operations — a failed install never leaves a half-deployed state.
+
 ### System Detection Layer
 
 Before deploying, the installer profiles the system for platform-aware decisions:
@@ -436,6 +443,7 @@ Tickets live in two places:
 | Harness ↔ Dashboard | Skill metadata → telemetry | `--report-skills` scans 7 tool dirs, POSTs to `/api/skills/report` |
 | Skills ↔ f-rr-d | Workflow artifacts | `ticket-manager`, `create-plan` skills read/write `thoughts/` files |
 | Dashboard ↔ f-rr-d | Bi-directional ticket sync | `PATCH /api/tickets` → SQLite + `writeTicketFile()` → thoughts/ |
+| Skills ↔ Dashboard | Notification read-state from CI | `ticket-manager`/`ticket-executor` POST `mark-read` to `/api/notifications` |
 | Packages ↔ Harness | Runtime dependencies | Harness deploys extension dirs → `npm install --prefix` for deps |
 | Skills ↔ Packages | Tool invocation at runtime | Skills use tool calls backed by package capabilities |
 
@@ -493,6 +501,51 @@ Each AI coding tool has different conventions for naming, frontmatter fields, al
 ### Why dual-write tickets (SQLite + filesystem)?
 
 The filesystem (`thoughts/`) is the **canonical** store — it's in git, works offline, and is editable by any agent with file access. The SQLite cache provides fast queries, filtering, and dashboard rendering. The dashboard writes back to the filesystem on every mutation, keeping the two in sync.
+
+### Why config-manifest instead of editing manifest.json directly?
+
+The monolithic `manifest.json` (8868 lines) had cross-tool path contamination, no validation that per-tool skill formatting was correct, and was hard to maintain. The modular YAML system (`config-manifest/`) solved this by:
+- **Enforcing path isolation** — `compile.py` rejects any `src` path that uses another tool's prefix (e.g., `claude/` in `opencode.yaml` — cross-contamination detected at compile time, not at deploy time)
+- **Per-tool format specs** — each tool YAML is validated against its naming convention (snake/kebab), `allowed-tools` casing (PascalCase/lowercase), and target directory
+- **Test suite gate** — `run-all-tests.py` runs YAML validation → manifest structure → on-disk skill format compliance before any deployment
+
+See `docs/fixes/ai-engineering-harness-fixes.md` (v1.7.0 "Config-Manifest Modularization") for the full origin story.
+
+### Why per-tool naming compliance is enforced at compile time?
+
+Historical experience showed that naming errors cause real failures:
+- **Pi rejects kebab-case** — Pi's skill loader errors when `name:` contains underscores; 72 Pi skill files had to be bulk-fixed from snake_case to kebab-case
+- **OpenCode rejects snake_case** — OpenCode's naming regex `^[a-z0-9]+(-[a-z0-9]+)*$` rejects underscores; 74 OpenCode skill directories had to be renamed
+- **Claude requires PascalCase tools** — Claude Code's `allowed-tools` must be PascalCase (`Read`, `Write`, `Bash`), not lowercase; 105 Claude skill files had to be fixed
+
+The `test-skills.py` script validates all these rules across all 7 tools before any deployment reaches users. See `docs/fixes/ai-engineering-harness-fixes.md` (v1.7.6) and `docs/fixes/ai-engineering-harness-fixes.md` (v1.7.4 "OpenCode Skills Kebab-Case Naming") for details.
+
+### Why notification integration between skills and dashboard?
+
+The `ticket-manager`, `ticket-executor`, and `validate-plan` skills (delivered by Pipeline 1) interact with the CTO Dashboard's notification API (Pipeline 4) to mark review requests and status updates as read. When a skill completes a review action, it POSTs to `/api/notifications` with `action: "mark-read"` and the `notificationId` (e.g., `review-WOMONO-042`). This bridges the skill execution world and the dashboard UI — skills trigger the work, and the dashboard tracks which notifications remain.
+
+Notification IDs follow a convention: `review-<TICKET_ID>` for review queue entries, `update-<TICKET_ID>` for status changes. The sidebar's review badge filters by `readNotificationIds.has(...)` — only showing unread items.
+
+See `docs/fixes/ai-engineering-harness-fixes.md` (v1.7.3) and `docs/fixes/cto-dashboard-fixes.md` (v0.6.3) for full details.
+
+### Why compile.py must validate paths?
+
+Underscore/hyphen mismatches between manifest paths and actual filesystem directories caused real deployment failures — the installer fetched 404 URLs from GitHub because the manifest said `build-tool_agent` but the directory was `build-tool-agent`. The compile.py path validation (`TOOL_PATH_RULES`) catches these mismatches at build time rather than deploy time. See `docs/fixes/manifest-path-fix.md` for the full incident.
+
+### Why command naming must avoid skill conflicts?
+
+Gemini CLI and Antigravity CLI had naming conflicts where `/create_plan` (a command file) and `create_plan/` (a skill directory) collided, producing auto-renamed `/user.create_plan` and `/create_plan1` variants. The fix renamed all commands with a `run-` prefix (`/run-create_plan`, `/run-debug`, etc.), ensuring skill names and command names never collide. OpenCode and Claude were unaffected because they handle commands/skills in separate namespaces natively. See `docs/fixes/ai-engineering-harness-fixes.md` (v1.6.1) for details.
+
+### Why platform-aware detection?
+
+The installer originally deployed skills/agents/commands uniformly without detecting the user's platform — leading to broken integrations on different OS, missing system deps, wrong icon paths, and incompatible runtimes. The detection layer (`detect/`) now profiles 11 aspects of the system before deploying, allowing the installer to:
+- Select correct XDG paths per OS (Linux/macOS/Windows)
+- Auto-install missing system deps (e.g., `libwebkit2gtk-4.1-dev` on Debian)
+- Generate proper `.desktop` files on Linux
+- Detect which AI tools are already installed and install only those (`--tool=auto`)
+- Warn about non-UTF-8 locales, root execution, or missing prerequisites
+
+See `docs/fixes/ai-engineering-harness-fixes.md` (v1.7.2 "Platform-Aware Harness Installer") for full details.
 
 ---
 
