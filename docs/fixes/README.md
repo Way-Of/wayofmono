@@ -48,7 +48,12 @@ See [wo-agent-fixes.md](./wo-agent-fixes.md) for detailed release notes.
 
 See [ai-engineering-harness-fixes.md](./ai-engineering-harness-fixes.md) for detailed release notes.
 
-**Quick Summary (v1.7.7):**
+**Quick Summary (v1.7.8):**
+- `--purge` flag: nuclear cleanup of harness config dirs (no manifest needed)
+- 5 skills consolidated into build-tool-skill (WOMONO-083): validation, adaptation, lifecycle, config-manifest integration
+- Wo Coder naming: snake_case→kebab-case (72 skill dirs renamed, matches Pi)
+
+**Previous (v1.7.7):**
 - Per-tool naming compliance: researched online docs, fixed OpenCode (snake→kebab), converted 841 manifest paths kebab→snake for 5 tools, deleted 72 kebab dirs, fixed AGENTS.md table
 - investor-ready-doc-gen enhanced: brand color detection, Marp CLI platform install, Mermaid charts, anti-overflow QA
 

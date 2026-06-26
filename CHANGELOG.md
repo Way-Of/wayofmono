@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.8] - 2026-06-26
+
+### Harness (AI Engineering Harness v1.7.8)
+- **`--purge` flag added**: Nuclear cleanup — wipes all harness config dirs regardless of manifest. Supports `--dry-run`, `--yes`, single-tool or `all`. Added to install.ts and install.ps1.
+- **Skill consolidation (WOMONO-083)**: Deleted 5 skills (`skill-compliance-checker`, `skill-adapter`, `skill-auto-update`, `build-skill-adapter`, `build-skill-auto-update`) from all 7 tools. All functionality absorbed into `build-tool-skill` with expanded SKILL.md (validation, adaptation, lifecycle, config-manifest), 8 new assets, and updated YAML entries.
+- **Wo Coder naming changed to kebab-case**: All 72 skill directories in `wocode/agent/skills/` renamed from snake_case to kebab-case (matching Pi convention). Updated AGENTS.md, build-tool-skill SKILL.md, and wocode.yaml.
+
 ## [1.7.7] - 2026-06-23
 
 ### Harness (AI Engineering Harness v1.7.7)

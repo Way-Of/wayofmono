@@ -414,7 +414,7 @@ ai-harness --report-skills
 | Pi | **kebab-case** | kebab-case | Title Case | `~/.pi/agent/` | [pi.dev](https://pi.dev) |
 | Codex CLI | **snake_case** | snake_case | lowercase_snake | `~/.codex/` | [developers.openai.com/codex/cli](https://developers.openai.com/codex/cli) |
 | Antigravity CLI | **snake_case** | snake_case | lowercase | `~/.antigravity/` | [antigravity.google](https://antigravity.google/docs/cli-overview) |
-| Wo Coder | **snake_case** | snake_case | lowercase | `~/.wocode/` | [github.com/Way-Of/wayofmono](https://github.com/Way-Of/wayofmono) |
+| Wo Coder | **kebab-case** | kebab-case | lowercase | `~/.wocode/` | [github.com/Way-Of/wayofmono](https://github.com/Way-Of/wayofmono) |
 
 **OpenCode Critical**: Skill directory name MUST match frontmatter `name` exactly (regex `^[a-z0-9]+(-[a-z0-9]+)*$`)
 

@@ -22,15 +22,17 @@ The architecture is project-agnostic — any project can adopt the same pipeline
 │                    DELIVERY PIPELINES                               │
 │                                                                     │
 │  Pipeline 1: AI Engineering Harness (skills/agents/configs)         │
-│  Pipeline 2: WayOfMono Packages (runtime/LLM/TUI)                   │
+│  Pipeline 2: npm Packages (TypeScript runtime libraries)            │
 │  Pipeline 3: f-rr-d (tickets/plans/research)                        │
 │  Pipeline 4: CTO Dashboard (telemetry/observability)                 │
 │     ├── WayOfMono → Next.js (ui/)                                   │
 │     └── WayOfTeams → Phoenix LiveView (thoughts/wayofteams/)         │
+│  Pipeline 5: Hex Packages (Elixir runtime libraries)                │
+│  Pipeline 6: MCP Bridge (cross-language agent/tool delivery)        │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-WayOfMono is the **publisher** of the harness and packages. The other four projects (WayOfTeams, WayOfWork, WayOfCollab, Opticat) **consume** these pipelines. All five projects store tickets, plans, and docs in f-rr-d under their own namespaces with a shared directory structure.
+WayOfMono is the **publisher** of the harness, npm packages, and Hex packages. The other projects (WayOfTeams, WayOfWork, WayOfCollab, Opticat) **consume** these pipelines. WayOfTeams is also a **publisher** of Hex packages and MCP servers. All projects store tickets, plans, and docs in f-rr-d under their own namespaces with a shared directory structure.
 
 ---
 
@@ -405,6 +407,177 @@ Tickets live in two places:
 
 ---
 
+## Pipeline 5: Hex Packages (Elixir Runtime Delivery)
+
+Parallel to Pipeline 2 (npm), delivers **Elixir runtime capabilities** — Jido skill libraries, Ash extension resources, MCP server SDKs — through the Hex.pm registry as `@wayofmono/*` packages.
+
+### Registry
+
+| Aspect | Detail |
+|--------|--------|
+| **Registry** | `hex.pm` (public) + `wayofmono` organization (private) |
+| **Scope** | `@wayofmono/*` |
+| **Auto-docs** | `hexdocs.pm` via `mix docs` (ExDoc) |
+| **Publish tool** | `mix hex.publish` |
+
+### Package Landscape (Planned)
+
+```
+hex.pm/packages/@wayofmono/
+├── wo_mcp              MCP server SDK (conduit_mcp wrapper)
+├── wo_jido_skills      Shared Jido action/skill library
+├── wo_ash_resources    Shared Ash resource + Igniter installer mix tasks
+└── telemetry_elixir    OTel Elixir SDK wrapper
+```
+
+### CI/CD Workflow
+
+```yaml
+# .github/workflows/release-elixir.yml
+on:
+  push:
+    tags: ['elixir-v*']
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: '1.18'
+          otp-version: '27'
+      - run: mix deps.get
+      - run: mix compile --warnings-as-errors
+      - run: mix test
+      - run: mix docs
+      - run: mix hex.publish --yes
+        env:
+          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
+```
+
+Tag convention: `elixir-v1.2.3` for monorepo. Versions are immutable on Hex — fixes require a new version number. First-time setup: `mix hex.user register` + `mix hex.user key generate` for `HEX_API_KEY`.
+
+### Publishers & Consumers
+
+| Project | Role | Content |
+|---------|------|---------|
+| **WayOfTeams** | Publisher | `wo_mcp`, `wo_jido_skills`, `wo_ash_resources` |
+| **WayOfMono** | Publisher | `telemetry_elixir` |
+| **WayOfCollab** | Consumer | All packages |
+| **WayOfWork** | Consumer | All packages |
+
+---
+
+## Pipeline 6: MCP Bridge (Cross-Language Agent Delivery)
+
+Bridges TypeScript/Deno-focused Pipeline 1 (Harness) with the Elixir/Ash/Jido ecosystem through the **Model Context Protocol (MCP)**. This is the critical cross-language integration layer — it enables TypeScript AI tools to invoke Elixir Jido agents as MCP tools.
+
+### How It Works
+
+```
+manifest.json (Pipeline 1)
+     │
+     ▼
+install.ts ──→ ~/.config/opencode/mcp.json
+               {
+                 "mcpServers": {
+                   "wayofteams-skills": {
+                     "command": "wayofteams-mcp-server",
+                     "args": ["--skills", "ticket_manager,backlog_groomer"]
+                   }
+                 }
+               }
+                    │
+                    ▼
+              AI Tool loads MCP server at startup
+              (stdio pipe or HTTP connection)
+                    │
+                    ▼
+              MCP server connects to WayOfTeams BEAM
+              via Streamable HTTP (localhost:4000/mcp)
+                    │
+                    ▼
+              Jido Action executed on WayOfTeams Phoenix
+              (create_ticket, review_ticket, sync_skills, etc.)
+```
+
+### Supported MCP Libraries
+
+| Library | Version | Transport | Features |
+|---------|---------|-----------|----------|
+| `conduit_mcp` | 0.9.7 | Streamable HTTP, SSE | Phoenix integration, rate limiting, auth |
+| `mcp-elixir-sdk` | 1.0.1 | stdio, Streamable HTTP | 40/40 conformance, async tools, sampling |
+| `anubis-mcp` | fork | Streamable HTTP | Component registration DSL |
+
+WayOfTeams uses `conduit_mcp` as its primary MCP server library (already a dependency).
+
+### Component Type: `elixir_mcp`
+
+The config-manifest supports a new `elixir_mcp` component type alongside `skills`, `agents`, `commands`:
+
+**config-manifest/tools/opencode.yaml**:
+```yaml
+components:
+  - name: wayofteams-ticket-manager
+    type: elixir_mcp
+    src: elixir/mcp_servers/ticket-manager
+    transport: stdio
+```
+
+The harness installer:
+1. Reads the `elixir_mcp` component from manifest
+2. Downloads the Elixir MCP binary (Burrito-wrapped, single executable)
+3. Writes the corresponding `mcp.json` entry into the tool's config dir
+4. The AI tool loads the MCP server at startup, bridging to the BEAM
+
+### Jido Action → MCP Tool Mapping
+
+Jido actions expose their schema as MCP tool input_schemas automatically:
+
+```elixir
+# Jido Action
+defmodule Wayofteams.Actions.Tickets.CreateTicketAction do
+  use Jido.Action,
+    name: "create_ticket",
+    description: "Create a new ticket",
+    schema: [
+      title: [type: :string, required: true],
+      project_prefix: [type: :string, required: true],
+      ticket_type: [type: :string, required: true]
+    ]
+
+  def run(params, _context) do
+    # ... Elixir logic
+  end
+end
+
+# Auto-generated MCP tool:
+# {
+#   "name": "create_ticket",
+#   "description": "Create a new ticket",
+#   "inputSchema": {
+#     "type": "object",
+#     "required": ["title", "project_prefix", "ticket_type"],
+#     "properties": {
+#       "title": {"type": "string"},
+#       "project_prefix": {"type": "string"},
+#       "ticket_type": {"type": "string"}
+#     }
+#   }
+# }
+```
+
+### Publishers & Consumers
+
+| Project | Role | What They Publish/Consume |
+|---------|------|--------------------------|
+| **WayOfTeams** | Publisher | MCP server binary wrapping 18 Jido agents, 80+ Jido actions |
+| **WayOfMono** | Consumer | Installs MCP server configs via harness |
+| **WayOfCollab** | Publisher | MCP server for collaboration APIs |
+| **All AI Tools** | Consumer | Load MCP servers at runtime |
+
+---
+
 ## Interconnection Map
 
 ```
@@ -477,24 +650,46 @@ Tickets live in two places:
                      │  wayofteams/docs/    │     └──────────────────────────────┘
                     └──────────────────────┘
 
-                    ┌────────────────────────────────────────────────────┐
-                    │  NPM Packages (@wayofmono/*)                       │
-                    │  Deliver runtime: LLM, TUI, agents, web access     │
-                    │  Installed via: npm install / pnpm                 │
-                    │                                                   │
-                    │  External consumers:                               │
-                    │  ├── Way of Pi (Electron IDE)                      │
-                    │  └── Way of Work (productivity platform)           │
-                    └────────────────────────────────────────────────────┘
+                     ┌────────────────────────────────────────────────────┐
+                     │  NPM Packages (@wayofmono/*)                       │
+                     │  Deliver runtime: LLM, TUI, agents, web access     │
+                     │  Installed via: npm install / pnpm                 │
+                     │                                                   │
+                     │  External consumers:                               │
+                     │  ├── Way of Pi (Electron IDE)                      │
+                     │  └── Way of Work (productivity platform)           │
+                     └────────────────────────────────────────────────────┘
 
-                    ┌────────────────────────────────────────────────────┐
-                    │  PROJECTS (5 namespaces in f-rr-d)                 │
-                    │  ├── WayOfMono  (WOMONO)  — harness, packages      │
-                    │  ├── WayOfTeams (WOTEAMS) — CTO Dashboard          │
-                    │  ├── WayOfWork  (WOW)     — platform specs         │
-                    │  ├── WayOfCollab(WOC)     — collaboration          │
-                    │  └── Opticat    (OPT)     — HVAC simulation         │
-                    └────────────────────────────────────────────────────┘
+                     ┌────────────────────────────────────────────────────┐
+                     │  HEX Packages (@wayofmono/* on hex.pm)             │
+                     │  Deliver: Jido skill libs, MCP servers,            │
+                     │           Ash extension resources                  │
+                     │  Installed via: mix deps.get / hex.pm              │
+                     │                                                   │
+                     │  Publisher: WayOfTeams (WOTEAMS)                   │
+                     │  Consumers: WayOfCollab, WayOfWork                 │
+                     └───────────────────────┬────────────────────────────┘
+                                             │
+                                             ▼
+                     ┌────────────────────────────────────────────────────┐
+                     │  MCP BRIDGE (cross-language agent delivery)        │
+                     │                                                    │
+                     │  TypeScript/Deno Harness ──→ install MCP config    │
+                     │  AI Tool loads MCP server at runtime               │
+                     │  MCP server wraps Jido actions as MCP tools        │
+                     │  Jido actions executed on WayOfTeams BEAM          │
+                     │                                                    │
+                     │  Transports: stdio (local) / Streamable HTTP       │
+                     └────────────────────────────────────────────────────┘
+
+                     ┌────────────────────────────────────────────────────┐
+                     │  PROJECTS (5 namespaces in f-rr-d)                 │
+                     │  ├── WayOfMono  (WOMONO)  — harness, packages      │
+                     │  ├── WayOfTeams (WOTEAMS) — CTO Dashboard, Hex     │
+                     │  ├── WayOfWork  (WOW)     — platform specs         │
+                     │  ├── WayOfCollab(WOC)     — collaboration          │
+                     │  └── Opticat    (OPT)     — HVAC simulation         │
+                     └────────────────────────────────────────────────────┘
 ```
 
 ---

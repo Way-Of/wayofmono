@@ -21,7 +21,7 @@ Unified skill management for all 7 AI coding tools. Covers creation, validation,
 | Pi | **kebab-case** | Title Case | `~/.pi/agent/` |
 | Codex CLI | **snake_case** | lowercase_snake | `~/.codex/` |
 | Antigravity CLI | **snake_case** | lowercase | `~/.antigravity/` |
-| Wo Coder | **snake_case** | lowercase | `~/.wocode/` |
+| Wo Coder | **kebab-case** | lowercase | `~/.wocode/` |
 
 ## Online Sources
 Always fetch latest docs before building:
@@ -48,7 +48,8 @@ Always fetch latest docs before building:
 
 ### Naming Rules
 - OpenCode: kebab-case directory, name matches directory
-- Claude/Gemini/Codex/Antigravity/Wo Coder: snake_case directory
+- Claude/Gemini/Codex/Antigravity: snake_case directory
+- Pi/Wo Coder: kebab-case directory
 - Pi: kebab-case directory
 - Codex: also needs `skill.yaml` + `prompt.md` (two-file format)
 

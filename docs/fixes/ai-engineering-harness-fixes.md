@@ -1,5 +1,31 @@
 # AI Engineering Harness Fixes & Release Notes
 
+## v1.7.8 — 2026-06-26 — Skill Consolidation (WOMONO-083) + --purge + Wocode kebab-case
+
+### Features
+- **`--purge` flag added to installers**: Nuclear cleanup — wipes all harness config dirs regardless of manifest. No manifest needed (unlike `--uninstall`). Supports `--dry-run`, `--yes`, and single-tool or `all`. Added to both `install.ts` and `install.ps1`.
+- **5 skills consolidated into build-tool-skill (WOMONO-083)**: Deleted `skill-compliance-checker`, `skill-adapter`, `skill-auto-update`, `build-skill-adapter`, `build-skill-auto-update` from all 7 tools. Absorbed all functionality into `build-tool-skill`:
+  - Expanded canonical SKILL.md with validation, adaptation, lifecycle sync, config-manifest integration
+  - Created `assets/` dir with 8 files: config-manifest-example.yaml, 4 skill examples, compliance-check.py, adapter-generate.py
+  - Removed all 5 entries from 7 `config-manifest/tools/*.yaml` files
+  - Deployed updated build-tool-skill entries with asset files to all tool YAMLs
+  - Deleted skill directories from all 7 harnesses and canonical `skills/`
+- **Wo Coder naming changed to kebab-case**: All 72 skill directories in `wocode/agent/skills/` renamed from snake_case to kebab-case (matching Pi convention). Updated `wocode.yaml`, `AGENTS.md`, and `build-tool-skill` SKILL.md references.
+
+### Files
+- `packages/@aiengineeringharness/install.ts` — Added `--purge` handler (L322-370)
+- `packages/@aiengineeringharness/install.ps1` — Added `-Purge` switch
+- `README.md` — Added Uninstall and Purge sections with examples
+- `packages/@aiengineeringharness/skills/build-tool-skill/SKILL.md` — Expanded with 5 sections (creation, validation, adaptation, lifecycle, config-manifest)
+- `packages/@aiengineeringharness/skills/build-tool-skill/assets/` — 8 new files (examples + scripts)
+- `packages/@aiengineeringharness/config-manifest/tools/*.yaml` — All 7 files: removed 5 deleted skills + updated build-tool-skill entries
+- `packages/@aiengineeringharness/{opencode,claude,gemini,pi,wocode,codex,antigravity}/skills/` — 5 skill directories deleted per tool
+- `packages/@aiengineeringharness/wocode/agent/skills/` — 72 directories renamed snake→kebab
+- `AGENTS.md` — Wo Coder naming: snake_case→kebab-case
+- `manifest.json` — Recompiled with 0 errors
+
+---
+
 ## v1.7.7 — 2026-06-23 — Per-Tool Naming Compliance: kebab vs snake resolved across all 7 tools
 
 ### Features

@@ -400,23 +400,23 @@ components:
   skill/build-tool-skill:
     description: "Unified skill builder, validator, adapter, and lifecycle manager for all 7 tools"
     files:
-    - src: wocode/agent/skills/build_tool_skill/SKILL.md
+    - src: wocode/agent/skills/build-tool-skill/SKILL.md
       dest: skills/build-tool-skill/SKILL.md
-    - src: wocode/agent/skills/build_tool_skill/assets/config-manifest-example.yaml
+    - src: wocode/agent/skills/build-tool-skill/assets/config-manifest-example.yaml
       dest: skills/build-tool-skill/assets/config-manifest-example.yaml
-    - src: wocode/agent/skills/build_tool_skill/assets/skill-example-opencode.md
+    - src: wocode/agent/skills/build-tool-skill/assets/skill-example-opencode.md
       dest: skills/build-tool-skill/assets/skill-example-opencode.md
-    - src: wocode/agent/skills/build_tool_skill/assets/skill-example-claude.md
+    - src: wocode/agent/skills/build-tool-skill/assets/skill-example-claude.md
       dest: skills/build-tool-skill/assets/skill-example-claude.md
-    - src: wocode/agent/skills/build_tool_skill/assets/skill-example-pi.md
+    - src: wocode/agent/skills/build-tool-skill/assets/skill-example-pi.md
       dest: skills/build-tool-skill/assets/skill-example-pi.md
-    - src: wocode/agent/skills/build_tool_skill/assets/skill-example-codex.yaml
+    - src: wocode/agent/skills/build-tool-skill/assets/skill-example-codex.yaml
       dest: skills/build-tool-skill/assets/skill-example-codex.yaml
-    - src: wocode/agent/skills/build_tool_skill/assets/skill-example-codex-prompt.md
+    - src: wocode/agent/skills/build-tool-skill/assets/skill-example-codex-prompt.md
       dest: skills/build-tool-skill/assets/skill-example-codex-prompt.md
-    - src: wocode/agent/skills/build_tool_skill/assets/compliance-check.py
+    - src: wocode/agent/skills/build-tool-skill/assets/compliance-check.py
       dest: skills/build-tool-skill/assets/compliance-check.py
-    - src: wocode/agent/skills/build_tool_skill/assets/adapter-generate.py
+    - src: wocode/agent/skills/build-tool-skill/assets/adapter-generate.py
       dest: skills/build-tool-skill/assets/adapter-generate.py
   skill/build-tool-agent:
     description: "Unified agent builder for all 7 tools \u2014 deployed to Wo Coder"
@@ -676,21 +676,21 @@ components:
   skill/runbook-manager:
     description: Generate, update, and maintain production runbooks per project
     files:
-    - src: wocode/agent/skills/runbook_manager/SKILL.md
+    - src: wocode/agent/skills/runbook-manager/SKILL.md
       dest: skills/runbook-manager/SKILL.md
-    - src: wocode/agent/skills/runbook_manager/assets/runbook-template.md
+    - src: wocode/agent/skills/runbook-manager/assets/runbook-template.md
       dest: skills/runbook-manager/assets/runbook-template.md
   skill/postmortem-manager:
     description: Generate incident postmortems with interactive flow and git metrics
     files:
-    - src: wocode/agent/skills/postmortem_manager/SKILL.md
+    - src: wocode/agent/skills/postmortem-manager/SKILL.md
       dest: skills/postmortem-manager/SKILL.md
-    - src: wocode/agent/skills/postmortem_manager/assets/postmortem-template.md
+    - src: wocode/agent/skills/postmortem-manager/assets/postmortem-template.md
       dest: skills/postmortem-manager/assets/postmortem-template.md
   skill/session-export:
     description: Capture working session as structured session history with git metrics and context
     files:
-    - src: wocode/agent/skills/session_export/SKILL.md
+    - src: wocode/agent/skills/session-export/SKILL.md
       dest: skills/session-export/SKILL.md
-    - src: wocode/agent/skills/session_export/assets/session-template.md
+    - src: wocode/agent/skills/session-export/assets/session-template.md
       dest: skills/session-export/assets/session-template.md
