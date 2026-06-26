@@ -632,3 +632,122 @@ components:
       dest: skills/session-export/SKILL.md
     - src: opencode/skills/session-export/assets/session-template.md
       dest: skills/session-export/assets/session-template.md
+
+
+  command/fixes-create:
+    description: "Create fix note entry"
+    files:
+    - src: opencode/commands/fixes-create.md
+      dest: commands/fixes-create.md
+
+  command/fixes-bump:
+    description: "Bump version across project files"
+    files:
+    - src: opencode/commands/fixes-bump.md
+      dest: commands/fixes-bump.md
+
+  command/fixes-validate:
+    description: "Validate version consistency"
+    files:
+    - src: opencode/commands/fixes-validate.md
+      dest: commands/fixes-validate.md
+
+
+  command/debug-k8s:
+    description: "Debug Kubernetes cluster issues"
+    files:
+    - src: opencode/commands/debug-k8s.md
+      dest: commands/debug-k8s.md
+
+  command/work:
+    description: "Start working on a ticket, update status to In Progress"
+    files:
+    - src: opencode/commands/work.md
+      dest: commands/work.md
+
+  command/complete:
+    description: "Complete a ticket, submit for review"
+    files:
+    - src: opencode/commands/complete.md
+      dest: commands/complete.md
+
+  command/ticket-create:
+    description: "Interactive ticket creation wizard"
+    files:
+    - src: opencode/commands/ticket-create.md
+      dest: commands/ticket-create.md
+
+  command/submit-for-review:
+    description: "Submit ticket for CTO review"
+    files:
+    - src: opencode/commands/submit-for-review.md
+      dest: commands/submit-for-review.md
+
+  command/sync-team:
+    description: "Show team ticket dashboard"
+    files:
+    - src: opencode/commands/sync-team.md
+      dest: commands/sync-team.md
+
+  command/sync-skills:
+    description: "Sync all skills across all frontends"
+    files:
+    - src: opencode/commands/sync-skills.md
+      dest: commands/sync-skills.md
+
+  command/help:
+    description: "Unified help system for all commands and skills"
+    files:
+    - src: opencode/commands/help.md
+      dest: commands/help.md
+
+  command/experimental-pr-workflow:
+    description: "Formalize experimental work into tickets and PRs"
+    files:
+    - src: opencode/commands/experimental-pr-workflow.md
+      dest: commands/experimental-pr-workflow.md
+
+  command/git-commit-helper:
+    description: "Create well-structured git commits"
+    files:
+    - src: opencode/commands/git-commit-helper.md
+      dest: commands/git-commit-helper.md
+
+  command/pr-description-generator:
+    description: "Generate comprehensive PR descriptions"
+    files:
+    - src: opencode/commands/pr-description-generator.md
+      dest: commands/pr-description-generator.md
+
+  command/otel-instrument:
+    description: "OpenTelemetry instrumentation orchestrator"
+    files:
+    - src: opencode/commands/otel_instrument.md
+      dest: commands/otel-instrument.md
+  skill/fixes-manager:
+    description: "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT."
+    files:
+    - src: opencode/skills/fixes-manager/SKILL.md
+      dest: skills/fixes-manager/SKILL.md
+    - src: opencode/skills/fixes-manager/assets/womono/version-config.json
+      dest: skills/fixes-manager/assets/womono/version-config.json
+    - src: opencode/skills/fixes-manager/assets/womono/components.json
+      dest: skills/fixes-manager/assets/womono/components.json
+    - src: opencode/skills/fixes-manager/assets/womono/fix-note-template.md
+      dest: skills/fixes-manager/assets/womono/fix-note-template.md
+    - src: opencode/skills/fixes-manager/assets/womono/validate-rules.json
+      dest: skills/fixes-manager/assets/womono/validate-rules.json
+    - src: opencode/skills/fixes-manager/assets/womono/migration-rules.json
+      dest: skills/fixes-manager/assets/womono/migration-rules.json
+    - src: opencode/skills/fixes-manager/assets/wow/version-config.json
+      dest: skills/fixes-manager/assets/wow/version-config.json
+    - src: opencode/skills/fixes-manager/assets/wow/components.json
+      dest: skills/fixes-manager/assets/wow/components.json
+    - src: opencode/skills/fixes-manager/assets/wow/fix-note-template.md
+      dest: skills/fixes-manager/assets/wow/fix-note-template.md
+    - src: opencode/skills/fixes-manager/assets/opticat/version-config.json
+      dest: skills/fixes-manager/assets/opticat/version-config.json
+    - src: opencode/skills/fixes-manager/assets/opticat/components.json
+      dest: skills/fixes-manager/assets/opticat/components.json
+    - src: opencode/skills/fixes-manager/assets/opticat/fix-note-template.md
+      dest: skills/fixes-manager/assets/opticat/fix-note-template.md

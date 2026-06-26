@@ -1,0 +1,7 @@
+name: experimental_pr_workflow
+description: "Formalize experimental work into tickets and PRs. Delegates to the experimental-pr-workflow skill."
+version: 1.0.0
+tools:
+  - read_file
+  - write_file
+  - run_shell_command

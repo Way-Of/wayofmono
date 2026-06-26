@@ -1,0 +1,9 @@
+[
+  {
+    "name": "WayOfWork Platform",
+    "slug": "wow-platform",
+    "fix_note_file": "wow-fixes.md",
+    "version_sources": [],
+    "package_path": ""
+  }
+]

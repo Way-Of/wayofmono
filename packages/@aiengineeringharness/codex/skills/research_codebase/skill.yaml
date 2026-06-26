@@ -1,0 +1,7 @@
+name: research_codebase
+description: "Comprehensive codebase research. Delegates to the research-codebase skill."
+version: 1.0.0
+tools:
+  - read_file
+  - write_file
+  - run_shell_command

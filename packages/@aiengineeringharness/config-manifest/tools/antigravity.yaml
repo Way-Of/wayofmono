@@ -715,3 +715,99 @@ components:
       dest: skills/session-export/SKILL.md
     - src: antigravity/skills/session_export/assets/session-template.md
       dest: skills/session-export/assets/session-template.md
+
+
+  command/fixes-create:
+    description: "Create fix note entry command"
+    files:
+    - src: antigravity/commands/run-fixes-create.toml
+      dest: commands/fixes-create.toml
+
+  command/fixes-bump:
+    description: "Bump version across project files command"
+    files:
+    - src: antigravity/commands/run-fixes-bump.toml
+      dest: commands/fixes-bump.toml
+
+  command/fixes-validate:
+    description: "Validate version consistency command"
+    files:
+    - src: antigravity/commands/run-fixes-validate.toml
+      dest: commands/fixes-validate.toml
+
+
+  command/debug-k8s:
+    description: "Debug Kubernetes cluster issues"
+    files:
+    - src: antigravity/commands/run-debug-k8s.toml
+      dest: commands/debug-k8s.toml
+
+  command/work:
+    description: "Start working on a ticket, update status to In Progress"
+    files:
+    - src: antigravity/commands/run-work.toml
+      dest: commands/work.toml
+
+  command/complete:
+    description: "Complete a ticket, submit for review"
+    files:
+    - src: antigravity/commands/run-complete.toml
+      dest: commands/complete.toml
+
+  command/ticket-create:
+    description: "Interactive ticket creation wizard"
+    files:
+    - src: antigravity/commands/run-ticket-create.toml
+      dest: commands/ticket-create.toml
+
+  command/submit-for-review:
+    description: "Submit ticket for CTO review"
+    files:
+    - src: antigravity/commands/run-submit-for-review.toml
+      dest: commands/submit-for-review.toml
+
+  command/sync-team:
+    description: "Show team ticket dashboard"
+    files:
+    - src: antigravity/commands/run-sync-team.toml
+      dest: commands/sync-team.toml
+
+  command/sync-skills:
+    description: "Sync all skills across all frontends"
+    files:
+    - src: antigravity/commands/run-sync-skills.toml
+      dest: commands/sync-skills.toml
+
+  command/help:
+    description: "Unified help system for all commands and skills"
+    files:
+    - src: antigravity/commands/run-help.toml
+      dest: commands/help.toml
+
+  skill/fixes-manager:
+    description: "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT."
+    files:
+    - src: antigravity/skills/fixes_manager/SKILL.md
+      dest: skills/fixes-manager/SKILL.md
+    - src: antigravity/skills/fixes_manager/assets/womono/version-config.json
+      dest: skills/fixes-manager/assets/womono/version-config.json
+    - src: antigravity/skills/fixes_manager/assets/womono/components.json
+      dest: skills/fixes-manager/assets/womono/components.json
+    - src: antigravity/skills/fixes_manager/assets/womono/fix-note-template.md
+      dest: skills/fixes-manager/assets/womono/fix-note-template.md
+    - src: antigravity/skills/fixes_manager/assets/womono/validate-rules.json
+      dest: skills/fixes-manager/assets/womono/validate-rules.json
+    - src: antigravity/skills/fixes_manager/assets/womono/migration-rules.json
+      dest: skills/fixes-manager/assets/womono/migration-rules.json
+    - src: antigravity/skills/fixes_manager/assets/wow/version-config.json
+      dest: skills/fixes-manager/assets/wow/version-config.json
+    - src: antigravity/skills/fixes_manager/assets/wow/components.json
+      dest: skills/fixes-manager/assets/wow/components.json
+    - src: antigravity/skills/fixes_manager/assets/wow/fix-note-template.md
+      dest: skills/fixes-manager/assets/wow/fix-note-template.md
+    - src: antigravity/skills/fixes_manager/assets/opticat/version-config.json
+      dest: skills/fixes-manager/assets/opticat/version-config.json
+    - src: antigravity/skills/fixes_manager/assets/opticat/components.json
+      dest: skills/fixes-manager/assets/opticat/components.json
+    - src: antigravity/skills/fixes_manager/assets/opticat/fix-note-template.md
+      dest: skills/fixes-manager/assets/opticat/fix-note-template.md

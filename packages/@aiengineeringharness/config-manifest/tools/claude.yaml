@@ -588,3 +588,99 @@ components:
       dest: skills/session-export/SKILL.md
     - src: claude/skills/session_export/assets/session-template.md
       dest: skills/session-export/assets/session-template.md
+
+
+  skill/fixes-create:
+    description: "Create fix note entry command"
+    files:
+    - src: claude/skills/fixes_create/SKILL.md
+      dest: skills/fixes-create/SKILL.md
+
+  skill/fixes-bump:
+    description: "Bump version across project files command"
+    files:
+    - src: claude/skills/fixes_bump/SKILL.md
+      dest: skills/fixes-bump/SKILL.md
+
+  skill/fixes-validate:
+    description: "Validate version consistency command"
+    files:
+    - src: claude/skills/fixes_validate/SKILL.md
+      dest: skills/fixes-validate/SKILL.md
+
+
+  skill/commit:
+    description: "Create structured git commits"
+    files:
+    - src: claude/skills/commit/SKILL.md
+      dest: skills/commit/SKILL.md
+
+  skill/work:
+    description: "Start working on a ticket, update status to In Progress"
+    files:
+    - src: claude/skills/work/SKILL.md
+      dest: skills/work/SKILL.md
+
+  skill/complete:
+    description: "Complete a ticket, submit for review"
+    files:
+    - src: claude/skills/complete/SKILL.md
+      dest: skills/complete/SKILL.md
+
+  skill/ticket-create:
+    description: "Interactive ticket creation wizard"
+    files:
+    - src: claude/skills/ticket_create/SKILL.md
+      dest: skills/ticket-create/SKILL.md
+
+  skill/submit-for-review:
+    description: "Submit ticket for CTO review"
+    files:
+    - src: claude/skills/submit_for_review/SKILL.md
+      dest: skills/submit-for-review/SKILL.md
+
+  skill/sync-team:
+    description: "Show team ticket dashboard"
+    files:
+    - src: claude/skills/sync_team/SKILL.md
+      dest: skills/sync-team/SKILL.md
+
+  skill/sync-skills:
+    description: "Sync all skills across all frontends"
+    files:
+    - src: claude/skills/sync_skills/SKILL.md
+      dest: skills/sync-skills/SKILL.md
+
+  skill/help:
+    description: "Unified help system for all commands and skills"
+    files:
+    - src: claude/skills/help/SKILL.md
+      dest: skills/help/SKILL.md
+
+  skill/fixes-manager:
+    description: "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT."
+    files:
+    - src: claude/skills/fixes_manager/SKILL.md
+      dest: skills/fixes-manager/SKILL.md
+    - src: claude/skills/fixes_manager/assets/womono/version-config.json
+      dest: skills/fixes-manager/assets/womono/version-config.json
+    - src: claude/skills/fixes_manager/assets/womono/components.json
+      dest: skills/fixes-manager/assets/womono/components.json
+    - src: claude/skills/fixes_manager/assets/womono/fix-note-template.md
+      dest: skills/fixes-manager/assets/womono/fix-note-template.md
+    - src: claude/skills/fixes_manager/assets/womono/validate-rules.json
+      dest: skills/fixes-manager/assets/womono/validate-rules.json
+    - src: claude/skills/fixes_manager/assets/womono/migration-rules.json
+      dest: skills/fixes-manager/assets/womono/migration-rules.json
+    - src: claude/skills/fixes_manager/assets/wow/version-config.json
+      dest: skills/fixes-manager/assets/wow/version-config.json
+    - src: claude/skills/fixes_manager/assets/wow/components.json
+      dest: skills/fixes-manager/assets/wow/components.json
+    - src: claude/skills/fixes_manager/assets/wow/fix-note-template.md
+      dest: skills/fixes-manager/assets/wow/fix-note-template.md
+    - src: claude/skills/fixes_manager/assets/opticat/version-config.json
+      dest: skills/fixes-manager/assets/opticat/version-config.json
+    - src: claude/skills/fixes_manager/assets/opticat/components.json
+      dest: skills/fixes-manager/assets/opticat/components.json
+    - src: claude/skills/fixes_manager/assets/opticat/fix-note-template.md
+      dest: skills/fixes-manager/assets/opticat/fix-note-template.md

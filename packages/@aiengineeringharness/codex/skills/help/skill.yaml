@@ -1,0 +1,7 @@
+name: help
+description: "Unified help system for all commands and skills. Delegates to the help-command skill."
+version: 1.0.0
+tools:
+  - read_file
+  - write_file
+  - run_shell_command

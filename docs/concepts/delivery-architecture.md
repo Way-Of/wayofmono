@@ -5,15 +5,15 @@ via f-rr-d, the AI Engineering Harness, and WayOfMono packages.
 
 ## Overview
 
-Multiple projects across the Way-Of ecosystem share the same **4 interconnected delivery pipelines** that transform canonical sources into deployed instances. Every component flows through a **canonical source → adapt → deploy** pattern — skills, agents, commands, configs, runtime libraries, contextual knowledge, and engineering team observability.
+Multiple projects across the Way-Of ecosystem share the same **6 interconnected delivery pipelines** that transform canonical sources into deployed instances. Every component flows through a **canonical source → adapt → deploy** pattern — skills, agents, commands, configs, runtime libraries, contextual knowledge, and engineering team observability.
 
-| Project | Namespace | Description | Harness | Packages | f-rr-d | Dashboard |
-|---------|-----------|-------------|---------|----------|--------|-----------|
-| **WayOfMono** | WOMONO | Monorepo, AI Engineering Harness, skills | Publisher | Publisher | Full consumer | Next.js (ui/) |
-| **WayOfTeams** | WOTEAMS | CTO Dashboard (Phoenix LiveView) | Consumer | Consumer | Full consumer | Phoenix LiveView |
-| **WayOfWork** | WOW | Work platform specifications | Consumer | Consumer | Full consumer | — |
-| **WayOfCollab** | WOC | Collaboration & messaging (Elixir OTP) | Consumer | Consumer | Full consumer | — |
-| **Opticat** | OPT | HVAC simulation & optical equipment | Consumer | Consumer | Full consumer | — |
+| Project | Namespace | Description | Harness | npm Pkgs | Hex Pkgs | MCP Bridge | f-rr-d | Dashboard |
+|---------|-----------|-------------|---------|----------|----------|------------|--------|-----------|
+| **WayOfMono** | WOMONO | Monorepo, AI Engineering Harness, skills | Publisher | Publisher | — | Consumer | Full consumer | Next.js (ui/) |
+| **WayOfTeams** | WOTEAMS | CTO Dashboard (Phoenix LiveView) | Consumer | Consumer | Publisher | Publisher | Full consumer | Phoenix LiveView |
+| **WayOfWork** | WOW | Work platform specifications | Consumer | Consumer | Consumer | Consumer | Full consumer | — |
+| **WayOfCollab** | WOC | Collaboration & messaging (Elixir OTP) | Consumer | Consumer | Consumer | Consumer | Full consumer | — |
+| **Opticat** | OPT | HVAC simulation & optical equipment | Consumer | Consumer | — | — | Full consumer | — |
 
 The architecture is project-agnostic — any project can adopt the same pipelines for skill delivery, package distribution, knowledge management, and observability.
 
@@ -750,14 +750,16 @@ end
 
 ## Key Design Decisions
 
-### Why 4 separate pipelines?
+### Why separate pipelines?
 
 Each pipeline has different delivery characteristics:
 
 | Pipeline | Update Cadence | Consumer | Failure Impact |
 |----------|---------------|----------|----------------|
 | Harness | On commit (sync) or on demand (install) | AI tool config dirs (any project) | Missing skills/agents |
-| Packages | On npm publish (tag/release) | Application runtime (any project) | Broken imports |
+| npm Packages | On npm publish (tag/release) | Application runtime (any project) | Broken imports |
+| Hex Packages | On hex.pm publish (tag/release) | Elixir BEAM runtime (WayOfTeams, WOC) | Missing Elixir deps |
+| MCP Bridge | On harness install + on BEAM boot | AI tool MCP server (any project) | Missing cross-language tools |
 | f-rr-d | On git push (per-session pull) | Agent context (any project) | Stale knowledge |
 | Dashboard | Real-time HTTP | Human dashboard UI (WayOfMono + WayOfTeams) | Missing telemetry |
 

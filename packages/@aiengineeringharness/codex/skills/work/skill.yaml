@@ -1,0 +1,7 @@
+name: work
+description: "Start working on a ticket, update status to In Progress. Delegates to the ticket-manager skill."
+version: 1.0.0
+tools:
+  - read_file
+  - write_file
+  - run_shell_command

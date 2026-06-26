@@ -1,0 +1,47 @@
+{
+  "project": "wayofmono",
+  "namespace": "WOMONO",
+  "version_files": [
+    {
+      "path": "packages/@aiengineeringharness/manifest.json",
+      "fields": ["version"],
+      "type": "json",
+      "bump_order": 1
+    },
+    {
+      "path": "packages/@aiengineeringharness/config-manifest/base_manifest.yaml",
+      "fields": ["manifest_version"],
+      "type": "yaml",
+      "bump_order": 2
+    },
+    {
+      "path": "packages/@aiengineeringharness/install.ts",
+      "fields": ["version string (line ~20)"],
+      "type": "regex",
+      "pattern": "const VERSION = \"(\\d+\\.\\d+\\.\\d+)\"",
+      "bump_order": 3
+    },
+    {
+      "path": "CHANGELOG.md",
+      "fields": ["version header"],
+      "type": "markdown",
+      "bump_order": 4
+    },
+    {
+      "path": "README.md",
+      "fields": ["version references"],
+      "type": "markdown",
+      "bump_order": 5
+    }
+  ],
+  "per_tool_versions": {
+    "opencode": "opencode/version",
+    "claude": "claude/version",
+    "gemini": "gemini/version",
+    "pi": "pi/version",
+    "wocode": "wocode/version",
+    "antigravity": "antigravity/version",
+    "codex": "codex/version"
+  },
+  "bump_order": ["top-level", "per-tool", "base_manifest", "install.ts", "CHANGELOG.md", "README.md"]
+}

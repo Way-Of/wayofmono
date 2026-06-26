@@ -1,0 +1,7 @@
+name: pr_description_generator
+description: "Generate comprehensive PR descriptions. Delegates to the pr-description-generator skill."
+version: 1.0.0
+tools:
+  - read_file
+  - write_file
+  - run_shell_command

@@ -1,0 +1,7 @@
+name: commit
+description: "Create structured git commits. Delegates to the git-commit-helper skill."
+version: 1.0.0
+tools:
+  - read_file
+  - write_file
+  - run_shell_command

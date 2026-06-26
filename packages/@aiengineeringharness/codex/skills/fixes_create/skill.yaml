@@ -1,0 +1,7 @@
+name: fixes_create
+description: "Create a fix note entry for any Way-Of project using the fixes-manager skill."
+version: 1.0.0
+tools:
+  - read_file
+  - write_file
+  - run_shell_command

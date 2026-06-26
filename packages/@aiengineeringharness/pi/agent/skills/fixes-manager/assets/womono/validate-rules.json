@@ -1,0 +1,28 @@
+{
+  "checks": [
+    {
+      "name": "version-consistency",
+      "description": "All version fields across WOMONO files match the expected version"
+    },
+    {
+      "name": "per-tool-version-consistency",
+      "description": "All 7 per-tool versions in manifest.json match top-level version"
+    },
+    {
+      "name": "file-exists",
+      "description": "All referenced fix note files exist in thoughts/wayofmono/docs/fixes/"
+    },
+    {
+      "name": "entry-order",
+      "description": "Version entries are in reverse chronological order (newest first)"
+    },
+    {
+      "name": "date-format",
+      "description": "All dates follow YYYY-MM-DD format"
+    },
+    {
+      "name": "no-empty-sections",
+      "description": "Fix note entries have content, not just headers"
+    }
+  ]
+}

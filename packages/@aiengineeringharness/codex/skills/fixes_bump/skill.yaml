@@ -1,0 +1,7 @@
+name: fixes_bump
+description: "Bump the version across all project files using the fixes-manager skill."
+version: 1.0.0
+tools:
+  - read_file
+  - write_file
+  - run_shell_command

@@ -1,0 +1,23 @@
+{
+  "project": "wayofmono",
+  "legacy_base": "docs/fixes/",
+  "target_base": "thoughts/wayofmono/docs/fixes/",
+  "files": [
+    {
+      "source": "docs/fixes/ai-engineering-harness-fixes.md",
+      "dest": "thoughts/wayofmono/docs/fixes/ai-engineering-harness-fixes.md",
+      "component": "harness"
+    },
+    {
+      "source": "docs/fixes/wo-coding-agent-fixes.md",
+      "dest": "thoughts/wayofmono/docs/fixes/wo-coding-agent-fixes.md",
+      "component": "wocode"
+    },
+    {
+      "source": "docs/fixes/wo-agent-fixes.md",
+      "dest": "thoughts/wayofmono/docs/fixes/wo-agent-fixes.md",
+      "component": "wouser"
+    }
+  ],
+  "redirect_from_legacy": true
+}

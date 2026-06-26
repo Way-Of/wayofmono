@@ -1,0 +1,7 @@
+name: create_plan
+description: "Generate implementation plan from ticket. Delegates to the create-plan skill."
+version: 1.0.0
+tools:
+  - read_file
+  - write_file
+  - run_shell_command

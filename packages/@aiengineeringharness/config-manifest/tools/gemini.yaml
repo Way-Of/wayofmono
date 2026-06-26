@@ -714,3 +714,93 @@ components:
       dest: skills/session-export/SKILL.md
     - src: gemini/skills/session_export/assets/session-template.md
       dest: skills/session-export/assets/session-template.md
+
+
+  command/fixes_create:
+    description: "Create fix note entry command"
+    files:
+    - src: gemini/commands/run-fixes_create.toml
+      dest: commands/fixes-create.toml
+
+  command/fixes_bump:
+    description: "Bump version across project files command"
+    files:
+    - src: gemini/commands/run-fixes_bump.toml
+      dest: commands/fixes-bump.toml
+
+  command/fixes_validate:
+    description: "Validate version consistency command"
+    files:
+    - src: gemini/commands/run-fixes_validate.toml
+      dest: commands/fixes-validate.toml
+
+
+  command/work:
+    description: "Start working on a ticket, update status to In Progress"
+    files:
+    - src: gemini/commands/run-work.toml
+      dest: commands/work.toml
+
+  command/complete:
+    description: "Complete a ticket, submit for review"
+    files:
+    - src: gemini/commands/run-complete.toml
+      dest: commands/complete.toml
+
+  command/ticket_create:
+    description: "Interactive ticket creation wizard"
+    files:
+    - src: gemini/commands/run-ticket_create.toml
+      dest: commands/ticket-create.toml
+
+  command/submit_for_review:
+    description: "Submit ticket for CTO review"
+    files:
+    - src: gemini/commands/run-submit_for_review.toml
+      dest: commands/submit-for-review.toml
+
+  command/sync_team:
+    description: "Show team ticket dashboard"
+    files:
+    - src: gemini/commands/run-sync_team.toml
+      dest: commands/sync-team.toml
+
+  command/sync_skills:
+    description: "Sync all skills across all frontends"
+    files:
+    - src: gemini/commands/run-sync_skills.toml
+      dest: commands/sync-skills.toml
+
+  command/help:
+    description: "Unified help system for all commands and skills"
+    files:
+    - src: gemini/commands/run-help.toml
+      dest: commands/help.toml
+
+  skill/fixes-manager:
+    description: "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT."
+    files:
+    - src: gemini/skills/fixes_manager/SKILL.md
+      dest: skills/fixes-manager/SKILL.md
+    - src: gemini/skills/fixes_manager/assets/womono/version-config.json
+      dest: skills/fixes-manager/assets/womono/version-config.json
+    - src: gemini/skills/fixes_manager/assets/womono/components.json
+      dest: skills/fixes-manager/assets/womono/components.json
+    - src: gemini/skills/fixes_manager/assets/womono/fix-note-template.md
+      dest: skills/fixes-manager/assets/womono/fix-note-template.md
+    - src: gemini/skills/fixes_manager/assets/womono/validate-rules.json
+      dest: skills/fixes-manager/assets/womono/validate-rules.json
+    - src: gemini/skills/fixes_manager/assets/womono/migration-rules.json
+      dest: skills/fixes-manager/assets/womono/migration-rules.json
+    - src: gemini/skills/fixes_manager/assets/wow/version-config.json
+      dest: skills/fixes-manager/assets/wow/version-config.json
+    - src: gemini/skills/fixes_manager/assets/wow/components.json
+      dest: skills/fixes-manager/assets/wow/components.json
+    - src: gemini/skills/fixes_manager/assets/wow/fix-note-template.md
+      dest: skills/fixes-manager/assets/wow/fix-note-template.md
+    - src: gemini/skills/fixes_manager/assets/opticat/version-config.json
+      dest: skills/fixes-manager/assets/opticat/version-config.json
+    - src: gemini/skills/fixes_manager/assets/opticat/components.json
+      dest: skills/fixes-manager/assets/opticat/components.json
+    - src: gemini/skills/fixes_manager/assets/opticat/fix-note-template.md
+      dest: skills/fixes-manager/assets/opticat/fix-note-template.md

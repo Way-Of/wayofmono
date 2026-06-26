@@ -694,3 +694,178 @@ components:
       dest: skills/session-export/SKILL.md
     - src: wocode/agent/skills/session-export/assets/session-template.md
       dest: skills/session-export/assets/session-template.md
+
+
+  prompt/fixes-create:
+    description: "Create fix note entry prompt"
+    files:
+    - src: wocode/agent/prompts/fixes-create.md
+      dest: prompts/fixes-create.md
+
+  prompt/fixes-bump:
+    description: "Bump version across project files prompt"
+    files:
+    - src: wocode/agent/prompts/fixes-bump.md
+      dest: prompts/fixes-bump.md
+
+  prompt/fixes-validate:
+    description: "Validate version consistency prompt"
+    files:
+    - src: wocode/agent/prompts/fixes-validate.md
+      dest: prompts/fixes-validate.md
+
+
+  prompt/commit:
+    description: "Create structured git commits"
+    files:
+    - src: wocode/agent/prompts/commit.md
+      dest: prompts/commit.md
+
+  prompt/debug:
+    description: "Debug issues during testing"
+    files:
+    - src: wocode/agent/prompts/debug.md
+      dest: prompts/debug.md
+
+  prompt/debug-k8s:
+    description: "Debug Kubernetes cluster issues"
+    files:
+    - src: wocode/agent/prompts/debug-k8s.md
+      dest: prompts/debug-k8s.md
+
+  prompt/worktree:
+    description: "Manage git worktrees for parallel development"
+    files:
+    - src: wocode/agent/prompts/worktree.md
+      dest: prompts/worktree.md
+
+  prompt/work:
+    description: "Start working on a ticket, update status to In Progress"
+    files:
+    - src: wocode/agent/prompts/work.md
+      dest: prompts/work.md
+
+  prompt/complete:
+    description: "Complete a ticket, submit for review"
+    files:
+    - src: wocode/agent/prompts/complete.md
+      dest: prompts/complete.md
+
+  prompt/ticket-create:
+    description: "Interactive ticket creation wizard"
+    files:
+    - src: wocode/agent/prompts/ticket-create.md
+      dest: prompts/ticket-create.md
+
+  prompt/submit-for-review:
+    description: "Submit ticket for CTO review"
+    files:
+    - src: wocode/agent/prompts/submit-for-review.md
+      dest: prompts/submit-for-review.md
+
+  prompt/sync-team:
+    description: "Show team ticket dashboard"
+    files:
+    - src: wocode/agent/prompts/sync-team.md
+      dest: prompts/sync-team.md
+
+  prompt/sync-skills:
+    description: "Sync all skills across all frontends"
+    files:
+    - src: wocode/agent/prompts/sync-skills.md
+      dest: prompts/sync-skills.md
+
+  prompt/help:
+    description: "Unified help system for all commands and skills"
+    files:
+    - src: wocode/agent/prompts/help.md
+      dest: prompts/help.md
+
+  prompt/experimental-pr-workflow:
+    description: "Formalize experimental work into tickets and PRs"
+    files:
+    - src: wocode/agent/prompts/experimental-pr-workflow.md
+      dest: prompts/experimental-pr-workflow.md
+
+  prompt/git-commit-helper:
+    description: "Create well-structured git commits"
+    files:
+    - src: wocode/agent/prompts/git-commit-helper.md
+      dest: prompts/git-commit-helper.md
+
+  prompt/pr-description-generator:
+    description: "Generate comprehensive PR descriptions"
+    files:
+    - src: wocode/agent/prompts/pr-description-generator.md
+      dest: prompts/pr-description-generator.md
+
+
+  prompt/create-plan:
+    description: "Create Plan prompt"
+    files:
+    - src: wocode/agent/prompts/create_plan.md
+      dest: prompts/create-plan.md
+
+  prompt/implement-plan:
+    description: "Implement Plan prompt"
+    files:
+    - src: wocode/agent/prompts/implement_plan.md
+      dest: prompts/implement-plan.md
+
+  prompt/init-harness:
+    description: "Initialize Harness prompt"
+    files:
+    - src: wocode/agent/prompts/init_harness.md
+      dest: prompts/init-harness.md
+
+  prompt/research-codebase:
+    description: "Research Codebase prompt"
+    files:
+    - src: wocode/agent/prompts/research_codebase.md
+      dest: prompts/research-codebase.md
+
+  prompt/validate-plan:
+    description: "Validate Plan prompt"
+    files:
+    - src: wocode/agent/prompts/validate_plan.md
+      dest: prompts/validate-plan.md
+
+  prompt/validate-telemetry:
+    description: "Validate Telemetry prompt"
+    files:
+    - src: wocode/agent/prompts/validate_telemetry.md
+      dest: prompts/validate-telemetry.md
+
+  prompt/otel-instrument:
+    description: "OTel Instrument prompt"
+    files:
+    - src: wocode/agent/prompts/otel_instrument.md
+      dest: prompts/otel-instrument.md
+
+  skill/fixes-manager:
+    description: "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT."
+    files:
+    - src: wocode/agent/skills/fixes-manager/SKILL.md
+      dest: skills/fixes-manager/SKILL.md
+    - src: wocode/agent/skills/fixes-manager/assets/womono/version-config.json
+      dest: skills/fixes-manager/assets/womono/version-config.json
+    - src: wocode/agent/skills/fixes-manager/assets/womono/components.json
+      dest: skills/fixes-manager/assets/womono/components.json
+    - src: wocode/agent/skills/fixes-manager/assets/womono/fix-note-template.md
+      dest: skills/fixes-manager/assets/womono/fix-note-template.md
+    - src: wocode/agent/skills/fixes-manager/assets/womono/validate-rules.json
+      dest: skills/fixes-manager/assets/womono/validate-rules.json
+    - src: wocode/agent/skills/fixes-manager/assets/womono/migration-rules.json
+      dest: skills/fixes-manager/assets/womono/migration-rules.json
+    - src: wocode/agent/skills/fixes-manager/assets/wow/version-config.json
+      dest: skills/fixes-manager/assets/wow/version-config.json
+    - src: wocode/agent/skills/fixes-manager/assets/wow/components.json
+      dest: skills/fixes-manager/assets/wow/components.json
+    - src: wocode/agent/skills/fixes-manager/assets/wow/fix-note-template.md
+      dest: skills/fixes-manager/assets/wow/fix-note-template.md
+    - src: wocode/agent/skills/fixes-manager/assets/opticat/version-config.json
+      dest: skills/fixes-manager/assets/opticat/version-config.json
+    - src: wocode/agent/skills/fixes-manager/assets/opticat/components.json
+      dest: skills/fixes-manager/assets/opticat/components.json
+    - src: wocode/agent/skills/fixes-manager/assets/opticat/fix-note-template.md
+      dest: skills/fixes-manager/assets/opticat/fix-note-template.md

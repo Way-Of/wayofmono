@@ -1,0 +1,2 @@
+description = "Fixes Create"
+prompt = "Activate the `fixes-manager` skill to create a fix note entry for the specified project (--project), component (--component), and version (--version)."

@@ -572,3 +572,121 @@ components:
       dest: skills/session-export/SKILL.md
     - src: codex/skills/session_export/assets/session-template.md
       dest: skills/session-export/assets/session-template.md
+
+
+  skill/fixes-create:
+    description: "Create fix note entry skill"
+    files:
+    - src: codex/skills/fixes_create/skill.yaml
+      dest: skills/fixes-create/skill.yaml
+    - src: codex/skills/fixes_create/prompt.md
+      dest: skills/fixes-create/prompt.md
+
+  skill/fixes-bump:
+    description: "Bump version across project files skill"
+    files:
+    - src: codex/skills/fixes_bump/skill.yaml
+      dest: skills/fixes-bump/skill.yaml
+    - src: codex/skills/fixes_bump/prompt.md
+      dest: skills/fixes-bump/prompt.md
+
+  skill/fixes-validate:
+    description: "Validate version consistency skill"
+    files:
+    - src: codex/skills/fixes_validate/skill.yaml
+      dest: skills/fixes-validate/skill.yaml
+    - src: codex/skills/fixes_validate/prompt.md
+      dest: skills/fixes-validate/prompt.md
+
+
+  skill/commit:
+    description: "Create structured git commits"
+    files:
+    - src: codex/skills/commit/skill.yaml
+      dest: skills/commit/skill.yaml
+    - src: codex/skills/commit/prompt.md
+      dest: skills/commit/prompt.md
+
+  skill/work:
+    description: "Start working on a ticket, update status to In Progress"
+    files:
+    - src: codex/skills/work/skill.yaml
+      dest: skills/work/skill.yaml
+    - src: codex/skills/work/prompt.md
+      dest: skills/work/prompt.md
+
+  skill/complete:
+    description: "Complete a ticket, submit for review"
+    files:
+    - src: codex/skills/complete/skill.yaml
+      dest: skills/complete/skill.yaml
+    - src: codex/skills/complete/prompt.md
+      dest: skills/complete/prompt.md
+
+  skill/ticket-create:
+    description: "Interactive ticket creation wizard"
+    files:
+    - src: codex/skills/ticket_create/skill.yaml
+      dest: skills/ticket-create/skill.yaml
+    - src: codex/skills/ticket_create/prompt.md
+      dest: skills/ticket-create/prompt.md
+
+  skill/submit-for-review:
+    description: "Submit ticket for CTO review"
+    files:
+    - src: codex/skills/submit_for_review/skill.yaml
+      dest: skills/submit-for-review/skill.yaml
+    - src: codex/skills/submit_for_review/prompt.md
+      dest: skills/submit-for-review/prompt.md
+
+  skill/sync-team:
+    description: "Show team ticket dashboard"
+    files:
+    - src: codex/skills/sync_team/skill.yaml
+      dest: skills/sync-team/skill.yaml
+    - src: codex/skills/sync_team/prompt.md
+      dest: skills/sync-team/prompt.md
+
+  skill/sync-skills:
+    description: "Sync all skills across all frontends"
+    files:
+    - src: codex/skills/sync_skills/skill.yaml
+      dest: skills/sync-skills/skill.yaml
+    - src: codex/skills/sync_skills/prompt.md
+      dest: skills/sync-skills/prompt.md
+
+  skill/help:
+    description: "Unified help system for all commands and skills"
+    files:
+    - src: codex/skills/help/skill.yaml
+      dest: skills/help/skill.yaml
+    - src: codex/skills/help/prompt.md
+      dest: skills/help/prompt.md
+
+  skill/fixes-manager:
+    description: "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT."
+    files:
+    - src: codex/skills/fixes_manager/SKILL.md
+      dest: skills/fixes-manager/SKILL.md
+    - src: codex/skills/fixes_manager/assets/womono/version-config.json
+      dest: skills/fixes-manager/assets/womono/version-config.json
+    - src: codex/skills/fixes_manager/assets/womono/components.json
+      dest: skills/fixes-manager/assets/womono/components.json
+    - src: codex/skills/fixes_manager/assets/womono/fix-note-template.md
+      dest: skills/fixes-manager/assets/womono/fix-note-template.md
+    - src: codex/skills/fixes_manager/assets/womono/validate-rules.json
+      dest: skills/fixes-manager/assets/womono/validate-rules.json
+    - src: codex/skills/fixes_manager/assets/womono/migration-rules.json
+      dest: skills/fixes-manager/assets/womono/migration-rules.json
+    - src: codex/skills/fixes_manager/assets/wow/version-config.json
+      dest: skills/fixes-manager/assets/wow/version-config.json
+    - src: codex/skills/fixes_manager/assets/wow/components.json
+      dest: skills/fixes-manager/assets/wow/components.json
+    - src: codex/skills/fixes_manager/assets/wow/fix-note-template.md
+      dest: skills/fixes-manager/assets/wow/fix-note-template.md
+    - src: codex/skills/fixes_manager/assets/opticat/version-config.json
+      dest: skills/fixes-manager/assets/opticat/version-config.json
+    - src: codex/skills/fixes_manager/assets/opticat/components.json
+      dest: skills/fixes-manager/assets/opticat/components.json
+    - src: codex/skills/fixes_manager/assets/opticat/fix-note-template.md
+      dest: skills/fixes-manager/assets/opticat/fix-note-template.md

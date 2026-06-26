@@ -1307,6 +1307,158 @@
               "dest": "skills/session-export/assets/session-template.md"
             }
           ]
+        },
+        "command/fixes-create": {
+          "description": "Create fix note entry command",
+          "files": [
+            {
+              "src": "antigravity/commands/run-fixes-create.toml",
+              "dest": "commands/fixes-create.toml"
+            }
+          ]
+        },
+        "command/fixes-bump": {
+          "description": "Bump version across project files command",
+          "files": [
+            {
+              "src": "antigravity/commands/run-fixes-bump.toml",
+              "dest": "commands/fixes-bump.toml"
+            }
+          ]
+        },
+        "command/fixes-validate": {
+          "description": "Validate version consistency command",
+          "files": [
+            {
+              "src": "antigravity/commands/run-fixes-validate.toml",
+              "dest": "commands/fixes-validate.toml"
+            }
+          ]
+        },
+        "command/debug-k8s": {
+          "description": "Debug Kubernetes cluster issues",
+          "files": [
+            {
+              "src": "antigravity/commands/run-debug-k8s.toml",
+              "dest": "commands/debug-k8s.toml"
+            }
+          ]
+        },
+        "command/work": {
+          "description": "Start working on a ticket, update status to In Progress",
+          "files": [
+            {
+              "src": "antigravity/commands/run-work.toml",
+              "dest": "commands/work.toml"
+            }
+          ]
+        },
+        "command/complete": {
+          "description": "Complete a ticket, submit for review",
+          "files": [
+            {
+              "src": "antigravity/commands/run-complete.toml",
+              "dest": "commands/complete.toml"
+            }
+          ]
+        },
+        "command/ticket-create": {
+          "description": "Interactive ticket creation wizard",
+          "files": [
+            {
+              "src": "antigravity/commands/run-ticket-create.toml",
+              "dest": "commands/ticket-create.toml"
+            }
+          ]
+        },
+        "command/submit-for-review": {
+          "description": "Submit ticket for CTO review",
+          "files": [
+            {
+              "src": "antigravity/commands/run-submit-for-review.toml",
+              "dest": "commands/submit-for-review.toml"
+            }
+          ]
+        },
+        "command/sync-team": {
+          "description": "Show team ticket dashboard",
+          "files": [
+            {
+              "src": "antigravity/commands/run-sync-team.toml",
+              "dest": "commands/sync-team.toml"
+            }
+          ]
+        },
+        "command/sync-skills": {
+          "description": "Sync all skills across all frontends",
+          "files": [
+            {
+              "src": "antigravity/commands/run-sync-skills.toml",
+              "dest": "commands/sync-skills.toml"
+            }
+          ]
+        },
+        "command/help": {
+          "description": "Unified help system for all commands and skills",
+          "files": [
+            {
+              "src": "antigravity/commands/run-help.toml",
+              "dest": "commands/help.toml"
+            }
+          ]
+        },
+        "skill/fixes-manager": {
+          "description": "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.",
+          "files": [
+            {
+              "src": "antigravity/skills/fixes_manager/SKILL.md",
+              "dest": "skills/fixes-manager/SKILL.md"
+            },
+            {
+              "src": "antigravity/skills/fixes_manager/assets/womono/version-config.json",
+              "dest": "skills/fixes-manager/assets/womono/version-config.json"
+            },
+            {
+              "src": "antigravity/skills/fixes_manager/assets/womono/components.json",
+              "dest": "skills/fixes-manager/assets/womono/components.json"
+            },
+            {
+              "src": "antigravity/skills/fixes_manager/assets/womono/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/womono/fix-note-template.md"
+            },
+            {
+              "src": "antigravity/skills/fixes_manager/assets/womono/validate-rules.json",
+              "dest": "skills/fixes-manager/assets/womono/validate-rules.json"
+            },
+            {
+              "src": "antigravity/skills/fixes_manager/assets/womono/migration-rules.json",
+              "dest": "skills/fixes-manager/assets/womono/migration-rules.json"
+            },
+            {
+              "src": "antigravity/skills/fixes_manager/assets/wow/version-config.json",
+              "dest": "skills/fixes-manager/assets/wow/version-config.json"
+            },
+            {
+              "src": "antigravity/skills/fixes_manager/assets/wow/components.json",
+              "dest": "skills/fixes-manager/assets/wow/components.json"
+            },
+            {
+              "src": "antigravity/skills/fixes_manager/assets/wow/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/wow/fix-note-template.md"
+            },
+            {
+              "src": "antigravity/skills/fixes_manager/assets/opticat/version-config.json",
+              "dest": "skills/fixes-manager/assets/opticat/version-config.json"
+            },
+            {
+              "src": "antigravity/skills/fixes_manager/assets/opticat/components.json",
+              "dest": "skills/fixes-manager/assets/opticat/components.json"
+            },
+            {
+              "src": "antigravity/skills/fixes_manager/assets/opticat/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
         }
       }
     },
@@ -2374,6 +2526,158 @@
               "dest": "skills/session-export/assets/session-template.md"
             }
           ]
+        },
+        "skill/fixes-create": {
+          "description": "Create fix note entry command",
+          "files": [
+            {
+              "src": "claude/skills/fixes_create/SKILL.md",
+              "dest": "skills/fixes-create/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-bump": {
+          "description": "Bump version across project files command",
+          "files": [
+            {
+              "src": "claude/skills/fixes_bump/SKILL.md",
+              "dest": "skills/fixes-bump/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-validate": {
+          "description": "Validate version consistency command",
+          "files": [
+            {
+              "src": "claude/skills/fixes_validate/SKILL.md",
+              "dest": "skills/fixes-validate/SKILL.md"
+            }
+          ]
+        },
+        "skill/commit": {
+          "description": "Create structured git commits",
+          "files": [
+            {
+              "src": "claude/skills/commit/SKILL.md",
+              "dest": "skills/commit/SKILL.md"
+            }
+          ]
+        },
+        "skill/work": {
+          "description": "Start working on a ticket, update status to In Progress",
+          "files": [
+            {
+              "src": "claude/skills/work/SKILL.md",
+              "dest": "skills/work/SKILL.md"
+            }
+          ]
+        },
+        "skill/complete": {
+          "description": "Complete a ticket, submit for review",
+          "files": [
+            {
+              "src": "claude/skills/complete/SKILL.md",
+              "dest": "skills/complete/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket-create": {
+          "description": "Interactive ticket creation wizard",
+          "files": [
+            {
+              "src": "claude/skills/ticket_create/SKILL.md",
+              "dest": "skills/ticket-create/SKILL.md"
+            }
+          ]
+        },
+        "skill/submit-for-review": {
+          "description": "Submit ticket for CTO review",
+          "files": [
+            {
+              "src": "claude/skills/submit_for_review/SKILL.md",
+              "dest": "skills/submit-for-review/SKILL.md"
+            }
+          ]
+        },
+        "skill/sync-team": {
+          "description": "Show team ticket dashboard",
+          "files": [
+            {
+              "src": "claude/skills/sync_team/SKILL.md",
+              "dest": "skills/sync-team/SKILL.md"
+            }
+          ]
+        },
+        "skill/sync-skills": {
+          "description": "Sync all skills across all frontends",
+          "files": [
+            {
+              "src": "claude/skills/sync_skills/SKILL.md",
+              "dest": "skills/sync-skills/SKILL.md"
+            }
+          ]
+        },
+        "skill/help": {
+          "description": "Unified help system for all commands and skills",
+          "files": [
+            {
+              "src": "claude/skills/help/SKILL.md",
+              "dest": "skills/help/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-manager": {
+          "description": "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.",
+          "files": [
+            {
+              "src": "claude/skills/fixes_manager/SKILL.md",
+              "dest": "skills/fixes-manager/SKILL.md"
+            },
+            {
+              "src": "claude/skills/fixes_manager/assets/womono/version-config.json",
+              "dest": "skills/fixes-manager/assets/womono/version-config.json"
+            },
+            {
+              "src": "claude/skills/fixes_manager/assets/womono/components.json",
+              "dest": "skills/fixes-manager/assets/womono/components.json"
+            },
+            {
+              "src": "claude/skills/fixes_manager/assets/womono/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/womono/fix-note-template.md"
+            },
+            {
+              "src": "claude/skills/fixes_manager/assets/womono/validate-rules.json",
+              "dest": "skills/fixes-manager/assets/womono/validate-rules.json"
+            },
+            {
+              "src": "claude/skills/fixes_manager/assets/womono/migration-rules.json",
+              "dest": "skills/fixes-manager/assets/womono/migration-rules.json"
+            },
+            {
+              "src": "claude/skills/fixes_manager/assets/wow/version-config.json",
+              "dest": "skills/fixes-manager/assets/wow/version-config.json"
+            },
+            {
+              "src": "claude/skills/fixes_manager/assets/wow/components.json",
+              "dest": "skills/fixes-manager/assets/wow/components.json"
+            },
+            {
+              "src": "claude/skills/fixes_manager/assets/wow/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/wow/fix-note-template.md"
+            },
+            {
+              "src": "claude/skills/fixes_manager/assets/opticat/version-config.json",
+              "dest": "skills/fixes-manager/assets/opticat/version-config.json"
+            },
+            {
+              "src": "claude/skills/fixes_manager/assets/opticat/components.json",
+              "dest": "skills/fixes-manager/assets/opticat/components.json"
+            },
+            {
+              "src": "claude/skills/fixes_manager/assets/opticat/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
         }
       }
     },
@@ -3414,6 +3718,202 @@
             {
               "src": "codex/skills/session_export/assets/session-template.md",
               "dest": "skills/session-export/assets/session-template.md"
+            }
+          ]
+        },
+        "skill/fixes-create": {
+          "description": "Create fix note entry skill",
+          "files": [
+            {
+              "src": "codex/skills/fixes_create/skill.yaml",
+              "dest": "skills/fixes-create/skill.yaml"
+            },
+            {
+              "src": "codex/skills/fixes_create/prompt.md",
+              "dest": "skills/fixes-create/prompt.md"
+            }
+          ]
+        },
+        "skill/fixes-bump": {
+          "description": "Bump version across project files skill",
+          "files": [
+            {
+              "src": "codex/skills/fixes_bump/skill.yaml",
+              "dest": "skills/fixes-bump/skill.yaml"
+            },
+            {
+              "src": "codex/skills/fixes_bump/prompt.md",
+              "dest": "skills/fixes-bump/prompt.md"
+            }
+          ]
+        },
+        "skill/fixes-validate": {
+          "description": "Validate version consistency skill",
+          "files": [
+            {
+              "src": "codex/skills/fixes_validate/skill.yaml",
+              "dest": "skills/fixes-validate/skill.yaml"
+            },
+            {
+              "src": "codex/skills/fixes_validate/prompt.md",
+              "dest": "skills/fixes-validate/prompt.md"
+            }
+          ]
+        },
+        "skill/commit": {
+          "description": "Create structured git commits",
+          "files": [
+            {
+              "src": "codex/skills/commit/skill.yaml",
+              "dest": "skills/commit/skill.yaml"
+            },
+            {
+              "src": "codex/skills/commit/prompt.md",
+              "dest": "skills/commit/prompt.md"
+            }
+          ]
+        },
+        "skill/work": {
+          "description": "Start working on a ticket, update status to In Progress",
+          "files": [
+            {
+              "src": "codex/skills/work/skill.yaml",
+              "dest": "skills/work/skill.yaml"
+            },
+            {
+              "src": "codex/skills/work/prompt.md",
+              "dest": "skills/work/prompt.md"
+            }
+          ]
+        },
+        "skill/complete": {
+          "description": "Complete a ticket, submit for review",
+          "files": [
+            {
+              "src": "codex/skills/complete/skill.yaml",
+              "dest": "skills/complete/skill.yaml"
+            },
+            {
+              "src": "codex/skills/complete/prompt.md",
+              "dest": "skills/complete/prompt.md"
+            }
+          ]
+        },
+        "skill/ticket-create": {
+          "description": "Interactive ticket creation wizard",
+          "files": [
+            {
+              "src": "codex/skills/ticket_create/skill.yaml",
+              "dest": "skills/ticket-create/skill.yaml"
+            },
+            {
+              "src": "codex/skills/ticket_create/prompt.md",
+              "dest": "skills/ticket-create/prompt.md"
+            }
+          ]
+        },
+        "skill/submit-for-review": {
+          "description": "Submit ticket for CTO review",
+          "files": [
+            {
+              "src": "codex/skills/submit_for_review/skill.yaml",
+              "dest": "skills/submit-for-review/skill.yaml"
+            },
+            {
+              "src": "codex/skills/submit_for_review/prompt.md",
+              "dest": "skills/submit-for-review/prompt.md"
+            }
+          ]
+        },
+        "skill/sync-team": {
+          "description": "Show team ticket dashboard",
+          "files": [
+            {
+              "src": "codex/skills/sync_team/skill.yaml",
+              "dest": "skills/sync-team/skill.yaml"
+            },
+            {
+              "src": "codex/skills/sync_team/prompt.md",
+              "dest": "skills/sync-team/prompt.md"
+            }
+          ]
+        },
+        "skill/sync-skills": {
+          "description": "Sync all skills across all frontends",
+          "files": [
+            {
+              "src": "codex/skills/sync_skills/skill.yaml",
+              "dest": "skills/sync-skills/skill.yaml"
+            },
+            {
+              "src": "codex/skills/sync_skills/prompt.md",
+              "dest": "skills/sync-skills/prompt.md"
+            }
+          ]
+        },
+        "skill/help": {
+          "description": "Unified help system for all commands and skills",
+          "files": [
+            {
+              "src": "codex/skills/help/skill.yaml",
+              "dest": "skills/help/skill.yaml"
+            },
+            {
+              "src": "codex/skills/help/prompt.md",
+              "dest": "skills/help/prompt.md"
+            }
+          ]
+        },
+        "skill/fixes-manager": {
+          "description": "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.",
+          "files": [
+            {
+              "src": "codex/skills/fixes_manager/SKILL.md",
+              "dest": "skills/fixes-manager/SKILL.md"
+            },
+            {
+              "src": "codex/skills/fixes_manager/assets/womono/version-config.json",
+              "dest": "skills/fixes-manager/assets/womono/version-config.json"
+            },
+            {
+              "src": "codex/skills/fixes_manager/assets/womono/components.json",
+              "dest": "skills/fixes-manager/assets/womono/components.json"
+            },
+            {
+              "src": "codex/skills/fixes_manager/assets/womono/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/womono/fix-note-template.md"
+            },
+            {
+              "src": "codex/skills/fixes_manager/assets/womono/validate-rules.json",
+              "dest": "skills/fixes-manager/assets/womono/validate-rules.json"
+            },
+            {
+              "src": "codex/skills/fixes_manager/assets/womono/migration-rules.json",
+              "dest": "skills/fixes-manager/assets/womono/migration-rules.json"
+            },
+            {
+              "src": "codex/skills/fixes_manager/assets/wow/version-config.json",
+              "dest": "skills/fixes-manager/assets/wow/version-config.json"
+            },
+            {
+              "src": "codex/skills/fixes_manager/assets/wow/components.json",
+              "dest": "skills/fixes-manager/assets/wow/components.json"
+            },
+            {
+              "src": "codex/skills/fixes_manager/assets/wow/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/wow/fix-note-template.md"
+            },
+            {
+              "src": "codex/skills/fixes_manager/assets/opticat/version-config.json",
+              "dest": "skills/fixes-manager/assets/opticat/version-config.json"
+            },
+            {
+              "src": "codex/skills/fixes_manager/assets/opticat/components.json",
+              "dest": "skills/fixes-manager/assets/opticat/components.json"
+            },
+            {
+              "src": "codex/skills/fixes_manager/assets/opticat/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
             }
           ]
         }
@@ -4717,6 +5217,149 @@
               "dest": "skills/session-export/assets/session-template.md"
             }
           ]
+        },
+        "command/fixes_create": {
+          "description": "Create fix note entry command",
+          "files": [
+            {
+              "src": "gemini/commands/run-fixes_create.toml",
+              "dest": "commands/fixes-create.toml"
+            }
+          ]
+        },
+        "command/fixes_bump": {
+          "description": "Bump version across project files command",
+          "files": [
+            {
+              "src": "gemini/commands/run-fixes_bump.toml",
+              "dest": "commands/fixes-bump.toml"
+            }
+          ]
+        },
+        "command/fixes_validate": {
+          "description": "Validate version consistency command",
+          "files": [
+            {
+              "src": "gemini/commands/run-fixes_validate.toml",
+              "dest": "commands/fixes-validate.toml"
+            }
+          ]
+        },
+        "command/work": {
+          "description": "Start working on a ticket, update status to In Progress",
+          "files": [
+            {
+              "src": "gemini/commands/run-work.toml",
+              "dest": "commands/work.toml"
+            }
+          ]
+        },
+        "command/complete": {
+          "description": "Complete a ticket, submit for review",
+          "files": [
+            {
+              "src": "gemini/commands/run-complete.toml",
+              "dest": "commands/complete.toml"
+            }
+          ]
+        },
+        "command/ticket_create": {
+          "description": "Interactive ticket creation wizard",
+          "files": [
+            {
+              "src": "gemini/commands/run-ticket_create.toml",
+              "dest": "commands/ticket-create.toml"
+            }
+          ]
+        },
+        "command/submit_for_review": {
+          "description": "Submit ticket for CTO review",
+          "files": [
+            {
+              "src": "gemini/commands/run-submit_for_review.toml",
+              "dest": "commands/submit-for-review.toml"
+            }
+          ]
+        },
+        "command/sync_team": {
+          "description": "Show team ticket dashboard",
+          "files": [
+            {
+              "src": "gemini/commands/run-sync_team.toml",
+              "dest": "commands/sync-team.toml"
+            }
+          ]
+        },
+        "command/sync_skills": {
+          "description": "Sync all skills across all frontends",
+          "files": [
+            {
+              "src": "gemini/commands/run-sync_skills.toml",
+              "dest": "commands/sync-skills.toml"
+            }
+          ]
+        },
+        "command/help": {
+          "description": "Unified help system for all commands and skills",
+          "files": [
+            {
+              "src": "gemini/commands/run-help.toml",
+              "dest": "commands/help.toml"
+            }
+          ]
+        },
+        "skill/fixes-manager": {
+          "description": "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.",
+          "files": [
+            {
+              "src": "gemini/skills/fixes_manager/SKILL.md",
+              "dest": "skills/fixes-manager/SKILL.md"
+            },
+            {
+              "src": "gemini/skills/fixes_manager/assets/womono/version-config.json",
+              "dest": "skills/fixes-manager/assets/womono/version-config.json"
+            },
+            {
+              "src": "gemini/skills/fixes_manager/assets/womono/components.json",
+              "dest": "skills/fixes-manager/assets/womono/components.json"
+            },
+            {
+              "src": "gemini/skills/fixes_manager/assets/womono/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/womono/fix-note-template.md"
+            },
+            {
+              "src": "gemini/skills/fixes_manager/assets/womono/validate-rules.json",
+              "dest": "skills/fixes-manager/assets/womono/validate-rules.json"
+            },
+            {
+              "src": "gemini/skills/fixes_manager/assets/womono/migration-rules.json",
+              "dest": "skills/fixes-manager/assets/womono/migration-rules.json"
+            },
+            {
+              "src": "gemini/skills/fixes_manager/assets/wow/version-config.json",
+              "dest": "skills/fixes-manager/assets/wow/version-config.json"
+            },
+            {
+              "src": "gemini/skills/fixes_manager/assets/wow/components.json",
+              "dest": "skills/fixes-manager/assets/wow/components.json"
+            },
+            {
+              "src": "gemini/skills/fixes_manager/assets/wow/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/wow/fix-note-template.md"
+            },
+            {
+              "src": "gemini/skills/fixes_manager/assets/opticat/version-config.json",
+              "dest": "skills/fixes-manager/assets/opticat/version-config.json"
+            },
+            {
+              "src": "gemini/skills/fixes_manager/assets/opticat/components.json",
+              "dest": "skills/fixes-manager/assets/opticat/components.json"
+            },
+            {
+              "src": "gemini/skills/fixes_manager/assets/opticat/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
         }
       }
     },
@@ -5867,6 +6510,194 @@
             {
               "src": "opencode/skills/session-export/assets/session-template.md",
               "dest": "skills/session-export/assets/session-template.md"
+            }
+          ]
+        },
+        "command/fixes-create": {
+          "description": "Create fix note entry",
+          "files": [
+            {
+              "src": "opencode/commands/fixes-create.md",
+              "dest": "commands/fixes-create.md"
+            }
+          ]
+        },
+        "command/fixes-bump": {
+          "description": "Bump version across project files",
+          "files": [
+            {
+              "src": "opencode/commands/fixes-bump.md",
+              "dest": "commands/fixes-bump.md"
+            }
+          ]
+        },
+        "command/fixes-validate": {
+          "description": "Validate version consistency",
+          "files": [
+            {
+              "src": "opencode/commands/fixes-validate.md",
+              "dest": "commands/fixes-validate.md"
+            }
+          ]
+        },
+        "command/debug-k8s": {
+          "description": "Debug Kubernetes cluster issues",
+          "files": [
+            {
+              "src": "opencode/commands/debug-k8s.md",
+              "dest": "commands/debug-k8s.md"
+            }
+          ]
+        },
+        "command/work": {
+          "description": "Start working on a ticket, update status to In Progress",
+          "files": [
+            {
+              "src": "opencode/commands/work.md",
+              "dest": "commands/work.md"
+            }
+          ]
+        },
+        "command/complete": {
+          "description": "Complete a ticket, submit for review",
+          "files": [
+            {
+              "src": "opencode/commands/complete.md",
+              "dest": "commands/complete.md"
+            }
+          ]
+        },
+        "command/ticket-create": {
+          "description": "Interactive ticket creation wizard",
+          "files": [
+            {
+              "src": "opencode/commands/ticket-create.md",
+              "dest": "commands/ticket-create.md"
+            }
+          ]
+        },
+        "command/submit-for-review": {
+          "description": "Submit ticket for CTO review",
+          "files": [
+            {
+              "src": "opencode/commands/submit-for-review.md",
+              "dest": "commands/submit-for-review.md"
+            }
+          ]
+        },
+        "command/sync-team": {
+          "description": "Show team ticket dashboard",
+          "files": [
+            {
+              "src": "opencode/commands/sync-team.md",
+              "dest": "commands/sync-team.md"
+            }
+          ]
+        },
+        "command/sync-skills": {
+          "description": "Sync all skills across all frontends",
+          "files": [
+            {
+              "src": "opencode/commands/sync-skills.md",
+              "dest": "commands/sync-skills.md"
+            }
+          ]
+        },
+        "command/help": {
+          "description": "Unified help system for all commands and skills",
+          "files": [
+            {
+              "src": "opencode/commands/help.md",
+              "dest": "commands/help.md"
+            }
+          ]
+        },
+        "command/experimental-pr-workflow": {
+          "description": "Formalize experimental work into tickets and PRs",
+          "files": [
+            {
+              "src": "opencode/commands/experimental-pr-workflow.md",
+              "dest": "commands/experimental-pr-workflow.md"
+            }
+          ]
+        },
+        "command/git-commit-helper": {
+          "description": "Create well-structured git commits",
+          "files": [
+            {
+              "src": "opencode/commands/git-commit-helper.md",
+              "dest": "commands/git-commit-helper.md"
+            }
+          ]
+        },
+        "command/pr-description-generator": {
+          "description": "Generate comprehensive PR descriptions",
+          "files": [
+            {
+              "src": "opencode/commands/pr-description-generator.md",
+              "dest": "commands/pr-description-generator.md"
+            }
+          ]
+        },
+        "command/otel-instrument": {
+          "description": "OpenTelemetry instrumentation orchestrator",
+          "files": [
+            {
+              "src": "opencode/commands/otel_instrument.md",
+              "dest": "commands/otel-instrument.md"
+            }
+          ]
+        },
+        "skill/fixes-manager": {
+          "description": "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.",
+          "files": [
+            {
+              "src": "opencode/skills/fixes-manager/SKILL.md",
+              "dest": "skills/fixes-manager/SKILL.md"
+            },
+            {
+              "src": "opencode/skills/fixes-manager/assets/womono/version-config.json",
+              "dest": "skills/fixes-manager/assets/womono/version-config.json"
+            },
+            {
+              "src": "opencode/skills/fixes-manager/assets/womono/components.json",
+              "dest": "skills/fixes-manager/assets/womono/components.json"
+            },
+            {
+              "src": "opencode/skills/fixes-manager/assets/womono/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/womono/fix-note-template.md"
+            },
+            {
+              "src": "opencode/skills/fixes-manager/assets/womono/validate-rules.json",
+              "dest": "skills/fixes-manager/assets/womono/validate-rules.json"
+            },
+            {
+              "src": "opencode/skills/fixes-manager/assets/womono/migration-rules.json",
+              "dest": "skills/fixes-manager/assets/womono/migration-rules.json"
+            },
+            {
+              "src": "opencode/skills/fixes-manager/assets/wow/version-config.json",
+              "dest": "skills/fixes-manager/assets/wow/version-config.json"
+            },
+            {
+              "src": "opencode/skills/fixes-manager/assets/wow/components.json",
+              "dest": "skills/fixes-manager/assets/wow/components.json"
+            },
+            {
+              "src": "opencode/skills/fixes-manager/assets/wow/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/wow/fix-note-template.md"
+            },
+            {
+              "src": "opencode/skills/fixes-manager/assets/opticat/version-config.json",
+              "dest": "skills/fixes-manager/assets/opticat/version-config.json"
+            },
+            {
+              "src": "opencode/skills/fixes-manager/assets/opticat/components.json",
+              "dest": "skills/fixes-manager/assets/opticat/components.json"
+            },
+            {
+              "src": "opencode/skills/fixes-manager/assets/opticat/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
             }
           ]
         }
@@ -7138,6 +7969,176 @@
             {
               "src": "pi/agent/skills/session-export/assets/session-template.md",
               "dest": "skills/session-export/assets/session-template.md"
+            }
+          ]
+        },
+        "prompt/fixes-create": {
+          "description": "Create fix note entry prompt",
+          "files": [
+            {
+              "src": "pi/agent/prompts/fixes-create.md",
+              "dest": "prompts/fixes-create.md"
+            }
+          ]
+        },
+        "prompt/fixes-bump": {
+          "description": "Bump version across project files prompt",
+          "files": [
+            {
+              "src": "pi/agent/prompts/fixes-bump.md",
+              "dest": "prompts/fixes-bump.md"
+            }
+          ]
+        },
+        "prompt/fixes-validate": {
+          "description": "Validate version consistency prompt",
+          "files": [
+            {
+              "src": "pi/agent/prompts/fixes-validate.md",
+              "dest": "prompts/fixes-validate.md"
+            }
+          ]
+        },
+        "prompt/work": {
+          "description": "Start working on a ticket, update status to In Progress",
+          "files": [
+            {
+              "src": "pi/agent/prompts/work.md",
+              "dest": "prompts/work.md"
+            }
+          ]
+        },
+        "prompt/complete": {
+          "description": "Complete a ticket, submit for review",
+          "files": [
+            {
+              "src": "pi/agent/prompts/complete.md",
+              "dest": "prompts/complete.md"
+            }
+          ]
+        },
+        "prompt/ticket-create": {
+          "description": "Interactive ticket creation wizard",
+          "files": [
+            {
+              "src": "pi/agent/prompts/ticket-create.md",
+              "dest": "prompts/ticket-create.md"
+            }
+          ]
+        },
+        "prompt/submit-for-review": {
+          "description": "Submit ticket for CTO review",
+          "files": [
+            {
+              "src": "pi/agent/prompts/submit-for-review.md",
+              "dest": "prompts/submit-for-review.md"
+            }
+          ]
+        },
+        "prompt/sync-team": {
+          "description": "Show team ticket dashboard",
+          "files": [
+            {
+              "src": "pi/agent/prompts/sync-team.md",
+              "dest": "prompts/sync-team.md"
+            }
+          ]
+        },
+        "prompt/sync-skills": {
+          "description": "Sync all skills across all frontends",
+          "files": [
+            {
+              "src": "pi/agent/prompts/sync-skills.md",
+              "dest": "prompts/sync-skills.md"
+            }
+          ]
+        },
+        "prompt/help": {
+          "description": "Unified help system for all commands and skills",
+          "files": [
+            {
+              "src": "pi/agent/prompts/help.md",
+              "dest": "prompts/help.md"
+            }
+          ]
+        },
+        "prompt/experimental-pr-workflow": {
+          "description": "Formalize experimental work into tickets and PRs",
+          "files": [
+            {
+              "src": "pi/agent/prompts/experimental-pr-workflow.md",
+              "dest": "prompts/experimental-pr-workflow.md"
+            }
+          ]
+        },
+        "prompt/git-commit-helper": {
+          "description": "Create well-structured git commits",
+          "files": [
+            {
+              "src": "pi/agent/prompts/git-commit-helper.md",
+              "dest": "prompts/git-commit-helper.md"
+            }
+          ]
+        },
+        "prompt/pr-description-generator": {
+          "description": "Generate comprehensive PR descriptions",
+          "files": [
+            {
+              "src": "pi/agent/prompts/pr-description-generator.md",
+              "dest": "prompts/pr-description-generator.md"
+            }
+          ]
+        },
+        "skill/fixes-manager": {
+          "description": "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.",
+          "files": [
+            {
+              "src": "pi/agent/skills/fixes-manager/SKILL.md",
+              "dest": "skills/fixes-manager/SKILL.md"
+            },
+            {
+              "src": "pi/agent/skills/fixes-manager/assets/womono/version-config.json",
+              "dest": "skills/fixes-manager/assets/womono/version-config.json"
+            },
+            {
+              "src": "pi/agent/skills/fixes-manager/assets/womono/components.json",
+              "dest": "skills/fixes-manager/assets/womono/components.json"
+            },
+            {
+              "src": "pi/agent/skills/fixes-manager/assets/womono/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/womono/fix-note-template.md"
+            },
+            {
+              "src": "pi/agent/skills/fixes-manager/assets/womono/validate-rules.json",
+              "dest": "skills/fixes-manager/assets/womono/validate-rules.json"
+            },
+            {
+              "src": "pi/agent/skills/fixes-manager/assets/womono/migration-rules.json",
+              "dest": "skills/fixes-manager/assets/womono/migration-rules.json"
+            },
+            {
+              "src": "pi/agent/skills/fixes-manager/assets/wow/version-config.json",
+              "dest": "skills/fixes-manager/assets/wow/version-config.json"
+            },
+            {
+              "src": "pi/agent/skills/fixes-manager/assets/wow/components.json",
+              "dest": "skills/fixes-manager/assets/wow/components.json"
+            },
+            {
+              "src": "pi/agent/skills/fixes-manager/assets/wow/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/wow/fix-note-template.md"
+            },
+            {
+              "src": "pi/agent/skills/fixes-manager/assets/opticat/version-config.json",
+              "dest": "skills/fixes-manager/assets/opticat/version-config.json"
+            },
+            {
+              "src": "pi/agent/skills/fixes-manager/assets/opticat/components.json",
+              "dest": "skills/fixes-manager/assets/opticat/components.json"
+            },
+            {
+              "src": "pi/agent/skills/fixes-manager/assets/opticat/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
             }
           ]
         }
@@ -8417,6 +9418,275 @@
             {
               "src": "wocode/agent/skills/session-export/assets/session-template.md",
               "dest": "skills/session-export/assets/session-template.md"
+            }
+          ]
+        },
+        "prompt/fixes-create": {
+          "description": "Create fix note entry prompt",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/fixes-create.md",
+              "dest": "prompts/fixes-create.md"
+            }
+          ]
+        },
+        "prompt/fixes-bump": {
+          "description": "Bump version across project files prompt",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/fixes-bump.md",
+              "dest": "prompts/fixes-bump.md"
+            }
+          ]
+        },
+        "prompt/fixes-validate": {
+          "description": "Validate version consistency prompt",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/fixes-validate.md",
+              "dest": "prompts/fixes-validate.md"
+            }
+          ]
+        },
+        "prompt/commit": {
+          "description": "Create structured git commits",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/commit.md",
+              "dest": "prompts/commit.md"
+            }
+          ]
+        },
+        "prompt/debug": {
+          "description": "Debug issues during testing",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/debug.md",
+              "dest": "prompts/debug.md"
+            }
+          ]
+        },
+        "prompt/debug-k8s": {
+          "description": "Debug Kubernetes cluster issues",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/debug-k8s.md",
+              "dest": "prompts/debug-k8s.md"
+            }
+          ]
+        },
+        "prompt/worktree": {
+          "description": "Manage git worktrees for parallel development",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/worktree.md",
+              "dest": "prompts/worktree.md"
+            }
+          ]
+        },
+        "prompt/work": {
+          "description": "Start working on a ticket, update status to In Progress",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/work.md",
+              "dest": "prompts/work.md"
+            }
+          ]
+        },
+        "prompt/complete": {
+          "description": "Complete a ticket, submit for review",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/complete.md",
+              "dest": "prompts/complete.md"
+            }
+          ]
+        },
+        "prompt/ticket-create": {
+          "description": "Interactive ticket creation wizard",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/ticket-create.md",
+              "dest": "prompts/ticket-create.md"
+            }
+          ]
+        },
+        "prompt/submit-for-review": {
+          "description": "Submit ticket for CTO review",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/submit-for-review.md",
+              "dest": "prompts/submit-for-review.md"
+            }
+          ]
+        },
+        "prompt/sync-team": {
+          "description": "Show team ticket dashboard",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/sync-team.md",
+              "dest": "prompts/sync-team.md"
+            }
+          ]
+        },
+        "prompt/sync-skills": {
+          "description": "Sync all skills across all frontends",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/sync-skills.md",
+              "dest": "prompts/sync-skills.md"
+            }
+          ]
+        },
+        "prompt/help": {
+          "description": "Unified help system for all commands and skills",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/help.md",
+              "dest": "prompts/help.md"
+            }
+          ]
+        },
+        "prompt/experimental-pr-workflow": {
+          "description": "Formalize experimental work into tickets and PRs",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/experimental-pr-workflow.md",
+              "dest": "prompts/experimental-pr-workflow.md"
+            }
+          ]
+        },
+        "prompt/git-commit-helper": {
+          "description": "Create well-structured git commits",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/git-commit-helper.md",
+              "dest": "prompts/git-commit-helper.md"
+            }
+          ]
+        },
+        "prompt/pr-description-generator": {
+          "description": "Generate comprehensive PR descriptions",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/pr-description-generator.md",
+              "dest": "prompts/pr-description-generator.md"
+            }
+          ]
+        },
+        "prompt/create-plan": {
+          "description": "Create Plan prompt",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/create_plan.md",
+              "dest": "prompts/create-plan.md"
+            }
+          ]
+        },
+        "prompt/implement-plan": {
+          "description": "Implement Plan prompt",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/implement_plan.md",
+              "dest": "prompts/implement-plan.md"
+            }
+          ]
+        },
+        "prompt/init-harness": {
+          "description": "Initialize Harness prompt",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/init_harness.md",
+              "dest": "prompts/init-harness.md"
+            }
+          ]
+        },
+        "prompt/research-codebase": {
+          "description": "Research Codebase prompt",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/research_codebase.md",
+              "dest": "prompts/research-codebase.md"
+            }
+          ]
+        },
+        "prompt/validate-plan": {
+          "description": "Validate Plan prompt",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/validate_plan.md",
+              "dest": "prompts/validate-plan.md"
+            }
+          ]
+        },
+        "prompt/validate-telemetry": {
+          "description": "Validate Telemetry prompt",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/validate_telemetry.md",
+              "dest": "prompts/validate-telemetry.md"
+            }
+          ]
+        },
+        "prompt/otel-instrument": {
+          "description": "OTel Instrument prompt",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/otel_instrument.md",
+              "dest": "prompts/otel-instrument.md"
+            }
+          ]
+        },
+        "skill/fixes-manager": {
+          "description": "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.",
+          "files": [
+            {
+              "src": "wocode/agent/skills/fixes-manager/SKILL.md",
+              "dest": "skills/fixes-manager/SKILL.md"
+            },
+            {
+              "src": "wocode/agent/skills/fixes-manager/assets/womono/version-config.json",
+              "dest": "skills/fixes-manager/assets/womono/version-config.json"
+            },
+            {
+              "src": "wocode/agent/skills/fixes-manager/assets/womono/components.json",
+              "dest": "skills/fixes-manager/assets/womono/components.json"
+            },
+            {
+              "src": "wocode/agent/skills/fixes-manager/assets/womono/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/womono/fix-note-template.md"
+            },
+            {
+              "src": "wocode/agent/skills/fixes-manager/assets/womono/validate-rules.json",
+              "dest": "skills/fixes-manager/assets/womono/validate-rules.json"
+            },
+            {
+              "src": "wocode/agent/skills/fixes-manager/assets/womono/migration-rules.json",
+              "dest": "skills/fixes-manager/assets/womono/migration-rules.json"
+            },
+            {
+              "src": "wocode/agent/skills/fixes-manager/assets/wow/version-config.json",
+              "dest": "skills/fixes-manager/assets/wow/version-config.json"
+            },
+            {
+              "src": "wocode/agent/skills/fixes-manager/assets/wow/components.json",
+              "dest": "skills/fixes-manager/assets/wow/components.json"
+            },
+            {
+              "src": "wocode/agent/skills/fixes-manager/assets/wow/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/wow/fix-note-template.md"
+            },
+            {
+              "src": "wocode/agent/skills/fixes-manager/assets/opticat/version-config.json",
+              "dest": "skills/fixes-manager/assets/opticat/version-config.json"
+            },
+            {
+              "src": "wocode/agent/skills/fixes-manager/assets/opticat/components.json",
+              "dest": "skills/fixes-manager/assets/opticat/components.json"
+            },
+            {
+              "src": "wocode/agent/skills/fixes-manager/assets/opticat/fix-note-template.md",
+              "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
             }
           ]
         }

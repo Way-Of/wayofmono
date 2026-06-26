@@ -1,0 +1,7 @@
+name: debug_k8s
+description: "Debug Kubernetes cluster issues. Delegates to the debug-k8s skill."
+version: 1.0.0
+tools:
+  - read_file
+  - write_file
+  - run_shell_command

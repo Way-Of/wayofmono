@@ -694,3 +694,111 @@ components:
       dest: skills/session-export/SKILL.md
     - src: pi/agent/skills/session-export/assets/session-template.md
       dest: skills/session-export/assets/session-template.md
+
+
+  prompt/fixes-create:
+    description: "Create fix note entry prompt"
+    files:
+    - src: pi/agent/prompts/fixes-create.md
+      dest: prompts/fixes-create.md
+
+  prompt/fixes-bump:
+    description: "Bump version across project files prompt"
+    files:
+    - src: pi/agent/prompts/fixes-bump.md
+      dest: prompts/fixes-bump.md
+
+  prompt/fixes-validate:
+    description: "Validate version consistency prompt"
+    files:
+    - src: pi/agent/prompts/fixes-validate.md
+      dest: prompts/fixes-validate.md
+
+
+  prompt/work:
+    description: "Start working on a ticket, update status to In Progress"
+    files:
+    - src: pi/agent/prompts/work.md
+      dest: prompts/work.md
+
+  prompt/complete:
+    description: "Complete a ticket, submit for review"
+    files:
+    - src: pi/agent/prompts/complete.md
+      dest: prompts/complete.md
+
+  prompt/ticket-create:
+    description: "Interactive ticket creation wizard"
+    files:
+    - src: pi/agent/prompts/ticket-create.md
+      dest: prompts/ticket-create.md
+
+  prompt/submit-for-review:
+    description: "Submit ticket for CTO review"
+    files:
+    - src: pi/agent/prompts/submit-for-review.md
+      dest: prompts/submit-for-review.md
+
+  prompt/sync-team:
+    description: "Show team ticket dashboard"
+    files:
+    - src: pi/agent/prompts/sync-team.md
+      dest: prompts/sync-team.md
+
+  prompt/sync-skills:
+    description: "Sync all skills across all frontends"
+    files:
+    - src: pi/agent/prompts/sync-skills.md
+      dest: prompts/sync-skills.md
+
+  prompt/help:
+    description: "Unified help system for all commands and skills"
+    files:
+    - src: pi/agent/prompts/help.md
+      dest: prompts/help.md
+
+  prompt/experimental-pr-workflow:
+    description: "Formalize experimental work into tickets and PRs"
+    files:
+    - src: pi/agent/prompts/experimental-pr-workflow.md
+      dest: prompts/experimental-pr-workflow.md
+
+  prompt/git-commit-helper:
+    description: "Create well-structured git commits"
+    files:
+    - src: pi/agent/prompts/git-commit-helper.md
+      dest: prompts/git-commit-helper.md
+
+  prompt/pr-description-generator:
+    description: "Generate comprehensive PR descriptions"
+    files:
+    - src: pi/agent/prompts/pr-description-generator.md
+      dest: prompts/pr-description-generator.md
+
+  skill/fixes-manager:
+    description: "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT."
+    files:
+    - src: pi/agent/skills/fixes-manager/SKILL.md
+      dest: skills/fixes-manager/SKILL.md
+    - src: pi/agent/skills/fixes-manager/assets/womono/version-config.json
+      dest: skills/fixes-manager/assets/womono/version-config.json
+    - src: pi/agent/skills/fixes-manager/assets/womono/components.json
+      dest: skills/fixes-manager/assets/womono/components.json
+    - src: pi/agent/skills/fixes-manager/assets/womono/fix-note-template.md
+      dest: skills/fixes-manager/assets/womono/fix-note-template.md
+    - src: pi/agent/skills/fixes-manager/assets/womono/validate-rules.json
+      dest: skills/fixes-manager/assets/womono/validate-rules.json
+    - src: pi/agent/skills/fixes-manager/assets/womono/migration-rules.json
+      dest: skills/fixes-manager/assets/womono/migration-rules.json
+    - src: pi/agent/skills/fixes-manager/assets/wow/version-config.json
+      dest: skills/fixes-manager/assets/wow/version-config.json
+    - src: pi/agent/skills/fixes-manager/assets/wow/components.json
+      dest: skills/fixes-manager/assets/wow/components.json
+    - src: pi/agent/skills/fixes-manager/assets/wow/fix-note-template.md
+      dest: skills/fixes-manager/assets/wow/fix-note-template.md
+    - src: pi/agent/skills/fixes-manager/assets/opticat/version-config.json
+      dest: skills/fixes-manager/assets/opticat/version-config.json
+    - src: pi/agent/skills/fixes-manager/assets/opticat/components.json
+      dest: skills/fixes-manager/assets/opticat/components.json
+    - src: pi/agent/skills/fixes-manager/assets/opticat/fix-note-template.md
+      dest: skills/fixes-manager/assets/opticat/fix-note-template.md

@@ -1,0 +1,13 @@
+{
+  "project": "way-of-work",
+  "namespace": "WOW",
+  "version_files": [
+    {
+      "path": "thoughts/wow/docs/fixes/wow-fixes.md",
+      "fields": ["version header"],
+      "type": "markdown",
+      "bump_order": 1
+    }
+  ],
+  "bump_order": ["fix-note"]
+}

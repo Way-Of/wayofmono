@@ -1,0 +1,9 @@
+[
+  {
+    "name": "OptiCat Platform",
+    "slug": "opticat-platform",
+    "fix_note_file": "opticat-fixes.md",
+    "version_sources": [],
+    "package_path": ""
+  }
+]

@@ -1,0 +1,2 @@
+description = "Ticket-create"
+prompt = "Activate the `ticket-manager` skill to perform the ticket-create operation."
