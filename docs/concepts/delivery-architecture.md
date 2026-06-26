@@ -28,12 +28,29 @@ Delivers **skills, agents, commands, extensions, and tool configs** to the 7 AI 
 
 ```
 packages/@aiengineeringharness/
-├── opencode/skills/        ← CANONICAL skills (kebab-case)
-├── opencode/agents/        ← CANONICAL agent definitions
-├── manifest.json           ← Deployment map (src→dest for all 7 tools)
+├── manifest.json                 ← Compiled deployment map (auto-generated, do not edit)
+├── config-manifest/              ← Modular YAML source of truth for manifest
+│   ├── base_manifest.yaml        ← Global metadata, version, shared asset templates
+│   ├── compile.py                ← YAML → manifest.json compiler
+│   ├── validate.py               ← Per-tool format validator
+│   ├── tools/                    ← Per-tool YAML definitions (7 files)
+│   │   ├── opencode.yaml
+│   │   ├── claude.yaml
+│   │   ├── gemini.yaml
+│   │   ├── pi.yaml
+│   │   ├── codex.yaml
+│   │   ├── wocode.yaml
+│   │   └── antigravity.yaml
+│   └── scripts/                  ← Test suite
+│       ├── test-yamls.py         ← Per-tool YAML cross-contamination checks
+│       ├── test-manifest.py      ← Compiled manifest structure checks
+│       ├── test-skills.py        ← On-disk skill format compliance
+│       └── run-all-tests.py      ← Orchestrator
+├── opencode/skills/              ← CANONICAL skills (kebab-case)
+├── opencode/agents/              ← CANONICAL agent definitions
 └── scripts/
-    ├── docs-sync.ts        ← Canonical→per-tool sync + adaptation
-    └── compliance-check.ts ← Naming/tool-case/frontmatter validation
+    ├── docs-sync.ts              ← Canonical→per-tool sync + adaptation
+    └── compliance-check.ts       ← Naming/tool-case/frontmatter validation
 ```
 
 ### Flow
@@ -49,13 +66,17 @@ packages/@aiengineeringharness/
        │                                 antigravity/skills/ (snake_case)
        │                                 wocode/skills/ (kebab-case)
        ▼
-  manifest.json ─── install.ts ───→ ~/.claude/skills/
-  (src→dest map)                    ~/.config/opencode/skills/
-                                    ~/.gemini/skills/
-                                    ~/.pi/agent/skills/
-                                    ~/.antigravity/skills/
-                                    ~/.codex/skills/
-                                    ~/.wocode/skills/
+  config-manifest/ ─── compile.py ───→ manifest.json
+  (tools/*.yaml)                       (auto-generated)
+       │
+       ▼
+  install.ts ─── reads manifest ───→ ~/.claude/skills/
+  (src→dest map)                      ~/.config/opencode/skills/
+                                      ~/.gemini/skills/
+                                      ~/.pi/agent/skills/
+                                      ~/.antigravity/skills/
+                                      ~/.codex/skills/
+                                      ~/.wocode/skills/
 ```
 
 ### What Gets Deployed
@@ -68,6 +89,59 @@ packages/@aiengineeringharness/
 | **Settings** | `settings.json`, `.mcp.json`, `opencode.json` | Tool-native config schema |
 | **Extensions** | Subagent multi-agent workflows (Pi, Wocode) | `package.json` with npm deps |
 | **Hooks/Sidecars** | Antigravity-only lifecycle hooks | Tool-specific |
+
+#### Manifest Compilation Pipeline
+
+Instead of editing `manifest.json` directly (it is auto-generated and should not be hand-edited), contributors modify per-tool YAML files in `config-manifest/tools/`. The compilation pipeline enforces:
+
+| Step | Script | Checks |
+|------|--------|--------|
+| **YAML validation** | `test-yamls.py` | Cross-contamination (no `claude/` paths in `opencode.yaml`), valid structure, correct tool prefix |
+| **Compilation** | `compile.py` | Merges `base_manifest.yaml` + per-tool YAMLs → `manifest.json` |
+| **Manifest validation** | `test-manifest.py` | All 7 tools present, correct JSON structure, path existence |
+| **Skill format validation** | `test-skills.py` | Per-tool naming conventions, `allowed-tools` casing, frontmatter correctness |
+| **Orchestrator** | `run-all-tests.py` | Runs all test suites, returns non-zero on failure |
+
+Integration with skills: `skill-compliance-checker` invokes `validate.py`, `skill-adapter` consumes the compiled manifest, and `skill-auto-update` recompiles after sync.
+
+##### Deep Dive: config-manifest Scripts
+
+**`base_manifest.yaml`** — Global metadata (version, tool ordering, shared YAML anchors for asset templates like investor-ready docs). Each tool YAML inherits from this base.
+
+**`tools/opencode.yaml`** (same pattern for all 7 tools) — Declares all `components` with `{src, dest}` file pairs. The cross-contamination rule is absolute: every `src` path must start with `opencode/` and must never reference paths from another tool's directory.
+
+**`compile.py`** — Entry point for producing `manifest.json`. It:
+1. Loads `base_manifest.yaml` for global metadata
+2. Iterates all 7 `tools/*.yaml` files
+3. Validates each tool's paths against `TOOL_PATH_RULES` (allowed prefixes, forbidden prefixes, naming convention)
+4. Validates component naming (regex `^[a-z0-9]+([_-][a-z0-9]+)*$`)
+5. Checks source file existence on disk (warning-level, not fatal)
+6. Applies default targets (e.g., `~/.config/opencode`) when missing
+7. Exits non-zero on any path/naming error — never writes an invalid manifest
+8. Writes the merged `manifest.json` with `{version, tools}` structure
+
+**`validate.py`** — Standalone format validator used by `skill-compliance-checker`. Validates per-tool YAMLs against `TOOL_SPECS` that include:
+- `naming`: snake_case vs kebab-case per tool
+- `allowed_tools_case`: PascalCase (Claude) vs lowercase (all others)
+- `target`: expected install directory
+- `skill_dir_regex`: format of skill directory names
+- Cross-checks consistency with the compiled `manifest.json` (missing/extra components)
+
+**`scripts/test-yamls.py`** — YAML-level structural validation. Checks every per-tool YAML for: valid YAML syntax, path prefix compliance (9 rules per tool — 1 allowed prefix, 6 forbidden), naming convention, source file existence, component structure (name/version/target/components).
+
+**`scripts/test-manifest.py`** — Post-compilation validation of `manifest.json`. Checks: valid JSON, `version` + `tools` keys present, all 7 expected tools with no extras, per-tool structure (name/version/target/components), cross-contamination of paths, source file existence, component count matches YAML source.
+
+**`scripts/test-skills.py`** — The most critical end-to-end test — validates what users actually download. Checks every on-disk SKILL.md across all 7 tools:
+| Check | OpenCode | Claude | Gemini | Pi | WoCoder | Codex | Antigravity |
+|-------|----------|--------|--------|----|---------|-------|-------------|
+| Skill file | SKILL.md | SKILL.md | SKILL.md | SKILL.md | SKILL.md | skill.yaml+prompt.md | SKILL.md |
+| Dir naming | kebab | kebab | kebab | kebab | snake | snake | snake |
+| name field | kebab | snake | snake | kebab | snake | snake | snake |
+| allowed-tools case | lowercase | PascalCase | lowercase | lowercase | lowercase | snake_case | lowercase |
+| disable-model-invocation | commands only | commands only | unsupported | unsupported | commands only | unsupported | commands only |
+Also validates cross-tool alignment — all 7 tools must have the same set of skills (only formatting differs).
+
+**`scripts/run-all-tests.py`** — Orchestrator that runs all 3 test suites in sequence: YAML validation → manifest validation → skill format validation. Used in CI/CD. Exits non-zero on any failure.
 
 ### Idempotent Deployment
 
@@ -281,22 +355,34 @@ Tickets live in two places:
                     │  packages/@aiengineeringharness/                 │
                     │    ├── opencode/skills/  (81 canonical skills)   │
                     │    ├── opencode/agents/  (6 core agents)         │
+                    │    ├── config-manifest/  (modular YAML source)   │
+                    │    │   ├── tools/*.yaml  (per-tool definitions)  │
+                    │    │   └── compile.py    (YAML→manifest.json)    │
                     │    └── manifest.json     (deployment map v1.7.7) │
                     └──────────────┬──────────────────────────┬────────┘
                                    │                          │
                    ┌───────────────┴──────┐     ┌─────────────┴──────────┐
-                   │   docs-sync.ts       │     │   install.ts           │
-                   │   (skill adaptation)  │     │   (manifest deploy)    │
+                   │   docs-sync.ts       │     │  compile.py            │
+                   │   (skill adaptation)  │     │  (YAML → json)         │
                    └───────┬──────────────┘     └───────────┬────────────┘
                            │                                │
                            ▼                                ▼
               ┌─────────────────────┐          ┌──────────────────────────┐
-              │  Per-Tool Skill     │          │  7 Tool Config Dirs:     │
-              │  Directories:       │          │  ~/.claude/              │
-              │  claude/skills/     │          │  ~/.config/opencode/     │
-              │  pi/skills/         │          │  ~/.gemini/              │
-              │  (naming adapted)   │          │  ~/.pi/agent/            │
-              └─────────────────────┘          │  ~/.antigravity/         │
+              │  Per-Tool Skill     │          │  manifest.json           │
+              │  Directories:       │          │  ← compiled output       │
+              │  claude/skills/     │          │                          │
+              │  pi/skills/         │          │  install.ts              │
+              │  (naming adapted)   │          │  (manifest consumer)     │
+              └─────────────────────┘          └───────────┬──────────────┘
+                                                           │
+                                                           ▼
+                                               ┌──────────────────────────┐
+                                               │  7 Tool Config Dirs:     │
+                                               │  ~/.claude/              │
+                                               │  ~/.config/opencode/     │
+                                               │  ~/.gemini/              │
+                                               │  ~/.pi/agent/            │
+                                               │  ~/.antigravity/         │
                                                │  ~/.codex/               │
                                                │  ~/.wocode/              │
                                                └───────────┬──────────────┘
@@ -358,7 +444,15 @@ Tickets live in two places:
 | File | Role | Pipeline |
 |------|------|----------|
 | `packages/@aiengineeringharness/install.ts` | Orchestrator — CLI, manifest loader, file deployer | Harness |
-| `packages/@aiengineeringharness/manifest.json` | Deployment map — all files for all 7 tools | Harness |
+| `packages/@aiengineeringharness/manifest.json` | Deployment map — all files for all 7 tools (auto-generated) | Harness |
+| `packages/@aiengineeringharness/config-manifest/base_manifest.yaml` | Global metadata, version, shared YAML anchors | Harness (config-manifest) |
+| `packages/@aiengineeringharness/config-manifest/tools/opencode.yaml` | Per-tool YAML component definitions (7 files) | Harness (config-manifest) |
+| `packages/@aiengineeringharness/config-manifest/compile.py` | YAML → manifest.json compiler with path validation | Harness (config-manifest) |
+| `packages/@aiengineeringharness/config-manifest/validate.py` | Per-tool format validator (naming, casing, targets) | Harness (config-manifest) |
+| `packages/@aiengineeringharness/config-manifest/scripts/test-yamls.py` | YAML syntax, cross-contamination, structure checks | Harness (config-manifest) |
+| `packages/@aiengineeringharness/config-manifest/scripts/test-manifest.py` | Compiled manifest structure and completeness | Harness (config-manifest) |
+| `packages/@aiengineeringharness/config-manifest/scripts/test-skills.py` | On-disk skill format per tool (frontmatter, naming, casing) | Harness (config-manifest) |
+| `packages/@aiengineeringharness/config-manifest/scripts/run-all-tests.py` | Orchestrator — runs all test suites in sequence | Harness (config-manifest) |
 | `packages/@aiengineeringharness/scripts/docs-sync.ts` | Skill sync — canonical→per-tool with adaptation | Harness |
 | `packages/@aiengineeringharness/scripts/compliance-check.ts` | Validation — naming, tool-case, frontmatter | Harness |
 | `packages/@aiengineeringharness/transaction.ts` | Atomic installer — lock file, rollback | Harness |

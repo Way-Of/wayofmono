@@ -165,3 +165,7 @@ Three key skills reference the config-manifest system:
 | **skill-auto-update** | Syncs skills across all tools | After sync, recompiles `manifest.json` via `compile.py` and runs `validate.py` for post-sync integrity |
 
 All three skills are deployed to all 7 tools (8 copies each, including pi/extensions). Every copy was updated (2026-06-15) to reference the config-manifest pipeline: `compile.py`, `validate.py`, and `scripts/run-all-tests.py`.
+
+## Reference
+
+For the full context delivery architecture — how config-manifest, harness installer, npm packages, f-rr-d, and the CTO Dashboard interconnect — see the [Delivery Architecture](../../../docs/concepts/delivery-architecture.md) document.
