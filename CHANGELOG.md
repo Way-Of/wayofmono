@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.7.9] - 2026-06-26
+
+### Harness (AI Engineering Harness v1.7.9)
+- **`--uninstall` recursive fix**: Changed `Deno.remove(dir)` to `Deno.remove(dir, { recursive: true })` so subdirectories (skills/, agents/, etc.) are fully deleted even when non-empty.
+- **Multi-tool command alignment (WOMONO-085)**: Created 168 command files across all 7 tools for 24 slash commands (ticket workflow, sync, fixes, etc.). All commands registered in config-manifest YAMLs and compiled into manifest.json.
+
 ## [1.7.8] - 2026-06-26
 
 ### Harness (AI Engineering Harness v1.7.8)
