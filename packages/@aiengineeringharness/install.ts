@@ -427,6 +427,8 @@ function printHelp(): void {
       title: "maintenance",
       items: [
         { cmd: "--prune", desc: "Interactive: review & remove non-manifest skills across all tools" },
+        { cmd: "--purge[=<name>]", desc: "Nuclear cleanup: wipe ALL harness files from tool config dirs (no manifest needed)" },
+        { cmd: "--purge=all", desc: "Purge all 7 tool config directories at once" },
         { cmd: "--check", desc: "Check installed version vs manifest" },
         { cmd: "--compliance", desc: "Validate all tools match manifest — no missing/stale/dangling files" },
         { cmd: "--uninstall=<name>", desc: "Remove installed files (claude, opencode, all, ...)" },
@@ -1100,7 +1102,7 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 
 const args = parseArgs(Deno.args, {
   string: ["tool", "skill", "dest", "mode", "report-url", "uninstall"],
-  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs", "report-skills", "update", "no-validate", "prune", "install-cli", "compliance", "detect", "no-report", "debug"],
+  boolean: ["interactive", "dry-run", "yes", "help", "check", "local", "import-ref", "sync-docs", "report-skills", "update", "no-validate", "prune", "install-cli", "compliance", "detect", "no-report", "debug", "purge"],
   alias: { h: "help", n: "dry-run", y: "yes", i: "interactive", l: "local" },
 });
 
@@ -1754,6 +1756,140 @@ if (args.update) {
   Deno.exit(0);
 }
 
+// --purge: nuclear cleanup — remove ALL harness files from tool config dirs
+// Unlike --uninstall (manifest-based) and --prune (interactive extras),
+// --purge recursively deletes known subdirectories regardless of manifest.
+// Use this to start fresh when files have wrong formatting or duplicates.
+if (args.purge) {
+  const sd = scriptDir();
+  const token = resolveToken();
+  const manifest = await loadManifest(sd, token);
+  const homedir = Deno.env.get("HOME") ?? "";
+
+  const logo = [
+    "██╗    ██╗ ██████╗     ███╗   ███╗ ██████╗ ███╗   ██╗ ██████╗",
+    "██║    ██║██╔═══██╗    ████╗ ████║██╔═══██╗████╗  ██║██╔═══██╗",
+    "██║ █╗ ██║██║   ██║    ██╔████╔██║██║   ██║██╔██╗ ██║██║   ██║",
+    "██║███╗██║██║   ██║    ██║╚██╔╝██║██║   ██║██║╚██╗██║██║   ██║",
+    "╚███╔███╔╝╚██████╔╝    ██║ ╚═╝ ██║╚██████╔╝██║ ╚████║╚██████╔╝",
+    " ╚══╝╚══╝  ╚═════╝     ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝",
+  ];
+  for (const l of logo) console.log(o(`  ${l}`));
+  console.log();
+  console.log(`  ${ob("⟡ HARNESS PURGE")}  ${od("nuclear cleanup — wipes all harness files")}  ${od("─".repeat(30))}\n`);
+
+  const allTools = Object.keys(manifest.tools);
+  const purgeTarget = String(args.purge === true ? "all" : args.purge);
+  let toolsToPurge: string[];
+
+  if (purgeTarget === "all") {
+    toolsToPurge = allTools;
+  } else {
+    if (!manifest.tools[purgeTarget]) {
+      console.error(`  ${cross()} Unknown tool: "${purgeTarget}". Available: ${allTools.join(", ")}`);
+      Deno.exit(1);
+    }
+    toolsToPurge = [purgeTarget];
+  }
+
+  // Summarize what will be purged
+  const knownSubdirs = ["skills", "agents", "commands", "prompts", "extensions", "themes", "keybindings"];
+  const purgeSummary = toolsToPurge.map((t) => {
+    const targetDir = expandHome(manifest.tools[t].target);
+    return `  ${C.bold}${t}${C.reset}  ${od(targetDir)}`;
+  }).join("\n");
+  console.log(`\nWill recursively wipe these tool directories:\n${purgeSummary}\n`);
+  console.log(`  ${yellow("⚠  This removes ALL files in skills/, agents/, commands/, prompts/,")}`);
+  console.log(`  ${yellow("   extensions/, themes/, keybindings/ and the version marker.")}`);
+  console.log(`  ${yellow("   Re-run ai-harness --tool=<name> to reinstall fresh.\n")}`);
+
+  // Confirm unless --yes
+  if (!args.yes) {
+    const ok = await promptConfirm("Continue with purge?");
+    if (!ok) {
+      console.log("  Cancelled.");
+      Deno.exit(0);
+    }
+  }
+
+  let totalRemoved = 0;
+  let totalFailed = 0;
+
+  for (const tool of toolsToPurge) {
+    const targetDir = expandHome(manifest.tools[tool].target);
+    console.log(`\n  ${C.bold}${tool}${C.reset}  ${od(targetDir)}`);
+
+    // Safety check: refuse to purge if target doesn't look like a tool config dir
+    let looksLikeConfig = false;
+    try {
+      for (const subdir of knownSubdirs) {
+        const dir = join(targetDir, subdir);
+        try { const _ = await Deno.stat(dir); if (_.isDirectory) looksLikeConfig = true; } catch { /* ok */ }
+      }
+      // Also check for version file
+      if (!looksLikeConfig) {
+        try { const _ = await Deno.stat(join(targetDir, ".ai-harness-version")); looksLikeConfig = true; } catch { /* ok */ }
+      }
+    } catch { /* target dir doesn't exist */ }
+
+    if (!looksLikeConfig) {
+      // If target dir doesn't exist at all, that's also fine
+      try {
+        const _ = await Deno.stat(targetDir);
+        // Dir exists but doesn't look like a config — warn but proceed
+        console.log(`  ${yellow("⚠  " + targetDir + " exists but no harness subdirs found")}`);
+      } catch {
+        console.log(`  ${od("- " + targetDir + " does not exist, skipping")}`);
+        continue;
+      }
+    }
+
+    for (const subdir of knownSubdirs) {
+      const dir = join(targetDir, subdir);
+      if (args["dry-run"]) {
+        console.log(`  would remove  ${subdir}/`);
+        continue;
+      }
+      try {
+        await Deno.remove(dir, { recursive: true });
+        console.log(`  ✓ removed  ${subdir}/`);
+        totalRemoved++;
+      } catch (err) {
+        const e = err as Error;
+        if (e instanceof Deno.errors.NotFound) {
+          // not found is fine
+        } else {
+          console.log(`  ${cross()} failed to remove ${subdir}/: ${e.message}`);
+          totalFailed++;
+        }
+      }
+    }
+
+    // Remove version marker and any harness config files
+    for (const extra of [".ai-harness-version"]) {
+      const path = join(targetDir, extra);
+      if (args["dry-run"]) {
+        console.log(`  would remove  ${extra}`);
+        continue;
+      }
+      try {
+        await Deno.remove(path);
+        console.log(`  ✓ removed  ${extra}`);
+      } catch { /* not found */ }
+    }
+  }
+
+  if (args["dry-run"]) {
+    console.log(`\n  ${od("(dry run — no files were written)")}  ${toolsToPurge.length} tool(s) would be purged\n`);
+  } else {
+    console.log(`\n  ${check()} Purge complete — ${totalRemoved} subdirectories removed, ${totalFailed} failed\n`);
+    if (totalRemoved > 0) {
+      console.log(`  ${od("Run")} ai-harness --tool=all --yes ${od("to reinstall fresh")}\n`);
+    }
+  }
+  Deno.exit(0);
+}
+
 // --uninstall: remove installed files
 if (args.uninstall) {
   const sd = scriptDir();
@@ -1901,7 +2037,7 @@ if (args.uninstall) {
   Deno.exit(0);
 }
 
-if (!args.tool && !args.uninstall) {
+if (!args.tool && !args.uninstall && !args.purge) {
   console.error("Error: --tool is required.\n");
   printHelp();
   Deno.exit(1);

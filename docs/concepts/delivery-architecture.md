@@ -1,26 +1,36 @@
 # Context Delivery Architecture
 
-How skills, knowledge, and runtime capabilities are delivered to projects
+How skills, knowledge, runtime capabilities, and observability are delivered across projects
 via f-rr-d, the AI Engineering Harness, and WayOfMono packages.
 
 ## Overview
 
-WayOfMono operates **4 interconnected delivery pipelines** that transform canonical sources into deployed instances. Every component flows through a **canonical source → adapt → deploy** pattern — skills, agents, commands, configs, runtime libraries, contextual knowledge, and engineering team observability.
+Multiple projects across the Way-Of ecosystem share the same **4 interconnected delivery pipelines** that transform canonical sources into deployed instances. Every component flows through a **canonical source → adapt → deploy** pattern — skills, agents, commands, configs, runtime libraries, contextual knowledge, and engineering team observability.
 
-The CTO Dashboard exists in two implementations: the original **Next.js** version (`ui/`) and the **WayOfTeams** Phoenix LiveView port (`thoughts/wayofteams/`), each consuming the same f-rr-d and harness pipelines.
+| Project | Namespace | Description | Harness | Packages | f-rr-d | Dashboard |
+|---------|-----------|-------------|---------|----------|--------|-----------|
+| **WayOfMono** | WOMONO | Monorepo, AI Engineering Harness, skills | Publisher | Publisher | Full consumer | Next.js (ui/) |
+| **WayOfTeams** | WOTEAMS | CTO Dashboard (Phoenix LiveView) | Consumer | Consumer | Full consumer | Phoenix LiveView |
+| **WayOfWork** | WOW | Work platform specifications | Consumer | Consumer | Full consumer | — |
+| **WayOfCollab** | WOC | Collaboration & messaging (Elixir OTP) | Consumer | Consumer | Full consumer | — |
+| **Opticat** | OPT | HVAC simulation & optical equipment | Consumer | Consumer | Full consumer | — |
+
+The architecture is project-agnostic — any project can adopt the same pipelines for skill delivery, package distribution, knowledge management, and observability.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                    DELIVERY PIPELINES                               │
 │                                                                     │
-│  Pipeline 1: Harness (skills/agents/configs)                        │
-│  Pipeline 2: Packages (runtime/LLM/TUI capabilities)                │
-│  Pipeline 3: f-rr-d (tickets/plans/research knowledge)              │
-│  Pipeline 4: CTO Dashboard (telemetry/observability)                │
-│     ├── Next.js (ui/)                                               │
-│     └── WayOfTeams Phoenix (thoughts/wayofteams/)                   │
+│  Pipeline 1: AI Engineering Harness (skills/agents/configs)         │
+│  Pipeline 2: WayOfMono Packages (runtime/LLM/TUI)                   │
+│  Pipeline 3: f-rr-d (tickets/plans/research)                        │
+│  Pipeline 4: CTO Dashboard (telemetry/observability)                 │
+│     ├── WayOfMono → Next.js (ui/)                                   │
+│     └── WayOfTeams → Phoenix LiveView (thoughts/wayofteams/)         │
 └─────────────────────────────────────────────────────────────────────┘
 ```
+
+WayOfMono is the **publisher** of the harness and packages. The other four projects (WayOfTeams, WayOfWork, WayOfCollab, Opticat) **consume** these pipelines. All five projects store tickets, plans, and docs in f-rr-d under their own namespaces with a shared directory structure.
 
 ---
 
@@ -251,38 +261,53 @@ Delivers **contextual knowledge** — tickets, plans, research, decisions, perso
 - **Location**: `thoughts/` (cloned by `/init_harness`)
 - **Rule**: Append-only — never delete, rename, or move anything inside `thoughts/`
 
-### Structure
+### Structure (5 projects)
 
 ```
 thoughts/
 ├── shared/                    # Cross-project templates
 │   └── tickets/ticket-template.md
-├── global/                    # Cross-project concerns
-├── wayofmono/                 # WOMONO-XXX namespace
-│   ├── shared/tickets/        # Feature/bug tickets
-│   ├── shared/plans/          # Implementation plans
-│   ├── shared/research/       # Technical research
-│   ├── docs/                  # Architecture docs, decisions
-│   ├── enforcement-ticket/    # HIGHEST PRIORITY
-│   └── zerwiz/, tomas/, ...   # Personal workspaces
-├── wow/                       # WOW-XXX namespace
-│   └── shared/tickets/ ...
-├── opticat/                   # OPT-XXX namespace
-│   └── shared/tickets/ ...
-├── wayofteams/                # WOTEAMS-XXX namespace
+├── global/                    # Cross-project concerns (team.md, compliance, etc.)
+├── wayofmono/                 # WOMONO-XXX — Monorepo, harness, packages
 │   ├── shared/tickets/
-│   ├── docs/                  # Architecture, product docs, investor-ready materials
-│   └── <developer>/
+│   ├── shared/plans/
+│   ├── shared/research/
+│   ├── docs/                  # Architecture, product docs, investor-ready docs
+│   ├── enforcement-ticket/
+│   └── zerwiz/               # Josef — AI Harness, skills, packages
+├── wow/                       # WOW-XXX — Work platform specifications
+│   ├── shared/tickets/
+│   ├── shared/plans/
+│   ├── shared/research/
+│   └── docs/
+├── woc/                       # WOC-XXX — Collaboration & messaging
+│   ├── shared/tickets/
+│   ├── shared/plans/
+│   ├── shared/research/
+│   └── docs/
+├── opticat/                   # OPT-XXX — HVAC simulation & optical equipment
+│   ├── shared/tickets/
+│   ├── shared/plans/
+│   ├── shared/research/
+│   ├── docs/
+│   └── enforcement-ticket/
+└── wayofteams/                # WOTEAMS-XXX — CTO Dashboard (Phoenix LiveView)
+    ├── shared/tickets/
+    ├── shared/plans/
+    ├── shared/research/
+    ├── docs/                  # Architecture, product docs, investor-ready docs
+    └── michael/               # Michael — documentation, WayOfTeams logic
 ```
 
-### Four Namespaces
+### Five Namespaces
 
 | Prefix | Project | Path |
 |--------|---------|------|
-| WOMONO | WayOfMono (internal tooling) | `thoughts/wayofmono/shared/tickets/` |
-| WOW | WayOfWork (multi-tenant platform) | `thoughts/wow/shared/tickets/` |
-| OPT | OptiCat (HVAC simulation) | `thoughts/opticat/shared/tickets/` |
-| WOTEAMS | WayOfTeams (CTO Dashboard) | `thoughts/wayofteams/shared/tickets/` |
+| WOMONO | WayOfMono — monorepo, harness, packages | `thoughts/wayofmono/shared/tickets/` |
+| WOW | WayOfWork — work platform specifications | `thoughts/wow/shared/tickets/` |
+| WOC | WayOfCollab — collaboration & messaging | `thoughts/woc/shared/tickets/` |
+| OPT | OptiCat — HVAC simulation & optical equipment | `thoughts/opticat/shared/tickets/` |
+| WOTEAMS | WayOfTeams — CTO Dashboard (Phoenix) | `thoughts/wayofteams/shared/tickets/` |
 
 ### Ticket Format
 
@@ -461,6 +486,15 @@ Tickets live in two places:
                     │  ├── Way of Pi (Electron IDE)                      │
                     │  └── Way of Work (productivity platform)           │
                     └────────────────────────────────────────────────────┘
+
+                    ┌────────────────────────────────────────────────────┐
+                    │  PROJECTS (5 namespaces in f-rr-d)                 │
+                    │  ├── WayOfMono  (WOMONO)  — harness, packages      │
+                    │  ├── WayOfTeams (WOTEAMS) — CTO Dashboard          │
+                    │  ├── WayOfWork  (WOW)     — platform specs         │
+                    │  ├── WayOfCollab(WOC)     — collaboration          │
+                    │  └── Opticat    (OPT)     — HVAC simulation         │
+                    └────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -505,15 +539,19 @@ Tickets live in two places:
 | `packages/@wayofmono/wo-ai/` | Multi-LLM provider abstraction | Packages |
 | `packages/@wayofmono/web-access/` | Web access tool layer | Packages |
 | `packages/@wayofmono/telemetry/` | OTel telemetry SDK | Packages |
-| `thoughts/<project>/shared/tickets/` | Ticket markdown files | f-rr-d |
+| `thoughts/<project>/shared/tickets/` | Ticket markdown files (5 namespaces) | f-rr-d |
 | `thoughts/<project>/shared/plans/` | Implementation plans | f-rr-d |
 | `thoughts/<project>/enforcement-ticket/` | Highest-priority override tickets | f-rr-d |
+| `thoughts/global/team.md` | Team roles & assignment rules | f-rr-d |
+| `thoughts/wayofmono/docs/Product docs/Investor Ready/` | WayOfMono investor-ready documentation | f-rr-d |
+| `thoughts/wayofteams/docs/Product docs/Investor Ready/` | WayOfTeams investor-ready documentation | f-rr-d |
 | `ui/src/app/api/skills/report/route.ts` | Skill telemetry endpoint | Dashboard (Next.js) |
 | `ui/src/app/api/tickets/route.ts` | Ticket CRUD + dual-write | Dashboard (Next.js) |
 | `ui/prisma/schema.prisma` | Dashboard data model | Dashboard (Next.js) |
 | `thoughts/wayofteams/` | WayOfTeams project root (Phoenix LiveView dashboard) | Dashboard (WayOfTeams) |
-| `thoughts/wayofteams/docs/Product docs/Investor Ready/` | Investor-ready documentation (pitch deck, financials, GTM) | Dashboard (WayOfTeams) |
+| `thoughts/wayofteams/docs/Product docs/Investor Ready/` | WayOfTeams investor-ready documentation (pitch deck, financials, GTM) | Dashboard (WayOfTeams) |
 | `thoughts/wayofteams/shared/tickets/` | WOTEAMS ticket markdown files | f-rr-d |
+| `thoughts/wayofmono/docs/Product docs/Investor Ready/` | WayOfMono investor-ready documentation (generated by investor-ready-doc-gen skill) | f-rr-d |
 
 ## Key Design Decisions
 
@@ -523,10 +561,14 @@ Each pipeline has different delivery characteristics:
 
 | Pipeline | Update Cadence | Consumer | Failure Impact |
 |----------|---------------|----------|----------------|
-| Harness | On commit (sync) or on demand (install) | AI tool config dirs | Missing skills/agents |
-| Packages | On npm publish (tag/release) | Application runtime | Broken imports |
-| f-rr-d | On git push (per-session pull) | Agent context | Stale knowledge |
-| Dashboard | Real-time HTTP | Human dashboard UI | Missing telemetry |
+| Harness | On commit (sync) or on demand (install) | AI tool config dirs (any project) | Missing skills/agents |
+| Packages | On npm publish (tag/release) | Application runtime (any project) | Broken imports |
+| f-rr-d | On git push (per-session pull) | Agent context (any project) | Stale knowledge |
+| Dashboard | Real-time HTTP | Human dashboard UI (WayOfMono + WayOfTeams) | Missing telemetry |
+
+### Why multiple projects share the same pipelines?
+
+Five projects (WayOfMono, WayOfTeams, WayOfWork, WayOfCollab, Opticat) store knowledge in f-rr-d under their own namespaces. WayOfMono publishes the harness and packages; the other projects consume them. The architecture is designed so that any project can plug into any pipeline without forking — a project can use the harness for skill delivery without using the packages, or use f-rr-d for tickets without the dashboard. This modularity allows each project to adopt only what it needs while maintaining cross-project consistency.
 
 ### Why canonical skills go through 7 per-tool copies?
 
@@ -534,7 +576,7 @@ Each AI coding tool has different conventions for naming, frontmatter fields, al
 
 ### Why two dashboard implementations?
 
-The CTO Dashboard exists as both a **Next.js** app (`ui/`) and a **Phoenix LiveView** app (WayOfTeams, `thoughts/wayofteams/`). Both consume the same f-rr-d tickets and harness telemetry through the same API contracts. The Next.js version was built first as a rapid prototype; the WayOfTeams Phoenix port provides a more production-ready stack with Ash Framework resource management, Jido agent integration, and PostgreSQL persistence. Both are active — they represent an incremental migration rather than a rewrite.
+The CTO Dashboard exists as both a **Next.js** app (`ui/`, owned by WayOfMono) and a **Phoenix LiveView** app (WayOfTeams, `thoughts/wayofteams/`, owned by the WOTEAMS project). Both consume the same f-rr-d tickets and harness telemetry through the same API contracts but are independent projects. The Next.js version was built first as a rapid prototype under WayOfMono; WayOfTeams is a separate project that reimplements the dashboard with a more production-ready stack (Phoenix LiveView, Ash Framework, Jido agents, PostgreSQL). Both are active and serve their respective project stakeholders.
 
 ### Why dual-write tickets (SQLite + filesystem)?
 
@@ -595,4 +637,5 @@ See `docs/fixes/ai-engineering-harness-fixes.md` (v1.7.2 "Platform-Aware Harness
 - [Packages Reference](packages.md)
 - [Dev vs Runtime Dependencies](concepts/dev-vs-runtime-deps.md)
 - [AI Engineering Harness Guide](guides/ai-harness/)
+- [WayOfMono Investor-Ready Docs](../../thoughts/wayofmono/docs/Product%20docs/Investor%20Ready/)
 - [WayOfTeams Investor-Ready Docs](../../thoughts/wayofteams/docs/Product%20docs/Investor%20Ready/)

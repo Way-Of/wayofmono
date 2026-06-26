@@ -327,22 +327,6 @@ components:
     files:
     - src: antigravity/skills/opticat-ui-builder/SKILL.md
       dest: skills/opticat-ui-builder/SKILL.md
-  skill/skill-adapter:
-    description: Skill Adapter skill
-    files:
-    - src: antigravity/skills/skill-adapter/SKILL.md
-      dest: skills/skill-adapter/SKILL.md
-    - src: antigravity/skills/skill-adapter/assets/compliance-fix.ts
-      dest: skills/skill-adapter/assets/compliance-fix.ts
-  skill/skill-auto-update:
-    description: Skill Auto Update skill
-    files:
-    - src: antigravity/skills/skill-auto-update/SKILL.md
-      dest: skills/skill-auto-update/SKILL.md
-    - src: antigravity/skills/skill-auto-update/assets/compliance-fix.ts
-      dest: skills/skill-auto-update/assets/compliance-fix.ts
-    - src: antigravity/skills/skill-auto-update/assets/skillsrules.md
-      dest: skills/skill-auto-update/assets/skillsrules.md
   skill/team-setup:
     description: Team Setup skill
     files:
@@ -629,23 +613,6 @@ components:
     files:
     - src: antigravity/skills/build-backlog-groomer/SKILL.md
       dest: skills/build-backlog-groomer/SKILL.md
-  skill/build-skill-adapter:
-    description: Adapts skills between different AI coding tool formats and conventions
-    files:
-    - src: antigravity/skills/build-skill-adapter/SKILL.md
-      dest: skills/build-skill-adapter/SKILL.md
-  skill/build-skill-auto-update:
-    description: Automatically updates skills when dependencies or APIs change
-    files:
-    - src: antigravity/skills/build-skill-auto-update/SKILL.md
-      dest: skills/build-skill-auto-update/SKILL.md
-  skill/skill-compliance-checker:
-    description: Validates skills against production-ready standards and best practices
-    files:
-    - src: antigravity/skills/skill-compliance-checker/SKILL.md
-      dest: skills/skill-compliance-checker/SKILL.md
-    - src: antigravity/skills/skill-compliance-checker/assets/compliance-fix.ts
-      dest: skills/skill-compliance-checker/assets/compliance-fix.ts
   skill/self-documentation:
     description: Enables Wo to answer How do I...? and What's the command for...?
       questions by searching its own commands, skills, and documentation locally
@@ -711,3 +678,24 @@ components:
     files:
     - src: antigravity/skills/womonodeploy/SKILL.md
       dest: skills/womonodeploy/SKILL.md
+  skill/runbook-manager:
+    description: Generate, update, and maintain production runbooks per project
+    files:
+    - src: antigravity/skills/runbook_manager/SKILL.md
+      dest: skills/runbook-manager/SKILL.md
+    - src: antigravity/skills/runbook_manager/assets/runbook-template.md
+      dest: skills/runbook-manager/assets/runbook-template.md
+  skill/postmortem-manager:
+    description: Generate incident postmortems with interactive flow and git metrics
+    files:
+    - src: antigravity/skills/postmortem_manager/SKILL.md
+      dest: skills/postmortem-manager/SKILL.md
+    - src: antigravity/skills/postmortem_manager/assets/postmortem-template.md
+      dest: skills/postmortem-manager/assets/postmortem-template.md
+  skill/session-export:
+    description: Capture working session as structured session history with git metrics and context
+    files:
+    - src: antigravity/skills/session_export/SKILL.md
+      dest: skills/session-export/SKILL.md
+    - src: antigravity/skills/session_export/assets/session-template.md
+      dest: skills/session-export/assets/session-template.md

@@ -192,22 +192,6 @@ components:
     files:
     - src: claude/skills/prd-to-issues/SKILL.md
       dest: skills/prd-to-issues/SKILL.md
-  skill/skill-adapter:
-    description: Skill Adapter skill
-    files:
-    - src: claude/skills/skill-adapter/SKILL.md
-      dest: skills/skill-adapter/SKILL.md
-    - src: claude/skills/skill-adapter/assets/compliance-fix.ts
-      dest: skills/skill-adapter/assets/compliance-fix.ts
-  skill/skill-auto-update:
-    description: Skill Auto Update skill
-    files:
-    - src: claude/skills/skill-auto-update/SKILL.md
-      dest: skills/skill-auto-update/SKILL.md
-    - src: claude/skills/skill-auto-update/assets/compliance-fix.ts
-      dest: skills/skill-auto-update/assets/compliance-fix.ts
-    - src: claude/skills/skill-auto-update/assets/skillsrules.md
-      dest: skills/skill-auto-update/assets/skillsrules.md
   skill/team-setup:
     description: Team Setup skill
     files:
@@ -305,11 +289,26 @@ components:
     - src: claude/skills/build-tool/SKILL.md
       dest: skills/build-tool/SKILL.md
   skill/build-tool-skill:
-    description: "Unified skill builder for all 7 tools \u2014 deployed to Claude\
-      \ Code"
+    description: "Unified skill builder, validator, adapter, and lifecycle manager for all 7 tools"
     files:
-    - src: claude/skills/build-tool-skill/SKILL.md
+    - src: claude/skills/build_tool_skill/SKILL.md
       dest: skills/build-tool-skill/SKILL.md
+    - src: claude/skills/build_tool_skill/assets/config-manifest-example.yaml
+      dest: skills/build-tool-skill/assets/config-manifest-example.yaml
+    - src: claude/skills/build_tool_skill/assets/skill-example-opencode.md
+      dest: skills/build-tool-skill/assets/skill-example-opencode.md
+    - src: claude/skills/build_tool_skill/assets/skill-example-claude.md
+      dest: skills/build-tool-skill/assets/skill-example-claude.md
+    - src: claude/skills/build_tool_skill/assets/skill-example-pi.md
+      dest: skills/build-tool-skill/assets/skill-example-pi.md
+    - src: claude/skills/build_tool_skill/assets/skill-example-codex.yaml
+      dest: skills/build-tool-skill/assets/skill-example-codex.yaml
+    - src: claude/skills/build_tool_skill/assets/skill-example-codex-prompt.md
+      dest: skills/build-tool-skill/assets/skill-example-codex-prompt.md
+    - src: claude/skills/build_tool_skill/assets/compliance-check.py
+      dest: skills/build-tool-skill/assets/compliance-check.py
+    - src: claude/skills/build_tool_skill/assets/adapter-generate.py
+      dest: skills/build-tool-skill/assets/adapter-generate.py
   skill/build-tool-agent:
     description: "Unified agent builder for all 7 tools \u2014 deployed to Claude\
       \ Code"
@@ -503,23 +502,6 @@ components:
     files:
     - src: claude/skills/build-backlog-groomer/SKILL.md
       dest: skills/build-backlog-groomer/SKILL.md
-  skill/build-skill-adapter:
-    description: Adapts skills between different AI coding tool formats and conventions
-    files:
-    - src: claude/skills/build-skill-adapter/SKILL.md
-      dest: skills/build-skill-adapter/SKILL.md
-  skill/build-skill-auto-update:
-    description: Automatically updates skills when dependencies or APIs change
-    files:
-    - src: claude/skills/build-skill-auto-update/SKILL.md
-      dest: skills/build-skill-auto-update/SKILL.md
-  skill/skill-compliance-checker:
-    description: Validates skills against production-ready standards and best practices
-    files:
-    - src: claude/skills/skill-compliance-checker/SKILL.md
-      dest: skills/skill-compliance-checker/SKILL.md
-    - src: claude/skills/skill-compliance-checker/assets/compliance-fix.ts
-      dest: skills/skill-compliance-checker/assets/compliance-fix.ts
   skill/self-documentation:
     description: Enables Wo to answer How do I...? and What's the command for...?
       questions by searching its own commands, skills, and documentation locally
@@ -585,3 +567,24 @@ components:
     files:
     - src: claude/skills/womonodeploy/SKILL.md
       dest: skills/womonodeploy/SKILL.md
+  skill/runbook-manager:
+    description: Generate, update, and maintain production runbooks per project
+    files:
+    - src: claude/skills/runbook_manager/SKILL.md
+      dest: skills/runbook-manager/SKILL.md
+    - src: claude/skills/runbook_manager/assets/runbook-template.md
+      dest: skills/runbook-manager/assets/runbook-template.md
+  skill/postmortem-manager:
+    description: Generate incident postmortems with interactive flow and git metrics
+    files:
+    - src: claude/skills/postmortem_manager/SKILL.md
+      dest: skills/postmortem-manager/SKILL.md
+    - src: claude/skills/postmortem_manager/assets/postmortem-template.md
+      dest: skills/postmortem-manager/assets/postmortem-template.md
+  skill/session-export:
+    description: Capture working session as structured session history with git metrics and context
+    files:
+    - src: claude/skills/session_export/SKILL.md
+      dest: skills/session-export/SKILL.md
+    - src: claude/skills/session_export/assets/session-template.md
+      dest: skills/session-export/assets/session-template.md
