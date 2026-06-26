@@ -7,7 +7,13 @@
       "fields": ["version header"],
       "type": "markdown",
       "bump_order": 1
+    },
+    {
+      "path": "CHANGELOG.md",
+      "fields": ["version header"],
+      "type": "markdown",
+      "bump_order": 2
     }
   ],
-  "bump_order": ["fix-note"]
+  "bump_order": ["fix-note", "CHANGELOG.md"]
 }

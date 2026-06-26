@@ -10,9 +10,42 @@ Bump the version across all project files using the fixes-manager skill.
 - `--version` (required) — Target version string (e.g. `1.8.0`)
 
 ## Process:
-1. Validate the provided arguments
-2. Activate the fixes-manager skill
-3. Load `assets/<project>/version-config.json` for version fields and file list
-4. Update each file's version field in the defined order
-5. Update fix notes and CHANGELOG
-6. Confirm the result with the user
+
+### 1. Validate Arguments
+- Project must be a valid namespace from `skills/fixes-manager/assets/`
+
+### 2. Load Version Config
+- Read `skills/fixes-manager/assets/<project>/version-config.json`
+- This defines ALL version files for that project, their types (json/yaml/regex/markdown), and bump order
+- **Each project has its own config** — wow and opticat only have a fix note to bump, womono has 5+ files
+
+### 3. Bump Each Version File in Order
+For each file in `version-config.json.version_files`, sorted by `bump_order`:
+
+| type | How to update |
+|------|--------------|
+| `json` | Update the specified `fields` in the JSON file |
+| `yaml` | Update the specified `fields` in the YAML file |
+| `regex` | Replace the regex `pattern` match with the new version |
+| `markdown` | Insert a new version header entry (CHANGELOG) or find/replace old version strings (README) |
+
+### 4. womono-Specific Notes
+If `--project=womono`, these additional steps apply:
+- After updating `manifest.json`, also update the 7 per-tool `version` fields: `antigravity/version`, `claude/version`, `codex/version`, `gemini/version`, `opencode/version`, `pi/version`, `wocode/version`
+- After all files are updated, recompile:
+  ```bash
+  python3 packages/@aiengineeringharness/config-manifest/compile.py
+  ```
+
+### 5. CHANGELOG.md Entry Format (womono only)
+Insert after `# Changelog` line:
+
+```markdown
+## [<version>] - YYYY-MM-DD
+
+### Harness (AI Engineering Harness v<version>)
+- <summary of changes>
+```
+
+### 6. Confirm
+Show the user a summary of what was changed and ask for confirmation before committing.

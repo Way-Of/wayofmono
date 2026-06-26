@@ -6,11 +6,12 @@ description: Fixes Bump — Bump version across project files
 Bump the version across all project files using the fixes-manager skill.
 
 ## Usage
-`/fixes bump --project=womono --version=1.8.0`
+`/fixes bump --project=<project> --version=<version>`
 
 ## Steps
 1. Validate arguments: `--project` (required), `--version` (required)
-2. Load the fixes-manager skill `assets/<project>/version-config.json`
-3. Update each file's version field in the defined order
-4. Update fix notes and CHANGELOG
-5. Confirm the result with the user
+2. Load the fixes-manager skill
+3. Read `assets/<project>/version-config.json` for version files, types, and bump order
+4. Update each version file in order (types: json/yaml/regex/markdown) — includes CHANGELOG.md for all projects
+5. If `--project=womono`: also update 7 per-tool version fields in manifest.json, then recompile
+6. Confirm the result with the user

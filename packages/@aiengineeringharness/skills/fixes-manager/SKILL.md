@@ -17,11 +17,11 @@ Fix notes live in `thoughts/<project>/docs/fixes/`. The skill writes to the corr
 
 ## Supported Projects
 
-| Project | Namespace | Assets | Fixes Location |
-|---------|-----------|--------|----------------|
-| WayOfMono | WOMONO | `assets/womono/` | `thoughts/wayofmono/docs/fixes/` |
-| WayOfWork | WOW | `assets/wow/` | `thoughts/wow/docs/fixes/` |
-| OptiCat | OPT | `assets/opticat/` | `thoughts/opticat/docs/fixes/` |
+| Project | Namespace | Assets | Fixes Location | Also Bumps |
+|---------|-----------|--------|----------------|------------|
+| WayOfMono | WOMONO | `assets/womono/` | `thoughts/wayofmono/docs/fixes/` | `manifest.json`, `CHANGELOG.md`, `README.md`, `install.ts` |
+| WayOfWork | WOW | `assets/wow/` | `thoughts/wow/docs/fixes/` | `CHANGELOG.md` |
+| OptiCat | OPT | `assets/opticat/` | `thoughts/opticat/docs/fixes/` | `CHANGELOG.md` |
 
 ---
 
@@ -123,14 +123,14 @@ assets/<project>/
 
 ### Version Files
 
-| File | Field(s) |
-|------|----------|
-| `packages/@aiengineeringharness/manifest.json` | `version` (top-level) + 7 per-tool `version` fields |
-| `packages/@aiengineeringharness/config-manifest/base_manifest.yaml` | `manifest_version` |
-| `packages/@aiengineeringharness/install.ts` | Version string at top of file |
-| `CHANGELOG.md` | Version header in WOMONO section |
-| `README.md` | Version references |
-| `thoughts/wayofmono/docs/fixes/*.md` | Version headers |
+| File | Field(s) | Projects |
+|------|----------|----------|
+| `packages/@aiengineeringharness/manifest.json` | `version` (top-level) + 7 per-tool `version` fields | womono |
+| `packages/@aiengineeringharness/config-manifest/base_manifest.yaml` | `manifest_version` | womono |
+| `packages/@aiengineeringharness/install.ts` | `const VERSION = "..."` (regex) | womono |
+| `CHANGELOG.md` | Version header | **all projects** |
+| `README.md` | Version references | womono |
+| `thoughts/<project>/docs/fixes/*.md` | Version headers | all projects |
 
 ---
 

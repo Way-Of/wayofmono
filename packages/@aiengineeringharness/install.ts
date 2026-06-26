@@ -41,6 +41,9 @@ import { initLogger, log, logDetect, getLogPath } from "./logger.ts";
 import { Transaction } from "./transaction.ts";
 import { generateReport, generateSanitizedReport, printReport, pushReport } from "./report.ts";
 
+/** Harness version — kept in sync with manifest.json */
+const VERSION = "1.7.9";
+
 function normalizeSlashes(p: string): string {
   if (Deno.build.os === "windows") return p.replace(/\\/g, "/");
   return p;
