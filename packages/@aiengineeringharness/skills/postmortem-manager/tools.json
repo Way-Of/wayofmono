@@ -1,0 +1,41 @@
+{
+  "name": "postmortem-manager",
+  "description": "Generate and update incident postmortems per project",
+  "commands": [
+    {
+      "name": "create_postmortem",
+      "description": "Interactive postmortem generation",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "project": { "type": "string", "description": "Project slug" },
+          "create_tickets": { "type": "boolean", "description": "Auto-create tickets from action items" }
+        },
+        "required": ["project"]
+      }
+    },
+    {
+      "name": "update_postmortem",
+      "description": "Append findings to existing postmortem",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "file": { "type": "string", "description": "Path to postmortem file" },
+          "finding": { "type": "string", "description": "New finding to append" }
+        },
+        "required": ["file"]
+      }
+    },
+    {
+      "name": "list_postmortems",
+      "description": "List all postmortems for a project",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "project": { "type": "string", "description": "Project slug" }
+        },
+        "required": ["project"]
+      }
+    }
+  ]
+}

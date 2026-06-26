@@ -1,0 +1,30 @@
+{
+  "name": "runbook-manager",
+  "description": "Generate and update production runbooks per project",
+  "commands": [
+    {
+      "name": "create_runbook",
+      "description": "Generate a new runbook for a project",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "project": { "type": "string", "description": "Project slug (e.g., wowx, wayofteams, wayofmono)" }
+        },
+        "required": ["project"]
+      }
+    },
+    {
+      "name": "update_runbook",
+      "description": "Update an existing runbook with current infra state",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "project": { "type": "string", "description": "Project slug" },
+          "add_issue": { "type": "string", "description": "Append issue with format: Symptom:.. Cause:.. Fix:.." },
+          "add_contact": { "type": "string", "description": "Add contact with format: Name:.. Role:.. Contact:.." }
+        },
+        "required": ["project"]
+      }
+    }
+  ]
+}

@@ -578,6 +578,50 @@ ai-harness --prune
 .\install.ps1 -Prune
 ```
 
+### Uninstall (--uninstall)
+
+Remove harness files for a specific tool or all tools — files that match the current manifest are removed. Leaves non-manifest files in place.
+
+**macOS / Linux / Windows (bash):**
+
+```bash
+ai-harness --uninstall=claude
+ai-harness --uninstall=all --yes
+```
+
+**Windows (PowerShell wrapper):**
+
+```powershell
+.\install.ps1 -Uninstall claude
+.\install.ps1 -Uninstall all -Yes
+```
+
+### Purge All Harness Files (--purge)
+
+**⚠ Nuclear option.** Recursively wipes ALL harness files (skills, agents, commands, prompts, extensions, themes, keybindings) from tool config directories, regardless of what's in the manifest. Use when you have duplicates, wrong-format files, or want a completely clean reinstall.
+
+**macOS / Linux / Windows (bash):**
+
+```bash
+# Purge a single tool
+ai-harness --purge=opencode --yes
+
+# Purge all 7 tools
+ai-harness --purge=all --yes
+
+# Preview what would be removed
+ai-harness --purge=all --dry-run
+```
+
+**Windows (PowerShell wrapper):**
+
+```powershell
+.\install.ps1 -Purge opencode -Yes
+.\install.ps1 -Purge all -Yes
+```
+
+> After purge, reinstall with `ai-harness --tool=all --yes` for a clean slate.
+
 ### Sync Documentation (--sync-docs)
 
 **Syncs the 81 canonical skills from the harness to all 7 tool directories.**
@@ -1343,6 +1387,8 @@ ai-harness --tool=claude --local --yes
 | `--uninstall=<name>` | | Remove installed files (claude, opencode, all, ...) |
 | `--no-validate` | | Skip compliance validation after --update |
 | `--prune` | | Interactive: review & remove non-manifest skills |
+| `--purge[=<name>]` | | Nuclear cleanup: wipe ALL harness files from tool config (no manifest) |
+| `--purge=all` | | Purge all 7 tool config directories at once |
 | `--sync-docs` | | Sync canonical skills to all tool directories |
 | `--report-skills` | | Report local skills to dashboard telemetry API |
 | `--report-url=<url>` | | Dashboard URL for skill reporting |

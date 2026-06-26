@@ -1,26 +1,38 @@
 # Context Delivery Architecture
 
-How skills, knowledge, and runtime capabilities are delivered to projects
+How skills, knowledge, runtime capabilities, and observability are delivered across projects
 via f-rr-d, the AI Engineering Harness, and WayOfMono packages.
 
 ## Overview
 
-WayOfMono operates **4 interconnected delivery pipelines** that transform canonical sources into deployed instances. Every component flows through a **canonical source → adapt → deploy** pattern — skills, agents, commands, configs, runtime libraries, contextual knowledge, and engineering team observability.
+Multiple projects across the Way-Of ecosystem share the same **4 interconnected delivery pipelines** that transform canonical sources into deployed instances. Every component flows through a **canonical source → adapt → deploy** pattern — skills, agents, commands, configs, runtime libraries, contextual knowledge, and engineering team observability.
 
-The CTO Dashboard exists in two implementations: the original **Next.js** version (`ui/`) and the **WayOfTeams** Phoenix LiveView port (`thoughts/wayofteams/`), each consuming the same f-rr-d and harness pipelines.
+| Project | Namespace | Description | Harness | Packages | f-rr-d | Dashboard |
+|---------|-----------|-------------|---------|----------|--------|-----------|
+| **WayOfMono** | WOMONO | Monorepo, AI Engineering Harness, skills | Publisher | Publisher | Full consumer | Next.js (ui/) |
+| **WayOfTeams** | WOTEAMS | CTO Dashboard (Phoenix LiveView) | Consumer | Consumer | Full consumer | Phoenix LiveView |
+| **WayOfWork** | WOW | Work platform specifications | Consumer | Consumer | Full consumer | — |
+| **WayOfCollab** | WOC | Collaboration & messaging (Elixir OTP) | Consumer | Consumer | Full consumer | — |
+| **Opticat** | OPT | HVAC simulation & optical equipment | Consumer | Consumer | Full consumer | — |
+
+The architecture is project-agnostic — any project can adopt the same pipelines for skill delivery, package distribution, knowledge management, and observability.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                    DELIVERY PIPELINES                               │
 │                                                                     │
-│  Pipeline 1: Harness (skills/agents/configs)                        │
-│  Pipeline 2: Packages (runtime/LLM/TUI capabilities)                │
-│  Pipeline 3: f-rr-d (tickets/plans/research knowledge)              │
-│  Pipeline 4: CTO Dashboard (telemetry/observability)                │
-│     ├── Next.js (ui/)                                               │
-│     └── WayOfTeams Phoenix (thoughts/wayofteams/)                   │
+│  Pipeline 1: AI Engineering Harness (skills/agents/configs)         │
+│  Pipeline 2: npm Packages (TypeScript runtime libraries)            │
+│  Pipeline 3: f-rr-d (tickets/plans/research)                        │
+│  Pipeline 4: CTO Dashboard (telemetry/observability)                 │
+│     ├── WayOfMono → Next.js (ui/)                                   │
+│     └── WayOfTeams → Phoenix LiveView (thoughts/wayofteams/)         │
+│  Pipeline 5: Hex Packages (Elixir runtime libraries)                │
+│  Pipeline 6: MCP Bridge (cross-language agent/tool delivery)        │
 └─────────────────────────────────────────────────────────────────────┘
 ```
+
+WayOfMono is the **publisher** of the harness, npm packages, and Hex packages. The other projects (WayOfTeams, WayOfWork, WayOfCollab, Opticat) **consume** these pipelines. WayOfTeams is also a **publisher** of Hex packages and MCP servers. All projects store tickets, plans, and docs in f-rr-d under their own namespaces with a shared directory structure.
 
 ---
 
@@ -251,38 +263,53 @@ Delivers **contextual knowledge** — tickets, plans, research, decisions, perso
 - **Location**: `thoughts/` (cloned by `/init_harness`)
 - **Rule**: Append-only — never delete, rename, or move anything inside `thoughts/`
 
-### Structure
+### Structure (5 projects)
 
 ```
 thoughts/
 ├── shared/                    # Cross-project templates
 │   └── tickets/ticket-template.md
-├── global/                    # Cross-project concerns
-├── wayofmono/                 # WOMONO-XXX namespace
-│   ├── shared/tickets/        # Feature/bug tickets
-│   ├── shared/plans/          # Implementation plans
-│   ├── shared/research/       # Technical research
-│   ├── docs/                  # Architecture docs, decisions
-│   ├── enforcement-ticket/    # HIGHEST PRIORITY
-│   └── zerwiz/, tomas/, ...   # Personal workspaces
-├── wow/                       # WOW-XXX namespace
-│   └── shared/tickets/ ...
-├── opticat/                   # OPT-XXX namespace
-│   └── shared/tickets/ ...
-├── wayofteams/                # WOTEAMS-XXX namespace
+├── global/                    # Cross-project concerns (team.md, compliance, etc.)
+├── wayofmono/                 # WOMONO-XXX — Monorepo, harness, packages
 │   ├── shared/tickets/
-│   ├── docs/                  # Architecture, product docs, investor-ready materials
-│   └── <developer>/
+│   ├── shared/plans/
+│   ├── shared/research/
+│   ├── docs/                  # Architecture, product docs, investor-ready docs
+│   ├── enforcement-ticket/
+│   └── zerwiz/               # Josef — AI Harness, skills, packages
+├── wow/                       # WOW-XXX — Work platform specifications
+│   ├── shared/tickets/
+│   ├── shared/plans/
+│   ├── shared/research/
+│   └── docs/
+├── woc/                       # WOC-XXX — Collaboration & messaging
+│   ├── shared/tickets/
+│   ├── shared/plans/
+│   ├── shared/research/
+│   └── docs/
+├── opticat/                   # OPT-XXX — HVAC simulation & optical equipment
+│   ├── shared/tickets/
+│   ├── shared/plans/
+│   ├── shared/research/
+│   ├── docs/
+│   └── enforcement-ticket/
+└── wayofteams/                # WOTEAMS-XXX — CTO Dashboard (Phoenix LiveView)
+    ├── shared/tickets/
+    ├── shared/plans/
+    ├── shared/research/
+    ├── docs/                  # Architecture, product docs, investor-ready docs
+    └── michael/               # Michael — documentation, WayOfTeams logic
 ```
 
-### Four Namespaces
+### Five Namespaces
 
 | Prefix | Project | Path |
 |--------|---------|------|
-| WOMONO | WayOfMono (internal tooling) | `thoughts/wayofmono/shared/tickets/` |
-| WOW | WayOfWork (multi-tenant platform) | `thoughts/wow/shared/tickets/` |
-| OPT | OptiCat (HVAC simulation) | `thoughts/opticat/shared/tickets/` |
-| WOTEAMS | WayOfTeams (CTO Dashboard) | `thoughts/wayofteams/shared/tickets/` |
+| WOMONO | WayOfMono — monorepo, harness, packages | `thoughts/wayofmono/shared/tickets/` |
+| WOW | WayOfWork — work platform specifications | `thoughts/wow/shared/tickets/` |
+| WOC | WayOfCollab — collaboration & messaging | `thoughts/woc/shared/tickets/` |
+| OPT | OptiCat — HVAC simulation & optical equipment | `thoughts/opticat/shared/tickets/` |
+| WOTEAMS | WayOfTeams — CTO Dashboard (Phoenix) | `thoughts/wayofteams/shared/tickets/` |
 
 ### Ticket Format
 
@@ -380,6 +407,177 @@ Tickets live in two places:
 
 ---
 
+## Pipeline 5: Hex Packages (Elixir Runtime Delivery)
+
+Parallel to Pipeline 2 (npm), delivers **Elixir runtime capabilities** — Jido skill libraries, Ash extension resources, MCP server SDKs — through the Hex.pm registry as `@wayofmono/*` packages.
+
+### Registry
+
+| Aspect | Detail |
+|--------|--------|
+| **Registry** | `hex.pm` (public) + `wayofmono` organization (private) |
+| **Scope** | `@wayofmono/*` |
+| **Auto-docs** | `hexdocs.pm` via `mix docs` (ExDoc) |
+| **Publish tool** | `mix hex.publish` |
+
+### Package Landscape (Planned)
+
+```
+hex.pm/packages/@wayofmono/
+├── wo_mcp              MCP server SDK (conduit_mcp wrapper)
+├── wo_jido_skills      Shared Jido action/skill library
+├── wo_ash_resources    Shared Ash resource + Igniter installer mix tasks
+└── telemetry_elixir    OTel Elixir SDK wrapper
+```
+
+### CI/CD Workflow
+
+```yaml
+# .github/workflows/release-elixir.yml
+on:
+  push:
+    tags: ['elixir-v*']
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: '1.18'
+          otp-version: '27'
+      - run: mix deps.get
+      - run: mix compile --warnings-as-errors
+      - run: mix test
+      - run: mix docs
+      - run: mix hex.publish --yes
+        env:
+          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
+```
+
+Tag convention: `elixir-v1.2.3` for monorepo. Versions are immutable on Hex — fixes require a new version number. First-time setup: `mix hex.user register` + `mix hex.user key generate` for `HEX_API_KEY`.
+
+### Publishers & Consumers
+
+| Project | Role | Content |
+|---------|------|---------|
+| **WayOfTeams** | Publisher | `wo_mcp`, `wo_jido_skills`, `wo_ash_resources` |
+| **WayOfMono** | Publisher | `telemetry_elixir` |
+| **WayOfCollab** | Consumer | All packages |
+| **WayOfWork** | Consumer | All packages |
+
+---
+
+## Pipeline 6: MCP Bridge (Cross-Language Agent Delivery)
+
+Bridges TypeScript/Deno-focused Pipeline 1 (Harness) with the Elixir/Ash/Jido ecosystem through the **Model Context Protocol (MCP)**. This is the critical cross-language integration layer — it enables TypeScript AI tools to invoke Elixir Jido agents as MCP tools.
+
+### How It Works
+
+```
+manifest.json (Pipeline 1)
+     │
+     ▼
+install.ts ──→ ~/.config/opencode/mcp.json
+               {
+                 "mcpServers": {
+                   "wayofteams-skills": {
+                     "command": "wayofteams-mcp-server",
+                     "args": ["--skills", "ticket_manager,backlog_groomer"]
+                   }
+                 }
+               }
+                    │
+                    ▼
+              AI Tool loads MCP server at startup
+              (stdio pipe or HTTP connection)
+                    │
+                    ▼
+              MCP server connects to WayOfTeams BEAM
+              via Streamable HTTP (localhost:4000/mcp)
+                    │
+                    ▼
+              Jido Action executed on WayOfTeams Phoenix
+              (create_ticket, review_ticket, sync_skills, etc.)
+```
+
+### Supported MCP Libraries
+
+| Library | Version | Transport | Features |
+|---------|---------|-----------|----------|
+| `conduit_mcp` | 0.9.7 | Streamable HTTP, SSE | Phoenix integration, rate limiting, auth |
+| `mcp-elixir-sdk` | 1.0.1 | stdio, Streamable HTTP | 40/40 conformance, async tools, sampling |
+| `anubis-mcp` | fork | Streamable HTTP | Component registration DSL |
+
+WayOfTeams uses `conduit_mcp` as its primary MCP server library (already a dependency).
+
+### Component Type: `elixir_mcp`
+
+The config-manifest supports a new `elixir_mcp` component type alongside `skills`, `agents`, `commands`:
+
+**config-manifest/tools/opencode.yaml**:
+```yaml
+components:
+  - name: wayofteams-ticket-manager
+    type: elixir_mcp
+    src: elixir/mcp_servers/ticket-manager
+    transport: stdio
+```
+
+The harness installer:
+1. Reads the `elixir_mcp` component from manifest
+2. Downloads the Elixir MCP binary (Burrito-wrapped, single executable)
+3. Writes the corresponding `mcp.json` entry into the tool's config dir
+4. The AI tool loads the MCP server at startup, bridging to the BEAM
+
+### Jido Action → MCP Tool Mapping
+
+Jido actions expose their schema as MCP tool input_schemas automatically:
+
+```elixir
+# Jido Action
+defmodule Wayofteams.Actions.Tickets.CreateTicketAction do
+  use Jido.Action,
+    name: "create_ticket",
+    description: "Create a new ticket",
+    schema: [
+      title: [type: :string, required: true],
+      project_prefix: [type: :string, required: true],
+      ticket_type: [type: :string, required: true]
+    ]
+
+  def run(params, _context) do
+    # ... Elixir logic
+  end
+end
+
+# Auto-generated MCP tool:
+# {
+#   "name": "create_ticket",
+#   "description": "Create a new ticket",
+#   "inputSchema": {
+#     "type": "object",
+#     "required": ["title", "project_prefix", "ticket_type"],
+#     "properties": {
+#       "title": {"type": "string"},
+#       "project_prefix": {"type": "string"},
+#       "ticket_type": {"type": "string"}
+#     }
+#   }
+# }
+```
+
+### Publishers & Consumers
+
+| Project | Role | What They Publish/Consume |
+|---------|------|--------------------------|
+| **WayOfTeams** | Publisher | MCP server binary wrapping 18 Jido agents, 80+ Jido actions |
+| **WayOfMono** | Consumer | Installs MCP server configs via harness |
+| **WayOfCollab** | Publisher | MCP server for collaboration APIs |
+| **All AI Tools** | Consumer | Load MCP servers at runtime |
+
+---
+
 ## Interconnection Map
 
 ```
@@ -452,15 +650,46 @@ Tickets live in two places:
                      │  wayofteams/docs/    │     └──────────────────────────────┘
                     └──────────────────────┘
 
-                    ┌────────────────────────────────────────────────────┐
-                    │  NPM Packages (@wayofmono/*)                       │
-                    │  Deliver runtime: LLM, TUI, agents, web access     │
-                    │  Installed via: npm install / pnpm                 │
-                    │                                                   │
-                    │  External consumers:                               │
-                    │  ├── Way of Pi (Electron IDE)                      │
-                    │  └── Way of Work (productivity platform)           │
-                    └────────────────────────────────────────────────────┘
+                     ┌────────────────────────────────────────────────────┐
+                     │  NPM Packages (@wayofmono/*)                       │
+                     │  Deliver runtime: LLM, TUI, agents, web access     │
+                     │  Installed via: npm install / pnpm                 │
+                     │                                                   │
+                     │  External consumers:                               │
+                     │  ├── Way of Pi (Electron IDE)                      │
+                     │  └── Way of Work (productivity platform)           │
+                     └────────────────────────────────────────────────────┘
+
+                     ┌────────────────────────────────────────────────────┐
+                     │  HEX Packages (@wayofmono/* on hex.pm)             │
+                     │  Deliver: Jido skill libs, MCP servers,            │
+                     │           Ash extension resources                  │
+                     │  Installed via: mix deps.get / hex.pm              │
+                     │                                                   │
+                     │  Publisher: WayOfTeams (WOTEAMS)                   │
+                     │  Consumers: WayOfCollab, WayOfWork                 │
+                     └───────────────────────┬────────────────────────────┘
+                                             │
+                                             ▼
+                     ┌────────────────────────────────────────────────────┐
+                     │  MCP BRIDGE (cross-language agent delivery)        │
+                     │                                                    │
+                     │  TypeScript/Deno Harness ──→ install MCP config    │
+                     │  AI Tool loads MCP server at runtime               │
+                     │  MCP server wraps Jido actions as MCP tools        │
+                     │  Jido actions executed on WayOfTeams BEAM          │
+                     │                                                    │
+                     │  Transports: stdio (local) / Streamable HTTP       │
+                     └────────────────────────────────────────────────────┘
+
+                     ┌────────────────────────────────────────────────────┐
+                     │  PROJECTS (5 namespaces in f-rr-d)                 │
+                     │  ├── WayOfMono  (WOMONO)  — harness, packages      │
+                     │  ├── WayOfTeams (WOTEAMS) — CTO Dashboard, Hex     │
+                     │  ├── WayOfWork  (WOW)     — platform specs         │
+                     │  ├── WayOfCollab(WOC)     — collaboration          │
+                     │  └── Opticat    (OPT)     — HVAC simulation         │
+                     └────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -505,15 +734,19 @@ Tickets live in two places:
 | `packages/@wayofmono/wo-ai/` | Multi-LLM provider abstraction | Packages |
 | `packages/@wayofmono/web-access/` | Web access tool layer | Packages |
 | `packages/@wayofmono/telemetry/` | OTel telemetry SDK | Packages |
-| `thoughts/<project>/shared/tickets/` | Ticket markdown files | f-rr-d |
+| `thoughts/<project>/shared/tickets/` | Ticket markdown files (5 namespaces) | f-rr-d |
 | `thoughts/<project>/shared/plans/` | Implementation plans | f-rr-d |
 | `thoughts/<project>/enforcement-ticket/` | Highest-priority override tickets | f-rr-d |
+| `thoughts/global/team.md` | Team roles & assignment rules | f-rr-d |
+| `thoughts/wayofmono/docs/Product docs/Investor Ready/` | WayOfMono investor-ready documentation | f-rr-d |
+| `thoughts/wayofteams/docs/Product docs/Investor Ready/` | WayOfTeams investor-ready documentation | f-rr-d |
 | `ui/src/app/api/skills/report/route.ts` | Skill telemetry endpoint | Dashboard (Next.js) |
 | `ui/src/app/api/tickets/route.ts` | Ticket CRUD + dual-write | Dashboard (Next.js) |
 | `ui/prisma/schema.prisma` | Dashboard data model | Dashboard (Next.js) |
 | `thoughts/wayofteams/` | WayOfTeams project root (Phoenix LiveView dashboard) | Dashboard (WayOfTeams) |
-| `thoughts/wayofteams/docs/Product docs/Investor Ready/` | Investor-ready documentation (pitch deck, financials, GTM) | Dashboard (WayOfTeams) |
+| `thoughts/wayofteams/docs/Product docs/Investor Ready/` | WayOfTeams investor-ready documentation (pitch deck, financials, GTM) | Dashboard (WayOfTeams) |
 | `thoughts/wayofteams/shared/tickets/` | WOTEAMS ticket markdown files | f-rr-d |
+| `thoughts/wayofmono/docs/Product docs/Investor Ready/` | WayOfMono investor-ready documentation (generated by investor-ready-doc-gen skill) | f-rr-d |
 
 ## Key Design Decisions
 
@@ -523,10 +756,14 @@ Each pipeline has different delivery characteristics:
 
 | Pipeline | Update Cadence | Consumer | Failure Impact |
 |----------|---------------|----------|----------------|
-| Harness | On commit (sync) or on demand (install) | AI tool config dirs | Missing skills/agents |
-| Packages | On npm publish (tag/release) | Application runtime | Broken imports |
-| f-rr-d | On git push (per-session pull) | Agent context | Stale knowledge |
-| Dashboard | Real-time HTTP | Human dashboard UI | Missing telemetry |
+| Harness | On commit (sync) or on demand (install) | AI tool config dirs (any project) | Missing skills/agents |
+| Packages | On npm publish (tag/release) | Application runtime (any project) | Broken imports |
+| f-rr-d | On git push (per-session pull) | Agent context (any project) | Stale knowledge |
+| Dashboard | Real-time HTTP | Human dashboard UI (WayOfMono + WayOfTeams) | Missing telemetry |
+
+### Why multiple projects share the same pipelines?
+
+Five projects (WayOfMono, WayOfTeams, WayOfWork, WayOfCollab, Opticat) store knowledge in f-rr-d under their own namespaces. WayOfMono publishes the harness and packages; the other projects consume them. The architecture is designed so that any project can plug into any pipeline without forking — a project can use the harness for skill delivery without using the packages, or use f-rr-d for tickets without the dashboard. This modularity allows each project to adopt only what it needs while maintaining cross-project consistency.
 
 ### Why canonical skills go through 7 per-tool copies?
 
@@ -534,7 +771,7 @@ Each AI coding tool has different conventions for naming, frontmatter fields, al
 
 ### Why two dashboard implementations?
 
-The CTO Dashboard exists as both a **Next.js** app (`ui/`) and a **Phoenix LiveView** app (WayOfTeams, `thoughts/wayofteams/`). Both consume the same f-rr-d tickets and harness telemetry through the same API contracts. The Next.js version was built first as a rapid prototype; the WayOfTeams Phoenix port provides a more production-ready stack with Ash Framework resource management, Jido agent integration, and PostgreSQL persistence. Both are active — they represent an incremental migration rather than a rewrite.
+The CTO Dashboard exists as both a **Next.js** app (`ui/`, owned by WayOfMono) and a **Phoenix LiveView** app (WayOfTeams, `thoughts/wayofteams/`, owned by the WOTEAMS project). Both consume the same f-rr-d tickets and harness telemetry through the same API contracts but are independent projects. The Next.js version was built first as a rapid prototype under WayOfMono; WayOfTeams is a separate project that reimplements the dashboard with a more production-ready stack (Phoenix LiveView, Ash Framework, Jido agents, PostgreSQL). Both are active and serve their respective project stakeholders.
 
 ### Why dual-write tickets (SQLite + filesystem)?
 
@@ -595,4 +832,5 @@ See `docs/fixes/ai-engineering-harness-fixes.md` (v1.7.2 "Platform-Aware Harness
 - [Packages Reference](packages.md)
 - [Dev vs Runtime Dependencies](concepts/dev-vs-runtime-deps.md)
 - [AI Engineering Harness Guide](guides/ai-harness/)
+- [WayOfMono Investor-Ready Docs](../../thoughts/wayofmono/docs/Product%20docs/Investor%20Ready/)
 - [WayOfTeams Investor-Ready Docs](../../thoughts/wayofteams/docs/Product%20docs/Investor%20Ready/)

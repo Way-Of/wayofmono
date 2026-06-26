@@ -1,5 +1,5 @@
 {
-  "version": "1.7.7",
+  "version": "1.7.8",
   "tools": {
     "antigravity": {
       "name": "antigravity",
@@ -87,7 +87,7 @@
               "dest": "commands/README.md"
             },
             {
-              "src": "antigravity/commands/run_commit.toml",
+              "src": "antigravity/commands/run-commit.toml",
               "dest": "commands/commit.toml"
             },
             {
@@ -95,15 +95,15 @@
               "dest": "commands/create-plan.toml"
             },
             {
-              "src": "antigravity/commands/run_debug_k8s.toml",
+              "src": "antigravity/commands/run-debug-k8s.toml",
               "dest": "commands/debug-k8s.toml"
             },
             {
-              "src": "antigravity/commands/run_debug.toml",
+              "src": "antigravity/commands/run-debug.toml",
               "dest": "commands/debug.toml"
             },
             {
-              "src": "antigravity/commands/run_experimental_pr_workflow.toml",
+              "src": "antigravity/commands/run-experimental-pr-workflow.toml",
               "dest": "commands/experimental-pr-workflow.toml"
             },
             {
@@ -139,7 +139,7 @@
               "dest": "commands/validate-telemetry.toml"
             },
             {
-              "src": "antigravity/commands/run_worktree.toml",
+              "src": "antigravity/commands/run-worktree.toml",
               "dest": "commands/worktree.toml"
             }
           ]
@@ -148,7 +148,7 @@
           "description": "Commit command",
           "files": [
             {
-              "src": "antigravity/commands/run_commit.toml",
+              "src": "antigravity/commands/run-commit.toml",
               "dest": "commands/commit.toml"
             }
           ]
@@ -166,7 +166,7 @@
           "description": "Debug K8s command",
           "files": [
             {
-              "src": "antigravity/commands/run_debug_k8s.toml",
+              "src": "antigravity/commands/run-debug-k8s.toml",
               "dest": "commands/debug-k8s.toml"
             }
           ]
@@ -175,7 +175,7 @@
           "description": "Debug command",
           "files": [
             {
-              "src": "antigravity/commands/run_debug.toml",
+              "src": "antigravity/commands/run-debug.toml",
               "dest": "commands/debug.toml"
             }
           ]
@@ -184,7 +184,7 @@
           "description": "Experimental Pr Workflow command",
           "files": [
             {
-              "src": "antigravity/commands/run_experimental_pr_workflow.toml",
+              "src": "antigravity/commands/run-experimental-pr-workflow.toml",
               "dest": "commands/experimental-pr-workflow.toml"
             }
           ]
@@ -265,7 +265,7 @@
           "description": "Worktree command",
           "files": [
             {
-              "src": "antigravity/commands/run_worktree.toml",
+              "src": "antigravity/commands/run-worktree.toml",
               "dest": "commands/worktree.toml"
             }
           ]
@@ -603,36 +603,6 @@
             }
           ]
         },
-        "skill/skill-adapter": {
-          "description": "Skill Adapter skill",
-          "files": [
-            {
-              "src": "antigravity/skills/skill_adapter/SKILL.md",
-              "dest": "skills/skill-adapter/SKILL.md"
-            },
-            {
-              "src": "antigravity/skills/skill_adapter/assets/compliance_fix.ts",
-              "dest": "skills/skill-adapter/assets/compliance-fix.ts"
-            }
-          ]
-        },
-        "skill/skill-auto-update": {
-          "description": "Skill Auto Update skill",
-          "files": [
-            {
-              "src": "antigravity/skills/skill_auto_update/SKILL.md",
-              "dest": "skills/skill-auto-update/SKILL.md"
-            },
-            {
-              "src": "antigravity/skills/skill_auto_update/assets/compliance_fix.ts",
-              "dest": "skills/skill-auto-update/assets/compliance-fix.ts"
-            },
-            {
-              "src": "antigravity/skills/skill_auto_update/assets/skillsrules.md",
-              "dest": "skills/skill-auto-update/assets/skillsrules.md"
-            }
-          ]
-        },
         "skill/team-setup": {
           "description": "Team Setup skill",
           "files": [
@@ -650,7 +620,7 @@
               "dest": "skills/ticket-context/SKILL.md"
             },
             {
-              "src": "antigravity/skills/ticket_context/assets/audit_tickets.js",
+              "src": "antigravity/skills/ticket_context/assets/audit-tickets.js",
               "dest": "skills/ticket-context/assets/audit-tickets.js"
             }
           ]
@@ -663,7 +633,7 @@
               "dest": "skills/ticket-manager/SKILL.md"
             },
             {
-              "src": "antigravity/skills/ticket_manager/assets/audit_tickets.js",
+              "src": "antigravity/skills/ticket_manager/assets/audit-tickets.js",
               "dest": "skills/ticket-manager/assets/audit-tickets.js"
             }
           ]
@@ -795,16 +765,48 @@
           ]
         },
         "skill/build-tool-skill": {
-          "description": "Unified skill builder for all 7 tools \u2014 deployed to Antigravity",
+          "description": "Unified skill builder, validator, adapter, and lifecycle manager for all 7 tools",
           "files": [
             {
               "src": "antigravity/skills/build_tool_skill/SKILL.md",
               "dest": "skills/build-tool-skill/SKILL.md"
+            },
+            {
+              "src": "antigravity/skills/build_tool_skill/assets/config-manifest-example.yaml",
+              "dest": "skills/build-tool-skill/assets/config-manifest-example.yaml"
+            },
+            {
+              "src": "antigravity/skills/build_tool_skill/assets/skill-example-opencode.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-opencode.md"
+            },
+            {
+              "src": "antigravity/skills/build_tool_skill/assets/skill-example-claude.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-claude.md"
+            },
+            {
+              "src": "antigravity/skills/build_tool_skill/assets/skill-example-pi.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-pi.md"
+            },
+            {
+              "src": "antigravity/skills/build_tool_skill/assets/skill-example-codex.yaml",
+              "dest": "skills/build-tool-skill/assets/skill-example-codex.yaml"
+            },
+            {
+              "src": "antigravity/skills/build_tool_skill/assets/skill-example-codex-prompt.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-codex-prompt.md"
+            },
+            {
+              "src": "antigravity/skills/build_tool_skill/assets/compliance-check.py",
+              "dest": "skills/build-tool-skill/assets/compliance-check.py"
+            },
+            {
+              "src": "antigravity/skills/build_tool_skill/assets/adapter-generate.py",
+              "dest": "skills/build-tool-skill/assets/adapter-generate.py"
             }
           ]
         },
         "skill/build-tool-agent": {
-          "description": "Unified agent builder for all 7 tools \u2014 deployed to Antigravity",
+          "description": "Unified agent builder for all 7 tools — deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_agent/SKILL.md",
@@ -813,7 +815,7 @@
           ]
         },
         "skill/build-tool-extension": {
-          "description": "Unified extension/plugin builder for all 7 tools \u2014 deployed to Antigravity",
+          "description": "Unified extension/plugin builder for all 7 tools — deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_extension/SKILL.md",
@@ -822,7 +824,7 @@
           ]
         },
         "skill/build-tool-tui": {
-          "description": "Unified TUI component builder for all 7 tools \u2014 deployed to Antigravity",
+          "description": "Unified TUI component builder for all 7 tools — deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_tui/SKILL.md",
@@ -831,7 +833,7 @@
           ]
         },
         "skill/build-tool-cli": {
-          "description": "Unified CLI reference for all 7 tools \u2014 deployed to Antigravity",
+          "description": "Unified CLI reference for all 7 tools — deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_cli/SKILL.md",
@@ -840,7 +842,7 @@
           ]
         },
         "skill/build-tool-themes": {
-          "description": "Unified theme builder for all 7 tools \u2014 deployed to Antigravity",
+          "description": "Unified theme builder for all 7 tools — deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_themes/SKILL.md",
@@ -849,7 +851,7 @@
           ]
         },
         "skill/build-tool-prompts": {
-          "description": "Unified prompt template builder for all 7 tools \u2014 deployed to Antigravity",
+          "description": "Unified prompt template builder for all 7 tools — deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_prompts/SKILL.md",
@@ -858,7 +860,7 @@
           ]
         },
         "skill/build-tool-keybindings": {
-          "description": "Unified keybinding reference for all 7 tools \u2014 deployed to Antigravity",
+          "description": "Unified keybinding reference for all 7 tools — deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_keybindings/SKILL.md",
@@ -867,7 +869,7 @@
           ]
         },
         "skill/build-tool-config": {
-          "description": "Unified configuration reference for all 7 tools \u2014 deployed to Antigravity",
+          "description": "Unified configuration reference for all 7 tools — deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_config/SKILL.md",
@@ -876,7 +878,7 @@
           ]
         },
         "skill/build-tool-orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools \u2014 deployed to Antigravity",
+          "description": "Unified orchestration coordinator for all 7 tools — deployed to Antigravity",
           "files": [
             {
               "src": "antigravity/skills/build_tool_orchestrate/SKILL.md",
@@ -904,12 +906,8 @@
               "dest": "skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml"
             },
             {
-              "src": "antigravity/skills/investor_ready_doc_gen/assets/pdf/investor_theme.css",
+              "src": "antigravity/skills/investor_ready_doc_gen/assets/pdf/investor-theme.css",
               "dest": "skills/investor-ready-doc-gen/assets/pdf/investor-theme.css"
-            },
-            {
-              "src": "antigravity/skills/investor_ready_doc_gen/assets/pdf/design_template.yaml",
-              "dest": "skills/investor-ready-doc-gen/assets/pdf/design-template.yaml"
             },
             {
               "src": "antigravity/skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
@@ -1159,37 +1157,6 @@
             }
           ]
         },
-        "skill/build-skill-adapter": {
-          "description": "Adapts skills between different AI coding tool formats and conventions",
-          "files": [
-            {
-              "src": "antigravity/skills/build_skill_adapter/SKILL.md",
-              "dest": "skills/build-skill-adapter/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-skill-auto-update": {
-          "description": "Automatically updates skills when dependencies or APIs change",
-          "files": [
-            {
-              "src": "antigravity/skills/build_skill_auto_update/SKILL.md",
-              "dest": "skills/build-skill-auto-update/SKILL.md"
-            }
-          ]
-        },
-        "skill/skill-compliance-checker": {
-          "description": "Validates skills against production-ready standards and best practices",
-          "files": [
-            {
-              "src": "antigravity/skills/skill_compliance_checker/SKILL.md",
-              "dest": "skills/skill-compliance-checker/SKILL.md"
-            },
-            {
-              "src": "antigravity/skills/skill_compliance_checker/assets/compliance_fix.ts",
-              "dest": "skills/skill-compliance-checker/assets/compliance-fix.ts"
-            }
-          ]
-        },
         "skill/self-documentation": {
           "description": "Enables Wo to answer How do I...? and What's the command for...? questions by searching its own commands, skills, and documentation locally",
           "files": [
@@ -1216,7 +1183,7 @@
               "dest": "skills/ticket-executor/SKILL.md"
             },
             {
-              "src": "antigravity/skills/ticket_executor/assets/audit_tickets.js",
+              "src": "antigravity/skills/ticket_executor/assets/audit-tickets.js",
               "dest": "skills/ticket-executor/assets/audit-tickets.js"
             }
           ]
@@ -1299,6 +1266,45 @@
             {
               "src": "antigravity/skills/womonodeploy/SKILL.md",
               "dest": "skills/womonodeploy/SKILL.md"
+            }
+          ]
+        },
+        "skill/runbook-manager": {
+          "description": "Generate, update, and maintain production runbooks per project",
+          "files": [
+            {
+              "src": "antigravity/skills/runbook_manager/SKILL.md",
+              "dest": "skills/runbook-manager/SKILL.md"
+            },
+            {
+              "src": "antigravity/skills/runbook_manager/assets/runbook-template.md",
+              "dest": "skills/runbook-manager/assets/runbook-template.md"
+            }
+          ]
+        },
+        "skill/postmortem-manager": {
+          "description": "Generate incident postmortems with interactive flow and git metrics",
+          "files": [
+            {
+              "src": "antigravity/skills/postmortem_manager/SKILL.md",
+              "dest": "skills/postmortem-manager/SKILL.md"
+            },
+            {
+              "src": "antigravity/skills/postmortem_manager/assets/postmortem-template.md",
+              "dest": "skills/postmortem-manager/assets/postmortem-template.md"
+            }
+          ]
+        },
+        "skill/session-export": {
+          "description": "Capture working session as structured session history with git metrics and context",
+          "files": [
+            {
+              "src": "antigravity/skills/session_export/SKILL.md",
+              "dest": "skills/session-export/SKILL.md"
+            },
+            {
+              "src": "antigravity/skills/session_export/assets/session-template.md",
+              "dest": "skills/session-export/assets/session-template.md"
             }
           ]
         }
@@ -1655,36 +1661,6 @@
             }
           ]
         },
-        "skill/skill-adapter": {
-          "description": "Skill Adapter skill",
-          "files": [
-            {
-              "src": "claude/skills/skill_adapter/SKILL.md",
-              "dest": "skills/skill-adapter/SKILL.md"
-            },
-            {
-              "src": "claude/skills/skill_adapter/assets/compliance_fix.ts",
-              "dest": "skills/skill-adapter/assets/compliance-fix.ts"
-            }
-          ]
-        },
-        "skill/skill-auto-update": {
-          "description": "Skill Auto Update skill",
-          "files": [
-            {
-              "src": "claude/skills/skill_auto_update/SKILL.md",
-              "dest": "skills/skill-auto-update/SKILL.md"
-            },
-            {
-              "src": "claude/skills/skill_auto_update/assets/compliance_fix.ts",
-              "dest": "skills/skill-auto-update/assets/compliance-fix.ts"
-            },
-            {
-              "src": "claude/skills/skill_auto_update/assets/skillsrules.md",
-              "dest": "skills/skill-auto-update/assets/skillsrules.md"
-            }
-          ]
-        },
         "skill/team-setup": {
           "description": "Team Setup skill",
           "files": [
@@ -1702,7 +1678,7 @@
               "dest": "skills/ticket-context/SKILL.md"
             },
             {
-              "src": "claude/skills/ticket_context/assets/audit_tickets.js",
+              "src": "claude/skills/ticket_context/assets/audit-tickets.js",
               "dest": "skills/ticket-context/assets/audit-tickets.js"
             }
           ]
@@ -1715,7 +1691,7 @@
               "dest": "skills/ticket-manager/SKILL.md"
             },
             {
-              "src": "claude/skills/ticket_manager/assets/audit_tickets.js",
+              "src": "claude/skills/ticket_manager/assets/audit-tickets.js",
               "dest": "skills/ticket-manager/assets/audit-tickets.js"
             }
           ]
@@ -1856,16 +1832,48 @@
           ]
         },
         "skill/build-tool-skill": {
-          "description": "Unified skill builder for all 7 tools \u2014 deployed to Claude Code",
+          "description": "Unified skill builder, validator, adapter, and lifecycle manager for all 7 tools",
           "files": [
             {
               "src": "claude/skills/build_tool_skill/SKILL.md",
               "dest": "skills/build-tool-skill/SKILL.md"
+            },
+            {
+              "src": "claude/skills/build_tool_skill/assets/config-manifest-example.yaml",
+              "dest": "skills/build-tool-skill/assets/config-manifest-example.yaml"
+            },
+            {
+              "src": "claude/skills/build_tool_skill/assets/skill-example-opencode.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-opencode.md"
+            },
+            {
+              "src": "claude/skills/build_tool_skill/assets/skill-example-claude.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-claude.md"
+            },
+            {
+              "src": "claude/skills/build_tool_skill/assets/skill-example-pi.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-pi.md"
+            },
+            {
+              "src": "claude/skills/build_tool_skill/assets/skill-example-codex.yaml",
+              "dest": "skills/build-tool-skill/assets/skill-example-codex.yaml"
+            },
+            {
+              "src": "claude/skills/build_tool_skill/assets/skill-example-codex-prompt.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-codex-prompt.md"
+            },
+            {
+              "src": "claude/skills/build_tool_skill/assets/compliance-check.py",
+              "dest": "skills/build-tool-skill/assets/compliance-check.py"
+            },
+            {
+              "src": "claude/skills/build_tool_skill/assets/adapter-generate.py",
+              "dest": "skills/build-tool-skill/assets/adapter-generate.py"
             }
           ]
         },
         "skill/build-tool-agent": {
-          "description": "Unified agent builder for all 7 tools \u2014 deployed to Claude Code",
+          "description": "Unified agent builder for all 7 tools — deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_agent/SKILL.md",
@@ -1874,7 +1882,7 @@
           ]
         },
         "skill/build-tool-extension": {
-          "description": "Unified extension/plugin builder for all 7 tools \u2014 deployed to Claude Code",
+          "description": "Unified extension/plugin builder for all 7 tools — deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_extension/SKILL.md",
@@ -1883,7 +1891,7 @@
           ]
         },
         "skill/build-tool-tui": {
-          "description": "Unified TUI component builder for all 7 tools \u2014 deployed to Claude Code",
+          "description": "Unified TUI component builder for all 7 tools — deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_tui/SKILL.md",
@@ -1892,7 +1900,7 @@
           ]
         },
         "skill/build-tool-cli": {
-          "description": "Unified CLI reference for all 7 tools \u2014 deployed to Claude Code",
+          "description": "Unified CLI reference for all 7 tools — deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_cli/SKILL.md",
@@ -1901,7 +1909,7 @@
           ]
         },
         "skill/build-tool-themes": {
-          "description": "Unified theme builder for all 7 tools \u2014 deployed to Claude Code",
+          "description": "Unified theme builder for all 7 tools — deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_themes/SKILL.md",
@@ -1910,7 +1918,7 @@
           ]
         },
         "skill/build-tool-prompts": {
-          "description": "Unified prompt template builder for all 7 tools \u2014 deployed to Claude Code",
+          "description": "Unified prompt template builder for all 7 tools — deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_prompts/SKILL.md",
@@ -1919,7 +1927,7 @@
           ]
         },
         "skill/build-tool-keybindings": {
-          "description": "Unified keybinding reference for all 7 tools \u2014 deployed to Claude Code",
+          "description": "Unified keybinding reference for all 7 tools — deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_keybindings/SKILL.md",
@@ -1928,7 +1936,7 @@
           ]
         },
         "skill/build-tool-config": {
-          "description": "Unified configuration reference for all 7 tools \u2014 deployed to Claude Code",
+          "description": "Unified configuration reference for all 7 tools — deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_config/SKILL.md",
@@ -1937,7 +1945,7 @@
           ]
         },
         "skill/build-tool-orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools \u2014 deployed to Claude Code",
+          "description": "Unified orchestration coordinator for all 7 tools — deployed to Claude Code",
           "files": [
             {
               "src": "claude/skills/build_tool_orchestrate/SKILL.md",
@@ -1965,12 +1973,8 @@
               "dest": "skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml"
             },
             {
-              "src": "claude/skills/investor_ready_doc_gen/assets/pdf/investor_theme.css",
+              "src": "claude/skills/investor_ready_doc_gen/assets/pdf/investor-theme.css",
               "dest": "skills/investor-ready-doc-gen/assets/pdf/investor-theme.css"
-            },
-            {
-              "src": "claude/skills/investor_ready_doc_gen/assets/pdf/design_template.yaml",
-              "dest": "skills/investor-ready-doc-gen/assets/pdf/design-template.yaml"
             },
             {
               "src": "claude/skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
@@ -2220,37 +2224,6 @@
             }
           ]
         },
-        "skill/build-skill-adapter": {
-          "description": "Adapts skills between different AI coding tool formats and conventions",
-          "files": [
-            {
-              "src": "claude/skills/build_skill_adapter/SKILL.md",
-              "dest": "skills/build-skill-adapter/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-skill-auto-update": {
-          "description": "Automatically updates skills when dependencies or APIs change",
-          "files": [
-            {
-              "src": "claude/skills/build_skill_auto_update/SKILL.md",
-              "dest": "skills/build-skill-auto-update/SKILL.md"
-            }
-          ]
-        },
-        "skill/skill-compliance-checker": {
-          "description": "Validates skills against production-ready standards and best practices",
-          "files": [
-            {
-              "src": "claude/skills/skill_compliance_checker/SKILL.md",
-              "dest": "skills/skill-compliance-checker/SKILL.md"
-            },
-            {
-              "src": "claude/skills/skill_compliance_checker/assets/compliance_fix.ts",
-              "dest": "skills/skill-compliance-checker/assets/compliance-fix.ts"
-            }
-          ]
-        },
         "skill/self-documentation": {
           "description": "Enables Wo to answer How do I...? and What's the command for...? questions by searching its own commands, skills, and documentation locally",
           "files": [
@@ -2277,7 +2250,7 @@
               "dest": "skills/ticket-executor/SKILL.md"
             },
             {
-              "src": "claude/skills/ticket_executor/assets/audit_tickets.js",
+              "src": "claude/skills/ticket_executor/assets/audit-tickets.js",
               "dest": "skills/ticket-executor/assets/audit-tickets.js"
             }
           ]
@@ -2360,6 +2333,45 @@
             {
               "src": "claude/skills/womonodeploy/SKILL.md",
               "dest": "skills/womonodeploy/SKILL.md"
+            }
+          ]
+        },
+        "skill/runbook-manager": {
+          "description": "Generate, update, and maintain production runbooks per project",
+          "files": [
+            {
+              "src": "claude/skills/runbook_manager/SKILL.md",
+              "dest": "skills/runbook-manager/SKILL.md"
+            },
+            {
+              "src": "claude/skills/runbook_manager/assets/runbook-template.md",
+              "dest": "skills/runbook-manager/assets/runbook-template.md"
+            }
+          ]
+        },
+        "skill/postmortem-manager": {
+          "description": "Generate incident postmortems with interactive flow and git metrics",
+          "files": [
+            {
+              "src": "claude/skills/postmortem_manager/SKILL.md",
+              "dest": "skills/postmortem-manager/SKILL.md"
+            },
+            {
+              "src": "claude/skills/postmortem_manager/assets/postmortem-template.md",
+              "dest": "skills/postmortem-manager/assets/postmortem-template.md"
+            }
+          ]
+        },
+        "skill/session-export": {
+          "description": "Capture working session as structured session history with git metrics and context",
+          "files": [
+            {
+              "src": "claude/skills/session_export/SKILL.md",
+              "dest": "skills/session-export/SKILL.md"
+            },
+            {
+              "src": "claude/skills/session_export/assets/session-template.md",
+              "dest": "skills/session-export/assets/session-template.md"
             }
           ]
         }
@@ -2655,36 +2667,6 @@
             }
           ]
         },
-        "skill/skill-adapter": {
-          "description": "Skill Adapter skill",
-          "files": [
-            {
-              "src": "codex/skills/skill_adapter/SKILL.md",
-              "dest": "skills/skill-adapter/SKILL.md"
-            },
-            {
-              "src": "codex/skills/skill_adapter/assets/compliance_fix.ts",
-              "dest": "skills/skill-adapter/assets/compliance-fix.ts"
-            }
-          ]
-        },
-        "skill/skill-auto-update": {
-          "description": "Skill Auto Update skill",
-          "files": [
-            {
-              "src": "codex/skills/skill_auto_update/SKILL.md",
-              "dest": "skills/skill-auto-update/SKILL.md"
-            },
-            {
-              "src": "codex/skills/skill_auto_update/assets/compliance_fix.ts",
-              "dest": "skills/skill-auto-update/assets/compliance-fix.ts"
-            },
-            {
-              "src": "codex/skills/skill_auto_update/assets/skillsrules.md",
-              "dest": "skills/skill-auto-update/assets/skillsrules.md"
-            }
-          ]
-        },
         "skill/tdd": {
           "description": "Tdd skill",
           "files": [
@@ -2711,7 +2693,7 @@
               "dest": "skills/ticket-context/SKILL.md"
             },
             {
-              "src": "codex/skills/ticket_context/assets/audit_tickets.js",
+              "src": "codex/skills/ticket_context/assets/audit-tickets.js",
               "dest": "skills/ticket-context/assets/audit-tickets.js"
             }
           ]
@@ -2724,7 +2706,7 @@
               "dest": "skills/ticket-manager/SKILL.md"
             },
             {
-              "src": "codex/skills/ticket_manager/assets/audit_tickets.js",
+              "src": "codex/skills/ticket_manager/assets/audit-tickets.js",
               "dest": "skills/ticket-manager/assets/audit-tickets.js"
             }
           ]
@@ -2892,16 +2874,48 @@
           ]
         },
         "skill/build-tool-skill": {
-          "description": "Unified skill builder for all 7 tools \u2014 deployed to Codex",
+          "description": "Unified skill builder, validator, adapter, and lifecycle manager for all 7 tools",
           "files": [
             {
               "src": "codex/skills/build_tool_skill/SKILL.md",
               "dest": "skills/build-tool-skill/SKILL.md"
+            },
+            {
+              "src": "codex/skills/build_tool_skill/assets/config-manifest-example.yaml",
+              "dest": "skills/build-tool-skill/assets/config-manifest-example.yaml"
+            },
+            {
+              "src": "codex/skills/build_tool_skill/assets/skill-example-opencode.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-opencode.md"
+            },
+            {
+              "src": "codex/skills/build_tool_skill/assets/skill-example-claude.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-claude.md"
+            },
+            {
+              "src": "codex/skills/build_tool_skill/assets/skill-example-pi.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-pi.md"
+            },
+            {
+              "src": "codex/skills/build_tool_skill/assets/skill-example-codex.yaml",
+              "dest": "skills/build-tool-skill/assets/skill-example-codex.yaml"
+            },
+            {
+              "src": "codex/skills/build_tool_skill/assets/skill-example-codex-prompt.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-codex-prompt.md"
+            },
+            {
+              "src": "codex/skills/build_tool_skill/assets/compliance-check.py",
+              "dest": "skills/build-tool-skill/assets/compliance-check.py"
+            },
+            {
+              "src": "codex/skills/build_tool_skill/assets/adapter-generate.py",
+              "dest": "skills/build-tool-skill/assets/adapter-generate.py"
             }
           ]
         },
         "skill/build-tool-agent": {
-          "description": "Unified agent builder for all 7 tools \u2014 deployed to Codex",
+          "description": "Unified agent builder for all 7 tools — deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_agent/SKILL.md",
@@ -2910,7 +2924,7 @@
           ]
         },
         "skill/build-tool-extension": {
-          "description": "Unified extension/plugin builder for all 7 tools \u2014 deployed to Codex",
+          "description": "Unified extension/plugin builder for all 7 tools — deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_extension/SKILL.md",
@@ -2919,7 +2933,7 @@
           ]
         },
         "skill/build-tool-tui": {
-          "description": "Unified TUI component builder for all 7 tools \u2014 deployed to Codex",
+          "description": "Unified TUI component builder for all 7 tools — deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_tui/SKILL.md",
@@ -2928,7 +2942,7 @@
           ]
         },
         "skill/build-tool-cli": {
-          "description": "Unified CLI reference for all 7 tools \u2014 deployed to Codex",
+          "description": "Unified CLI reference for all 7 tools — deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_cli/SKILL.md",
@@ -2937,7 +2951,7 @@
           ]
         },
         "skill/build-tool-themes": {
-          "description": "Unified theme builder for all 7 tools \u2014 deployed to Codex",
+          "description": "Unified theme builder for all 7 tools — deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_themes/SKILL.md",
@@ -2946,7 +2960,7 @@
           ]
         },
         "skill/build-tool-prompts": {
-          "description": "Unified prompt template builder for all 7 tools \u2014 deployed to Codex",
+          "description": "Unified prompt template builder for all 7 tools — deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_prompts/SKILL.md",
@@ -2955,7 +2969,7 @@
           ]
         },
         "skill/build-tool-keybindings": {
-          "description": "Unified keybinding reference for all 7 tools \u2014 deployed to Codex",
+          "description": "Unified keybinding reference for all 7 tools — deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_keybindings/SKILL.md",
@@ -2964,7 +2978,7 @@
           ]
         },
         "skill/build-tool-config": {
-          "description": "Unified configuration reference for all 7 tools \u2014 deployed to Codex",
+          "description": "Unified configuration reference for all 7 tools — deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_config/SKILL.md",
@@ -2973,7 +2987,7 @@
           ]
         },
         "skill/build-tool-orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools \u2014 deployed to Codex",
+          "description": "Unified orchestration coordinator for all 7 tools — deployed to Codex",
           "files": [
             {
               "src": "codex/skills/build_tool_orchestrate/SKILL.md",
@@ -3001,12 +3015,8 @@
               "dest": "skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml"
             },
             {
-              "src": "codex/skills/investor_ready_doc_gen/assets/pdf/investor_theme.css",
+              "src": "codex/skills/investor_ready_doc_gen/assets/pdf/investor-theme.css",
               "dest": "skills/investor-ready-doc-gen/assets/pdf/investor-theme.css"
-            },
-            {
-              "src": "codex/skills/investor_ready_doc_gen/assets/pdf/design_template.yaml",
-              "dest": "skills/investor-ready-doc-gen/assets/pdf/design-template.yaml"
             },
             {
               "src": "codex/skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
@@ -3256,37 +3266,6 @@
             }
           ]
         },
-        "skill/build-skill-adapter": {
-          "description": "Adapts skills between different AI coding tool formats and conventions",
-          "files": [
-            {
-              "src": "codex/skills/build_skill_adapter/SKILL.md",
-              "dest": "skills/build-skill-adapter/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-skill-auto-update": {
-          "description": "Automatically updates skills when dependencies or APIs change",
-          "files": [
-            {
-              "src": "codex/skills/build_skill_auto_update/SKILL.md",
-              "dest": "skills/build-skill-auto-update/SKILL.md"
-            }
-          ]
-        },
-        "skill/skill-compliance-checker": {
-          "description": "Validates skills against production-ready standards and best practices",
-          "files": [
-            {
-              "src": "codex/skills/skill_compliance_checker/SKILL.md",
-              "dest": "skills/skill-compliance-checker/SKILL.md"
-            },
-            {
-              "src": "codex/skills/skill_compliance_checker/assets/compliance_fix.ts",
-              "dest": "skills/skill-compliance-checker/assets/compliance-fix.ts"
-            }
-          ]
-        },
         "skill/self-documentation": {
           "description": "Enables Wo to answer How do I...? and What's the command for...? questions by searching its own commands, skills, and documentation locally",
           "files": [
@@ -3313,7 +3292,7 @@
               "dest": "skills/ticket-executor/SKILL.md"
             },
             {
-              "src": "codex/skills/ticket_executor/assets/audit_tickets.js",
+              "src": "codex/skills/ticket_executor/assets/audit-tickets.js",
               "dest": "skills/ticket-executor/assets/audit-tickets.js"
             }
           ]
@@ -3398,6 +3377,45 @@
               "dest": "skills/womonodeploy/SKILL.md"
             }
           ]
+        },
+        "skill/runbook-manager": {
+          "description": "Generate, update, and maintain production runbooks per project",
+          "files": [
+            {
+              "src": "codex/skills/runbook_manager/SKILL.md",
+              "dest": "skills/runbook-manager/SKILL.md"
+            },
+            {
+              "src": "codex/skills/runbook_manager/assets/runbook-template.md",
+              "dest": "skills/runbook-manager/assets/runbook-template.md"
+            }
+          ]
+        },
+        "skill/postmortem-manager": {
+          "description": "Generate incident postmortems with interactive flow and git metrics",
+          "files": [
+            {
+              "src": "codex/skills/postmortem_manager/SKILL.md",
+              "dest": "skills/postmortem-manager/SKILL.md"
+            },
+            {
+              "src": "codex/skills/postmortem_manager/assets/postmortem-template.md",
+              "dest": "skills/postmortem-manager/assets/postmortem-template.md"
+            }
+          ]
+        },
+        "skill/session-export": {
+          "description": "Capture working session as structured session history with git metrics and context",
+          "files": [
+            {
+              "src": "codex/skills/session_export/SKILL.md",
+              "dest": "skills/session-export/SKILL.md"
+            },
+            {
+              "src": "codex/skills/session_export/assets/session-template.md",
+              "dest": "skills/session-export/assets/session-template.md"
+            }
+          ]
         }
       }
     },
@@ -3479,7 +3497,7 @@
           "description": "Gemini commands",
           "files": [
             {
-              "src": "gemini/commands/run_commit.toml",
+              "src": "gemini/commands/run-commit.toml",
               "dest": "commands/commit.toml"
             },
             {
@@ -3487,15 +3505,15 @@
               "dest": "commands/create-plan.toml"
             },
             {
-              "src": "gemini/commands/run_debug_k8s.toml",
+              "src": "gemini/commands/run-debug-k8s.toml",
               "dest": "commands/debug-k8s.toml"
             },
             {
-              "src": "gemini/commands/run_debug.toml",
+              "src": "gemini/commands/run-debug.toml",
               "dest": "commands/debug.toml"
             },
             {
-              "src": "gemini/commands/run_experimental_pr_workflow.toml",
+              "src": "gemini/commands/run-experimental-pr-workflow.toml",
               "dest": "commands/experimental-pr-workflow.toml"
             },
             {
@@ -3531,7 +3549,7 @@
               "dest": "commands/validate-telemetry.toml"
             },
             {
-              "src": "gemini/commands/run_worktree.toml",
+              "src": "gemini/commands/run-worktree.toml",
               "dest": "commands/worktree.toml"
             }
           ]
@@ -3540,7 +3558,7 @@
           "description": "Commit command",
           "files": [
             {
-              "src": "gemini/commands/run_commit.toml",
+              "src": "gemini/commands/run-commit.toml",
               "dest": "commands/commit.toml"
             }
           ]
@@ -3558,7 +3576,7 @@
           "description": "Debug K8s command",
           "files": [
             {
-              "src": "gemini/commands/run_debug_k8s.toml",
+              "src": "gemini/commands/run-debug-k8s.toml",
               "dest": "commands/debug-k8s.toml"
             }
           ]
@@ -3567,7 +3585,7 @@
           "description": "Debug command",
           "files": [
             {
-              "src": "gemini/commands/run_debug.toml",
+              "src": "gemini/commands/run-debug.toml",
               "dest": "commands/debug.toml"
             }
           ]
@@ -3576,7 +3594,7 @@
           "description": "Experimental Pr Workflow command",
           "files": [
             {
-              "src": "gemini/commands/run_experimental_pr_workflow.toml",
+              "src": "gemini/commands/run-experimental-pr-workflow.toml",
               "dest": "commands/experimental-pr-workflow.toml"
             }
           ]
@@ -3657,7 +3675,7 @@
           "description": "Worktree command",
           "files": [
             {
-              "src": "gemini/commands/run_worktree.toml",
+              "src": "gemini/commands/run-worktree.toml",
               "dest": "commands/worktree.toml"
             }
           ]
@@ -3986,124 +4004,6 @@
             }
           ]
         },
-        "skill/skill-adapter": {
-          "description": "Skill Adapter skill",
-          "files": [
-            {
-              "src": "gemini/skills/skill_adapter/SKILL.md",
-              "dest": "skills/skill-adapter/SKILL.md"
-            },
-            {
-              "src": "gemini/skills/skill_adapter/assets/compliance_fix.ts",
-              "dest": "skills/skill-adapter/assets/compliance-fix.ts"
-            },
-            {
-              "src": "gemini/skills/skill_adapter/scripts/gemini_skill_update.py",
-              "dest": "skills/skill-adapter/scripts/gemini-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_adapter/scripts/test_yamls.py",
-              "dest": "skills/skill-adapter/scripts/test-yamls.py"
-            },
-            {
-              "src": "gemini/skills/skill_adapter/scripts/claude_skill_update.py",
-              "dest": "skills/skill-adapter/scripts/claude-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_adapter/scripts/test_manifest.py",
-              "dest": "skills/skill-adapter/scripts/test-manifest.py"
-            },
-            {
-              "src": "gemini/skills/skill_adapter/scripts/wocode_skill_update.py",
-              "dest": "skills/skill-adapter/scripts/wocode-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_adapter/scripts/codex_skill_update.py",
-              "dest": "skills/skill-adapter/scripts/codex-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_adapter/scripts/pi_skill_update.py",
-              "dest": "skills/skill-adapter/scripts/pi-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_adapter/scripts/test_skills.py",
-              "dest": "skills/skill-adapter/scripts/test-skills.py"
-            },
-            {
-              "src": "gemini/skills/skill_adapter/scripts/opencode_skill_update.py",
-              "dest": "skills/skill-adapter/scripts/opencode-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_adapter/scripts/run_all_tests.py",
-              "dest": "skills/skill-adapter/scripts/run-all-tests.py"
-            },
-            {
-              "src": "gemini/skills/skill_adapter/scripts/antigravity_skill_update.py",
-              "dest": "skills/skill-adapter/scripts/antigravity-skill-update.py"
-            }
-          ]
-        },
-        "skill/skill-auto-update": {
-          "description": "Skill Auto Update skill",
-          "files": [
-            {
-              "src": "gemini/skills/skill_auto_update/SKILL.md",
-              "dest": "skills/skill-auto-update/SKILL.md"
-            },
-            {
-              "src": "gemini/skills/skill_auto_update/assets/compliance_fix.ts",
-              "dest": "skills/skill-auto-update/assets/compliance-fix.ts"
-            },
-            {
-              "src": "gemini/skills/skill_auto_update/assets/skillsrules.md",
-              "dest": "skills/skill-auto-update/assets/skillsrules.md"
-            },
-            {
-              "src": "gemini/skills/skill_auto_update/scripts/gemini_skill_update.py",
-              "dest": "skills/skill-auto-update/scripts/gemini-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_auto_update/scripts/test_yamls.py",
-              "dest": "skills/skill-auto-update/scripts/test-yamls.py"
-            },
-            {
-              "src": "gemini/skills/skill_auto_update/scripts/claude_skill_update.py",
-              "dest": "skills/skill-auto-update/scripts/claude-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_auto_update/scripts/test_manifest.py",
-              "dest": "skills/skill-auto-update/scripts/test-manifest.py"
-            },
-            {
-              "src": "gemini/skills/skill_auto_update/scripts/wocode_skill_update.py",
-              "dest": "skills/skill-auto-update/scripts/wocode-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_auto_update/scripts/codex_skill_update.py",
-              "dest": "skills/skill-auto-update/scripts/codex-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_auto_update/scripts/pi_skill_update.py",
-              "dest": "skills/skill-auto-update/scripts/pi-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_auto_update/scripts/test_skills.py",
-              "dest": "skills/skill-auto-update/scripts/test-skills.py"
-            },
-            {
-              "src": "gemini/skills/skill_auto_update/scripts/opencode_skill_update.py",
-              "dest": "skills/skill-auto-update/scripts/opencode-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_auto_update/scripts/run_all_tests.py",
-              "dest": "skills/skill-auto-update/scripts/run-all-tests.py"
-            },
-            {
-              "src": "gemini/skills/skill_auto_update/scripts/antigravity_skill_update.py",
-              "dest": "skills/skill-auto-update/scripts/antigravity-skill-update.py"
-            }
-          ]
-        },
         "skill/team-setup": {
           "description": "Team Setup skill",
           "files": [
@@ -4121,7 +4021,7 @@
               "dest": "skills/ticket-context/SKILL.md"
             },
             {
-              "src": "gemini/skills/ticket_context/assets/audit_tickets.js",
+              "src": "gemini/skills/ticket_context/assets/audit-tickets.js",
               "dest": "skills/ticket-context/assets/audit-tickets.js"
             }
           ]
@@ -4134,7 +4034,7 @@
               "dest": "skills/ticket-manager/SKILL.md"
             },
             {
-              "src": "gemini/skills/ticket_manager/assets/audit_tickets.js",
+              "src": "gemini/skills/ticket_manager/assets/audit-tickets.js",
               "dest": "skills/ticket-manager/assets/audit-tickets.js"
             }
           ]
@@ -4275,16 +4175,48 @@
           ]
         },
         "skill/build-tool-skill": {
-          "description": "Unified skill builder for all 7 tools \u2014 deployed to Gemini CLI",
+          "description": "Unified skill builder, validator, adapter, and lifecycle manager for all 7 tools",
           "files": [
             {
               "src": "gemini/skills/build_tool_skill/SKILL.md",
               "dest": "skills/build-tool-skill/SKILL.md"
+            },
+            {
+              "src": "gemini/skills/build_tool_skill/assets/config-manifest-example.yaml",
+              "dest": "skills/build-tool-skill/assets/config-manifest-example.yaml"
+            },
+            {
+              "src": "gemini/skills/build_tool_skill/assets/skill-example-opencode.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-opencode.md"
+            },
+            {
+              "src": "gemini/skills/build_tool_skill/assets/skill-example-claude.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-claude.md"
+            },
+            {
+              "src": "gemini/skills/build_tool_skill/assets/skill-example-pi.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-pi.md"
+            },
+            {
+              "src": "gemini/skills/build_tool_skill/assets/skill-example-codex.yaml",
+              "dest": "skills/build-tool-skill/assets/skill-example-codex.yaml"
+            },
+            {
+              "src": "gemini/skills/build_tool_skill/assets/skill-example-codex-prompt.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-codex-prompt.md"
+            },
+            {
+              "src": "gemini/skills/build_tool_skill/assets/compliance-check.py",
+              "dest": "skills/build-tool-skill/assets/compliance-check.py"
+            },
+            {
+              "src": "gemini/skills/build_tool_skill/assets/adapter-generate.py",
+              "dest": "skills/build-tool-skill/assets/adapter-generate.py"
             }
           ]
         },
         "skill/build-tool-agent": {
-          "description": "Unified agent builder for all 7 tools \u2014 deployed to Gemini CLI",
+          "description": "Unified agent builder for all 7 tools — deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_agent/SKILL.md",
@@ -4293,7 +4225,7 @@
           ]
         },
         "skill/build-tool-extension": {
-          "description": "Unified extension/plugin builder for all 7 tools \u2014 deployed to Gemini CLI",
+          "description": "Unified extension/plugin builder for all 7 tools — deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_extension/SKILL.md",
@@ -4302,7 +4234,7 @@
           ]
         },
         "skill/build-tool-tui": {
-          "description": "Unified TUI component builder for all 7 tools \u2014 deployed to Gemini CLI",
+          "description": "Unified TUI component builder for all 7 tools — deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_tui/SKILL.md",
@@ -4311,7 +4243,7 @@
           ]
         },
         "skill/build-tool-cli": {
-          "description": "Unified CLI reference for all 7 tools \u2014 deployed to Gemini CLI",
+          "description": "Unified CLI reference for all 7 tools — deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_cli/SKILL.md",
@@ -4320,7 +4252,7 @@
           ]
         },
         "skill/build-tool-themes": {
-          "description": "Unified theme builder for all 7 tools \u2014 deployed to Gemini CLI",
+          "description": "Unified theme builder for all 7 tools — deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_themes/SKILL.md",
@@ -4329,7 +4261,7 @@
           ]
         },
         "skill/build-tool-prompts": {
-          "description": "Unified prompt template builder for all 7 tools \u2014 deployed to Gemini CLI",
+          "description": "Unified prompt template builder for all 7 tools — deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_prompts/SKILL.md",
@@ -4338,7 +4270,7 @@
           ]
         },
         "skill/build-tool-keybindings": {
-          "description": "Unified keybinding reference for all 7 tools \u2014 deployed to Gemini CLI",
+          "description": "Unified keybinding reference for all 7 tools — deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_keybindings/SKILL.md",
@@ -4347,7 +4279,7 @@
           ]
         },
         "skill/build-tool-config": {
-          "description": "Unified configuration reference for all 7 tools \u2014 deployed to Gemini CLI",
+          "description": "Unified configuration reference for all 7 tools — deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_config/SKILL.md",
@@ -4356,7 +4288,7 @@
           ]
         },
         "skill/build-tool-orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools \u2014 deployed to Gemini CLI",
+          "description": "Unified orchestration coordinator for all 7 tools — deployed to Gemini CLI",
           "files": [
             {
               "src": "gemini/skills/build_tool_orchestrate/SKILL.md",
@@ -4384,12 +4316,8 @@
               "dest": "skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml"
             },
             {
-              "src": "gemini/skills/investor_ready_doc_gen/assets/pdf/investor_theme.css",
+              "src": "gemini/skills/investor_ready_doc_gen/assets/pdf/investor-theme.css",
               "dest": "skills/investor-ready-doc-gen/assets/pdf/investor-theme.css"
-            },
-            {
-              "src": "gemini/skills/investor_ready_doc_gen/assets/pdf/design_template.yaml",
-              "dest": "skills/investor-ready-doc-gen/assets/pdf/design-template.yaml"
             },
             {
               "src": "gemini/skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
@@ -4639,81 +4567,6 @@
             }
           ]
         },
-        "skill/build-skill-adapter": {
-          "description": "Adapts skills between different AI coding tool formats and conventions",
-          "files": [
-            {
-              "src": "gemini/skills/build_skill_adapter/SKILL.md",
-              "dest": "skills/build-skill-adapter/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-skill-auto-update": {
-          "description": "Automatically updates skills when dependencies or APIs change",
-          "files": [
-            {
-              "src": "gemini/skills/build_skill_auto_update/SKILL.md",
-              "dest": "skills/build-skill-auto-update/SKILL.md"
-            }
-          ]
-        },
-        "skill/skill-compliance-checker": {
-          "description": "Validates skills against production-ready standards and best practices",
-          "files": [
-            {
-              "src": "gemini/skills/skill_compliance_checker/SKILL.md",
-              "dest": "skills/skill-compliance-checker/SKILL.md"
-            },
-            {
-              "src": "gemini/skills/skill_compliance_checker/assets/compliance_fix.ts",
-              "dest": "skills/skill-compliance-checker/assets/compliance-fix.ts"
-            },
-            {
-              "src": "gemini/skills/skill_compliance_checker/scripts/gemini_skill_update.py",
-              "dest": "skills/skill-compliance-checker/scripts/gemini-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_compliance_checker/scripts/test_yamls.py",
-              "dest": "skills/skill-compliance-checker/scripts/test-yamls.py"
-            },
-            {
-              "src": "gemini/skills/skill_compliance_checker/scripts/claude_skill_update.py",
-              "dest": "skills/skill-compliance-checker/scripts/claude-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_compliance_checker/scripts/test_manifest.py",
-              "dest": "skills/skill-compliance-checker/scripts/test-manifest.py"
-            },
-            {
-              "src": "gemini/skills/skill_compliance_checker/scripts/wocode_skill_update.py",
-              "dest": "skills/skill-compliance-checker/scripts/wocode-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_compliance_checker/scripts/codex_skill_update.py",
-              "dest": "skills/skill-compliance-checker/scripts/codex-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_compliance_checker/scripts/pi_skill_update.py",
-              "dest": "skills/skill-compliance-checker/scripts/pi-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_compliance_checker/scripts/test_skills.py",
-              "dest": "skills/skill-compliance-checker/scripts/test-skills.py"
-            },
-            {
-              "src": "gemini/skills/skill_compliance_checker/scripts/opencode_skill_update.py",
-              "dest": "skills/skill-compliance-checker/scripts/opencode-skill-update.py"
-            },
-            {
-              "src": "gemini/skills/skill_compliance_checker/scripts/run_all_tests.py",
-              "dest": "skills/skill-compliance-checker/scripts/run-all-tests.py"
-            },
-            {
-              "src": "gemini/skills/skill_compliance_checker/scripts/antigravity_skill_update.py",
-              "dest": "skills/skill-compliance-checker/scripts/antigravity-skill-update.py"
-            }
-          ]
-        },
         "skill/self-documentation": {
           "description": "Enables Wo to answer How do I...? and What's the command for...? questions by searching its own commands, skills, and documentation locally",
           "files": [
@@ -4740,7 +4593,7 @@
               "dest": "skills/ticket-executor/SKILL.md"
             },
             {
-              "src": "gemini/skills/ticket_executor/assets/audit_tickets.js",
+              "src": "gemini/skills/ticket_executor/assets/audit-tickets.js",
               "dest": "skills/ticket-executor/assets/audit-tickets.js"
             }
           ]
@@ -4823,6 +4676,45 @@
             {
               "src": "gemini/skills/womonodeploy/SKILL.md",
               "dest": "skills/womonodeploy/SKILL.md"
+            }
+          ]
+        },
+        "skill/runbook-manager": {
+          "description": "Generate, update, and maintain production runbooks per project",
+          "files": [
+            {
+              "src": "gemini/skills/runbook_manager/SKILL.md",
+              "dest": "skills/runbook-manager/SKILL.md"
+            },
+            {
+              "src": "gemini/skills/runbook_manager/assets/runbook-template.md",
+              "dest": "skills/runbook-manager/assets/runbook-template.md"
+            }
+          ]
+        },
+        "skill/postmortem-manager": {
+          "description": "Generate incident postmortems with interactive flow and git metrics",
+          "files": [
+            {
+              "src": "gemini/skills/postmortem_manager/SKILL.md",
+              "dest": "skills/postmortem-manager/SKILL.md"
+            },
+            {
+              "src": "gemini/skills/postmortem_manager/assets/postmortem-template.md",
+              "dest": "skills/postmortem-manager/assets/postmortem-template.md"
+            }
+          ]
+        },
+        "skill/session-export": {
+          "description": "Capture working session as structured session history with git metrics and context",
+          "files": [
+            {
+              "src": "gemini/skills/session_export/SKILL.md",
+              "dest": "skills/session-export/SKILL.md"
+            },
+            {
+              "src": "gemini/skills/session_export/assets/session-template.md",
+              "dest": "skills/session-export/assets/session-template.md"
             }
           ]
         }
@@ -5237,124 +5129,6 @@
             }
           ]
         },
-        "skill/skill-adapter": {
-          "description": "Skill Adapter skill",
-          "files": [
-            {
-              "src": "opencode/skills/skill-adapter/SKILL.md",
-              "dest": "skills/skill-adapter/SKILL.md"
-            },
-            {
-              "src": "opencode/skills/skill-adapter/assets/compliance-fix.ts",
-              "dest": "skills/skill-adapter/assets/compliance-fix.ts"
-            },
-            {
-              "src": "opencode/skills/skill-adapter/scripts/gemini-skill-update.py",
-              "dest": "skills/skill-adapter/scripts/gemini-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-adapter/scripts/test-yamls.py",
-              "dest": "skills/skill-adapter/scripts/test-yamls.py"
-            },
-            {
-              "src": "opencode/skills/skill-adapter/scripts/claude-skill-update.py",
-              "dest": "skills/skill-adapter/scripts/claude-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-adapter/scripts/test-manifest.py",
-              "dest": "skills/skill-adapter/scripts/test-manifest.py"
-            },
-            {
-              "src": "opencode/skills/skill-adapter/scripts/wocode-skill-update.py",
-              "dest": "skills/skill-adapter/scripts/wocode-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-adapter/scripts/codex-skill-update.py",
-              "dest": "skills/skill-adapter/scripts/codex-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-adapter/scripts/pi-skill-update.py",
-              "dest": "skills/skill-adapter/scripts/pi-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-adapter/scripts/test-skills.py",
-              "dest": "skills/skill-adapter/scripts/test-skills.py"
-            },
-            {
-              "src": "opencode/skills/skill-adapter/scripts/opencode-skill-update.py",
-              "dest": "skills/skill-adapter/scripts/opencode-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-adapter/scripts/run-all-tests.py",
-              "dest": "skills/skill-adapter/scripts/run-all-tests.py"
-            },
-            {
-              "src": "opencode/skills/skill-adapter/scripts/antigravity-skill-update.py",
-              "dest": "skills/skill-adapter/scripts/antigravity-skill-update.py"
-            }
-          ]
-        },
-        "skill/skill-auto-update": {
-          "description": "Skill Auto Update skill",
-          "files": [
-            {
-              "src": "opencode/skills/skill-auto-update/SKILL.md",
-              "dest": "skills/skill-auto-update/SKILL.md"
-            },
-            {
-              "src": "opencode/skills/skill-auto-update/assets/compliance-fix.ts",
-              "dest": "skills/skill-auto-update/assets/compliance-fix.ts"
-            },
-            {
-              "src": "opencode/skills/skill-auto-update/assets/skillsrules.md",
-              "dest": "skills/skill-auto-update/assets/skillsrules.md"
-            },
-            {
-              "src": "opencode/skills/skill-auto-update/scripts/gemini-skill-update.py",
-              "dest": "skills/skill-auto-update/scripts/gemini-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-auto-update/scripts/test-yamls.py",
-              "dest": "skills/skill-auto-update/scripts/test-yamls.py"
-            },
-            {
-              "src": "opencode/skills/skill-auto-update/scripts/claude-skill-update.py",
-              "dest": "skills/skill-auto-update/scripts/claude-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-auto-update/scripts/test-manifest.py",
-              "dest": "skills/skill-auto-update/scripts/test-manifest.py"
-            },
-            {
-              "src": "opencode/skills/skill-auto-update/scripts/wocode-skill-update.py",
-              "dest": "skills/skill-auto-update/scripts/wocode-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-auto-update/scripts/codex-skill-update.py",
-              "dest": "skills/skill-auto-update/scripts/codex-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-auto-update/scripts/pi-skill-update.py",
-              "dest": "skills/skill-auto-update/scripts/pi-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-auto-update/scripts/test-skills.py",
-              "dest": "skills/skill-auto-update/scripts/test-skills.py"
-            },
-            {
-              "src": "opencode/skills/skill-auto-update/scripts/opencode-skill-update.py",
-              "dest": "skills/skill-auto-update/scripts/opencode-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-auto-update/scripts/run-all-tests.py",
-              "dest": "skills/skill-auto-update/scripts/run-all-tests.py"
-            },
-            {
-              "src": "opencode/skills/skill-auto-update/scripts/antigravity-skill-update.py",
-              "dest": "skills/skill-auto-update/scripts/antigravity-skill-update.py"
-            }
-          ]
-        },
         "skill/self-documentation": {
           "description": "Enables Wo to answer How do I...? and What's the command for...? questions by searching its own commands, skills, and documentation locally",
           "files": [
@@ -5571,16 +5345,48 @@
           ]
         },
         "skill/build-tool-skill": {
-          "description": "Unified skill builder for all 7 tools \u2014 deployed to OpenCode",
+          "description": "Unified skill builder, validator, adapter, and lifecycle manager for all 7 tools",
           "files": [
             {
               "src": "opencode/skills/build-tool-skill/SKILL.md",
               "dest": "skills/build-tool-skill/SKILL.md"
+            },
+            {
+              "src": "opencode/skills/build-tool-skill/assets/config-manifest-example.yaml",
+              "dest": "skills/build-tool-skill/assets/config-manifest-example.yaml"
+            },
+            {
+              "src": "opencode/skills/build-tool-skill/assets/skill-example-opencode.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-opencode.md"
+            },
+            {
+              "src": "opencode/skills/build-tool-skill/assets/skill-example-claude.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-claude.md"
+            },
+            {
+              "src": "opencode/skills/build-tool-skill/assets/skill-example-pi.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-pi.md"
+            },
+            {
+              "src": "opencode/skills/build-tool-skill/assets/skill-example-codex.yaml",
+              "dest": "skills/build-tool-skill/assets/skill-example-codex.yaml"
+            },
+            {
+              "src": "opencode/skills/build-tool-skill/assets/skill-example-codex-prompt.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-codex-prompt.md"
+            },
+            {
+              "src": "opencode/skills/build-tool-skill/assets/compliance-check.py",
+              "dest": "skills/build-tool-skill/assets/compliance-check.py"
+            },
+            {
+              "src": "opencode/skills/build-tool-skill/assets/adapter-generate.py",
+              "dest": "skills/build-tool-skill/assets/adapter-generate.py"
             }
           ]
         },
         "skill/build-tool-agent": {
-          "description": "Unified agent builder for all 7 tools \u2014 deployed to OpenCode",
+          "description": "Unified agent builder for all 7 tools — deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build-tool-agent/SKILL.md",
@@ -5589,7 +5395,7 @@
           ]
         },
         "skill/build-tool-extension": {
-          "description": "Unified extension/plugin builder for all 7 tools \u2014 deployed to OpenCode",
+          "description": "Unified extension/plugin builder for all 7 tools — deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build-tool-extension/SKILL.md",
@@ -5598,7 +5404,7 @@
           ]
         },
         "skill/build-tool-tui": {
-          "description": "Unified TUI component builder for all 7 tools \u2014 deployed to OpenCode",
+          "description": "Unified TUI component builder for all 7 tools — deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build-tool-tui/SKILL.md",
@@ -5607,7 +5413,7 @@
           ]
         },
         "skill/build-tool-cli": {
-          "description": "Unified CLI reference for all 7 tools \u2014 deployed to OpenCode",
+          "description": "Unified CLI reference for all 7 tools — deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build-tool-cli/SKILL.md",
@@ -5616,7 +5422,7 @@
           ]
         },
         "skill/build-tool-themes": {
-          "description": "Unified theme builder for all 7 tools \u2014 deployed to OpenCode",
+          "description": "Unified theme builder for all 7 tools — deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build-tool-themes/SKILL.md",
@@ -5625,7 +5431,7 @@
           ]
         },
         "skill/build-tool-prompts": {
-          "description": "Unified prompt template builder for all 7 tools \u2014 deployed to OpenCode",
+          "description": "Unified prompt template builder for all 7 tools — deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build-tool-prompts/SKILL.md",
@@ -5634,7 +5440,7 @@
           ]
         },
         "skill/build-tool-keybindings": {
-          "description": "Unified keybinding reference for all 7 tools \u2014 deployed to OpenCode",
+          "description": "Unified keybinding reference for all 7 tools — deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build-tool-keybindings/SKILL.md",
@@ -5643,7 +5449,7 @@
           ]
         },
         "skill/build-tool-config": {
-          "description": "Unified configuration reference for all 7 tools \u2014 deployed to OpenCode",
+          "description": "Unified configuration reference for all 7 tools — deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build-tool-config/SKILL.md",
@@ -5652,7 +5458,7 @@
           ]
         },
         "skill/build-tool-orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools \u2014 deployed to OpenCode",
+          "description": "Unified orchestration coordinator for all 7 tools — deployed to OpenCode",
           "files": [
             {
               "src": "opencode/skills/build-tool-orchestrate/SKILL.md",
@@ -5682,10 +5488,6 @@
             {
               "src": "opencode/skills/investor-ready-doc-gen/assets/pdf/investor-theme.css",
               "dest": "skills/investor-ready-doc-gen/assets/pdf/investor-theme.css"
-            },
-            {
-              "src": "opencode/skills/investor-ready-doc-gen/assets/pdf/design-template.yaml",
-              "dest": "skills/investor-ready-doc-gen/assets/pdf/design-template.yaml"
             },
             {
               "src": "opencode/skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml",
@@ -5935,81 +5737,6 @@
             }
           ]
         },
-        "skill/build-skill-adapter": {
-          "description": "Adapts skills between different AI coding tool formats and conventions",
-          "files": [
-            {
-              "src": "opencode/skills/build-skill-adapter/SKILL.md",
-              "dest": "skills/build-skill-adapter/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-skill-auto-update": {
-          "description": "Automatically updates skills when dependencies or APIs change",
-          "files": [
-            {
-              "src": "opencode/skills/build-skill-auto-update/SKILL.md",
-              "dest": "skills/build-skill-auto-update/SKILL.md"
-            }
-          ]
-        },
-        "skill/skill-compliance-checker": {
-          "description": "Validates skills against production-ready standards and best practices",
-          "files": [
-            {
-              "src": "opencode/skills/skill-compliance-checker/SKILL.md",
-              "dest": "skills/skill-compliance-checker/SKILL.md"
-            },
-            {
-              "src": "opencode/skills/skill-compliance-checker/assets/compliance-fix.ts",
-              "dest": "skills/skill-compliance-checker/assets/compliance-fix.ts"
-            },
-            {
-              "src": "opencode/skills/skill-compliance-checker/scripts/gemini-skill-update.py",
-              "dest": "skills/skill-compliance-checker/scripts/gemini-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-compliance-checker/scripts/test-yamls.py",
-              "dest": "skills/skill-compliance-checker/scripts/test-yamls.py"
-            },
-            {
-              "src": "opencode/skills/skill-compliance-checker/scripts/claude-skill-update.py",
-              "dest": "skills/skill-compliance-checker/scripts/claude-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-compliance-checker/scripts/test-manifest.py",
-              "dest": "skills/skill-compliance-checker/scripts/test-manifest.py"
-            },
-            {
-              "src": "opencode/skills/skill-compliance-checker/scripts/wocode-skill-update.py",
-              "dest": "skills/skill-compliance-checker/scripts/wocode-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-compliance-checker/scripts/codex-skill-update.py",
-              "dest": "skills/skill-compliance-checker/scripts/codex-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-compliance-checker/scripts/pi-skill-update.py",
-              "dest": "skills/skill-compliance-checker/scripts/pi-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-compliance-checker/scripts/test-skills.py",
-              "dest": "skills/skill-compliance-checker/scripts/test-skills.py"
-            },
-            {
-              "src": "opencode/skills/skill-compliance-checker/scripts/opencode-skill-update.py",
-              "dest": "skills/skill-compliance-checker/scripts/opencode-skill-update.py"
-            },
-            {
-              "src": "opencode/skills/skill-compliance-checker/scripts/run-all-tests.py",
-              "dest": "skills/skill-compliance-checker/scripts/run-all-tests.py"
-            },
-            {
-              "src": "opencode/skills/skill-compliance-checker/scripts/antigravity-skill-update.py",
-              "dest": "skills/skill-compliance-checker/scripts/antigravity-skill-update.py"
-            }
-          ]
-        },
         "skill/ticket-executor": {
           "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
           "files": [
@@ -6101,6 +5828,45 @@
             {
               "src": "opencode/skills/womonodeploy/SKILL.md",
               "dest": "skills/womonodeploy/SKILL.md"
+            }
+          ]
+        },
+        "skill/runbook-manager": {
+          "description": "Generate, update, and maintain production runbooks per project",
+          "files": [
+            {
+              "src": "opencode/skills/runbook-manager/SKILL.md",
+              "dest": "skills/runbook-manager/SKILL.md"
+            },
+            {
+              "src": "opencode/skills/runbook-manager/assets/runbook-template.md",
+              "dest": "skills/runbook-manager/assets/runbook-template.md"
+            }
+          ]
+        },
+        "skill/postmortem-manager": {
+          "description": "Generate incident postmortems with interactive flow and git metrics",
+          "files": [
+            {
+              "src": "opencode/skills/postmortem-manager/SKILL.md",
+              "dest": "skills/postmortem-manager/SKILL.md"
+            },
+            {
+              "src": "opencode/skills/postmortem-manager/assets/postmortem-template.md",
+              "dest": "skills/postmortem-manager/assets/postmortem-template.md"
+            }
+          ]
+        },
+        "skill/session-export": {
+          "description": "Capture working session as structured session history with git metrics and context",
+          "files": [
+            {
+              "src": "opencode/skills/session-export/SKILL.md",
+              "dest": "skills/session-export/SKILL.md"
+            },
+            {
+              "src": "opencode/skills/session-export/assets/session-template.md",
+              "dest": "skills/session-export/assets/session-template.md"
             }
           ]
         }
@@ -6347,7 +6113,7 @@
           ]
         },
         "skill/observability-driven-development": {
-          "description": "Observability Driven Development (ODD) \u2014 design the trace before the feature; local OTel feedback loop",
+          "description": "Observability Driven Development (ODD) — design the trace before the feature; local OTel feedback loop",
           "files": [
             {
               "src": "pi/agent/skills/observability-driven-development/SKILL.md",
@@ -6548,67 +6314,6 @@
             }
           ]
         },
-        "skill/skill-auto-update": {
-          "description": "Skill Auto-Update - auto-discover and sync skills across all frontends",
-          "files": [
-            {
-              "src": "pi/agent/skills/skill-auto-update/SKILL.md",
-              "dest": "skills/skill-auto-update/SKILL.md"
-            },
-            {
-              "src": "pi/agent/skills/skill-auto-update/assets/compliance-fix.ts",
-              "dest": "skills/skill-auto-update/assets/compliance-fix.ts"
-            },
-            {
-              "src": "pi/agent/skills/skill-auto-update/assets/skillsrules.md",
-              "dest": "skills/skill-auto-update/assets/skillsrules.md"
-            },
-            {
-              "src": "pi/agent/skills/skill-auto-update/scripts/gemini-skill-update.py",
-              "dest": "skills/skill-auto-update/scripts/gemini-skill-update.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-auto-update/scripts/test-yamls.py",
-              "dest": "skills/skill-auto-update/scripts/test-yamls.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-auto-update/scripts/claude-skill-update.py",
-              "dest": "skills/skill-auto-update/scripts/claude-skill-update.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-auto-update/scripts/test-manifest.py",
-              "dest": "skills/skill-auto-update/scripts/test-manifest.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-auto-update/scripts/wocode-skill-update.py",
-              "dest": "skills/skill-auto-update/scripts/wocode-skill-update.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-auto-update/scripts/codex-skill-update.py",
-              "dest": "skills/skill-auto-update/scripts/codex-skill-update.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-auto-update/scripts/pi-skill-update.py",
-              "dest": "skills/skill-auto-update/scripts/pi-skill-update.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-auto-update/scripts/test-skills.py",
-              "dest": "skills/skill-auto-update/scripts/test-skills.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-auto-update/scripts/opencode-skill-update.py",
-              "dest": "skills/skill-auto-update/scripts/opencode-skill-update.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-auto-update/scripts/run-all-tests.py",
-              "dest": "skills/skill-auto-update/scripts/run-all-tests.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-auto-update/scripts/antigravity-skill-update.py",
-              "dest": "skills/skill-auto-update/scripts/antigravity-skill-update.py"
-            }
-          ]
-        },
         "skill/auto-ticket-creator": {
           "description": "Auto-Ticket Creator - monitor and auto-create tickets from changes",
           "files": [
@@ -6633,63 +6338,6 @@
             {
               "src": "pi/agent/skills/cto-dashboard/SKILL.md",
               "dest": "skills/cto-dashboard/SKILL.md"
-            }
-          ]
-        },
-        "skill/skill-adapter": {
-          "description": "Skill Adapter - platform-specific skill loading and format adapters",
-          "files": [
-            {
-              "src": "pi/agent/skills/skill-adapter/SKILL.md",
-              "dest": "skills/skill-adapter/SKILL.md"
-            },
-            {
-              "src": "pi/agent/skills/skill-adapter/assets/compliance-fix.ts",
-              "dest": "skills/skill-adapter/assets/compliance-fix.ts"
-            },
-            {
-              "src": "pi/agent/skills/skill-adapter/scripts/gemini-skill-update.py",
-              "dest": "skills/skill-adapter/scripts/gemini-skill-update.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-adapter/scripts/test-yamls.py",
-              "dest": "skills/skill-adapter/scripts/test-yamls.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-adapter/scripts/claude-skill-update.py",
-              "dest": "skills/skill-adapter/scripts/claude-skill-update.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-adapter/scripts/test-manifest.py",
-              "dest": "skills/skill-adapter/scripts/test-manifest.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-adapter/scripts/wocode-skill-update.py",
-              "dest": "skills/skill-adapter/scripts/wocode-skill-update.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-adapter/scripts/codex-skill-update.py",
-              "dest": "skills/skill-adapter/scripts/codex-skill-update.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-adapter/scripts/pi-skill-update.py",
-              "dest": "skills/skill-adapter/scripts/pi-skill-update.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-adapter/scripts/test-skills.py",
-              "dest": "skills/skill-adapter/scripts/test-skills.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-adapter/scripts/opencode-skill-update.py",
-              "dest": "skills/skill-adapter/scripts/opencode-skill-update.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-adapter/scripts/run-all-tests.py",
-              "dest": "skills/skill-adapter/scripts/run-all-tests.py"
-            },
-            {
-              "src": "pi/agent/skills/skill-adapter/scripts/antigravity-skill-update.py",
-              "dest": "skills/skill-adapter/scripts/antigravity-skill-update.py"
             }
           ]
         },
@@ -6959,16 +6607,48 @@
           ]
         },
         "skill/build-tool-skill": {
-          "description": "Unified skill builder for all 7 tools \u2014 deployed to Pi",
+          "description": "Unified skill builder, validator, adapter, and lifecycle manager for all 7 tools",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-skill/SKILL.md",
               "dest": "skills/build-tool-skill/SKILL.md"
+            },
+            {
+              "src": "pi/agent/skills/build-tool-skill/assets/config-manifest-example.yaml",
+              "dest": "skills/build-tool-skill/assets/config-manifest-example.yaml"
+            },
+            {
+              "src": "pi/agent/skills/build-tool-skill/assets/skill-example-opencode.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-opencode.md"
+            },
+            {
+              "src": "pi/agent/skills/build-tool-skill/assets/skill-example-claude.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-claude.md"
+            },
+            {
+              "src": "pi/agent/skills/build-tool-skill/assets/skill-example-pi.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-pi.md"
+            },
+            {
+              "src": "pi/agent/skills/build-tool-skill/assets/skill-example-codex.yaml",
+              "dest": "skills/build-tool-skill/assets/skill-example-codex.yaml"
+            },
+            {
+              "src": "pi/agent/skills/build-tool-skill/assets/skill-example-codex-prompt.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-codex-prompt.md"
+            },
+            {
+              "src": "pi/agent/skills/build-tool-skill/assets/compliance-check.py",
+              "dest": "skills/build-tool-skill/assets/compliance-check.py"
+            },
+            {
+              "src": "pi/agent/skills/build-tool-skill/assets/adapter-generate.py",
+              "dest": "skills/build-tool-skill/assets/adapter-generate.py"
             }
           ]
         },
         "skill/build-tool-agent": {
-          "description": "Unified agent builder for all 7 tools \u2014 deployed to Pi",
+          "description": "Unified agent builder for all 7 tools — deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-agent/SKILL.md",
@@ -6977,7 +6657,7 @@
           ]
         },
         "skill/build-tool-extension": {
-          "description": "Unified extension/plugin builder for all 7 tools \u2014 deployed to Pi",
+          "description": "Unified extension/plugin builder for all 7 tools — deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-extension/SKILL.md",
@@ -6986,7 +6666,7 @@
           ]
         },
         "skill/build-tool-tui": {
-          "description": "Unified TUI component builder for all 7 tools \u2014 deployed to Pi",
+          "description": "Unified TUI component builder for all 7 tools — deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-tui/SKILL.md",
@@ -6995,7 +6675,7 @@
           ]
         },
         "skill/build-tool-cli": {
-          "description": "Unified CLI reference for all 7 tools \u2014 deployed to Pi",
+          "description": "Unified CLI reference for all 7 tools — deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-cli/SKILL.md",
@@ -7004,7 +6684,7 @@
           ]
         },
         "skill/build-tool-themes": {
-          "description": "Unified theme builder for all 7 tools \u2014 deployed to Pi",
+          "description": "Unified theme builder for all 7 tools — deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-themes/SKILL.md",
@@ -7013,7 +6693,7 @@
           ]
         },
         "skill/build-tool-prompts": {
-          "description": "Unified prompt template builder for all 7 tools \u2014 deployed to Pi",
+          "description": "Unified prompt template builder for all 7 tools — deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-prompts/SKILL.md",
@@ -7022,7 +6702,7 @@
           ]
         },
         "skill/build-tool-keybindings": {
-          "description": "Unified keybinding reference for all 7 tools \u2014 deployed to Pi",
+          "description": "Unified keybinding reference for all 7 tools — deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-keybindings/SKILL.md",
@@ -7031,7 +6711,7 @@
           ]
         },
         "skill/build-tool-config": {
-          "description": "Unified configuration reference for all 7 tools \u2014 deployed to Pi",
+          "description": "Unified configuration reference for all 7 tools — deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-config/SKILL.md",
@@ -7040,7 +6720,7 @@
           ]
         },
         "skill/build-tool-orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools \u2014 deployed to Pi",
+          "description": "Unified orchestration coordinator for all 7 tools — deployed to Pi",
           "files": [
             {
               "src": "pi/agent/skills/build-tool-orchestrate/SKILL.md",
@@ -7070,10 +6750,6 @@
             {
               "src": "pi/agent/extensions/skills/investor-ready-doc-gen/assets/pdf/investor-theme.css",
               "dest": "skills/investor-ready-doc-gen/assets/pdf/investor-theme.css"
-            },
-            {
-              "src": "pi/agent/skills/investor-ready-doc-gen/assets/pdf/design-template.yaml",
-              "dest": "skills/investor-ready-doc-gen/assets/pdf/design-template.yaml"
             },
             {
               "src": "pi/agent/extensions/skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml",
@@ -7323,37 +6999,6 @@
             }
           ]
         },
-        "skill/build-skill-adapter": {
-          "description": "Adapts skills between different AI coding tool formats and conventions",
-          "files": [
-            {
-              "src": "pi/agent/skills/build-skill-adapter/SKILL.md",
-              "dest": "skills/build-skill-adapter/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-skill-auto-update": {
-          "description": "Automatically updates skills when dependencies or APIs change",
-          "files": [
-            {
-              "src": "pi/agent/skills/build-skill-auto-update/SKILL.md",
-              "dest": "skills/build-skill-auto-update/SKILL.md"
-            }
-          ]
-        },
-        "skill/skill-compliance-checker": {
-          "description": "Validates skills against production-ready standards and best practices",
-          "files": [
-            {
-              "src": "pi/agent/skills/skill-compliance-checker/SKILL.md",
-              "dest": "skills/skill-compliance-checker/SKILL.md"
-            },
-            {
-              "src": "pi/agent/skills/skill-compliance-checker/assets/compliance-fix.ts",
-              "dest": "skills/skill-compliance-checker/assets/compliance-fix.ts"
-            }
-          ]
-        },
         "skill/self-documentation": {
           "description": "Enables Wo to answer How do I...? and What's the command for...? questions by searching its own commands, skills, and documentation locally",
           "files": [
@@ -7456,6 +7101,45 @@
               "dest": "skills/github-issue/SKILL.md"
             }
           ]
+        },
+        "skill/runbook-manager": {
+          "description": "Generate, update, and maintain production runbooks per project",
+          "files": [
+            {
+              "src": "pi/agent/skills/runbook-manager/SKILL.md",
+              "dest": "skills/runbook-manager/SKILL.md"
+            },
+            {
+              "src": "pi/agent/skills/runbook-manager/assets/runbook-template.md",
+              "dest": "skills/runbook-manager/assets/runbook-template.md"
+            }
+          ]
+        },
+        "skill/postmortem-manager": {
+          "description": "Generate incident postmortems with interactive flow and git metrics",
+          "files": [
+            {
+              "src": "pi/agent/skills/postmortem-manager/SKILL.md",
+              "dest": "skills/postmortem-manager/SKILL.md"
+            },
+            {
+              "src": "pi/agent/skills/postmortem-manager/assets/postmortem-template.md",
+              "dest": "skills/postmortem-manager/assets/postmortem-template.md"
+            }
+          ]
+        },
+        "skill/session-export": {
+          "description": "Capture working session as structured session history with git metrics and context",
+          "files": [
+            {
+              "src": "pi/agent/skills/session-export/SKILL.md",
+              "dest": "skills/session-export/SKILL.md"
+            },
+            {
+              "src": "pi/agent/skills/session-export/assets/session-template.md",
+              "dest": "skills/session-export/assets/session-template.md"
+            }
+          ]
         }
       }
     },
@@ -7510,7 +7194,7 @@
           "description": "Open files from cwd in $VISUAL/$EDITOR via /edit or ctrl+e",
           "files": [
             {
-              "src": "wocode/agent/extensions/open_editor.ts",
+              "src": "wocode/agent/extensions/open-editor.ts",
               "dest": "extensions/open-editor.ts"
             }
           ]
@@ -7560,7 +7244,7 @@
           "description": "Cycle through themes with Ctrl+T",
           "files": [
             {
-              "src": "wocode/agent/extensions/theme_cycler.ts",
+              "src": "wocode/agent/extensions/theme-cycler.ts",
               "dest": "extensions/theme-cycler.ts"
             }
           ]
@@ -7569,103 +7253,103 @@
           "description": "Web search, URL fetching, GitHub cloning, PDF extraction, YouTube/video analysis",
           "files": [
             {
-              "src": "wocode/agent/packets/web_access/index.ts",
+              "src": "wocode/agent/packets/web-access/index.ts",
               "dest": "extensions/web-access/index.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/activity.ts",
+              "src": "wocode/agent/packets/web-access/activity.ts",
               "dest": "extensions/web-access/activity.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/banner.png",
+              "src": "wocode/agent/packets/web-access/banner.png",
               "dest": "extensions/web-access/banner.png"
             },
             {
-              "src": "wocode/agent/packets/web_access/chrome_cookies.ts",
+              "src": "wocode/agent/packets/web-access/chrome-cookies.ts",
               "dest": "extensions/web-access/chrome-cookies.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/code_search.ts",
+              "src": "wocode/agent/packets/web-access/code-search.ts",
               "dest": "extensions/web-access/code-search.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/curator_page.ts",
+              "src": "wocode/agent/packets/web-access/curator-page.ts",
               "dest": "extensions/web-access/curator-page.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/curator_server.ts",
+              "src": "wocode/agent/packets/web-access/curator-server.ts",
               "dest": "extensions/web-access/curator-server.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/extract.ts",
+              "src": "wocode/agent/packets/web-access/extract.ts",
               "dest": "extensions/web-access/extract.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/exa.ts",
+              "src": "wocode/agent/packets/web-access/exa.ts",
               "dest": "extensions/web-access/exa.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/gemini_api.ts",
+              "src": "wocode/agent/packets/web-access/gemini-api.ts",
               "dest": "extensions/web-access/gemini-api.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/gemini_search.ts",
+              "src": "wocode/agent/packets/web-access/gemini-search.ts",
               "dest": "extensions/web-access/gemini-search.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/gemini_url_context.ts",
+              "src": "wocode/agent/packets/web-access/gemini-url-context.ts",
               "dest": "extensions/web-access/gemini-url-context.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/gemini_web.ts",
+              "src": "wocode/agent/packets/web-access/gemini-web.ts",
               "dest": "extensions/web-access/gemini-web.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/gemini_web_config.ts",
+              "src": "wocode/agent/packets/web-access/gemini-web-config.ts",
               "dest": "extensions/web-access/gemini-web-config.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/github_api.ts",
+              "src": "wocode/agent/packets/web-access/github-api.ts",
               "dest": "extensions/web-access/github-api.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/github_extract.ts",
+              "src": "wocode/agent/packets/web-access/github-extract.ts",
               "dest": "extensions/web-access/github-extract.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/perplexity.ts",
+              "src": "wocode/agent/packets/web-access/perplexity.ts",
               "dest": "extensions/web-access/perplexity.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/pdf_extract.ts",
+              "src": "wocode/agent/packets/web-access/pdf-extract.ts",
               "dest": "extensions/web-access/pdf-extract.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/rsc_extract.ts",
+              "src": "wocode/agent/packets/web-access/rsc-extract.ts",
               "dest": "extensions/web-access/rsc-extract.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/storage.ts",
+              "src": "wocode/agent/packets/web-access/storage.ts",
               "dest": "extensions/web-access/storage.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/summary_review.ts",
+              "src": "wocode/agent/packets/web-access/summary-review.ts",
               "dest": "extensions/web-access/summary-review.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/utils.ts",
+              "src": "wocode/agent/packets/web-access/utils.ts",
               "dest": "extensions/web-access/utils.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/video_extract.ts",
+              "src": "wocode/agent/packets/web-access/video-extract.ts",
               "dest": "extensions/web-access/video-extract.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/youtube_extract.ts",
+              "src": "wocode/agent/packets/web-access/youtube-extract.ts",
               "dest": "extensions/web-access/youtube-extract.ts"
             },
             {
-              "src": "wocode/agent/packets/web_access/skills/librarian/SKILL.md",
+              "src": "wocode/agent/packets/web-access/skills/librarian/SKILL.md",
               "dest": "extensions/web-access/skills/librarian/SKILL.md"
             }
           ]
@@ -7674,7 +7358,7 @@
           "description": "Built-in themes for Wo Coder",
           "files": [
             {
-              "src": "wocode/agent/themes/catppuccin_mocha.json",
+              "src": "wocode/agent/themes/catppuccin-mocha.json",
               "dest": "themes/catppuccin-mocha.json"
             },
             {
@@ -7694,7 +7378,7 @@
               "dest": "themes/gruvbox.json"
             },
             {
-              "src": "wocode/agent/themes/midnight_ocean.json",
+              "src": "wocode/agent/themes/midnight-ocean.json",
               "dest": "themes/midnight-ocean.json"
             },
             {
@@ -7702,11 +7386,11 @@
               "dest": "themes/nord.json"
             },
             {
-              "src": "wocode/agent/themes/ocean_breeze.json",
+              "src": "wocode/agent/themes/ocean-breeze.json",
               "dest": "themes/ocean-breeze.json"
             },
             {
-              "src": "wocode/agent/themes/rose_pine.json",
+              "src": "wocode/agent/themes/rose-pine.json",
               "dest": "themes/rose-pine.json"
             },
             {
@@ -7714,11 +7398,11 @@
               "dest": "themes/synthwave.json"
             },
             {
-              "src": "wocode/agent/themes/tokyo_night.json",
+              "src": "wocode/agent/themes/tokyo-night.json",
               "dest": "themes/tokyo-night.json"
             },
             {
-              "src": "wocode/agent/themes/wo_code.json",
+              "src": "wocode/agent/themes/wo-code.json",
               "dest": "themes/wo-code.json"
             }
           ]
@@ -7774,7 +7458,7 @@
           "description": "Auto Ticket Creator skill",
           "files": [
             {
-              "src": "wocode/agent/skills/auto_ticket_creator/SKILL.md",
+              "src": "wocode/agent/skills/auto-ticket-creator/SKILL.md",
               "dest": "skills/auto-ticket-creator/SKILL.md"
             }
           ]
@@ -7783,7 +7467,7 @@
           "description": "Backlog Groomer skill",
           "files": [
             {
-              "src": "wocode/agent/skills/backlog_groomer/SKILL.md",
+              "src": "wocode/agent/skills/backlog-groomer/SKILL.md",
               "dest": "skills/backlog-groomer/SKILL.md"
             }
           ]
@@ -7792,7 +7476,7 @@
           "description": "Create Plan skill",
           "files": [
             {
-              "src": "wocode/agent/skills/create_plan/SKILL.md",
+              "src": "wocode/agent/skills/create-plan/SKILL.md",
               "dest": "skills/create-plan/SKILL.md"
             }
           ]
@@ -7801,7 +7485,7 @@
           "description": "Cto Dashboard skill",
           "files": [
             {
-              "src": "wocode/agent/skills/cto_dashboard/SKILL.md",
+              "src": "wocode/agent/skills/cto-dashboard/SKILL.md",
               "dest": "skills/cto-dashboard/SKILL.md"
             }
           ]
@@ -7819,7 +7503,7 @@
           "description": "Debug K8S skill",
           "files": [
             {
-              "src": "wocode/agent/skills/debug_k8s/SKILL.md",
+              "src": "wocode/agent/skills/debug-k8s/SKILL.md",
               "dest": "skills/debug-k8s/SKILL.md"
             }
           ]
@@ -7828,7 +7512,7 @@
           "description": "Docs Sync Updater skill",
           "files": [
             {
-              "src": "wocode/agent/skills/docs_sync_updater/SKILL.md",
+              "src": "wocode/agent/skills/docs-sync-updater/SKILL.md",
               "dest": "skills/docs-sync-updater/SKILL.md"
             }
           ]
@@ -7837,7 +7521,7 @@
           "description": "Document Generation skill",
           "files": [
             {
-              "src": "wocode/agent/skills/document_generation/SKILL.md",
+              "src": "wocode/agent/skills/document-generation/SKILL.md",
               "dest": "skills/document-generation/SKILL.md"
             }
           ]
@@ -7846,7 +7530,7 @@
           "description": "Experimental Pr Workflow skill",
           "files": [
             {
-              "src": "wocode/agent/skills/experimental_pr_workflow/SKILL.md",
+              "src": "wocode/agent/skills/experimental-pr-workflow/SKILL.md",
               "dest": "skills/experimental-pr-workflow/SKILL.md"
             }
           ]
@@ -7855,7 +7539,7 @@
           "description": "Git Commit Helper skill",
           "files": [
             {
-              "src": "wocode/agent/skills/git_commit_helper/SKILL.md",
+              "src": "wocode/agent/skills/git-commit-helper/SKILL.md",
               "dest": "skills/git-commit-helper/SKILL.md"
             }
           ]
@@ -7864,7 +7548,7 @@
           "description": "Help Command skill",
           "files": [
             {
-              "src": "wocode/agent/skills/help_command/SKILL.md",
+              "src": "wocode/agent/skills/help-command/SKILL.md",
               "dest": "skills/help-command/SKILL.md"
             }
           ]
@@ -7873,7 +7557,7 @@
           "description": "Implement Plan skill",
           "files": [
             {
-              "src": "wocode/agent/skills/implement_plan/SKILL.md",
+              "src": "wocode/agent/skills/implement-plan/SKILL.md",
               "dest": "skills/implement-plan/SKILL.md"
             }
           ]
@@ -7882,7 +7566,7 @@
           "description": "Improve Codebase Architecture skill",
           "files": [
             {
-              "src": "wocode/agent/skills/improve_codebase_architecture/SKILL.md",
+              "src": "wocode/agent/skills/improve-codebase-architecture/SKILL.md",
               "dest": "skills/improve-codebase-architecture/SKILL.md"
             }
           ]
@@ -7891,7 +7575,7 @@
           "description": "Observability Driven Development skill",
           "files": [
             {
-              "src": "wocode/agent/skills/observability_driven_development/SKILL.md",
+              "src": "wocode/agent/skills/observability-driven-development/SKILL.md",
               "dest": "skills/observability-driven-development/SKILL.md"
             }
           ]
@@ -7900,7 +7584,7 @@
           "description": "Opticat Backend Integrator skill",
           "files": [
             {
-              "src": "wocode/agent/skills/opticat_backend_integrator/SKILL.md",
+              "src": "wocode/agent/skills/opticat-backend-integrator/SKILL.md",
               "dest": "skills/opticat-backend-integrator/SKILL.md"
             }
           ]
@@ -7909,7 +7593,7 @@
           "description": "Opticat Simulator skill",
           "files": [
             {
-              "src": "wocode/agent/skills/opticat_simulator/SKILL.md",
+              "src": "wocode/agent/skills/opticat-simulator/SKILL.md",
               "dest": "skills/opticat-simulator/SKILL.md"
             }
           ]
@@ -7918,7 +7602,7 @@
           "description": "Opticat Ui Builder skill",
           "files": [
             {
-              "src": "wocode/agent/skills/opticat_ui_builder/SKILL.md",
+              "src": "wocode/agent/skills/opticat-ui-builder/SKILL.md",
               "dest": "skills/opticat-ui-builder/SKILL.md"
             }
           ]
@@ -7927,7 +7611,7 @@
           "description": "Otel Collector skill",
           "files": [
             {
-              "src": "wocode/agent/skills/otel_collector/SKILL.md",
+              "src": "wocode/agent/skills/otel-collector/SKILL.md",
               "dest": "skills/otel-collector/SKILL.md"
             }
           ]
@@ -7936,7 +7620,7 @@
           "description": "Otel Instrument skill",
           "files": [
             {
-              "src": "wocode/agent/skills/otel_instrument/SKILL.md",
+              "src": "wocode/agent/skills/otel-instrument/SKILL.md",
               "dest": "skills/otel-instrument/SKILL.md"
             }
           ]
@@ -7945,7 +7629,7 @@
           "description": "Otel Instrumentation skill",
           "files": [
             {
-              "src": "wocode/agent/skills/otel_instrumentation/SKILL.md",
+              "src": "wocode/agent/skills/otel-instrumentation/SKILL.md",
               "dest": "skills/otel-instrumentation/SKILL.md"
             }
           ]
@@ -7954,7 +7638,7 @@
           "description": "Otel Ottl skill",
           "files": [
             {
-              "src": "wocode/agent/skills/otel_ottl/SKILL.md",
+              "src": "wocode/agent/skills/otel-ottl/SKILL.md",
               "dest": "skills/otel-ottl/SKILL.md"
             }
           ]
@@ -7963,7 +7647,7 @@
           "description": "Otel Semantic Conventions skill",
           "files": [
             {
-              "src": "wocode/agent/skills/otel_semantic_conventions/SKILL.md",
+              "src": "wocode/agent/skills/otel-semantic-conventions/SKILL.md",
               "dest": "skills/otel-semantic-conventions/SKILL.md"
             }
           ]
@@ -7972,7 +7656,7 @@
           "description": "Pr Description Generator skill",
           "files": [
             {
-              "src": "wocode/agent/skills/pr_description_generator/SKILL.md",
+              "src": "wocode/agent/skills/pr-description-generator/SKILL.md",
               "dest": "skills/pr-description-generator/SKILL.md"
             }
           ]
@@ -7981,7 +7665,7 @@
           "description": "Prd To Issues skill",
           "files": [
             {
-              "src": "wocode/agent/skills/prd_to_issues/SKILL.md",
+              "src": "wocode/agent/skills/prd-to-issues/SKILL.md",
               "dest": "skills/prd-to-issues/SKILL.md"
             }
           ]
@@ -7990,126 +7674,8 @@
           "description": "Research Codebase skill",
           "files": [
             {
-              "src": "wocode/agent/skills/research_codebase/SKILL.md",
+              "src": "wocode/agent/skills/research-codebase/SKILL.md",
               "dest": "skills/research-codebase/SKILL.md"
-            }
-          ]
-        },
-        "skill/skill-adapter": {
-          "description": "Skill Adapter skill",
-          "files": [
-            {
-              "src": "wocode/agent/skills/skill_adapter/SKILL.md",
-              "dest": "skills/skill-adapter/SKILL.md"
-            },
-            {
-              "src": "wocode/agent/skills/skill_adapter/assets/compliance_fix.ts",
-              "dest": "skills/skill-adapter/assets/compliance-fix.ts"
-            },
-            {
-              "src": "wocode/agent/skills/skill_adapter/scripts/gemini_skill_update.py",
-              "dest": "skills/skill-adapter/scripts/gemini-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_adapter/scripts/test_yamls.py",
-              "dest": "skills/skill-adapter/scripts/test-yamls.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_adapter/scripts/claude_skill_update.py",
-              "dest": "skills/skill-adapter/scripts/claude-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_adapter/scripts/test_manifest.py",
-              "dest": "skills/skill-adapter/scripts/test-manifest.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_adapter/scripts/wocode_skill_update.py",
-              "dest": "skills/skill-adapter/scripts/wocode-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_adapter/scripts/codex_skill_update.py",
-              "dest": "skills/skill-adapter/scripts/codex-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_adapter/scripts/pi_skill_update.py",
-              "dest": "skills/skill-adapter/scripts/pi-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_adapter/scripts/test_skills.py",
-              "dest": "skills/skill-adapter/scripts/test-skills.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_adapter/scripts/opencode_skill_update.py",
-              "dest": "skills/skill-adapter/scripts/opencode-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_adapter/scripts/run_all_tests.py",
-              "dest": "skills/skill-adapter/scripts/run-all-tests.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_adapter/scripts/antigravity_skill_update.py",
-              "dest": "skills/skill-adapter/scripts/antigravity-skill-update.py"
-            }
-          ]
-        },
-        "skill/skill-auto-update": {
-          "description": "Skill Auto Update skill",
-          "files": [
-            {
-              "src": "wocode/agent/skills/skill_auto_update/SKILL.md",
-              "dest": "skills/skill-auto-update/SKILL.md"
-            },
-            {
-              "src": "wocode/agent/skills/skill_auto_update/assets/compliance_fix.ts",
-              "dest": "skills/skill-auto-update/assets/compliance-fix.ts"
-            },
-            {
-              "src": "wocode/agent/skills/skill_auto_update/assets/skillsrules.md",
-              "dest": "skills/skill-auto-update/assets/skillsrules.md"
-            },
-            {
-              "src": "wocode/agent/skills/skill_auto_update/scripts/gemini_skill_update.py",
-              "dest": "skills/skill-auto-update/scripts/gemini-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_auto_update/scripts/test_yamls.py",
-              "dest": "skills/skill-auto-update/scripts/test-yamls.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_auto_update/scripts/claude_skill_update.py",
-              "dest": "skills/skill-auto-update/scripts/claude-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_auto_update/scripts/test_manifest.py",
-              "dest": "skills/skill-auto-update/scripts/test-manifest.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_auto_update/scripts/wocode_skill_update.py",
-              "dest": "skills/skill-auto-update/scripts/wocode-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_auto_update/scripts/codex_skill_update.py",
-              "dest": "skills/skill-auto-update/scripts/codex-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_auto_update/scripts/pi_skill_update.py",
-              "dest": "skills/skill-auto-update/scripts/pi-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_auto_update/scripts/test_skills.py",
-              "dest": "skills/skill-auto-update/scripts/test-skills.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_auto_update/scripts/opencode_skill_update.py",
-              "dest": "skills/skill-auto-update/scripts/opencode-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_auto_update/scripts/run_all_tests.py",
-              "dest": "skills/skill-auto-update/scripts/run-all-tests.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_auto_update/scripts/antigravity_skill_update.py",
-              "dest": "skills/skill-auto-update/scripts/antigravity-skill-update.py"
             }
           ]
         },
@@ -8117,7 +7683,7 @@
           "description": "Team Setup skill",
           "files": [
             {
-              "src": "wocode/agent/skills/team_setup/SKILL.md",
+              "src": "wocode/agent/skills/team-setup/SKILL.md",
               "dest": "skills/team-setup/SKILL.md"
             }
           ]
@@ -8126,11 +7692,11 @@
           "description": "Ticket Context skill",
           "files": [
             {
-              "src": "wocode/agent/skills/ticket_context/SKILL.md",
+              "src": "wocode/agent/skills/ticket-context/SKILL.md",
               "dest": "skills/ticket-context/SKILL.md"
             },
             {
-              "src": "wocode/agent/skills/ticket_context/assets/audit_tickets.js",
+              "src": "wocode/agent/skills/ticket-context/assets/audit-tickets.js",
               "dest": "skills/ticket-context/assets/audit-tickets.js"
             }
           ]
@@ -8139,11 +7705,11 @@
           "description": "Ticket Manager skill",
           "files": [
             {
-              "src": "wocode/agent/skills/ticket_manager/SKILL.md",
+              "src": "wocode/agent/skills/ticket-manager/SKILL.md",
               "dest": "skills/ticket-manager/SKILL.md"
             },
             {
-              "src": "wocode/agent/skills/ticket_manager/assets/audit_tickets.js",
+              "src": "wocode/agent/skills/ticket-manager/assets/audit-tickets.js",
               "dest": "skills/ticket-manager/assets/audit-tickets.js"
             }
           ]
@@ -8152,7 +7718,7 @@
           "description": "Usage Rules skill",
           "files": [
             {
-              "src": "wocode/agent/skills/usage_rules/SKILL.md",
+              "src": "wocode/agent/skills/usage-rules/SKILL.md",
               "dest": "skills/usage-rules/SKILL.md"
             }
           ]
@@ -8161,7 +7727,7 @@
           "description": "Validate Plan skill",
           "files": [
             {
-              "src": "wocode/agent/skills/validate_plan/SKILL.md",
+              "src": "wocode/agent/skills/validate-plan/SKILL.md",
               "dest": "skills/validate-plan/SKILL.md"
             }
           ]
@@ -8170,7 +7736,7 @@
           "description": "Validate Telemetry skill",
           "files": [
             {
-              "src": "wocode/agent/skills/validate_telemetry/SKILL.md",
+              "src": "wocode/agent/skills/validate-telemetry/SKILL.md",
               "dest": "skills/validate-telemetry/SKILL.md"
             }
           ]
@@ -8188,7 +7754,7 @@
           "description": "Wow Access Control skill",
           "files": [
             {
-              "src": "wocode/agent/skills/wow_access_control/SKILL.md",
+              "src": "wocode/agent/skills/wow-access-control/SKILL.md",
               "dest": "skills/wow-access-control/SKILL.md"
             }
           ]
@@ -8197,7 +7763,7 @@
           "description": "Wow Agent Dev skill",
           "files": [
             {
-              "src": "wocode/agent/skills/wow_agent_dev/SKILL.md",
+              "src": "wocode/agent/skills/wow-agent-dev/SKILL.md",
               "dest": "skills/wow-agent-dev/SKILL.md"
             }
           ]
@@ -8206,7 +7772,7 @@
           "description": "Wow Backend Dev skill",
           "files": [
             {
-              "src": "wocode/agent/skills/wow_backend_dev/SKILL.md",
+              "src": "wocode/agent/skills/wow-backend-dev/SKILL.md",
               "dest": "skills/wow-backend-dev/SKILL.md"
             }
           ]
@@ -8215,7 +7781,7 @@
           "description": "Wow Communications skill",
           "files": [
             {
-              "src": "wocode/agent/skills/wow_communications/SKILL.md",
+              "src": "wocode/agent/skills/wow-communications/SKILL.md",
               "dest": "skills/wow-communications/SKILL.md"
             }
           ]
@@ -8224,7 +7790,7 @@
           "description": "Wow Core Architecture skill",
           "files": [
             {
-              "src": "wocode/agent/skills/wow_core_architecture/SKILL.md",
+              "src": "wocode/agent/skills/wow-core-architecture/SKILL.md",
               "dest": "skills/wow-core-architecture/SKILL.md"
             }
           ]
@@ -8233,7 +7799,7 @@
           "description": "Wow Frontend Dev skill",
           "files": [
             {
-              "src": "wocode/agent/skills/wow_frontend_dev/SKILL.md",
+              "src": "wocode/agent/skills/wow-frontend-dev/SKILL.md",
               "dest": "skills/wow-frontend-dev/SKILL.md"
             }
           ]
@@ -8242,7 +7808,7 @@
           "description": "Wow Human In The Loop skill",
           "files": [
             {
-              "src": "wocode/agent/skills/wow_human_in_the_loop/SKILL.md",
+              "src": "wocode/agent/skills/wow-human-in-the-loop/SKILL.md",
               "dest": "skills/wow-human-in-the-loop/SKILL.md"
             }
           ]
@@ -8251,7 +7817,7 @@
           "description": "Wow Skill Creator skill",
           "files": [
             {
-              "src": "wocode/agent/skills/wow_skill_creator/SKILL.md",
+              "src": "wocode/agent/skills/wow-skill-creator/SKILL.md",
               "dest": "skills/wow-skill-creator/SKILL.md"
             }
           ]
@@ -8260,7 +7826,7 @@
           "description": "Wow Ui Surfaces skill",
           "files": [
             {
-              "src": "wocode/agent/skills/wow_ui_surfaces/SKILL.md",
+              "src": "wocode/agent/skills/wow-ui-surfaces/SKILL.md",
               "dest": "skills/wow-ui-surfaces/SKILL.md"
             }
           ]
@@ -8269,7 +7835,7 @@
           "description": "Write A Prd skill",
           "files": [
             {
-              "src": "wocode/agent/skills/write_a_prd/SKILL.md",
+              "src": "wocode/agent/skills/write-a-prd/SKILL.md",
               "dest": "skills/write-a-prd/SKILL.md"
             }
           ]
@@ -8278,7 +7844,7 @@
           "description": "Wow Practices Guide",
           "files": [
             {
-              "src": "wocode/agent/skills/womono_practices_guide/SKILL.md",
+              "src": "wocode/agent/skills/womono-practices-guide/SKILL.md",
               "dest": "skills/womono-practices-guide/SKILL.md"
             }
           ]
@@ -8287,7 +7853,7 @@
           "description": "Wow Practices Audit",
           "files": [
             {
-              "src": "wocode/agent/skills/womono_practices_audit/SKILL.md",
+              "src": "wocode/agent/skills/womono-practices-audit/SKILL.md",
               "dest": "skills/womono-practices-audit/SKILL.md"
             }
           ]
@@ -8296,7 +7862,7 @@
           "description": "Wow Practices Backlog",
           "files": [
             {
-              "src": "wocode/agent/skills/womono_practices_backlog/SKILL.md",
+              "src": "wocode/agent/skills/womono-practices-backlog/SKILL.md",
               "dest": "skills/womono-practices-backlog/SKILL.md"
             }
           ]
@@ -8305,97 +7871,129 @@
           "description": "Universal component builder for all 7 AI coding tools",
           "files": [
             {
-              "src": "wocode/agent/skills/build_tool/SKILL.md",
+              "src": "wocode/agent/skills/build-tool/SKILL.md",
               "dest": "skills/build-tool/SKILL.md"
             }
           ]
         },
         "skill/build-tool-skill": {
-          "description": "Unified skill builder for all 7 tools \u2014 deployed to Wo Coder",
+          "description": "Unified skill builder, validator, adapter, and lifecycle manager for all 7 tools",
           "files": [
             {
-              "src": "wocode/agent/skills/build_tool_skill/SKILL.md",
+              "src": "wocode/agent/skills/build-tool-skill/SKILL.md",
               "dest": "skills/build-tool-skill/SKILL.md"
+            },
+            {
+              "src": "wocode/agent/skills/build-tool-skill/assets/config-manifest-example.yaml",
+              "dest": "skills/build-tool-skill/assets/config-manifest-example.yaml"
+            },
+            {
+              "src": "wocode/agent/skills/build-tool-skill/assets/skill-example-opencode.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-opencode.md"
+            },
+            {
+              "src": "wocode/agent/skills/build-tool-skill/assets/skill-example-claude.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-claude.md"
+            },
+            {
+              "src": "wocode/agent/skills/build-tool-skill/assets/skill-example-pi.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-pi.md"
+            },
+            {
+              "src": "wocode/agent/skills/build-tool-skill/assets/skill-example-codex.yaml",
+              "dest": "skills/build-tool-skill/assets/skill-example-codex.yaml"
+            },
+            {
+              "src": "wocode/agent/skills/build-tool-skill/assets/skill-example-codex-prompt.md",
+              "dest": "skills/build-tool-skill/assets/skill-example-codex-prompt.md"
+            },
+            {
+              "src": "wocode/agent/skills/build-tool-skill/assets/compliance-check.py",
+              "dest": "skills/build-tool-skill/assets/compliance-check.py"
+            },
+            {
+              "src": "wocode/agent/skills/build-tool-skill/assets/adapter-generate.py",
+              "dest": "skills/build-tool-skill/assets/adapter-generate.py"
             }
           ]
         },
         "skill/build-tool-agent": {
-          "description": "Unified agent builder for all 7 tools \u2014 deployed to Wo Coder",
+          "description": "Unified agent builder for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocode/agent/skills/build_tool_agent/SKILL.md",
+              "src": "wocode/agent/skills/build-tool-agent/SKILL.md",
               "dest": "skills/build-tool-agent/SKILL.md"
             }
           ]
         },
         "skill/build-tool-extension": {
-          "description": "Unified extension/plugin builder for all 7 tools \u2014 deployed to Wo Coder",
+          "description": "Unified extension/plugin builder for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocode/agent/skills/build_tool_extension/SKILL.md",
+              "src": "wocode/agent/skills/build-tool-extension/SKILL.md",
               "dest": "skills/build-tool-extension/SKILL.md"
             }
           ]
         },
         "skill/build-tool-tui": {
-          "description": "Unified TUI component builder for all 7 tools \u2014 deployed to Wo Coder",
+          "description": "Unified TUI component builder for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocode/agent/skills/build_tool_tui/SKILL.md",
+              "src": "wocode/agent/skills/build-tool-tui/SKILL.md",
               "dest": "skills/build-tool-tui/SKILL.md"
             }
           ]
         },
         "skill/build-tool-cli": {
-          "description": "Unified CLI reference for all 7 tools \u2014 deployed to Wo Coder",
+          "description": "Unified CLI reference for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocode/agent/skills/build_tool_cli/SKILL.md",
+              "src": "wocode/agent/skills/build-tool-cli/SKILL.md",
               "dest": "skills/build-tool-cli/SKILL.md"
             }
           ]
         },
         "skill/build-tool-themes": {
-          "description": "Unified theme builder for all 7 tools \u2014 deployed to Wo Coder",
+          "description": "Unified theme builder for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocode/agent/skills/build_tool_themes/SKILL.md",
+              "src": "wocode/agent/skills/build-tool-themes/SKILL.md",
               "dest": "skills/build-tool-themes/SKILL.md"
             }
           ]
         },
         "skill/build-tool-prompts": {
-          "description": "Unified prompt template builder for all 7 tools \u2014 deployed to Wo Coder",
+          "description": "Unified prompt template builder for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocode/agent/skills/build_tool_prompts/SKILL.md",
+              "src": "wocode/agent/skills/build-tool-prompts/SKILL.md",
               "dest": "skills/build-tool-prompts/SKILL.md"
             }
           ]
         },
         "skill/build-tool-keybindings": {
-          "description": "Unified keybinding reference for all 7 tools \u2014 deployed to Wo Coder",
+          "description": "Unified keybinding reference for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocode/agent/skills/build_tool_keybindings/SKILL.md",
+              "src": "wocode/agent/skills/build-tool-keybindings/SKILL.md",
               "dest": "skills/build-tool-keybindings/SKILL.md"
             }
           ]
         },
         "skill/build-tool-config": {
-          "description": "Unified configuration reference for all 7 tools \u2014 deployed to Wo Coder",
+          "description": "Unified configuration reference for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocode/agent/skills/build_tool_config/SKILL.md",
+              "src": "wocode/agent/skills/build-tool-config/SKILL.md",
               "dest": "skills/build-tool-config/SKILL.md"
             }
           ]
         },
         "skill/build-tool-orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools \u2014 deployed to Wo Coder",
+          "description": "Unified orchestration coordinator for all 7 tools — deployed to Wo Coder",
           "files": [
             {
-              "src": "wocode/agent/skills/build_tool_orchestrate/SKILL.md",
+              "src": "wocode/agent/skills/build-tool-orchestrate/SKILL.md",
               "dest": "skills/build-tool-orchestrate/SKILL.md"
             }
           ]
@@ -8404,255 +8002,251 @@
           "description": "Generate investor-ready documentation for any project",
           "files": [
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/SKILL.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/SKILL.md",
               "dest": "skills/investor-ready-doc-gen/SKILL.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/verticals/VERTICAL_TEMPLATE.yaml",
               "dest": "skills/investor-ready-doc-gen/assets/verticals/VERTICAL_TEMPLATE.yaml"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/verticals/hvac_optimization/market_reference.yaml",
               "dest": "skills/investor-ready-doc-gen/assets/verticals/hvac_optimization/market_reference.yaml"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml",
               "dest": "skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/pdf/investor_theme.css",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/pdf/investor-theme.css",
               "dest": "skills/investor-ready-doc-gen/assets/pdf/investor-theme.css"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/pdf/design_template.yaml",
-              "dest": "skills/investor-ready-doc-gen/assets/pdf/design-template.yaml"
-            },
-            {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml",
               "dest": "skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/examples/wow_config.yaml",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/examples/wow_config.yaml",
               "dest": "skills/investor-ready-doc-gen/assets/examples/wow_config.yaml"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/examples/opticat_config.yaml",
               "dest": "skills/investor-ready-doc-gen/assets/examples/opticat_config.yaml"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/todo.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/todo.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/todo.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/changelog.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/changelog.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/changelog.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/index.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/index.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/index.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/costs/cloud_costs.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/costs/cloud_costs.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/costs/hardware_costs.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/costs/hardware_costs.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/costs/setup_legal_costs.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/costs/setup_legal_costs.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/costs/detailed_breakdown.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/costs/detailed_breakdown.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/costs/cost_analysis.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/costs/cost_analysis.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/costs/team_tooling_costs.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/costs/team_tooling_costs.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/costs/alignment_summary.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/costs/alignment_summary.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/technical/demo_script.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/technical/demo_script.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/technical/product_functionality.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/technical/product_functionality.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/technical/demo_presentation_slides.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/technical/demo_presentation_slides.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/technical/technical_overview.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/technical/technical_overview.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/technical/demo_video_links.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/technical/demo_video_links.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/technical/demo_use_case_scenarios.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/technical/demo_use_case_scenarios.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/company/company_overview.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/company/company_overview.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/company/company_overview.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/company/team_values.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/company/team_values.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/company/team_values.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/company/organizational_chart.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/company/organizational_chart.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/company/business_plan.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/company/business_plan.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/company/business_plan.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/company/team_bios.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/company/team_bios.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/company/team_bios.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/venture_studio/README.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/venture_studio/README.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/venture_studio/venture_studio_strategy.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/venture_studio/venture_studio_strategy.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/pitch_deck/send_ahead_deck.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/pitch_deck/send_ahead_deck.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/pitch_deck/pitch_script.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/pitch_deck/pitch_script.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/pitch_deck/supporting_slides.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/pitch_deck/supporting_slides.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/pitch_deck/master_deck.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/pitch_deck/master_deck.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/pitch_deck/one_pager.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/pitch_deck/one_pager.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/operations/kpi_dashboard.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/operations/kpi_dashboard.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/operations/client_overview.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/operations/client_overview.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/operations/venture_studio_strategy.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/operations/venture_studio_strategy.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/financial/master_financial_model.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/financial/master_financial_model.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/financial/README.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/financial/README.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/financial/README.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/financial/seed_allocation_plan.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/financial/seed_allocation_plan.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/financial/cost_analysis.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/financial/cost_analysis.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/financial/revenue_model.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/financial/revenue_model.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/financial/historical_financials.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/financial/historical_financials.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/financial/cap_table.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/financial/cap_table.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/legal/intellectual_property.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/legal/intellectual_property.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/legal/shareholder_agreement.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/legal/shareholder_agreement.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/legal/vc_investor_contract.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/legal/vc_investor_contract.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/legal/advisor_board_contract.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/legal/advisor_board_contract.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/legal/angel_investor_contract.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/legal/angel_investor_contract.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/executive/executive_summary.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/executive/executive_summary.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/executive/white_paper.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/executive/white_paper.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/executive/investment_thesis.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/executive/investment_thesis.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/market/research_prompt.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/market/research_prompt.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/market/market_research.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/market/market_research.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/market/market_research.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/market/product_roadmap.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/market/product_roadmap.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/market/README.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/market/README.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/market/README.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/market/go_to_market_strategy.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/market/go_to_market_strategy.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/market/deep_research.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/market/deep_research.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/market/deep_research.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/market/partnership_strategy.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/market/partnership_strategy.md"
             },
             {
-              "src": "wocode/agent/skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md",
+              "src": "wocode/agent/skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md",
               "dest": "skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md"
             }
           ]
@@ -8661,7 +8255,7 @@
           "description": "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories",
           "files": [
             {
-              "src": "wocode/agent/skills/build_auto_ticket_creator/SKILL.md",
+              "src": "wocode/agent/skills/build-auto-ticket-creator/SKILL.md",
               "dest": "skills/build-auto-ticket-creator/SKILL.md"
             }
           ]
@@ -8670,83 +8264,8 @@
           "description": "Product & Ticket Manager. Helps transform ideas/plans into structured tickets in thoughts/shared/tickets/ and maintains the project backlog.",
           "files": [
             {
-              "src": "wocode/agent/skills/build_backlog_groomer/SKILL.md",
+              "src": "wocode/agent/skills/build-backlog-groomer/SKILL.md",
               "dest": "skills/build-backlog-groomer/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-skill-adapter": {
-          "description": "Adapts skills between different AI coding tool formats and conventions",
-          "files": [
-            {
-              "src": "wocode/agent/skills/build_skill_adapter/SKILL.md",
-              "dest": "skills/build-skill-adapter/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-skill-auto-update": {
-          "description": "Automatically updates skills when dependencies or APIs change",
-          "files": [
-            {
-              "src": "wocode/agent/skills/build_skill_auto_update/SKILL.md",
-              "dest": "skills/build-skill-auto-update/SKILL.md"
-            }
-          ]
-        },
-        "skill/skill-compliance-checker": {
-          "description": "Validates skills against production-ready standards and best practices",
-          "files": [
-            {
-              "src": "wocode/agent/skills/skill_compliance_checker/SKILL.md",
-              "dest": "skills/skill-compliance-checker/SKILL.md"
-            },
-            {
-              "src": "wocode/agent/skills/skill_compliance_checker/assets/compliance_fix.ts",
-              "dest": "skills/skill-compliance-checker/assets/compliance-fix.ts"
-            },
-            {
-              "src": "wocode/agent/skills/skill_compliance_checker/scripts/gemini_skill_update.py",
-              "dest": "skills/skill-compliance-checker/scripts/gemini-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_compliance_checker/scripts/test_yamls.py",
-              "dest": "skills/skill-compliance-checker/scripts/test-yamls.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_compliance_checker/scripts/claude_skill_update.py",
-              "dest": "skills/skill-compliance-checker/scripts/claude-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_compliance_checker/scripts/test_manifest.py",
-              "dest": "skills/skill-compliance-checker/scripts/test-manifest.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_compliance_checker/scripts/wocode_skill_update.py",
-              "dest": "skills/skill-compliance-checker/scripts/wocode-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_compliance_checker/scripts/codex_skill_update.py",
-              "dest": "skills/skill-compliance-checker/scripts/codex-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_compliance_checker/scripts/pi_skill_update.py",
-              "dest": "skills/skill-compliance-checker/scripts/pi-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_compliance_checker/scripts/test_skills.py",
-              "dest": "skills/skill-compliance-checker/scripts/test-skills.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_compliance_checker/scripts/opencode_skill_update.py",
-              "dest": "skills/skill-compliance-checker/scripts/opencode-skill-update.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_compliance_checker/scripts/run_all_tests.py",
-              "dest": "skills/skill-compliance-checker/scripts/run-all-tests.py"
-            },
-            {
-              "src": "wocode/agent/skills/skill_compliance_checker/scripts/antigravity_skill_update.py",
-              "dest": "skills/skill-compliance-checker/scripts/antigravity-skill-update.py"
             }
           ]
         },
@@ -8754,11 +8273,11 @@
           "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
           "files": [
             {
-              "src": "wocode/agent/skills/ticket_executor/SKILL.md",
+              "src": "wocode/agent/skills/ticket-executor/SKILL.md",
               "dest": "skills/ticket-executor/SKILL.md"
             },
             {
-              "src": "wocode/agent/skills/ticket_executor/assets/audit_tickets.js",
+              "src": "wocode/agent/skills/ticket-executor/assets/audit-tickets.js",
               "dest": "skills/ticket-executor/assets/audit-tickets.js"
             }
           ]
@@ -8767,7 +8286,7 @@
           "description": "Enables Wo to answer How do I...? and What's the command for...? questions by searching its own commands, skills, and documentation locally",
           "files": [
             {
-              "src": "wocode/agent/skills/self_documentation/SKILL.md",
+              "src": "wocode/agent/skills/self-documentation/SKILL.md",
               "dest": "skills/self-documentation/SKILL.md"
             }
           ]
@@ -8776,7 +8295,7 @@
           "description": "Validate Podman/Quadlet configurations on Fedora",
           "files": [
             {
-              "src": "wocode/agent/skills/validate_podman/SKILL.md",
+              "src": "wocode/agent/skills/validate-podman/SKILL.md",
               "dest": "skills/validate-podman/SKILL.md"
             }
           ]
@@ -8785,7 +8304,7 @@
           "description": "Bump WoM harness version across all files and tools",
           "files": [
             {
-              "src": "wocode/agent/skills/womono_version_updater/SKILL.md",
+              "src": "wocode/agent/skills/womono-version-updater/SKILL.md",
               "dest": "skills/womono-version-updater/SKILL.md"
             }
           ]
@@ -8803,7 +8322,7 @@
           "description": "Create and manage GitHub feature branches from tickets with proper naming and protection",
           "files": [
             {
-              "src": "wocode/agent/skills/github_branch/SKILL.md",
+              "src": "wocode/agent/skills/github-branch/SKILL.md",
               "dest": "skills/github-branch/SKILL.md"
             }
           ]
@@ -8812,7 +8331,7 @@
           "description": "Create, manage, and review GitHub Pull Requests with ticket linking and template support",
           "files": [
             {
-              "src": "wocode/agent/skills/github_pr/SKILL.md",
+              "src": "wocode/agent/skills/github-pr/SKILL.md",
               "dest": "skills/github-pr/SKILL.md"
             }
           ]
@@ -8821,7 +8340,7 @@
           "description": "Review GitHub Pull Requests with structured feedback and CTO Dashboard integration",
           "files": [
             {
-              "src": "wocode/agent/skills/github_review/SKILL.md",
+              "src": "wocode/agent/skills/github-review/SKILL.md",
               "dest": "skills/github-review/SKILL.md"
             }
           ]
@@ -8830,7 +8349,7 @@
           "description": "Sync feature branches with base branch, resolve conflicts, manage branch lifecycle",
           "files": [
             {
-              "src": "wocode/agent/skills/github_sync/SKILL.md",
+              "src": "wocode/agent/skills/github-sync/SKILL.md",
               "dest": "skills/github-sync/SKILL.md"
             }
           ]
@@ -8839,7 +8358,7 @@
           "description": "Create GitHub releases with changelog generation, version tagging, and automated publishing",
           "files": [
             {
-              "src": "wocode/agent/skills/github_release/SKILL.md",
+              "src": "wocode/agent/skills/github-release/SKILL.md",
               "dest": "skills/github-release/SKILL.md"
             }
           ]
@@ -8848,7 +8367,7 @@
           "description": "Create, manage, and link GitHub Issues with tickets, bi-directional sync",
           "files": [
             {
-              "src": "wocode/agent/skills/github_issue/SKILL.md",
+              "src": "wocode/agent/skills/github-issue/SKILL.md",
               "dest": "skills/github-issue/SKILL.md"
             }
           ]
@@ -8857,8 +8376,47 @@
           "description": "Validate skill manifest against production-ready standards and conventions",
           "files": [
             {
-              "src": "wocode/agent/skills/validate_manifest/SKILL.md",
+              "src": "wocode/agent/skills/validate-manifest/SKILL.md",
               "dest": "skills/validate-manifest/SKILL.md"
+            }
+          ]
+        },
+        "skill/runbook-manager": {
+          "description": "Generate, update, and maintain production runbooks per project",
+          "files": [
+            {
+              "src": "wocode/agent/skills/runbook-manager/SKILL.md",
+              "dest": "skills/runbook-manager/SKILL.md"
+            },
+            {
+              "src": "wocode/agent/skills/runbook-manager/assets/runbook-template.md",
+              "dest": "skills/runbook-manager/assets/runbook-template.md"
+            }
+          ]
+        },
+        "skill/postmortem-manager": {
+          "description": "Generate incident postmortems with interactive flow and git metrics",
+          "files": [
+            {
+              "src": "wocode/agent/skills/postmortem-manager/SKILL.md",
+              "dest": "skills/postmortem-manager/SKILL.md"
+            },
+            {
+              "src": "wocode/agent/skills/postmortem-manager/assets/postmortem-template.md",
+              "dest": "skills/postmortem-manager/assets/postmortem-template.md"
+            }
+          ]
+        },
+        "skill/session-export": {
+          "description": "Capture working session as structured session history with git metrics and context",
+          "files": [
+            {
+              "src": "wocode/agent/skills/session-export/SKILL.md",
+              "dest": "skills/session-export/SKILL.md"
+            },
+            {
+              "src": "wocode/agent/skills/session-export/assets/session-template.md",
+              "dest": "skills/session-export/assets/session-template.md"
             }
           ]
         }

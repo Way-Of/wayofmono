@@ -1,0 +1,67 @@
+# config-manifest-example.yaml
+# Example per-tool YAML entry showing how to register a skill for all 7 tools.
+# Copy this block into each tool's YAML at config-manifest/tools/<tool>.yaml.
+#
+# Tool-specific notes:
+# - opencode: src uses kebab-case dir naming
+# - claude:   src uses snake_case dir naming
+# - gemini:   src uses snake_case dir naming
+# - pi:       src uses kebab-case dir naming under pi/agent/
+# - wocode:   src uses snake_case dir naming under wocode/agent/
+# - codex:    src uses snake_case dir naming
+# - antigravity: src uses snake_case dir naming
+#
+# dest paths are always kebab-case (canonical format).
+
+# --- opencode ---
+#   skill/example-skill:
+#     description: Description of the skill
+#     files:
+#     - src: opencode/skills/example-skill/SKILL.md
+#       dest: skills/example-skill/SKILL.md
+#     - src: opencode/skills/example-skill/assets/template.md
+#       dest: skills/example-skill/assets/template.md
+
+# --- claude ---
+#   skill/example-skill:
+#     description: Description of the skill
+#     files:
+#     - src: claude/skills/example_skill/SKILL.md
+#       dest: skills/example-skill/SKILL.md
+#     - src: claude/skills/example_skill/assets/template.md
+#       dest: skills/example-skill/assets/template.md
+
+# --- gemini ---
+#   skill/example-skill:
+#     description: Description of the skill
+#     files:
+#     - src: gemini/skills/example_skill/SKILL.md
+#       dest: skills/example-skill/SKILL.md
+
+# --- pi ---
+#   skill/example-skill:
+#     description: Description of the skill
+#     files:
+#     - src: pi/agent/skills/example-skill/SKILL.md
+#       dest: skills/example-skill/SKILL.md
+
+# --- wocode ---
+#   skill/example-skill:
+#     description: Description of the skill
+#     files:
+#     - src: wocode/agent/skills/example_skill/SKILL.md
+#       dest: skills/example-skill/SKILL.md
+
+# --- codex ---
+#   skill/example-skill:
+#     description: Description of the skill
+#     files:
+#     - src: codex/skills/example_skill/SKILL.md
+#       dest: skills/example-skill/SKILL.md
+
+# --- antigravity ---
+#   skill/example-skill:
+#     description: Description of the skill
+#     files:
+#     - src: antigravity/skills/example_skill/SKILL.md
+#       dest: skills/example-skill/SKILL.md

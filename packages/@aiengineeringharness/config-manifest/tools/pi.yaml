@@ -239,37 +239,6 @@ components:
     files:
     - src: pi/agent/skills/team-setup/SKILL.md
       dest: skills/team-setup/SKILL.md
-  skill/skill-auto-update:
-    description: Skill Auto-Update - auto-discover and sync skills across all frontends
-    files:
-    - src: pi/agent/skills/skill-auto-update/SKILL.md
-      dest: skills/skill-auto-update/SKILL.md
-    - src: pi/agent/skills/skill-auto-update/assets/compliance-fix.ts
-      dest: skills/skill-auto-update/assets/compliance-fix.ts
-    - src: pi/agent/skills/skill-auto-update/assets/skillsrules.md
-      dest: skills/skill-auto-update/assets/skillsrules.md
-    - src: pi/agent/skills/skill-auto-update/scripts/gemini-skill-update.py
-      dest: skills/skill-auto-update/scripts/gemini-skill-update.py
-    - src: pi/agent/skills/skill-auto-update/scripts/test-yamls.py
-      dest: skills/skill-auto-update/scripts/test-yamls.py
-    - src: pi/agent/skills/skill-auto-update/scripts/claude-skill-update.py
-      dest: skills/skill-auto-update/scripts/claude-skill-update.py
-    - src: pi/agent/skills/skill-auto-update/scripts/test-manifest.py
-      dest: skills/skill-auto-update/scripts/test-manifest.py
-    - src: pi/agent/skills/skill-auto-update/scripts/wocode-skill-update.py
-      dest: skills/skill-auto-update/scripts/wocode-skill-update.py
-    - src: pi/agent/skills/skill-auto-update/scripts/codex-skill-update.py
-      dest: skills/skill-auto-update/scripts/codex-skill-update.py
-    - src: pi/agent/skills/skill-auto-update/scripts/pi-skill-update.py
-      dest: skills/skill-auto-update/scripts/pi-skill-update.py
-    - src: pi/agent/skills/skill-auto-update/scripts/test-skills.py
-      dest: skills/skill-auto-update/scripts/test-skills.py
-    - src: pi/agent/skills/skill-auto-update/scripts/opencode-skill-update.py
-      dest: skills/skill-auto-update/scripts/opencode-skill-update.py
-    - src: pi/agent/skills/skill-auto-update/scripts/run-all-tests.py
-      dest: skills/skill-auto-update/scripts/run-all-tests.py
-    - src: pi/agent/skills/skill-auto-update/scripts/antigravity-skill-update.py
-      dest: skills/skill-auto-update/scripts/antigravity-skill-update.py
   skill/auto-ticket-creator:
     description: Auto-Ticket Creator - monitor and auto-create tickets from changes
     files:
@@ -285,35 +254,6 @@ components:
     files:
     - src: pi/agent/skills/cto-dashboard/SKILL.md
       dest: skills/cto-dashboard/SKILL.md
-  skill/skill-adapter:
-    description: Skill Adapter - platform-specific skill loading and format adapters
-    files:
-    - src: pi/agent/skills/skill-adapter/SKILL.md
-      dest: skills/skill-adapter/SKILL.md
-    - src: pi/agent/skills/skill-adapter/assets/compliance-fix.ts
-      dest: skills/skill-adapter/assets/compliance-fix.ts
-    - src: pi/agent/skills/skill-adapter/scripts/gemini-skill-update.py
-      dest: skills/skill-adapter/scripts/gemini-skill-update.py
-    - src: pi/agent/skills/skill-adapter/scripts/test-yamls.py
-      dest: skills/skill-adapter/scripts/test-yamls.py
-    - src: pi/agent/skills/skill-adapter/scripts/claude-skill-update.py
-      dest: skills/skill-adapter/scripts/claude-skill-update.py
-    - src: pi/agent/skills/skill-adapter/scripts/test-manifest.py
-      dest: skills/skill-adapter/scripts/test-manifest.py
-    - src: pi/agent/skills/skill-adapter/scripts/wocode-skill-update.py
-      dest: skills/skill-adapter/scripts/wocode-skill-update.py
-    - src: pi/agent/skills/skill-adapter/scripts/codex-skill-update.py
-      dest: skills/skill-adapter/scripts/codex-skill-update.py
-    - src: pi/agent/skills/skill-adapter/scripts/pi-skill-update.py
-      dest: skills/skill-adapter/scripts/pi-skill-update.py
-    - src: pi/agent/skills/skill-adapter/scripts/test-skills.py
-      dest: skills/skill-adapter/scripts/test-skills.py
-    - src: pi/agent/skills/skill-adapter/scripts/opencode-skill-update.py
-      dest: skills/skill-adapter/scripts/opencode-skill-update.py
-    - src: pi/agent/skills/skill-adapter/scripts/run-all-tests.py
-      dest: skills/skill-adapter/scripts/run-all-tests.py
-    - src: pi/agent/skills/skill-adapter/scripts/antigravity-skill-update.py
-      dest: skills/skill-adapter/scripts/antigravity-skill-update.py
   skill/backlog-groomer:
     description: Backlog Groomer skill
     files:
@@ -463,10 +403,26 @@ components:
     - src: pi/agent/skills/build-tool/SKILL.md
       dest: skills/build-tool/SKILL.md
   skill/build-tool-skill:
-    description: "Unified skill builder for all 7 tools \u2014 deployed to Pi"
+    description: "Unified skill builder, validator, adapter, and lifecycle manager for all 7 tools"
     files:
     - src: pi/agent/skills/build-tool-skill/SKILL.md
       dest: skills/build-tool-skill/SKILL.md
+    - src: pi/agent/skills/build-tool-skill/assets/config-manifest-example.yaml
+      dest: skills/build-tool-skill/assets/config-manifest-example.yaml
+    - src: pi/agent/skills/build-tool-skill/assets/skill-example-opencode.md
+      dest: skills/build-tool-skill/assets/skill-example-opencode.md
+    - src: pi/agent/skills/build-tool-skill/assets/skill-example-claude.md
+      dest: skills/build-tool-skill/assets/skill-example-claude.md
+    - src: pi/agent/skills/build-tool-skill/assets/skill-example-pi.md
+      dest: skills/build-tool-skill/assets/skill-example-pi.md
+    - src: pi/agent/skills/build-tool-skill/assets/skill-example-codex.yaml
+      dest: skills/build-tool-skill/assets/skill-example-codex.yaml
+    - src: pi/agent/skills/build-tool-skill/assets/skill-example-codex-prompt.md
+      dest: skills/build-tool-skill/assets/skill-example-codex-prompt.md
+    - src: pi/agent/skills/build-tool-skill/assets/compliance-check.py
+      dest: skills/build-tool-skill/assets/compliance-check.py
+    - src: pi/agent/skills/build-tool-skill/assets/adapter-generate.py
+      dest: skills/build-tool-skill/assets/adapter-generate.py
   skill/build-tool-agent:
     description: "Unified agent builder for all 7 tools \u2014 deployed to Pi"
     files:
@@ -657,23 +613,6 @@ components:
     files:
     - src: pi/agent/skills/build-backlog-groomer/SKILL.md
       dest: skills/build-backlog-groomer/SKILL.md
-  skill/build-skill-adapter:
-    description: Adapts skills between different AI coding tool formats and conventions
-    files:
-    - src: pi/agent/skills/build-skill-adapter/SKILL.md
-      dest: skills/build-skill-adapter/SKILL.md
-  skill/build-skill-auto-update:
-    description: Automatically updates skills when dependencies or APIs change
-    files:
-    - src: pi/agent/skills/build-skill-auto-update/SKILL.md
-      dest: skills/build-skill-auto-update/SKILL.md
-  skill/skill-compliance-checker:
-    description: Validates skills against production-ready standards and best practices
-    files:
-    - src: pi/agent/skills/skill-compliance-checker/SKILL.md
-      dest: skills/skill-compliance-checker/SKILL.md
-    - src: pi/agent/skills/skill-compliance-checker/assets/compliance-fix.ts
-      dest: skills/skill-compliance-checker/assets/compliance-fix.ts
   skill/self-documentation:
     description: Enables Wo to answer How do I...? and What's the command for...?
       questions by searching its own commands, skills, and documentation locally
@@ -734,3 +673,24 @@ components:
     files:
     - src: pi/agent/skills/github-issue/SKILL.md
       dest: skills/github-issue/SKILL.md
+  skill/runbook-manager:
+    description: Generate, update, and maintain production runbooks per project
+    files:
+    - src: pi/agent/skills/runbook-manager/SKILL.md
+      dest: skills/runbook-manager/SKILL.md
+    - src: pi/agent/skills/runbook-manager/assets/runbook-template.md
+      dest: skills/runbook-manager/assets/runbook-template.md
+  skill/postmortem-manager:
+    description: Generate incident postmortems with interactive flow and git metrics
+    files:
+    - src: pi/agent/skills/postmortem-manager/SKILL.md
+      dest: skills/postmortem-manager/SKILL.md
+    - src: pi/agent/skills/postmortem-manager/assets/postmortem-template.md
+      dest: skills/postmortem-manager/assets/postmortem-template.md
+  skill/session-export:
+    description: Capture working session as structured session history with git metrics and context
+    files:
+    - src: pi/agent/skills/session-export/SKILL.md
+      dest: skills/session-export/SKILL.md
+    - src: pi/agent/skills/session-export/assets/session-template.md
+      dest: skills/session-export/assets/session-template.md

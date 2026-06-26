@@ -32,6 +32,8 @@
   Skip compliance validation after --update.
 .PARAMETER Prune
   Interactive: review & remove non-manifest skills.
+.PARAMETER Purge
+  Nuclear cleanup: wipe ALL harness files from tool config dirs (no manifest).
 .PARAMETER SyncDocs
   Sync canonical skills to all tool directories.
 .PARAMETER ReportSkills
@@ -75,6 +77,7 @@ param(
   [switch]$Interactive,
   [switch]$Local,
   [string]$Uninstall,
+  [switch]$Purge,
   [switch]$NoValidate,
   [switch]$Prune,
   [switch]$SyncDocs,
@@ -188,6 +191,7 @@ function Show-Help {
   Write-Host "    -Uninstall <name> Remove installed files (claude, opencode, all, ...)"
   Write-Host "    -NoValidate       Skip compliance validation after --update"
   Write-Host "    -Prune            Interactive: review & remove non-manifest skills"
+  Write-Host "    -Purge [<name>]   Nuclear cleanup: wipe ALL harness files from tool config"
   Write-Host "    -SyncDocs         Sync canonical skills to all tool directories"
   Write-Host "    -ReportSkills     Report local skills to dashboard telemetry API"
   Write-Host "    -ReportUrl <url>  Dashboard URL for skill reporting"
@@ -235,6 +239,7 @@ function Main {
   if ($Interactive) { $denoArgs += "--interactive" }
   if ($Local) { $denoArgs += "--local" }
   if ($Uninstall) { $denoArgs += "--uninstall=$Uninstall" }
+  if ($Purge) { $denoArgs += "--purge" }
   if ($NoValidate) { $denoArgs += "--no-validate" }
   if ($Prune) { $denoArgs += "--prune" }
   if ($SyncDocs) { $denoArgs += "--sync-docs" }
