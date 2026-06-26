@@ -2008,7 +2008,7 @@ if (args.uninstall) {
     if (!args["dry-run"]) {
       for (const subdir of ["agents", "skills", "commands", "prompts", "extensions"]) {
         const dir = join(targetDir, subdir);
-        try { await Deno.remove(dir); } catch { /* not empty or not found */ }
+        try { await Deno.remove(dir, { recursive: true }); } catch { /* not found */ }
       }
       const versionFile = join(targetDir, ".ai-harness-version");
       try { await Deno.remove(versionFile); } catch { /* not found */ }
