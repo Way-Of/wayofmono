@@ -5,7 +5,9 @@ via f-rr-d, the AI Engineering Harness, and WayOfMono packages.
 
 ## Overview
 
-WayOfMono operates **4 interconnected delivery pipelines** that transform canonical sources into deployed instances. Every component flows through a **canonical source → adapt → deploy** pattern — skills, agents, commands, configs, runtime libraries, and contextual knowledge.
+WayOfMono operates **4 interconnected delivery pipelines** that transform canonical sources into deployed instances. Every component flows through a **canonical source → adapt → deploy** pattern — skills, agents, commands, configs, runtime libraries, contextual knowledge, and engineering team observability.
+
+The CTO Dashboard exists in two implementations: the original **Next.js** version (`ui/`) and the **WayOfTeams** Phoenix LiveView port (`thoughts/wayofteams/`), each consuming the same f-rr-d and harness pipelines.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -15,6 +17,8 @@ WayOfMono operates **4 interconnected delivery pipelines** that transform canoni
 │  Pipeline 2: Packages (runtime/LLM/TUI capabilities)                │
 │  Pipeline 3: f-rr-d (tickets/plans/research knowledge)              │
 │  Pipeline 4: CTO Dashboard (telemetry/observability)                │
+│     ├── Next.js (ui/)                                               │
+│     └── WayOfTeams Phoenix (thoughts/wayofteams/)                   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -46,37 +50,36 @@ packages/@aiengineeringharness/
 │       ├── test-manifest.py      ← Compiled manifest structure checks
 │       ├── test-skills.py        ← On-disk skill format compliance
 │       └── run-all-tests.py      ← Orchestrator
-├── opencode/skills/              ← CANONICAL skills (kebab-case)
-├── opencode/agents/              ← CANONICAL agent definitions
+├── opencode/skills/              ← Canonical skills (kebab-case)
+├── opencode/agents/              ← Canonical agent definitions
 └── scripts/
-    ├── docs-sync.ts              ← Canonical→per-tool sync + adaptation
-    └── compliance-check.ts       ← Naming/tool-case/frontmatter validation
+    ├── docs-sync.ts              ← Stale/legacy — use config-manifest instead
+    └── compliance-check.ts       ← Stale/legacy — use config-manifest instead
 ```
 
 ### Flow
 
 ```
-  SKILL.md (canonical)
+  config-manifest/tools/*.yaml
+  (per-tool definitions with naming, casing, target dirs)
        │
-       ▼
-  docs-sync.ts ─── adapts per-tool ───→ claude/skills/ (snake_case)
-                                        pi/skills/ (kebab-case)
-                                        gemini/skills/ (snake_case)
-                                        codex/skills/ (snake_case)
-       │                                 antigravity/skills/ (snake_case)
-       │                                 wocode/skills/ (kebab-case)
-       ▼
-  config-manifest/ ─── compile.py ───→ manifest.json
-  (tools/*.yaml)                       (auto-generated)
+       ├── compile.py ── validates + adapts ──→ manifest.json
+       │   (TOOL_PATH_RULES enforce naming per tool)  (auto-generated)
        │
-       ▼
-  install.ts ─── reads manifest ───→ ~/.claude/skills/
-  (src→dest map)                      ~/.config/opencode/skills/
-                                      ~/.gemini/skills/
-                                      ~/.pi/agent/skills/
-                                      ~/.antigravity/skills/
-                                      ~/.codex/skills/
-                                      ~/.wocode/skills/
+       ├── validate.py ── per-tool format spec check
+       │   (naming: snake/kebab, allowed-tools case, targets)
+       │
+       └── test-skills.py ── on-disk validation per tool
+           (frontmatter, dir naming, cross-tool alignment)
+                │
+                ▼
+          install.ts ─── reads manifest ───→ ~/.claude/skills/
+          (src→dest map)                      ~/.config/opencode/skills/
+                                              ~/.gemini/skills/
+                                              ~/.pi/agent/skills/
+                                              ~/.antigravity/skills/
+                                              ~/.codex/skills/
+                                              ~/.wocode/skills/
 ```
 
 ### What Gets Deployed
@@ -264,17 +267,22 @@ thoughts/
 │   └── zerwiz/, tomas/, ...   # Personal workspaces
 ├── wow/                       # WOW-XXX namespace
 │   └── shared/tickets/ ...
-└── opticat/                   # OPT-XXX namespace
-    └── shared/tickets/ ...
+├── opticat/                   # OPT-XXX namespace
+│   └── shared/tickets/ ...
+├── wayofteams/                # WOTEAMS-XXX namespace
+│   ├── shared/tickets/
+│   ├── docs/                  # Architecture, product docs, investor-ready materials
+│   └── <developer>/
 ```
 
-### Three Namespaces
+### Four Namespaces
 
 | Prefix | Project | Path |
 |--------|---------|------|
 | WOMONO | WayOfMono (internal tooling) | `thoughts/wayofmono/shared/tickets/` |
 | WOW | WayOfWork (multi-tenant platform) | `thoughts/wow/shared/tickets/` |
 | OPT | OptiCat (HVAC simulation) | `thoughts/opticat/shared/tickets/` |
+| WOTEAMS | WayOfTeams (CTO Dashboard) | `thoughts/wayofteams/shared/tickets/` |
 
 ### Ticket Format
 
@@ -315,9 +323,11 @@ The skills that drive this workflow are delivered by **Pipeline 1** (the harness
 
 ## Pipeline 4: CTO Dashboard (Observability Delivery)
 
-Delivers **telemetry, ticket status, and team visibility** through a Next.js 16 dashboard with SQLite backend.
+Delivers **telemetry, ticket status, and team visibility** through two dashboard implementations that share the same f-rr-d and harness pipelines.
 
-### Structure
+### Implementation: Next.js (ui/)
+
+Original dashboard — Next.js 16 with SQLite (Prisma) backend. Runs via `wodev` (Electron desktop app) or `wodev --web` (web server on port 6969).
 
 ```
 ui/
@@ -330,7 +340,21 @@ ui/
 └── prisma/schema.prisma          ← SkillReport, Ticket, User, Post models
 ```
 
-### Data Flow
+### Implementation: WayOfTeams (thoughts/wayofteams/)
+
+Phoenix LiveView port of the CTO Dashboard — reimplements the same feature set using Elixir's Phoenix framework with Ash Framework for resource management and Jido agents for AI workflow orchestration. The project's thoughts and investor-ready docs live in `thoughts/wayofteams/`.
+
+| Aspect | Next.js (ui/) | WayOfTeams (phoenix) |
+|--------|---------------|----------------------|
+| **Stack** | Next.js 16, Prisma, SQLite | Phoenix LiveView, Ash, PostgreSQL 16 |
+| **Agents** | N/A | Jido agents for signal processing, notifications, workflows |
+| **Pages** | ~10 views | 14 LiveView pages |
+| **State** | Zustand (client) + API (server) | Ash resources + LiveView |
+| **Status** | Active development | Active port |
+| **Deploy** | `wodev` CLI (Electron/web) | Elixir release |
+| **Namespace** | N/A | WOTEAMS |
+
+### Shared Data Flow
 
 ```
   AI Tool ──→ ai-harness --report-skills ──→ POST /api/skills/report
@@ -343,6 +367,8 @@ ui/
                            Notifications generated
                            for review queue
 ```
+
+Both implementations consume the same f-rr-d tickets and the same harness telemetry — they are interchangeable frontends on the same backend pipelines.
 
 ### Bi-Directional Sync
 
@@ -364,23 +390,27 @@ Tickets live in two places:
                     │    ├── opencode/agents/  (6 core agents)         │
                     │    ├── config-manifest/  (modular YAML source)   │
                     │    │   ├── tools/*.yaml  (per-tool definitions)  │
-                    │    │   └── compile.py    (YAML→manifest.json)    │
+                    │    │   ├── compile.py    (YAML→json + adapt)     │
+                    │    │   ├── validate.py   (format spec check)     │
+                    │    │   └── test-skills.py(on-disk validation)    │
                     │    └── manifest.json     (deployment map v1.7.7) │
-                    └──────────────┬──────────────────────────┬────────┘
-                                   │                          │
-                   ┌───────────────┴──────┐     ┌─────────────┴──────────┐
-                   │   docs-sync.ts       │     │  compile.py            │
-                   │   (skill adaptation)  │     │  (YAML → json)         │
-                   └───────┬──────────────┘     └───────────┬────────────┘
-                           │                                │
-                           ▼                                ▼
-              ┌─────────────────────┐          ┌──────────────────────────┐
-              │  Per-Tool Skill     │          │  manifest.json           │
-              │  Directories:       │          │  ← compiled output       │
-              │  claude/skills/     │          │                          │
-              │  pi/skills/         │          │  install.ts              │
-              │  (naming adapted)   │          │  (manifest consumer)     │
-              └─────────────────────┘          └───────────┬──────────────┘
+                    └────────────────────┬─────────────────────────────┘
+                                         │
+                            ┌────────────┴────────────┐
+                            │  config-manifest/        │
+                            │  compile.py + validate   │
+                            │  + test-skills.py        │
+                            │  (naming, casing, paths) │
+                            └────────────┬────────────┘
+                                         │
+                                         ▼
+                            ┌──────────────────────────┐
+                            │  manifest.json           │
+                            │  ← compiled + validated  │
+                            │                          │
+                            │  install.ts              │
+                            │  (manifest consumer)     │
+                            └───────────┬──────────────┘
                                                            │
                                                            ▼
                                                ┌──────────────────────────┐
@@ -413,12 +443,13 @@ Tickets live in two places:
                     └──────────┬───────────┘
                                │ writes to
                                ▼
-                    ┌──────────────────────┐     ┌────────────────────────┐
-                    │  thoughts/ (f-rr-d)  │◀───▶│  CTO Dashboard         │
-                    │  tickets/*.md        │     │  GET /api/tickets      │
-                    │  plans/*.md          │     │  PATCH /api/tickets    │
-                    │  research/*.md       │     │  POST /api/tickets     │
-                    │  (append-only git)   │     └────────────────────────┘
+                     ┌──────────────────────┐     ┌──────────────────────────────┐
+                     │  thoughts/ (f-rr-d)  │◀───▶│  CTO Dashboard               │
+                     │  tickets/*.md        │     │  ├── Next.js (ui/)           │
+                     │  plans/*.md          │     │  │   GET/PATCH /api/tickets   │
+                     │  research/*.md       │     │  └── WayOfTeams (Phoenix)    │
+                     │  (append-only git)   │     │      WOTEAMS namespace       │
+                     │  wayofteams/docs/    │     └──────────────────────────────┘
                     └──────────────────────┘
 
                     ┌────────────────────────────────────────────────────┐
@@ -438,8 +469,8 @@ Tickets live in two places:
 
 | Gateway | What Connects | Mechanism |
 |---------|--------------|-----------|
-| `install.ts` ↔ `docs-sync.ts` | Canonical skills → per-tool adaptation | `--sync-docs` flag calls `deno run -A scripts/docs-sync.ts` |
-| `install.ts` → manifest | Deployment orchestration | `loadManifest()` → `installTool()` iterates components |
+| `config-manifest/` → `manifest.json` | Per-tool YAML definitions → compiled deployment map | `compile.py` merges 7 YAMLs + validates naming/casing/paths |
+| `install.ts` → `manifest.json` | Deployment orchestration | `loadManifest()` → `installTool()` iterates components |
 | Harness ↔ Dashboard | Skill metadata → telemetry | `--report-skills` scans 7 tool dirs, POSTs to `/api/skills/report` |
 | Skills ↔ f-rr-d | Workflow artifacts | `ticket-manager`, `create-plan` skills read/write `thoughts/` files |
 | Dashboard ↔ f-rr-d | Bi-directional ticket sync | `PATCH /api/tickets` → SQLite + `writeTicketFile()` → thoughts/ |
@@ -461,8 +492,8 @@ Tickets live in two places:
 | `packages/@aiengineeringharness/config-manifest/scripts/test-manifest.py` | Compiled manifest structure and completeness | Harness (config-manifest) |
 | `packages/@aiengineeringharness/config-manifest/scripts/test-skills.py` | On-disk skill format per tool (frontmatter, naming, casing) | Harness (config-manifest) |
 | `packages/@aiengineeringharness/config-manifest/scripts/run-all-tests.py` | Orchestrator — runs all test suites in sequence | Harness (config-manifest) |
-| `packages/@aiengineeringharness/scripts/docs-sync.ts` | Skill sync — canonical→per-tool with adaptation | Harness |
-| `packages/@aiengineeringharness/scripts/compliance-check.ts` | Validation — naming, tool-case, frontmatter | Harness |
+| `packages/@aiengineeringharness/scripts/docs-sync.ts` | Stale/legacy — use config-manifest instead | Harness |
+| `packages/@aiengineeringharness/scripts/compliance-check.ts` | Stale/legacy — use config-manifest instead | Harness |
 | `packages/@aiengineeringharness/transaction.ts` | Atomic installer — lock file, rollback | Harness |
 | `packages/@aiengineeringharness/adapt/paths.ts` | Platform path resolver — XDG/Library/AppData | Harness |
 | `packages/@aiengineeringharness/adapt/formats.ts` | Format definitions — naming, skill dirs per tool | Harness |
@@ -477,9 +508,12 @@ Tickets live in two places:
 | `thoughts/<project>/shared/tickets/` | Ticket markdown files | f-rr-d |
 | `thoughts/<project>/shared/plans/` | Implementation plans | f-rr-d |
 | `thoughts/<project>/enforcement-ticket/` | Highest-priority override tickets | f-rr-d |
-| `ui/src/app/api/skills/report/route.ts` | Skill telemetry endpoint | Dashboard |
-| `ui/src/app/api/tickets/route.ts` | Ticket CRUD + dual-write | Dashboard |
-| `ui/prisma/schema.prisma` | Dashboard data model | Dashboard |
+| `ui/src/app/api/skills/report/route.ts` | Skill telemetry endpoint | Dashboard (Next.js) |
+| `ui/src/app/api/tickets/route.ts` | Ticket CRUD + dual-write | Dashboard (Next.js) |
+| `ui/prisma/schema.prisma` | Dashboard data model | Dashboard (Next.js) |
+| `thoughts/wayofteams/` | WayOfTeams project root (Phoenix LiveView dashboard) | Dashboard (WayOfTeams) |
+| `thoughts/wayofteams/docs/Product docs/Investor Ready/` | Investor-ready documentation (pitch deck, financials, GTM) | Dashboard (WayOfTeams) |
+| `thoughts/wayofteams/shared/tickets/` | WOTEAMS ticket markdown files | f-rr-d |
 
 ## Key Design Decisions
 
@@ -496,7 +530,11 @@ Each pipeline has different delivery characteristics:
 
 ### Why canonical skills go through 7 per-tool copies?
 
-Each AI coding tool has different conventions for naming, frontmatter fields, allowed-tools casing, and config file formats. Rather than forcing a single format, the harness maintains **one canonical copy** and **adapts on sync** (`docs-sync.ts`). This keeps the authoring UX simple while supporting 7 divergent tools.
+Each AI coding tool has different conventions for naming, frontmatter fields, allowed-tools casing, and config file formats. Rather than forcing a single format, the harness maintains **one canonical copy** and **adapts at compile time** (`config-manifest/`). The per-tool YAML files in `tools/*.yaml` define the exact naming, casing, and target for each tool, and `compile.py` enforces these rules when building `manifest.json`. This keeps the authoring UX simple while supporting 7 divergent tools.
+
+### Why two dashboard implementations?
+
+The CTO Dashboard exists as both a **Next.js** app (`ui/`) and a **Phoenix LiveView** app (WayOfTeams, `thoughts/wayofteams/`). Both consume the same f-rr-d tickets and harness telemetry through the same API contracts. The Next.js version was built first as a rapid prototype; the WayOfTeams Phoenix port provides a more production-ready stack with Ash Framework resource management, Jido agent integration, and PostgreSQL persistence. Both are active — they represent an incremental migration rather than a rewrite.
 
 ### Why dual-write tickets (SQLite + filesystem)?
 
@@ -557,3 +595,4 @@ See `docs/fixes/ai-engineering-harness-fixes.md` (v1.7.2 "Platform-Aware Harness
 - [Packages Reference](packages.md)
 - [Dev vs Runtime Dependencies](concepts/dev-vs-runtime-deps.md)
 - [AI Engineering Harness Guide](guides/ai-harness/)
+- [WayOfTeams Investor-Ready Docs](../../thoughts/wayofteams/docs/Product%20docs/Investor%20Ready/)
