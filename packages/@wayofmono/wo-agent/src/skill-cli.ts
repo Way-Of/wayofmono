@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { APP_NAME } from "./config.js";
 import { loadSkillsFromDir } from "./core/skills.js";
+import { isLocalPath } from "./utils/paths.js";
 import {
 	addEntryToManifest,
 	discoverNpmAgents,
@@ -281,7 +282,7 @@ async function handleInstall(cwd: string, type: ResourceType, source: string): P
 		name = resolvedPath.split("/").pop() || resolvedPath.split("\\").pop() || "unknown";
 	}
 
-	const entrySource = source.startsWith("npm:") ? source : `npm:${source}`;
+	const entrySource = resolvedSource.startsWith("npm:") ? resolvedSource : `npm:${resolvedSource}`;
 	const added = addEntryToManifest(cwd, { source: entrySource, name, path: resolvedPath, type });
 
 	if (added) {
