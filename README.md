@@ -1809,6 +1809,114 @@ All 13 packages published under `@wayofmono` scope at [npmjs.com/settings/wayofm
 
 **Specialized packages** (specific use cases): `wo-tui`, `wo-mermaid`, `wo-skill-docs`, `web-access`, `lens`, `wo-web-ui`, `telegram`, `whatsapp`
 
+## 🔄 Keeping Updated — Automatic Skill & Package Updates
+
+### Update to Latest Package Versions
+
+```bash
+# Update all @wayofmono packages to latest versions
+npm update @wayofmono/wo-agent @wayofmono/wo-user-extra @wayofmono/wo-coding-agent @wayofmono/wo-ai @wayofmono/wo-tui @wayofmono/wo-agent-core @wayofmono/wo-skill-docs @wayofmono/wo-mermaid @wayofmono/web-access @wayofmono/lens @wayofmono/wo-web-ui @wayofmono/telemetry @wayofmono/telegram @wayofmono/whatsapp
+
+# Or update everything at once (if using these packages)
+npm update
+```
+
+### After Updating — Re-Register Skills
+
+After updating packages, you need to refresh the skill manifest to pick up new/updated skills:
+
+```bash
+# Re-scan and register new/updated skills from updated packages
+npx wouser skill update
+
+# Or discover all available skills in node_modules
+npx wouser skill discover
+
+# List what's currently registered
+npx wouser skill list
+```
+
+### How It Works
+
+1. **`npm update`** — Downloads latest package versions to `node_modules/`
+2. **`wouser skill update`** — Re-reads `SKILL.md` files from updated packages and refreshes `.wo/manifest.json`
+3. **`wouser skill discover`** — Finds any new skill packages you haven't registered yet
+4. **`wouser skill list`** — Shows all registered skills with versions
+
+### Quick Example Workflow
+
+```bash
+# 1. Update packages
+npm update @wayofmono/wo-agent @wayofmono/wo-user-extra
+
+# 2. Refresh skills
+npx wouser skill update
+
+# 3. Check for new skills
+npx wouser skill discover
+
+# 4. Register any new ones
+npx wouser skill install investor-ready-doc-gen
+```
+
+## 🛠 Skill Management — Short Commands
+
+### Install Skills (One Command)
+
+```bash
+# Short form (auto-resolves under @wayofmono scope)
+npx wouser skill install investor-ready-doc-gen
+npx wouser skill install tdd
+npx wouser skill install codebase_analyzer
+
+# Full npm form (also works)
+npx wouser skill install npm:@wayofmono/skill-investor-ready-doc-gen
+npx wouser skill install npm:@wayofmono/skill-tdd
+```
+
+### Manage Skills
+
+```bash
+# List registered skills with versions
+npx wouser skill list
+
+# Find unregistered skills in node_modules
+npx wouser skill discover
+
+# Update after npm update
+npx wouser skill update
+
+# Remove a skill
+npx wouser skill remove investor-ready-doc-gen
+```
+
+### Also Manage Agents & Extensions
+
+```bash
+# Install agents (persona definitions)
+npx wouser agent install codebase_analyzer
+npx wouser agent install thoughts_analyzer
+
+# Install extensions (custom LLM-callable tools)
+npx wouser extension install pipeline-tools
+npx wouser extension install web-search
+
+# List all
+npx wouser agent list
+npx wouser extension list
+```
+
+## 📚 Fixes & Release Notes
+
+See the [Fixes & Release Notes](docs/fixes/) directory for detailed change logs:
+
+- [wo-agent fixes](docs/fixes/wo-agent-fixes.md) — Skill management, short-form auto-resolution
+- [wo-coding-agent fixes](docs/fixes/wo-coding-agent-fixes.md) — Coding agent updates
+- [AI Engineering Harness fixes](docs/fixes/ai-engineering-harness-fixes.md) — Harness updates
+- [CTO Dashboard fixes](docs/fixes/cto-dashboard-fixes.md) — Dashboard updates
+
+---
+
 ## 📊 CTO Dashboard
 
 **Production dashboard**: https://cto.wayof.work ([@wayofmono/wo-cto-dashboard](https://www.npmjs.com/package/@wayofmono/wo-cto-dashboard), Next.js 16, Prisma/SQLite)

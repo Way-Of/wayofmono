@@ -1,5 +1,40 @@
 # wouser (wo-agent) Fixes & Release Notes
 
+## v1.0.6 — 2026-06-28
+
+### Added: Short-Form Auto-Resolution for Skill/Agent/Extension Install
+- **New feature**: `wouser skill install investor-ready-doc-gen` auto-resolves to `npm:@wayofmono/skill-investor-ready-doc-gen`
+- **Applies to**: `skill install`, `agent install`, `extension install` — all three resource types
+- **No npm: prefix needed**: Users can just type the skill name
+- **Auto-resolves under @wayofmono scope**: Short form → `npm:@wayofmono/skill-<name>`, `npm:@wayofmono/agent-<name>`, `npm:@wayofmono/extension-<name>`
+
+### Added: Complete Update Flow for Dependency Consumers
+- **After npm update**: `npm update @wayofmono/skill-investor-ready-doc-gen`
+- **Re-register skills**: `wouser skill update` — Re-reads SKILL.md from updated packages
+- **Bulk update all**: `wouser skill update` (no args) updates all registered skills
+- **Single update**: `wouser skill update investor-ready-doc-gen` for specific skill
+
+### Files modified
+- `src/skill-cli.ts` — Added short-form auto-resolution in `handleInstall()`
+- `src/skill-cli.ts` — Added `isLocalPath` import for proper source detection
+- Auto-resolution logic handles: npm:, git:, http(s):, local paths, and short forms
+
+### Complete User Update Workflow
+```bash
+# 1. Update npm packages to latest versions
+npm update @wayofmono/skill-investor-ready-doc-gen @wayofmono/skill-tdd
+
+# 2. Re-register skills from updated packages
+wouser skill update
+
+# 3. Verify updated skills are loaded
+wouser skill list
+
+# 4. Skills automatically available in next chat session
+```
+
+---
+
 ## v1.0.5 — 2026-06-28
 
 ### Added: Resource Management CLI (skills, agents, extensions as npm deps)
