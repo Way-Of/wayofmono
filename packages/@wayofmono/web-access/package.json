@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/web-access",
-  "version": "0.10.9",
+  "version": "0.10.10",
   "description": "Web search, URL fetching, GitHub repo cloning, PDF extraction, YouTube video understanding, and local video analysis for Wo coding agents",
   "type": "module",
   "main": "dist/index.js",
