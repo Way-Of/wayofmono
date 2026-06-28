@@ -1,0 +1,40 @@
+[
+  {
+    "name": "AI Engineering Harness",
+    "slug": "harness",
+    "fix_note_file": "ai-engineering-harness-fixes.md",
+    "version_sources": [
+      "packages/@aiengineeringharness/manifest.json (top-level version)",
+      "packages/@aiengineeringharness/config-manifest/base_manifest.yaml (manifest_version)",
+      "packages/@aiengineeringharness/install.ts (VERSION constant)"
+    ],
+    "package_path": "packages/@aiengineeringharness/"
+  },
+  {
+    "name": "Wo Coding Agent (wocode)",
+    "slug": "wocode",
+    "fix_note_file": "wo-coding-agent-fixes.md",
+    "version_sources": [
+      "packages/@wayofmono/wo-coding-agent/package.json (version)"
+    ],
+    "package_path": "packages/@wayofmono/wo-coding-agent/"
+  },
+  {
+    "name": "Wo Agent (wouser)",
+    "slug": "wouser",
+    "fix_note_file": "wo-agent-fixes.md",
+    "version_sources": [
+      "packages/@wayofmono/wo-agent/package.json (version)"
+    ],
+    "package_path": "packages/@wayofmono/wo-agent/"
+  },
+  {
+    "name": "CTO Dashboard",
+    "slug": "dashboard",
+    "fix_note_file": "cto-dashboard-fixes.md",
+    "version_sources": [
+      "ui/package.json (version)"
+    ],
+    "package_path": "ui/"
+  }
+]
