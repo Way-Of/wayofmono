@@ -243,7 +243,16 @@ export async function handleSkillCommand(args: string[]): Promise<boolean> {
 }
 
 async function handleInstall(cwd: string, type: ResourceType, source: string): Promise<boolean> {
-	const resolvedPath = resolveNpmPackagePath(cwd, source);
+	// Handle short-form auto-resolution (e.g., "investor-ready-doc-gen" -> "npm:@wayofmono/skill-investor-ready-doc-gen")
+	let resolvedSource = source;
+	if (!source.startsWith("npm:") && !source.startsWith("git:") && !source.startsWith("http") && !isLocalPath(source)) {
+		// Short form: auto-resolve under @wayofmono scope
+		const prefix = type === "skill" ? "skill-" : type === "agent" ? "agent-" : "extension-";
+		resolvedSource = `npm:@wayofmono/${prefix}${source}`;
+		console.log(chalk.dim(`Resolving short form: ${source} → ${resolvedSource}`));
+	}
+
+	const resolvedPath = resolveNpmPackagePath(cwd, resolvedSource);
 	if (!resolvedPath) {
 		console.error(chalk.red(`Package not found: ${source}`));
 		console.error(chalk.dim("Make sure the package is installed in node_modules/ first."));
