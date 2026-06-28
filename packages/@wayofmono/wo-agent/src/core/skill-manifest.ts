@@ -119,6 +119,36 @@ function discoverPackagesByMarker(cwd: string, marker: string, type: ManifestEnt
 		}
 	} catch {}
 
+	// Also scan extension packages that may contain multiple skills/agents
+	if (type === "skill" || type === "agent") {
+		try {
+			const items = readdirSync(scopePath, { withFileTypes: true });
+			const prefix = packagePrefix.includes("/") ? packagePrefix : `@wayofmono/`;
+			for (const item of items) {
+				if (!item.isDirectory()) continue;
+				if (item.name.startsWith("wo-") || item.name.startsWith("skill-") || item.name.startsWith("agent-")) {
+					const fullPath = join(scopePath, item.name);
+					// Check for skills/agents in subdirectories
+					const skillsDir = join(fullPath, "skills");
+					const agentSkillsDir = join(fullPath, "agent", "skills");
+					for (const subDir of [skillsDir, agentSkillsDir]) {
+						if (existsSync(subDir)) {
+							const subItems = readdirSync(subDir, { withFileTypes: true });
+							for (const subItem of subItems) {
+								if (!subItem.isDirectory()) continue;
+								const subFullPath = join(subDir, subItem.name);
+								const markerFile = join(subFullPath, marker);
+								if (existsSync(markerFile)) {
+									found.push({ source: `npm:${prefix}${item.name}`, name: subItem.name, path: subFullPath, type });
+								}
+							}
+						}
+					}
+				}
+			}
+		} catch {}
+	}
+
 	return found;
 }
 
