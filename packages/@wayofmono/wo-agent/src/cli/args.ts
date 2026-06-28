@@ -214,7 +214,10 @@ ${chalk.bold("Commands:")}
   ${APP_NAME} update [source|self]      Update ${APP_NAME} and installed extensions
   ${APP_NAME} list                      List installed extensions from settings
   ${APP_NAME} config                    Open TUI to enable/disable package resources
-  ${APP_NAME} <command> --help          Show help for install/remove/uninstall/update/list
+  ${APP_NAME} skill <command>           Manage skills (install, remove, discover, list, update)
+  ${APP_NAME} agent <command>           Manage agents (install, remove, discover, list, update)
+  ${APP_NAME} extension <command>       Manage extensions (install, remove, discover, list, update)
+  ${APP_NAME} <command> --help          Show help for install/remove/uninstall/update/list/skill
 
   ${chalk.bold("Options:")}
   --provider <name>              Provider name (default: google)

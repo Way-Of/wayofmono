@@ -6,6 +6,7 @@ import { CONFIG_DIR_NAME, getAgentDir } from "../config.js";
 import { parseFrontmatter } from "../utils/frontmatter.js";
 import { canonicalizePath } from "../utils/paths.js";
 import type { ResourceDiagnostic } from "./diagnostics.js";
+import { readManifest } from "./skill-manifest.js";
 import { createSyntheticSourceInfo, type SourceInfo } from "./source-info.js";
 
 /** Max name length per spec */
@@ -447,6 +448,15 @@ export function loadSkills(options: LoadSkillsOptions): LoadSkillsResult {
 	if (includeDefaults) {
 		addSkills(loadSkillsFromDirInternal(join(resolvedAgentDir, "skills"), "user", true));
 		addSkills(loadSkillsFromDirInternal(resolve(cwd, CONFIG_DIR_NAME, "skills"), "project", true));
+
+		const manifest = readManifest(cwd);
+		for (const entry of manifest.entries.filter((e) => e.type === "skill")) {
+			if (existsSync(entry.path)) {
+				addSkills(loadSkillsFromDirInternal(entry.path, "project", true));
+			} else {
+				allDiagnostics.push({ type: "warning", message: `skill path from manifest does not exist`, path: entry.path });
+			}
+		}
 	}
 
 	const userSkillsDir = join(resolvedAgentDir, "skills");

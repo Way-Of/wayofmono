@@ -1,5 +1,41 @@
 # wouser (wo-agent) Fixes & Release Notes
 
+## v1.0.5 — 2026-06-28
+
+### Added: Resource Management CLI (skills, agents, extensions as npm deps)
+- **New command**: `wouser skill install <source>` — Register a skill from npm package
+- **New command**: `wouser skill remove <source>` — Unregister a skill
+- **New command**: `wouser skill discover` — Scan node_modules for unregistered skills
+- **New command**: `wouser skill list` — List registered skills
+- **New command**: `wouser skill update [source]` — Refresh after npm update
+- **Same CLI**: `wouser agent <command>` and `wouser extension <command>` for agents/extensions
+- **New file**: `.wo/manifest.json` — tracks registered resources (skills, agents, extensions)
+- **Auto-loading**: Skills from manifest are loaded automatically on startup
+- **Source formats**: `npm:@wayofmono/skill-foo` or short `foo` (auto-resolves)
+
+### How to use
+```bash
+npm install @wayofmono/skill-investor-ready-doc-gen
+wouser skill install npm:@wayofmono/skill-investor-ready-doc-gen
+wouser skill list
+```
+
+### Files added
+- `src/core/skill-manifest.ts` — Manifest read/write + discovery for all 3 types
+- `src/skill-cli.ts` — Generic resource CLI handler
+
+### Files modified
+- `src/main.ts` — Added routing for `skill`/`agent`/`extension` subcommands
+- `src/core/skills.ts` — Manifest-based skill loading in `loadSkills()`
+- `src/cli/args.ts` — Updated help text
+- `src/index.ts` — New exports for manifest types
+
+### Constraints
+- Skills auto-load from manifest; agents and extensions require manual `--skill`/`--extension` for now (auto-loading in future iteration)
+- Only `npm:` source type currently; `github:` and `https:` planned
+
+---
+
 ## v1.0.4 — 2026-06-14
 
 ### Fixed: npm workspace dependencies

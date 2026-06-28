@@ -46,6 +46,7 @@ import { InteractiveMode, runPrintMode, runRpcMode } from "./modes/index.js";
 import { ExtensionSelectorComponent } from "./modes/interactive/components/extension-selector.js";
 import { initTheme, stopThemeWatcher } from "./modes/interactive/theme/theme.js";
 import { handleConfigCommand, handlePackageCommand } from "./package-manager-cli.js";
+import { handleSkillCommand } from "./skill-cli.js";
 import { isLocalPath } from "./utils/paths.js";
 
 /**
@@ -506,6 +507,10 @@ export async function main(args: string[], options?: MainOptions) {
 	if (offlineMode) {
 		process.env.PI_OFFLINE = "1";
 		process.env.PI_SKIP_VERSION_CHECK = "1";
+	}
+
+	if (await handleSkillCommand(args)) {
+		return;
 	}
 
 	if (await handlePackageCommand(args)) {

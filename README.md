@@ -993,6 +993,11 @@ packages/@aiengineeringharness/     → 1,226 files
 
 ### Skill Loading Paths
 
+Skills can be loaded from three sources:
+- **Harness-installed** — global skill directories per tool (below)
+- **Project-local** — `.wo/agents/<name>/skills/SKILL.md` files, discovered by `loadSkillsFromDir()`
+- **npm packages** — `node_modules/@wayofmono/skill-*/SKILL.md` if bundled (WOMONO-107)
+
 Each agent frontend loads skills from specific directories. The AI Engineering Harness installs skills to these locations:
 
 | Tool | Global Skill Directory | Project-Local Skill Directory |
@@ -1615,6 +1620,59 @@ const agent = createAgent({
 const result = await agent.run('Analyze this codebase for security issues');
 console.log(result);
 ```
+
+**Loading skills programmatically:**
+
+`@wayofmono/wo-agent` provides `loadSkillsFromDir()` and `loadSkills()` for discovering SKILL.md files at runtime:
+
+```js
+import { loadSkillsFromDir, formatSkillsForPrompt } from '@wayofmono/wo-agent';
+
+// Load agent persona from project folder
+const agent = loadSkillsFromDir({
+  dir: '.wo/agents/investready',
+  source: 'agent'
+});
+
+// Load skills from local project folder (no npm package needed)
+const skills = loadSkillsFromDir({
+  dir: '.wo/agents/investready/skills',
+  source: 'project'
+});
+
+// Load skills from an npm package's SKILL.md (if bundled)
+const npmSkills = loadSkillsFromDir({
+  dir: './node_modules/@wayofmono/skill-investor-ready-doc-gen',
+  source: 'npm'
+});
+
+// Merge and format for LLM system prompt
+const all = [...agent.skills, ...skills.skills, ...npmSkills.skills];
+const prompt = agent.skills[0]?.body + '\n\n' + formatSkillsForPrompt(all);
+```
+
+SKILL.md is just a markdown file with YAML frontmatter:
+```markdown
+---
+name: investor-ready-doc-gen
+description: Generate investor-ready docs for any project
+---
+
+# Instructions
+...
+```
+
+Place it in your project's `.wo/agents/<name>/skills/` folder and `loadSkillsFromDir()` discovers it automatically — no npm publish needed.
+
+**Or use the CLI to register skills from npm packages** (no file copying):
+
+```bash
+npm install @wayofmono/skill-investor-ready-doc-gen
+wouser skill install npm:@wayofmono/skill-investor-ready-doc-gen
+wouser skill list
+```
+
+Same pattern for agents and extensions. Tracked in `.wo/manifest.json`.
 
 **Config files created (same .wo/ folder as wocode):**
 ```
