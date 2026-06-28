@@ -1,0 +1,41 @@
+{
+  "name": "@wayofmono/skill-investor-ready-doc-gen",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Assets for the investor-ready-doc-gen skill — mustache templates, PDF themes, JSON schemas, vertical knowledge bases, and example configs for generating investor-ready documentation",
+  "main": "index.js",
+  "exports": {
+    ".": {
+      "import": "./index.js"
+    }
+  },
+  "files": [
+    "assets",
+    "index.js"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "node -e \"console.log('Pure asset package — no build needed')\"",
+    "test": "node --test"
+  },
+  "keywords": [
+    "wayofmono",
+    "skill",
+    "investor-ready-doc-gen",
+    "assets",
+    "templates",
+    "investor",
+    "pitch-deck",
+    "documentation"
+  ],
+  "author": "WayOfMono",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Way-Of/wayofmono",
+    "directory": "packages/@wayofmono/skill-investor-ready-doc-gen"
+  },
+  "homepage": "https://wayofmono.dev"
+}

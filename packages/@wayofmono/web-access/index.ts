@@ -37,7 +37,7 @@ import { isPerplexityAvailable } from "./perplexity.js";
 import { isExaAvailable } from "./exa.js";
 import { isGeminiApiAvailable } from "./gemini-api.js";
 import { getActiveGoogleEmail, isGeminiWebAvailable } from "./gemini-web.js";
-import { isBrowserCookieAccessAllowed } from "./gemini-web-config.ts";
+import { isBrowserCookieAccessAllowed } from "./gemini-web-config.js";
 
 const WEB_SEARCH_CONFIG_PATH = join(homedir(), ".wo", "agent", "web-search.json");
 

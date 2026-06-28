@@ -1,0 +1,34 @@
+project_name: "Way of Work"
+project_tagline: "AI-native operating system for Swedish construction"
+project_description: "Way of Work is an AI-powered platform purpose-built for Swedish construction companies. It replaces the fragmented 9-12 tool stack with a unified platform featuring 14 specialized AI agents for project management, safety compliance, cost estimation, and operations."
+
+problem_statement: "Swedish construction SMEs juggle 9-12 disparate tools for project management, invoicing, time tracking, safety, and compliance. None integrate. Data lives in silos. Regulatory requirements (APV v5.0, AFS 2023:10, ID06) are creating forced digitalization."
+problem_details:
+  - title: "Tool Fragmentation"
+    description: "SMEs use 9-12 separate tools with no integration, causing data silos and manual data entry"
+  - title: "Regulatory Pressure"
+    description: "New APV v5.0, AFS 2023:10, and ID06 mandates require digital compliance"
+  - title: "AI Ineffectiveness"
+    description: "Generic AI tools lack Swedish construction domain knowledge (PBL, AB 04, AFS)"
+  - title: "Knowledge Loss"
+    description: "Experienced PMs leave with decades of tacit knowledge when they retire"
+
+solution_description: "Way of Work provides 14 specialized AI agents (each with deep Swedish construction domain expertise) orchestrated by a central dispatch system. Covers project management, safety compliance, cost estimation, ÄTA change orders, TA-plans, scheduling, and invoicing."
+solution_highlights:
+  - title: "14 Specialized AI Agents"
+    description: "Domain-specific agents for every facet of construction operations"
+  - title: "Multi-Channel Communication"
+    description: "WhatsApp, Telegram, and Email for dispatch, offers, and alerts"
+  - title: "Human-in-the-Loop"
+    description: "All data mutations go through admin approval workflow"
+  - title: "Swedish Compliance Engine"
+    description: "Built-in PBL, AB 04, AFS 2023:10, APV v5.0, ID06 compliance"
+
+target_market: "Swedish Construction SMEs"
+market_category: "Construction Technology (ConTech)"
+tam: "SEK 500B+"
+sam: "SEK 50B"
+som: "SEK 5B"
+market_growth_rate: "15% CAGR (digitalization-driven)"
+
+# ... additional WoW-specific config fields
