@@ -1,0 +1,33 @@
+{
+  "name": "@wayofmono/wo-user-extra",
+  "version": "1.0.0",
+  "description": "Extension skills and agents for wo-agent runtime — additional capabilities for enterprise, testing, research, and platform integration",
+  "type": "module",
+  "files": [
+    "agent/",
+    "agents/",
+    "skills/"
+  ],
+  "exports": {
+    "./agent/": "./agent/",
+    "./agents/": "./agents/",
+    "./skills/": "./skills/"
+  },
+  "scripts": {
+    "build": "echo 'No build needed for this extension package'",
+    "test": "echo 'No tests yet'"
+  },
+  "keywords": [
+    "wo-agent",
+    "extension",
+    "skills",
+    "agents",
+    "wayofmono",
+    "investor-ready-doc-gen"
+  ],
+  "author": "",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  }
+}
