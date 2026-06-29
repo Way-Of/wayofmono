@@ -938,7 +938,7 @@ Opens at **http://localhost:6969**
 |--------|-------|
 | Total repo files | **51,033** (excluding node_modules) |
 | SKILL.md files | **906** (81 canonical × 7 tools + 79 doc copies) |
-| NPM packages published | **13** |
+| NPM packages published | **29** |
 | AI coding tools supported | **7** |
 | Subagents | **6** |
 | Active developers | **4** (craig, tomas, andre, zerwiz) |
@@ -985,7 +985,7 @@ packages/@aiengineeringharness/     → 1,226 files
 
 - **906 SKILL.md files** — same 81 canonical skills adapted for all 7 tools
 - **6 subagents** — codebase_analyzer, codebase_locator, codebase_pattern_finder, explore, general, thoughts_analyzer
-- **13 NPM packages** — `@wayofmono/*` scope on [npmjs.com](https://www.npmjs.com/settings/wayofmono/packages)
+- **29 NPM packages** — `@wayofmono/*` scope on [npmjs.com](https://www.npmjs.com/settings/wayofmono/packages) (14 core + 1 extension + 14 skill packages)
 - Ticket templates — WOW, OPT, WOMONO, GLOBAL namespaces
 - TUI dashboard components
 - Multi-format documentation (MDX, HTML, PDF, JSON)

@@ -1,0 +1,22 @@
+{
+  "name": "@wayofmono/skill-session-export",
+  "version": "0.1.0",
+  "description": "Session Export — capture working sessions as structured history in f-rr-d",
+  "type": "module",
+  "files": [
+    "SKILL.md",
+    "assets/",
+    "platform/"
+  ],
+  "exports": {
+    "./skills/": "./SKILL.md",
+    "./assets/": "./assets/"
+  },
+  "scripts": {
+    "build": "echo 'No build needed'",
+    "test": "echo 'No tests yet'"
+  },
+  "keywords": ["wo-agent", "skill", "session", "export", "wayofmono"],
+  "license": "ISC",
+  "publishConfig": { "access": "public" }
+}
