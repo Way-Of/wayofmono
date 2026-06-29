@@ -1,6 +1,6 @@
 # AI Engineering Harness Fixes & Release Notes
 
-## v1.8.4 — 2026-06-29 — Subagent Extension Fix + Agent Protocol Rewrite (WOMONO-115, WOMONO-116)
+## v1.7.10 — 2026-06-29 — Subagent Extension Fix + Agent Protocol Rewrite (WOMONO-115, WOMONO-116)
 
 ### Bug Fixes
 - **Subagent extension import path fixed (WOMONO-115)**: Fixed `packages/@aiengineeringharness/pi/agent/extensions/subagents-index.ts` import from `./agents.js` to `./subagent/agents.ts` — resolves "Cannot find module './agents.js'" error on pi startup.
@@ -21,7 +21,7 @@
 - `packages/@aiengineeringharness/pi/agent/extensions/subagents-index.ts` (L29: import path fix)
 - `packages/@aiengineeringharness/pi/agent/agents/{planner,reviewer,scout,coder}.md` — 4 files rewritten
 - `packages/@aiengineeringharness/pi/agent/extensions/subagent/agents/{planner,reviewer,scout,coder}.md` — 4 files rewritten
-- `CHANGELOG.md` — v1.8.4 entry added
+- `CHANGELOG.md` — v1.7.10 entry added
 - `thoughts/wayofmono/shared/tickets/WOMONO-115-fix-subagents-extension-import-path.md` — Status: Done
 - `thoughts/wayofmono/shared/tickets/WOMONO-116-improve-subagent-agent-definitions.md` — Status: Done
 

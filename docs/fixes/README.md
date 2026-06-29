@@ -15,7 +15,7 @@
 |-----------|---------|----------------|------------|
 | **wocode** | `@wayofmono/wo-coding-agent` | v1.0.11 | `~/.wocode/` |
 | **wouser** | `@wayofmono/wo-agent` | v1.0.4 | `~/.wo/` |
-| **Harness** | `@aiengineeringharness` | v1.7.7 | `~/.wocode/`, `~/.pi/agent/`, etc. |
+| **Harness** | `@aiengineeringharness` | v1.7.10 | `~/.wocode/`, `~/.pi/agent/`, etc. |
 | **Dashboard** | `@wayofmono/wo-cto-dashboard` | v0.6.3 | `~/.config/wodev/` |
 
 ---
@@ -48,7 +48,12 @@ See [wo-agent-fixes.md](./wo-agent-fixes.md) for detailed release notes.
 
 See [ai-engineering-harness-fixes.md](./ai-engineering-harness-fixes.md) for detailed release notes.
 
-**Quick Summary (v1.7.8):**
+**Quick Summary (v1.8.4):**
+- Subagent extension import path fixed (WOMONO-115): `./agents.js` → `./subagent/agents.ts`
+- Worker → coder rename in both agent directories
+- All 4 subagent agents (planner, reviewer, scout, coder) rewritten with full operational protocols, file generation, completion signals, safety protocols
+
+**Previous (v1.7.8):**
 - `--purge` flag: nuclear cleanup of harness config dirs (no manifest needed)
 - 5 skills consolidated into build-tool-skill (WOMONO-083): validation, adaptation, lifecycle, config-manifest integration
 - Wo Coder naming: snake_case→kebab-case (72 skill dirs renamed, matches Pi)

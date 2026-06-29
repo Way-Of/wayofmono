@@ -42,8 +42,8 @@ components:
       dest: extensions/subagent/agents/reviewer.md
     - src: wocode/agent/extensions/subagent/agents/scout.md
       dest: extensions/subagent/agents/scout.md
-    - src: wocode/agent/extensions/subagent/agents/worker.md
-      dest: extensions/subagent/agents/worker.md
+    - src: wocode/agent/extensions/subagent/agents/coder.md
+      dest: extensions/subagent/agents/coder.md
     - src: wocode/agent/extensions/subagent/prompts/implement.md
       dest: extensions/subagent/prompts/implement.md
     - src: wocode/agent/extensions/subagent/prompts/implement-and-review.md

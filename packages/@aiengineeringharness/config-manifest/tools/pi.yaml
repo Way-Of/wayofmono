@@ -17,6 +17,14 @@ components:
       dest: agents/thoughts-locator.md
     - src: pi/agent/agents/web-search-researcher.md
       dest: agents/web-search-researcher.md
+    - src: pi/agent/agents/planner.md
+      dest: agents/planner.md
+    - src: pi/agent/agents/reviewer.md
+      dest: agents/reviewer.md
+    - src: pi/agent/agents/scout.md
+      dest: agents/scout.md
+    - src: pi/agent/agents/coder.md
+      dest: agents/coder.md
     - src: pi/agent/agents/README.md
       dest: agents/README.md
   extension/open-editor:
@@ -24,7 +32,7 @@ components:
     files:
     - src: pi/agent/extensions/open-editor.ts
       dest: extensions/open-editor.ts
-  extension/subagent:
+extension/subagent:
     description: Subagent tool for multi-agent workflows (single, parallel, chain)
     files:
     - src: pi/agent/extensions/subagent/index.ts
@@ -37,8 +45,8 @@ components:
       dest: extensions/subagent/agents/reviewer.md
     - src: pi/agent/extensions/subagent/agents/scout.md
       dest: extensions/subagent/agents/scout.md
-    - src: pi/agent/extensions/subagent/agents/worker.md
-      dest: extensions/subagent/agents/worker.md
+    - src: pi/agent/extensions/subagent/agents/coder.md
+      dest: extensions/subagent/agents/coder.md
     - src: pi/agent/extensions/subagent/prompts/implement.md
       dest: extensions/subagent/prompts/implement.md
     - src: pi/agent/extensions/subagent/prompts/implement-and-review.md

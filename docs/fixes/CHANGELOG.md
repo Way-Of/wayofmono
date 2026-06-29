@@ -25,3 +25,30 @@ Example:
 ```bash
 deno run -A --reload https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=all --yes
 ```
+
+---
+
+## v1.7.10 — 2026-06-29 — Subagent Extension Fix + Agent Protocol Rewrite (WOMONO-115, WOMONO-116)
+
+### Bug Fixes
+- **Subagent extension import path fixed (WOMONO-115)**: Fixed `packages/@aiengineeringharness/pi/agent/extensions/subagents-index.ts` import from `./agents.js` to `./subagent/agents.ts` — resolves "Cannot find module './agents.js'" error on pi startup.
+
+### Features
+- **Worker agent renamed to coder (WOMONO-115, WOMONO-116)**: Renamed `worker.md` → `coder.md` in both:
+  - `packages/@aiengineeringharness/pi/agent/agents/`
+  - `packages/@aiengineeringharness/pi/agent/extensions/subagent/agents/`
+- **Subagent agents rewritten with full operational protocols (WOMONO-116)**: Updated `planner`, `reviewer`, `scout`, `coder` in both main agents folder and subagent extension with:
+  - Mandatory workflows with gate/checkpoints
+  - File generation requirements (plans → `.pi/planning/`, audits → `.pi/reviews/`, recon → `.pi/recon/`)
+  - Directory integrity rules (specific save locations)
+  - Completion signals: `[PLAN_COMPLETE]`, `[REVIEW_COMPLETE]`, `[RECON_COMPLETE]`, `[CODE_COMPLETE]`
+  - Safety protocols: bash limits, read-only enforcement, git safety, review dispatch
+  - Modeled after reference implementation in `/ref/pip/.pi/agents/agents/`
+
+### Files
+- `packages/@aiengineeringharness/pi/agent/extensions/subagents-index.ts` (L29: import path fix)
+- `packages/@aiengineeringharness/pi/agent/agents/{planner,reviewer,scout,coder}.md` — 4 files rewritten
+- `packages/@aiengineeringharness/pi/agent/extensions/subagent/agents/{planner,reviewer,scout,coder}.md` — 4 files rewritten
+- `CHANGELOG.md` — v1.7.10 entry added
+- `thoughts/wayofmono/shared/tickets/WOMONO-115-fix-subagents-extension-import-path.md` — Status: Done
+- `thoughts/wayofmono/shared/tickets/WOMONO-116-improve-subagent-agent-definitions.md` — Status: Done
