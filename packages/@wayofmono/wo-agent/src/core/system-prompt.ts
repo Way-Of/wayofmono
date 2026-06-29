@@ -66,11 +66,11 @@ export function buildSystemPrompt(options: BuildSystemPromptOptions): string {
 			}
 		}
 
-		// Append skills section (only if read tool is available)
-		const customPromptHasRead = !selectedTools || selectedTools.includes("read");
-		if (customPromptHasRead && skills.length > 0) {
-			prompt += formatSkillsForPrompt(skills);
-		}
+// Append skills section (only if read tool is available)
+	const customPromptHasRead = !selectedTools || selectedTools.includes("read");
+	if (customPromptHasRead && skills.length > 0) {
+		prompt += formatSkillsForPrompt(skills, { doNotInclude: "read-tool-preamble" });
+	}
 
 		// Add date and working directory last
 		prompt += `\nCurrent date: ${date}`;
@@ -161,7 +161,7 @@ Pi documentation (read only when the user asks about pi itself, its SDK, extensi
 
 	// Append skills section (only if read tool is available)
 	if (hasRead && skills.length > 0) {
-		prompt += formatSkillsForPrompt(skills);
+		prompt += formatSkillsForPrompt(skills, { doNotInclude: "read-tool-preamble" });
 	}
 
 	// Add date and working directory last
