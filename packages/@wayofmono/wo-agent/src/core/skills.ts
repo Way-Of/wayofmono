@@ -404,13 +404,13 @@ function escapeXml(str: string): string {
 
 export interface LoadSkillsOptions {
 	/** Working directory for project-local skills. */
-	cwd: string;
+	cwd?: string;
 	/** Agent config directory for global skills. */
-	agentDir: string;
+	agentDir?: string;
 	/** Explicit skill paths (files or directories) */
-	skillPaths: string[];
+	skillPaths?: string[];
 	/** Include default skills directories. */
-	includeDefaults: boolean;
+	includeDefaults?: boolean;
 }
 
 function normalizePath(input: string): string {
@@ -430,8 +430,9 @@ function resolveSkillPath(p: string, cwd: string): string {
  * Load skills from all configured locations.
  * Returns skills and any validation diagnostics.
  */
-export function loadSkills(options: LoadSkillsOptions): LoadSkillsResult {
-	const { cwd, agentDir, skillPaths, includeDefaults } = options;
+export function loadSkills(options?: LoadSkillsOptions): LoadSkillsResult {
+	if (!options?.skillPaths?.length) return { skills: [], diagnostics: [] };
+	const { cwd = process.cwd(), agentDir, skillPaths, includeDefaults = true } = options;
 
 	// Resolve agentDir - if not provided, use default from config
 	const resolvedAgentDir = agentDir ?? getAgentDir();
