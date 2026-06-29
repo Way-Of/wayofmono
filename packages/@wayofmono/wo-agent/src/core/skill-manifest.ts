@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "fs";
 import { join, resolve } from "path";
 import { CONFIG_DIR_NAME } from "../config.js";
 
@@ -106,12 +106,19 @@ function discoverPackagesByMarker(cwd: string, marker: string, type: ManifestEnt
 	const scopePath = join(nmPath, packagePrefix.includes("/") ? packagePrefix : `@wayofmono`);
 	if (!existsSync(scopePath)) return found;
 
+	// Helper: check if path is a directory (follows symlinks)
+	function isDirectory(path: string): boolean {
+		try {
+			return statSync(path).isDirectory();
+		} catch { return false; }
+	}
+
 	try {
 		const items = readdirSync(scopePath, { withFileTypes: true });
 		const prefix = packagePrefix.includes("/") ? packagePrefix : `@wayofmono/`;
 		for (const item of items) {
-			if (!item.isDirectory()) continue;
 			const fullPath = join(scopePath, item.name);
+			if (!isDirectory(fullPath)) continue;
 			const markerFile = join(fullPath, marker);
 			if (existsSync(markerFile)) {
 				found.push({ source: `npm:${prefix}${item.name}`, name: item.name, path: fullPath, type });
@@ -125,18 +132,18 @@ function discoverPackagesByMarker(cwd: string, marker: string, type: ManifestEnt
 			const items = readdirSync(scopePath, { withFileTypes: true });
 			const prefix = packagePrefix.includes("/") ? packagePrefix : `@wayofmono/`;
 			for (const item of items) {
-				if (!item.isDirectory()) continue;
+				const fullPath = join(scopePath, item.name);
+				if (!isDirectory(fullPath)) continue;
 				if (item.name.startsWith("wo-") || item.name.startsWith("skill-") || item.name.startsWith("agent-")) {
-					const fullPath = join(scopePath, item.name);
 					// Check for skills/agents in subdirectories
 					const skillsDir = join(fullPath, "skills");
 					const agentSkillsDir = join(fullPath, "agent", "skills");
 					for (const subDir of [skillsDir, agentSkillsDir]) {
-						if (existsSync(subDir)) {
+						if (isDirectory(subDir)) {
 							const subItems = readdirSync(subDir, { withFileTypes: true });
 							for (const subItem of subItems) {
-								if (!subItem.isDirectory()) continue;
 								const subFullPath = join(subDir, subItem.name);
+								if (!isDirectory(subFullPath)) continue;
 								const markerFile = join(subFullPath, marker);
 								if (existsSync(markerFile)) {
 									found.push({ source: `npm:${prefix}${item.name}`, name: subItem.name, path: subFullPath, type });

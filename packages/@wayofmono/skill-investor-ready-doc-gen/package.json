@@ -1,0 +1,32 @@
+{
+  "name": "@wayofmono/skill-investor-ready-doc-gen",
+  "version": "0.2.0",
+  "description": "Investor-Ready Document Generator — generate complete investor documentation packages with 40+ mustache templates, branded PDF export via Marp CLI, vertical knowledge bases, and automated web research",
+  "type": "module",
+  "files": [
+    "SKILL.md",
+    "assets/"
+  ],
+  "exports": {
+    "./skills/": "./SKILL.md",
+    "./assets/": "./assets/"
+  },
+  "scripts": {
+    "build": "echo 'No build needed — static asset package'",
+    "test": "echo 'No tests yet'"
+  },
+  "keywords": [
+    "investor-ready",
+    "doc-gen",
+    "pitch-deck",
+    "investor-docs",
+    "wayofmono",
+    "wo-agent",
+    "skill"
+  ],
+  "author": "",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  }
+}
