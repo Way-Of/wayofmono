@@ -1,5 +1,46 @@
 # wouser (wo-agent) Fixes & Release Notes
 
+## v1.0.7 — 2026-06-29
+
+### Fixed: Skill discovery with pnpm symlinks
+- **Bug**: `Dirent.isDirectory()` returns `false` for pnpm symlinked workspace packages
+- **Fix**: Replaced with `statSync()` which follows symlinks and correctly identifies directories
+- **Affects**: `wouser skill discover`, `loadSkillsFromDir()` — now finds 50 skills (36 `skills/` + 14 `agent/skills/`) instead of 0
+
+### Added: 14 standalone skill packages published to npm
+- Each skill from `wo-user-extra/agent/skills/` published as `@wayofmono/skill-<name>`
+- Users can `npm install @wayofmono/skill-tdd` without pulling entire bundle
+- Short-form auto-resolution works: `wouser skill install tdd`
+
+### Added: wo-user-extra extension bundle published
+- **New package**: `@wayofmono/wo-user-extra@1.0.0` — bundle of 36 skills + 14 agent/skills + 7 agents + 2 extensions + 12 themes + prompts
+- Full discoverable via `wouser skill discover` after `npm install @wayofmono/wo-user-extra`
+
+### New skill packages (14 total)
+| Package | Version |
+|---------|---------|
+| `@wayofmono/skill-auto-ticket-creator` | 0.1.0 |
+| `@wayofmono/skill-backlog-groomer` | 0.1.0 |
+| `@wayofmono/skill-docs-sync-updater` | 0.1.0 |
+| `@wayofmono/skill-document-generation` | 0.1.0 |
+| `@wayofmono/skill-experimental-pr-workflow` | 0.1.0 |
+| `@wayofmono/skill-interview` | 0.1.0 |
+| `@wayofmono/skill-investor-ready-doc-gen` | 0.2.0 |
+| `@wayofmono/skill-prd-to-issues` | 0.1.0 |
+| `@wayofmono/skill-research-codebase` | 0.1.0 |
+| `@wayofmono/skill-runbook-manager` | 0.1.0 |
+| `@wayofmono/skill-self-documentation` | 0.1.0 |
+| `@wayofmono/skill-session-export` | 0.1.0 |
+| `@wayofmono/skill-tdd` | 0.1.0 |
+| `@wayofmono/skill-write-a-prd` | 0.1.0 |
+
+### Files modified
+- `src/core/skill-manifest.ts` — `statSync()` replaces `Dirent.isDirectory()` for symlink-safe discovery
+- `package.json` — Added `@wayofmono/wo-user-extra` workspace dependency
+- `README.md` — Updated stats (13→29 packages), added skill packages section, extension package section
+
+---
+
 ## v1.0.6 — 2026-06-28
 
 ### Added: Short-Form Auto-Resolution for Skill/Agent/Extension Install
