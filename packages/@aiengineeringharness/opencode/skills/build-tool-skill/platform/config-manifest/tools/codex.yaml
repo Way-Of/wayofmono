@@ -1,0 +1,692 @@
+name: codex
+version: 1.0.0
+target: ~/.codex
+components:
+  settings:
+    description: Codex global configuration
+    files:
+    - src: codex/README.md
+      dest: README.md
+  agents:
+    description: Specialized subagents for Codex
+    files:
+    - src: codex/agents/codebase_analyzer.md
+      dest: agents/codebase_analyzer.md
+    - src: codex/agents/codebase_investigator.md
+      dest: agents/codebase_investigator.md
+    - src: codex/agents/codebase_locator.md
+      dest: agents/codebase_locator.md
+    - src: codex/agents/codebase_pattern_finder.md
+      dest: agents/codebase_pattern_finder.md
+    - src: codex/agents/thoughts_analyzer.md
+      dest: agents/thoughts_analyzer.md
+    - src: codex/agents/thoughts_locator.md
+      dest: agents/thoughts_locator.md
+    - src: codex/agents/web_search_researcher.md
+      dest: agents/web_search_researcher.md
+  skill/auto-ticket-creator:
+    description: Auto Ticket Creator skill
+    files:
+    - src: codex/skills/auto_ticket_creator/SKILL.md
+      dest: skills/auto-ticket-creator/SKILL.md
+  skill/backlog-groomer:
+    description: Backlog Groomer skill
+    files:
+    - src: codex/skills/backlog_groomer/SKILL.md
+      dest: skills/backlog-groomer/SKILL.md
+  skill/create-plan:
+    description: Create Plan skill
+    files:
+    - src: codex/skills/create_plan/SKILL.md
+      dest: skills/create-plan/SKILL.md
+  skill/cto-dashboard:
+    description: Cto Dashboard skill
+    files:
+    - src: codex/skills/cto_dashboard/SKILL.md
+      dest: skills/cto-dashboard/SKILL.md
+  skill/debug:
+    description: Debug skill
+    files:
+    - src: codex/skills/debug/SKILL.md
+      dest: skills/debug/SKILL.md
+  skill/debug-k8s:
+    description: Debug K8S skill
+    files:
+    - src: codex/skills/debug_k8s/SKILL.md
+      dest: skills/debug-k8s/SKILL.md
+  skill/docs-sync-updater:
+    description: Docs Sync Updater skill
+    files:
+    - src: codex/skills/docs_sync_updater/SKILL.md
+      dest: skills/docs-sync-updater/SKILL.md
+  skill/document-generation:
+    description: Document Generation skill
+    files:
+    - src: codex/skills/document_generation/SKILL.md
+      dest: skills/document-generation/SKILL.md
+  skill/experimental-pr-workflow:
+    description: Experimental Pr Workflow skill
+    files:
+    - src: codex/skills/experimental_pr_workflow/SKILL.md
+      dest: skills/experimental-pr-workflow/SKILL.md
+  skill/git-commit-helper:
+    description: Git Commit Helper skill
+    files:
+    - src: codex/skills/git_commit_helper/SKILL.md
+      dest: skills/git-commit-helper/SKILL.md
+  skill/help-command:
+    description: Help Command skill
+    files:
+    - src: codex/skills/help_command/SKILL.md
+      dest: skills/help-command/SKILL.md
+  skill/implement-plan:
+    description: Implement Plan skill
+    files:
+    - src: codex/skills/implement_plan/SKILL.md
+      dest: skills/implement-plan/SKILL.md
+  skill/improve-codebase-architecture:
+    description: Improve Codebase Architecture skill
+    files:
+    - src: codex/skills/improve_codebase_architecture/SKILL.md
+      dest: skills/improve-codebase-architecture/SKILL.md
+  skill/init-harness:
+    description: Init Harness skill
+    files:
+    - src: codex/skills/init_harness/SKILL.md
+      dest: skills/init-harness/SKILL.md
+  skill/interview:
+    description: Interview skill
+    files:
+    - src: codex/skills/interview/SKILL.md
+      dest: skills/interview/SKILL.md
+  skill/observability-driven-development:
+    description: Observability Driven Development skill
+    files:
+    - src: codex/skills/observability_driven_development/SKILL.md
+      dest: skills/observability-driven-development/SKILL.md
+  skill/opticat-backend-integrator:
+    description: Opticat Backend Integrator skill
+    files:
+    - src: codex/skills/opticat_backend_integrator/SKILL.md
+      dest: skills/opticat-backend-integrator/SKILL.md
+  skill/opticat-simulator:
+    description: Opticat Simulator skill
+    files:
+    - src: codex/skills/opticat_simulator/SKILL.md
+      dest: skills/opticat-simulator/SKILL.md
+  skill/opticat-ui-builder:
+    description: Opticat Ui Builder skill
+    files:
+    - src: codex/skills/opticat_ui_builder/SKILL.md
+      dest: skills/opticat-ui-builder/SKILL.md
+  skill/otel-collector:
+    description: Otel Collector skill
+    files:
+    - src: codex/skills/otel_collector/SKILL.md
+      dest: skills/otel-collector/SKILL.md
+  skill/otel-instrument:
+    description: Otel Instrument skill
+    files:
+    - src: codex/skills/otel_instrument/SKILL.md
+      dest: skills/otel-instrument/SKILL.md
+  skill/otel-instrumentation:
+    description: Otel Instrumentation skill
+    files:
+    - src: codex/skills/otel_instrumentation/SKILL.md
+      dest: skills/otel-instrumentation/SKILL.md
+  skill/otel-ottl:
+    description: Otel Ottl skill
+    files:
+    - src: codex/skills/otel_ottl/SKILL.md
+      dest: skills/otel-ottl/SKILL.md
+  skill/otel-semantic-conventions:
+    description: Otel Semantic Conventions skill
+    files:
+    - src: codex/skills/otel_semantic_conventions/SKILL.md
+      dest: skills/otel-semantic-conventions/SKILL.md
+  skill/pr-description-generator:
+    description: Pr Description Generator skill
+    files:
+    - src: codex/skills/pr_description_generator/SKILL.md
+      dest: skills/pr-description-generator/SKILL.md
+  skill/prd-to-issues:
+    description: Prd To Issues skill
+    files:
+    - src: codex/skills/prd_to_issues/SKILL.md
+      dest: skills/prd-to-issues/SKILL.md
+  skill/research-codebase:
+    description: Research Codebase skill
+    files:
+    - src: codex/skills/research_codebase/SKILL.md
+      dest: skills/research-codebase/SKILL.md
+  skill/tdd:
+    description: Tdd skill
+    files:
+    - src: codex/skills/tdd/SKILL.md
+      dest: skills/tdd/SKILL.md
+  skill/team-setup:
+    description: Team Setup skill
+    files:
+    - src: codex/skills/team_setup/SKILL.md
+      dest: skills/team-setup/SKILL.md
+  skill/ticket-context:
+    description: Ticket Context skill
+    files:
+    - src: codex/skills/ticket_context/SKILL.md
+      dest: skills/ticket-context/SKILL.md
+
+    - src: codex/skills/ticket_context/assets/audit-tickets.js
+      dest: skills/ticket-context/assets/audit-tickets.js
+  skill/ticket-manager:
+    description: Ticket Manager skill
+    files:
+    - src: codex/skills/ticket_manager/SKILL.md
+      dest: skills/ticket-manager/SKILL.md
+
+    - src: codex/skills/ticket_manager/assets/audit-tickets.js
+      dest: skills/ticket-manager/assets/audit-tickets.js
+  skill/usage-rules:
+    description: Usage Rules skill
+    files:
+    - src: codex/skills/usage_rules/SKILL.md
+      dest: skills/usage-rules/SKILL.md
+  skill/validate-plan:
+    description: Validate Plan skill
+    files:
+    - src: codex/skills/validate_plan/SKILL.md
+      dest: skills/validate-plan/SKILL.md
+  skill/validate-telemetry:
+    description: Validate Telemetry skill
+    files:
+    - src: codex/skills/validate_telemetry/SKILL.md
+      dest: skills/validate-telemetry/SKILL.md
+  skill/worktree:
+    description: Worktree skill
+    files:
+    - src: codex/skills/worktree/SKILL.md
+      dest: skills/worktree/SKILL.md
+  skill/wow-access-control:
+    description: Wow Access Control skill
+    files:
+    - src: codex/skills/wow_access_control/SKILL.md
+      dest: skills/wow-access-control/SKILL.md
+  skill/wow-agent-dev:
+    description: Wow Agent Dev skill
+    files:
+    - src: codex/skills/wow_agent_dev/SKILL.md
+      dest: skills/wow-agent-dev/SKILL.md
+  skill/wow-backend-dev:
+    description: Wow Backend Dev skill
+    files:
+    - src: codex/skills/wow_backend_dev/SKILL.md
+      dest: skills/wow-backend-dev/SKILL.md
+  skill/wow-communications:
+    description: Wow Communications skill
+    files:
+    - src: codex/skills/wow_communications/SKILL.md
+      dest: skills/wow-communications/SKILL.md
+  skill/wow-core-architecture:
+    description: Wow Core Architecture skill
+    files:
+    - src: codex/skills/wow_core_architecture/SKILL.md
+      dest: skills/wow-core-architecture/SKILL.md
+  skill/wow-frontend-dev:
+    description: Wow Frontend Dev skill
+    files:
+    - src: codex/skills/wow_frontend_dev/SKILL.md
+      dest: skills/wow-frontend-dev/SKILL.md
+  skill/wow-human-in-the-loop:
+    description: Wow Human In The Loop skill
+    files:
+    - src: codex/skills/wow_human_in_the_loop/SKILL.md
+      dest: skills/wow-human-in-the-loop/SKILL.md
+  skill/wow-skill-creator:
+    description: Wow Skill Creator skill
+    files:
+    - src: codex/skills/wow_skill_creator/SKILL.md
+      dest: skills/wow-skill-creator/SKILL.md
+  skill/wow-ui-surfaces:
+    description: Wow Ui Surfaces skill
+    files:
+    - src: codex/skills/wow_ui_surfaces/SKILL.md
+      dest: skills/wow-ui-surfaces/SKILL.md
+  skill/write-a-prd:
+    description: Write A Prd skill
+    files:
+    - src: codex/skills/write_a_prd/SKILL.md
+      dest: skills/write-a-prd/SKILL.md
+  skill/womono-practices-guide:
+    description: Wow Practices Guide
+    files:
+    - src: codex/skills/womono_practices_guide/SKILL.md
+      dest: skills/womono-practices-guide/SKILL.md
+  skill/womono-practices-audit:
+    description: Wow Practices Audit
+    files:
+    - src: codex/skills/womono_practices_audit/SKILL.md
+      dest: skills/womono-practices-audit/SKILL.md
+  skill/womono-practices-backlog:
+    description: Wow Practices Backlog
+    files:
+    - src: codex/skills/womono_practices_backlog/SKILL.md
+      dest: skills/womono-practices-backlog/SKILL.md
+  skill/build-tool:
+    description: Universal component builder for all 7 AI coding tools
+    files:
+    - src: codex/skills/build_tool/SKILL.md
+      dest: skills/build-tool/SKILL.md
+  skill/build-tool-skill:
+    description: "Unified skill builder, validator, adapter, and lifecycle manager for all 7 tools"
+    files:
+    - src: codex/skills/build_tool_skill/SKILL.md
+      dest: skills/build-tool-skill/SKILL.md
+    - src: codex/skills/build_tool_skill/assets/config-manifest-example.yaml
+      dest: skills/build-tool-skill/assets/config-manifest-example.yaml
+    - src: codex/skills/build_tool_skill/assets/skill-example-opencode.md
+      dest: skills/build-tool-skill/assets/skill-example-opencode.md
+    - src: codex/skills/build_tool_skill/assets/skill-example-claude.md
+      dest: skills/build-tool-skill/assets/skill-example-claude.md
+    - src: codex/skills/build_tool_skill/assets/skill-example-pi.md
+      dest: skills/build-tool-skill/assets/skill-example-pi.md
+    - src: codex/skills/build_tool_skill/assets/skill-example-codex.yaml
+      dest: skills/build-tool-skill/assets/skill-example-codex.yaml
+    - src: codex/skills/build_tool_skill/assets/skill-example-codex-prompt.md
+      dest: skills/build-tool-skill/assets/skill-example-codex-prompt.md
+    - src: codex/skills/build_tool_skill/assets/compliance-check.py
+      dest: skills/build-tool-skill/assets/compliance-check.py
+    - src: codex/skills/build_tool_skill/assets/adapter-generate.py
+      dest: skills/build-tool-skill/assets/adapter-generate.py
+  skill/build-tool-agent:
+    description: "Unified agent builder for all 7 tools \u2014 deployed to Codex"
+    files:
+    - src: codex/skills/build_tool_agent/SKILL.md
+      dest: skills/build-tool-agent/SKILL.md
+  skill/build-tool-extension:
+    description: "Unified extension/plugin builder for all 7 tools \u2014 deployed\
+      \ to Codex"
+    files:
+    - src: codex/skills/build_tool_extension/SKILL.md
+      dest: skills/build-tool-extension/SKILL.md
+  skill/build-tool-tui:
+    description: "Unified TUI component builder for all 7 tools \u2014 deployed to\
+      \ Codex"
+    files:
+    - src: codex/skills/build_tool_tui/SKILL.md
+      dest: skills/build-tool-tui/SKILL.md
+  skill/build-tool-cli:
+    description: "Unified CLI reference for all 7 tools \u2014 deployed to Codex"
+    files:
+    - src: codex/skills/build_tool_cli/SKILL.md
+      dest: skills/build-tool-cli/SKILL.md
+  skill/build-tool-themes:
+    description: "Unified theme builder for all 7 tools \u2014 deployed to Codex"
+    files:
+    - src: codex/skills/build_tool_themes/SKILL.md
+      dest: skills/build-tool-themes/SKILL.md
+  skill/build-tool-prompts:
+    description: "Unified prompt template builder for all 7 tools \u2014 deployed\
+      \ to Codex"
+    files:
+    - src: codex/skills/build_tool_prompts/SKILL.md
+      dest: skills/build-tool-prompts/SKILL.md
+  skill/build-tool-keybindings:
+    description: "Unified keybinding reference for all 7 tools \u2014 deployed to\
+      \ Codex"
+    files:
+    - src: codex/skills/build_tool_keybindings/SKILL.md
+      dest: skills/build-tool-keybindings/SKILL.md
+  skill/build-tool-config:
+    description: "Unified configuration reference for all 7 tools \u2014 deployed\
+      \ to Codex"
+    files:
+    - src: codex/skills/build_tool_config/SKILL.md
+      dest: skills/build-tool-config/SKILL.md
+  skill/build-tool-orchestrate:
+    description: "Unified orchestration coordinator for all 7 tools \u2014 deployed\
+      \ to Codex"
+    files:
+    - src: codex/skills/build_tool_orchestrate/SKILL.md
+      dest: skills/build-tool-orchestrate/SKILL.md
+  skill/investor-ready-doc-gen:
+    description: Generate investor-ready documentation for any project
+    files:
+    - src: codex/skills/investor_ready_doc_gen/SKILL.md
+      dest: skills/investor-ready-doc-gen/SKILL.md
+    - src: codex/skills/investor_ready_doc_gen/assets/verticals/VERTICAL_TEMPLATE.yaml
+      dest: skills/investor-ready-doc-gen/assets/verticals/VERTICAL_TEMPLATE.yaml
+    - src: codex/skills/investor_ready_doc_gen/assets/verticals/hvac_optimization/market_reference.yaml
+      dest: skills/investor-ready-doc-gen/assets/verticals/hvac_optimization/market_reference.yaml
+    - src: codex/skills/investor_ready_doc_gen/assets/verticals/construction_software/market_reference.yaml
+      dest: skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml
+    - src: codex/skills/investor_ready_doc_gen/assets/pdf/investor-theme.css
+      dest: skills/investor-ready-doc-gen/assets/pdf/investor-theme.css
+    - src: codex/skills/investor_ready_doc_gen/assets/schema/investor_config.schema.yaml
+      dest: skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml
+    - src: codex/skills/investor_ready_doc_gen/assets/examples/wow_config.yaml
+      dest: skills/investor-ready-doc-gen/assets/examples/wow_config.yaml
+    - src: codex/skills/investor_ready_doc_gen/assets/examples/opticat_config.yaml
+      dest: skills/investor-ready-doc-gen/assets/examples/opticat_config.yaml
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/todo.md
+      dest: skills/investor-ready-doc-gen/assets/templates/todo.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/changelog.md
+      dest: skills/investor-ready-doc-gen/assets/templates/changelog.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/index.md
+      dest: skills/investor-ready-doc-gen/assets/templates/index.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/costs/cloud_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/cloud_costs.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/costs/hardware_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/hardware_costs.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/costs/setup_legal_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/setup_legal_costs.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/costs/detailed_breakdown.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/detailed_breakdown.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/costs/cost_analysis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/cost_analysis.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/costs/team_tooling_costs.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/team_tooling_costs.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/costs/alignment_summary.md
+      dest: skills/investor-ready-doc-gen/assets/templates/costs/alignment_summary.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/technical/demo_script.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_script.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/technical/product_functionality.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/product_functionality.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/technical/demo_presentation_slides.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_presentation_slides.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/technical/technical_overview.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/technical_overview.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/technical/demo_video_links.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_video_links.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/technical/demo_use_case_scenarios.md
+      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_use_case_scenarios.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/company/company_overview.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/company_overview.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/company/team_values.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/team_values.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/company/organizational_chart.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/organizational_chart.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/company/business_plan.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/business_plan.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/company/team_bios.md
+      dest: skills/investor-ready-doc-gen/assets/templates/company/team_bios.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/venture_studio/README.md
+      dest: skills/investor-ready-doc-gen/assets/templates/venture_studio/README.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/venture_studio/venture_studio_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/venture_studio/venture_studio_strategy.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/pitch_deck/send_ahead_deck.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/send_ahead_deck.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/pitch_deck/pitch_script.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/pitch_script.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/pitch_deck/supporting_slides.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/supporting_slides.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/pitch_deck/master_deck.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/master_deck.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/pitch_deck/one_pager.md
+      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/one_pager.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/operations/kpi_dashboard.md
+      dest: skills/investor-ready-doc-gen/assets/templates/operations/kpi_dashboard.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/operations/client_overview.md
+      dest: skills/investor-ready-doc-gen/assets/templates/operations/client_overview.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/operations/venture_studio_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/operations/venture_studio_strategy.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/financial/master_financial_model.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/master_financial_model.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/financial/README.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/README.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/financial/seed_allocation_plan.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/seed_allocation_plan.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/financial/cost_analysis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/cost_analysis.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/financial/revenue_model.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/revenue_model.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/financial/historical_financials.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/historical_financials.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/financial/cap_table.md
+      dest: skills/investor-ready-doc-gen/assets/templates/financial/cap_table.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/legal/intellectual_property.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/intellectual_property.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/legal/shareholder_agreement.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/shareholder_agreement.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/legal/vc_investor_contract.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/vc_investor_contract.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/legal/advisor_board_contract.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/advisor_board_contract.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/legal/angel_investor_contract.md
+      dest: skills/investor-ready-doc-gen/assets/templates/legal/angel_investor_contract.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/executive/executive_summary.md
+      dest: skills/investor-ready-doc-gen/assets/templates/executive/executive_summary.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/executive/white_paper.md
+      dest: skills/investor-ready-doc-gen/assets/templates/executive/white_paper.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/executive/investment_thesis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/executive/investment_thesis.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/market/research_prompt.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/research_prompt.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/market/market_research.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/market_research.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/market/product_roadmap.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/product_roadmap.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/market/README.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/README.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/market/go_to_market_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/go_to_market_strategy.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/market/deep_research.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/deep_research.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/market/partnership_strategy.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/partnership_strategy.md
+    - src: codex/skills/investor_ready_doc_gen/assets/templates/market/competitive_analysis.md
+      dest: skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
+  skill/build-auto-ticket-creator:
+    description: Monitor codebase, dependencies, and external sources to auto-create
+      tickets for agent updates, skill updates, dep updates, security advisories
+    files:
+    - src: codex/skills/build_auto_ticket_creator/SKILL.md
+      dest: skills/build-auto-ticket-creator/SKILL.md
+  skill/build-backlog-groomer:
+    description: Product & Ticket Manager. Helps transform ideas/plans into structured
+      tickets in thoughts/shared/tickets/ and maintains the project backlog.
+    files:
+    - src: codex/skills/build_backlog_groomer/SKILL.md
+      dest: skills/build-backlog-groomer/SKILL.md
+  skill/self-documentation:
+    description: Enables Wo to answer How do I...? and What's the command for...?
+      questions by searching its own commands, skills, and documentation locally
+    files:
+    - src: codex/skills/self_documentation/SKILL.md
+      dest: skills/self-documentation/SKILL.md
+  skill/validate-manifest:
+    description: Validate skill manifest against production-ready standards and conventions
+    files:
+    - src: codex/skills/validate_manifest/SKILL.md
+      dest: skills/validate-manifest/SKILL.md
+  skill/ticket-executor:
+    description: Execute approved plans in phases, validating telemetry and committing
+      changes after each phase completes successfully
+    files:
+    - src: codex/skills/ticket_executor/SKILL.md
+      dest: skills/ticket-executor/SKILL.md
+
+    - src: codex/skills/ticket_executor/assets/audit-tickets.js
+      dest: skills/ticket-executor/assets/audit-tickets.js
+  skill/validate-podman:
+    description: Validate Podman/Quadlet configurations on Fedora
+    files:
+    - src: codex/skills/validate_podman/SKILL.md
+      dest: skills/validate-podman/SKILL.md
+  skill/womono-version-updater:
+    description: Bump WoM harness version across all files and tools
+    files:
+    - src: codex/skills/womono_version_updater/SKILL.md
+      dest: skills/womono-version-updater/SKILL.md
+  skill/github-branch:
+    description: Create and manage GitHub feature branches from tickets with proper naming and protection
+    files:
+    - src: codex/skills/github_branch/SKILL.md
+      dest: skills/github-branch/SKILL.md
+  skill/github-pr:
+    description: Create, manage, and review GitHub Pull Requests with ticket linking and template support
+    files:
+    - src: codex/skills/github_pr/SKILL.md
+      dest: skills/github-pr/SKILL.md
+  skill/github-review:
+    description: Review GitHub Pull Requests with structured feedback and CTO Dashboard integration
+    files:
+    - src: codex/skills/github_review/SKILL.md
+      dest: skills/github-review/SKILL.md
+  skill/github-sync:
+    description: Sync feature branches with base branch, resolve conflicts, manage branch lifecycle
+    files:
+    - src: codex/skills/github_sync/SKILL.md
+      dest: skills/github-sync/SKILL.md
+  skill/github-release:
+    description: Create GitHub releases with changelog generation, version tagging, and automated publishing
+    files:
+    - src: codex/skills/github_release/SKILL.md
+      dest: skills/github-release/SKILL.md
+  skill/github-issue:
+    description: Create, manage, and link GitHub Issues with tickets, bi-directional sync
+    files:
+    - src: codex/skills/github_issue/SKILL.md
+      dest: skills/github-issue/SKILL.md
+  skill/womonodeploy:
+    description: Release and deploy WoM npm packages to production
+    files:
+    - src: codex/skills/womonodeploy/SKILL.md
+      dest: skills/womonodeploy/SKILL.md
+  skill/runbook-manager:
+    description: Generate, update, and maintain production runbooks per project
+    files:
+    - src: codex/skills/runbook_manager/SKILL.md
+      dest: skills/runbook-manager/SKILL.md
+    - src: codex/skills/runbook_manager/assets/runbook-template.md
+      dest: skills/runbook-manager/assets/runbook-template.md
+  skill/postmortem-manager:
+    description: Generate incident postmortems with interactive flow and git metrics
+    files:
+    - src: codex/skills/postmortem_manager/SKILL.md
+      dest: skills/postmortem-manager/SKILL.md
+    - src: codex/skills/postmortem_manager/assets/postmortem-template.md
+      dest: skills/postmortem-manager/assets/postmortem-template.md
+  skill/session-export:
+    description: Capture working session as structured session history with git metrics and context
+    files:
+    - src: codex/skills/session_export/SKILL.md
+      dest: skills/session-export/SKILL.md
+    - src: codex/skills/session_export/assets/session-template.md
+      dest: skills/session-export/assets/session-template.md
+
+
+  skill/fixes-create:
+    description: "Create fix note entry skill"
+    files:
+    - src: codex/skills/fixes_create/skill.yaml
+      dest: skills/fixes-create/skill.yaml
+    - src: codex/skills/fixes_create/prompt.md
+      dest: skills/fixes-create/prompt.md
+
+  skill/fixes-bump:
+    description: "Bump version across project files skill"
+    files:
+    - src: codex/skills/fixes_bump/skill.yaml
+      dest: skills/fixes-bump/skill.yaml
+    - src: codex/skills/fixes_bump/prompt.md
+      dest: skills/fixes-bump/prompt.md
+
+  skill/fixes-validate:
+    description: "Validate version consistency skill"
+    files:
+    - src: codex/skills/fixes_validate/skill.yaml
+      dest: skills/fixes-validate/skill.yaml
+    - src: codex/skills/fixes_validate/prompt.md
+      dest: skills/fixes-validate/prompt.md
+
+
+  skill/commit:
+    description: "Create structured git commits"
+    files:
+    - src: codex/skills/commit/skill.yaml
+      dest: skills/commit/skill.yaml
+    - src: codex/skills/commit/prompt.md
+      dest: skills/commit/prompt.md
+
+  skill/work:
+    description: "Start working on a ticket, update status to In Progress"
+    files:
+    - src: codex/skills/work/skill.yaml
+      dest: skills/work/skill.yaml
+    - src: codex/skills/work/prompt.md
+      dest: skills/work/prompt.md
+
+  skill/complete:
+    description: "Complete a ticket, submit for review"
+    files:
+    - src: codex/skills/complete/skill.yaml
+      dest: skills/complete/skill.yaml
+    - src: codex/skills/complete/prompt.md
+      dest: skills/complete/prompt.md
+
+  skill/ticket-create:
+    description: "Interactive ticket creation wizard"
+    files:
+    - src: codex/skills/ticket_create/skill.yaml
+      dest: skills/ticket-create/skill.yaml
+    - src: codex/skills/ticket_create/prompt.md
+      dest: skills/ticket-create/prompt.md
+
+  skill/submit-for-review:
+    description: "Submit ticket for CTO review"
+    files:
+    - src: codex/skills/submit_for_review/skill.yaml
+      dest: skills/submit-for-review/skill.yaml
+    - src: codex/skills/submit_for_review/prompt.md
+      dest: skills/submit-for-review/prompt.md
+
+  skill/sync-team:
+    description: "Show team ticket dashboard"
+    files:
+    - src: codex/skills/sync_team/skill.yaml
+      dest: skills/sync-team/skill.yaml
+    - src: codex/skills/sync_team/prompt.md
+      dest: skills/sync-team/prompt.md
+
+  skill/sync-skills:
+    description: "Sync all skills across all frontends"
+    files:
+    - src: codex/skills/sync_skills/skill.yaml
+      dest: skills/sync-skills/skill.yaml
+    - src: codex/skills/sync_skills/prompt.md
+      dest: skills/sync-skills/prompt.md
+
+  skill/help:
+    description: "Unified help system for all commands and skills"
+    files:
+    - src: codex/skills/help/skill.yaml
+      dest: skills/help/skill.yaml
+    - src: codex/skills/help/prompt.md
+      dest: skills/help/prompt.md
+
+  skill/fixes-manager:
+    description: "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT."
+    files:
+    - src: codex/skills/fixes_manager/SKILL.md
+      dest: skills/fixes-manager/SKILL.md
+    - src: codex/skills/fixes_manager/assets/womono/version-config.json
+      dest: skills/fixes-manager/assets/womono/version-config.json
+    - src: codex/skills/fixes_manager/assets/womono/components.json
+      dest: skills/fixes-manager/assets/womono/components.json
+    - src: codex/skills/fixes_manager/assets/womono/fix-note-template.md
+      dest: skills/fixes-manager/assets/womono/fix-note-template.md
+    - src: codex/skills/fixes_manager/assets/womono/validate-rules.json
+      dest: skills/fixes-manager/assets/womono/validate-rules.json
+    - src: codex/skills/fixes_manager/assets/womono/migration-rules.json
+      dest: skills/fixes-manager/assets/womono/migration-rules.json
+    - src: codex/skills/fixes_manager/assets/wow/version-config.json
+      dest: skills/fixes-manager/assets/wow/version-config.json
+    - src: codex/skills/fixes_manager/assets/wow/components.json
+      dest: skills/fixes-manager/assets/wow/components.json
+    - src: codex/skills/fixes_manager/assets/wow/fix-note-template.md
+      dest: skills/fixes-manager/assets/wow/fix-note-template.md
+    - src: codex/skills/fixes_manager/assets/opticat/version-config.json
+      dest: skills/fixes-manager/assets/opticat/version-config.json
+    - src: codex/skills/fixes_manager/assets/opticat/components.json
+      dest: skills/fixes-manager/assets/opticat/components.json
+    - src: codex/skills/fixes_manager/assets/opticat/fix-note-template.md
+      dest: skills/fixes-manager/assets/opticat/fix-note-template.md

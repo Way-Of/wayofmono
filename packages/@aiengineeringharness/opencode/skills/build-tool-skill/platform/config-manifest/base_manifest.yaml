@@ -1,0 +1,91 @@
+# Base Manifest Configuration
+# Global metadata and shared configuration for all 7 AI coding tools
+# This file is merged with tool-specific configs to produce manifest.json
+
+manifest_version: "1.7.9"
+environment: "production"
+description: "AI Engineering Harness - Modular manifest for 7 AI coding tools"
+
+# Global defaults applied to all tools
+global_defaults:
+  strict_paths: true
+  checksum_verification: true
+  validate_on_install: true
+
+# Tool ordering (for consistent output)
+tool_order:
+  - "claude"
+  - "opencode"
+  - "gemini"
+  - "pi"
+  - "wocode"
+  - "codex"
+  - "antigravity"
+
+# Shared asset templates (YAML anchors for reuse)
+shared_templates:
+  investor_ready_doc_gen_assets: &investor_ready_doc_gen_assets
+    - verticals/VERTICAL_TEMPLATE.yaml
+    - verticals/hvac_optimization/market_reference.yaml
+    - verticals/construction_software/market_reference.yaml
+    - pdf/investor-theme.css
+    - schema/investor_config.schema.yaml
+    - examples/wow_config.yaml
+    - examples/opticat_config.yaml
+    - templates/todo.md
+    - templates/changelog.md
+    - templates/index.md
+    - templates/costs/cloud_costs.md
+    - templates/costs/hardware_costs.md
+    - templates/costs/setup_legal_costs.md
+    - templates/costs/detailed_breakdown.md
+    - templates/costs/cost_analysis.md
+    - templates/costs/team_tooling_costs.md
+    - templates/costs/alignment_summary.md
+    - templates/technical/demo_script.md
+    - templates/technical/product_functionality.md
+    - templates/technical/demo_presentation_slides.md
+    - templates/technical/technical_overview.md
+    - templates/technical/demo_video_links.md
+    - templates/technical/demo_use_case_scenarios.md
+    - templates/company/company_overview.md
+    - templates/company/team_values.md
+    - templates/company/organizational_chart.md
+    - templates/company/business_plan.md
+    - templates/company/team_bios.md
+    - templates/venture_studio/README.md
+    - templates/venture_studio/venture_studio_strategy.md
+    - templates/pitch_deck/send_ahead_deck.md
+    - templates/pitch_deck/pitch_script.md
+    - templates/pitch_deck/supporting_slides.md
+    - templates/pitch_deck/master_deck.md
+    - templates/pitch_deck/one_pager.md
+    - templates/operations/kpi_dashboard.md
+    - templates/operations/client_overview.md
+    - templates/operations/venture_studio_strategy.md
+    - templates/financial/master_financial_model.md
+    - templates/financial/README.md
+    - templates/financial/seed_allocation_plan.md
+    - templates/financial/cost_analysis.md
+    - templates/financial/revenue_model.md
+    - templates/financial/historical_financials.md
+    - templates/financial/cap_table.md
+    - templates/legal/intellectual_property.md
+    - templates/legal/shareholder_agreement.md
+    - templates/legal/vc_investor_contract.md
+    - templates/legal/advisor_board_contract.md
+    - templates/legal/angel_investor_contract.md
+    - templates/executive/executive_summary.md
+    - templates/executive/white_paper.md
+    - templates/executive/investment_thesis.md
+    - templates/market/research_prompt.md
+    - templates/market/market_research.md
+    - templates/market/product_roadmap.md
+    - templates/market/README.md
+    - templates/market/go_to_market_strategy.md
+    - templates/market/deep_research.md
+    - templates/market/partnership_strategy.md
+    - templates/market/competitive_analysis.md
+
+# The "tools" key will be populated by compile.py from tools/*.yaml
+tools: {}
