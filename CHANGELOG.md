@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.4] - 2026-06-29
+
+### Harness (AI Engineering Harness v1.8.4)
+- **Subagent extension import path fixed (WOMONO-115)**: Fixed `agent/extensions/subagents-index.ts` import from `./agents.js` to `./subagent/agents.ts` — resolves "Cannot find module './agents.js'" error on pi startup.
+- **Worker agent renamed to coder (WOMONO-115, WOMONO-116)**: Renamed `worker.md` → `coder.md` in both `packages/@aiengineeringharness/pi/agent/agents/` and `packages/@aiengineeringharness/pi/agent/extensions/subagent/agents/`.
+- **Subagent agents rewritten with operational protocols (WOMONO-116)**: Updated `planner`, `reviewer`, `scout`, `coder` in both main agents folder and subagent extension with mandatory workflows, file generation requirements, directory integrity rules, completion signals (`[PLAN_COMPLETE]`, `[REVIEW_COMPLETE]`, `[RECON_COMPLETE]`, `[CODE_COMPLETE]`), and safety protocols (bash limits, read-only enforcement). Modeled after reference implementation in `/ref/pip/.pi/agents/agents/`.
+
 ## [1.7.9] - 2026-06-26
 
 ### Harness (AI Engineering Harness v1.7.9)
