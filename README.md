@@ -1715,7 +1715,7 @@ The User Assistant (wouser) is an **SDK**. If you're building an AI chatbot or f
 
 ## 📦 Wo Packages
 
-All **13** packages published under `@wayofmono` scope at [npmjs.com/settings/wayofmono](https://www.npmjs.com/settings/wayofmono/packages).
+All **29** packages published under `@wayofmono` scope at [npmjs.com/settings/wayofmono](https://www.npmjs.com/settings/wayofmono/packages) (14 core + 1 extension + 14 skill packages).
 
 ### Install from npm (each package separate copy-paste)
 
@@ -1787,7 +1787,7 @@ pnpm add ~/wayofmono/packages/@wayofmono/wo-coding-agent
 
 ### Package Details
 
-All 13 packages published under `@wayofmono` scope at [npmjs.com/settings/wayofmono](https://www.npmjs.com/settings/wayofmono/packages).
+All 29 packages published under `@wayofmono` scope at [npmjs.com/settings/wayofmono](https://www.npmjs.com/settings/wayofmono/packages) (14 core + 1 extension + 14 skill packages).
 
 | Package | Description | When to Use | npm |
 |---------|-------------|-------------|-----|
@@ -1809,6 +1809,42 @@ All 13 packages published under `@wayofmono` scope at [npmjs.com/settings/wayofm
 
 **Specialized packages** (specific use cases): `wo-tui`, `wo-mermaid`, `wo-skill-docs`, `web-access`, `lens`, `wo-web-ui`, `telegram`, `whatsapp`
 
+### Skill Packages (14 published)
+
+Each skill is available as a standalone `@wayofmono/skill-*` npm package — install only the skills you need:
+
+```bash
+# Install individual skills
+npm install @wayofmono/skill-auto-ticket-creator
+npm install @wayofmono/skill-backlog-groomer
+npm install @wayofmono/skill-docs-sync-updater
+npm install @wayofmono/skill-document-generation
+npm install @wayofmono/skill-experimental-pr-workflow
+npm install @wayofmono/skill-interview
+npm install @wayofmono/skill-investor-ready-doc-gen
+npm install @wayofmono/skill-prd-to-issues
+npm install @wayofmono/skill-research-codebase
+npm install @wayofmono/skill-runbook-manager
+npm install @wayofmono/skill-self-documentation
+npm install @wayofmono/skill-session-export
+npm install @wayofmono/skill-tdd
+npm install @wayofmono/skill-write-a-prd
+```
+
+Then register them with wouser:
+```bash
+npx wouser skill install auto-ticket-creator
+npx wouser skill install backlog-groomer
+npx wouser skill install tdd
+# ... or install all at once via wo-user-extra bundle
+```
+
+### Extension Package
+
+| Package | Description | Install |
+|---------|-------------|---------|
+| **@wayofmono/wo-user-extra** | Bundle of 36 skills + 14 agent/skills + 7 agents + 2 extensions + 12 themes + prompts | `npm install @wayofmono/wo-user-extra` |
+
 ## 🔄 Keeping Updated — Automatic Skill & Package Updates
 
 ### Update to Latest Package Versions
@@ -1816,6 +1852,9 @@ All 13 packages published under `@wayofmono` scope at [npmjs.com/settings/wayofm
 ```bash
 # Update all @wayofmono packages to latest versions
 npm update @wayofmono/wo-agent @wayofmono/wo-user-extra @wayofmono/wo-coding-agent @wayofmono/wo-ai @wayofmono/wo-tui @wayofmono/wo-agent-core @wayofmono/wo-skill-docs @wayofmono/wo-mermaid @wayofmono/web-access @wayofmono/lens @wayofmono/wo-web-ui @wayofmono/telemetry @wayofmono/telegram @wayofmono/whatsapp
+
+# Update skill packages (install only what you use)
+npm update @wayofmono/skill-tdd @wayofmono/skill-investor-ready-doc-gen @wayofmono/skill-interview
 
 # Or update everything at once (if using these packages)
 npm update
@@ -2370,7 +2409,7 @@ cd ui && pnpm build
 │   │   ├── antigravity/ → ~/.antigravity/        # 146 files
 │   │   └── wocode/     → ~/.wocode/            # 182 files
 │   │
-│   ├── @wayofmono/                 # 13 NPM packages
+│   ├── @wayofmono/                 # 29 NPM packages (14 core + 1 extension + 14 skill)
 │   │   ├── wo-ai/                  # 4.0M — Multi-Provider LLM API
 │   │   ├── wo-tui/                 # 1.5M — Terminal UI Library
 │   │   ├── wo-agent-core/          # 1.1M — Agent Runtime
