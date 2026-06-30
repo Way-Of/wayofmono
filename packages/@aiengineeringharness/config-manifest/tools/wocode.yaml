@@ -12,18 +12,18 @@ components:
   agents:
     description: Specialized subagents for Wo Coder
     files:
-    - src: wocode/agent/agents/codebase_analyzer.md
-      dest: agents/codebase_analyzer.md
-    - src: wocode/agent/agents/codebase_locator.md
-      dest: agents/codebase_locator.md
-    - src: wocode/agent/agents/codebase_pattern_finder.md
-      dest: agents/codebase_pattern_finder.md
-    - src: wocode/agent/agents/thoughts_analyzer.md
-      dest: agents/thoughts_analyzer.md
-    - src: wocode/agent/agents/thoughts_locator.md
-      dest: agents/thoughts_locator.md
-    - src: wocode/agent/agents/web_search_researcher.md
-      dest: agents/web_search_researcher.md
+    - src: wocode/agent/agents/codebase-analyzer.md
+      dest: agents/codebase-analyzer.md
+    - src: wocode/agent/agents/codebase-locator.md
+      dest: agents/codebase-locator.md
+    - src: wocode/agent/agents/codebase-pattern-finder.md
+      dest: agents/codebase-pattern-finder.md
+    - src: wocode/agent/agents/thoughts-analyzer.md
+      dest: agents/thoughts-analyzer.md
+    - src: wocode/agent/agents/thoughts-locator.md
+      dest: agents/thoughts-locator.md
+    - src: wocode/agent/agents/web-search-researcher.md
+      dest: agents/web-search-researcher.md
   extension/open-editor:
     description: Open files from cwd in $VISUAL/$EDITOR via /edit or ctrl+e
     files:
