@@ -6738,6 +6738,22 @@
             {
               "src": "pi/agent/agents/README.md",
               "dest": "agents/README.md"
+            },
+            {
+              "src": "pi/agent/agents/planner.md",
+              "dest": "agents/planner.md"
+            },
+            {
+              "src": "pi/agent/agents/reviewer.md",
+              "dest": "agents/reviewer.md"
+            },
+            {
+              "src": "pi/agent/agents/scout.md",
+              "dest": "agents/scout.md"
+            },
+            {
+              "src": "pi/agent/agents/coder.md",
+              "dest": "agents/coder.md"
             }
           ]
         },
@@ -6774,8 +6790,8 @@
               "dest": "extensions/subagent/agents/scout.md"
             },
             {
-              "src": "pi/agent/extensions/subagent/agents/worker.md",
-              "dest": "extensions/subagent/agents/worker.md"
+              "src": "pi/agent/extensions/subagent/agents/coder.md",
+              "dest": "extensions/subagent/agents/coder.md"
             },
             {
               "src": "pi/agent/extensions/subagent/prompts/implement.md",
@@ -8188,6 +8204,22 @@
             {
               "src": "wocode/agent/agents/web_search_researcher.md",
               "dest": "agents/web_search_researcher.md"
+            },
+            {
+              "src": "wocode/agent/agents/planner.md",
+              "dest": "agents/planner.md"
+            },
+            {
+              "src": "wocode/agent/agents/reviewer.md",
+              "dest": "agents/reviewer.md"
+            },
+            {
+              "src": "wocode/agent/agents/scout.md",
+              "dest": "agents/scout.md"
+            },
+            {
+              "src": "wocode/agent/agents/coder.md",
+              "dest": "agents/coder.md"
             }
           ]
         },
@@ -8224,8 +8256,8 @@
               "dest": "extensions/subagent/agents/scout.md"
             },
             {
-              "src": "wocode/agent/extensions/subagent/agents/worker.md",
-              "dest": "extensions/subagent/agents/worker.md"
+              "src": "wocode/agent/extensions/subagent/agents/coder.md",
+              "dest": "extensions/subagent/agents/coder.md"
             },
             {
               "src": "wocode/agent/extensions/subagent/prompts/implement.md",
