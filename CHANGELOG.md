@@ -2,10 +2,12 @@
 
 ## [1.7.10] - 2026-06-29
 
-### Harness (AI Engineering Harness v1.7.10)
+### Harness (AI Engineering Harness v1.7.10) — pi + wocode agents only
 - **Subagent extension import path fixed (WOMONO-115)**: Fixed `agent/extensions/subagents-index.ts` import from `./agents.js` to `./subagent/agents.ts` — resolves "Cannot find module './agents.js'" error on pi startup.
-- **Worker agent renamed to coder (WOMONO-115, WOMONO-116)**: Renamed `worker.md` → `coder.md` in both `packages/@aiengineeringharness/pi/agent/agents/` and `packages/@aiengineeringharness/pi/agent/extensions/subagent/agents/`.
-- **Subagent agents rewritten with operational protocols (WOMONO-116)**: Updated `planner`, `reviewer`, `scout`, `coder` in both main agents folder and subagent extension with mandatory workflows with mandatory workflows, file generation requirements, directory integrity rules, completion signals (`[PLAN_COMPLETE]`, `[REVIEW_COMPLETE]`, `[RECON_COMPLETE]`, `[CODE_COMPLETE]`), and safety protocols (bash limits, read-only enforcement). Modeled after reference implementation in `/ref/pip/.pi/agents/agents/`.
+- **Subagent index.ts renamed and moved (WOMONO-115)**: `extensions/subagent/index.ts` renamed to `extensions/subagents-index.ts` — moved up one level so the `subagent/` directory contains only `agents.ts`, `agents/`, and `prompts/`. Applied to both pi and wocode.
+- **Worker agent renamed to coder (WOMONO-115, WOMONO-116)**: Renamed `worker.md` → `coder.md` in both pi and wocode, in both `packages/@aiengineeringharness/{pi,wocode}/agent/agents/` and `packages/@aiengineeringharness/{pi,wocode}/agent/extensions/subagent/agents/`.
+- **Operational protocol agents added (WOMONO-116)**: Added `planner`, `reviewer`, `scout`, `coder` to both pi (kebab-case) and wocode (snake_case) main agent directories with mandatory workflows, file generation requirements, directory integrity rules, completion signals (`[PLAN_COMPLETE]`, `[REVIEW_COMPLETE]`, `[RECON_COMPLETE]`, `[CODE_COMPLETE]`), and safety protocols (bash limits, read-only enforcement).
+- **Manifest.json fixed**: Added missing operational protocol agents, renamed `worker.md` → `coder.md`, renamed `subagent/index.ts` → `subagents-index.ts` for both pi and wocode. Pushed to GitHub main (commit 550420b5).
 
 ## [1.7.9] - 2026-06-26
 

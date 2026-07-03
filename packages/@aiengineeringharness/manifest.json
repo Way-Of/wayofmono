@@ -8444,8 +8444,8 @@
           "description": "Initialize harness skill",
           "files": [
             {
-              "src": "wocode/skills/init_harness/SKILL.md",
-              "dest": "skills/init_harness/SKILL.md"
+              "src": "wocode/agent/skills/init-harness/SKILL.md",
+              "dest": "skills/init-harness/SKILL.md"
             }
           ]
         },

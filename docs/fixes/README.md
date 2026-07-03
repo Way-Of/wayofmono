@@ -6,6 +6,8 @@
 - [wouser (wo-agent) Fixes](./wo-agent-fixes.md) — General-purpose user agent v1.0.4+
 - [CTO Dashboard Fixes](./cto-dashboard-fixes.md) — Dashboard (Next.js) v0.2.1+
 - [AI Engineering Harness Fixes](./ai-engineering-harness-fixes.md) — Core harness v1.7.0+
+- [Manifest & Install Architecture](./manifest-install-architecture.md) — How install.ts + manifest.json work, failure modes, and troubleshooting
+- [GitHub + Deno CDN Cache](./github-deno-cache.md) — raw.githubusercontent.com caching, stale deployments, and workarounds
 
 ---
 

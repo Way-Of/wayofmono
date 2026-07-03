@@ -264,10 +264,19 @@ function scriptDir(): string {
   return url.slice(0, url.lastIndexOf("/") + 1);
 }
 
+function cacheBustUrl(url: string): string {
+  // raw.githubusercontent.com has aggressive CDN caching (5+ min)
+  // Append timestamp busts the cache without affecting functionality
+  if (url.includes("raw.githubusercontent.com") && !url.includes("?")) {
+    return `${url}?t=${Date.now()}`;
+  }
+  return url;
+}
+
 async function loadManifest(sd: string, token: string | null): Promise<Manifest> {
   const isRemote = sd.startsWith("http://") || sd.startsWith("https://");
   if (isRemote) {
-    const manifestUrl = `${sd}manifest.json`;
+    const manifestUrl = cacheBustUrl(`${sd}manifest.json`);
     const resp = await fetchWithAuth(manifestUrl, token);
     if (!resp.ok) {
       if ((resp.status === 403 || resp.status === 404) && !token) {
@@ -296,7 +305,7 @@ async function readFileIfExists(path: string): Promise<string | null> {
 }
 
 async function fetchRemoteFile(baseUrl: string, src: string, token: string | null, expectedSha256?: string): Promise<string> {
-  const url = `${baseUrl}${src}`;
+  const url = cacheBustUrl(`${baseUrl}${src}`);
   const resp = await fetchWithAuth(url, token);
   if (!resp.ok) {
     if ((resp.status === 403 || resp.status === 404) && !token) {
