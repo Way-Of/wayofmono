@@ -2,8 +2,9 @@
 /**
  * Phase 4: Online Compliance Checking
  *
- * Reads skill SKILL.md files across all tools and validates them against
+ * Reads skill files across all tools and validates them against
  * known tool specifications from docs/tools/ai-coding-tools/.
+ * Supports SKILL.md for all tools; Codex additionally supports skill.yaml.
  *
  * Checks:
  *   1. Tool name usage (e.g., Pi using PascalCase tool names vs OpenCode lowercase)
@@ -504,15 +505,64 @@ async function checkTool(toolName: string, fixMode: boolean): Promise<Compliance
       const skillPath = join(skillDir, entry.name, "SKILL.md");
 
       let content: string;
+      let isCodexYaml = false;
       try {
         content = Deno.readTextFileSync(skillPath);
       } catch {
-        results.push({
-          tool: toolName,
-          skill: entry.name,
-          issues: [{ file: entry.name, line: 0, severity: "error", code: "MISSING_SKILL", message: "SKILL.md not found" }],
-          passed: false,
-        });
+        if (toolName === "codex") {
+          // Codex supports native skill.yaml format alongside SKILL.md
+          try {
+            content = Deno.readTextFileSync(join(skillDir, entry.name, "skill.yaml"));
+            isCodexYaml = true;
+          } catch {
+            results.push({
+              tool: toolName,
+              skill: entry.name,
+              issues: [{ file: entry.name, line: 0, severity: "error", code: "MISSING_SKILL", message: "SKILL.md/skill.yaml not found" }],
+              passed: false,
+            });
+            continue;
+          }
+        } else {
+          results.push({
+            tool: toolName,
+            skill: entry.name,
+            issues: [{ file: entry.name, line: 0, severity: "error", code: "MISSING_SKILL", message: "SKILL.md not found" }],
+            passed: false,
+          });
+          continue;
+        }
+      }
+
+      // Handle Codex native YAML format separately
+      if (isCodexYaml) {
+        const issues: ComplianceIssue[] = [];
+        try {
+          const yaml = parseYaml(content) as Record<string, unknown>;
+          issues.push(...checkNamingConvention(entry.name, spec));
+          if (yaml?.name && typeof yaml.name === "string" && yaml.name !== entry.name) {
+            issues.push({
+              file: entry.name, line: 0, severity: "warning", code: "NAME_MISMATCH",
+              message: `YAML name "${yaml.name}" doesn't match dir name "${entry.name}"`,
+            });
+          }
+          if (yaml?.tools && Array.isArray(yaml.tools)) {
+            for (const tool of yaml.tools) {
+              if (typeof tool === "string" && tool !== tool.toLowerCase()) {
+                issues.push({
+                  file: entry.name, line: 0, severity: "error", code: "WRONG_TOOL_CASE",
+                  message: `Tool name "${tool}" should be lowercase for codex`,
+                });
+              }
+            }
+          }
+        } catch (e) {
+          issues.push({
+            file: entry.name, line: 0, severity: "error", code: "PARSE_ERROR",
+            message: `YAML parse error: ${e}`,
+          });
+        }
+        results.push({ tool: toolName, skill: entry.name, issues, passed: issues.length === 0 });
         continue;
       }
 
