@@ -1,0 +1,12 @@
+name: init-harness
+naming: kebab-case
+allowed-tools: read, write, bash
+allowed-tools-case: lowercase
+disable-model-invocation: false
+dir_name: init-harness
+project_memory: null
+config_dir: ~/.pi/agent/
+dests:
+  - pi/skills/
+  - pi/agent/skills/
+  - pi/agent/extensions/skills/

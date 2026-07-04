@@ -1,0 +1,10 @@
+name: init_harness
+naming: snake_case
+allowed-tools: read, write, bash
+allowed-tools-case: lowercase
+disable-model-invocation: false
+dir_name: init_harness
+project_memory: RULES.md
+config_dir: ~/.codex/
+dests:
+  - codex/skills/
