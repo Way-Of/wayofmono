@@ -122,16 +122,22 @@ ai-engineering-harness/
 
 ## Agents
 
-All agents are shared across all six tools:
+All agents are shared across all seven tools:
 
 | Agent | OpenCode | Claude | Gemini | Pi | Wo Coder | Antigravity | Codex | Purpose |
 |-------|:--------:|:------:|:------:|:--:|:--------:|:-----------:|:----:|--------|
 | `codebase_analyzer` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Analyze implementation details, trace data flow |
+| `codebase_investigator` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Investigate codebase structure and dependencies |
 | `codebase_locator` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Find files/directories by feature or task |
 | `codebase_pattern_finder` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Discover similar implementations and patterns |
 | `thoughts_analyzer` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Extract insights from research documents |
 | `thoughts_locator` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Discover documents in thoughts/ directory |
 | `web_search_researcher` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Research information from web sources |
+| `coder` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Implementation and code generation |
+| `planner` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Architecture and implementation planning |
+| `reviewer` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Code review and quality checks |
+| `scout` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Fast codebase reconnaissance |
+| `netlify_troubleshooter` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Netlify CI/CD diagnostics and build pipeline |
 
 ## Workflow
 
