@@ -41,6 +41,8 @@ For complex release tasks (multi-file updates, validation), write a Python or De
 | File | What to Change |
 |------|---------------|
 | `packages/@aiengineeringharness/manifest.json` | `"version": "X.Y.Z"` (use Python json.dump) |
+| `packages/@aiengineeringharness/install.ts` | `const VERSION = "X.Y.Z"` (~line 45) — must match manifest.json |
+| `packages/@aiengineeringharness/install.ps1` | `$ScriptVersion = "X.Y.Z"` (~top of file) — must match install.ts |
 | `CHANGELOG.md` | Add `## [X.Y.Z] - YYYY-MM-DD` entry with changes |
 | `README.md` | `| Harness version | **X.Y.Z** |` in stats table |
 | `docs/fixes/ai-engineering-harness-fixes.md` | Add release notes for the new version |

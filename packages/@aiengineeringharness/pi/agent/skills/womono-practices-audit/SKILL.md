@@ -61,6 +61,7 @@ For each practice doc, systematically check the codebase for compliance:
 - **Production readiness**: Flag any mock data in application code, missing error handling, missing observability, insecure patterns, or untested failure modes
 - **Canonical skill architecture**: Check skills follow config-manifest pattern
 - **Manifest integrity**: Run compliance-check.ts and validate-manifest.ts
+- **Version sync**: Verify `manifest.json`, `install.ts` (`VERSION` constant), and `install.ps1` (`$ScriptVersion`) all match. If any differ, flag as CRITICAL violation.
 
 Use `grep`, `glob`, and codebase reading tools to search for violations.
 

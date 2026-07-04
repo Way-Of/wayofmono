@@ -64,6 +64,7 @@ womono-validate-manifest --report=json
 4. **File type consistency**: Extensions match expectations
 5. **Canonical skill compilation**: Verify that per-tool copies exist for canonical skills
 6. **Config-manifest alignment**: Check that manifest matches compiled YAMLs
+7. **Version consistency**: Verify `manifest.json`, `install.ts` (`VERSION` constant), and `install.ps1` (`$ScriptVersion`) all have the same version. Flag mismatch as CRITICAL.
 
 ## Exit Codes
 - `0`: Fully compliant

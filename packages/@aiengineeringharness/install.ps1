@@ -97,6 +97,7 @@ param(
   [switch]$SkipBinary
 )
 
+$ScriptVersion = "1.7.12"
 $ScriptUrl = "https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts"
 
 function Write-Logo {

@@ -31,6 +31,14 @@ Scripts at `packages/@aiengineeringharness/scripts/`:
 
 When automating tasks, create Python scripts (not Bash) for JSON manipulation — use `json.load`/`json.dump` with `ensure_ascii=False` and `indent=2`.
 
+### Version Sync (CRITICAL)
+Three files must always have the same version:
+- `packages/@aiengineeringharness/manifest.json` — `"version": "X.Y.Z"` (top-level)
+- `packages/@aiengineeringharness/install.ts` — `const VERSION = "X.Y.Z"` (~line 45)
+- `packages/@aiengineeringharness/install.ps1` — `$ScriptVersion = "X.Y.Z"` (~top of file)
+
+When bumping versions, update ALL three. Never let them drift apart. The `womono-version-updater` skill lists all three in its Files to Update table.
+
 ### Fixes Docs
 Release notes go in `docs/fixes/`:
 - `ai-engineering-harness-fixes.md` — harness changes
