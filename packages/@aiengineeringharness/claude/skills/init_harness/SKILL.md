@@ -11,7 +11,7 @@ Initialize the AI Engineering Harness in this repository.
 ## What This Command Does
 
 1. Runs the tool's project memory init to generate project memory file
-2. Discovers all installed skills and commands and writes them into the project memory file
+2. Discovers all installed skills, commands, and agents and writes them into the project memory file
 3. Clones the shared `f-rr-d` repo into `thoughts/` with full branch tracking
 4. Creates the project's subfolder inside `thoughts/` with standard structure
 5. Creates personal thoughts directories for developers
@@ -51,7 +51,7 @@ If this fails (branch diverged):
 git -C thoughts/ pull --rebase
 ```
 
-**Push after every Write:**
+**Push after every write:**
 ```bash
 git -C thoughts/ add <file>
 git -C thoughts/ commit -m "<PREFIX>-<NNN>: <description>"
@@ -95,11 +95,11 @@ Set `PROJECT_NAME` to the project name and `PROJECT_SLUG` to the slug.
 Check if the project memory file already exists. If it does, keep it and skip this step.
 If not, run the tool's `/init` command. If this tool has no `/init`, create the project memory file manually with the standard format for this tool.
 
-#### Step 2a: Discover and Append AI Engineering Harness Skills & Commands Reference
+#### Step 2a: Discover and Append AI Engineering Harness Skills, Commands & Agents Reference
 
-After the project memory file is created (or if it already exists), append a reference section listing all skills and commands installed by the AI Engineering Harness.
+After the project memory file is created (or if it already exists), append a reference section listing all skills, commands, and agents installed by the AI Engineering Harness.
 
-Determine the tool's config directory installed by the harness (e.g., `~/.config/opencode/`, `~/.claude/`, `~/.gemini/`, `~/.pi/agent/`, `~/.wocode/`, `~/.antigravity/`, `~/.codex/`). Then discover skills and commands:
+Determine the tool's config directory installed by the harness (e.g., `~/.config/opencode/`, `~/.claude/`, `~/.gemini/`, `~/.pi/agent/`, `~/.wocode/`, `~/.antigravity/`, `~/.codex/`). Then discover skills, commands, and agents:
 
 ```bash
 # List all installed skill names from the AI Engineering Harness
@@ -107,6 +107,9 @@ ls -d <TOOL_CONFIG_DIR>/skills/*/ 2>/dev/null | xargs -n1 basename | sort
 
 # List all installed command names (if tool has a commands/ dir from the harness)
 ls <TOOL_CONFIG_DIR>/commands/ 2>/dev/null | sed 's/\.md$//' | sort
+
+# List all installed agent names from the AI Engineering Harness
+ls <TOOL_CONFIG_DIR>/agents/ 2>/dev/null | sed 's/\.md$//' | grep -vi readme | sort
 ```
 
 Append the following section to the project memory file:
@@ -119,6 +122,9 @@ Append the following section to the project memory file:
 
 ### Commands (slash commands from the AI Engineering Harness)
 <list each command name from the discovery above, one per line>
+
+### Agents (available from the AI Engineering Harness)
+<list each agent name from the discovery above, one per line>
 ```
 
 If the tool does not have a `commands/` directory (e.g., Claude, Codex), omit the Commands section.
@@ -290,9 +296,25 @@ Print the following summary:
 ## Harness Initialized Successfully
 
 ### Created
-- <project-memory-file> — Project memory for AI agents (includes skills & commands reference)
+- <project-memory-file> — Project memory for AI agents (includes skills, commands & agents reference)
 - thoughts/ — Centralized f-rr-d repository for tickets, plans, research
 - thoughts/${PROJECT_SLUG}/ — This project's workspace
+
+### Available Agents
+The following agents are available via the AI Engineering Harness:
+- **codebase_analyzer** — Analyze implementation details, trace data flow
+- **codebase_locator** — Find files/directories by feature or task
+- **codebase_pattern_finder** — Discover similar implementations and patterns
+- **thoughts_analyzer** — Extract insights from research documents
+- **thoughts_locator** — Discover documents in thoughts/ directory
+- **web_search_researcher** — Research information from web sources
+- **coder** — Implementation and code generation
+- **planner** — Architecture and implementation planning
+- **reviewer** — Code review and quality checks
+- **scout** — Fast codebase reconnaissance
+- **netlify_troubleshooter** — Netlify CI/CD diagnostics and build pipeline
+
+Use `/help` to learn more about each agent.
 
 ### Next Steps
 1. **Set up GitHub auth for f-rr-d** (if not done):
