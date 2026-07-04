@@ -95,7 +95,7 @@
               "dest": "commands/create-plan.toml"
             },
             {
-              "src": "antigravity/commands/run-debug-k8s.toml",
+              "src": "antigravity/commands/run-debug_k8s.toml",
               "dest": "commands/debug-k8s.toml"
             },
             {
@@ -103,7 +103,7 @@
               "dest": "commands/debug.toml"
             },
             {
-              "src": "antigravity/commands/run-experimental-pr-workflow.toml",
+              "src": "antigravity/commands/run-experimental_pr_workflow.toml",
               "dest": "commands/experimental-pr-workflow.toml"
             },
             {
@@ -166,7 +166,7 @@
           "description": "Debug K8s command",
           "files": [
             {
-              "src": "antigravity/commands/run-debug-k8s.toml",
+              "src": "antigravity/commands/run-debug_k8s.toml",
               "dest": "commands/debug-k8s.toml"
             }
           ]
@@ -184,7 +184,7 @@
           "description": "Experimental Pr Workflow command",
           "files": [
             {
-              "src": "antigravity/commands/run-experimental-pr-workflow.toml",
+              "src": "antigravity/commands/run-experimental_pr_workflow.toml",
               "dest": "commands/experimental-pr-workflow.toml"
             }
           ]
@@ -1312,7 +1312,7 @@
           "description": "Create fix note entry command",
           "files": [
             {
-              "src": "antigravity/commands/run-fixes-create.toml",
+              "src": "antigravity/commands/run-fixes_create.toml",
               "dest": "commands/fixes-create.toml"
             }
           ]
@@ -1321,7 +1321,7 @@
           "description": "Bump version across project files command",
           "files": [
             {
-              "src": "antigravity/commands/run-fixes-bump.toml",
+              "src": "antigravity/commands/run-fixes_bump.toml",
               "dest": "commands/fixes-bump.toml"
             }
           ]
@@ -1330,7 +1330,7 @@
           "description": "Validate version consistency command",
           "files": [
             {
-              "src": "antigravity/commands/run-fixes-validate.toml",
+              "src": "antigravity/commands/run-fixes_validate.toml",
               "dest": "commands/fixes-validate.toml"
             }
           ]
@@ -1339,7 +1339,7 @@
           "description": "Debug Kubernetes cluster issues",
           "files": [
             {
-              "src": "antigravity/commands/run-debug-k8s.toml",
+              "src": "antigravity/commands/run-debug_k8s.toml",
               "dest": "commands/debug-k8s.toml"
             }
           ]
@@ -1366,7 +1366,7 @@
           "description": "Interactive ticket creation wizard",
           "files": [
             {
-              "src": "antigravity/commands/run-ticket-create.toml",
+              "src": "antigravity/commands/run-ticket_create.toml",
               "dest": "commands/ticket-create.toml"
             }
           ]
@@ -1375,7 +1375,7 @@
           "description": "Submit ticket for CTO review",
           "files": [
             {
-              "src": "antigravity/commands/run-submit-for-review.toml",
+              "src": "antigravity/commands/run-submit_for_review.toml",
               "dest": "commands/submit-for-review.toml"
             }
           ]
@@ -1384,7 +1384,7 @@
           "description": "Show team ticket dashboard",
           "files": [
             {
-              "src": "antigravity/commands/run-sync-team.toml",
+              "src": "antigravity/commands/run-sync_team.toml",
               "dest": "commands/sync-team.toml"
             }
           ]
@@ -1393,7 +1393,7 @@
           "description": "Sync all skills across all frontends",
           "files": [
             {
-              "src": "antigravity/commands/run-sync-skills.toml",
+              "src": "antigravity/commands/run-sync_skills.toml",
               "dest": "commands/sync-skills.toml"
             }
           ]
@@ -4005,7 +4005,7 @@
               "dest": "commands/create-plan.toml"
             },
             {
-              "src": "gemini/commands/run-debug-k8s.toml",
+              "src": "gemini/commands/run-debug_k8s.toml",
               "dest": "commands/debug-k8s.toml"
             },
             {
@@ -4013,7 +4013,7 @@
               "dest": "commands/debug.toml"
             },
             {
-              "src": "gemini/commands/run-experimental-pr-workflow.toml",
+              "src": "gemini/commands/run-experimental_pr_workflow.toml",
               "dest": "commands/experimental-pr-workflow.toml"
             },
             {
@@ -4076,7 +4076,7 @@
           "description": "Debug K8s command",
           "files": [
             {
-              "src": "gemini/commands/run-debug-k8s.toml",
+              "src": "gemini/commands/run-debug_k8s.toml",
               "dest": "commands/debug-k8s.toml"
             }
           ]
@@ -4094,7 +4094,7 @@
           "description": "Experimental Pr Workflow command",
           "files": [
             {
-              "src": "gemini/commands/run-experimental-pr-workflow.toml",
+              "src": "gemini/commands/run-experimental_pr_workflow.toml",
               "dest": "commands/experimental-pr-workflow.toml"
             }
           ]
@@ -5423,7 +5423,7 @@
           "description": "Create implementation plans command",
           "files": [
             {
-              "src": "opencode/commands/create_plan.md",
+              "src": "opencode/commands/create-plan.md",
               "dest": "commands/create-plan.md"
             }
           ]
@@ -5450,7 +5450,7 @@
           "description": "Execute an approved plan command",
           "files": [
             {
-              "src": "opencode/commands/implement_plan.md",
+              "src": "opencode/commands/implement-plan.md",
               "dest": "commands/implement-plan.md"
             }
           ]
@@ -5459,7 +5459,7 @@
           "description": "Initialize harness in a new repository command",
           "files": [
             {
-              "src": "opencode/commands/init_harness.md",
+              "src": "opencode/commands/init-harness.md",
               "dest": "commands/init-harness.md"
             }
           ]
@@ -5468,7 +5468,7 @@
           "description": "Comprehensive codebase research command",
           "files": [
             {
-              "src": "opencode/commands/research_codebase.md",
+              "src": "opencode/commands/research-codebase.md",
               "dest": "commands/research-codebase.md"
             }
           ]
@@ -5477,7 +5477,7 @@
           "description": "Validate implementation against plan command",
           "files": [
             {
-              "src": "opencode/commands/validate_plan.md",
+              "src": "opencode/commands/validate-plan.md",
               "dest": "commands/validate-plan.md"
             }
           ]
@@ -5486,7 +5486,7 @@
           "description": "Validate local telemetry against a narrative spec command",
           "files": [
             {
-              "src": "opencode/commands/validate_telemetry.md",
+              "src": "opencode/commands/validate-telemetry.md",
               "dest": "commands/validate-telemetry.md"
             }
           ]
@@ -6643,7 +6643,7 @@
           "description": "OpenTelemetry instrumentation orchestrator",
           "files": [
             {
-              "src": "opencode/commands/otel_instrument.md",
+              "src": "opencode/commands/otel-instrument.md",
               "dest": "commands/otel-instrument.md"
             }
           ]
