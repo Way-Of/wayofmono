@@ -650,6 +650,7 @@ async function collectFilePaths(dir: string, baseDir: string): Promise<string[]>
       let relPath = relative(baseDir, fullPath);
       if (Deno.build.os === "windows") relPath = relPath.replace(/\\/g, "/");
       if (entry.isDirectory) {
+        if (entry.name.startsWith(".")) continue; // skip hidden dirs (e.g., .system)
         results.push(...await collectFilePaths(fullPath, baseDir));
       } else if (entry.isFile) {
         results.push(relPath);

@@ -9610,7 +9610,7 @@
           "description": "Create Plan prompt",
           "files": [
             {
-              "src": "wocode/agent/prompts/create_plan.md",
+              "src": "wocode/agent/prompts/create-plan.md",
               "dest": "prompts/create-plan.md"
             }
           ]
@@ -9619,7 +9619,7 @@
           "description": "Implement Plan prompt",
           "files": [
             {
-              "src": "wocode/agent/prompts/implement_plan.md",
+              "src": "wocode/agent/prompts/implement-plan.md",
               "dest": "prompts/implement-plan.md"
             }
           ]
@@ -9628,7 +9628,7 @@
           "description": "Initialize Harness prompt",
           "files": [
             {
-              "src": "wocode/agent/prompts/init_harness.md",
+              "src": "wocode/agent/prompts/init-harness.md",
               "dest": "prompts/init-harness.md"
             }
           ]
@@ -9637,7 +9637,7 @@
           "description": "Research Codebase prompt",
           "files": [
             {
-              "src": "wocode/agent/prompts/research_codebase.md",
+              "src": "wocode/agent/prompts/research-codebase.md",
               "dest": "prompts/research-codebase.md"
             }
           ]
@@ -9646,7 +9646,7 @@
           "description": "Validate Plan prompt",
           "files": [
             {
-              "src": "wocode/agent/prompts/validate_plan.md",
+              "src": "wocode/agent/prompts/validate-plan.md",
               "dest": "prompts/validate-plan.md"
             }
           ]
@@ -9655,7 +9655,7 @@
           "description": "Validate Telemetry prompt",
           "files": [
             {
-              "src": "wocode/agent/prompts/validate_telemetry.md",
+              "src": "wocode/agent/prompts/validate-telemetry.md",
               "dest": "prompts/validate-telemetry.md"
             }
           ]
@@ -9664,7 +9664,7 @@
           "description": "OTel Instrument prompt",
           "files": [
             {
-              "src": "wocode/agent/prompts/otel_instrument.md",
+              "src": "wocode/agent/prompts/otel-instrument.md",
               "dest": "prompts/otel-instrument.md"
             }
           ]
