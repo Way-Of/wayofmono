@@ -20,7 +20,7 @@ Generates any AI coding tool component for any of 7 target tools using per-tool 
 | Codex | `codex` | snake_case | lowercase | JSON | https://developers.openai.com/codex/cli |
 | Wo Coder | `wocode` | snake_case | lowercase | JSON | internal (wo-coder.md) |
 
-Always read `thoughts/global/docs/ai-coding-tools/<tool>.md` for current format specs before generating.
+Always Read `thoughts/global/docs/ai-coding-tools/<tool>.md` for current format specs before generating.
 
 ---
 
@@ -131,11 +131,11 @@ All tools use JSON config files. Key files per tool:
 
 1. **Identify target tool** — Ask user which of 7 tools the component is for
 2. **Identify component type** — skill, Agent, Command, Extension, Config, Keybinding, Theme, or TUI
-3. **Fetch latest docs** — read `thoughts/global/docs/ai-coding-tools/<tool>.md` AND fetch the official docs URL
+3. **Fetch latest docs** — Read `thoughts/global/docs/ai-coding-tools/<tool>.md` AND fetch the official docs URL
 4. **Generate with correct naming** — snake_case or kebab-case per tool
 5. **Use correct casing** — allowed-tools values must match per-tool spec exactly
 6. **Validate frontmatter** — Only include fields supported by target tool
-7. **write to correct directory** — Place in harness dir or user config dir per tool
+7. **Write to correct directory** — Place in harness dir or user config dir per tool
 8. **Run compliance check** — `deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts` to validate
 
 ---

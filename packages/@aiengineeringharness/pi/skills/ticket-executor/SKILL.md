@@ -1,5 +1,5 @@
 ---
-name: ticket_executor
+name: ticket-executor
 description: Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully
 allowed-tools: read, write, grep, glob, web, search
 ---

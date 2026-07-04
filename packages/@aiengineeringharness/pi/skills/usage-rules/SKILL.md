@@ -1,5 +1,5 @@
 ---
-name: usage_rules
+name: usage-rules
 description: >-
   Manage, sync, and search LLM rules and documentation from Elixir dependencies
   using the `ash-project/usage_rules` library. Use when working on an Elixir/Mix

@@ -38,7 +38,7 @@ The following principles are synthesized from 6 authoritative sources (OGSCapita
 ### Core Principles
 1. **Purpose-driven design**: A pitch deck is a decision document, not a showcase. Every design choice must accelerate investor understanding of: market size, urgency, traction, business logic, founder credibility. If it distracts from these signals, cut it.
 2. **One idea per slide**: Each slide proves exactly one thing (problem, market logic, traction). Never combine product detail, market context, and strategy on one slide.
-3. **Scan-first layout**: Investors scan before reading. Write headlines as conclusions, not labels. Disciplined subheads, clear spacing, visible difference between primary/secondary information.
+3. **Scan-first layout**: Investors scan before reading. write headlines as conclusions, not labels. Disciplined subheads, clear spacing, visible difference between primary/secondary information.
 4. **15-slide consensus**: 15 slides for the visual pitch is the norm in 2026. 25+ loses attention. Longer content goes in a separate due-diligence document.
 5. **Stage-appropriate narrative**: Pre-seed → lead with founder + problem. Series A → lead with traction. Series B+ → lead with scale and defensibility.
 
@@ -268,11 +268,11 @@ Before generating ANY investor docs, you MUST thoroughly investigate the applica
    - Look for CSS custom properties: `--primary`, `--color-primary`, `--brand-primary`, `--accent`
    - Check `tailwind.config.js` / `tailwind.config.ts` for custom color palettes
    - Scan `theme.json`, `colors.css`, `variables.css`, or similar theme files
-   - Read the app's main CSS for dominant hex colors (most frequently used non-gray colors)
+   - read the app's main CSS for dominant hex colors (most frequently used non-gray colors)
    - Check for brand asset files: `logo.svg`, `brand-assets/`, `favicon` colors
    - If the project has a website, fetch it and extract brand colors from the rendered CSS
    - If no colors found, ASK the user: "What are your brand's primary/accent colors?" — provide a color picker reference
-   - Write findings to `investor_research/<project_name>/design.yaml` (copy format from `assets/pdf/design-template.yaml`)
+   - write findings to `investor_research/<project_name>/design.yaml` (copy format from `assets/pdf/design-template.yaml`)
 
 Create a structured research folder for all findings:
 

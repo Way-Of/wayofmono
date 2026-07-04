@@ -1,10 +1,10 @@
 ---
-name: github_pr
+name: github-pr
 description: "Create, manage, and review GitHub Pull Requests with ticket linking, template support, and review workflow integration."
 allowed-tools: read, write, edit, bash, git, gh
 ---
 
-# GitHub PR Skill
+# GitHub PR skill
 
 Manages GitHub Pull Requests with full ticket integration, templates, and review workflow.
 

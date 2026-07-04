@@ -4,7 +4,7 @@ description: "Create and manage GitHub feature branches from tickets. Ensures pr
 allowed-tools: read, write, edit, bash, git
 ---
 
-# GitHub Branch Skill
+# GitHub Branch skill
 
 Creates and manages feature branches for tickets with proper naming conventions and GitHub integration.
 

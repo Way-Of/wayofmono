@@ -1,5 +1,5 @@
 ---
-name: build_tool_keybindings
+name: build-tool-keybindings
 description: Build keybindings for all 7 AI coding tools — knows registerShortcut(), Key IDs, modifier combos, reserved keys, terminal compatibility.
 allowed-tools: read, write, edit, bash, grep, glob, websearch
 ---

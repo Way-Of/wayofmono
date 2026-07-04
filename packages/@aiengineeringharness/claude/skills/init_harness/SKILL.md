@@ -51,7 +51,7 @@ If this fails (branch diverged):
 git -C thoughts/ pull --rebase
 ```
 
-**Push after every write:**
+**Push after every Write:**
 ```bash
 git -C thoughts/ add <file>
 git -C thoughts/ commit -m "<PREFIX>-<NNN>: <description>"

@@ -7,7 +7,7 @@ description: Comprehensive guide for developing backend APIs, database interacti
 
 ## Architecture & Core Tech Stack
 - **Runtime:** Bun (v1.x). Native APIs (`Bun.serve`, `Bun.spawn`, `Bun.file`) are preferred over Node.js polyfills where applicable.
-- **Database:** SQLite via `bun:sqlite` (synchronous execution). **Strictly no ORMs.** write raw, parameterized SQL.
+- **Database:** SQLite via `bun:sqlite` (synchronous execution). **Strictly no ORMs.** Write raw, parameterized SQL.
 - **Routing:** Custom minimalist router (`server/router.ts`). Routes are registered in separate modules under `server/routes/` and composed in `server/index.ts`.
 - **Authentication:** JWT-based. The router extracts `{ userId, tenantId, role }` and passes it as the `auth` object to handlers.
 

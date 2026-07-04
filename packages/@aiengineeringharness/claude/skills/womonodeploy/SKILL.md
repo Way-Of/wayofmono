@@ -104,7 +104,7 @@ wodev                   # production server (read-only, as normal user)
 
 | `wodev` flag | Mode | Description |
 |--------------|------|-------------|
-| `wodev` | production | `next start` — read-only, requires build first |
+| `wodev` | production | `next start` — Read-only, requires build first |
 | `wodev --dev` | development | `next dev --turbopack` — hot reload, writes .next/ |
 | `wodev --build` | build | `next build` — one-time build |
 | `wodev --update` | — | `npm update -g @wayofmono/wo-cto-dashboard` |

@@ -213,7 +213,7 @@ Each ticket follows the template in `thoughts/shared/tickets/ticket-template.md`
 
 ## Notification Integration
 
-When updating ticket status or managing tickets, mark related CTO Dashboard notifications as read via the notification API:
+When updating ticket status or managing tickets, mark related CTO Dashboard notifications as Read via the notification API:
 
 ```bash
 # Mark review notification as read after review action

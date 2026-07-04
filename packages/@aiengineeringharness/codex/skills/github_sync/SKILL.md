@@ -4,7 +4,7 @@ description: "Sync feature branches with base branch, resolve conflicts, and man
 allowed-tools: read, write, edit, bash, git
 ---
 
-# GitHub Sync Skill
+# GitHub Sync skill
 
 Manages branch synchronization with base branch, conflict resolution, and branch lifecycle.
 

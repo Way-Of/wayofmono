@@ -20,7 +20,7 @@ When invoked:
 
 ### Step 1: Context Discovery
 
-1. **read the implementation plan** completely
+1. **Read the implementation plan** completely
 2. **Identify what should have changed**
 3. **Delegate to research agents** (e.g., `codebase_investigator`, `codebase_locator`) to verify implementation details and find modified files.
 
@@ -76,7 +76,7 @@ Recommended workflow:
 
 ## Key Principles
 
-1. **Understand Before Validating** - read the entire plan first
+1. **Understand Before Validating** - Read the entire plan first
 2. **Be Objective and Critical** - Validate functionality, not just presence
 3. **Verify Comprehensively** - Run all automated checks
 4. **Communicate Clearly** - Provide specific file references
@@ -84,7 +84,7 @@ Recommended workflow:
 
 ## Notification Integration
 
-When validating plans or marking validation complete, mark related CTO Dashboard notifications as read via the notification API:
+When validating plans or marking validation complete, mark related CTO Dashboard notifications as Read via the notification API:
 
 ```bash
 # Mark validation notification as read after validation complete

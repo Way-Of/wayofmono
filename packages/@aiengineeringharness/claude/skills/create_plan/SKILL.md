@@ -26,7 +26,7 @@ This command uses the `thoughts/` directory pattern for organizing planning arti
 When this command is invoked:
 
 1. **Check if parameters were provided**:
-   - If a file path or ticket reference was provided, read it immediately
+   - If a file path or ticket reference was provided, Read it immediately
    - Begin the research process
 
 2. **If no parameters provided**, respond with:
@@ -45,9 +45,9 @@ Tip: You can also invoke this command with a ticket file directly: `/create_plan
 
 ### Step 1: Context Gathering & Initial Analysis
 
-1. **read all mentioned files immediately and FULLY**
+1. **Read all mentioned files immediately and FULLY**
 2. **Delegate to research agents** (e.g., `codebase_investigator`, `codebase_locator`, `codebase_pattern_finder`) to gather context.
-3. **read all files identified by research tasks**
+3. **Read all files identified by research tasks**
 4. **Present informed understanding with focused questions**
 
 ### Step 2: Research & Discovery
@@ -77,7 +77,7 @@ Present a high-level structure for approval before detailed writing.
 
 ### Step 4: Detailed Plan Writing
 
-write the plan to `thoughts/plans/{descriptive_name}.md` using this template:
+Write the plan to `thoughts/plans/{descriptive_name}.md` using this template:
 
 ```markdown
 # [Feature/Task Name] Implementation Plan
@@ -134,7 +134,7 @@ Continue refining until the user is satisfied.
 
 1. **Be Skeptical** - question vague requirements
 2. **Be Interactive** - Get user buy-in at each step
-3. **Be Thorough** - read all context files COMPLETELY
+3. **Be Thorough** - Read all context files COMPLETELY
 4. **Be Practical** - Focus on incremental, testable changes
 5. **Track Progress** - Use TodoWrite
 

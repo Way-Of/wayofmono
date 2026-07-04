@@ -1,10 +1,7 @@
 ---
-name: runbook-manager
+name: runbook_manager
 description: "Generate, update, and maintain production runbooks per project in the f-rr-d thoughts folder. Generates from infra configs, deploy scripts, and team contacts. Follows canonical template at assets/runbook-template.md."
-version: "1.0"
-tools: [read, write, grep, glob, bash]
-platforms: [opencode, claude, gemini, pi, wocode, antigravity, codex]
-allowed-tools: read, write, grep, glob, bash
+allowed-tools: Read Write Grep Glob Bash
 ---
 
 # Runbook Manager Skill

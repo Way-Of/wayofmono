@@ -221,11 +221,11 @@ Before generating ANY investor docs, you MUST thoroughly investigate the applica
    - Look for CSS custom properties: `--primary`, `--color-primary`, `--brand-primary`, `--accent`
    - Check `tailwind.config.js` / `tailwind.config.ts` for custom color palettes
    - Scan `theme.json`, `colors.css`, `variables.css`, or similar theme files
-   - Read the app's main CSS for dominant hex colors (most frequently used non-gray colors)
+   - read the app's main CSS for dominant hex colors (most frequently used non-gray colors)
    - Check for brand asset files: `logo.svg`, `brand-assets/`, `favicon` colors
    - If the project has a website, fetch it and extract brand colors from the rendered CSS
    - If no colors found, ASK the user: "What are your brand's primary/accent colors?" — provide a color picker reference
-   - Write findings to `investor_research/<project_name>/design.yaml` (copy format from `assets/pdf/design-template.yaml`)
+   - write findings to `investor_research/<project_name>/design.yaml` (copy format from `assets/pdf/design-template.yaml`)
 
 Create a structured research folder for all findings:
 

@@ -7,7 +7,7 @@ description: Fundamental architectural principles and tech stack rules for the W
 
 ## Tech Stack
 - **Backend:** Bun (v1.x), raw HTTP server (`Bun.serve`), TypeScript. NO Express, NO NestJS.
-- **Database:** SQLite via `bun:sqlite`. NO ORMs (Prisma, Drizzle, etc.). write raw, parameterized SQL queries.
+- **Database:** SQLite via `bun:sqlite`. NO ORMs (Prisma, Drizzle, etc.). Write raw, parameterized SQL queries.
 - **Frontend:** React 19, Vite, Tailwind CSS, React Router v6.
 - **Desktop:** Electron wrapper for the web app.
 

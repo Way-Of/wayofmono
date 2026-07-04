@@ -4,7 +4,7 @@ description: "Create, manage, and link GitHub Issues with tickets. Supports bi-d
 allowed-tools: read, write, edit, bash, git, gh
 ---
 
-# GitHub Issue Skill
+# GitHub Issue skill
 
 Manages GitHub Issues with bi-directional sync to f-rr-d tickets.
 

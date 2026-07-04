@@ -4,7 +4,7 @@ description: "Review GitHub Pull Requests with structured feedback, approval wor
 allowed-tools: read, write, edit, bash, git, gh
 ---
 
-# GitHub Review Skill
+# GitHub Review skill
 
 Handles PR review workflow with structured feedback, approval states, and CTO Dashboard integration.
 

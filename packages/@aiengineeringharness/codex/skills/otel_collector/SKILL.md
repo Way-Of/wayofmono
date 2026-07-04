@@ -5,7 +5,6 @@ description: >
   pipelines, sampling, deployment. Covers OTLP, Prometheus, filelog,
   hostmetrics; processor ordering; pipeline design; head/tail sampling;
   and RED metric derivation via signaltometrics.
-disable-model-invocation: true
 allowed-tools: read, bash, grep, glob, replace, write
 ---
 

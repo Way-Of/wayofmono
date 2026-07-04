@@ -24,8 +24,8 @@ Strict SemVer: `MAJOR.MINOR.PATCH`
 ## Workflow
 
 When user says "bump to X.Y.Z" or "release vX.Y.Z":
-1. Read current version from `manifest.json`
-2. Read `CHANGELOG.md` for unreleased changes
+1. read current version from `manifest.json`
+2. read `CHANGELOG.md` for unreleased changes
 3. Update `manifest.json` line 2 to new version
 4. Add `## [X.Y.Z] - YYYY-MM-DD` section to CHANGELOG.md above unreleased
 5. Update harness version in README.md stats table

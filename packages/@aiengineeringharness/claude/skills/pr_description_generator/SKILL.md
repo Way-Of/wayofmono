@@ -10,7 +10,7 @@ allowed-tools: Read, Bash, Grep, Glob, Replace, Write
 
 Activate this skill when the user:
 - Asks to "create a PR description" or "describe this PR"
-- Says "generate PR description" or "write PR description"
+- Says "generate PR description" or "Write PR description"
 - Mentions "pull request" in context of documenting changes
 - Asks to "update PR description" for an existing PR
 
@@ -64,7 +64,7 @@ git diff --name-only main...HEAD
 
 **Deep analysis required** - Think carefully about:
 
-1. **Code changes**: read the entire diff, understand purpose and impact
+1. **Code changes**: Read the entire diff, understand purpose and impact
 2. **User-facing impact**: What will users notice? Breaking changes?
 3. **Implementation details**: Technical approach and decisions
 4. **Migration requirements**: Data migration, deployment steps

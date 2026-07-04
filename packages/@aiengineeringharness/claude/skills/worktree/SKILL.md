@@ -56,7 +56,7 @@ When auto-triggered (no explicit subcommand), infer intent from context. If ambi
 
 ## `create`
 
-1. **Resolve branch name** using naming conventions above. If argument is a ticket path, use `read_file` to read the ticket for context.
+1. **Resolve branch name** using naming conventions above. If argument is a ticket path, use `read_file` to Read the ticket for context.
 
 2. **Check conflicts**:
    ```bash

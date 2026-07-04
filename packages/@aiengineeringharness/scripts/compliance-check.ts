@@ -429,25 +429,48 @@ function applyFixes(
     fixCount++;
   }
 
-  // 4. Fix BODY_WRONG_TOOL_CASE — fix tool name casing in body
+  // 4. Fix BODY_WRONG_TOOL_CASE — fix tool name casing in body (skip code blocks & inline code)
   const bodyIssues = issues.filter((i) => i.code === "BODY_WRONG_TOOL_CASE");
   if (bodyIssues.length > 0) {
     const bodyLines = body.split("\n");
-    for (const bi of bodyIssues) {
-      const lineIdx = bi.line - 1;
-      if (lineIdx < 0 || lineIdx >= bodyLines.length) continue;
-      const oldLine = bodyLines[lineIdx];
+    let inCodeBlock = false;
+    for (let i = 0; i < bodyLines.length; i++) {
+      if (bodyLines[i].trimStart().startsWith("```")) {
+        inCodeBlock = !inCodeBlock;
+        continue;
+      }
+      if (inCodeBlock) continue;
+
+      const hasIssue = bodyIssues.some((bi) => bi.line - 1 === i);
+      if (!hasIssue) continue;
+
+      const oldLine = bodyLines[i];
+
+      // Protect inline code with placeholders
+      const inlineCodes: string[] = [];
+      const protectedLine = oldLine.replace(/`[^`]*`/g, (m) => {
+        inlineCodes.push(m);
+        return `\x00IC${inlineCodes.length - 1}\x00`;
+      });
+
+      let fixedLine = protectedLine;
       if (spec.toolNameCase === "lowercase") {
-        bodyLines[lineIdx] = oldLine.replace(
-          /\b(Read|Write|Edit|Bash|Grep|Glob|WebFetch|WebSearch|AskUserQuestion|Skill)\b/g,
+        fixedLine = protectedLine.replace(
+          /(?<![-_])\b(Read|Write|Edit|Bash|Grep|Glob|WebFetch|WebSearch|AskUserQuestion|Skill)\b/g,
           (m) => m.toLowerCase(),
         );
       } else if (spec.toolNameCase === "PascalCase") {
-        bodyLines[lineIdx] = oldLine.replace(
-          /\b(read|write|edit|bash|grep|glob)\b/g,
+        fixedLine = protectedLine.replace(
+          /(?<![-_])\b(read|write|edit|bash|grep|glob)\b/g,
           (m) => m.charAt(0).toUpperCase() + m.slice(1),
         );
       }
+
+      // Restore inline code placeholders
+      for (let j = inlineCodes.length - 1; j >= 0; j--) {
+        fixedLine = fixedLine.replace(`\x00IC${j}\x00`, inlineCodes[j]);
+      }
+      bodyLines[i] = fixedLine;
     }
     const newBody = bodyLines.join("\n");
     if (newBody !== body) {

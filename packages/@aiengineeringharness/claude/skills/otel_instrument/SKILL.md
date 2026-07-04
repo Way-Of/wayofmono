@@ -44,7 +44,7 @@ Some tasks span skills. Execute in this order:
 
 | Compound Task | Sequence |
 |---|---|
-| ODD on a new feature | `observability_driven_development` (write narrative) → `otel_instrumentation` (instrument) → `observability_driven_development` (validate) |
+| ODD on a new feature | `observability_driven_development` (Write narrative) → `otel_instrumentation` (instrument) → `observability_driven_development` (validate) |
 | Full observability setup | `otel_instrumentation` → `otel_collector` → `otel_ottl` (if sensitive data) |
 | Instrument + sampling | `otel_instrumentation` → `otel_collector` |
 | Fix naming + add redaction | `otel_semantic_conventions` → `otel_ottl` |

@@ -1,10 +1,7 @@
 ---
-name: fixes-manager
+name: fixes_manager
 description: "Cross-project fix/release notes and version manager. Creates, updates, bumps versions, validates, and diffs fix notes for any Way-Of project (WOMONO, WOW, OPT, etc.). Per-project assets define each project's version fields, file paths, and fix note format."
-version: "1.0"
-tools: [read, write, edit, bash, grep, glob, websearch]
-platforms: [opencode, claude, gemini, pi, wocode, antigravity, codex]
-allowed-tools: read, write, edit, bash, grep, glob, websearch
+allowed-tools: Read Write Edit Bash Grep Glob Websearch
 ---
 
 # fixes-manager — Cross-Project Fix Notes & Version Manager

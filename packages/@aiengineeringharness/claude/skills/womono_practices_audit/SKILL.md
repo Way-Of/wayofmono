@@ -17,7 +17,7 @@ Audit existing code, configuration, or infrastructure against the canonical best
 ls thoughts/wayofmono/docs/best-practices/
 ```
 
-read each doc. These are your audit criteria.
+Read each doc. These are your audit criteria.
 
 ### 2. Scan the Codebase
 

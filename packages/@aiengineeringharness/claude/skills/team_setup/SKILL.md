@@ -30,10 +30,10 @@ Assign a ticket to a developer.
 
 | Role | Permissions |
 |------|-------------|
-| cto | read-all, write-all, approve-reviews, assign-any, manage-team |
-| lead | read-project, write-project, approve-reviews, assign-project, manage-skills |
-| senior | read-project, write-assigned, request-review, create-tickets |
-| junior | read-assigned, write-assigned, request-review, create-personal-tickets |
+| cto | Read-all, Write-all, approve-reviews, assign-any, manage-team |
+| lead | Read-project, Write-project, approve-reviews, assign-project, manage-skills |
+| senior | Read-project, Write-assigned, request-review, create-tickets |
+| junior | Read-assigned, Write-assigned, request-review, create-personal-tickets |
 
 ## Developer Structure
 

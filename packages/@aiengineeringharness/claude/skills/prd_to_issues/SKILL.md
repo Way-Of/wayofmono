@@ -14,7 +14,7 @@ Break a PRD into independently-grabbable issues using vertical slices (tracer bu
 
 Ask the user for the PRD file path (e.g. `issues/prd.md`).
 
-If the PRD is not already in your context window, read it from the file.
+If the PRD is not already in your context window, Read it from the file.
 
 ### 2. Explore the codebase (optional)
 
@@ -52,7 +52,7 @@ Iterate until the user approves the breakdown.
 
 ### 5. Create the issue files
 
-For each approved slice, write a markdown file in `issues/` using the naming pattern `issues/NNN-short-title.md` (e.g. `issues/001-add-user-auth.md`).
+For each approved slice, Write a markdown file in `issues/` using the naming pattern `issues/NNN-short-title.md` (e.g. `issues/001-add-user-auth.md`).
 
 Number issues starting from the next available number (check what files already exist in `issues/`).
 

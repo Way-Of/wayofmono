@@ -18,9 +18,9 @@ I'm ready to research the codebase. Please provide your research question or are
 
 ## Steps to follow after receiving the research query:
 
-1. **read any directly mentioned files first:**
-   - If the user mentions specific files, read them FULLY first
-   - read these files yourself before spawning sub-tasks
+1. **Read any directly mentioned files first:**
+   - If the user mentions specific files, Read them FULLY first
+   - Read these files yourself before spawning sub-tasks
 
 2. **Analyze and decompose the research question:**
    - Break down the query into composable research areas
@@ -86,5 +86,5 @@ status: complete
 - Always delegate to parallel sub-agents for efficiency
 - Always run fresh codebase research
 - Focus on finding concrete file paths and line numbers
-- read files FULLY before spawning sub-tasks
+- Read files FULLY before spawning sub-tasks
 - Wait for ALL sub-agents before synthesizing

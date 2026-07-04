@@ -1,13 +1,10 @@
 ---
 name: session-export
 description: "Capture the current working session and export as structured session history in the f-rr-d thoughts folder. Auto-captures git metrics, problems solved, files changed, commits, architecture decisions, and next steps. Follows canonical template at assets/session-template.md."
-version: "1.0"
-tools: [read, write, grep, glob, bash]
-platforms: [opencode, claude, gemini, pi, wocode, antigravity, codex]
 allowed-tools: read, write, grep, glob, bash
 ---
 
-# Session Export Skill
+# Session Export skill
 
 Export working session history to `thoughts/<project>/docs/sessions/<YYYY-MM-DD>-<session-slug>.md`.
 

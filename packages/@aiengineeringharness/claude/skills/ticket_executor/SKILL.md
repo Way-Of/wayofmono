@@ -50,7 +50,7 @@ Agents should respect the UI status as the current state. Use `update_ticket` to
 
 ## Notification Integration
 
-When completing ticket phases or implementing plans, mark related CTO Dashboard notifications as read via the notification API:
+When completing ticket phases or implementing plans, mark related CTO Dashboard notifications as Read via the notification API:
 
 ```bash
 # Mark review notification as read after phase completion

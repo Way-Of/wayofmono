@@ -19,7 +19,7 @@ Before writing code, scan `thoughts/wayofmono/docs/best-practices/` for docs rel
 ls thoughts/wayofmono/docs/best-practices/
 ```
 
-If you're working on databases, read `database-conventions.md`. If you're deploying, read `hosting-standards.md`. Apply the rules in each doc to your implementation.
+If you're working on databases, Read `database-conventions.md`. If you're deploying, Read `hosting-standards.md`. Apply the rules in each doc to your implementation.
 
 ### 2. Production-Ready Mandate
 

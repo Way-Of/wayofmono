@@ -39,7 +39,7 @@ I can investigate logs, state, and recent changes to help identify the issue.
 
 ### Step 1: Understand the Problem
 
-1. **read any provided context** (plan or ticket file)
+1. **Read any provided context** (plan or ticket file)
 2. **Quick state check**:
    - Current git branch and recent commits
    - Any uncommitted changes
@@ -105,6 +105,6 @@ Would you like me to investigate something specific further?
 
 - **Focus on manual testing scenarios**
 - **Always require problem description**
-- **read files completely**
+- **Read files completely**
 - **Guide back to user** for things outside reach
 

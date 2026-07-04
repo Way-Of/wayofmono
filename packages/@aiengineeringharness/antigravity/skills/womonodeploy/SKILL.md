@@ -8,7 +8,7 @@ description: >-
 allowed-tools: read, write, edit, bash, grep, glob, todowrite, task, question
 ---
 
-# womonodeploy — Package Release & Deploy Skill
+# womonodeploy — Package Release & Deploy skill
 
 Releases and updates npm packages across the WayOfMono ecosystem. Covers the
 full lifecycle: version bump → docs → npm publish → git → permissions fix.
@@ -25,11 +25,11 @@ full lifecycle: version bump → docs → npm publish → git → permissions fi
 
 Ask the user what version to bump to (SemVer: `MAJOR.MINOR.PATCH`).
 
-Read current version from `ui/package.json` `"version"` field.
+read current version from `ui/package.json` `"version"` field.
 
 ### Step 2 — Update package.json
 
-Edit `ui/package.json` → set `"version": "X.Y.Z"`.
+edit `ui/package.json` → set `"version": "X.Y.Z"`.
 
 ### Step 3 — Update READMEs
 

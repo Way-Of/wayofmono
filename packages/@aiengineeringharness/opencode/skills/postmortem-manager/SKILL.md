@@ -1,13 +1,10 @@
 ---
 name: postmortem-manager
 description: "Generate, update, and maintain incident postmortems per project in the f-rr-d thoughts folder. Interactive flow covers What Went Well, What Could Be Better, Root Cause Analysis, Tech Debt, Knowledge, Action Items, and Metrics. Follows canonical template at assets/postmortem-template.md."
-version: "1.0"
-tools: [read, write, grep, glob, bash]
-platforms: [opencode, claude, gemini, pi, wocode, antigravity, codex]
 allowed-tools: read, write, grep, glob, bash
 ---
 
-# Postmortem Manager Skill
+# Postmortem Manager skill
 
 Generate incident postmortems at `thoughts/<project>/docs/postmortem/<YYYY-MM-DD>-<incident-slug>.md` per project.
 

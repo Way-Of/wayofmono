@@ -4,7 +4,7 @@ description: "Create, manage, and review GitHub Pull Requests with ticket linkin
 allowed-tools: read, write, edit, bash, git, gh
 ---
 
-# GitHub PR Skill
+# GitHub PR skill
 
 Manages GitHub Pull Requests with full ticket integration, templates, and review workflow.
 

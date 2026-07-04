@@ -2,7 +2,6 @@
 name: research_codebase
 description: Conduct comprehensive codebase research by delegating to parallel sub-agents and synthesizing findings using Gemini CLI tools.
 allowed-tools: read, write, bash, grep, glob, todowrite, task, google, web, search, web, fetch
-disable-model-invocation: true
 ---
 
 # Research Codebase
