@@ -102,12 +102,12 @@ $ScriptUrl = "https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@
 
 function Write-Logo {
   $logo = @(
-    "██╗    ██╗ ██████╗     ███╗   ███╗ ██████╗ ███╗   ██╗ ██████╗",
-    "██║    ██║██╔═══██╗    ████╗ ████║██╔═══██╗████╗  ██║██╔═══██╗",
-    "██║ █╗ ██║██║   ██║    ██╔████╔██║██║   ██║██╔██╗ ██║██║   ██║",
-    "██║███╗██║██║   ██║    ██║╚██╔╝██║██║   ██║██║╚██╗██║██║   ██║",
-    "╚███╔███╔╝╚██████╔╝    ██║ ╚═╝ ██║╚██████╔╝██║ ╚████║╚██████╔╝",
-    " ╚══╝╚══╝  ╚═════╝     ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝"
+    "WW      WW  OOOOOO      MM    MM  OOOOOO  NNN   NN  OOOOOO",
+    "WW      WW OO  OO OO    MMMM MMMM OO  OO OO MMMM  NN OO  OO OO",
+    "WW  W  WW OO    OO    MM MM MM MM OO    OO MM MM NN OO    OO",
+    "WW WWW WW OO    OO    MM  MM  MM OO    OO MM  MMMM OO    OO",
+    " WWW WWW   OOOOOO     MM      MM  OOOOOO  MM   MMM  OOOOOO",
+    "  W   W       WW      MM      MM    WW    MM    M    WW"
   )
   foreach ($line in $logo) { Write-Host "  $line" -ForegroundColor Cyan }
   Write-Host ""
@@ -115,22 +115,22 @@ function Write-Logo {
 
 function Write-Step {
   param([string]$Text)
-  Write-Host "  ⟡ $Text" -ForegroundColor Cyan
+  Write-Host "  [>] $Text" -ForegroundColor Cyan
 }
 
 function Write-Ok {
   param([string]$Text)
-  Write-Host "  ✓ $Text" -ForegroundColor Green
+  Write-Host "  [+] $Text" -ForegroundColor Green
 }
 
 function Write-Warn {
   param([string]$Text)
-  Write-Host "  ⚠ $Text" -ForegroundColor Yellow
+  Write-Host "  [!] $Text" -ForegroundColor Yellow
 }
 
 function Write-Err {
   param([string]$Text)
-  Write-Host "  ✗ $Text" -ForegroundColor Red
+  Write-Host "  [x] $Text" -ForegroundColor Red
 }
 
 function Test-Deno {
@@ -176,9 +176,9 @@ function Install-Deno {
 
 function Show-Help {
   Write-Logo
-  Write-Host "  $("─" * 54)" -ForegroundColor DarkGray
-  Write-Host "  AI Engineering Harness — Windows PowerShell Installer" -ForegroundColor Cyan
-  Write-Host "  $("─" * 54)" -ForegroundColor DarkGray
+  Write-Host "  $("-" * 54)" -ForegroundColor DarkGray
+  Write-Host "  AI Engineering Harness -- Windows PowerShell Installer" -ForegroundColor Cyan
+  Write-Host "  $("-" * 54)" -ForegroundColor DarkGray
   Write-Host ""
   Write-Host "  USAGE:" -ForegroundColor White
   Write-Host "    .\install.ps1 [-InstallCli] [-Tool <name>] [-Update] [-Compliance] [-Check] [-Yes] [-DryRun]"
