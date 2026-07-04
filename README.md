@@ -76,8 +76,7 @@ deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/pac
 
 **Alternative (PowerShell wrapper — easier for Windows):**
 ```powershell
-iex (iwr https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ps1 -useb)
-install.ps1 -InstallCli
+iwr https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ps1 -useb -OutFile "$env:TEMP\ai-harness-install.ps1"; & "$env:TEMP\ai-harness-install.ps1" -InstallCli
 ```
 > Downloads a wrapper script that provides a friendlier interface. `-useb` = UseBasicParsing.
 
@@ -85,19 +84,18 @@ install.ps1 -InstallCli
 
 Deno caches remote scripts after the first download. To force re-download of the latest version, add `--reload`:
 
-**macOS / Linux / Windows (bash):**
+**macOS / Linux / Windows (bash with Deno):**
 ```bash
 deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 ```
 
-**Windows (PowerShell):**
+**Windows (PowerShell wrapper):**
 ```powershell
-iex (iwr https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ps1 -useb)
-install.ps1 -InstallCli
+iwr https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ps1 -useb -OutFile "$env:TEMP\ai-harness-install.ps1"; & "$env:TEMP\ai-harness-install.ps1" -InstallCli
 ```
 
-- **Windows (Deno)**: Always use `--reload` (required even on first install)
-- **macOS / Linux**: Use `--reload` when re-installing to pick up changes
+- Always use `--reload` on Windows (required even on first install)
+- Use `--reload` on macOS / Linux when re-installing to pick up changes
 - Subsequent updates via `ai-harness --update` do **not** need `--reload`
 
 **Verify CLI works:**
