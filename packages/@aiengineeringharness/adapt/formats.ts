@@ -7,13 +7,13 @@ export interface SkillFormat {
 }
 
 const FORMAT_MAP: Record<string, SkillFormat> = {
-  opencode: { naming: "snake_case", frontmatterFormat: "opencode", skillDir: "skills" },
+  opencode: { naming: "kebab-case", frontmatterFormat: "opencode", skillDir: "skills" },
   claude: { naming: "snake_case", frontmatterFormat: "claude", skillDir: "skills" },
   gemini: { naming: "snake_case", frontmatterFormat: "gemini", skillDir: "skills" },
   pi: { naming: "kebab-case", frontmatterFormat: "pi", skillDir: "skills" },
   codex: { naming: "snake_case", frontmatterFormat: "codex", skillDir: "skills" },
   antigravity: { naming: "snake_case", frontmatterFormat: "antigravity", skillDir: "skills" },
-  wocode: { naming: "snake_case", frontmatterFormat: "wocode", skillDir: "skills" },
+  wocode: { naming: "kebab-case", frontmatterFormat: "wocode", skillDir: "skills" },
 };
 
 export function getToolFormat(toolName: string): SkillFormat {

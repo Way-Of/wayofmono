@@ -12,13 +12,13 @@ Generates any AI coding tool component for any of 7 target tools using per-tool 
 
 | Tool | Binary | Naming | allowed-tools Casing | Config Format | Docs URL |
 |------|--------|--------|---------------------|---------------|----------|
-| OpenCode | `opencode` | snake_case | lowercase | JSON | https://opencode.ai/docs/ |
+| OpenCode | `opencode` | kebab-case | lowercase | JSON | https://opencode.ai/docs/ |
 | Claude Code | `claude` | snake_case | Title Case | JSON | https://code.claude.com/docs/en/overview |
 | Gemini CLI | `gemini` | snake_case | lowercase | JSON | https://geminicli.com/docs/ |
 | Pi | `pi` | kebab-case | Title Case | JSON | https://pi.dev/ |
 | Antigravity | `agy` | snake_case | lowercase | JSON | https://antigravity.google/docs/cli-overview |
 | Codex | `codex` | snake_case | lowercase | JSON | https://developers.openai.com/codex/cli |
-| Wo Coder | `wocode` | snake_case | lowercase | JSON | internal (wo-coder.md) |
+| Wo Coder | `wocode` | kebab-case | lowercase | JSON | internal (wo-coder.md) |
 
 Always read `thoughts/global/docs/ai-coding-tools/<tool>.md` for current format specs before generating.
 
@@ -30,7 +30,7 @@ Always read `thoughts/global/docs/ai-coding-tools/<tool>.md` for current format 
 
 Each tool uses SKILL.md with YAML frontmatter. Per-tool rules:
 
-**Naming**: snake_case (opencode, claude, gemini, antigravity, codex, wocode) or kebab-case (pi)
+**Naming**: kebab-case (opencode, pi, wocode) or snake_case (claude, gemini, antigravity, codex)
 **Name field**: Must exactly match parent directory name, regex `^[a-z0-9]+(-[a-z0-9]+)*$`
 **allowed-tools**: Space-delimited string (not array). Casing per tool spec below.
 
@@ -52,13 +52,13 @@ All tools use Markdown frontmatter format for agent definitions. Per-tool rules:
 
 | Tool | Dir | Naming | Format |
 |------|-----|--------|--------|
-| opencode | `agents/` | snake_case | .md with YAML frontmatter |
+| opencode | `agents/` | kebab-case | .md with YAML frontmatter |
 | claude | `agents/` | snake_case | .md with YAML frontmatter |
 | gemini | `agents/` | snake_case | .md with YAML frontmatter |
 | pi | `agents/` | kebab-case | .md with YAML frontmatter |
 | antigravity | `agents/` | snake_case | .md with YAML frontmatter |
 | codex | `agents/` | snake_case | .md with YAML frontmatter |
-| wocode | `agents/` | snake_case | .md with YAML frontmatter |
+| wocode | `agents/` | kebab-case | .md with YAML frontmatter |
 
 Required fields: `name`, `description`, `tools`, system prompt in body.
 

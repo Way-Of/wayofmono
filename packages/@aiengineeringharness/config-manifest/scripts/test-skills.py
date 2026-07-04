@@ -75,8 +75,8 @@ TOOL_SPECS = {
         "has_commands": False,
     },
     "wocode": {
-        "dir_naming": "snake",
-        "name_naming": "snake",           # wocode uses snake_case dirs and names (matching claude/gemini convention)
+        "dir_naming": "kebab",
+        "name_naming": "kebab",           # wocode uses kebab-case dirs and names (matching opencode convention)
         "skill_file": "SKILL.md",
         "allowed_tools_format": "string",
         "allowed_tools_case": "lowercase",
@@ -194,7 +194,7 @@ def test_skill(tool, skill_dir_name, spec):
             # Name matches directory exactly — always valid regardless of pattern
             pass
         elif not re.match(actual_pattern, name):
-            # Kebab-naming tools (Pi, wocode, opencode, codex) treat underscores as invalid chars
+            # Kebab-naming tools (Pi, opencode, wocode) treat underscores as invalid chars
             # Pi reports: "name contains invalid characters (must be lowercase a-z, 0-9, hyphens only)"
             result.error("NAME_CONVENTION",
                 f"Frontmatter name '{name}' should be kebab-case matching directory '{expected_name}' — underscores ('_') are invalid for {tool}")

@@ -24,7 +24,7 @@ config-manifest/
 
 | Tool | Dir Naming | allowed-tools Case | Skill Format | Config Dir |
 |------|-----------|-------------------|-------------|------------|
-| OpenCode | snake_case | lowercase | SKILL.md + commands/ | `~/.config/opencode/` |
+| OpenCode | kebab-case | lowercase | SKILL.md + commands/ | `~/.config/opencode/` |
 | Claude Code | snake_case | PascalCase | SKILL.md (`disable-model-invocation` for commands) | `~/.claude/` |
 | Gemini CLI | snake_case | lowercase | SKILL.md + TOML commands/ | `~/.gemini/` |
 | Pi | kebab-case | lowercase | SKILL.md + prompts/ | `~/.pi/agent/` |
@@ -141,7 +141,7 @@ Ensures every skill in every tool's `skills/` directory follows the correct form
 | Check | OpenCode | Claude | Gemini | Pi | WoCoder | Codex | Antigravity |
 |-------|----------|--------|--------|----|---------|-------|-------------|
 | **Skill file** | SKILL.md | SKILL.md | SKILL.md | SKILL.md | SKILL.md | skill.yaml+prompt.md | SKILL.md |
-| **name convention** | snake_case | snake_case | snake_case | kebab-case | kebab-case | snake_case | snake_case |
+| **name convention** | kebab-case | snake_case | snake_case | kebab-case | kebab-case | snake_case | snake_case |
 | **allowed-tools case** | lowercase | PascalCase | lowercase | lowercase list | lowercase | snake_case list | lowercase |
 | **disable-model-invocation** | commands only | commands only | unsupported | unsupported | commands only | unsupported | commands only |
 

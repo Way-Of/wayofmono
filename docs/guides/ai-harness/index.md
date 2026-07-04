@@ -87,13 +87,13 @@ skills/create_plan/
 ## Per-Tool Adaptation
 
 The harness adapts each skill for 7 tools:
-- **OpenCode**: snake_case dirs, SKILL.md with `allowed-tools`
+- **OpenCode**: kebab-case dirs, SKILL.md with `allowed-tools`
 - **Claude**: snake_case dirs, SKILL.md with `allowed-tools`  
 - **Gemini**: snake_case dirs, SKILL.md format
 - **Pi**: kebab-case dirs, SKILL.md format
 - **Codex**: snake_case dirs, SKILL.md format
 - **Antigravity**: snake_case dirs, SKILL.md format
-- **Wo Coder**: snake_case dirs, SKILL.md format
+- **Wo Coder**: kebab-case dirs, SKILL.md format
 
 ## Pipeline Scripts
 

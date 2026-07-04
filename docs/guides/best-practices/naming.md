@@ -17,13 +17,13 @@ Standard naming conventions across WayOfMono.
 
 | Tool | Skill Directory Naming | Config Dir |
 |------|------------------------|------------|
-| OpenCode | snake_case | `~/.config/opencode/` |
+| OpenCode | kebab-case | `~/.config/opencode/` |
 | Claude Code | snake_case | `~/.claude/` |
 | Gemini CLI | snake_case | `~/.gemini/` |
 | Pi | kebab-case | `~/.pi/agent/` |
 | Codex | snake_case | `~/.codex/` |
 | Antigravity | snake_case | `~/.antigravity/` |
-| Wo Coder | snake_case | `~/.wocode/` |
+| Wo Coder | kebab-case | `~/.wocode/` |
 
 **OpenCode Critical**: Skill directory name MUST match frontmatter `name` exactly (regex `^[a-z0-9]+(-[a-z0-9]+)*$`)
 

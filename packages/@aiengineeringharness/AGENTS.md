@@ -118,7 +118,7 @@ ai-engineering-harness/
 | `pi_themes` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi themes — JSON, 51 color tokens, vars, hex/256-color |
 | `pi_tui` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi TUI — built-in & custom components, keyboard, widgets |
 
-**Naming**: OpenCode, Claude, Gemini, and Wo Coder use snake_case. Pi uses kebab-case (its native convention).
+**Naming**: OpenCode and Wo Coder use kebab-case; Claude, Gemini, Codex, and Antigravity use snake_case. Pi uses kebab-case (its native convention).
 
 ## Agents
 

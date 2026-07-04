@@ -35,7 +35,7 @@ TOOL_PATH_RULES = {
     "opencode": {
         "allowed_prefixes": ["opencode/"],
         "forbidden_prefixes": ["claude/", "gemini/", "pi/", "wocode/", "codex/", "antigravity/"],
-        "naming": "snake",
+        "naming": "kebab",
         "dest_prefix": "",
     },
     "gemini": {
@@ -53,7 +53,7 @@ TOOL_PATH_RULES = {
     "wocode": {
         "allowed_prefixes": ["wocode/", "wocode/agent/"],
         "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "codex/", "antigravity/"],
-        "naming": "snake",
+        "naming": "kebab",
         "dest_prefix": "",
     },
     "codex": {

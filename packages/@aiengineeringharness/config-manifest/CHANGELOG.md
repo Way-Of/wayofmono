@@ -28,5 +28,5 @@ Initial modular manifest system replacing the monolithic `manifest.json`.
 
 - Gemini CLI deprecated (stops serving June 18, 2026) — Antigravity CLI is the replacement
 - Claude uses `disable-model-invocation: true` for slash commands (no separate commands/ dir)
-- Pi uses kebab-case dir naming (unique); all others use snake_case
+- Pi, OpenCode, and Wo Coder use kebab-case dir naming; all others use snake_case
 - Codex uses dual-file format (`skill.yaml` + `prompt.md`) — unique

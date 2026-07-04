@@ -42,13 +42,13 @@ COLOURS = {
 # Per-tool specification reference
 TOOL_SPECS = {
     "opencode": {
-        "naming": "snake",
+        "naming": "kebab",
         "allowed_prefixes": ["opencode/"],
         "forbidden_prefixes": ["claude/", "gemini/", "pi/", "wocode/", "codex/", "antigravity/"],
         "target": "~/.config/opencode",
         "allowed_tools_case": "lowercase",
         "skill_dir_regex": r"^[a-z0-9]+(-[a-z0-9]+)*$",
-        "dir_naming": "snake_case",
+        "dir_naming": "kebab-case",
     },
     "claude": {
         "naming": "snake",
@@ -78,13 +78,13 @@ TOOL_SPECS = {
         "dir_naming": "kebab-case",
     },
     "wocode": {
-        "naming": "snake",
+        "naming": "kebab",
         "allowed_prefixes": ["wocode/", "wocode/agent/"],
         "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "codex/", "antigravity/"],
         "target": "~/.wocode",
         "allowed_tools_case": "lowercase",
         "skill_dir_regex": r"^[a-z0-9]+(-[a-z0-9]+)*$",
-        "dir_naming": "snake_case",
+        "dir_naming": "kebab-case",
     },
     "codex": {
         "naming": "snake",

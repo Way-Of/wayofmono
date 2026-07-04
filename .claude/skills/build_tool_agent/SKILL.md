@@ -63,13 +63,13 @@ You are a cross-tool agent builder. You know how to create agent definitions for
 
 ## Agent Formats Per Tool
 
-### OpenCode / Claude / Antigravity / Wo Coder
+### Claude / Antigravity
 - Format: Markdown with YAML frontmatter
 - Fields: name (snake_case), description, type (agent/subagent), tools
 - Location: `agents/` directory
 - Invocation: via task tool or subagent dispatch
 
-### Pi
+### OpenCode / Pi / Wo Coder
 - Format: Markdown with YAML frontmatter
 - Fields: name (kebab-case), description, tools, system prompt
 - Location: `agents/` directory

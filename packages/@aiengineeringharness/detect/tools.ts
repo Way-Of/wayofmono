@@ -27,13 +27,13 @@ function detectTool(name: string, configDir: string, format: "snake_case" | "keb
 export function detectTools(): DetectResult<ToolsInfo> {
   try {
     const tools = {
-      opencode: detectTool("opencode", "~/.config/opencode", "snake_case", "opencode"),
+      opencode: detectTool("opencode", "~/.config/opencode", "kebab-case", "opencode"),
       claude: detectTool("claude", "~/.claude", "snake_case", "claude"),
       gemini: detectTool("gemini", "~/.gemini", "snake_case", "gemini"),
       pi: detectTool("pi", "~/.pi/agent", "kebab-case"),
       codex: detectTool("codex", "~/.codex", "snake_case"),
       antigravity: detectTool("antigravity", "~/.antigravity", "snake_case"),
-      wocode: detectTool("wocode", "~/.wocode", "snake_case"),
+      wocode: detectTool("wocode", "~/.wocode", "kebab-case"),
     };
 
     const installed = Object.values(tools).filter((t) => t.detected).map((t) => t.name);
@@ -46,13 +46,13 @@ export function detectTools(): DetectResult<ToolsInfo> {
   } catch (err) {
     return {
       value: {
-        opencode: { name: "opencode", configDir: "~/.config/opencode", detected: false, format: "snake_case" },
+        opencode: { name: "opencode", configDir: "~/.config/opencode", detected: false, format: "kebab-case" },
         claude: { name: "claude", configDir: "~/.claude", detected: false, format: "snake_case" },
         gemini: { name: "gemini", configDir: "~/.gemini", detected: false, format: "snake_case" },
         pi: { name: "pi", configDir: "~/.pi/agent", detected: false, format: "kebab-case" },
         codex: { name: "codex", configDir: "~/.codex", detected: false, format: "snake_case" },
         antigravity: { name: "antigravity", configDir: "~/.antigravity", detected: false, format: "snake_case" },
-        wocode: { name: "wocode", configDir: "~/.wocode", detected: false, format: "snake_case" },
+        wocode: { name: "wocode", configDir: "~/.wocode", detected: false, format: "kebab-case" },
         any: false,
         installed: [],
       },

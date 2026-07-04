@@ -29,7 +29,7 @@ TOOLS_DIR = os.path.join(CONFIG_DIR, "tools")
 
 TOOL_SPECS = {
     "opencode": {
-        "naming": "snake",
+        "naming": "kebab",
         "allowed_prefixes": ["opencode/"],
         "forbidden_prefixes": ["claude/", "gemini/", "pi/", "wocode/", "codex/", "antigravity/"],
         "target": "~/.config/opencode",
@@ -53,7 +53,7 @@ TOOL_SPECS = {
         "target": "~/.pi/agent",
     },
     "wocode": {
-        "naming": "snake",
+        "naming": "kebab",
         "allowed_prefixes": ["wocode/", "wocode/agent/"],
         "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "codex/", "antigravity/"],
         "target": "~/.wocode",

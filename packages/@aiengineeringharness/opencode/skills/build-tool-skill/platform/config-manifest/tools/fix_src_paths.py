@@ -10,7 +10,7 @@ TOOLS_DIR = os.path.join(BASE, "config-manifest", "tools")
 
 # Define the expected naming convention per tool and the skills directory path
 TOOL_CONFIG = {
-    "wocode": {"convention": "snake_case", "skills_dir": "wocode/agent/skills"},
+    "wocode": {"convention": "kebab-case", "skills_dir": "wocode/agent/skills"},
     "pi": {"convention": "kebab-case", "skills_dir": "pi/agent/skills"},
     "antigravity": {"convention": "snake_case", "skills_dir": "antigravity/skills"},
     "codex": {"convention": "snake_case", "skills_dir": "codex/skills"},

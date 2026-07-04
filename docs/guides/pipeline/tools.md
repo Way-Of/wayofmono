@@ -70,7 +70,7 @@ deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts
 
 **Checks:**
 - Correct frontmatter fields
-- Naming conventions (snake_case for OpenCode/Claude/Gemini/Codex/Antigravity/WoCoder, kebab-case for Pi)
+- Naming conventions (kebab-case for OpenCode/Pi/WoCoder, snake_case for Claude/Gemini/Codex/Antigravity)
 - `allowed-tools` casing
 - Format compliance
 

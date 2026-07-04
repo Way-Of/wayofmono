@@ -7,7 +7,7 @@
 # - claude:   src uses snake_case dir naming
 # - gemini:   src uses snake_case dir naming
 # - pi:       src uses kebab-case dir naming under pi/agent/
-# - wocode:   src uses snake_case dir naming under wocode/agent/
+# - wocode:   src uses kebab-case dir naming under wocode/agent/
 # - codex:    src uses snake_case dir naming
 # - antigravity: src uses snake_case dir naming
 #

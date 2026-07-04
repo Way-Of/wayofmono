@@ -76,7 +76,7 @@ TOOL_SPECS = {
     },
     "wocode": {
         "dir_naming": "snake",
-        "name_naming": "snake",           # wocode uses snake_case dirs and names (matching claude/gemini convention)
+        "name_naming": "kebab",           # wocode uses kebab-case dirs and names (matching opencode convention)
         "skill_file": "SKILL.md",
         "allowed_tools_format": "string",
         "allowed_tools_case": "lowercase",

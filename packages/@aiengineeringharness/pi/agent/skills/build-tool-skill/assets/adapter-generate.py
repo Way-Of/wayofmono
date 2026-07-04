@@ -27,7 +27,7 @@ TOOL_PATHS = {
     "claude": ("claude/skills", lambda n: n.replace("-", "_")),     # kebab → snake
     "gemini": ("gemini/skills", lambda n: n.replace("-", "_")),     # kebab → snake
     "pi": ("pi/agent/skills", lambda n: n),                          # kebab → kebab
-    "wocode": ("wocode/agent/skills", lambda n: n.replace("-", "_")), # kebab → snake
+    "wocode": ("wocode/agent/skills", lambda n: n),                          # kebab → kebab
     "codex": ("codex/skills", lambda n: n.replace("-", "_")),       # kebab → snake
     "antigravity": ("antigravity/skills", lambda n: n.replace("-", "_")), # kebab → snake
 }
