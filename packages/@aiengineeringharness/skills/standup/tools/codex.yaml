@@ -1,0 +1,10 @@
+name: standup
+naming: snake_case
+allowed-tools: read, write, bash, glob, grep, git
+allowed-tools-case: lowercase
+disable-model-invocation: false
+dir_name: standup
+project_memory: RULES.md
+config_dir: ~/.codex/
+dests:
+  - codex/skills/

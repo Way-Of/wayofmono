@@ -1,0 +1,10 @@
+name: standup
+naming: snake_case
+allowed-tools: Read, Write, Bash, Glob, Grep, Git
+allowed-tools-case: PascalCase
+disable-model-invocation: true
+dir_name: standup
+project_memory: CLAUDE.md
+config_dir: ~/.claude/
+dests:
+  - claude/skills/

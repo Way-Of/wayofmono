@@ -1,0 +1,10 @@
+name: standup
+naming: kebab-case
+allowed-tools: read, write, bash, glob, grep, git
+allowed-tools-case: lowercase
+disable-model-invocation: true
+dir_name: standup
+project_memory: AGENTS.md
+config_dir: ~/.config/opencode/
+dests:
+  - opencode/skills/

@@ -1,5 +1,5 @@
 {
-  "version": "1.7.11",
+  "version": "1.7.12",
   "tools": {
     "antigravity": {
       "name": "antigravity",
@@ -1166,15 +1166,6 @@
             }
           ]
         },
-        "skill/validate-manifest": {
-          "description": "Validate skill manifest against production-ready standards and conventions",
-          "files": [
-            {
-              "src": "antigravity/skills/validate_manifest/SKILL.md",
-              "dest": "skills/validate-manifest/SKILL.md"
-            }
-          ]
-        },
         "skill/ticket-executor": {
           "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
           "files": [
@@ -1457,6 +1448,24 @@
             {
               "src": "antigravity/skills/fixes_manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/standup": {
+          "description": "Daily standup skill",
+          "files": [
+            {
+              "src": "antigravity/skills/standup/SKILL.md",
+              "dest": "skills/standup/SKILL.md"
+            }
+          ]
+        },
+        "skill/womono-validate-manifest": {
+          "description": "Validate skill manifest against production-ready standards and conventions",
+          "files": [
+            {
+              "src": "antigravity/skills/womono_validate_manifest/SKILL.md",
+              "dest": "skills/validate-manifest/SKILL.md"
             }
           ]
         }
@@ -2385,15 +2394,6 @@
             }
           ]
         },
-        "skill/validate-manifest": {
-          "description": "Validate skill manifest against production-ready standards and conventions",
-          "files": [
-            {
-              "src": "claude/skills/validate_manifest/SKILL.md",
-              "dest": "skills/validate-manifest/SKILL.md"
-            }
-          ]
-        },
         "skill/ticket-executor": {
           "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
           "files": [
@@ -2676,6 +2676,24 @@
             {
               "src": "claude/skills/fixes_manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/standup": {
+          "description": "Daily standup skill",
+          "files": [
+            {
+              "src": "claude/skills/standup/SKILL.md",
+              "dest": "skills/standup/SKILL.md"
+            }
+          ]
+        },
+        "skill/womono-validate-manifest": {
+          "description": "Validate skill manifest against production-ready standards and conventions",
+          "files": [
+            {
+              "src": "claude/skills/womono_validate_manifest/SKILL.md",
+              "dest": "skills/validate-manifest/SKILL.md"
             }
           ]
         }
@@ -3579,15 +3597,6 @@
             }
           ]
         },
-        "skill/validate-manifest": {
-          "description": "Validate skill manifest against production-ready standards and conventions",
-          "files": [
-            {
-              "src": "codex/skills/validate_manifest/SKILL.md",
-              "dest": "skills/validate-manifest/SKILL.md"
-            }
-          ]
-        },
         "skill/ticket-executor": {
           "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
           "files": [
@@ -3914,6 +3923,24 @@
             {
               "src": "codex/skills/fixes_manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/standup": {
+          "description": "Daily standup skill",
+          "files": [
+            {
+              "src": "codex/skills/standup/SKILL.md",
+              "dest": "skills/standup/SKILL.md"
+            }
+          ]
+        },
+        "skill/womono-validate-manifest": {
+          "description": "Validate skill manifest against production-ready standards and conventions",
+          "files": [
+            {
+              "src": "codex/skills/womono_validate_manifest/SKILL.md",
+              "dest": "skills/validate-manifest/SKILL.md"
             }
           ]
         }
@@ -5076,15 +5103,6 @@
             }
           ]
         },
-        "skill/validate-manifest": {
-          "description": "Validate skill manifest against production-ready standards and conventions",
-          "files": [
-            {
-              "src": "gemini/skills/validate_manifest/SKILL.md",
-              "dest": "skills/validate-manifest/SKILL.md"
-            }
-          ]
-        },
         "skill/ticket-executor": {
           "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
           "files": [
@@ -5358,6 +5376,24 @@
             {
               "src": "gemini/skills/fixes_manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/standup": {
+          "description": "Daily standup skill",
+          "files": [
+            {
+              "src": "gemini/skills/standup/SKILL.md",
+              "dest": "skills/standup/SKILL.md"
+            }
+          ]
+        },
+        "skill/womono-validate-manifest": {
+          "description": "Validate skill manifest against production-ready standards and conventions",
+          "files": [
+            {
+              "src": "gemini/skills/womono_validate_manifest/SKILL.md",
+              "dest": "skills/validate-manifest/SKILL.md"
             }
           ]
         }
@@ -5778,15 +5814,6 @@
             {
               "src": "opencode/skills/self-documentation/SKILL.md",
               "dest": "skills/self-documentation/SKILL.md"
-            }
-          ]
-        },
-        "skill/validate-manifest": {
-          "description": "Validate skill manifest against production-ready standards and conventions",
-          "files": [
-            {
-              "src": "opencode/skills/validate-manifest/SKILL.md",
-              "dest": "skills/validate-manifest/SKILL.md"
             }
           ]
         },
@@ -6698,6 +6725,24 @@
             {
               "src": "opencode/skills/fixes-manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/standup": {
+          "description": "Daily standup skill",
+          "files": [
+            {
+              "src": "opencode/skills/standup/SKILL.md",
+              "dest": "skills/standup/SKILL.md"
+            }
+          ]
+        },
+        "skill/womono-validate-manifest": {
+          "description": "Validate skill manifest against production-ready standards and conventions",
+          "files": [
+            {
+              "src": "opencode/skills/womono-validate-manifest/SKILL.md",
+              "dest": "skills/validate-manifest/SKILL.md"
             }
           ]
         }
@@ -7855,15 +7900,6 @@
             }
           ]
         },
-        "skill/validate-manifest": {
-          "description": "Validate skill manifest against production-ready standards and conventions",
-          "files": [
-            {
-              "src": "pi/agent/skills/validate-manifest/SKILL.md",
-              "dest": "skills/validate-manifest/SKILL.md"
-            }
-          ]
-        },
         "skill/ticket-executor": {
           "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
           "files": [
@@ -8155,6 +8191,28 @@
             {
               "src": "pi/agent/skills/fixes-manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/standup": {
+          "description": "Daily standup skill",
+          "files": [
+            {
+              "src": "pi/skills/standup/SKILL.md",
+              "dest": "skills/standup/SKILL.md"
+            },
+            {
+              "src": "pi/agent/skills/standup/SKILL.md",
+              "dest": "agent/skills/standup/SKILL.md"
+            }
+          ]
+        },
+        "skill/womono-validate-manifest": {
+          "description": "Validate skill manifest against production-ready standards and conventions",
+          "files": [
+            {
+              "src": "pi/agent/skills/womono-validate-manifest/SKILL.md",
+              "dest": "skills/validate-manifest/SKILL.md"
             }
           ]
         }
@@ -9405,15 +9463,6 @@
             }
           ]
         },
-        "skill/validate-manifest": {
-          "description": "Validate skill manifest against production-ready standards and conventions",
-          "files": [
-            {
-              "src": "wocode/agent/skills/validate-manifest/SKILL.md",
-              "dest": "skills/validate-manifest/SKILL.md"
-            }
-          ]
-        },
         "skill/runbook-manager": {
           "description": "Generate, update, and maintain production runbooks per project",
           "files": [
@@ -9719,6 +9768,24 @@
             {
               "src": "wocode/agent/skills/fixes-manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/standup": {
+          "description": "Daily standup skill",
+          "files": [
+            {
+              "src": "wocode/agent/skills/standup/SKILL.md",
+              "dest": "agent/skills/standup/SKILL.md"
+            }
+          ]
+        },
+        "skill/womono-validate-manifest": {
+          "description": "Validate skill manifest against production-ready standards and conventions",
+          "files": [
+            {
+              "src": "wocode/agent/skills/womono-validate-manifest/SKILL.md",
+              "dest": "skills/validate-manifest/SKILL.md"
             }
           ]
         }

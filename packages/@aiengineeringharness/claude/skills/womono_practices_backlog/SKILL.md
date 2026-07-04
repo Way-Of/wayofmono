@@ -9,6 +9,29 @@ description: Creates tickets across all WoM projects (WOMONO, WOW, OPT) with cor
 
 When you find code, infrastructure, or workflows that don't follow WoM best practices, create a ticket so the work is tracked and prioritized. This skill formalizes the ticketing process for tech debt and improvement items across all Way-Of projects.
 
+## WOMONO Ecosystem Knowledge
+
+When creating tickets about WOMONO harness work, reference these systems:
+
+### Canonical Skill Architecture
+Skills use the config-manifest pattern: `skills/<name>/SKILL.md` + `compile.py` + `tools/<tool>.yaml`. Reference implementations at `skills/init-harness/` and `skills/standup/`. Per-tool copies live in each tool's skills directory.
+
+### Config-Manifest
+Located at `packages/@aiengineeringharness/config-manifest/`. Has `compile.py` (YAML → manifest.json), `validate.py` (format validation), and `tools/*.yaml` (per-tool definitions). Per-tool update scripts in `config-manifest/scripts/`.
+
+### Fixes Docs
+Release notes go in `docs/fixes/`. The relevant file depends on the component:
+- `ai-engineering-harness-fixes.md` — harness changes
+- `wocode-fixes.md` — wocode changes
+- `wouser-fixes.md` — wouser changes
+- `cto-dashboard-fixes.md` — dashboard changes
+
+### Manifest.json Safety
+Never use string replacement. Use Python scripts with `json.load`/`json.dump` with `ensure_ascii=False`. Existing validation scripts at `scripts/compliance-check.ts` and `scripts/validate-manifest.ts`.
+
+### Creating Scripts for Tasks
+When a task needs automation (like bulk renaming, manifest updates, compliance fixes), create a Python or Deno script in the appropriate `scripts/` directory. Scripts are preferred over manual edits for repeatable tasks.
+
 ## Project Namespace Reference
 
 | Project | Folder | Ticket Prefix | Storage Path |
@@ -91,7 +114,7 @@ Match `project` and `namespace` to the correct project:
 | WOW | `WOW` | `wow` |
 | OPT | `OPT` | `opticat` |
 
-### Step 6: Write Description
+### Step 6: write Description
 
 Include:
 - **What** violates the practice

@@ -13,6 +13,32 @@ allowed-tools: read, write, edit, bash, grep, glob, todowrite, task, question
 Releases and updates npm packages across the WayOfMono ecosystem. Covers the
 full lifecycle: version bump → docs → npm publish → git → permissions fix.
 
+## WOMONO Ecosystem Knowledge
+
+### Fixes Docs
+Release notes go in `docs/fixes/`. The relevant file depends on the component:
+- `ai-engineering-harness-fixes.md` — harness changes (skills, agents, installer)
+- `wocode-fixes.md` — wocode changes
+- `wouser-fixes.md` — wouser changes
+- `cto-dashboard-fixes.md` — dashboard changes (current focus)
+
+### Canonical Skill Architecture
+Skills use the config-manifest pattern: `skills/<name>/SKILL.md` + `compile.py` + `tools/<tool>.yaml`. Reference `skills/init-harness/` and `skills/standup/`. When releasing skill updates, recompile with `python3 skills/<name>/compile.py`.
+
+### Config-Manifest
+When adding new skills or components, update `config-manifest/tools/*.yaml` and run `python3 config-manifest/compile.py` to regenerate `manifest.json`.
+
+### Manifest.json Safety
+Never use string replacement on `manifest.json`. Use Python:
+```python
+with open('manifest.json') as f: data = json.load(f)
+# modify
+with open('manifest.json', 'w') as f: json.dump(data, f, indent=2, ensure_ascii=False)
+```
+
+### Creating Scripts for Tasks
+When automating release workflows, create Python scripts in the harness `scripts/` directory. Use `json.dump` with `ensure_ascii=False` for JSON operations.
+
 ## Supported Packages
 
 | Package | Location | npm Name | Standalone Repo |
@@ -125,5 +151,8 @@ Override: `PORT=8080 wodev`
 | `ui/bin/wodev.js` | CLI entry point |
 | `ui/README.md` | Standalone package README |
 | `README.md` | Monorepo root README (CTO Dashboard section) |
-| `docs/fixes/cto-dashboard-fixes.md` | Release notes |
+| `docs/fixes/cto-dashboard-fixes.md` | Dashboard release notes |
+| `docs/fixes/ai-engineering-harness-fixes.md` | Harness release notes |
+| `docs/fixes/wocode-fixes.md` | Wocode release notes |
+| `docs/fixes/wouser-fixes.md` | Wouser release notes |
 | `thoughts/wayofmono/shared/tickets/WOMONO-084-EXTRACT-UI-TO-WAYOFDEV-REPO.md` | Dashboard extraction ticket |

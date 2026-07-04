@@ -1,5 +1,37 @@
 # AI Engineering Harness Fixes & Release Notes
 
+## v1.7.12 — 2026-07-04 — WOMONO Skills Update + Standup Skill (WOMONO-135, WOMONO-136, WOMONO-137)
+
+### Features
+- **Standup skill for all 7 tools (WOMONO-135)**: Created canonical standup skill at `packages/@aiengineeringharness/skills/standup/` with SKILL.md, `compile.py`, and 7 per-tool YAML configs. Generates daily standup files at `thoughts/global/standup/<dev>/<YYYY-MM-DD>.md`. Compiled per-tool copies to all 7 tools with manifest entries.
+- **WOMONO skills updated with ecosystem knowledge (WOMONO-136)**: All 6 WOMONO-specific skills updated to know about canonical skill architecture (`skills/<name>/SKILL.md` + `compile.py` + `tools/*.yaml`), config-manifest system, fixes docs (`docs/fixes/`), existing scripts (`scripts/`, `config-manifest/scripts/`), and manifest.json safety (Python `json.dump` with `ensure_ascii=False`).
+- **validate-manifest renamed to womono-validate-manifest (WOMONO-136)**: Renamed directory, `name` frontmatter, and manifest.json component key + src paths across all 7 tools. Expanded SKILL.md with ecosystem knowledge.
+- **Naming inconsistencies fixed (WOMONO-136)**: `wow_practices_guide` → `womono_practices_guide`, `wow_practices_audit` → `womono_practices_audit` in body headings across all tool copies.
+- **thoughts_locator & thoughts_analyzer updated (WOMONO-137)**: Both agents updated across all 7 tools with knowledge of namespace-based tickets (WOMONO-XXX, WOW-XXX, OPT-XXX), enforcement tickets, per-project f-rr-d structure, ticket frontmatter/status flow, and GitHub Skills Agent Directory.
+- **AGENTS.md updated**: Added WOMONO-Specific Skills section and thoughts agent update notes.
+
+### Breaking Changes
+- `validate-manifest` skill renamed to `womono-validate-manifest` — update any references to the old name
+- Tool-specific skill names updated: `validate_manifest` → `womono_validate_manifest` (claude, gemini, antigravity, codex)
+
+### Files
+- `packages/@aiengineeringharness/skills/standup/` — New canonical standup skill (SKILL.md, compile.py, 7 tool YAMLs)
+- `packages/@aiengineeringharness/opencode/skills/womono-practices-guide/SKILL.md` — Updated
+- `packages/@aiengineeringharness/opencode/skills/womono-practices-audit/SKILL.md` — Updated
+- `packages/@aiengineeringharness/opencode/skills/womono-practices-backlog/SKILL.md` — Updated
+- `packages/@aiengineeringharness/opencode/skills/womonodeploy/SKILL.md` — Updated
+- `packages/@aiengineeringharness/opencode/skills/womono-version-updater/SKILL.md` — Updated
+- `packages/@aiengineeringharness/opencode/skills/womono-validate-manifest/SKILL.md` — Renamed from validate-manifest and updated
+- `packages/@aiengineeringharness/opencode/agents/thoughts_locator.md` — Updated
+- `packages/@aiengineeringharness/opencode/agents/thoughts_analyzer.md` — Updated
+- `packages/@aiengineeringharness/{claude,gemini,pi,wocode,antigravity,codex}/skills/<tool-version-of-all-6>` — Propagated
+- `packages/@aiengineeringharness/{claude,gemini,pi,wocode,antigravity,codex}/agents/thoughts_*.*` — Propagated
+- `packages/@aiengineeringharness/manifest.json` — v1.7.12, rename validate-manifest entries
+- `AGENTS.md` — Added WOMONO-Specific Skills section
+- `CHANGELOG.md` — v1.7.12 entry
+
+---
+
 ## v1.7.10 — 2026-06-29 — Subagent Extension Fix + Agent Protocol Rewrite (WOMONO-115, WOMONO-116)
 
 ### Bug Fixes

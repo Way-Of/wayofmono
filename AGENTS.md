@@ -508,6 +508,35 @@ skills/<skill>/SKILL.md  (canonical)
 | Antigravity | snake_case | lowercase | commands only | snake_case |
 | Codex CLI | snake_case | lowercase | unsupported | snake_case |
 
+## WOMONO-Specific Skills
+
+These skills are purpose-built for working on the WayOfMono harness itself:
+
+| Skill | Purpose |
+|-------|---------|
+| `womono-practices-guide` | Guides development to follow WoM best practices; load at task start |
+| `womono-practices-audit` | Audits code/infra against best practices, produces compliance report |
+| `womono-practices-backlog` | Creates tickets across all projects with correct naming/namespaces |
+| `womonodeploy` | Releases npm packages across WoM ecosystem |
+| `womono-version-updater` | Bumps harness version across all files and tools |
+| `womono-validate-manifest` | Validates manifest.json paths across all 7 tools |
+
+All WOMONO skills know about:
+- **Canonical skill architecture** (`skills/<name>/SKILL.md` + `compile.py` + `tools/*.yaml`)
+- **Config-manifest system** (`config-manifest/compile.py`, per-tool YAMLs)
+- **Fixes docs** (`docs/fixes/` — harness, wocode, wouser, dashboard)
+- **Manifest.json safety** — use Python `json.dump` with `ensure_ascii=False`, never string replacement
+- **Existing scripts** (`scripts/compliance-check.ts`, `scripts/validate-manifest.ts`, `config-manifest/validate.py`)
+- **Creating scripts** for task automation (Python or Deno in `scripts/`)
+
+### Agent Updates (thoughts_locator & thoughts_analyzer)
+
+The `thoughts_locator` and `thoughts_analyzer` agents have been updated to know:
+- Namespace-based tickets (WOMONO-XXX, WOW-XXX, OPT-XXX) with per-project f-rr-d structure
+- Enforcement tickets and their highest-priority override status
+- Ticket frontmatter, status flow, and lifecycle
+- GitHub Skills Agent Directory (branch, issue, pr, release, review, sync)
+
 ## f-rr-d (förråd) Structure
 
 ```

@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.7.12] - 2026-07-04
+
+### Harness (AI Engineering Harness v1.7.12) — WOMONO skills update + standup skill
+
+- **Standup skill for all 7 tools (WOMONO-135)**: Created canonical standup skill at `skills/standup/` with SKILL.md, compile.py, and 7 per-tool YAML configs. Creates daily standup files at `thoughts/global/standup/<dev>/<YYYY-MM-DD>.md`. Compiled and deployed with manifest entries across all tools.
+- **WOMONO skills updated with ecosystem knowledge (WOMONO-136)**: All 6 WOMONO-specific skills (`womono-practices-guide`, `womono-practices-audit`, `womono-practices-backlog`, `womonodeploy`, `womono-version-updater`, `womono-validate-manifest`) now know about canonical skill architecture, config-manifest system, fixes docs, existing scripts, and manifest.json safety (Python json.dump, never string replacement).
+- **validate-manifest renamed to womono-validate-manifest (WOMONO-136)**: Renamed skill directory, name frontmatter, and manifest.json entries across all 7 tools. Updated src paths.
+- **Naming inconsistencies fixed (WOMONO-136)**: `wow_practices_guide` → `womono_practices_guide`, `wow_practices_audit` → `womono_practices_audit` in body headings.
+- **thoughts_locator & thoughts_analyzer updated (WOMONO-137)**: Both agents updated across all 7 tools with knowledge of namespace-based tickets, enforcement tickets, per-project f-rr-d structure, ticket frontmatter/status flow, and GitHub Skills Agent Directory.
+- **AGENTS.md updated**: Added WOMONO-Specific Skills section documenting all 6 skills, their knowledge scope, and the updated agent definitions.
+
 ## [1.7.11] - 2026-07-04
 
 ### Harness (AI Engineering Harness v1.7.11) — init-harness canonical skill
