@@ -60,7 +60,7 @@ interface ComplianceResult {
 const TOOL_SPECS: Record<string, ToolSpec> = {
   opencode: {
     name: "opencode",
-    naming: "snake",
+    naming: "kebab",
     toolNameCase: "lowercase",
     allowedToolsFormat: "lowercase",
     supportedFrontmatter: ["name", "description", "allowed-tools", "docs-url", "disable-model-invocation", "on"],
@@ -104,7 +104,7 @@ const TOOL_SPECS: Record<string, ToolSpec> = {
   },
   wocode: {
     name: "wocode",
-    naming: "snake",
+    naming: "kebab",
     toolNameCase: "lowercase",
     allowedToolsFormat: "lowercase",
     supportedFrontmatter: ["name", "description", "allowed-tools", "docs-url", "disable-model-invocation", "on"],
