@@ -355,6 +355,114 @@ function checkFrontmatterNameMatch(
 // Main
 // ---------------------------------------------------------------------------
 
+function applyFixes(
+  content: string,
+  issues: ComplianceIssue[],
+  spec: ToolSpec,
+  skillDir: string,
+): { fixed: string; fixCount: number } {
+  let fixCount = 0;
+
+  const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!match) return { fixed: content, fixCount: 0 };
+
+  let frontmatterYaml = match[1];
+  let body = match[2];
+  const originalYaml = frontmatterYaml;
+  const originalBody = body;
+
+  // 1. Fix UNSUPPORTED_FRONTMATTER — remove unsupported fields
+  const unsupportedIssues = issues.filter((i) => i.code === "UNSUPPORTED_FRONTMATTER");
+  for (const issue of unsupportedIssues) {
+    const fieldMatch = issue.message.match(/Frontmatter field "([^"]+)"/);
+    if (!fieldMatch) continue;
+    const field = fieldMatch[1];
+    const lines = frontmatterYaml.split("\n").filter((l) => {
+      const trimmed = l.trim();
+      return !trimmed.startsWith(`${field}:`) && !trimmed.startsWith(`${field}: `);
+    });
+    if (lines.length < frontmatterYaml.split("\n").length) {
+      frontmatterYaml = lines.join("\n");
+      fixCount++;
+    }
+  }
+
+  // 2. Fix WRONG_TOOL_CASE (allowed-tools) — normalize case
+  const toolCaseIssues = issues.filter((i) => i.code === "WRONG_TOOL_CASE");
+  if (toolCaseIssues.length > 0) {
+    const lines = frontmatterYaml.split("\n");
+    const fixedLines = lines.map((line) => {
+      const atMatch = line.match(/^allowed-tools:\s*(.+)$/);
+      if (atMatch) {
+        const tools = atMatch[1].split(/\s*,\s*|\s+/).filter(Boolean);
+        const fixedTools = tools.map((t) => {
+          if (spec.toolNameCase === "lowercase") return t.toLowerCase();
+          if (spec.toolNameCase === "PascalCase") {
+            return t.replace(/\b([a-z])/g, (_, c) => c.toUpperCase());
+          }
+          return t;
+        });
+        return `allowed-tools: ${fixedTools.join(" ")}`;
+      }
+      return line;
+    });
+    const newYaml = fixedLines.join("\n");
+    if (newYaml !== frontmatterYaml) {
+      frontmatterYaml = newYaml;
+      fixCount += toolCaseIssues.length;
+    }
+  }
+
+  // 3. Fix NAME_MISMATCH — update frontmatter name to match dir
+  const nameIssues = issues.filter((i) => i.code === "NAME_MISMATCH");
+  for (const _ni of nameIssues) {
+    const expectedName = spec.naming === "kebab"
+      ? skillDir.replace(/_/g, "-")
+      : skillDir.replace(/-/g, "_");
+    frontmatterYaml = frontmatterYaml.split("\n").map((line) => {
+      const nMatch = line.match(/^name:\s*(.+)$/);
+      if (nMatch && nMatch[1].trim() !== expectedName) {
+        return `name: ${expectedName}`;
+      }
+      return line;
+    }).join("\n");
+    fixCount++;
+  }
+
+  // 4. Fix BODY_WRONG_TOOL_CASE — fix tool name casing in body
+  const bodyIssues = issues.filter((i) => i.code === "BODY_WRONG_TOOL_CASE");
+  if (bodyIssues.length > 0) {
+    const bodyLines = body.split("\n");
+    for (const bi of bodyIssues) {
+      const lineIdx = bi.line - 1;
+      if (lineIdx < 0 || lineIdx >= bodyLines.length) continue;
+      const oldLine = bodyLines[lineIdx];
+      if (spec.toolNameCase === "lowercase") {
+        bodyLines[lineIdx] = oldLine.replace(
+          /\b(Read|Write|Edit|Bash|Grep|Glob|WebFetch|WebSearch|AskUserQuestion|Skill)\b/g,
+          (m) => m.toLowerCase(),
+        );
+      } else if (spec.toolNameCase === "PascalCase") {
+        bodyLines[lineIdx] = oldLine.replace(
+          /\b(read|write|edit|bash|grep|glob)\b/g,
+          (m) => m.charAt(0).toUpperCase() + m.slice(1),
+        );
+      }
+    }
+    const newBody = bodyLines.join("\n");
+    if (newBody !== body) {
+      body = newBody;
+      fixCount += bodyIssues.length;
+    }
+  }
+
+  if (frontmatterYaml === originalYaml && body === originalBody) {
+    return { fixed: content, fixCount: 0 };
+  }
+
+  return { fixed: `---\n${frontmatterYaml}\n---\n${body}`, fixCount };
+}
+
 async function checkTool(toolName: string, fixMode: boolean): Promise<ComplianceResult[]> {
   const spec = TOOL_SPECS[toolName];
   if (!spec) {
@@ -364,6 +472,7 @@ async function checkTool(toolName: string, fixMode: boolean): Promise<Compliance
 
   const skillDir = join(REPO_ROOT, "packages/@aiengineeringharness", toolName, "skills");
   const results: ComplianceResult[] = [];
+  let totalFixed = 0;
 
   try {
     const entries = Deno.readDirSync(skillDir);
@@ -398,6 +507,32 @@ async function checkTool(toolName: string, fixMode: boolean): Promise<Compliance
       issues.push(...checkDeprecatedPatterns(entry.name, content, spec));
       issues.push(...checkFrontmatterNameMatch(entry.name, frontmatter, spec));
 
+      // Auto-fix mode
+      if (fixMode && issues.length > 0) {
+        const fixable = issues.filter((i) =>
+          ["UNSUPPORTED_FRONTMATTER", "WRONG_TOOL_CASE", "NAME_MISMATCH", "BODY_WRONG_TOOL_CASE"].includes(i.code)
+        );
+        if (fixable.length > 0) {
+          const { fixed, fixCount } = applyFixes(content, fixable, spec, entry.name);
+          if (fixCount > 0) {
+            Deno.writeTextFileSync(skillPath, fixed);
+            console.log(`  ✧ FIXED    ${entry.name}/SKILL.md (${fixCount} issue(s))`);
+            totalFixed += fixCount;
+            // Re-check after fix
+            const reContent = Deno.readTextFileSync(skillPath);
+            const { frontmatter: fm2 } = parseFrontmatter(reContent);
+            issues.length = 0;
+            if (error) issues.push({ file: entry.name, line: 0, severity: "error", code: "PARSE_ERROR", message: error });
+            issues.push(...checkNamingConvention(entry.name, spec));
+            issues.push(...checkFrontmatterFields(entry.name, fm2, spec));
+            issues.push(...checkToolNameCase(entry.name, fm2, spec));
+            issues.push(...checkMentionedToolNames(entry.name, reContent, spec));
+            issues.push(...checkDeprecatedPatterns(entry.name, reContent, spec));
+            issues.push(...checkFrontmatterNameMatch(entry.name, fm2, spec));
+          }
+        }
+      }
+
       results.push({
         tool: toolName,
         skill: entry.name,
@@ -407,6 +542,10 @@ async function checkTool(toolName: string, fixMode: boolean): Promise<Compliance
     }
   } catch (e) {
     console.error(`Error reading ${skillDir}: ${e}`);
+  }
+
+  if (fixMode && totalFixed > 0) {
+    console.log(`  └ ${toolName}: ${totalFixed} issue(s) auto-fixed\n`);
   }
 
   return results;
