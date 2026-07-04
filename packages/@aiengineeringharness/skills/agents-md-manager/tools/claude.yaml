@@ -1,0 +1,10 @@
+name: agents_md_manager
+naming: snake_case
+allowed-tools: Read, Write, Bash, Glob, Grep
+allowed-tools-case: PascalCase
+disable-model-invocation: true
+dir_name: agents_md_manager
+project_memory: CLAUDE.md
+config_dir: ~/.claude/
+dests:
+  - claude/skills/

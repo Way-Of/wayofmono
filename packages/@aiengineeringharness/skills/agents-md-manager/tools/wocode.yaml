@@ -1,0 +1,10 @@
+name: agents-md-manager
+naming: kebab-case
+allowed-tools: read, write, bash, glob, grep
+allowed-tools-case: lowercase
+disable-model-invocation: true
+dir_name: agents-md-manager
+project_memory: AGENTS.md
+config_dir: ~/.wocode/agent/
+dests:
+  - wocode/agent/skills/

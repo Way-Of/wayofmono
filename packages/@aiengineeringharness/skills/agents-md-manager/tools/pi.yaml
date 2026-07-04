@@ -1,0 +1,11 @@
+name: agents-md-manager
+naming: kebab-case
+allowed-tools: read, write, bash, glob, grep
+allowed-tools-case: lowercase
+dir_name: agents-md-manager
+project_memory: AGENTS.md
+config_dir: ~/.pi/agent/
+dests:
+  - pi/skills/
+  - pi/agent/skills/
+  - pi/agent/extensions/skills/

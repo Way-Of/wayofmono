@@ -1,0 +1,9 @@
+name: agents_md_manager
+naming: snake_case
+allowed-tools: read, write, bash, glob, grep
+allowed-tools-case: lowercase
+dir_name: agents_md_manager
+project_memory: GEMINI.md
+config_dir: ~/.gemini/
+dests:
+  - gemini/skills/

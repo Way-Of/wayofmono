@@ -1488,6 +1488,15 @@
               "dest": "skills/validate-manifest/SKILL.md"
             }
           ]
+        },
+        "skill/agents_md_manager": {
+          "description": "Create, update, and maintain AGENTS.md files across projects and subdirectories",
+          "files": [
+            {
+              "src": "antigravity/skills/agents_md_manager/SKILL.md",
+              "dest": "skills/agents_md_manager/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -2738,6 +2747,15 @@
             {
               "src": "claude/skills/womono_validate_manifest/SKILL.md",
               "dest": "skills/validate-manifest/SKILL.md"
+            }
+          ]
+        },
+        "skill/agents_md_manager": {
+          "description": "Create, update, and maintain AGENTS.md files across projects and subdirectories",
+          "files": [
+            {
+              "src": "claude/skills/agents_md_manager/SKILL.md",
+              "dest": "skills/agents_md_manager/SKILL.md"
             }
           ]
         }
@@ -4009,6 +4027,15 @@
             {
               "src": "codex/skills/womono_validate_manifest/SKILL.md",
               "dest": "skills/validate-manifest/SKILL.md"
+            }
+          ]
+        },
+        "skill/agents_md_manager": {
+          "description": "Create, update, and maintain AGENTS.md files across projects and subdirectories",
+          "files": [
+            {
+              "src": "codex/skills/agents_md_manager/SKILL.md",
+              "dest": "skills/agents_md_manager/SKILL.md"
             }
           ]
         }
@@ -5484,6 +5511,15 @@
               "dest": "skills/validate-manifest/SKILL.md"
             }
           ]
+        },
+        "skill/agents_md_manager": {
+          "description": "Create, update, and maintain AGENTS.md files across projects and subdirectories",
+          "files": [
+            {
+              "src": "gemini/skills/agents_md_manager/SKILL.md",
+              "dest": "skills/agents_md_manager/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -6851,6 +6887,15 @@
             {
               "src": "opencode/skills/womono-validate-manifest/SKILL.md",
               "dest": "skills/validate-manifest/SKILL.md"
+            }
+          ]
+        },
+        "skill/agents-md-manager": {
+          "description": "Create, update, and maintain AGENTS.md files across projects and subdirectories",
+          "files": [
+            {
+              "src": "opencode/skills/agents-md-manager/SKILL.md",
+              "dest": "skills/agents-md-manager/SKILL.md"
             }
           ]
         }
@@ -8325,6 +8370,15 @@
             {
               "src": "pi/agent/skills/womono-validate-manifest/SKILL.md",
               "dest": "skills/validate-manifest/SKILL.md"
+            }
+          ]
+        },
+        "skill/agents-md-manager": {
+          "description": "Create, update, and maintain AGENTS.md files across projects and subdirectories",
+          "files": [
+            {
+              "src": "pi/skills/agents-md-manager/SKILL.md",
+              "dest": "skills/agents-md-manager/SKILL.md"
             }
           ]
         }
@@ -9906,6 +9960,15 @@
             {
               "src": "wocode/agent/skills/womono-validate-manifest/SKILL.md",
               "dest": "skills/validate-manifest/SKILL.md"
+            }
+          ]
+        },
+        "skill/agents-md-manager": {
+          "description": "Create, update, and maintain AGENTS.md files across projects and subdirectories",
+          "files": [
+            {
+              "src": "wocode/agent/skills/agents-md-manager/SKILL.md",
+              "dest": "skills/agents-md-manager/SKILL.md"
             }
           ]
         }

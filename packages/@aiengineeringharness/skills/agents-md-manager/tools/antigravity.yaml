@@ -1,0 +1,10 @@
+name: agents_md_manager
+naming: snake_case
+allowed-tools: read, write, bash, glob, grep
+allowed-tools-case: lowercase
+disable-model-invocation: true
+dir_name: agents_md_manager
+project_memory: ANTIGRAVITY.md
+config_dir: ~/.antigravity/
+dests:
+  - antigravity/skills/
