@@ -46,6 +46,14 @@
   Show clone + stow instructions (repo).
 .PARAMETER Dest
   Clone destination for --mode=repo.
+.PARAMETER Detect
+  Print platform-aware system report and exit.
+.PARAMETER Debug
+  Enable verbose debug logging.
+.PARAMETER Force
+  Skip safety checks (e.g. running as admin/root).
+.PARAMETER NoReport
+  Disable telemetry reporting.
 .PARAMETER SkipBinary
   Skip CLI binary update in --update.
 .PARAMETER Help
@@ -77,7 +85,7 @@ param(
   [switch]$Interactive,
   [switch]$Local,
   [string]$Uninstall,
-  [switch]$Purge,
+  [string]$Purge,
   [switch]$NoValidate,
   [switch]$Prune,
   [switch]$SyncDocs,
