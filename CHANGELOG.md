@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.11] - 2026-07-04
+
+### Harness (AI Engineering Harness v1.7.11) — init-harness canonical skill
+- **Init-harness skill converted to config-manifest pattern (WOMONO-131)**: Refactored from 9 standalone per-tool copies to canonical + compile architecture at `packages/@aiengineeringharness/skills/init-harness/` with per-tool YAML configs and compile.py.
+- **Frontmatter compliance fixes**: Pi `name: init_harness` → `init-harness` (kebab-case), removed `disable-model-invocation` for Pi, Codex, Gemini (unsupported on those tools).
+- **AGENTS.md updated**: Added Canonical Skill Architecture section documenting the pattern, install.ts data flow, and how to create new skills.
+
 ## [1.7.10] - 2026-06-29
 
 ### Harness (AI Engineering Harness v1.7.10) — pi + wocode agents only

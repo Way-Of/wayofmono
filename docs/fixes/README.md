@@ -17,7 +17,7 @@
 |-----------|---------|----------------|------------|
 | **wocode** | `@wayofmono/wo-coding-agent` | v1.0.11 | `~/.wocode/` |
 | **wouser** | `@wayofmono/wo-agent` | v1.0.4 | `~/.wo/` |
-| **Harness** | `@aiengineeringharness` | v1.7.10 | `~/.wocode/`, `~/.pi/agent/`, etc. |
+| **Harness** | `@aiengineeringharness` | v1.7.11 | `~/.wocode/`, `~/.pi/agent/`, etc. |
 | **Dashboard** | `@wayofmono/wo-cto-dashboard` | v0.6.3 | `~/.config/wodev/` |
 
 ---
@@ -50,7 +50,12 @@ See [wo-agent-fixes.md](./wo-agent-fixes.md) for detailed release notes.
 
 See [ai-engineering-harness-fixes.md](./ai-engineering-harness-fixes.md) for detailed release notes.
 
-**Quick Summary (v1.8.4):**
+**Quick Summary (v1.7.11):**
+- Init-harness skill converted to canonical + compile pattern (WOMONO-131): `skills/init-harness/` with per-tool YAML configs + compile.py
+- Per-tool frontmatter compliance fixes (Pi kebab-case name, removed disable-model-invocation for Pi/Codex/Gemini)
+- AGENTS.md updated with Canonical Skill Architecture documentation
+
+**Previous (v1.7.10):**
 - Subagent extension import path fixed (WOMONO-115): `./agents.js` → `./subagent/agents.ts`
 - Worker → coder rename in both agent directories
 - All 4 subagent agents (planner, reviewer, scout, coder) rewritten with full operational protocols, file generation, completion signals, safety protocols

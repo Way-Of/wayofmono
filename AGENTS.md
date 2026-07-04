@@ -420,6 +420,94 @@ ai-harness --report-skills
 
 **Source of Truth**: Per-tool naming conventions verified against official documentation in `docs/ai-coding-tools/` (June 2026). All agent/agent files should conform to these rules — run `config-manifest/scripts/*-skill-update.py --validate` to check compliance.
 
+## Canonical Skill Architecture (config-manifest pattern)
+
+Multi-tool skills follow a **canonical + compile** pattern (like `config-manifest/`). The canonical source lives at `packages/@aiengineeringharness/skills/<skill>/` and a `compile.py` generates per-tool copies adapted for each tool's frontmatter format.
+
+### Pattern
+
+```
+skills/<skill>/
+├── SKILL.md          # Canonical body (tool-agnostic instructions, no frontmatter)
+├── compile.py        # Python script: reads per-tool YAML + canonical body, outputs per-tool SKILL.md files
+├── tools/            # Per-tool frontmatter YAML configs
+│   ├── opencode.yaml
+│   ├── claude.yaml
+│   ├── gemini.yaml
+│   ├── pi.yaml
+│   ├── wocode.yaml
+│   ├── antigravity.yaml
+│   └── codex.yaml
+└── README.md         # (optional) How to use
+```
+
+### Per-tool YAML fields
+
+| Field | Description |
+|-------|-------------|
+| `name` | Skill name in tool's case convention (kebab or snake) |
+| `naming` | `kebab-case` or `snake_case` |
+| `allowed-tools` | Value with correct case for the tool |
+| `allowed-tools-case` | `lowercase`, `PascalCase`, or `snake_case` |
+| `disable-model-invocation` | `true`/`false` — only `true` for OpenCode, Claude, wocode, Antigravity |
+| `dir_name` | Skill directory name (kebab or snake) |
+| `project_memory` | Tool's project memory filename (e.g. `AGENTS.md`, `CLAUDE.md`) or `null` |
+| `config_dir` | User's config directory for the tool |
+| `dests` | List of relative output paths from harness root (e.g. `opencode/skills/`) |
+
+### Usage
+
+```bash
+# Compile all tools
+python3 packages/@aiengineeringharness/skills/<skill>/compile.py
+
+# Compile single tool
+python3 packages/@aiengineeringharness/skills/<skill>/compile.py --tool=opencode
+
+# Validate existing files match expected output
+python3 packages/@aiengineeringharness/skills/<skill>/compile.py --validate
+```
+
+### install.ts & manifest.json data flow
+
+```
+skills/<skill>/SKILL.md  (canonical)
+       ↓ compile.py
+<tool>/skills/<dir>/SKILL.md  (per-tool source)
+       ↓ install.ts
+~/.config/<tool>/skills/<dir>/SKILL.md  (user's config)
+```
+
+- **manifest.json** defines `src` (per-tool copy in harness) → `dest` (relative path in user's config dir)
+- **install.ts** reads manifest entries, copies from `src` to `targetDir + dest`
+- The canonical `skills/` directory is the human-readable source of truth — NOT used directly by `install.ts`
+- Each tool's subdirectory (e.g. `opencode/skills/`, `claude/skills/`) is the actual source for installation
+- `manifest.json` entries reference per-tool src paths, e.g. `"src": "opencode/skills/init-harness/SKILL.md", "dest": "skills/init-harness/SKILL.md"`
+
+### Creating a new skill (config-manifest style)
+
+1. Create `skills/<skill>/SKILL.md` with the tool-agnostic body content
+2. Create per-tool YAML files in `skills/<skill>/tools/<tool>.yaml` with frontmatter fields
+3. Copy `skills/init-harness/compile.py` as a template and adapt if needed
+4. Run `python3 compile.py` to generate per-tool copies
+5. Add manifest entries referencing the tool-specific src paths
+
+### Reference implementation
+
+`packages/@aiengineeringharness/skills/init-harness/` — the first skill converted to this pattern. All other `skills/*/` skills should follow the same architecture.
+
+### Per-tool frontmatter rules (from config-manifest)
+
+| Tool | `name` case | `allowed-tools` case | `disable-model-invocation` | Dir naming |
+|------|------------|----------------------|---------------------------|------------|
+| OpenCode | kebab-case | lowercase | commands only | kebab-case |
+| Claude Code | snake_case | PascalCase (`Read`, `Write`) | commands only | snake_case |
+| Gemini CLI | snake_case | lowercase | unsupported | snake_case |
+| Pi | kebab-case | lowercase | unsupported | kebab-case |
+| Wo Coder | kebab-case | lowercase | commands only | kebab-case |
+| Antigravity | snake_case | lowercase | commands only | snake_case |
+| Codex CLI | snake_case | lowercase | unsupported | snake_case |
+
 ## f-rr-d (förråd) Structure
 
 ```

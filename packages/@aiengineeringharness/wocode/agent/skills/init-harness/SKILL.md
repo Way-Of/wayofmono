@@ -1,14 +1,9 @@
 ---
-name: init_harness
-description: >-
-  Initialize the AI Engineering Harness in a repository by running the tool's
-  project memory init, then cloning the shared f-rr-d thoughts repo and setting
-  up the standard directory structure. The f-rr-d repo is append-only — never
-  delete, rename, or move anything inside thoughts/.
+name: init-harness
+description: Initialize the AI Engineering Harness in a repository by running the tool's project memory init, then cloning the shared f-rr-d thoughts repo and setting up the standard directory structure. The f-rr-d repo is append-only — never delete, rename, or move anything inside thoughts/.
 disable-model-invocation: true
-allowed-tools: 'read, write, bash'
+allowed-tools: read, write, bash
 ---
-
 # Initialize Harness
 
 Initialize the AI Engineering Harness in this repository.
@@ -128,6 +123,80 @@ Append the following section to the project memory file:
 
 If the tool does not have a `commands/` directory (e.g., Claude, Codex), omit the Commands section.
 
+After listing skills and commands, also add structured agent definitions for the 6 GitHub skills so that agents know exactly when and how to use them:
+
+```markdown
+## GitHub Skills Agent Directory
+
+Use these skills for all GitHub operations. Never use raw `gh` or `git` commands for operations covered by these skills.
+
+#### Agent: GitHub Branch (github-branch)
+- **Identifier:** `github_branch_v1`
+- **Primary Runtime:** Platform-native
+- **Core Responsibility:** Create and manage feature branches from tickets with proper naming, ticket linking, and base branch selection
+- **Inputs:** Ticket ID, branch name, namespace
+- **Outputs:** Feature branch created, pushed to origin
+- **Constraints:** Never push directly to `main`; always create feature branches; never force-push
+
+#### Agent: GitHub Issue (github-issue)
+- **Identifier:** `github_issue_v1`
+- **Primary Runtime:** Platform-native
+- **Core Responsibility:** Create, manage, and link GitHub Issues with f-rr-d tickets; bi-directional sync
+- **Inputs:** Ticket details, namespace, labels
+- **Outputs:** GitHub Issue created/updated, synced with f-rr-d
+- **Constraints:** Must maintain bi-directional link between GitHub Issue and f-rr-d ticket; never close tickets without verification
+
+#### Agent: GitHub PR (github-pr)
+- **Identifier:** `github_pr_v1`
+- **Primary Runtime:** Platform-native
+- **Core Responsibility:** Create, manage, and review Pull Requests with ticket linking, templates, and review workflow
+- **Inputs:** Branch name, ticket reference, PR template
+- **Outputs:** PR created, linked to ticket, ready for review
+- **Constraints:** Never merge own PRs; always use PR templates; must reference the ticket in the PR body
+
+#### Agent: GitHub Release (github-release)
+- **Identifier:** `github_release_v1`
+- **Primary Runtime:** Platform-native
+- **Core Responsibility:** Create releases with changelog generation, version tagging, and automated publishing
+- **Inputs:** Version number, changelog entries, target branch
+- **Outputs:** GitHub Release created, tag pushed
+- **Constraints:** Must validate version is bumped in all required files; never delete existing releases
+
+#### Agent: GitHub Review (github-review)
+- **Identifier:** `github_review_v1`
+- **Primary Runtime:** Platform-native
+- **Core Responsibility:** Review Pull Requests with structured feedback, approval workflow, and CTO Dashboard integration
+- **Inputs:** PR URL, review criteria
+- **Outputs:** Review submitted (approve/changes-requested/reject), CTO Dashboard notified
+- **Constraints:** Never self-review; must verify against ticket acceptance criteria; only CTO can dismiss reviews
+
+#### Agent: GitHub Sync (github-sync)
+- **Identifier:** `github_sync_v1`
+- **Primary Runtime:** Platform-native
+- **Core Responsibility:** Sync feature branches with base branch, resolve conflicts, and manage branch lifecycle
+- **Inputs:** Feature branch name, base branch name
+- **Outputs:** Branch synced, conflicts resolved, CI re-triggered
+- **Constraints:** Never force-push; always pull --rebase before syncing; must run CI after conflict resolution
+```
+
+### GitHub Workflow Pattern
+
+After adding the GitHub skill agent definitions, also append this workflow to the project memory file:
+
+```markdown
+## GitHub Workflow
+
+All GitHub operations follow this sequence:
+1. `github-branch` — Create a feature branch from a ticket
+2. `github-pr` — Create a Pull Request from the branch
+3. `github-review` — Request review, address feedback
+4. `github-sync` — Keep branch up-to-date with base
+5. `github-release` — Tag and release when merged
+6. `github-issue` — Link issues to PRs throughout
+```
+
+This ensures agents always use the correct skill for each step and never resort to raw commands.
+
 ### Step 3: Clone the Shared f-rr-d Repo
 
 Run these checks in order:
@@ -165,16 +234,22 @@ thoughts/${PROJECT_SLUG}/
 │   ├── guides/         # How-to guides
 │   └── references/     # Reference docs
 ├── global/             # Project-level cross-cutting concerns
+├── enforcement-ticket/ # HIGHEST PRIORITY — overrides all other tickets
+├── zerwiz/             # Developer workspace
+├── tomas/              # Developer workspace
+├── craig/              # Developer workspace
+├── andre/              # Developer workspace
 ├── TODO.md             # If the user wants one
-└── enforcement-ticket/ # If the project needs it
 ```
+
+> **Enforcement tickets** are the highest priority items in the project. They **override all other tickets** — when an enforcement ticket exists, all work on non-enforcement tickets must pause until the enforcement ticket is resolved. This includes tickets across all namespaces (WOMONO, WOW, OPT).
 
 Create the core structure:
 
 ```bash
 mkdir -p thoughts/${PROJECT_SLUG}/shared/{tickets,plans,research}
 mkdir -p thoughts/${PROJECT_SLUG}/docs/{architecture,decisions,guides,references}
-mkdir -p thoughts/${PROJECT_SLUG}/global
+mkdir -p thoughts/${PROJECT_SLUG}/{global,enforcement-ticket,zerwiz,tomas,craig,andre}
 ```
 
 Copy the ticket template from the shared location:
@@ -187,11 +262,13 @@ Additional subdirectories like `docs/best-practices/`, `docs/skills/`, `docs/too
 
 ### Step 5: Create Personal Thoughts Directories
 
+Developer directories (`zerwiz/`, `tomas/`, `craig/`, `andre/`) were already created in Step 4. These are **always** created for every project — no user input needed. If additional developers join later, create their directories manually:
+
 ```bash
-mkdir -p thoughts/${PROJECT_SLUG}/$(whoami)
+mkdir -p thoughts/${PROJECT_SLUG}/<developer-name>
 ```
 
-Create directories for any known team members the user mentions. Personal dirs contain tickets, plans, and research files directly — no subfolder structure needed.
+Personal dirs contain tickets, plans, and research files directly — no subfolder structure needed.
 
 ### Step 6: Add thoughts/ to .gitignore (Critical)
 

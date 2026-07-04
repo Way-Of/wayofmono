@@ -515,6 +515,36 @@ All tools also discover skills from `~/.agents/skills/` (shared cross-tool locat
 
 ---
 
+## v1.7.11 — 2026-07-04 — Init-Harness Canonical Skill Architecture (WOMONO-131)
+
+### Features
+- **Init-harness skill converted to config-manifest pattern**: Refactored from 9 standalone per-tool copies to a canonical + compile architecture at `packages/@aiengineeringharness/skills/init-harness/`:
+  - `SKILL.md` — tool-agnostic canonical body (no frontmatter)
+  - `tools/{opencode,claude,gemini,pi,wocode,antigravity,codex}.yaml` — per-tool frontmatter configs
+  - `compile.py` — generates per-tool SKILL.md files from canonical + YAML configs
+  - `compile.py --validate` — checks existing files match expected output
+- **Frontmatter compliance fixes** (applied by compile.py):
+  - Pi: `name: init_harness` → `init-harness` (kebab-case), removed `disable-model-invocation` (unsupported on Pi)
+  - wocode: `name: init_harness` → `init-harness` (kebab-case)
+  - Codex: removed `disable-model-invocation` (unsupported on Codex)
+  - Gemini: removed `disable-model-invocation` (unsupported on Gemini)
+- **AGENTS.md updated**: Added "Canonical Skill Architecture (config-manifest pattern)" section documenting the pattern, per-tool YAML fields, install.ts data flow, and how to create new skills
+
+### Files
+- `packages/@aiengineeringharness/skills/init-harness/SKILL.md` — new canonical body
+- `packages/@aiengineeringharness/skills/init-harness/compile.py` — new compile script
+- `packages/@aiengineeringharness/skills/init-harness/tools/opencode.yaml` — new per-tool config
+- `packages/@aiengineeringharness/skills/init-harness/tools/claude.yaml` — new per-tool config
+- `packages/@aiengineeringharness/skills/init-harness/tools/gemini.yaml` — new per-tool config
+- `packages/@aiengineeringharness/skills/init-harness/tools/pi.yaml` — new per-tool config
+- `packages/@aiengineeringharness/skills/init-harness/tools/wocode.yaml` — new per-tool config
+- `packages/@aiengineeringharness/skills/init-harness/tools/antigravity.yaml` — new per-tool config
+- `packages/@aiengineeringharness/skills/init-harness/tools/codex.yaml` — new per-tool config
+- `AGENTS.md` — Added Canonical Skill Architecture section (L423-509)
+- `docs/fixes/ai-engineering-harness-fixes.md` — v1.7.11 entry added
+
+---
+
 ## Known Issues (Future Work)
 
 - ❌ Harness skills installation via `ai-harness --tool=wocode` only installs 25/81 skills
