@@ -85,11 +85,18 @@ install.ps1 -InstallCli
 
 Deno caches remote scripts after the first download. To force re-download of the latest version, add `--reload`:
 
+**macOS / Linux / Windows (bash):**
 ```bash
 deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
 ```
 
-- **Windows**: Always use `--reload` (required even on first install)
+**Windows (PowerShell):**
+```powershell
+iex (iwr https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ps1 -useb)
+install.ps1 -InstallCli
+```
+
+- **Windows (Deno)**: Always use `--reload` (required even on first install)
 - **macOS / Linux**: Use `--reload` when re-installing to pick up changes
 - Subsequent updates via `ai-harness --update` do **not** need `--reload`
 
