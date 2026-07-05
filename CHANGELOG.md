@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.13] - 2026-07-05
+
+### TypeScript Cleanup Across All wo-* Packages
+
+- **Removed source maps from dist/** (all 8 wo-* packages): Disabled `sourceMap` and `declarationMap` in tsconfig.base.json; added `!dist/**/*.map` to package.json `files` arrays. Eliminates ~580+ .map files from npm publishes (wo-agent: 286→0, wo-coding-agent: 280→0, wo-agent-core: 50→0, wo-tui: 50→0, wo-ai: 100→0, wo-web-ui: 16→0, wo-skill-docs: 6→0, wo-mermaid: 2→0).
+
+- **Moved vendor runtime assets out of src/** (wo-agent, wo-coding-agent): Relocated `marked.min.js`, `highlight.min.js`, `template.js` from `src/core/export-html/` to `assets/export-html/`. Updated `copy-assets` build scripts. Source directories now contain only TypeScript (.ts) files.
+
+- **Version bumps**: wo-agent 1.0.8, wo-coding-agent 1.0.12, wo-agent-core 1.0.5, wo-tui 1.0.5, wo-web-ui 1.0.4, wo-skill-docs 1.0.4, wo-ai 1.0.5, wo-mermaid 1.0.4.
+
+- **Resolves**: WOMONO-147, WOMONO-148, WOMONO-149, WOMONO-150, WOMONO-151, WOMONO-152, WOMONO-153, WOMONO-154, WOMONO-155, WOMONO-156
+
 ## [1.7.12] - 2026-07-04
 
 ### Harness (AI Engineering Harness v1.7.12) — WOMONO skills update + standup skill

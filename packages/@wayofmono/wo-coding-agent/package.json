@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/wo-coding-agent",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Coding agent CLI with read, bash, edit, write tools and session management",
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     }
   },
   "files": [
+    "!dist/**/*.map",
     "dist",
     "src",
     "docs",
@@ -34,7 +35,7 @@
   ],
   "scripts": {
     "build": "tsc && npm run copy-assets",
-    "copy-assets": "shx mkdir -p dist/modes/interactive/theme && shx cp src/modes/interactive/theme/*.json dist/modes/interactive/theme/ && shx mkdir -p dist/modes/interactive/assets && shx cp src/modes/interactive/assets/*.png dist/modes/interactive/assets/ && shx mkdir -p dist/core/export-html/vendor && shx cp src/core/export-html/template.* dist/core/export-html/ && shx cp src/core/export-html/vendor/*.js dist/core/export-html/vendor/",
+    "copy-assets": "shx mkdir -p dist/modes/interactive/theme && shx cp src/modes/interactive/theme/*.json dist/modes/interactive/theme/ && shx mkdir -p dist/modes/interactive/assets && shx cp src/modes/interactive/assets/*.png dist/modes/interactive/assets/ && shx mkdir -p dist/core/export-html/vendor && shx cp assets/export-html/template.* dist/core/export-html/ && shx cp assets/export-html/vendor/*.js dist/core/export-html/vendor/",
     "test": "vitest --run --passWithNoTests",
     "typecheck": "tsc --noEmit"
   },
