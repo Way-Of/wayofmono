@@ -99,10 +99,6 @@
               "dest": "commands/debug.toml"
             },
             {
-              "src": "antigravity/commands/run-experimental-pr-workflow.toml",
-              "dest": "commands/experimental-pr-workflow.toml"
-            },
-            {
               "src": "antigravity/commands/run-git_commit_helper.toml",
               "dest": "commands/git-commit-helper.toml"
             },
@@ -160,15 +156,6 @@
             {
               "src": "antigravity/commands/run-debug.toml",
               "dest": "commands/debug.toml"
-            }
-          ]
-        },
-        "command/experimental-pr-workflow": {
-          "description": "Experimental Pr Workflow command",
-          "files": [
-            {
-              "src": "antigravity/commands/run-experimental-pr-workflow.toml",
-              "dest": "commands/experimental-pr-workflow.toml"
             }
           ]
         },
@@ -268,15 +255,6 @@
             {
               "src": "antigravity/skills/debug/SKILL.md",
               "dest": "skills/debug/SKILL.md"
-            }
-          ]
-        },
-        "skill/experimental-pr-workflow": {
-          "description": "Experimental Pr Workflow skill",
-          "files": [
-            {
-              "src": "antigravity/skills/experimental_pr_workflow/SKILL.md",
-              "dest": "skills/experimental-pr-workflow/SKILL.md"
             }
           ]
         },
@@ -810,15 +788,6 @@
             }
           ]
         },
-        "command/fixes-validate": {
-          "description": "Validate version consistency command",
-          "files": [
-            {
-              "src": "antigravity/commands/run-fixes-validate.toml",
-              "dest": "commands/fixes-validate.toml"
-            }
-          ]
-        },
         "command/work": {
           "description": "Start working on a ticket, update status to In Progress",
           "files": [
@@ -843,15 +812,6 @@
             {
               "src": "antigravity/commands/run-ticket-create.toml",
               "dest": "commands/ticket-create.toml"
-            }
-          ]
-        },
-        "command/submit-for-review": {
-          "description": "Submit ticket for CTO review",
-          "files": [
-            {
-              "src": "antigravity/commands/run-submit-for-review.toml",
-              "dest": "commands/submit-for-review.toml"
             }
           ]
         },
@@ -1132,15 +1092,6 @@
             {
               "src": "claude/skills/document_generation/SKILL.md",
               "dest": "skills/document-generation/SKILL.md"
-            }
-          ]
-        },
-        "skill/experimental-pr-workflow": {
-          "description": "Experimental Pr Workflow skill",
-          "files": [
-            {
-              "src": "claude/skills/experimental_pr_workflow/SKILL.md",
-              "dest": "skills/experimental-pr-workflow/SKILL.md"
             }
           ]
         },
@@ -1533,15 +1484,6 @@
             }
           ]
         },
-        "skill/fixes-validate": {
-          "description": "Validate version consistency command",
-          "files": [
-            {
-              "src": "claude/skills/fixes_validate/SKILL.md",
-              "dest": "skills/fixes-validate/SKILL.md"
-            }
-          ]
-        },
         "skill/commit": {
           "description": "Create structured git commits",
           "files": [
@@ -1575,15 +1517,6 @@
             {
               "src": "claude/skills/ticket_create/SKILL.md",
               "dest": "skills/ticket-create/SKILL.md"
-            }
-          ]
-        },
-        "skill/submit-for-review": {
-          "description": "Submit ticket for CTO review",
-          "files": [
-            {
-              "src": "claude/skills/submit_for_review/SKILL.md",
-              "dest": "skills/submit-for-review/SKILL.md"
             }
           ]
         },
@@ -1767,15 +1700,6 @@
             {
               "src": "codex/skills/document_generation/SKILL.md",
               "dest": "skills/document-generation/SKILL.md"
-            }
-          ]
-        },
-        "skill/experimental-pr-workflow": {
-          "description": "Experimental Pr Workflow skill",
-          "files": [
-            {
-              "src": "codex/skills/experimental_pr_workflow/SKILL.md",
-              "dest": "skills/experimental-pr-workflow/SKILL.md"
             }
           ]
         },
@@ -2248,19 +2172,6 @@
             }
           ]
         },
-        "skill/fixes-validate": {
-          "description": "Validate version consistency skill",
-          "files": [
-            {
-              "src": "codex/skills/fixes_validate/skill.yaml",
-              "dest": "skills/fixes-validate/skill.yaml"
-            },
-            {
-              "src": "codex/skills/fixes_validate/prompt.md",
-              "dest": "skills/fixes-validate/prompt.md"
-            }
-          ]
-        },
         "skill/commit": {
           "description": "Create structured git commits",
           "files": [
@@ -2310,19 +2221,6 @@
             {
               "src": "codex/skills/ticket_create/prompt.md",
               "dest": "skills/ticket-create/prompt.md"
-            }
-          ]
-        },
-        "skill/submit-for-review": {
-          "description": "Submit ticket for CTO review",
-          "files": [
-            {
-              "src": "codex/skills/submit_for_review/skill.yaml",
-              "dest": "skills/submit-for-review/skill.yaml"
-            },
-            {
-              "src": "codex/skills/submit_for_review/prompt.md",
-              "dest": "skills/submit-for-review/prompt.md"
             }
           ]
         },
@@ -2638,15 +2536,6 @@
             {
               "src": "opencode/skills/document-generation/SKILL.md",
               "dest": "skills/document-generation/SKILL.md"
-            }
-          ]
-        },
-        "skill/experimental-pr-workflow": {
-          "description": "Experimental Pr Workflow skill",
-          "files": [
-            {
-              "src": "opencode/skills/experimental-pr-workflow/SKILL.md",
-              "dest": "skills/experimental-pr-workflow/SKILL.md"
             }
           ]
         },
@@ -3084,15 +2973,6 @@
             }
           ]
         },
-        "command/fixes-validate": {
-          "description": "Validate version consistency",
-          "files": [
-            {
-              "src": "opencode/commands/fixes-validate.md",
-              "dest": "commands/fixes-validate.md"
-            }
-          ]
-        },
         "command/work": {
           "description": "Start working on a ticket, update status to In Progress",
           "files": [
@@ -3120,30 +3000,12 @@
             }
           ]
         },
-        "command/submit-for-review": {
-          "description": "Submit ticket for CTO review",
-          "files": [
-            {
-              "src": "opencode/commands/submit-for-review.md",
-              "dest": "commands/submit-for-review.md"
-            }
-          ]
-        },
         "command/help": {
           "description": "Unified help system for all commands and skills",
           "files": [
             {
               "src": "opencode/commands/help.md",
               "dest": "commands/help.md"
-            }
-          ]
-        },
-        "command/experimental-pr-workflow": {
-          "description": "Formalize experimental work into tickets and PRs",
-          "files": [
-            {
-              "src": "opencode/commands/experimental-pr-workflow.md",
-              "dest": "commands/experimental-pr-workflow.md"
             }
           ]
         },
@@ -3473,15 +3335,6 @@
             {
               "src": "pi/agent/prompts/worktree.md",
               "dest": "prompts/worktree.md"
-            }
-          ]
-        },
-        "skill/experimental-pr-workflow": {
-          "description": "Experimental PR workflow skill",
-          "files": [
-            {
-              "src": "pi/agent/skills/experimental-pr-workflow/SKILL.md",
-              "dest": "skills/experimental-pr-workflow/SKILL.md"
             }
           ]
         },
@@ -4033,15 +3886,6 @@
             }
           ]
         },
-        "prompt/fixes-validate": {
-          "description": "Validate version consistency prompt",
-          "files": [
-            {
-              "src": "pi/agent/prompts/fixes-validate.md",
-              "dest": "prompts/fixes-validate.md"
-            }
-          ]
-        },
         "prompt/work": {
           "description": "Start working on a ticket, update status to In Progress",
           "files": [
@@ -4069,30 +3913,12 @@
             }
           ]
         },
-        "prompt/submit-for-review": {
-          "description": "Submit ticket for CTO review",
-          "files": [
-            {
-              "src": "pi/agent/prompts/submit-for-review.md",
-              "dest": "prompts/submit-for-review.md"
-            }
-          ]
-        },
         "prompt/help": {
           "description": "Unified help system for all commands and skills",
           "files": [
             {
               "src": "pi/agent/prompts/help.md",
               "dest": "prompts/help.md"
-            }
-          ]
-        },
-        "prompt/experimental-pr-workflow": {
-          "description": "Formalize experimental work into tickets and PRs",
-          "files": [
-            {
-              "src": "pi/agent/prompts/experimental-pr-workflow.md",
-              "dest": "prompts/experimental-pr-workflow.md"
             }
           ]
         },
@@ -4552,15 +4378,6 @@
             }
           ]
         },
-        "skill/experimental-pr-workflow": {
-          "description": "Experimental Pr Workflow skill",
-          "files": [
-            {
-              "src": "wocode/agent/skills/experimental-pr-workflow/SKILL.md",
-              "dest": "skills/experimental-pr-workflow/SKILL.md"
-            }
-          ]
-        },
         "skill/git-commit-helper": {
           "description": "Git Commit Helper skill",
           "files": [
@@ -4995,15 +4812,6 @@
             }
           ]
         },
-        "prompt/fixes-validate": {
-          "description": "Validate version consistency prompt",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/fixes-validate.md",
-              "dest": "prompts/fixes-validate.md"
-            }
-          ]
-        },
         "prompt/commit": {
           "description": "Create structured git commits",
           "files": [
@@ -5058,30 +4866,12 @@
             }
           ]
         },
-        "prompt/submit-for-review": {
-          "description": "Submit ticket for CTO review",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/submit-for-review.md",
-              "dest": "prompts/submit-for-review.md"
-            }
-          ]
-        },
         "prompt/help": {
           "description": "Unified help system for all commands and skills",
           "files": [
             {
               "src": "wocode/agent/prompts/help.md",
               "dest": "prompts/help.md"
-            }
-          ]
-        },
-        "prompt/experimental-pr-workflow": {
-          "description": "Formalize experimental work into tickets and PRs",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/experimental-pr-workflow.md",
-              "dest": "prompts/experimental-pr-workflow.md"
             }
           ]
         },
