@@ -15,7 +15,6 @@ Create, update, and maintain AGENTS.md files across projects and subdirectories.
 |------|-------------------|
 | OpenCode | `AGENTS.md` |
 | Claude Code | `CLAUDE.md` |
-| Gemini CLI | `GEMINI.md` |
 | Pi | `AGENTS.md` |
 | Wo Coder | `AGENTS.md` |
 | Antigravity | `ANTIGRAVITY.md` |
@@ -151,7 +150,7 @@ Ask the user:
 
 ### Step 2: Detect the Tool
 
-Determine which AI coding tool is running (check tool config directories, `.claude/`, `.gemini/`, etc.) to use the correct project memory filename (AGENTS.md, CLAUDE.md, GEMINI.md, etc.).
+Determine which AI coding tool is running (check tool config directories, `.claude/`, etc.) to use the correct project memory filename (AGENTS.md, CLAUDE.md).
 
 ### Step 3: Discover Available Resources
 
@@ -203,7 +202,7 @@ If no harness config directory is found, create a minimal AGENTS.md with just th
 OpenCode and Claude support YAML frontmatter in AGENTS.md. Some tools may not support frontmatter — detect and adapt.
 
 ### Multiple Tools Active
-If multiple harness config directories are detected (e.g., both `.claude/` and `.config/opencode/` exist), generate AGENTS.md as the primary file (used by OpenCode, Pi, Wo Coder) and note that other tools use their own filename (CLAUDE.md, GEMINI.md, etc.).
+If multiple harness config directories are detected (e.g., both `.claude/` and `.config/opencode/` exist), generate AGENTS.md as the primary file (used by OpenCode, Pi, Wo Coder) and note that other tools use their own filename (CLAUDE.md, , etc.).
 
 ## Known Patterns
 

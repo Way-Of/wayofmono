@@ -31,7 +31,7 @@ For each file in `version-config.json.version_files`, sorted by `bump_order`:
 
 ### 4. womono-Specific Notes
 If `--project=womono`, these additional steps apply:
-- After updating `manifest.json`, also update the 7 per-tool `version` fields: `antigravity/version`, `claude/version`, `codex/version`, `gemini/version`, `opencode/version`, `pi/version`, `wocode/version`
+- After updating `manifest.json`, also update the 7 per-tool `version` fields: `antigravity/version`, `claude/version`, `codex/version`, `opencode/version`, `pi/version`, `wocode/version`
 - After all files are updated, recompile:
   ```bash
   python3 packages/@aiengineeringharness/config-manifest/compile.py

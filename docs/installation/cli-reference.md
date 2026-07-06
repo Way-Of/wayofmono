@@ -7,7 +7,7 @@ Complete flag reference for the AI Engineering Harness CLI.
 | Flag | Alias | Description |
 |------|-------|-------------|
 | `--install-cli` | | Install/update CLI binary |
-| `--tool=<name>` | | Install tool config (claude, opencode, gemini, pi, wocode, antigravity, codex, all) |
+| `--tool=<name>` | | Install tool config (claude, opencode, pi, wocode, antigravity, codex, all) |
 | `--update` | | Full harness sync: CLI + docs + all tools + compliance |
 | `--compliance` | | Validate all installed files match manifest |
 | `--check` | | Compare installed versions against manifest |

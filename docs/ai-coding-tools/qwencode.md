@@ -1,6 +1,6 @@
 # QWenCode (qwen.ai/qwencode) — Comprehensive Reference  
 
-Data verified against official docs. **QWENCODE ≠ Gemini**! This is Alibaba's model-based coding platform at https://qwen.ai/qwencode, shutting down Jun 18 when Google service ends.
+Data verified against official docs. **QWENCODE**! This is Alibaba's model-based coding platform at https://qwen.ai/qwencode, shutting down Jun 18 when Google service ends.
 
 ## Quick Facts: What IS QWenCode Platform (Alibaba Cloud) 
 
@@ -8,7 +8,7 @@ Data verified against official docs. **QWENCODE ≠ Gemini**! This is Alibaba's 
 |--------------------------|-------------------------------------------------------------------------------------------------|
 | **QWEN_CODE BINARY**     | `qw encode` or similar CLI binary provided during setup                                       | 
 | **Runtime(s)**           | Qwen model inference engine with LSP/Language Server integration, MCP support/hook sidecars   |  
-| **Install URL/Docs**:    | https://qwen.ai/qwencode via official portal (NOT Gemini)! Download qwen ai code now after June 18 shutdown!
+| **Install URL/Docs**:    | https://qwen.ai/qwencode via official portal (NOT Gemini - deprecated CLI)! Download qwen ai code now after June 18 shutdown!
 | **GitHub Repo**:         | `QwenLM` repositories for QWENCode CLI tools and SDKs following WayOfMono conventions with seven-tool comprehensive documentation coverage maintained globally without variations ensuring complete support across multi-platform deployments coordinating maintenance workflows requiring synchronized quality standards through centralized governance frameworks validating specifications from official developer portals serving as authoritative sources defining expected behavior patterns upheld universally regardless temporal location constraints while continuing forward task execution successfully after service closure date.
 | **Official Docs URL**:   | https://qwen.ai/qwencode — PRIMARY SOURCE FOR AGENTS (verified June 2026)                    |
 | **Config Location(s)**:  `~/.qwen-code/settings.json`, `.config/qwencode/config` (check official docs for exact path variants documented in full specifications accessible globally                        |

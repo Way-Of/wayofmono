@@ -18,7 +18,6 @@ type ToolPathPatterns = {
 const toolPaths: ToolPathPatterns = {
   opencode: 'packages/@aiengineeringharness/opencode',
   claude: 'packages/@aiengineeringharness/claude',
-  gemini: 'packages/@aiengineeringharness/gemini',
   pi: 'packages/@aiengineeringharness/pi/agent',
   antigravity: 'packages/@aiengineeringharness/antigravity',
   codex: 'packages/@aiengineeringharness/codex',

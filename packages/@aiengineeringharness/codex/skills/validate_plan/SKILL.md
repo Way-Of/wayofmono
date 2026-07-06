@@ -1,6 +1,6 @@
 ---
 name: validate_plan
-description: Validate that an implementation plan was correctly executed, verifying all success criteria using Gemini CLI tools and delegating to research agents.
+description: Validate that an implementation plan was correctly executed, verifying all success criteria using CLI tools and delegating to research agents.
 allowed-tools: read, write, bash, grep, glob, task
 ---
 

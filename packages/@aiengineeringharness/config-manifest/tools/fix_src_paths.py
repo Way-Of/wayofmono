@@ -14,7 +14,6 @@ TOOL_CONFIG = {
     "pi": {"convention": "kebab-case", "skills_dir": "pi/agent/skills"},
     "antigravity": {"convention": "snake_case", "skills_dir": "antigravity/skills"},
     "codex": {"convention": "snake_case", "skills_dir": "codex/skills"},
-    "gemini": {"convention": "snake_case", "skills_dir": "gemini/skills"},
     "claude": {"convention": "snake_case", "skills_dir": "claude/skills"},
     "opencode": {"convention": "kebab-case", "skills_dir": "opencode/skills"},
 }

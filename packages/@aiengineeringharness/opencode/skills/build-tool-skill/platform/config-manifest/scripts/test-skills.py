@@ -30,7 +30,6 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fi
 TOOL_SKILL_DIRS = {
     "opencode": os.path.join(REPO_ROOT, "opencode", "skills"),
     "claude": os.path.join(REPO_ROOT, "claude", "skills"),
-    "gemini": os.path.join(REPO_ROOT, "gemini", "skills"),
     "pi": os.path.join(REPO_ROOT, "pi", "agent", "skills"),
     "wocode": os.path.join(REPO_ROOT, "wocode", "skills"),
     "codex": os.path.join(REPO_ROOT, "codex", "skills"),
@@ -56,7 +55,6 @@ TOOL_SPECS = {
         "supports_disable_model_invocation": True,
         "has_commands": True,
     },
-    "gemini": {
         "dir_naming": "kebab",
         "name_naming": "snake",
         "skill_file": "SKILL.md",

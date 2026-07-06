@@ -14,7 +14,7 @@ Audit existing code, configuration, or infrastructure against the canonical best
 When auditing WOMONO harness code, check against these systems:
 
 ### Canonical Skill Architecture
-Verify skills follow the config-manifest pattern: `skills/<name>/SKILL.md` + `compile.py` + `tools/<tool>.yaml`. Check that per-tool copies exist in each tool's directory and naming conventions are correct (kebab for opencode/pi/wocode, snake for claude/gemini/antigravity/codex).
+Verify skills follow the config-manifest pattern: `skills/<name>/SKILL.md` + `compile.py` + `tools/<tool>.yaml`. Check that per-tool copies exist in each tool's directory and naming conventions are correct (kebab for opencode/pi/wocode, snake for claude/antigravity/codex).
 
 ### Config-Manifest
 Check `config-manifest/tools/*.yaml` for correct entries. The `config-manifest/validate.py` script can check per-tool format compliance.

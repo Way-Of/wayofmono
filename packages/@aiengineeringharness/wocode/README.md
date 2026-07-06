@@ -28,9 +28,9 @@ Programmable TS/JS extensions (using the same API standard as Earendil Works Pi)
 
 ---
 
-## 🚫 Key Differences from Antigravity / Gemini CLI
+## 🚫 Key Differences from Antigravity / 
 
-Unlike the Gemini CLI and Antigravity, Wo Coder **does not** natively support:
+Unlike the and Antigravity, Wo Coder **does not** natively support:
 *   **Builtin Sidecars (`sidecar.json`)**: Wo Coder does not manage background sidecars or cron schedules.
 *   **Pre/Post Hooks (`hooks.json`)**: Wo Coder does not support lifecycle hooks configured via json event maps.
 

@@ -1,4 +1,4 @@
-// .gemini/skills/wow-skill-creator/scripts/backend-api-example.js
+// skills/wow-skill-creator/scripts/backend-api-example.js
 // Example Node.js script for making authenticated backend API calls within WoW.
 
 const fetch = require('node-fetch');

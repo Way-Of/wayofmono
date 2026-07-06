@@ -1,10 +1,10 @@
 // Auto-generated from canonical skill: experimental_pr_workflow
 // Platform: WoCoder (Node/Deno)
-// Description: Handles experimental features that lack proper ticketing by retroactively creating Linear tickets and PRs from commits. Utilizes `git` and `gh` commands via Gemini CLI's `run_shell_command` to formalize experimental work.
+// Description: Handles experimental features that lack proper ticketing by retroactively creating Linear tickets and PRs from commits. Utilizes `git` and `gh` commands via CLI `run_shell_command` to formalize experimental work.
 
 export const skill = {
   name: "experimental_pr_workflow",
-  description: "Handles experimental features that lack proper ticketing by retroactively creating Linear tickets and PRs from commits. Utilizes `git` and `gh` commands via Gemini CLI's `run_shell_command` to formalize experimental work.",
+  description: "Handles experimental features that lack proper ticketing by retroactively creating Linear tickets and PRs from commits. Utilizes `git` and `gh` commands via CLI `run_shell_command` to formalize experimental work.",
   tools: ["read_file", "run_shell_command", "search_file_content", "glob", "write_file"],
   prompt: `> **Platform**: Wo Coder | **Skill**: experimental_pr_workflow | **Version**: 1.0.0
 >

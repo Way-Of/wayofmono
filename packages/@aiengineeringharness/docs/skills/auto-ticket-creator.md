@@ -4,7 +4,7 @@ description: "Monitor codebase, dependencies, and external sources to auto-creat
 version: 1.0.0
 namespace: core
 tools: read, write, grep, glob, WebSearch
-platforms: [claude, opencode, gemini, pi, wocode, antigravity, codex]
+platforms: [claude, opencode, pi, wocode, antigravity, codex]
 allowed-tools: [read, write, grep, glob, web_search]
 dependencies: [ticket-manager]
 ---

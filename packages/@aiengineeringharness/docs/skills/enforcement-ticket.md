@@ -4,7 +4,7 @@ description: "Enforce English language requirement across all tickets and skills
 version: 1.0.0
 namespace: enforcement
 tools: read, write, grep
-platforms: [claude, opencode, gemini, pi, wocode, antigravity, codex]
+platforms: [claude, opencode, pi, wocode, antigravity, codex]
 allowed-tools: [read, write, grep]
 dependencies: [ticket-manager]
 ---

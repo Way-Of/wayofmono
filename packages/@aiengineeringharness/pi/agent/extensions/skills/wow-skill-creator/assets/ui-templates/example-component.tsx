@@ -1,4 +1,4 @@
-// .gemini/skills/wow-skill-creator/assets/ui-templates/example-component.tsx
+// skills/wow-skill-creator/assets/ui-templates/example-component.tsx
 import React from 'react';
 
 interface ExampleComponentProps {

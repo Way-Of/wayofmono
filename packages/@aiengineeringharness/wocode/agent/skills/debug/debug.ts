@@ -1,10 +1,10 @@
 // Auto-generated from canonical skill: debug
 // Platform: WoCoder (Node/Deno)
-// Description: Debug issues during manual testing or implementation by examining logs, state, and git history using Gemini CLI tools.
+// Description: Debug issues during manual testing or implementation by examining logs, state, and git history using CLI tools.
 
 export const skill = {
   name: "debug",
-  description: "Debug issues during manual testing or implementation by examining logs, state, and git history using Gemini CLI tools.",
+  description: "Debug issues during manual testing or implementation by examining logs, state, and git history using CLI tools.",
   tools: ["read_file", "run_shell_command", "search_file_content", "glob"],
   prompt: `> **Platform**: Wo Coder | **Skill**: debug | **Version**: 1.0.0
 >

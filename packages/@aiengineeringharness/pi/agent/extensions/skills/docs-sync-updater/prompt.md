@@ -12,7 +12,6 @@ Fetches the latest documentation from all supported agent frontends to keep skil
 | Source | URL |
 |--------|-----|
 | Pi | https://pi.dev/docs/latest |
-| Gemini CLI | https://geminicli.com/docs/ |
 | OpenCode | https://opencode.ai/docs/cli/ |
 | Claude Code | https://code.claude.com/docs/en/overview |
 | Codex | https://developers.openai.com/codex/cli |
@@ -21,7 +20,6 @@ Fetches the latest documentation from all supported agent frontends to keep skil
 ## Commands
 
 - `ai-harness docs sync` - Fetch all, show diff, create tickets
-- `ai-harness docs sync --source=claude,gemini` - Selective sources
 - `ai-harness docs watch` - Continuous monitoring daemon
 - `ai-harness docs status` - Show last sync and pending updates
 

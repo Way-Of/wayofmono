@@ -1,10 +1,10 @@
 // Auto-generated from canonical skill: pr_description_generator
 // Platform: WoCoder (Node/Deno)
-// Description: Generates comprehensive pull request descriptions following repository templates. Utilizes Gemini CLI tools including `run_shell_command` for `git` and `gh` commands.
+// Description: Generates comprehensive pull request descriptions following repository templates. Utilizes CLI tools including `run_shell_command` for `git` and `gh` commands.
 
 export const skill = {
   name: "pr_description_generator",
-  description: "Generates comprehensive pull request descriptions following repository templates. Utilizes Gemini CLI tools including `run_shell_command` for `git` and `gh` commands.",
+  description: "Generates comprehensive pull request descriptions following repository templates. Utilizes CLI tools including `run_shell_command` for `git` and `gh` commands.",
   tools: ["read_file", "run_shell_command", "search_file_content", "glob", "replace", "write_file"],
   prompt: `> **Platform**: Wo Coder | **Skill**: pr_description_generator | **Version**: 1.0.0
 >

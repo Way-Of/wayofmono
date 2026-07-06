@@ -1,2 +1,0 @@
-description = "Fixes Validate"
-prompt = "Activate the `fixes-manager` skill to validate version consistency across all project files. Requires --project argument."

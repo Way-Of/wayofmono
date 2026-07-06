@@ -3,7 +3,7 @@ name: fixes-manager
 description: "Cross-project fix/release notes manager. Creates, updates, diffs, and migrates fix notes for any Way-Of project. Per-project assets define each project's fix note location, template, and format rules."
 version: "1.0"
 tools: [read, write, edit, bash, grep, glob, websearch]
-platforms: [opencode, claude, gemini, pi, wocode, antigravity, codex]
+platforms: [opencode, claude, pi, wocode, antigravity, codex]
 allowed-tools: read, write, edit, bash, grep, glob, websearch
 ---
 

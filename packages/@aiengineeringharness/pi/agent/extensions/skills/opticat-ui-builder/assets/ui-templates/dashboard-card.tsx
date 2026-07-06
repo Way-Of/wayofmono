@@ -1,4 +1,4 @@
-// .gemini/skills/opticat-ui-builder/assets/ui-templates/dashboard-card.tsx
+// skills/opticat-ui-builder/assets/ui-templates/dashboard-card.tsx
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
 

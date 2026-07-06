@@ -16,7 +16,6 @@ global_defaults:
 tool_order:
   - "claude"
   - "opencode"
-  - "gemini"
   - "pi"
   - "wocode"
   - "codex"

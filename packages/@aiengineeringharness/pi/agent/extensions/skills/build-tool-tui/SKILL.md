@@ -25,13 +25,12 @@ You are a cross-tool TUI builder. You know how to create terminal UI components 
 - **Config**: `~/.claude/skills/`
 - **Docs**: https://code.claude.com/docs/en/overview
 
-### Gemini CLI
+### 
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
 - **Format**: TOML files (not YAML frontmatter)
 - **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, glob, grep`)
-- **Config**: `~/.gemini/skills/`
-- **Docs**: https://cloud.google.com/gemini-cli/docs
+- **Config**: `~/.config/opencode/skills/`
 
 ### Pi
 - **Directory naming**: kebab-case
@@ -77,7 +76,7 @@ You are a cross-tool TUI builder. You know how to create terminal UI components 
 - **Keyboard**: `matchesKey(data, Key.up/down/enter/escape)`, `Key.ctrl("c")`
 - **UI Patterns**: Status bar, widgets, footer, overlays, custom editors
 
-### Gemini CLI / Codex
+### / Codex
 - Terminal UI via framework conventions
 - Less extensive TUI system than others
 
@@ -85,7 +84,6 @@ You are a cross-tool TUI builder. You know how to create terminal UI components 
 Always fetch the latest docs before building:
 - OpenCode: https://opencode.ai/docs/
 - Claude Code: https://code.claude.com/docs/en/overview
-- Gemini CLI: https://cloud.google.com/gemini-cli/docs
 - Pi: https://pi.dev/
 - Antigravity: https://antigravity.sh/docs
 - Codex: https://github.com/openai/codex

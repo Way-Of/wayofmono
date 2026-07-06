@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is an AI Engineering Harness - a configuration repository that provides reusable agents, skills, and workflows for AI coding tools (OpenCode, Claude Code, Gemini CLI, and Pi). Configurations are symlinked to tool-specific directories via GNU Stow.
+This is an AI Engineering Harness - a configuration repository that provides reusable agents, skills, and workflows for AI coding tools (OpenCode, Claude Code, Pi, and more). Configurations are symlinked to tool-specific directories via GNU Stow.
 
 ## Setup Commands
 
@@ -12,7 +12,6 @@ This is an AI Engineering Harness - a configuration repository that provides reu
 # Install configurations (requires GNU Stow)
 ./setup.sh claude             # Install Claude Code config to ~/.claude/
 ./setup.sh opencode           # Install OpenCode config to ~/.config/opencode/
-./setup.sh gemini             # Install Gemini CLI config to ~/.gemini/
 ./setup.sh pi                 # Install Pi config to ~/.pi/agent/
 ./setup.sh all                # Install all four
 
@@ -28,14 +27,13 @@ This is an AI Engineering Harness - a configuration repository that provides reu
 
 - `claude/` → symlinks to `~/.claude/` (Claude Code)
 - `opencode/` → symlinks to `~/.config/opencode/` (OpenCode)
-- `gemini/` → symlinks to `~/.gemini/` (Gemini CLI)
 - `pi/` → symlinks to `~/.pi/agent/` (Pi)
 
 All four contain parallel structures:
-- `agents/` - Specialized subagents (snake_case for OpenCode/Claude/Gemini, kebab-case for Pi)
+- `agents/` - Specialized subagents (snake_case for OpenCode/Claude, kebab-case for Pi)
 - `skills/` or `commands/` - Manual commands and auto-triggered behaviors
 
-OpenCode additionally has `commands/` (separate from skills), while Claude Code implements commands as skills with `disable-model-invocation: true`. Gemini CLI uses TOML format for both commands and skills. Pi uses `prompts/` for command-equivalent prompt templates and includes an `extensions/` directory with the subagent extension for multi-agent workflows.
+OpenCode additionally has `commands/` (separate from skills), while Claude Code implements commands as skills with `disable-model-invocation: true`. Pi uses `prompts/` for command-equivalent prompt templates and includes an `extensions/` directory with the subagent extension for multi-agent workflows.
 
 ### Thoughts Directory (Context Engineering)
 

@@ -28,9 +28,9 @@ OpenCode dynamically discovers and reads an `AGENTS.md` file at your workspace r
 
 ---
 
-## 🚫 Key Differences from Antigravity / Gemini CLI
+## 🚫 Key Differences from Antigravity / 
 
-Unlike the Gemini CLI / Antigravity SDK platforms, OpenCode is a lightweight terminal-first interface and **does not** natively support:
+Unlike the / Antigravity SDK platforms, OpenCode is a lightweight terminal-first interface and **does not** natively support:
 *   **Background Sidecars (`sidecar.json`)**: OpenCode does not manage background daemons or cron schedules.
 *   **Lifecycle Hooks (`hooks.json`)**: OpenCode does not intercept terminal or file actions through pre/post-hook event pipelines.
 *   **Packaged Plugins (`plugin.json`)**: OpenCode does not package extensions into namespaced plugin folders.

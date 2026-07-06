@@ -42,5 +42,5 @@ This guide details the critical architectural mandates for all development withi
 
 - **Frontend**: React + Vite, Tailwind CSS, `lucide-react` for icons, `useTranslation()` for i18n.
 - **Backend**: Bun, SQLite, REST APIs.
-- **Agent Ecosystem**: Skills in `.gemini/skills/` or `.wo/skills/`, agents in `.wo/agents/`.
+- **Agent Ecosystem**: Skills in `skills/` or `.wo/skills/`, agents in `.wo/agents/`.
 - **Impact on Skills**: New skills should leverage these technologies and adhere to existing coding style and structural conventions.
