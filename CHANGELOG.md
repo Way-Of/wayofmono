@@ -2,11 +2,15 @@
 
 ## [1.7.14] - 2026-07-07
 
-### Harness (AI Engineering Harness v1.7.14) — Knowledge Database + New Tickets
+### Harness (AI Engineering Harness v1.7.14) — Knowledge Database + wo-* Patch Releases
 
 - **Knowledge Database command (WOMONO-158)**: New `/knowledge` skill with Python CLI (`knowledge.py`) for storing, fetching, searching, and managing learned knowledge. Cross-project database at `thoughts/global/knowledge/` with topic-based subdirectories, JSON indexes, and auto-incrementing entry IDs. Supports 9 seed topics (ash, docker, postgres, opentelemetry, elixir, deno, react, devops, ai-tools) with auto-created topics. Deployed to all 7 tools with manifest entries.
 
-- **New tickets created**: WOMONO-158 (Knowledge Database), WOMONO-159 (Archive Specialized Skills), WOMONO-160 (Per-Project Skill Delivery Mechanism).
+- **wo-* package patch releases (WOMONO-148–156)**: Published TypeScript cleanup fixes to npm. Versions bumped: wo-agent 1.0.8→1.0.9, wo-coding-agent 1.0.12→1.0.13, wo-agent-core 1.0.5→1.0.6, wo-ai 1.0.5→1.0.6, wo-tui 1.0.5→1.0.6, wo-web-ui 1.0.4→1.0.5, wo-skill-docs 1.0.4→1.0.5, wo-mermaid 1.0.4→1.0.5, wo-user-extra 1.0.0→1.0.1.
+
+- **Tickets closed**: WOMONO-148, WOMONO-149, WOMONO-150, WOMONO-151, WOMONO-152, WOMONO-153, WOMONO-154, WOMONO-155, WOMONO-156.
+
+- **New tickets created**: WOMONO-159 (Archive Specialized Skills), WOMONO-160 (Per-Project Skill Delivery Mechanism).
 
 ## [1.7.13] - 2026-07-05
 
