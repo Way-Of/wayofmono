@@ -3158,10 +3158,6 @@
           "description": "Subagent tool for multi-agent workflows (single, parallel, chain)",
           "files": [
             {
-              "src": "pi/agent/extensions/subagent/index.ts",
-              "dest": "extensions/subagent/index.ts"
-            },
-            {
               "src": "pi/agent/extensions/subagent/agents.ts",
               "dest": "extensions/subagent/agents.ts"
             },
@@ -4063,10 +4059,6 @@
         "extension/subagent": {
           "description": "Subagent tool for multi-agent workflows (single, parallel, chain)",
           "files": [
-            {
-              "src": "wocode/agent/extensions/subagent/index.ts",
-              "dest": "extensions/subagent/index.ts"
-            },
             {
               "src": "wocode/agent/extensions/subagent/agents.ts",
               "dest": "extensions/subagent/agents.ts"
