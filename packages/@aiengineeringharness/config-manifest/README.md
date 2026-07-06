@@ -13,7 +13,6 @@ config-manifest/
 │   ├── antigravity.yaml
 │   ├── claude.yaml
 │   ├── codex.yaml
-│   ├── gemini.yaml
 │   ├── opencode.yaml
 │   ├── pi.yaml
 │   └── wocode.yaml
@@ -26,7 +25,6 @@ config-manifest/
 |------|-----------|-------------------|-------------|------------|
 | OpenCode | kebab-case | lowercase | SKILL.md + commands/ | `~/.config/opencode/` |
 | Claude Code | snake_case | PascalCase | SKILL.md (`disable-model-invocation` for commands) | `~/.claude/` |
-| Gemini CLI | snake_case | lowercase | SKILL.md + TOML commands/ | `~/.gemini/` |
 | Pi | kebab-case | lowercase | SKILL.md + prompts/ | `~/.pi/agent/` |
 | Wo Coder | kebab-case | lowercase | SKILL.md + prompts/ | `~/.wocode/agent/` |
 | Codex CLI | snake_case | lowercase | skill.yaml + prompt.md | `~/.codex/` |
@@ -138,7 +136,7 @@ Validates the compiled `manifest.json` for:
 
 Ensures every skill in every tool's `skills/` directory follows the correct format for that tool. This is the most critical test — it validates what users actually download.
 
-| Check | OpenCode | Claude | Gemini | Pi | WoCoder | Codex | Antigravity |
+| Check | OpenCode | Claude | Pi | WoCoder | Codex | Antigravity |
 |-------|----------|--------|--------|----|---------|-------|-------------|
 | **Skill file** | SKILL.md | SKILL.md | SKILL.md | SKILL.md | SKILL.md | skill.yaml+prompt.md | SKILL.md |
 | **name convention** | kebab-case | snake_case | snake_case | kebab-case | kebab-case | snake_case | snake_case |

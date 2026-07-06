@@ -29,9 +29,9 @@ Programmable plugins (such as the `subagent` extension) are registered directly 
 
 ---
 
-## 🚫 Key Differences from Antigravity / Gemini CLI
+## 🚫 Key Differences from Antigravity / 
 
-Unlike the Gemini CLI / Antigravity SDK platforms, Pi is a minimalist framework and **does not** natively support:
+Unlike the / Antigravity SDK platforms, Pi is a minimalist framework and **does not** natively support:
 *   **Builtin Sidecars (`sidecar.json`)**: Pi does not manage background sidecars or scheduling.
 *   **Pre/Post Hooks (`hooks.json`)**: Pi does not intercept commands or filesystem actions via JSON event triggers.
 *   **Plugin manifests (`plugin.json`)**: Pi utilizes its own JS/TS extension lifecycle API rather than grouping files inside namespaced directories.

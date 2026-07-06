@@ -51,7 +51,7 @@ npm update -g @wayofmono/wo-cto-dashboard && wodev --build
 
 Tickets are now **persisted to disk**. The old 100% in-memory system (lost all status/review changes on refresh) is replaced with a markdown-first architecture:
 
-- **`.md` files are source of truth** — AI tools (Claude Code, OpenCode, Gemini CLI, Pi, Codex, Antigravity, woCoder) read/write them as before
+- **`.md` files are source of truth** — AI tools (Claude Code, OpenCode, Pi, Codex, Antigravity, woCoder) read/write them as before
 - **SQLite via Prisma is a read-cache** — Dashboard reads tickets from DB (~20ms vs ~200ms file scan)
 - **File watcher** — chokidar detects AI tool edits and upserts to DB automatically
 - **API fast-tracks DB writes** — When dashboard changes a status, it writes .md then immediately upserts DB (no stale-read latency)
@@ -188,7 +188,7 @@ sudo npm update -g @wayofmono/wo-cto-dashboard
   - `ticket-manager`: Marks `review-<TICKET_ID>` after review actions, `update-<TICKET_ID>` after status changes
   - `ticket-executor`: Marks notifications as read after phase completion
   - `validate-plan`: Marks notifications as read after validation
-- **Notification API integration**: All 3 ticket skills updated across all 7 tools (opencode, claude, gemini, pi, wocode, antigravity, codex)
+- **Notification API integration**: All 3 ticket skills updated across all 7 tools (opencode, claude, pi, wocode, antigravity, codex)
 - **AGENTS.md updated**: Added ticket lifecycle, namespaces, notification integration docs
 - **Deprecated skill removed**: `wow-tickets` skill removed from all 7 tools (replaced by namespace-agnostic `ticket-manager`)
 - **Manifest.json cleaned**: Removed all `wow-tickets` entries from manifest

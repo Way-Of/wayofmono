@@ -1,2 +1,0 @@
-description = "Fixes Bump"
-prompt = "Activate the `fixes-manager` skill to bump the version across all project files. Requires --project and --version arguments."

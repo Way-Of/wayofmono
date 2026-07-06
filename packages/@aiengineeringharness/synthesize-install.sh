@@ -28,7 +28,7 @@ if command -v ai-harness &> /dev/null; then
     echo "  ai-harness --sync-docs --tool=all"
     echo ""
     echo "Or manually synch each harness:"
-    for tool in pi opencode gemini antigravity codex claude wocode; do
+    for tool in pi opencode antigravity codex claude wocode; do
         echo "  ai-harness --sync-docs --tool=$tool"
     done
 else
@@ -52,7 +52,7 @@ echo "Run this command to synch all harnesses:"
 echo "  ai-harness --sync-docs --tool=all"
 echo ""
 echo "Or individual:"
-for tool in pi opencode gemini antigravity codex claude wocode; do
+for tool in pi opencode antigravity codex claude wocode; do
     echo "  ai-harness --sync-docs --tool=$tool"
     echo ""
 done

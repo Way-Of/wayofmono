@@ -1,10 +1,10 @@
 // Auto-generated from canonical skill: git_commit_helper
 // Platform: WoCoder (Node/Deno)
-// Description: Creates well-structured git commits by analyzing changes, drafting messages, and executing commits using Gemini CLI's `run_shell_command` for git operations.
+// Description: Creates well-structured git commits by analyzing changes, drafting messages, and executing commits using CLI `run_shell_command` for git operations.
 
 export const skill = {
   name: "git_commit_helper",
-  description: "Creates well-structured git commits by analyzing changes, drafting messages, and executing commits using Gemini CLI's `run_shell_command` for git operations.",
+  description: "Creates well-structured git commits by analyzing changes, drafting messages, and executing commits using CLI `run_shell_command` for git operations.",
   tools: ["read_file", "run_shell_command", "search_file_content", "glob"],
   prompt: `> **Platform**: Wo Coder | **Skill**: git_commit_helper | **Version**: 1.0.0
 >

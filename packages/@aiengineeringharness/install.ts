@@ -1107,6 +1107,165 @@ async function installTool(manifest: Manifest, toolName: string, opts: InstallOp
 }
 
 // ---------------------------------------------------------------------------
+// Delivery package types & discovery
+// ---------------------------------------------------------------------------
+
+interface DeliveryManifest {
+  project: string;
+  project_slug: string;
+  description: string;
+  version: string;
+  tools: Record<string, {
+    skills: Array<{ src: string; dest: string }>;
+  }>;
+}
+
+interface DeliveryPackage {
+  name: string;
+  dir: string;
+  manifest: DeliveryManifest;
+}
+
+const DELIVERY_PACKAGE_PREFIX = "@wayofmono/delivery-";
+
+async function discoverDeliveryPackages(workDir: string): Promise<DeliveryPackage[]> {
+  const packages: DeliveryPackage[] = [];
+  const nodeModulesDir = join(workDir, "node_modules");
+  try {
+    await Deno.stat(nodeModulesDir);
+  } catch {
+    return packages;
+  }
+  for await (const entry of Deno.readDir(nodeModulesDir)) {
+    if (!entry.isDirectory) continue;
+    if (!entry.name.startsWith(DELIVERY_PACKAGE_PREFIX)) continue;
+    const pkgDir = join(nodeModulesDir, entry.name);
+    const manifestPath = join(pkgDir, "manifest.json");
+    try {
+      await Deno.stat(manifestPath);
+      const content = await Deno.readTextFile(manifestPath);
+      const manifest = JSON.parse(content) as DeliveryManifest;
+      if (!manifest.tools || !manifest.project_slug) {
+        console.warn(`  ${yellow("⚠")} Invalid delivery manifest: ${entry.name} (missing tools or project_slug)`);
+        continue;
+      }
+      packages.push({ name: entry.name, dir: pkgDir, manifest });
+    } catch {
+      // No manifest.json or invalid — skip
+    }
+  }
+  return packages;
+}
+
+async function installDeliveryPackage(
+  deliveryPkg: DeliveryPackage,
+  toolName: string,
+  opts: InstallOptions,
+  manifest: Manifest,
+): Promise<void> {
+  const toolConfig = deliveryPkg.manifest.tools[toolName];
+  if (!toolConfig) return; // No skills for this tool in this delivery package
+
+  const toolHarnessConfig = manifest.tools[toolName];
+  if (!toolHarnessConfig) {
+    console.warn(`  ${yellow("⚠")} Unknown tool "${toolName}" — skipping delivery for ${deliveryPkg.name}`);
+    return;
+  }
+
+  const targetDir = opts.local ? getProjectLocalTarget(toolName) : expandHome(toolHarnessConfig.target);
+  const projectLabel = deliveryPkg.manifest.project_slug;
+
+  console.log(`\n  ${o("⟫")} ${C.bold}${projectLabel}${C.reset} ${od("(" + deliveryPkg.name + ")")} ${od("→")} ${od(targetDir)}`);
+
+  if (opts.dryRun) {
+    console.log(`  ${od("(dry run — no files will be written)")}`);
+  }
+
+  let newCount = 0;
+  let updatedCount = 0;
+  let unchanged = 0;
+  let skipped = 0;
+
+  for (const fileEntry of toolConfig.skills) {
+    const destPath = join(targetDir, fileEntry.dest);
+    const srcPath = join(deliveryPkg.dir, fileEntry.src);
+
+    // Check source exists
+    let srcStat: Deno.FileInfo | null = null;
+    try {
+      srcStat = await Deno.stat(srcPath);
+    } catch {
+      console.error(`  ${o("✗")} Source not found: ${deliveryPkg.name}/${fileEntry.src}`);
+      skipped++;
+      continue;
+    }
+
+    if (srcStat.isDirectory) {
+      if (opts.dryRun) {
+        console.log(`  ${o("+")} ${"NEW".padEnd(9)}  ${fileEntry.dest}/`);
+        newCount++;
+        continue;
+      }
+      await copyDirRecursive(srcPath, destPath);
+      console.log(`  ${o("✧")} ${"NEW".padEnd(9)}  ${fileEntry.dest}/`);
+      newCount++;
+      continue;
+    }
+
+    let srcContent: string;
+    try {
+      srcContent = await Deno.readTextFile(srcPath);
+    } catch {
+      console.error(`  ${o("✗")} Cannot read source: ${deliveryPkg.name}/${fileEntry.src}`);
+      skipped++;
+      continue;
+    }
+
+    // Check destination
+    const existingContent = await readFileIfExists(destPath);
+    if (existingContent !== null && existingContent === srcContent) {
+      console.log(`  ${od("·")} ${fileEntry.dest}  ${od("(ok)")}`);
+      unchanged++;
+      continue;
+    }
+
+    if (existingContent !== null && existingContent !== srcContent) {
+      console.log(`\n  ${o("⟁")} ${fileEntry.dest}  ${yellow("conflict")}  ${od("(incoming differs)")}`);
+      if (!opts.yes) {
+        if (opts.dryRun) {
+          console.log(`  ${od("[dry-run]")} would overwrite`);
+          updatedCount++;
+          continue;
+        }
+        const ok = await promptConfirm(`  ${o("⟫")} Overwrite ${fileEntry.dest}?`);
+        if (!ok) {
+          console.log(`  ${yellow("skipped")}.`);
+          skipped++;
+          continue;
+        }
+      }
+    }
+
+    if (opts.dryRun) {
+      const action = existingContent === null ? "NEW" : "UPDATED";
+      console.log(`  ${o("+")} ${action.padEnd(9)}  ${fileEntry.dest}`);
+      if (existingContent === null) newCount++; else updatedCount++;
+      continue;
+    }
+
+    await ensureDir(dirname(destPath));
+    await Deno.writeTextFile(destPath, srcContent);
+    const action = existingContent === null ? "NEW" : "UPDATED";
+    console.log(`  ${o("✧")} ${action.padEnd(9)}  ${od(fileEntry.dest)}`);
+    if (existingContent === null) newCount++; else updatedCount++;
+  }
+
+  if (!opts.dryRun) {
+    console.log(`\n  ${o("└")} ${od(projectLabel)}: ${green(String(newCount))} NEW, ${green(String(updatedCount))} UPDATED, ${od(String(unchanged))} UNCHANGED, ${yellow(String(skipped))} SKIPPED`);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Entry point
 // ---------------------------------------------------------------------------
 
@@ -2121,6 +2280,17 @@ console.log(`  ${ob("⟡ HARNESS INSTALL")}  ${od("v" + manifest.version)}  ${od
 try {
   for (const tool of toolsToInstall) {
     await installTool(manifest, tool, installOpts);
+  }
+
+  // Discover and install delivery packages from node_modules
+  const deliveryPackages = await discoverDeliveryPackages(Deno.cwd());
+  if (deliveryPackages.length > 0) {
+    console.log(`\n  ${ob("⟡ DELIVERY PACKAGES")}  ${od("found " + deliveryPackages.length + " package(s)")}\n`);
+    for (const tool of toolsToInstall) {
+      for (const deliveryPkg of deliveryPackages) {
+        await installDeliveryPackage(deliveryPkg, tool, installOpts, manifest);
+      }
+    }
   }
 
   // Patch wrapper to embed --reload so future updates bypass Deno cache

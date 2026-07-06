@@ -1,9 +1,8 @@
 ---
 name: build-tool-skill
-description: "Unified skill builder, validator, adapter, and lifecycle manager for all 7 AI coding tools. Create, validate, adapt, sync, and register skills across opencode, claude, gemini, pi, wocode, antigravity, codex. References config-manifest/ as the source of truth for per-tool formats."
 version: "2.0"
 tools: [read, write, edit, bash, grep, glob, websearch]
-platforms: [opencode, claude, gemini, pi, wocode, antigravity, codex]
+platforms: [opencode, claude, pi, wocode, antigravity, codex]
 allowed-tools: read, write, edit, bash, grep, glob, websearch
 ---
 
@@ -17,7 +16,6 @@ Unified skill management for all 7 AI coding tools. Covers creation, validation,
 |------|-----------------|------------------------|------------|
 | OpenCode | **kebab-case** | lowercase | `~/.config/opencode/` |
 | Claude Code | **snake_case** | PascalCase (`Read`, `Write`) | `~/.claude/` |
-| Gemini CLI | **snake_case** | lowercase | `~/.gemini/` |
 | Pi | **kebab-case** | Title Case | `~/.pi/agent/` |
 | Codex CLI | **snake_case** | lowercase_snake | `~/.codex/` |
 | Antigravity CLI | **snake_case** | lowercase | `~/.antigravity/` |
@@ -27,7 +25,6 @@ Unified skill management for all 7 AI coding tools. Covers creation, validation,
 Always fetch latest docs before building:
 - OpenCode: https://opencode.ai/docs/
 - Claude Code: https://code.claude.com/docs/en/overview
-- Gemini CLI: https://cloud.google.com/gemini-cli/docs
 - Pi: https://pi.dev/
 - Antigravity: https://antigravity.sh/docs
 - Codex: https://github.com/openai/codex
@@ -95,7 +92,6 @@ Checks: manifest source files exist, no stale files, no dangling entries.
 |------|-------|-------|---------|
 | OpenCode | `~/.config/opencode/` | `~/.config/opencode/` | `%USERPROFILE%\.config\opencode\` |
 | Claude Code | `~/.claude/` | `~/.claude/` | `%USERPROFILE%\.claude\` |
-| Gemini CLI | `~/.gemini/` | `~/.gemini/` | `%USERPROFILE%\.gemini\` |
 | Pi | `~/.pi/agent/` | `~/.pi/agent/` | `%USERPROFILE%\.pi\agent\` |
 | Antigravity | `~/.antigravity/` | `~/.antigravity/` | `%USERPROFILE%\.antigravity\` |
 | Codex | `~/.codex/` | `~/.codex/` | `%USERPROFILE%\.codex\` |

@@ -9,7 +9,6 @@ export interface SkillFormat {
 const FORMAT_MAP: Record<string, SkillFormat> = {
   opencode: { naming: "kebab-case", frontmatterFormat: "opencode", skillDir: "skills" },
   claude: { naming: "snake_case", frontmatterFormat: "claude", skillDir: "skills" },
-  gemini: { naming: "snake_case", frontmatterFormat: "gemini", skillDir: "skills" },
   pi: { naming: "kebab-case", frontmatterFormat: "pi", skillDir: "skills" },
   codex: { naming: "snake_case", frontmatterFormat: "codex", skillDir: "skills" },
   antigravity: { naming: "snake_case", frontmatterFormat: "antigravity", skillDir: "skills" },
@@ -21,7 +20,7 @@ export function getToolFormat(toolName: string): SkillFormat {
 }
 
 export function selectToolsToInstall(tools: ToolsInfo): string[] {
-  return tools.installed.length > 0 ? tools.installed : ["opencode", "claude", "gemini", "pi", "codex", "antigravity", "wocode"];
+  return tools.installed.length > 0 ? tools.installed : ["opencode", "claude", "pi", "codex", "antigravity", "wocode"];
 }
 
 export function validateSkillName(name: string, format: SkillFormat): boolean {

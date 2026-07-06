@@ -1,6 +1,6 @@
 # Antigravity Harness Integration
 
-This directory houses the shared capability templates, subagents, commands, and skills for the **Antigravity / Gemini CLI** agent platform integration. 
+This directory houses the shared capability templates, subagents, commands, and skills for the **Antigravity / ** agent platform integration. 
 
 Antigravity is Google's agent-first development platform that empowers autonomous AI agents to work within codebases, execute terminal tasks, orchestrate browser events, and coordinate multi-agent workflows.
 
@@ -21,7 +21,7 @@ Each core folder contains its own detailed specification and usage guide:
 ## ⚙️ Core Configuration Files
 
 *   **[`antigravity.json`](./antigravity.json)**: The plugin-registration configuration file used by the harness to register metadata.
-*   **`config.json`**: Located at `~/.gemini/config/config.json`, this is the user's primary configuration file for enabling sidecars, declaring project scopes, and configuring model parameters.
+*   **`config.json`**: Located at `~/.config/opencode/config/config.json`, this is the user's primary configuration file for enabling sidecars, declaring project scopes, and configuring model parameters.
 
 ---
 

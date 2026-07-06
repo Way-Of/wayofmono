@@ -31,7 +31,7 @@ The AI Engineering Harness at `packages/@aiengineeringharness/opencode/` deploys
 | **Skills** | `skills/` | 25+ auto-triggered skills (SKILL.md format) |
 | **Config** | `opencode.json` | MCP server configuration |
 
-### Key Differences from Antigravity / Gemini CLI
+### Key Differences from Antigravity CLI
 - **No background Sidecars** — OpenCode does not manage background daemons or cron schedules
 - **No lifecycle Hooks** — OpenCode does not intercept terminal or file actions through pre/post-hook event pipelines
 - **No packaged Plugins** — OpenCode does not package extensions into namespaced plugin folders

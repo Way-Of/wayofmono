@@ -12,7 +12,7 @@ from pathlib import Path
 CONFIG_DIR = Path(__file__).parent.parent
 TOOLS_DIR = CONFIG_DIR / "tools"
 
-TOOLS = ["antigravity", "claude", "codex", "gemini", "opencode", "pi", "wocode"]
+TOOLS = ["antigravity", "claude", "codex", "opencode", "pi", "wocode"]
 
 COMPONENT_TYPES = [
     "skill",
@@ -93,7 +93,7 @@ def main():
     
     # Check: other tools should NOT have themes/extensions
     print("\n=== Non-Pi/Wocode Theme/Extension Check ===")
-    for tool in ["antigravity", "claude", "codex", "gemini", "opencode"]:
+    for tool in ["antigravity", "claude", "codex", "opencode"]:
         counts = results[tool]["counts"]
         if counts['theme'] > 0 or counts['extension'] > 0:
             print(f"  WARNING: {tool} has themes={counts['theme']} extensions={counts['extension']} (should be 0)")

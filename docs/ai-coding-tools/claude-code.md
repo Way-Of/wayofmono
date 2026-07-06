@@ -42,7 +42,7 @@ The AI Engineering Harness at `packages/@aiengineeringharness/claude/` deploys t
 - **`.claude/rules/`**: Modular rule Markdown files with YAML frontmatter and path pattern targeting
 - **`@` Referencing**: Reference files in conversation (e.g. `@docs/style-guide.md`)
 
-### Key Differences from Antigravity / Gemini CLI
+### Key Differences from Antigravity CLI
 - **No built-in Sidecars** — Claude Code does not manage background sidecars or cron schedules
 - **No Pre/Post Hooks** — Claude Code does not support intercepting commands or tool actions with pre/post-hook scripts
 - Commands are implemented as **skills with `disable-model-invocation: true`**

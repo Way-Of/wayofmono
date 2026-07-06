@@ -11,8 +11,8 @@ Sidecars are background processes that run alongside Antigravity. Antigravity ma
 
 Sidecars are discovered by searching for `sidecar.json` configuration files. They can be defined in two locations:
 
-1. **Global sidecars**: Located under `~/.gemini/config/sidecars/`
-2. **Plugin sidecars**: Located under `~/.gemini/config/plugins/<pluginName>/sidecars/`
+1. **Global sidecars**: Located under `~/.config/opencode/config/sidecars/`
+2. **Plugin sidecars**: Located under `~/.config/opencode/config/plugins/<pluginName>/sidecars/`
 
 Each sidecar has its own directory. The directory name is used as the sidecar’s ID. 
 - For global sidecars: `<sidecarName>`
@@ -21,14 +21,14 @@ Each sidecar has its own directory. The directory name is used as the sidecar’
 ### Directory Structure Example
 
 ```
-~/.gemini/config/sidecars/
+~/.config/opencode/config/sidecars/
 ├── sidecar1/
 │   ├── sidecar.json
 │   └── script.py
 └── sidecar2/
     └── sidecar.json
 
-~/.gemini/config/plugins/
+~/.config/opencode/config/plugins/
 └── my-plugin/
       └── sidecars/
             └── plugin-sidecar/
@@ -87,7 +87,7 @@ The `sidecar.json` file defines how the sidecar is executed and restarted.
 
 ## ⚙️ User Configuration (`config.json`)
 
-Sidecars are disabled by default. They must be explicitly enabled by the user in the global configuration file located at `~/.gemini/config/config.json`.
+Sidecars are disabled by default. They must be explicitly enabled by the user in the global configuration file located at `~/.config/opencode/config/config.json`.
 
 ```json
 {
@@ -111,7 +111,7 @@ Sidecars are disabled by default. They must be explicitly enabled by the user in
 
 ## 💾 Runtime Data
 
-Runtime data produced by sidecars is stored in `~/.gemini/antigravity/sidecar_data/<sidecarId>/`. 
+Runtime data produced by sidecars is stored in `~/.config/opencode/antigravity/sidecar_data/<sidecarId>/`. 
 
 The directories include:
 - **`data/`**: Subdirectory for persistent data. This path is injected into the sidecar process environment as `ANTIGRAVITY_EXECUTABLE_DATA_DIR`.

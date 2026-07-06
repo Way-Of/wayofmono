@@ -6,7 +6,7 @@
 
 **Purpose**: Configuration harness for AI coding agents with reusable prompts, agents, and workflows.
 
-**Supported Tools**: OpenCode, Claude Code, Gemini CLI, Pi, Wo Coder, Antigravity, Codex
+**Supported Tools**: OpenCode, Claude Code, Pi, Wo Coder, Antigravity, Codex
 
 **Installation**: `./setup.sh <tool>` (macOS/Linux) or `.\install.ps1 -Tool all` (Windows/PowerShell)
 
@@ -42,7 +42,6 @@ ai-engineering-harness/
 │   ├── skills/         # 35+ skills (13 manual + 22+ auto)
 │   ├── .mcp.json       # MCP configuration
 │   └── settings.json   # Settings schema
-├── gemini/             → ~/.gemini/
 │   ├── agents/         # 6 agents (snake_case)
 │   ├── commands/       # 14 commands (TOML format)
 │   └── skills/         # 33+ skills (auto-triggered)
@@ -73,22 +72,22 @@ ai-engineering-harness/
 
 ## Commands & Skills
 
-| Command | OpenCode | Claude | Gemini | Pi | Wo Code | Antigravity | Codex | Type | Description |
+| Command | OpenCode | Claude | Pi | Wo Code | Antigravity | Codex | Type | Description |
 |---------|:--------:|:------:|:------:|:--:|:--------:|:-----------:|:----:|------|-------------|
-| `/init_harness` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Initialize harness (creates AGENTS.md/CLAUDE.md/GEMINI.md + thoughts/) |
-| `/create_plan` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Generate implementation plan from ticket |
-| `/implement_plan` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Execute approved plan phase-by-phase |
-| `/validate_plan` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Verify implementation against plan |
-| `/commit` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Create well-structured git commits |
-| `/debug` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Investigate issues during testing |
-| `/debug_k8s` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Debug Kubernetes (prefers MCP, falls back to kubectl) |
-| `/research_codebase` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Comprehensive codebase research |
-| `/validate_telemetry` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Validate local telemetry against a narrative spec |
-| `/work <ticket-id>` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Start working on a ticket (requires ticket-manager) |
-| `/complete <ticket-id>` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Complete a ticket, syncs status (requires ticket-manager) |
-| `/sync team` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Show team dashboard (requires ticket-manager) |
-| `/help` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Unified help system (requires help-command) |
-| `/sync skills` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Sync all skills to all frontends (requires skill-auto-update) |
+| `/init_harness` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Initialize harness (creates AGENTS.md/CLAUDE.md + thoughts/) |
+| `/create_plan` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Generate implementation plan from ticket |
+| `/implement_plan` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Execute approved plan phase-by-phase |
+| `/validate_plan` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Verify implementation against plan |
+| `/commit` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Create well-structured git commits |
+| `/debug` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Investigate issues during testing |
+| `/debug_k8s` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Debug Kubernetes (prefers MCP, falls back to kubectl) |
+| `/research_codebase` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Comprehensive codebase research |
+| `/validate_telemetry` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Validate local telemetry against a narrative spec |
+| `/work <ticket-id>` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Start working on a ticket (requires ticket-manager) |
+| `/complete <ticket-id>` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Complete a ticket, syncs status (requires ticket-manager) |
+| `/sync team` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Show team dashboard (requires ticket-manager) |
+| `/help` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Unified help system (requires help-command) |
+| `/sync skills` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Manual | Sync all skills to all frontends (requires skill-auto-update) |
 | `ticket_manager` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Manage tickets across namespaces with full lifecycle |
 | `team_setup` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Initialize and manage team configuration |
 | `skill_auto_update` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Auto-discover and sync skills across frontends |
@@ -118,13 +117,13 @@ ai-engineering-harness/
 | `pi_themes` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi themes — JSON, 51 color tokens, vars, hex/256-color |
 | `pi_tui` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Auto | Pi TUI — built-in & custom components, keyboard, widgets |
 
-**Naming**: OpenCode and Wo Coder use kebab-case; Claude, Gemini, Codex, and Antigravity use snake_case. Pi uses kebab-case (its native convention).
+**Naming**: OpenCode, Pi, and Wo Coder use kebab-case; Claude, Codex, and Antigravity use snake_case.
 
 ## Agents
 
-All agents are shared across all seven tools:
+All agents are shared across all six tools:
 
-| Agent | OpenCode | Claude | Gemini | Pi | Wo Coder | Antigravity | Codex | Purpose |
+| Agent | OpenCode | Claude | Pi | Wo Coder | Antigravity | Codex | Purpose |
 |-------|:--------:|:------:|:------:|:--:|:--------:|:-----------:|:----:|--------|
 | `codebase_analyzer` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Analyze implementation details, trace data flow |
 | `codebase_investigator` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Investigate codebase structure and dependencies |
@@ -158,7 +157,6 @@ Ticket → /create_plan → /implement_plan → /validate_plan → [/validate_te
 |------|------|----------------|
 | OpenCode | `opencode.json` | `"enabled": false` |
 | Claude Code | `.mcp.json` | `"disabled": true` |
-| Gemini CLI | TBD | TBD |
 | Pi | N/A | N/A |
 | Wo Coder | `wocode.json` | `"enabled": false` |
 | Codex | N/A | N/A |
@@ -180,35 +178,3 @@ Available MCP servers: `kubernetes` (disabled by default), `aspire-dashboard` (d
 - Config location: `~/.claude/`
 - Supports `.claude/rules/` for modular instructions
 
-### Gemini CLI
-- Project memory: `GEMINI.md` (generated by `/init`)
-- Commands/skills: TOML format in `commands/` and `skills/`
-- Agent naming: Uses snake_case convention
-- Config location: `~/.gemini/`
-
-### Pi
-- Commands implemented as prompt templates in `prompts/` directory
-- Agent naming: Uses kebab-case convention
-- Config location: `~/.pi/agent/`
-- Includes `subagent` extension for multi-agent workflows (chain, parallel, single)
-- Subagent extension provides additional agents (`planner`, `reviewer`, `scout`, `worker`) and workflow prompts
-- Skills serve double duty: auto-triggered behaviors and subagent delegation targets
-
-### Wo Code (wocode)
-- Project memory: `AGENTS.md` (generated by `/init`)
-- Prompts implement commands (like Pi), separate `skills/` directory for auto-triggered skills
-- Agent naming: Uses **kebab-case** convention (converted from snake_case in v1.7.11)
-- Config location: `~/.wocode/agent/` (target = `~/.wocode/agent`)
-- Includes `subagent` extension for multi-agent workflows (chain, parallel, single), matching Pi's extension system
-
-### Antigravity
-- Project memory: `ANTIGRAVITY.md` (generated by `/init`)
-- Commands and skills are separate directories
-- Agent naming: Uses snake_case convention
-- Config location: `~/.antigravity/`
-
-### Codex
-- Project memory: `RULES.md` (generated by `/init`)
-- Skills: `skill.yaml` + `prompt.md` per skill in `skills/` directory
-- Agent naming: Uses snake_case convention
-- Config location: `~/.codex/`

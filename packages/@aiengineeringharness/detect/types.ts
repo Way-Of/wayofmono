@@ -31,7 +31,6 @@ export interface ToolInfo {
 export interface ToolsInfo {
   opencode: ToolInfo;
   claude: ToolInfo;
-  gemini: ToolInfo;
   pi: ToolInfo;
   codex: ToolInfo;
   antigravity: ToolInfo;

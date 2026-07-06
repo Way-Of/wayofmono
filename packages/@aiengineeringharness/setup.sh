@@ -49,9 +49,6 @@ get_target_dir() {
             claude)
                 echo "./.claude"
                 ;;
-            gemini)
-                echo "./.gemini"
-                ;;
             pi)
                 echo "./.pi/agent"
                 ;;
@@ -75,9 +72,6 @@ get_target_dir() {
                 ;;
             claude)
                 echo "$HOME/.claude"
-                ;;
-            gemini)
-                echo "$HOME/.gemini"
                 ;;
             pi)
                 echo "$HOME/.pi/agent"
@@ -106,7 +100,6 @@ Usage:
 Tools:
   opencode    Install OpenCode configuration
   claude      Install Claude Code configuration
-  gemini      Install Gemini CLI configuration
   pi          Install Pi configuration
   wocode      Install Wo Coder configuration
   antigravity Install Antigravity configuration
@@ -123,7 +116,6 @@ Options:
 Examples:
   ./setup.sh opencode              # Install OpenCode
   ./setup.sh claude --dry-run      # Preview Claude Code installation
-  ./setup.sh gemini                # Install Gemini CLI
   ./setup.sh pi                    # Install Pi
   ./setup.sh all --restow          # Update all configurations
   ./setup.sh opencode --delete     # Remove OpenCode symlinks
@@ -300,7 +292,7 @@ main() {
                 print_usage
                 exit 0
                 ;;
-            opencode|claude|gemini|pi|wocode|antigravity|codex|all)
+            opencode|claude|pi|wocode|antigravity|codex|all)
                 tool="$1"
                 shift
                 ;;
@@ -340,7 +332,7 @@ main() {
     if [[ "$tool" == "all" ]]; then
         log_info "Installing all tools..."
         echo ""
-        for t in opencode claude gemini pi wocode antigravity codex; do
+        for t in opencode claude pi wocode antigravity codex; do
             process_tool "$t" "$action" "$restow" "$dry_run" "$local_mode"
             echo ""
         done
@@ -357,7 +349,7 @@ main() {
     if [[ "$action" == "stow" ]]; then
         echo "Your AI harness configuration is now linked:"
         if [[ "$tool" == "all" ]]; then
-        for t in opencode claude gemini pi wocode antigravity codex; do
+        for t in opencode claude pi wocode antigravity codex; do
                 local target=$(get_target_dir "$t" "$local_mode")
                 echo "  $target/ -> $STOW_DIR/$t/"
             done
@@ -368,7 +360,7 @@ main() {
         echo ""
         echo "Next steps:"
         echo "  1. Review and customize configurations in this repo"
-        echo "  2. Initialize your project with /init-harness (OpenCode, Claude Code, Gemini CLI)"
+        echo "  2. Initialize your project with /init-harness (OpenCode, Claude Code)"
         echo "  3. Start using your AI tool with configured agents, commands, and skills"
     else
         echo "Symlinks have been removed."

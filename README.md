@@ -116,7 +116,6 @@ One command sets up configurations for **all 7 AI coding tools** with **81 share
 2. **wouser** — general-purpose AI assistant  
 3. **Claude Code** — Anthropic's coding agent
 4. **OpenCode** — Open-source TUI-driven agent
-5. **Gemini CLI** — Google's multimodal agent
 6. **Pi** — Pi Agent standard
 7. **Codex** — OpenAI's coding agent
 8. **Antigravity** — Autonomous agent platform
@@ -136,7 +135,6 @@ ai-harness --tool=all --yes
 Creates config folders in your home directory:
 - `~/.config/opencode/` — OpenCode config + 91 skills
 - `~/.claude/` — Claude Code config + 90 skills
-- `~/.gemini/` — Gemini CLI config + 90 skills
 - `~/.pi/agent/` — Pi config + 85 skills
 - `~/.codex/` — Codex config + 90 skills
 - `~/.antigravity/` — Antigravity config + 89 skills
@@ -155,7 +153,6 @@ Each folder contains: `skills/`, `agents/`, `prompts/`, `commands/`, `settings.j
 - **pi** — Pi Agent, lightweight agent standard
 - **opencode** — Open-source TUI (terminal UI) coding agent
 - **claude** — Anthropic's Claude Code (requires Anthropic API key)
-- **gemini** — Google's Gemini CLI (requires Google API key)
 - **antigravity** — Autonomous agent platform
 - **codex** — OpenAI's Codex agent (requires OpenAI API key)
 
@@ -182,8 +179,6 @@ ai-harness --tool=claude --yes
 ```
 
 ```bash
-# Gemini CLI — Google's multimodal agent (needs GOOGLE_API_KEY)
-ai-harness --tool=gemini --yes
 ```
 
 ```bash
@@ -219,8 +214,6 @@ ai-harness --tool=codex --yes
 ```
 
 ```powershell
-# Gemini CLI
-.\install.ps1 -Tool gemini -Yes
 ```
 
 ```powershell
@@ -765,7 +758,7 @@ ai-harness --mode=repo --dest=~/.ai-engineering-harness
 | Parameter | Description |
 |-----------|-------------|
 | `-InstallCli` | Install/update CLI binary |
-| `-Tool <name>` | Install tool config (claude, opencode, gemini, pi, wocode, antigravity, codex, all) |
+| `-Tool <name>` | Install tool config (claude, opencode, pi, wocode, antigravity, codex, all) |
 | `-Update` | Full harness sync: CLI + docs + all tools + compliance |
 | `-Compliance` | Validate all installed files match manifest |
 | `-Check` | Compare installed versions against manifest |
@@ -801,7 +794,7 @@ The installer now auto-detects your environment and adapts:
 # Install only to AI tools that are actually installed on this machine
 ai-harness --tool=auto --yes
 ```
-Detects: OpenCode, Claude Code, Gemini CLI, Pi, Codex, Antigravity, Wo Coder — by checking config dirs and PATH.
+Detects: OpenCode, Claude Code, Pi, Codex, Antigravity, Wo Coder — by checking config dirs and PATH.
 
 **System report (`--detect`):**
 ```bash
@@ -966,7 +959,6 @@ WayOfMono is built on an **Interface-Agnostic Philosophy** — core logic and to
 | **Claude Code** | Agentic AI coding from Anthropic | [docs.anthropic.com](https://docs.anthropic.com/en/docs/claude-code) |
 | **Pi** | Pi Agent standard | [github.com/earendil-works/pi](https://github.com/earendil-works/pi) |
 | **OpenCode** | Open-source TUI-driven coding agent | [github.com/opencode-ai/opencode](https://github.com/opencode-ai/opencode) |
-| **Gemini CLI** | Multimodal automation | [github.com/google-gemini/gemini-cli](https://github.com/google-gemini/gemini-cli) |
 | **Antigravity** | Agent-first autonomous platform | [antigravity.io](https://antigravity.io) |
 
 ### What's Inside
@@ -979,7 +971,6 @@ packages/@aiengineeringharness/     → 1,226 files
 ├── scripts/                        # 14 pipeline scripts
 ├── opencode/    → ~/.config/opencode/  # 180 files, 91 SKILL.md
 ├── claude/      → ~/.claude/           # 167 files, 90 SKILL.md
-├── gemini/      → ~/.gemini/           # 145 files, 90 SKILL.md
 ├── pi/          → ~/.pi/agent/         # 174 files, 85 SKILL.md
 ├── codex/       → ~/.codex/            # 186 files, 90 SKILL.md
 ├── antigravity/ → ~/.antigravity/      # 146 files, 89 SKILL.md
@@ -1011,7 +1002,6 @@ Each agent frontend loads skills from specific directories. The AI Engineering H
 | **Pi** | `~/.pi/agent/skills/` | `.pi/agent/skills/` |
 | **OpenCode** | `~/.config/opencode/skills/` | `.config/opencode/skills/` |
 | **Claude Code** | `~/.claude/skills/` | `.claude/skills/` |
-| **Gemini CLI** | `~/.gemini/skills/` | `.gemini/skills/` |
 | **Codex** | `~/.codex/skills/` | `.codex/skills/` |
 | **Antigravity** | `~/.antigravity/skills/` | `.antigravity/skills/` |
 
@@ -1028,7 +1018,6 @@ Each agent frontend loads skills from specific directories. The AI Engineering H
 |------|---------------|-------------|
 | **OpenCode** | 91 | 180 |
 | **Claude Code** | 90 | 167 |
-| **Gemini CLI** | 90 | 145 |
 | **Codex** | 90 | 186 |
 | **Pi** | 85 | 174 |
 | **Antigravity** | 89 | 146 |
@@ -1244,8 +1233,6 @@ ai-harness --tool=pi
 ```
 
 ```bash
-# Gemini CLI — Google's agent (needs GOOGLE_API_KEY)
-ai-harness --tool=gemini
 ```
 
 ```bash
@@ -1385,7 +1372,7 @@ ai-harness --tool=claude --local --yes
 | Flag | Alias | Description |
 |------|-------|-------------|
 | `--install-cli` | | Install/update CLI binary |
-| `--tool=<name>` | | Install tool config (claude, opencode, gemini, pi, wocode, antigravity, codex, all, auto) |
+| `--tool=<name>` | | Install tool config (claude, opencode, pi, wocode, antigravity, codex, all, auto) |
 | `--update` | | Full harness sync: CLI + docs + all tools + compliance |
 | `--compliance` | | Validate all installed files match manifest |
 | `--check` | | Compare installed versions against manifest |
@@ -1428,7 +1415,6 @@ Each command separate copy-paste:
 ```
 
 ```bash
-./packages/@aiengineeringharness/setup.sh gemini
 ```
 
 ```bash
@@ -2408,7 +2394,6 @@ cd ui && pnpm build
 │   │   ├── scripts/               # 14 pipeline scripts
 │   │   ├── opencode/    → ~/.config/opencode/    # 180 files
 │   │   ├── claude/      → ~/.claude/             # 167 files
-│   │   ├── gemini/      → ~/.gemini/             # 145 files
 │   │   ├── pi/          → ~/.pi/agent/           # 174 files
 │   │   ├── codex/       → ~/.codex/              # 186 files
 │   │   ├── antigravity/ → ~/.antigravity/        # 146 files

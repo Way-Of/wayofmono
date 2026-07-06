@@ -31,16 +31,16 @@ MANIFEST_PATH = os.path.join(REPO_ROOT, "manifest.json")
 CONFIG_DIR = os.path.join(REPO_ROOT, "config-manifest")
 TOOLS_DIR = os.path.join(CONFIG_DIR, "tools")
 
-EXPECTED_TOOLS = {"claude", "opencode", "gemini", "pi", "wocode", "codex", "antigravity"}
+EXPECTED_TOOLS = {"claude", "opencode", , "pi", "wocode", "codex", "antigravity"}
 
 TOOL_PATH_RULES = {
-    "claude": {"allowed_prefixes": ["claude/"], "forbidden_prefixes": ["opencode/", "gemini/", "pi/", "wocode/", "codex/", "antigravity/"]},
-    "opencode": {"allowed_prefixes": ["opencode/"], "forbidden_prefixes": ["claude/", "gemini/", "pi/", "wocode/", "codex/", "antigravity/"]},
-    "gemini": {"allowed_prefixes": ["gemini/"], "forbidden_prefixes": ["claude/", "opencode/", "pi/", "wocode/", "codex/", "antigravity/"]},
-    "pi": {"allowed_prefixes": ["pi/agent/"], "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "wocode/", "codex/", "antigravity/"]},
-    "wocode": {"allowed_prefixes": ["wocode/", "wocode/agent/"], "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "codex/", "antigravity/"]},
-    "codex": {"allowed_prefixes": ["codex/"], "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "wocode/", "antigravity/"]},
-    "antigravity": {"allowed_prefixes": ["antigravity/"], "forbidden_prefixes": ["claude/", "opencode/", "gemini/", "pi/", "wocode/", "codex/"]},
+    "claude": {"allowed_prefixes": ["claude/"], "forbidden_prefixes": ["opencode/", "pi/", "wocode/", "codex/", "antigravity/"]},
+    "opencode": {"allowed_prefixes": ["opencode/"], "forbidden_prefixes": ["claude/", "pi/", "wocode/", "codex/", "antigravity/"]},
+    : {"allowed_prefixes": [], "forbidden_prefixes": ["claude/", "opencode/", "pi/", "wocode/", "codex/", "antigravity/"]},
+    "pi": {"allowed_prefixes": ["pi/agent/"], "forbidden_prefixes": ["claude/", "opencode/", "wocode/", "codex/", "antigravity/"]},
+    "wocode": {"allowed_prefixes": ["wocode/", "wocode/agent/"], "forbidden_prefixes": ["claude/", "opencode/", "pi/", "codex/", "antigravity/"]},
+    "codex": {"allowed_prefixes": ["codex/"], "forbidden_prefixes": ["claude/", "opencode/", "pi/", "wocode/", "antigravity/"]},
+    "antigravity": {"allowed_prefixes": ["antigravity/"], "forbidden_prefixes": ["claude/", "opencode/", "pi/", "wocode/", "codex/"]},
 }
 
 

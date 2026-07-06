@@ -1,7 +1,0 @@
-# Codex skills use two files: skill.yaml + prompt.md
-# File 1: skill.yaml (metadata)
-
-name: example_skill
-description: "Example skill for Codex CLI — uses snake_case dir naming and lowercase_snake allowed-tools"
-version: "1.0"
-allowed-tools: read_file, write_file, run_shell_command, glob, grep

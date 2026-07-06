@@ -35,9 +35,9 @@ Repeatable workflows are defined under `.claude/skills/<name>/SKILL.md`. For man
 
 ---
 
-## 🚫 Key Differences from Antigravity / Gemini CLI
+## 🚫 Key Differences from Antigravity / 
 
-Unlike Gemini CLI and Antigravity, Claude Code **does not** natively support:
+Unlike and Antigravity, Claude Code **does not** natively support:
 *   **Builtin Sidecars (`sidecar.json`)**: Claude Code does not manage background sidecars or cron schedules.
 *   **Pre/Post Hooks (`hooks.json`)**: Claude Code does not support intercepting commands or tool actions with pre/post-hook scripts in its configuration directory.
 

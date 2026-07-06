@@ -1,10 +1,10 @@
 // Auto-generated from canonical skill: debug_k8s
 // Platform: WoCoder (Node/Deno)
-// Description: Debug Kubernetes issues by examining pods, logs, events, and cluster state using `kubectl` commands via Gemini CLI's `run_shell_command`.
+// Description: Debug Kubernetes issues by examining pods, logs, events, and cluster state using `kubectl` commands via CLI `run_shell_command`.
 
 export const skill = {
   name: "debug_k8s",
-  description: "Debug Kubernetes issues by examining pods, logs, events, and cluster state using `kubectl` commands via Gemini CLI's `run_shell_command`.",
+  description: "Debug Kubernetes issues by examining pods, logs, events, and cluster state using `kubectl` commands via CLI `run_shell_command`.",
   tools: ["read_file", "run_shell_command", "search_file_content", "glob"],
   prompt: `> **Platform**: Wo Coder | **Skill**: debug_k8s | **Version**: 1.0.0
 >

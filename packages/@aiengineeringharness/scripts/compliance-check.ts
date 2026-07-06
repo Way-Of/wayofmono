@@ -81,17 +81,6 @@ const TOOL_SPECS: Record<string, ToolSpec> = {
     deprecatedPatterns: ["TodoWrite"],
     extraChecks: {},
   },
-  gemini: {
-    name: "gemini",
-    naming: "snake",
-    toolNameCase: "lowercase",
-    allowedToolsFormat: "snake_case",
-    supportedFrontmatter: ["name", "description", "allowed-tools", "docs-url", "on"],
-    disableSyntax: "N/A",
-    knownToolNames: ["read_file", "run_shell_command", "edit_file", "write_file", "glob", "grep", "web_fetch", "web_search", "ask_user", "task"],
-    deprecatedPatterns: [],
-    extraChecks: {},
-  },
   pi: {
     name: "pi",
     naming: "kebab",

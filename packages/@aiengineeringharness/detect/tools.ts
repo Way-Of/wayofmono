@@ -29,7 +29,6 @@ export function detectTools(): DetectResult<ToolsInfo> {
     const tools = {
       opencode: detectTool("opencode", "~/.config/opencode", "kebab-case", "opencode"),
       claude: detectTool("claude", "~/.claude", "snake_case", "claude"),
-      gemini: detectTool("gemini", "~/.gemini", "snake_case", "gemini"),
       pi: detectTool("pi", "~/.pi/agent", "kebab-case"),
       codex: detectTool("codex", "~/.codex", "snake_case"),
       antigravity: detectTool("antigravity", "~/.antigravity", "snake_case"),
@@ -48,7 +47,6 @@ export function detectTools(): DetectResult<ToolsInfo> {
       value: {
         opencode: { name: "opencode", configDir: "~/.config/opencode", detected: false, format: "kebab-case" },
         claude: { name: "claude", configDir: "~/.claude", detected: false, format: "snake_case" },
-        gemini: { name: "gemini", configDir: "~/.gemini", detected: false, format: "snake_case" },
         pi: { name: "pi", configDir: "~/.pi/agent", detected: false, format: "kebab-case" },
         codex: { name: "codex", configDir: "~/.codex", detected: false, format: "snake_case" },
         antigravity: { name: "antigravity", configDir: "~/.antigravity", detected: false, format: "snake_case" },

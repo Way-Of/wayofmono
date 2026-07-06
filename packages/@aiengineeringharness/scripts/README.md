@@ -1,6 +1,6 @@
 # ai-harness Scripts Documentation
 
-Utility scripts for managing the 7-tool AI coding harness system (OpenCode, Claude Code, Gemini CLI, Pi, Antigravity, Codex, Wo Coder). These Deno-based tools help maintain consistency across all platforms.
+Utility scripts for managing the 6-tool AI coding harness system (OpenCode, Claude Code, Pi, Antigravity, Codex, Wo Coder). These Deno-based tools help maintain consistency across all platforms.
 
 ---
 

@@ -58,7 +58,7 @@ Skills are loaded from three sources:
 - **Config location**: `~/.wocode/` (global), `.wo/` (workspace)
 - **MCP config**: OpenCode-compatible schema (`$schema: https://opencode.ai/config.json`)
 
-### Key Differences from Antigravity / Gemini CLI
+### Key Differences from Antigravity CLI
 - **No built-in Sidecars** — Wo Coder does not manage background daemons
 - **No Pre/Post Hooks** — Wo Coder does not support JSON event hooks
 - Extensibility via: Pi-compatible TS/JS extensions, MCP servers, Markdown commands/skills
@@ -155,7 +155,7 @@ Same API as Pi:
 - Format: `SKILL.md` with YAML frontmatter
 - Naming: snake_case directory names
 - YAML frontmatter: name, description, allowed-tools, platforms
-- Platforms array (from harness convention): `[claude, opencode, gemini, pi, wocode, antigravity, codex]`
+- Platforms array (from harness convention): `[claude, opencode, pi, wocode, antigravity, codex]`
 - Tool names: kebab-case (unlike Pi's Title Case)
 - Auto-triggered or manual (via `disable-model-invocation`)
 - Skills injected into system prompt as XML block per Agent Skills standard

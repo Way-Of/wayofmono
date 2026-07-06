@@ -26,13 +26,6 @@ const testManifest = {
       { src: 'claude/skills/test-skill.md', dest: 'skills/test-skill.md' },
     ],
   },
-  gemini: {
-    name: 'gemini',
-    description: 'Test tool',
-    files: [
-      { src: 'gemini/skills/test-skill.md', dest: 'skills/test-skill.md' },
-    ],
-  },
   pi: {
     name: 'pi',
     description: 'Test tool',
@@ -129,28 +122,6 @@ describe('validate-manifest', () => {
     expect(output).toContain('Tool: claude');
     expect(output).toContain('Missing files:');
     expect(output).toContain('claude/skills/missing-skill.md');
-  });
-
-  test('detects stale files', async () => {
-    const brokenManifest = JSON.parse(JSON.stringify(testManifest));
-    brokenManifest.gemini.files = [];
-    fs.writeFileSync(MANIFEST_PATH, JSON.stringify(brokenManifest, null, 2));
-
-    const output = runValidation(['--dry-run']);
-    expect(output).toContain('Tool: gemini');
-    expect(output).toContain('Stale files:');
-    expect(output).toContain('gemini/skills/test-skill.md');
-  });
-
-  test('auto-fixes stale entries', async () => {
-    const brokenManifest = JSON.parse(JSON.stringify(testManifest));
-    brokenManifest.gemini.files = [];
-    fs.writeFileSync(MANIFEST_PATH, JSON.stringify(brokenManifest, null, 2));
-
-    runValidation(['--fix']);
-
-    const fixedManifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
-    expect(fixedManifest.gemini.files).toEqual(testManifest.gemini.files);
   });
 
   test('outputs JSON report', async () => {

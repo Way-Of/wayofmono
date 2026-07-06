@@ -11,7 +11,7 @@ Hooks are interceptors that allow you to monitor, inspect, and modify the behavi
 
 Hooks are discovered by checking for a `hooks.json` configuration file in the following locations:
 
-1. **Global Hooks**: Configured in `~/.gemini/config/hooks.json` or inside a global plugin folder at `~/.gemini/config/plugins/<pluginName>/hooks.json`.
+1. **Global Hooks**: Configured in `~/.config/opencode/config/hooks.json` or inside a global plugin folder at `~/.config/opencode/config/plugins/<pluginName>/hooks.json`.
 2. **Workspace-Specific Hooks**: Configured in `<workspace-root>/.agents/hooks.json`. These are shared across your project team and committed to git.
 
 ---

@@ -1,4 +1,4 @@
-// .gemini/skills/opticat-ui-builder/assets/ui-templates/data-table.tsx
+// skills/opticat-ui-builder/assets/ui-templates/data-table.tsx
 import React from 'react';
 
 interface DataTableProps<T> {

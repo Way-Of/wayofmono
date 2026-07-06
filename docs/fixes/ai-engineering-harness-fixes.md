@@ -213,7 +213,7 @@
   - `ticket-manager`: Marks `review-<TICKET_ID>` after review actions, `update-<TICKET_ID>` after status changes
   - `ticket-executor`: Marks notifications as read after phase completion
   - `validate-plan`: Marks notifications as read after validation
-- **Notification API integration**: All 3 ticket skills updated across all 7 tools (opencode, claude, gemini, pi, wocode, antigravity, codex)
+- **Notification API integration**: All 3 ticket skills updated across all 7 tools (opencode, claude, pi, wocode, antigravity, codex)
 - **AGENTS.md updated**: Added ticket lifecycle, namespaces, notification integration docs
 - **Deprecated skill removed**: `wow-tickets` skill removed from all 7 tools (replaced by namespace-agnostic `ticket-manager`)
 - **Manifest.json cleaned**: Removed all `wow-tickets` entries from manifest (8 tools × 1 entry each)
@@ -349,7 +349,7 @@ Then recompiled `manifest.json` via `python3 config-manifest/compile.py`. The in
 - `~/.config/opencode/skills/skill-adapter/{assets,scripts}/` (11 files)
 - `~/.config/opencode/skills/skill-auto-update/{assets,scripts}/` (12 files)
 - `~/.config/opencode/skills/skill-compliance-checker/{assets,scripts}/` (11 files)
-- Same for antigravity, claude, codex, gemini, pi, wocode
+- Same for antigravity, claude, codex, pi, wocode
 
 ### Ticket Status Selection & CTO Review Integration (v1.7.1)
 

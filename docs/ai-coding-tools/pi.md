@@ -43,7 +43,7 @@ The repository itself has a `.pi/` directory with:
 - **Commands** implemented as prompt templates in `prompts/` directory
 - **Config location**: `~/.pi/agent/`
 
-### Key Differences from Antigravity / Gemini CLI
+### Key Differences from Antigravity CLI
 - **No built-in Sidecars** — Pi does not manage background sidecars
 - **No Pre/Post Hooks** — Pi does not support JSON-configured hooks
 - **No Plugin manifests** — Pi uses JS/TS extension lifecycle API instead

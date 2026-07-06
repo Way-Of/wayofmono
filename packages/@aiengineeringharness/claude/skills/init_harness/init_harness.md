@@ -1,6 +1,6 @@
 ---
 name: init_harness
-description: Initialize the AI Engineering Harness in a repository by creating the `thoughts/` directory structure for Gemini CLI.
+description: Initialize the AI Engineering Harness in a repository by creating the `thoughts/` directory structure for .
 allowed-tools: read_file, write_file, run_shell_command
 ---
 

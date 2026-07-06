@@ -62,4 +62,4 @@ Antigravity comes with pre-packaged plugins. You can browse and add these direct
 Place your plugin folder in one of the designated customization directories. Antigravity automatically scans and loads them on startup:
 
 *   **Workspace Level**: Place your plugin folder inside a `.agents/plugins/` or `_agents/plugins/` directory at the root of your opened workspace. The plugin will only be active when working in this workspace.
-*   **Global Level**: Place your plugin folder inside `~/.gemini/config/plugins/` in your user home directory. The plugin will be active across all projects.
+*   **Global Level**: Place your plugin folder inside `~/.config/opencode/config/plugins/` in your user home directory. The plugin will be active across all projects.

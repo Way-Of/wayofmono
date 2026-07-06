@@ -1,0 +1,86 @@
+{
+  "project": "wow",
+  "project_slug": "wow",
+  "description": "Way of Work (WoW) platform-specific skills",
+  "version": "1.0.0",
+  "tools": {
+    "opencode": {
+      "skills": [
+        {"src": "skills/wow-access-control/SKILL.md", "dest": "skills/wow-access-control/SKILL.md"},
+        {"src": "skills/wow-agent-dev/SKILL.md", "dest": "skills/wow-agent-dev/SKILL.md"},
+        {"src": "skills/wow-backend-dev/SKILL.md", "dest": "skills/wow-backend-dev/SKILL.md"},
+        {"src": "skills/wow-communications/SKILL.md", "dest": "skills/wow-communications/SKILL.md"},
+        {"src": "skills/wow-core-architecture/SKILL.md", "dest": "skills/wow-core-architecture/SKILL.md"},
+        {"src": "skills/wow-frontend-dev/SKILL.md", "dest": "skills/wow-frontend-dev/SKILL.md"},
+        {"src": "skills/wow-human-in-the-loop/SKILL.md", "dest": "skills/wow-human-in-the-loop/SKILL.md"},
+        {"src": "skills/wow-skill-creator/SKILL.md", "dest": "skills/wow-skill-creator/SKILL.md"},
+        {"src": "skills/wow-ui-surfaces/SKILL.md", "dest": "skills/wow-ui-surfaces/SKILL.md"}
+      ]
+    },
+    "claude": {
+      "skills": [
+        {"src": "claude/skills/wow_access_control/SKILL.md", "dest": "skills/wow_access_control/SKILL.md"},
+        {"src": "claude/skills/wow_agent_dev/SKILL.md", "dest": "skills/wow_agent_dev/SKILL.md"},
+        {"src": "claude/skills/wow_backend_dev/SKILL.md", "dest": "skills/wow_backend_dev/SKILL.md"},
+        {"src": "claude/skills/wow_communications/SKILL.md", "dest": "skills/wow_communications/SKILL.md"},
+        {"src": "claude/skills/wow_core_architecture/SKILL.md", "dest": "skills/wow_core_architecture/SKILL.md"},
+        {"src": "claude/skills/wow_frontend_dev/SKILL.md", "dest": "skills/wow_frontend_dev/SKILL.md"},
+        {"src": "claude/skills/wow_human_in_the_loop/SKILL.md", "dest": "skills/wow_human_in_the_loop/SKILL.md"},
+        {"src": "claude/skills/wow_skill_creator/SKILL.md", "dest": "skills/wow_skill_creator/SKILL.md"},
+        {"src": "claude/skills/wow_ui_surfaces/SKILL.md", "dest": "skills/wow_ui_surfaces/SKILL.md"}
+      ]
+    },
+    "antigravity": {
+      "skills": [
+        {"src": "antigravity/skills/wow_access_control/SKILL.md", "dest": "skills/wow_access_control/SKILL.md"},
+        {"src": "antigravity/skills/wow_agent_dev/SKILL.md", "dest": "skills/wow_agent_dev/SKILL.md"},
+        {"src": "antigravity/skills/wow_backend_dev/SKILL.md", "dest": "skills/wow_backend_dev/SKILL.md"},
+        {"src": "antigravity/skills/wow_communications/SKILL.md", "dest": "skills/wow_communications/SKILL.md"},
+        {"src": "antigravity/skills/wow_core_architecture/SKILL.md", "dest": "skills/wow_core_architecture/SKILL.md"},
+        {"src": "antigravity/skills/wow_frontend_dev/SKILL.md", "dest": "skills/wow_frontend_dev/SKILL.md"},
+        {"src": "antigravity/skills/wow_human_in_the_loop/SKILL.md", "dest": "skills/wow_human_in_the_loop/SKILL.md"},
+        {"src": "antigravity/skills/wow_skill_creator/SKILL.md", "dest": "skills/wow_skill_creator/SKILL.md"},
+        {"src": "antigravity/skills/wow_ui_surfaces/SKILL.md", "dest": "skills/wow_ui_surfaces/SKILL.md"}
+      ]
+    },
+    "codex": {
+      "skills": [
+        {"src": "codex/skills/wow_access_control/SKILL.md", "dest": "skills/wow_access_control/SKILL.md"},
+        {"src": "codex/skills/wow_agent_dev/SKILL.md", "dest": "skills/wow_agent_dev/SKILL.md"},
+        {"src": "codex/skills/wow_backend_dev/SKILL.md", "dest": "skills/wow_backend_dev/SKILL.md"},
+        {"src": "codex/skills/wow_communications/SKILL.md", "dest": "skills/wow_communications/SKILL.md"},
+        {"src": "codex/skills/wow_core_architecture/SKILL.md", "dest": "skills/wow_core_architecture/SKILL.md"},
+        {"src": "codex/skills/wow_frontend_dev/SKILL.md", "dest": "skills/wow_frontend_dev/SKILL.md"},
+        {"src": "codex/skills/wow_human_in_the_loop/SKILL.md", "dest": "skills/wow_human_in_the_loop/SKILL.md"},
+        {"src": "codex/skills/wow_skill_creator/SKILL.md", "dest": "skills/wow_skill_creator/SKILL.md"},
+        {"src": "codex/skills/wow_ui_surfaces/SKILL.md", "dest": "skills/wow_ui_surfaces/SKILL.md"}
+      ]
+    },
+    "pi": {
+      "skills": [
+        {"src": "pi/skills/wow-access-control/SKILL.md", "dest": "skills/wow-access-control/SKILL.md"},
+        {"src": "pi/skills/wow-agent-dev/SKILL.md", "dest": "skills/wow-agent-dev/SKILL.md"},
+        {"src": "pi/skills/wow-backend-dev/SKILL.md", "dest": "skills/wow-backend-dev/SKILL.md"},
+        {"src": "pi/skills/wow-communications/SKILL.md", "dest": "skills/wow-communications/SKILL.md"},
+        {"src": "pi/skills/wow-core-architecture/SKILL.md", "dest": "skills/wow-core-architecture/SKILL.md"},
+        {"src": "pi/skills/wow-frontend-dev/SKILL.md", "dest": "skills/wow-frontend-dev/SKILL.md"},
+        {"src": "pi/skills/wow-human-in-the-loop/SKILL.md", "dest": "skills/wow-human-in-the-loop/SKILL.md"},
+        {"src": "pi/skills/wow-skill-creator/SKILL.md", "dest": "skills/wow-skill-creator/SKILL.md"},
+        {"src": "pi/skills/wow-ui-surfaces/SKILL.md", "dest": "skills/wow-ui-surfaces/SKILL.md"}
+      ]
+    },
+    "wocode": {
+      "skills": [
+        {"src": "wocode/skills/wow-access-control/SKILL.md", "dest": "skills/wow-access-control/SKILL.md"},
+        {"src": "wocode/skills/wow-agent-dev/SKILL.md", "dest": "skills/wow-agent-dev/SKILL.md"},
+        {"src": "wocode/skills/wow-backend-dev/SKILL.md", "dest": "skills/wow-backend-dev/SKILL.md"},
+        {"src": "wocode/skills/wow-communications/SKILL.md", "dest": "skills/wow-communications/SKILL.md"},
+        {"src": "wocode/skills/wow-core-architecture/SKILL.md", "dest": "skills/wow-core-architecture/SKILL.md"},
+        {"src": "wocode/skills/wow-frontend-dev/SKILL.md", "dest": "skills/wow-frontend-dev/SKILL.md"},
+        {"src": "wocode/skills/wow-human-in-the-loop/SKILL.md", "dest": "skills/wow-human-in-the-loop/SKILL.md"},
+        {"src": "wocode/skills/wow-skill-creator/SKILL.md", "dest": "skills/wow-skill-creator/SKILL.md"},
+        {"src": "wocode/skills/wow-ui-surfaces/SKILL.md", "dest": "skills/wow-ui-surfaces/SKILL.md"}
+      ]
+    }
+  }
+}

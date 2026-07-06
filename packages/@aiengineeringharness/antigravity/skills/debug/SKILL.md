@@ -1,6 +1,6 @@
 ---
 name: debug
-description: Debug issues during manual testing or implementation by examining logs, state, and git history using Gemini CLI tools.
+description: Debug issues during manual testing or implementation by examining logs, state, and git history using CLI tools.
 allowed-tools: read, bash, grep, glob
 disable-model-invocation: true
 ---

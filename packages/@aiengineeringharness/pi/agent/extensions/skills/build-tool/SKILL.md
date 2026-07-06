@@ -14,7 +14,6 @@ Generates any AI coding tool component for any of 7 target tools using per-tool 
 |------|--------|--------|---------------------|---------------|----------|
 | OpenCode | `opencode` | kebab-case | lowercase | JSON | https://opencode.ai/docs/ |
 | Claude Code | `claude` | snake_case | Title Case | JSON | https://code.claude.com/docs/en/overview |
-| Gemini CLI | `gemini` | snake_case | lowercase | JSON | https://geminicli.com/docs/ |
 | Pi | `pi` | kebab-case | Title Case | JSON | https://pi.dev/ |
 | Antigravity | `agy` | snake_case | lowercase | JSON | https://antigravity.google/docs/cli-overview |
 | Codex | `codex` | snake_case | lowercase | JSON | https://developers.openai.com/codex/cli |
@@ -30,7 +29,7 @@ Always read `thoughts/global/docs/ai-coding-tools/<tool>.md` for current format 
 
 Each tool uses SKILL.md with YAML frontmatter. Per-tool rules:
 
-**Naming**: kebab-case (opencode, pi, wocode) or snake_case (claude, gemini, antigravity, codex)
+**Naming**: kebab-case (opencode, pi, wocode) or snake_case (claude, antigravity, codex)
 **Name field**: Must exactly match parent directory name, regex `^[a-z0-9]+(-[a-z0-9]+)*$`
 **allowed-tools**: Space-delimited string (not array). Casing per tool spec below.
 
@@ -38,7 +37,6 @@ Each tool uses SKILL.md with YAML frontmatter. Per-tool rules:
 |------|----------------------|----------------|
 | opencode | `read, write, bash, edit, grep, glob` | lowercase: `read, write, bash, edit, grep, glob, webfetch, websearch, question, todowrite, skill` |
 | claude | `Read, Write, Bash, Edit, Glob, Grep` | Title Case: `Read, Write, Bash, Edit, Glob, Grep, WebFetch, WebSearch, Web` |
-| gemini | `read, write, bash, glob, grep, web, code` | lowercase: `read, write, bash, glob, grep, web, code` |
 | pi | `Read, Write, Bash, Edit, Glob, Grep` | Title Case: `Read, Write, Bash, Edit, Glob, Grep, WebFetch, WebSearch` |
 | antigravity | `read, write, bash, glob, grep, web, code` | lowercase: `read, write, bash, glob, grep, web, code` |
 | codex | `read_file, write_file, run_shell_command` | lowercase: `read_file, write_file, run_shell_command` |
@@ -54,7 +52,6 @@ All tools use Markdown frontmatter format for agent definitions. Per-tool rules:
 |------|-----|--------|--------|
 | opencode | `agents/` | kebab-case | .md with YAML frontmatter |
 | claude | `agents/` | snake_case | .md with YAML frontmatter |
-| gemini | `agents/` | snake_case | .md with YAML frontmatter |
 | pi | `agents/` | kebab-case | .md with YAML frontmatter |
 | antigravity | `agents/` | snake_case | .md with YAML frontmatter |
 | codex | `agents/` | snake_case | .md with YAML frontmatter |
@@ -68,7 +65,6 @@ Required fields: `name`, `description`, `tools`, system prompt in body.
 |------|-----|--------|
 | opencode | `commands/` | Markdown .md files |
 | claude | N/A (commands = skills with `disable-model-invocation: true`) | SKILL.md |
-| gemini | `commands/` | TOML format |
 | pi | `prompts/` | Markdown prompt templates |
 | antigravity | `commands/` | Markdown .md files |
 | codex | N/A | N/A |
@@ -81,7 +77,6 @@ Required fields: `name`, `description`, `tools`, system prompt in body.
 | claude | plugin.json | Plugin manifest with relative paths, custom commands, hook interceptors |
 | pi | TypeScript/JS module | Extension API lifecycle: `activate`, `deactivate` |
 | opencode | MCP server config | Configure in opencode.json `mcpServers` section |
-| gemini | N/A | No extension system |
 | antigravity | N/A | No packaged plugin system |
 | codex | N/A | No extension system |
 | wocode | TypeScript/JS module | Same pattern as Pi (fork) |
@@ -94,7 +89,6 @@ All tools use JSON config files. Key files per tool:
 |------|-------------|--------|
 | opencode | `~/.config/opencode/opencode.json` | JSON/JSONC |
 | claude | `~/.claude/settings.json` | JSON |
-| gemini | `~/.gemini/config.json` | JSON |
 | pi | `~/.pi/agent/config.json` | JSON |
 | antigravity | `~/.antigravity/settings.json` | JSON |
 | codex | `~/.codex/config.json` | JSON |
@@ -146,7 +140,6 @@ All tools use JSON config files. Key files per tool:
 |------|-------------|
 | opencode | `packages/@aiengineeringharness/opencode/` → `~/.config/opencode/` |
 | claude | `packages/@aiengineeringharness/claude/` → `~/.claude/` |
-| gemini | `packages/@aiengineeringharness/gemini/` → `~/.gemini/` |
 | pi | `packages/@aiengineeringharness/pi/` → `~/.pi/agent/` |
 | antigravity | `packages/@aiengineeringharness/antigravity/` → `~/.antigravity/` |
 | codex | `packages/@aiengineeringharness/codex/` → `~/.codex/` |
@@ -161,7 +154,6 @@ Online docs (always fetch at generation time):
 
 - OpenCode: https://opencode.ai/docs/
 - Claude Code: https://code.claude.com/docs/en/overview
-- Gemini CLI: https://geminicli.com/docs/
 - Pi: https://pi.dev/
 - Antigravity: https://antigravity.google/docs/cli-overview
 - Codex: https://developers.openai.com/codex/cli

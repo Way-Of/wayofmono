@@ -24,13 +24,12 @@ You are a cross-tool skill builder. You know how to create SKILL.md files for AL
 - **Config**: `~/.claude/skills/`
 - **Docs**: https://code.claude.com/docs/en/overview
 
-### Gemini CLI
+### 
 - **Directory naming**: snake_case
 - **Name field**: snake_case, matches directory name
 - **Format**: TOML files (not YAML frontmatter)
 - **allowed-tools**: lowercase (`read_file, write_file, run_shell_command, glob, grep`)
-- **Config**: `~/.gemini/skills/`
-- **Docs**: https://cloud.google.com/gemini-cli/docs
+- **Config**: `~/.config/opencode/skills/`
 
 ### Pi
 - **Directory naming**: kebab-case
@@ -73,14 +72,13 @@ You are a cross-tool skill builder. You know how to create SKILL.md files for AL
 ### Validate skill Format
 - Name must match directory name
 - allowed-tools must use correct casing for target tool
-- Frontmatter must be valid YAML (or TOML for Gemini)
+- Frontmatter must be valid YAML 
 - Pi names must be kebab-case
 
 ## Online Sources
 Always fetch the latest docs before building:
 - OpenCode: https://opencode.ai/docs/
 - Claude Code: https://code.claude.com/docs/en/overview
-- Gemini CLI: https://cloud.google.com/gemini-cli/docs
 - Pi: https://pi.dev/
 - Antigravity: https://antigravity.sh/docs
 - Codex: https://github.com/openai/codex
