@@ -42,7 +42,7 @@ import { Transaction } from "./transaction.ts";
 import { generateReport, generateSanitizedReport, printReport, pushReport } from "./report.ts";
 
 /** Harness version — kept in sync with manifest.json & install.ps1 */
-const VERSION = "1.7.12";
+const VERSION = "1.7.14";
 
 function normalizeSlashes(p: string): string {
   if (Deno.build.os === "windows") return p.replace(/\\/g, "/");
@@ -425,7 +425,7 @@ function printHelp(): void {
     {
       title: "install & update",
       items: [
-        { cmd: "--tool=<name>", desc: "Install tool config (claude, opencode, gemini, pi, wocode, antigravity, codex, all)" },
+        { cmd: "--tool=<name>", desc: "Install tool config (claude, opencode, pi, wocode, antigravity, codex, all)" },
         { cmd: "--install-cli", desc: "Install/update CLI binary with Matrix output" },
         { cmd: "--update", desc: "Full harness sync: CLI + docs + all tools + stale cleanup + validate" },
         { cmd: "--yes, -y", desc: "Skip confirmation prompts" },
@@ -505,7 +505,6 @@ The repo must remain at a stable path on your system.
    3. Install symlinks:
        ./setup.sh claude             # Claude Code
        ./setup.sh opencode           # OpenCode
-       ./setup.sh gemini             # Gemini CLI
        ./setup.sh pi                 # Pi
        ./setup.sh wocode            # Wo Coder
        ./setup.sh antigravity        # Antigravity
@@ -797,8 +796,6 @@ function getProjectLocalTarget(tool: string): string {
   switch (tool) {
     case "claude":
       return "./.claude";
-    case "gemini":
-      return "./.gemini";
     case "pi":
       return "./.pi/agent";
     case "opencode":
@@ -1157,7 +1154,6 @@ if (args["report-skills"]) {
   const dirs = [
     { name: "Pi", path: join(homedir, ".pi", "agent", "skills") },
     { name: "OpenCode", path: join(homedir, ".config", "opencode", "skills") },
-    { name: "Gemini CLI", path: join(homedir, ".gemini", "skills") },
     { name: "Codex", path: join(homedir, ".codex", "skills") },
     { name: "Claude Code", path: join(homedir, ".claude", "skills") },
     { name: "Antigravity", path: join(homedir, ".antigravity", "skills") },

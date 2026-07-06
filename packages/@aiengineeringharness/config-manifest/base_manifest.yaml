@@ -2,7 +2,7 @@
 # Global metadata and shared configuration for all 7 AI coding tools
 # This file is merged with tool-specific configs to produce manifest.json
 
-manifest_version: "1.7.9"
+manifest_version: "1.7.14"
 environment: "production"
 description: "AI Engineering Harness - Modular manifest for 7 AI coding tools"
 
@@ -16,7 +16,6 @@ global_defaults:
 tool_order:
   - "claude"
   - "opencode"
-  - "gemini"
   - "pi"
   - "wocode"
   - "codex"

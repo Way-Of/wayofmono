@@ -32,7 +32,7 @@ components:
     files:
     - src: pi/agent/extensions/open-editor.ts
       dest: extensions/open-editor.ts
-extension/subagent:
+  extension/subagent:
     description: Subagent tool for multi-agent workflows (single, parallel, chain)
     files:
     - src: pi/agent/extensions/subagent/index.ts
