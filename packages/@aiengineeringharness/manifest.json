@@ -905,6 +905,69 @@
               "dest": "skills/knowledge/SKILL.md"
             }
           ]
+        },
+        "skill/commit": {
+          "description": "Create structured git commits. Delegates to the git-commit-helper skill.",
+          "files": [
+            {
+              "src": "antigravity/skills/commit/SKILL.md",
+              "dest": "skills/commit/SKILL.md"
+            }
+          ]
+        },
+        "skill/complete": {
+          "description": "Complete a ticket, submit for review. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "antigravity/skills/complete/SKILL.md",
+              "dest": "skills/complete/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-bump": {
+          "description": "Bump the version across all project files. Delegates to the fixes-manager skill.",
+          "files": [
+            {
+              "src": "antigravity/skills/fixes-bump/SKILL.md",
+              "dest": "skills/fixes-bump/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-create": {
+          "description": "Create a fix note entry. Delegates to the fixes-manager skill.",
+          "files": [
+            {
+              "src": "antigravity/skills/fixes-create/SKILL.md",
+              "dest": "skills/fixes-create/SKILL.md"
+            }
+          ]
+        },
+        "skill/help": {
+          "description": "Unified help system for all commands and skills. Delegates to the help-command skill.",
+          "files": [
+            {
+              "src": "antigravity/skills/help/SKILL.md",
+              "dest": "skills/help/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket-create": {
+          "description": "Interactive ticket creation wizard. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "antigravity/skills/ticket-create/SKILL.md",
+              "dest": "skills/ticket-create/SKILL.md"
+            }
+          ]
+        },
+        "skill/work": {
+          "description": "Start working on a ticket, update status to In Progress. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "antigravity/skills/work/SKILL.md",
+              "dest": "skills/work/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -1510,69 +1573,6 @@
             }
           ]
         },
-        "skill/fixes-create": {
-          "description": "Create fix note entry command",
-          "files": [
-            {
-              "src": "claude/skills/fixes_create/SKILL.md",
-              "dest": "skills/fixes-create/SKILL.md"
-            }
-          ]
-        },
-        "skill/fixes-bump": {
-          "description": "Bump version across project files command",
-          "files": [
-            {
-              "src": "claude/skills/fixes_bump/SKILL.md",
-              "dest": "skills/fixes-bump/SKILL.md"
-            }
-          ]
-        },
-        "skill/commit": {
-          "description": "Create structured git commits",
-          "files": [
-            {
-              "src": "claude/skills/commit/SKILL.md",
-              "dest": "skills/commit/SKILL.md"
-            }
-          ]
-        },
-        "skill/work": {
-          "description": "Start working on a ticket, update status to In Progress",
-          "files": [
-            {
-              "src": "claude/skills/work/SKILL.md",
-              "dest": "skills/work/SKILL.md"
-            }
-          ]
-        },
-        "skill/complete": {
-          "description": "Complete a ticket, submit for review",
-          "files": [
-            {
-              "src": "claude/skills/complete/SKILL.md",
-              "dest": "skills/complete/SKILL.md"
-            }
-          ]
-        },
-        "skill/ticket-create": {
-          "description": "Interactive ticket creation wizard",
-          "files": [
-            {
-              "src": "claude/skills/ticket_create/SKILL.md",
-              "dest": "skills/ticket-create/SKILL.md"
-            }
-          ]
-        },
-        "skill/help": {
-          "description": "Unified help system for all commands and skills",
-          "files": [
-            {
-              "src": "claude/skills/help/SKILL.md",
-              "dest": "skills/help/SKILL.md"
-            }
-          ]
-        },
         "skill/fixes-manager": {
           "description": "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.",
           "files": [
@@ -1632,6 +1632,69 @@
             {
               "src": "claude/skills/knowledge/SKILL.md",
               "dest": "skills/knowledge/SKILL.md"
+            }
+          ]
+        },
+        "skill/commit": {
+          "description": "Create structured git commits. Delegates to the git-commit-helper skill.",
+          "files": [
+            {
+              "src": "claude/skills/commit/SKILL.md",
+              "dest": "skills/commit/SKILL.md"
+            }
+          ]
+        },
+        "skill/complete": {
+          "description": "Complete a ticket, submit for review. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "claude/skills/complete/SKILL.md",
+              "dest": "skills/complete/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-bump": {
+          "description": "Bump the version across all project files. Delegates to the fixes-manager skill.",
+          "files": [
+            {
+              "src": "claude/skills/fixes-bump/SKILL.md",
+              "dest": "skills/fixes-bump/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-create": {
+          "description": "Create a fix note entry. Delegates to the fixes-manager skill.",
+          "files": [
+            {
+              "src": "claude/skills/fixes-create/SKILL.md",
+              "dest": "skills/fixes-create/SKILL.md"
+            }
+          ]
+        },
+        "skill/help": {
+          "description": "Unified help system for all commands and skills. Delegates to the help-command skill.",
+          "files": [
+            {
+              "src": "claude/skills/help/SKILL.md",
+              "dest": "skills/help/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket-create": {
+          "description": "Interactive ticket creation wizard. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "claude/skills/ticket-create/SKILL.md",
+              "dest": "skills/ticket-create/SKILL.md"
+            }
+          ]
+        },
+        "skill/work": {
+          "description": "Start working on a ticket, update status to In Progress. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "claude/skills/work/SKILL.md",
+              "dest": "skills/work/SKILL.md"
             }
           ]
         }
@@ -2214,97 +2277,6 @@
             }
           ]
         },
-        "skill/fixes-create": {
-          "description": "Create fix note entry skill",
-          "files": [
-            {
-              "src": "codex/skills/fixes_create/skill.yaml",
-              "dest": "skills/fixes-create/skill.yaml"
-            },
-            {
-              "src": "codex/skills/fixes_create/prompt.md",
-              "dest": "skills/fixes-create/prompt.md"
-            }
-          ]
-        },
-        "skill/fixes-bump": {
-          "description": "Bump version across project files skill",
-          "files": [
-            {
-              "src": "codex/skills/fixes_bump/skill.yaml",
-              "dest": "skills/fixes-bump/skill.yaml"
-            },
-            {
-              "src": "codex/skills/fixes_bump/prompt.md",
-              "dest": "skills/fixes-bump/prompt.md"
-            }
-          ]
-        },
-        "skill/commit": {
-          "description": "Create structured git commits",
-          "files": [
-            {
-              "src": "codex/skills/commit/skill.yaml",
-              "dest": "skills/commit/skill.yaml"
-            },
-            {
-              "src": "codex/skills/commit/prompt.md",
-              "dest": "skills/commit/prompt.md"
-            }
-          ]
-        },
-        "skill/work": {
-          "description": "Start working on a ticket, update status to In Progress",
-          "files": [
-            {
-              "src": "codex/skills/work/skill.yaml",
-              "dest": "skills/work/skill.yaml"
-            },
-            {
-              "src": "codex/skills/work/prompt.md",
-              "dest": "skills/work/prompt.md"
-            }
-          ]
-        },
-        "skill/complete": {
-          "description": "Complete a ticket, submit for review",
-          "files": [
-            {
-              "src": "codex/skills/complete/skill.yaml",
-              "dest": "skills/complete/skill.yaml"
-            },
-            {
-              "src": "codex/skills/complete/prompt.md",
-              "dest": "skills/complete/prompt.md"
-            }
-          ]
-        },
-        "skill/ticket-create": {
-          "description": "Interactive ticket creation wizard",
-          "files": [
-            {
-              "src": "codex/skills/ticket_create/skill.yaml",
-              "dest": "skills/ticket-create/skill.yaml"
-            },
-            {
-              "src": "codex/skills/ticket_create/prompt.md",
-              "dest": "skills/ticket-create/prompt.md"
-            }
-          ]
-        },
-        "skill/help": {
-          "description": "Unified help system for all commands and skills",
-          "files": [
-            {
-              "src": "codex/skills/help/skill.yaml",
-              "dest": "skills/help/skill.yaml"
-            },
-            {
-              "src": "codex/skills/help/prompt.md",
-              "dest": "skills/help/prompt.md"
-            }
-          ]
-        },
         "skill/fixes-manager": {
           "description": "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.",
           "files": [
@@ -2364,6 +2336,69 @@
             {
               "src": "codex/skills/knowledge/SKILL.md",
               "dest": "skills/knowledge/SKILL.md"
+            }
+          ]
+        },
+        "skill/commit": {
+          "description": "Create structured git commits. Delegates to the git-commit-helper skill.",
+          "files": [
+            {
+              "src": "codex/skills/commit/SKILL.md",
+              "dest": "skills/commit/SKILL.md"
+            }
+          ]
+        },
+        "skill/complete": {
+          "description": "Complete a ticket, submit for review. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "codex/skills/complete/SKILL.md",
+              "dest": "skills/complete/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-bump": {
+          "description": "Bump the version across all project files. Delegates to the fixes-manager skill.",
+          "files": [
+            {
+              "src": "codex/skills/fixes-bump/SKILL.md",
+              "dest": "skills/fixes-bump/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-create": {
+          "description": "Create a fix note entry. Delegates to the fixes-manager skill.",
+          "files": [
+            {
+              "src": "codex/skills/fixes-create/SKILL.md",
+              "dest": "skills/fixes-create/SKILL.md"
+            }
+          ]
+        },
+        "skill/help": {
+          "description": "Unified help system for all commands and skills. Delegates to the help-command skill.",
+          "files": [
+            {
+              "src": "codex/skills/help/SKILL.md",
+              "dest": "skills/help/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket-create": {
+          "description": "Interactive ticket creation wizard. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "codex/skills/ticket-create/SKILL.md",
+              "dest": "skills/ticket-create/SKILL.md"
+            }
+          ]
+        },
+        "skill/work": {
+          "description": "Start working on a ticket, update status to In Progress. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "codex/skills/work/SKILL.md",
+              "dest": "skills/work/SKILL.md"
             }
           ]
         }
@@ -3174,6 +3209,69 @@
             {
               "src": "opencode/skills/knowledge/SKILL.md",
               "dest": "skills/knowledge/SKILL.md"
+            }
+          ]
+        },
+        "skill/commit": {
+          "description": "Create structured git commits. Delegates to the git-commit-helper skill.",
+          "files": [
+            {
+              "src": "opencode/skills/commit/SKILL.md",
+              "dest": "skills/commit/SKILL.md"
+            }
+          ]
+        },
+        "skill/complete": {
+          "description": "Complete a ticket, submit for review. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "opencode/skills/complete/SKILL.md",
+              "dest": "skills/complete/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-bump": {
+          "description": "Bump the version across all project files. Delegates to the fixes-manager skill.",
+          "files": [
+            {
+              "src": "opencode/skills/fixes-bump/SKILL.md",
+              "dest": "skills/fixes-bump/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-create": {
+          "description": "Create a fix note entry. Delegates to the fixes-manager skill.",
+          "files": [
+            {
+              "src": "opencode/skills/fixes-create/SKILL.md",
+              "dest": "skills/fixes-create/SKILL.md"
+            }
+          ]
+        },
+        "skill/help": {
+          "description": "Unified help system for all commands and skills. Delegates to the help-command skill.",
+          "files": [
+            {
+              "src": "opencode/skills/help/SKILL.md",
+              "dest": "skills/help/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket-create": {
+          "description": "Interactive ticket creation wizard. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "opencode/skills/ticket-create/SKILL.md",
+              "dest": "skills/ticket-create/SKILL.md"
+            }
+          ]
+        },
+        "skill/work": {
+          "description": "Start working on a ticket, update status to In Progress. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "opencode/skills/work/SKILL.md",
+              "dest": "skills/work/SKILL.md"
             }
           ]
         }
@@ -4087,6 +4185,69 @@
             {
               "src": "pi/skills/knowledge/SKILL.md",
               "dest": "skills/knowledge/SKILL.md"
+            }
+          ]
+        },
+        "skill/commit": {
+          "description": "Create structured git commits. Delegates to the git-commit-helper skill.",
+          "files": [
+            {
+              "src": "pi/agent/skills/commit/SKILL.md",
+              "dest": "skills/commit/SKILL.md"
+            }
+          ]
+        },
+        "skill/complete": {
+          "description": "Complete a ticket, submit for review. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "pi/agent/skills/complete/SKILL.md",
+              "dest": "skills/complete/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-bump": {
+          "description": "Bump the version across all project files. Delegates to the fixes-manager skill.",
+          "files": [
+            {
+              "src": "pi/agent/skills/fixes-bump/SKILL.md",
+              "dest": "skills/fixes-bump/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-create": {
+          "description": "Create a fix note entry. Delegates to the fixes-manager skill.",
+          "files": [
+            {
+              "src": "pi/agent/skills/fixes-create/SKILL.md",
+              "dest": "skills/fixes-create/SKILL.md"
+            }
+          ]
+        },
+        "skill/help": {
+          "description": "Unified help system for all commands and skills. Delegates to the help-command skill.",
+          "files": [
+            {
+              "src": "pi/agent/skills/help/SKILL.md",
+              "dest": "skills/help/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket-create": {
+          "description": "Interactive ticket creation wizard. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "pi/agent/skills/ticket-create/SKILL.md",
+              "dest": "skills/ticket-create/SKILL.md"
+            }
+          ]
+        },
+        "skill/work": {
+          "description": "Start working on a ticket, update status to In Progress. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "pi/agent/skills/work/SKILL.md",
+              "dest": "skills/work/SKILL.md"
             }
           ]
         }
@@ -5114,6 +5275,69 @@
             {
               "src": "wocode/skills/knowledge/SKILL.md",
               "dest": "skills/knowledge/SKILL.md"
+            }
+          ]
+        },
+        "skill/commit": {
+          "description": "Create structured git commits. Delegates to the git-commit-helper skill.",
+          "files": [
+            {
+              "src": "wocode/agent/skills/commit/SKILL.md",
+              "dest": "skills/commit/SKILL.md"
+            }
+          ]
+        },
+        "skill/complete": {
+          "description": "Complete a ticket, submit for review. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "wocode/agent/skills/complete/SKILL.md",
+              "dest": "skills/complete/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-bump": {
+          "description": "Bump the version across all project files. Delegates to the fixes-manager skill.",
+          "files": [
+            {
+              "src": "wocode/agent/skills/fixes-bump/SKILL.md",
+              "dest": "skills/fixes-bump/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-create": {
+          "description": "Create a fix note entry. Delegates to the fixes-manager skill.",
+          "files": [
+            {
+              "src": "wocode/agent/skills/fixes-create/SKILL.md",
+              "dest": "skills/fixes-create/SKILL.md"
+            }
+          ]
+        },
+        "skill/help": {
+          "description": "Unified help system for all commands and skills. Delegates to the help-command skill.",
+          "files": [
+            {
+              "src": "wocode/agent/skills/help/SKILL.md",
+              "dest": "skills/help/SKILL.md"
+            }
+          ]
+        },
+        "skill/ticket-create": {
+          "description": "Interactive ticket creation wizard. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "wocode/agent/skills/ticket-create/SKILL.md",
+              "dest": "skills/ticket-create/SKILL.md"
+            }
+          ]
+        },
+        "skill/work": {
+          "description": "Start working on a ticket, update status to In Progress. Delegates to the ticket-manager skill.",
+          "files": [
+            {
+              "src": "wocode/agent/skills/work/SKILL.md",
+              "dest": "skills/work/SKILL.md"
             }
           ]
         }
