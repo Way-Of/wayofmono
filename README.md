@@ -2,18 +2,18 @@
 
 > Built as a unified toolset for the next generation of AI engineering.
 
-The ultimate monorepo consolidation for high-performance coding agents. WayOfMono provides a shared Intelligence Backend (Packages, Tools, Memory) that serves **7** distinct Agent Frontends, with Wo (Way of Coding) as our primary synthesized interface.
+The ultimate monorepo consolidation for high-performance coding agents. WayOfMono provides a shared Intelligence Backend (Packages, Tools, Memory) that serves **6** distinct Agent Frontends, with Wo (Way of Coding) as our primary synthesized interface. (Gemini CLI was removed June 2026 — Google ended support.)
 
 ## 👟 Quick Install
 
 ### What You're About to Do
 
-This guide will install **7 AI coding tools** with shared skills, agents, and configurations. You'll get:
+This guide will install **6 AI coding tools** with shared skills, agents, and configurations. You'll get:
 - **wocode** (Wo Coder) — our primary coding agent
 - **wouser** — general-purpose AI assistant
-- **Claude Code**, **OpenCode**, **Gemini CLI**, **Pi**, **Codex**, **Antigravity** — all configured with the same skills
+- **Claude Code**, **OpenCode**, **Pi**, **Codex**, **Antigravity** — all configured with the same skills
 
-Each tool will have access to **81 battle-tested skills** for tasks like debugging, planning, code review, and more.
+Each tool will have access to **shared skills** for tasks like debugging, planning, code review, and more. Project-specific skills (OptiCat, WoW, WOMONO) are delivered via npm packages — add `@wayofmono/delivery-<project>` to your project's dependencies for skills relevant to that project.
 
 ---
 
@@ -106,25 +106,27 @@ You should see the help output with all available commands.
 
 ---
 
-### Step 3: Install All 7 Tools at Once (Recommended)
+### Step 3: Install All 6 Tools at Once (Recommended)
 
 **What does this do?**
-One command sets up configurations for **all 7 AI coding tools** with **81 shared skills**, agents, prompts, and settings. This is the fastest way to get started.
+One command sets up configurations for **all 6 AI coding tools** with shared skills, agents, prompts, and settings. This is the fastest way to get started.
 
-**What are the 7 tools?**
+**What are the 6 tools?**
 1. **wocode** (Wo Coder) — our primary coding agent
 2. **wouser** — general-purpose AI assistant  
 3. **Claude Code** — Anthropic's coding agent
 4. **OpenCode** — Open-source TUI-driven agent
-6. **Pi** — Pi Agent standard
-7. **Codex** — OpenAI's coding agent
-8. **Antigravity** — Autonomous agent platform
+5. **Pi** — Pi Agent standard
+6. **Codex** — OpenAI's coding agent
+7. **Antigravity** — Autonomous agent platform
+
+> **Gemini CLI was removed** — Google ended support June 18, 2026. Antigravity CLI is the official replacement.
 
 **macOS / Linux / Windows (bash):**
 ```bash
 ai-harness --tool=all --yes
 ```
-> `--tool=all` = install all 7 tools. `--yes` = skip confirmation prompts.
+> `--tool=all` = install all 6 tools. `--yes` = skip confirmation prompts.
 
 **Windows (PowerShell wrapper):**
 ```powershell
@@ -142,11 +144,11 @@ Creates config folders in your home directory:
 
 Each folder contains: `skills/`, `agents/`, `prompts/`, `commands/`, `settings.json`
 
-**After this step:** Each AI tool will automatically load all 81 skills when you start it. No further configuration needed!
+**After this step:** Each AI tool will automatically load all skills when you start it. No further configuration needed!
 
 ### Step 3b: Install Individual Tools (one copy-paste per tool)
 
-**Use this if you only want specific tools instead of all 7.**
+**Use this if you only want specific tools instead of all 6.**
 
 **What each tool does:**
 - **wocode** — Wo Coder, our primary high-performance coding agent (recommended)
@@ -393,7 +395,7 @@ pnpm wouser --init
 ```
 your-project/
 ├── .wo/
-│   ├── agent/skills/      # 81 skills for wocode
+│   ├── agent/skills/      # shared skills for wocode
 │   ├── settings.json      # wocode settings
 │   └── models.json        # LLM provider config
 ├── .claude/
@@ -469,7 +471,7 @@ ai-harness --tool=claude -i
 
 **What `--update` does:**
 1. Updates the `ai-harness` CLI binary to latest version
-2. Syncs all 7 tool configs with latest skills/agents/prompts from GitHub
+2. Syncs all 6 tool configs with latest skills/agents/prompts from GitHub
 3. Removes stale/obsolete skill files (cleanup)
 4. Runs compliance validation (checks all files match manifest)
 5. Shows a summary of what changed
@@ -604,7 +606,7 @@ ai-harness --uninstall=all --yes
 # Purge a single tool
 ai-harness --purge=opencode --yes
 
-# Purge all 7 tools
+# Purge all 6 tools
 ai-harness --purge=all --yes
 
 # Preview what would be removed
@@ -622,7 +624,7 @@ ai-harness --purge=all --dry-run
 
 ### Sync Documentation (--sync-docs)
 
-**Syncs the 81 canonical skills from the harness to all 7 tool directories.**
+**Syncs canonical skills from the harness to all 6 tool directories.**
 
 **When to use:**
 - After editing skills in `packages/@aiengineeringharness/` (the source of truth)
@@ -632,7 +634,7 @@ ai-harness --purge=all --dry-run
 **macOS / Linux / Windows (bash):**
 
 ```bash
-# Sync all skills to all 7 tools
+# Sync all skills to all 6 tools
 ai-harness --sync-docs
 ```
 
@@ -692,7 +694,7 @@ ai-harness --report-skills --report-url https://cto.wayof.work
 
 ### Import Reference Skills (--import-ref)
 
-**Imports reference skills/agents from the docs/ folder to all 7 tool platforms.**
+**Imports reference skills/agents from the docs/ folder to all 6 tool platforms.**
 
 **What are reference skills?**
 Skills that live in `docs/skills/` and `docs/agents/` as documentation/examples. This command converts them to the proper format for each tool and installs them.
@@ -935,13 +937,14 @@ Opens at **http://localhost:6969**
 | Metric | Value |
 |--------|-------|
 | Total repo files | **51,033** (excluding node_modules) |
-| SKILL.md files | **906** (81 canonical × 7 tools + 79 doc copies) |
+| SKILL.md files | **~750** (shared skills across 6 tools + delivery packages) |
 | NPM packages published | **29** |
-| AI coding tools supported | **7** |
+| AI coding tools supported | **6** (Gemini CLI removed — Google ended support) |
+| Delivery packages | **3** (`@wayofmono/delivery-opticat`, `-wow`, `-womono`) |
 | Subagents | **6** |
 | Active developers | **4** (craig, tomas, andre, zerwiz) |
 | Active tickets | **29+** (WOMONO, WOW, OPT namespaces) |
-| Harness version | **1.7.14** |
+| Harness version | **1.7.15** |
 | Files in harness | **1,226** |
 | Files in docs | **173** |
 | Files in thoughts | **115** |
@@ -959,27 +962,32 @@ WayOfMono is built on an **Interface-Agnostic Philosophy** — core logic and to
 | **Claude Code** | Agentic AI coding from Anthropic | [docs.anthropic.com](https://docs.anthropic.com/en/docs/claude-code) |
 | **Pi** | Pi Agent standard | [github.com/earendil-works/pi](https://github.com/earendil-works/pi) |
 | **OpenCode** | Open-source TUI-driven coding agent | [github.com/opencode-ai/opencode](https://github.com/opencode-ai/opencode) |
-| **Antigravity** | Agent-first autonomous platform | [antigravity.io](https://antigravity.io) |
+| **Antigravity** | Agent-first autonomous platform (replaces deprecated Gemini CLI) | [antigravity.io](https://antigravity.io) |
 
 ### What's Inside
 
 ```
-packages/@aiengineeringharness/     → 1,226 files
-├── manifest.json                   # Source of truth (v1.7.14)
+packages/@aiengineeringharness/     → ~1,100 files
+├── manifest.json                   # Source of truth (v1.7.15)
 ├── install.ts                      # Deno CLI installer
 ├── setup.sh                        # GNU Stow installer
 ├── scripts/                        # 14 pipeline scripts
-├── opencode/    → ~/.config/opencode/  # 180 files, 91 SKILL.md
-├── claude/      → ~/.claude/           # 167 files, 90 SKILL.md
-├── pi/          → ~/.pi/agent/         # 174 files, 85 SKILL.md
-├── codex/       → ~/.codex/            # 186 files, 90 SKILL.md
-├── antigravity/ → ~/.antigravity/      # 146 files, 89 SKILL.md
-└── wocode/     → ~/.wocode/          # 182 files, 85 SKILL.md
+├── opencode/    → ~/.config/opencode/  # skills, agents, commands
+├── claude/      → ~/.claude/           # skills, agents, commands
+├── pi/          → ~/.pi/agent/         # skills, agents, prompts
+├── codex/       → ~/.codex/            # skills, agents
+├── antigravity/ → ~/.antigravity/      # skills, agents, commands
+└── wocode/     → ~/.wocode/          # skills, agents, prompts
+
+packages/delivery-*/               # Per-project skill delivery packages
+├── delivery-opticat/               # 3 OptiCat skills (6 tools × 3 = 18 SKILL.md)
+├── delivery-wow/                   # 9 WoW skills (6 tools × 9 = 54 SKILL.md)
+└── delivery-womono/                # 6 WOMONO skills (6 tools × 6 = 36 SKILL.md)
 ```
 
 ### Shared Resources
 
-- **906 SKILL.md files** — same 81 canonical skills adapted for all 7 tools
+- **Shared + delivery SKILL.md files** — shared skills adapted for all 6 tools, plus per-project delivery packages
 - **6 subagents** — codebase_analyzer, codebase_locator, codebase_pattern_finder, explore, general, thoughts_analyzer
 - **29 NPM packages** — `@wayofmono/*` scope on [npmjs.com](https://www.npmjs.com/settings/wayofmono/packages) (14 core + 1 extension + 14 skill packages)
 - Ticket templates — WOW, OPT, WOMONO, GLOBAL namespaces
@@ -988,6 +996,24 @@ packages/@aiengineeringharness/     → 1,226 files
 - Mermaid TUI renderer (ASCII art diagrams)
 
 ### Skill Loading Paths
+
+### Delivery Packages
+
+Project-specific skills are distributed via npm packages, not bundled in the main harness:
+
+```bash
+# Install OptiCat skills in your OptiCat project
+npm install @wayofmono/delivery-opticat
+ai-harness --update  # auto-discovers delivery packages in node_modules
+
+# Install WoW skills in your WoW project
+npm install @wayofmono/delivery-wow
+
+# Install WOMONO skills (this repo)
+npm install @wayofmono/delivery-womono
+```
+
+The harness auto-discovers `node_modules/@wayofmono/delivery-*/` on every install/update.
 
 Skills can be loaded from three sources:
 - **Harness-installed** — global skill directories per tool (below)
@@ -1008,20 +1034,20 @@ Each agent frontend loads skills from specific directories. The AI Engineering H
 **Additional skill discovery:**
 - All tools also discover skills from `~/.agents/skills/` (shared cross-tool location)
 - Pi and wocode support adding custom paths via `settings.json` skills array
+- Project-specific skills from `node_modules/@wayofmono/delivery-*/` are auto-installed
 - CLI flags like `--skill <path>` allow ad-hoc skill loading
 
 **Skill format:** Each skill is a directory containing `SKILL.md` (frontmatter + instructions) plus optional scripts, references, and assets.
 
 ### Per-Tool Skill Counts
 
-| Tool | SKILL.md files | Total files |
-|------|---------------|-------------|
-| **OpenCode** | 91 | 180 |
-| **Claude Code** | 90 | 167 |
-| **Codex** | 90 | 186 |
-| **Pi** | 85 | 174 |
-| **Antigravity** | 89 | 146 |
-| **Wo Coder** | 85 | 182 |
+Main harness skills are shared across all 6 tools (~60 each). Project-specific skills come from delivery packages:
+
+| Delivery Package | Skills | Per-tool copies | Install via |
+|-----------------|--------|-----------------|-------------|
+| **@wayofmono/delivery-opticat** | 3 OptiCat skills | 18 SKILL.md | `npm install @wayofmono/delivery-opticat` |
+| **@wayofmono/delivery-wow** | 9 WoW skills | 54 SKILL.md | `npm install @wayofmono/delivery-wow` |
+| **@wayofmono/delivery-womono** | 6 WOMONO skills | 36 SKILL.md | `npm install @wayofmono/delivery-womono` |
 
 ### Why Use the Harness
 
@@ -1385,7 +1411,7 @@ ai-harness --tool=claude --local --yes
 | `--no-validate` | | Skip compliance validation after --update |
 | `--prune` | | Interactive: review & remove non-manifest skills |
 | `--purge[=<name>]` | | Nuclear cleanup: wipe ALL harness files from tool config (no manifest) |
-| `--purge=all` | | Purge all 7 tool config directories at once |
+| `--purge=all` | | Purge all 6 tool config directories at once |
 | `--sync-docs` | | Sync canonical skills to all tool directories |
 | `--report-skills` | | Report local skills to dashboard telemetry API |
 | `--report-url=<url>` | | Dashboard URL for skill reporting |
@@ -1447,7 +1473,7 @@ Each command separate copy-paste:
 A high-performance CLI coding agent for automated engineering, refactoring, and code analysis. Think of it as an AI pair programmer that lives in your terminal.
 
 **Key features:**
-- 81 built-in skills (debugging, planning, code review, architecture analysis, etc.)
+- Shared skills (debugging, planning, code review, architecture analysis, etc.) + per-project delivery packages
 - 6 subagents for parallel codebase research
 - Local-first with Ollama (private, free, offline)
 - Project-aware (reads your AGENTS.md for persona)
@@ -1563,7 +1589,7 @@ A general-purpose AI assistant SDK + CLI. Unlike wocode (which is for coding), w
 | Install type | `--save-dev` (devDependency) | `--save` (dependency) |
 | Bundled in app? | No | Yes, if you use SDK |
 | Interface | TUI (terminal UI) | CLI + programmatic API |
-| Skills | 81 coding-focused skills | Same skills, general use |
+| Skills | Shared coding-focused skills | Same skills, general use |
 
 ---
 
@@ -2060,7 +2086,7 @@ The CTO Dashboard can fetch tickets from the private `f-rr-d` GitHub repository 
 **These are maintenance scripts for the harness itself. Run them when contributing to WayOfMono or doing maintenance.**
 
 ```bash
-# Sync canonical skills to all 7 tool directories
+# Sync canonical skills to all 6 tool directories
 ai-harness --sync-docs
 ```
 
@@ -2182,7 +2208,7 @@ Ticket → /create_plan → /implement_plan → /validate_plan → /validate_tel
 
 ## 🎛️ AI Engineering Harness
 
-Shared agents, commands, skills, and extensions for all 7 agent frontends. Install once and instantly configure any agent with battle-tested prompts and workflows. See the comprehensive [AI Engineering Harness Tutorial](https://github.com/Way-Of/wayofmono/tree/main/docs/ai-engineering-harness-tutorial.md) for step-by-step instructions on utilizing the agents, commands, and skills.
+Shared agents, commands, skills, and extensions for all 6 agent frontends. Install once and instantly configure any agent with battle-tested prompts and workflows. See the comprehensive [AI Engineering Harness Tutorial](https://github.com/Way-Of/wayofmono/tree/main/docs/ai-engineering-harness-tutorial.md) for step-by-step instructions on utilizing the agents, commands, and skills.
 
 ## 🚢 Deployment
 

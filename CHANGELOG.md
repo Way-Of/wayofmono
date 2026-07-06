@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.7.15] - 2026-07-07
+
+### Harness (AI Engineering Harness v1.7.15) — Gemini CLI Removal + Delivery Packages
+
+- **Gemini CLI removed from harness (WOMONO-157)**: Deleted entire `gemini/` directory (217 files: 81 skills, 13 agents, 24 commands). Removed ~1,481-line gemini section from `manifest.json`. Cleaned config-manifest, installer scripts, validation scripts, detect/adapt modules, and all 30+ docs files. Preserved wocode Gemini API integration files (gemini-api.ts, gemini-search.ts, etc.) — these are LLM provider integration, not Gemini CLI.
+
+- **Per-project skill delivery packages (WOMONO-160)**: Created 3 npm packages under `@wayofmono/delivery-*` scope for distributing project-specific skills:
+  - `@wayofmono/delivery-opticat` — 3 OptiCat skills (18 per-tool SKILL.md files across 6 tools)
+  - `@wayofmono/delivery-wow` — 9 WoW skills (54 per-tool SKILL.md files across 6 tools)
+  - `@wayofmono/delivery-womono` — 6 WOMONO skills (36 per-tool SKILL.md files across 6 tools)
+  - Each package has `package.json`, `manifest.json` with per-tool kebab-case/snake_case mapping
+  - `install.ts` updated with `discoverDeliveryPackages()` and `installDeliveryPackage()` — auto-discovers `node_modules/@wayofmono/delivery-*/` on install
+  - 101 project-specific skill entries removed from main harness `manifest.json`
+  - Cross-cutting skills (otel, debug, observability-driven-development) preserved in main harness
+
+- **Tickets closed**: WOMONO-157, WOMONO-160.
+
 ## [1.7.14] - 2026-07-07
 
 ### Harness (AI Engineering Harness v1.7.14) — Knowledge Database + wo-* Patch Releases
