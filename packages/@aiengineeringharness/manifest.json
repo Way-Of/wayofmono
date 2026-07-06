@@ -1306,6 +1306,15 @@
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
             }
           ]
+        },
+        "skill/knowledge": {
+          "description": "Store, fetch, search, and manage learned knowledge in a structured cross-project database",
+          "files": [
+            {
+              "src": "antigravity/skills/knowledge/SKILL.md",
+              "dest": "skills/knowledge/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -2370,6 +2379,15 @@
             {
               "src": "claude/skills/fixes_manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/knowledge": {
+          "description": "Store, fetch, search, and manage learned knowledge in a structured cross-project database",
+          "files": [
+            {
+              "src": "claude/skills/knowledge/SKILL.md",
+              "dest": "skills/knowledge/SKILL.md"
             }
           ]
         }
@@ -3455,6 +3473,15 @@
             {
               "src": "codex/skills/fixes_manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/knowledge": {
+          "description": "Store, fetch, search, and manage learned knowledge in a structured cross-project database",
+          "files": [
+            {
+              "src": "codex/skills/knowledge/SKILL.md",
+              "dest": "skills/knowledge/SKILL.md"
             }
           ]
         }
@@ -4642,6 +4669,15 @@
             {
               "src": "opencode/skills/fixes-manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/knowledge": {
+          "description": "Store, fetch, search, and manage learned knowledge in a structured cross-project database",
+          "files": [
+            {
+              "src": "opencode/skills/knowledge/SKILL.md",
+              "dest": "skills/knowledge/SKILL.md"
             }
           ]
         }
@@ -5955,6 +5991,15 @@
             {
               "src": "pi/agent/skills/fixes-manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/knowledge": {
+          "description": "Store, fetch, search, and manage learned knowledge in a structured cross-project database",
+          "files": [
+            {
+              "src": "pi/skills/knowledge/SKILL.md",
+              "dest": "skills/knowledge/SKILL.md"
             }
           ]
         }
@@ -7350,6 +7395,15 @@
             {
               "src": "wocode/agent/skills/fixes-manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/knowledge": {
+          "description": "Store, fetch, search, and manage learned knowledge in a structured cross-project database",
+          "files": [
+            {
+              "src": "wocode/skills/knowledge/SKILL.md",
+              "dest": "skills/knowledge/SKILL.md"
             }
           ]
         }
