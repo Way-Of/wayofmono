@@ -115,10 +115,6 @@
               "dest": "commands/init-harness.toml"
             },
             {
-              "src": "antigravity/commands/run-otel_instrument.toml",
-              "dest": "commands/otel-instrument.toml"
-            },
-            {
               "src": "antigravity/commands/run-pr_description_generator.toml",
               "dest": "commands/pr-description-generator.toml"
             },
@@ -200,15 +196,6 @@
             {
               "src": "antigravity/commands/run-init_harness.toml",
               "dest": "commands/init-harness.toml"
-            }
-          ]
-        },
-        "command/otel_instrument": {
-          "description": "Otel Instrument command",
-          "files": [
-            {
-              "src": "antigravity/commands/run-otel_instrument.toml",
-              "dest": "commands/otel-instrument.toml"
             }
           ]
         },
@@ -690,15 +677,6 @@
             }
           ]
         },
-        "skill/validate-manifest": {
-          "description": "Validate skill manifest against production-ready standards and conventions",
-          "files": [
-            {
-              "src": "antigravity/skills/validate_manifest/SKILL.md",
-              "dest": "skills/validate-manifest/SKILL.md"
-            }
-          ]
-        },
         "skill/ticket-executor": {
           "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
           "files": [
@@ -874,24 +852,6 @@
             {
               "src": "antigravity/commands/run-submit-for-review.toml",
               "dest": "commands/submit-for-review.toml"
-            }
-          ]
-        },
-        "command/sync-team": {
-          "description": "Show team ticket dashboard",
-          "files": [
-            {
-              "src": "antigravity/commands/run-sync-team.toml",
-              "dest": "commands/sync-team.toml"
-            }
-          ]
-        },
-        "command/sync-skills": {
-          "description": "Sync all skills across all frontends",
-          "files": [
-            {
-              "src": "antigravity/commands/run-sync-skills.toml",
-              "dest": "commands/sync-skills.toml"
             }
           ]
         },
@@ -1440,15 +1400,6 @@
             }
           ]
         },
-        "skill/validate-manifest": {
-          "description": "Validate skill manifest against production-ready standards and conventions",
-          "files": [
-            {
-              "src": "claude/skills/validate_manifest/SKILL.md",
-              "dest": "skills/validate-manifest/SKILL.md"
-            }
-          ]
-        },
         "skill/ticket-executor": {
           "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
           "files": [
@@ -1633,24 +1584,6 @@
             {
               "src": "claude/skills/submit_for_review/SKILL.md",
               "dest": "skills/submit-for-review/SKILL.md"
-            }
-          ]
-        },
-        "skill/sync-team": {
-          "description": "Show team ticket dashboard",
-          "files": [
-            {
-              "src": "claude/skills/sync_team/SKILL.md",
-              "dest": "skills/sync-team/SKILL.md"
-            }
-          ]
-        },
-        "skill/sync-skills": {
-          "description": "Sync all skills across all frontends",
-          "files": [
-            {
-              "src": "claude/skills/sync_skills/SKILL.md",
-              "dest": "skills/sync-skills/SKILL.md"
             }
           ]
         },
@@ -2174,15 +2107,6 @@
             }
           ]
         },
-        "skill/validate-manifest": {
-          "description": "Validate skill manifest against production-ready standards and conventions",
-          "files": [
-            {
-              "src": "codex/skills/validate_manifest/SKILL.md",
-              "dest": "skills/validate-manifest/SKILL.md"
-            }
-          ]
-        },
         "skill/ticket-executor": {
           "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
           "files": [
@@ -2399,32 +2323,6 @@
             {
               "src": "codex/skills/submit_for_review/prompt.md",
               "dest": "skills/submit-for-review/prompt.md"
-            }
-          ]
-        },
-        "skill/sync-team": {
-          "description": "Show team ticket dashboard",
-          "files": [
-            {
-              "src": "codex/skills/sync_team/skill.yaml",
-              "dest": "skills/sync-team/skill.yaml"
-            },
-            {
-              "src": "codex/skills/sync_team/prompt.md",
-              "dest": "skills/sync-team/prompt.md"
-            }
-          ]
-        },
-        "skill/sync-skills": {
-          "description": "Sync all skills across all frontends",
-          "files": [
-            {
-              "src": "codex/skills/sync_skills/skill.yaml",
-              "dest": "skills/sync-skills/skill.yaml"
-            },
-            {
-              "src": "codex/skills/sync_skills/prompt.md",
-              "dest": "skills/sync-skills/prompt.md"
             }
           ]
         },
@@ -2821,15 +2719,6 @@
             {
               "src": "opencode/skills/self-documentation/SKILL.md",
               "dest": "skills/self-documentation/SKILL.md"
-            }
-          ]
-        },
-        "skill/validate-manifest": {
-          "description": "Validate skill manifest against production-ready standards and conventions",
-          "files": [
-            {
-              "src": "opencode/skills/validate-manifest/SKILL.md",
-              "dest": "skills/validate-manifest/SKILL.md"
             }
           ]
         },
@@ -3240,24 +3129,6 @@
             }
           ]
         },
-        "command/sync-team": {
-          "description": "Show team ticket dashboard",
-          "files": [
-            {
-              "src": "opencode/commands/sync-team.md",
-              "dest": "commands/sync-team.md"
-            }
-          ]
-        },
-        "command/sync-skills": {
-          "description": "Sync all skills across all frontends",
-          "files": [
-            {
-              "src": "opencode/commands/sync-skills.md",
-              "dest": "commands/sync-skills.md"
-            }
-          ]
-        },
         "command/help": {
           "description": "Unified help system for all commands and skills",
           "files": [
@@ -3291,15 +3162,6 @@
             {
               "src": "opencode/commands/pr-description-generator.md",
               "dest": "commands/pr-description-generator.md"
-            }
-          ]
-        },
-        "command/otel-instrument": {
-          "description": "OpenTelemetry instrumentation orchestrator",
-          "files": [
-            {
-              "src": "opencode/commands/otel_instrument.md",
-              "dest": "commands/otel-instrument.md"
             }
           ]
         },
@@ -3575,15 +3437,6 @@
             {
               "src": "pi/agent/prompts/init-harness.md",
               "dest": "prompts/init-harness.md"
-            }
-          ]
-        },
-        "prompt/otel-instrument": {
-          "description": "OpenTelemetry instrumentation orchestrator prompt",
-          "files": [
-            {
-              "src": "pi/agent/prompts/otel-instrument.md",
-              "dest": "prompts/otel-instrument.md"
             }
           ]
         },
@@ -4047,15 +3900,6 @@
             }
           ]
         },
-        "skill/validate-manifest": {
-          "description": "Validate skill manifest against production-ready standards and conventions",
-          "files": [
-            {
-              "src": "pi/agent/skills/validate-manifest/SKILL.md",
-              "dest": "skills/validate-manifest/SKILL.md"
-            }
-          ]
-        },
         "skill/ticket-executor": {
           "description": "Execute approved plans in phases, validating telemetry and committing changes after each phase completes successfully",
           "files": [
@@ -4231,24 +4075,6 @@
             {
               "src": "pi/agent/prompts/submit-for-review.md",
               "dest": "prompts/submit-for-review.md"
-            }
-          ]
-        },
-        "prompt/sync-team": {
-          "description": "Show team ticket dashboard",
-          "files": [
-            {
-              "src": "pi/agent/prompts/sync-team.md",
-              "dest": "prompts/sync-team.md"
-            }
-          ]
-        },
-        "prompt/sync-skills": {
-          "description": "Sync all skills across all frontends",
-          "files": [
-            {
-              "src": "pi/agent/prompts/sync-skills.md",
-              "dest": "prompts/sync-skills.md"
             }
           ]
         },
@@ -5112,15 +4938,6 @@
             }
           ]
         },
-        "skill/validate-manifest": {
-          "description": "Validate skill manifest against production-ready standards and conventions",
-          "files": [
-            {
-              "src": "wocode/agent/skills/validate-manifest/SKILL.md",
-              "dest": "skills/validate-manifest/SKILL.md"
-            }
-          ]
-        },
         "skill/runbook-manager": {
           "description": "Generate, update, and maintain production runbooks per project",
           "files": [
@@ -5250,24 +5067,6 @@
             }
           ]
         },
-        "prompt/sync-team": {
-          "description": "Show team ticket dashboard",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/sync-team.md",
-              "dest": "prompts/sync-team.md"
-            }
-          ]
-        },
-        "prompt/sync-skills": {
-          "description": "Sync all skills across all frontends",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/sync-skills.md",
-              "dest": "prompts/sync-skills.md"
-            }
-          ]
-        },
         "prompt/help": {
           "description": "Unified help system for all commands and skills",
           "files": [
@@ -5355,15 +5154,6 @@
             {
               "src": "wocode/agent/prompts/validate-telemetry.md",
               "dest": "prompts/validate-telemetry.md"
-            }
-          ]
-        },
-        "prompt/otel-instrument": {
-          "description": "OTel Instrument prompt",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/otel-instrument.md",
-              "dest": "prompts/otel-instrument.md"
             }
           ]
         },
