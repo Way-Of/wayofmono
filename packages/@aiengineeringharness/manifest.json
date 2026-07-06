@@ -49,6 +49,26 @@
             {
               "src": "antigravity/agents/web_search_researcher.md",
               "dest": "agents/web_search_researcher.md"
+            },
+            {
+              "src": "antigravity/agents/coder.md",
+              "dest": "agents/coder.md"
+            },
+            {
+              "src": "antigravity/agents/planner.md",
+              "dest": "agents/planner.md"
+            },
+            {
+              "src": "antigravity/agents/reviewer.md",
+              "dest": "agents/reviewer.md"
+            },
+            {
+              "src": "antigravity/agents/scout.md",
+              "dest": "agents/scout.md"
+            },
+            {
+              "src": "antigravity/agents/netlify_troubleshooter.md",
+              "dest": "agents/netlify_troubleshooter.md"
             }
           ]
         },
@@ -928,6 +948,30 @@
             {
               "src": "claude/agents/web_search_researcher.md",
               "dest": "agents/web_search_researcher.md"
+            },
+            {
+              "src": "claude/agents/coder.md",
+              "dest": "agents/coder.md"
+            },
+            {
+              "src": "claude/agents/planner.md",
+              "dest": "agents/planner.md"
+            },
+            {
+              "src": "claude/agents/reviewer.md",
+              "dest": "agents/reviewer.md"
+            },
+            {
+              "src": "claude/agents/scout.md",
+              "dest": "agents/scout.md"
+            },
+            {
+              "src": "claude/agents/netlify_troubleshooter.md",
+              "dest": "agents/netlify_troubleshooter.md"
+            },
+            {
+              "src": "claude/agents/README.md",
+              "dest": "agents/README.md"
             }
           ]
         },
@@ -1637,6 +1681,30 @@
             {
               "src": "codex/agents/web_search_researcher.md",
               "dest": "agents/web_search_researcher.md"
+            },
+            {
+              "src": "codex/agents/coder.md",
+              "dest": "agents/coder.md"
+            },
+            {
+              "src": "codex/agents/planner.md",
+              "dest": "agents/planner.md"
+            },
+            {
+              "src": "codex/agents/reviewer.md",
+              "dest": "agents/reviewer.md"
+            },
+            {
+              "src": "codex/agents/scout.md",
+              "dest": "agents/scout.md"
+            },
+            {
+              "src": "codex/agents/netlify_troubleshooter.md",
+              "dest": "agents/netlify_troubleshooter.md"
+            },
+            {
+              "src": "codex/agents/README.md",
+              "dest": "agents/README.md"
             }
           ]
         },
@@ -2345,6 +2413,26 @@
             {
               "src": "opencode/agents/README.md",
               "dest": "agents/README.md"
+            },
+            {
+              "src": "opencode/agents/coder.md",
+              "dest": "agents/coder.md"
+            },
+            {
+              "src": "opencode/agents/planner.md",
+              "dest": "agents/planner.md"
+            },
+            {
+              "src": "opencode/agents/reviewer.md",
+              "dest": "agents/reviewer.md"
+            },
+            {
+              "src": "opencode/agents/scout.md",
+              "dest": "agents/scout.md"
+            },
+            {
+              "src": "opencode/agents/netlify_troubleshooter.md",
+              "dest": "agents/netlify_troubleshooter.md"
             }
           ]
         },
@@ -3124,6 +3212,10 @@
               "dest": "agents/web-search-researcher.md"
             },
             {
+              "src": "pi/agent/agents/README.md",
+              "dest": "agents/README.md"
+            },
+            {
               "src": "pi/agent/agents/planner.md",
               "dest": "agents/planner.md"
             },
@@ -3140,8 +3232,8 @@
               "dest": "agents/coder.md"
             },
             {
-              "src": "pi/agent/agents/README.md",
-              "dest": "agents/README.md"
+              "src": "pi/agent/agents/netlify-agent.md",
+              "dest": "agents/netlify-agent.md"
             }
           ]
         },
@@ -4044,6 +4136,30 @@
             {
               "src": "wocode/agent/agents/web-search-researcher.md",
               "dest": "agents/web-search-researcher.md"
+            },
+            {
+              "src": "wocode/agent/agents/planner.md",
+              "dest": "agents/planner.md"
+            },
+            {
+              "src": "wocode/agent/agents/reviewer.md",
+              "dest": "agents/reviewer.md"
+            },
+            {
+              "src": "wocode/agent/agents/scout.md",
+              "dest": "agents/scout.md"
+            },
+            {
+              "src": "wocode/agent/agents/coder.md",
+              "dest": "agents/coder.md"
+            },
+            {
+              "src": "wocode/agent/agents/netlify-agent.md",
+              "dest": "agents/netlify-agent.md"
+            },
+            {
+              "src": "wocode/agent/agents/README.md",
+              "dest": "agents/README.md"
             }
           ]
         },
