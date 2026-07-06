@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/wo-user-extra",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Extension skills and agents for wo-agent runtime — additional capabilities for enterprise, testing, research, and platform integration",
   "type": "module",
   "files": [
