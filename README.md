@@ -268,7 +268,9 @@ ai-harness --tool=opencode --skill=skills,commands,themes --yes
 .\install.ps1 -Tool opencode -Skill "skills,agents" -DryRun
 ```
 
-### Step 3d: Install wocode via npm/pnpm (Alternative)
+---
+
+## Install wocode via npm/pnpm
 
 **Use this if you want to install wocode directly as an npm package in your project, without the harness CLI.**
 
@@ -444,7 +446,9 @@ ai-harness --tool=all --local --yes
 
 **Tip**: Commit the generated folders (`.wo/`, `.claude/`, etc.) to git so your team gets the same setup!
 
-### Step 3d: Interactive Component Selection (--interactive / -i)
+---
+
+## Interactive Component Selection (--interactive / -i)
 
 Pick components via interactive checkbox picker — **each command is a separate copy-paste**:
 
