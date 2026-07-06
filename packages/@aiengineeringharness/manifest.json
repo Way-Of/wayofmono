@@ -95,10 +95,6 @@
               "dest": "commands/create-plan.toml"
             },
             {
-              "src": "antigravity/commands/run-debug-k8s.toml",
-              "dest": "commands/debug-k8s.toml"
-            },
-            {
               "src": "antigravity/commands/run-debug.toml",
               "dest": "commands/debug.toml"
             },
@@ -159,15 +155,6 @@
             {
               "src": "antigravity/commands/run-create_plan.toml",
               "dest": "commands/create-plan.toml"
-            }
-          ]
-        },
-        "command/debug_k8s": {
-          "description": "Debug K8s command",
-          "files": [
-            {
-              "src": "antigravity/commands/run-debug-k8s.toml",
-              "dest": "commands/debug-k8s.toml"
             }
           ]
         },
@@ -851,15 +838,6 @@
             {
               "src": "antigravity/commands/run-fixes-validate.toml",
               "dest": "commands/fixes-validate.toml"
-            }
-          ]
-        },
-        "command/debug-k8s": {
-          "description": "Debug Kubernetes cluster issues",
-          "files": [
-            {
-              "src": "antigravity/commands/run-debug-k8s.toml",
-              "dest": "commands/debug-k8s.toml"
             }
           ]
         },
@@ -2601,15 +2579,6 @@
             }
           ]
         },
-        "command/debug_k8s": {
-          "description": "Kubernetes cluster debugging command",
-          "files": [
-            {
-              "src": "opencode/commands/debug-k8s.md",
-              "dest": "commands/debug-k8s.md"
-            }
-          ]
-        },
         "command/implement_plan": {
           "description": "Execute an approved plan command",
           "files": [
@@ -3235,15 +3204,6 @@
             }
           ]
         },
-        "command/debug-k8s": {
-          "description": "Debug Kubernetes cluster issues",
-          "files": [
-            {
-              "src": "opencode/commands/debug-k8s.md",
-              "dest": "commands/debug-k8s.md"
-            }
-          ]
-        },
         "command/work": {
           "description": "Start working on a ticket, update status to In Progress",
           "files": [
@@ -3597,15 +3557,6 @@
             {
               "src": "pi/agent/prompts/debug.md",
               "dest": "prompts/debug.md"
-            }
-          ]
-        },
-        "prompt/debug-k8s": {
-          "description": "Kubernetes cluster debugging prompt",
-          "files": [
-            {
-              "src": "pi/agent/prompts/debug-k8s.md",
-              "dest": "prompts/debug-k8s.md"
             }
           ]
         },
@@ -5251,15 +5202,6 @@
             {
               "src": "wocode/agent/prompts/debug.md",
               "dest": "prompts/debug.md"
-            }
-          ]
-        },
-        "prompt/debug-k8s": {
-          "description": "Debug Kubernetes cluster issues",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/debug-k8s.md",
-              "dest": "prompts/debug-k8s.md"
             }
           ]
         },
