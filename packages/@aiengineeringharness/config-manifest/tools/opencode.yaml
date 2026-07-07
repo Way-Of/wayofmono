@@ -380,3 +380,8 @@ components:
       dest: skills/fixes-manager/assets/opticat/components.json
     - src: opencode/skills/fixes-manager/assets/opticat/fix-note-template.md
       dest: skills/fixes-manager/assets/opticat/fix-note-template.md
+  skill/debug:
+    description: Debug issues during manual testing or implementation
+    files:
+    - src: opencode/skills/debug/SKILL.md
+      dest: skills/debug/SKILL.md

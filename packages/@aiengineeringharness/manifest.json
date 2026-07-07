@@ -775,6 +775,15 @@
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
             }
           ]
+        },
+        "skill/debug": {
+          "description": "Debug issues during manual testing or implementation",
+          "files": [
+            {
+              "src": "antigravity/skills/debug/SKILL.md",
+              "dest": "skills/debug/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -1374,6 +1383,15 @@
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
             }
           ]
+        },
+        "skill/debug": {
+          "description": "Debug issues during manual testing or implementation",
+          "files": [
+            {
+              "src": "claude/skills/debug/SKILL.md",
+              "dest": "skills/debug/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -1954,6 +1972,15 @@
             {
               "src": "codex/skills/fixes_manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/debug": {
+          "description": "Debug issues during manual testing or implementation",
+          "files": [
+            {
+              "src": "codex/skills/debug/SKILL.md",
+              "dest": "skills/debug/SKILL.md"
             }
           ]
         }
@@ -2634,6 +2661,15 @@
             {
               "src": "opencode/skills/fixes-manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/debug": {
+          "description": "Debug issues during manual testing or implementation",
+          "files": [
+            {
+              "src": "opencode/skills/debug/SKILL.md",
+              "dest": "skills/debug/SKILL.md"
             }
           ]
         }
@@ -3399,6 +3435,15 @@
             {
               "src": "pi/agent/skills/fixes-manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/debug": {
+          "description": "Debug issues during manual testing or implementation",
+          "files": [
+            {
+              "src": "pi/agent/skills/debug/SKILL.md",
+              "dest": "skills/debug/SKILL.md"
             }
           ]
         }
@@ -4278,6 +4323,15 @@
             {
               "src": "wocode/agent/skills/fixes-manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/debug": {
+          "description": "Debug issues during manual testing or implementation",
+          "files": [
+            {
+              "src": "wocode/agent/skills/debug/SKILL.md",
+              "dest": "skills/debug/SKILL.md"
             }
           ]
         }
