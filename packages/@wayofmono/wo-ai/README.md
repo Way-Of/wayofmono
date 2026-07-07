@@ -45,6 +45,8 @@ for await (const event of stream) {
 | GitHub Copilot | openai-completions | `COPILOT_GITHUB_TOKEN` |
 | Mistral | mistral-conversations | `MISTRAL_API_KEY` |
 | Ollama (local) | openai-completions | `http://127.0.0.1:11434/v1` |
+| llama.cpp Docker (local) | openai-completions | `http://127.0.0.1:8081/v1` |
+| LM Studio (local) | openai-completions | `http://127.0.0.1:1234/v1` |
 
 ## API Reference
 
@@ -134,6 +136,40 @@ Then configure in `models.json`:
     }
   }
 }
+```
+
+### llama.cpp Docker (Local)
+
+No API key needed. Run llama.cpp Docker containers:
+
+```bash
+# Start the Docker containers
+docker compose -f ~/.config/llama-containers/compose.yml up -d
+
+# Check health
+curl http://localhost:8081/health
+```
+
+Built-in model IDs (no config needed):
+- `qwen3.5-9b-32k` — Port 8081, 32K context, full GPU
+- `qwen3.5-4b-65k` — Port 8084, 65K context, full GPU
+- `qwen3.6-35b-a3b-16k` — Port 8083, 16K context, split GPU/CPU, reasoning
+- `qwen3.5-9b-196k` — Port 8082, 196K context, full GPU
+
+```typescript
+const model = getModel("llama", "qwen3.5-9b-32k");
+```
+
+### LM Studio (Local)
+
+No API key needed. Start LM Studio and load a model (default port 1234):
+
+```bash
+# LM Studio serves at http://127.0.0.1:1234/v1
+```
+
+```typescript
+const model = getModel("lmstudio", "loaded-model");
 ```
 
 ### Amazon Bedrock
