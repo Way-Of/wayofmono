@@ -160,3 +160,10 @@ New topics are auto-created on first entry.
 - Topics are auto-created when first entry is stored
 - Index files are rebuilt on every store operation
 - The registry is the single source of truth for topic counts
+
+## Integration with Other Skills
+
+- **Postmortem Manager**: Stores root causes and solutions from incidents in the knowledge base
+- **Sales Knowledge**: Provides market data, competitive intel, and customer research for investor-ready-doc-gen
+- **Feature Testing Framework**: Template for testing features with knowledge capture built in
+- **Ticket System**: Links knowledge entries to tickets via `knowledge_entries` frontmatter field

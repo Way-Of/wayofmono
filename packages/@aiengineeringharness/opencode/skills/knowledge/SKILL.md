@@ -1,9 +1,3 @@
----
-name: knowledge
-description: "Store, fetch, search, and manage learned knowledge in a structured, growing cross-project database at thoughts/global/knowledge/."
-allowed-tools: read, write, bash, grep, glob
----
-
 # Knowledge Database
 
 Store, fetch, search, and manage learned knowledge in a structured, growing database.
@@ -12,10 +6,9 @@ Store, fetch, search, and manage learned knowledge in a structured, growing data
 
 1. **Store** — Capture knowledge from sessions, research, debugging into structured entries
 2. **Fetch** — Read specific entries, all entries in a topic, or the entire database
-3. **Search** — Full-text search across all knowledge entries with filters
+3. **Search** — Full-text search across all knowledge entries
 4. **List** — Browse entries by topic or view all topics
 5. **Stats** — See database growth, entry counts, topic breakdown
-6. **Anchor Sync** — Store entries in both file system AND Anchor MCP server
 
 Knowledge lives at `thoughts/global/knowledge/` — a cross-project resource shared across all namespaces.
 
@@ -23,24 +16,17 @@ Knowledge lives at `thoughts/global/knowledge/` — a cross-project resource sha
 
 ```
 thoughts/global/knowledge/
-├── knowledge-registry.json
+├── knowledge-registry.json          # All topics, counts, timestamps
+├── docker/
+│   ├── index.json                   # Topic index (fast lookups)
+│   ├── docker-001.md               # Knowledge entry
+│   └── docker-002.md
+├── postgres/
+│   ├── index.json
+│   └── postgres-001.md
 ├── ash/
 │   ├── index.json
 │   └── ash-001.md
-├── docker/
-│   ├── index.json
-│   └── docker-001.md
-├── frontend/
-├── backend/
-├── security/
-├── testing/
-├── architecture/
-├── anchor/
-├── mcp/
-├── phoenix/
-├── womono/
-├── wow/
-├── opticat/
 └── ...
 ```
 
@@ -55,189 +41,129 @@ tags: ["compose", "volumes", "permissions"]
 source: debugging
 date: 2026-07-06
 confidence: high
-related: ["WOMONO-162"]
-source_ticket: "WOMONO-162"
+related: []
 deprecated: false
 ---
 
 # Docker Compose Volume Permissions
 
-## Problem
-<What was happening>
-
-## Root Cause
-<Why it was happening>
-
-## Solution
-<What we did to fix it>
-
-## Gotchas
-<Non-obvious details>
-
-## Context
-- **Ticket**: WOMONO-162
-- **Date discovered**: 2026-07-06
+When running containers with named volumes...
 ```
-
-## Entry Quality Rules
-
-Before storing, validate:
-- Title is descriptive (not "fix" or "issue")
-- Problem section is filled
-- Root cause section is filled
-- Solution has actionable steps
-- Tags array has at least 1 tag
-- Confidence is set
-
-If incomplete, prompt user to fill missing sections.
-
-## Seed Topics (20+)
-
-| Topic | Domain |
-|-------|--------|
-| `ash`, `ash-framework` | Elixir Ash framework |
-| `docker` | Docker, compose, containers |
-| `postgres` | PostgreSQL, SQL, migrations |
-| `opentelemetry` | OTel, tracing, metrics |
-| `elixir` | Elixir language |
-| `phoenix` | Phoenix framework |
-| `deno` | Deno runtime, TypeScript |
-| `react` | React, frontend |
-| `frontend` | UI, CSS, layouts |
-| `backend` | APIs, database, auth |
-| `devops` | CI/CD, deployment |
-| `security` | Auth, access control |
-| `testing` | Tests, validation |
-| `architecture` | System design |
-| `ai-tools` | Harness, skills, agents |
-| `mcp` | Model Context Protocol |
-| `anchor` | Anchor MCP server |
-| `womono` | WayOfMono project |
-| `wow` | WayOfWork project |
-| `opticat` | OptiCat project |
-
-New topics auto-created on first entry.
 
 ## Commands
 
 ### Store Knowledge
 
 ```bash
-# Interactive
-echo "content" | python3 skills/knowledge/scripts/knowledge.py store docker "Title"
+# Interactive — pipe content via stdin
+echo "Fix: run chown on the volume mount" | python3 skills/knowledge/scripts/knowledge.py store docker "Volume permission fix"
 
-# With flags
-python3 skills/knowledge/scripts/knowledge.py store postgres "PgBouncer setup" \
-  --tags "pgbouncer,connection-pool" \
+# With all flags
+python3 skills/knowledge/scripts/knowledge.py store postgres "Connection pooling with PgBouncer" \
+  --tags "pgbouncer,connection-pool,performance" \
   --source research \
   --confidence high \
   --content "PgBouncer sits between app and Postgres..."
 
-# With ticket reference
-python3 skills/knowledge/scripts/knowledge.py store docker "Volume fix" \
-  --tags "compose,volumes" \
-  --content "Run chown on volume mount..."
+# From a file
+cat notes.md | python3 skills/knowledge/scripts/knowledge.py store ash "Ash resource patterns" --tags "resources,policies"
 ```
 
 ### Fetch Knowledge
 
 ```bash
+# Fetch a specific entry
 python3 skills/knowledge/scripts/knowledge.py fetch docker-001
+
+# Fetch all entries in a topic
 python3 skills/knowledge/scripts/knowledge.py fetch --topic docker
+
+# Fetch everything
 python3 skills/knowledge/scripts/knowledge.py fetch
 ```
 
-### Search (with filters)
+### Search
 
 ```bash
-# Full-text search
+# Full-text search across all entries
 python3 skills/knowledge/scripts/knowledge.py search "connection pool"
 
-# Search by tag
-python3 skills/knowledge/scripts/knowledge.py search --tag docker
-
-# Search by confidence
-python3 skills/knowledge/scripts/knowledge.py search --confidence high
-
-# Search by source
-python3 skills/knowledge/scripts/knowledge.py search --source debugging
-
-# Search by ticket
-python3 skills/knowledge/scripts/knowledge.py search --ticket WOMONO-162
+# Search by tag or content
+python3 skills/knowledge/scripts/knowledge.py search "chown"
 ```
 
 ### List & Stats
 
 ```bash
+# List all topics
 python3 skills/knowledge/scripts/knowledge.py topics
+
+# List entries in a topic
 python3 skills/knowledge/scripts/knowledge.py list docker
+
+# List all entries
+python3 skills/knowledge/scripts/knowledge.py list
+
+# Show statistics
 python3 skills/knowledge/scripts/knowledge.py stats
 ```
 
 ### Maintenance
 
 ```bash
+# Rebuild all indexes from actual files
 python3 skills/knowledge/scripts/knowledge.py rebuild
+
+# Initialize with seed topics
 python3 skills/knowledge/scripts/knowledge.py init
 ```
 
-## Anchor MCP Integration
-
-Store entries in BOTH file system AND Anchor MCP:
-
-```
-Step 1: Store in file system via knowledge.py
-Step 2: Store in Anchor MCP:
-    → anchors/create with title, content, metadata
-    → memory_note with knowledge_id, topic, tags
-Step 3: Confirm both stored
-```
-
-Search via Anchor for semantic results:
-```
-memory/search({query: "<description>"})
-→ Returns vector-similar results
-→ Map back to knowledge files
-```
-
-## Ticket Workflow Integration
-
-Before storing new knowledge:
-1. Search for existing entries on the same topic
-2. If found, ask: "Update existing entry or create new?"
-3. Link new entry to the ticket that discovered it
-
-After solving a problem during ticket work:
-1. Check: "Did this take >2 attempts? Is the error misleading? Is there a gotcha?"
-2. If yes, store the knowledge
-3. Set `source_ticket` to current ticket ID
-
 ## Agent Instructions
 
-When user says "store this" or "save this knowledge":
-1. Validate entry quality (title, problem, root cause, solution)
-2. Search for existing similar entries
-3. Determine topic from context
-4. Extract tags
-5. Run `knowledge.py store`
-6. Store in Anchor MCP
-7. Confirm stored
+When the user says "store this" or "save this knowledge":
 
-When user says "look up" or "what do we know about":
-1. Run `knowledge.py search`
-2. Also search Anchor MCP: `memory/search`
-3. Present combined results
+1. Run `python3 skills/knowledge/scripts/knowledge.py init` if first time
+2. Determine the topic from context (or ask)
+3. Generate a short, descriptive title
+4. Extract relevant tags from the content
+5. Run `knowledge.py store <topic> "<title>" --tags "..." --content "..."`
+6. Confirm the entry was stored
 
-When user says "what's in the knowledge base":
+When the user says "look up" or "what do we know about":
+
+1. Run `knowledge.py search "<query>"` or `knowledge.py fetch --topic <topic>`
+2. Present the results
+
+When the user says "what's in the knowledge base":
+
 1. Run `knowledge.py topics` and `knowledge.py stats`
-2. Summarize
+2. Summarize the state of the KB
+
+## Seed Topics
+
+- `ash` — Ash framework (Elixir)
+- `docker` — Docker, compose, containers
+- `postgres` — PostgreSQL, SQL, migrations
+- `opentelemetry` — OTel, tracing, metrics, collector
+- `elixir` — Elixir language, patterns, gotchas
+- `deno` — Deno runtime, TypeScript
+- `react` — React, Next.js, frontend
+- `devops` — CI/CD, deployment, infrastructure
+- `ai-tools` — AI coding tools, harness, skills
+
+New topics are auto-created on first entry.
 
 ## Rules
 
-- Entries are append-only — never delete, only deprecate
+- Entries are append-only — never delete, only deprecate via `deprecated: true`
 - Entry IDs are auto-incrementing: `<topic>-<NNN>`
-- Topics auto-created on first entry
-- Index rebuilt on every store
-- Registry is source of truth for counts
-- Quality validation before every store
-- Link entries to tickets when possible
+- Topics are auto-created when first entry is stored
+- Index files are rebuilt on every store operation
+- The registry is the single source of truth for topic counts
+
+## Integration with Other Skills
+
+- **Postmortem Manager**: Stores root causes and solutions from incidents in the knowledge base
+- **Sales Knowledge**: Provides market data, competitive intel, and customer research for investor-ready-doc-gen
+- **Feature Testing Framework**: Template for testing features with knowledge capture built in
+- **Ticket System**: Links knowledge entries to tickets via `knowledge_entries` frontmatter field
