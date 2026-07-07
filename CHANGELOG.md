@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.18] - 2026-07-07
+
+### wo-ai v1.0.8 — Built-in llama.cpp & LM Studio Providers (Fixed)
+
+- **Bug fix**: Previous 1.0.7 publish was missing compiled output. Rebuilt and republished as 1.0.8 with llama/lmstudio providers properly compiled into dist/.
+- **Published**: `@wayofmono/wo-ai@1.0.8` to npm.
+
 ## [1.7.17] - 2026-07-07
 
 ### wo-ai v1.0.7 — Added llama.cpp Docker & LM Studio Providers
