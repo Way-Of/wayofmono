@@ -33,6 +33,8 @@ See `assets/postmortem-template.md` — the source of truth for the output forma
 6. Prompt for Technical Debt Created (Debt, Reason, Mitigation)
 7. Prompt for Knowledge Gained (code snippets, configs, patterns)
 8. Generate Action Items as checkboxes, optionally create tickets
+9. **Store knowledge entries** in `thoughts/global/knowledge/` for root causes and solutions
+10. **Link knowledge entries** to postmortem via `knowledge_entries` frontmatter
 
 ## Git Metrics Auto-Capture
 
@@ -41,6 +43,65 @@ git log --oneline --stat <range>    # Commit count, files changed, lines ±
 git log --oneline <range>           # Timeline
 ```
 
+## Knowledge Integration
+
+After generating the postmortem, store key learnings in the knowledge base:
+
+```
+Postmortem generated:
+  → Review "Root Cause Analysis" section
+  → Review "Knowledge Gained" section
+  → For each non-obvious finding:
+      → Determine topic (docker, postgres, elixir, devops, etc.)
+      → Call: knowledge.py store <topic> "<title>" --content "<markdown>"
+      → Link: Add entry ID to postmortem's knowledge_entries field
+  → Report: "Stored <N> knowledge entries from postmortem"
+```
+
+### Knowledge Entry Format for Postmortems
+
+```yaml
+---
+id: <topic>-<NNN>
+title: "<Incident-related insight>"
+topic: "<topic>"
+tags: ["incident", "<specific-tags>"]
+source: "debugging"
+date: "YYYY-MM-DD"
+confidence: "high"
+related: ["<POSTMORTEM-TICKET-ID>"]
+deprecated: false
+---
+
+# <Title>
+
+## Problem
+<What happened during the incident>
+
+## Root Cause
+<Why it happened>
+
+## Solution
+<How it was fixed>
+
+## Prevention
+<How to prevent recurrence>
+```
+
 ## Action Items → Tickets
 
 Pass `--create-tickets` to auto-create WOMONO/WOW/OPT tickets from action items.
+
+## Postmortem → Knowledge Flow
+
+```
+Incident occurs
+  → Create postmortem via /create_postmortem
+  → Generate postmortem with all sections
+  → Store root causes in knowledge base
+  → Store solutions in knowledge base
+  → Store prevention patterns in knowledge base
+  → Link knowledge entries to postmortem
+  → Create action item tickets
+  → Next incident: search knowledge base for similar patterns
+```
