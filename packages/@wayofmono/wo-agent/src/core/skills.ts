@@ -431,8 +431,8 @@ function resolveSkillPath(p: string, cwd: string): string {
  * Returns skills and any validation diagnostics.
  */
 export function loadSkills(options?: LoadSkillsOptions): LoadSkillsResult {
-	if (!options?.skillPaths?.length) return { skills: [], diagnostics: [] };
-	const { cwd = process.cwd(), agentDir, skillPaths, includeDefaults = true } = options;
+	if (!options?.skillPaths?.length && !options?.includeDefaults) return { skills: [], diagnostics: [] };
+	const { cwd = process.cwd(), agentDir, skillPaths = [], includeDefaults = true } = options;
 
 	// Resolve agentDir - if not provided, use default from config
 	const resolvedAgentDir = agentDir ?? getAgentDir();
