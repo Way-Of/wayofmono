@@ -116,11 +116,10 @@ One command sets up configurations for **all 6 AI coding tools** with shared ski
 2. **wouser** — general-purpose AI assistant  
 3. **Claude Code** — Anthropic's coding agent
 4. **OpenCode** — Open-source TUI-driven agent
-5. **Pi** — Pi Agent standard
+5. **Antigravity** — Autonomous agent platform
 6. **Codex** — OpenAI's coding agent
-7. **Antigravity** — Autonomous agent platform
 
-> **Gemini CLI was removed** — Google ended support June 18, 2026. Antigravity CLI is the official replacement.
+> **Gemini CLI was removed** — Google ended support June 18, 2026.
 
 **macOS / Linux / Windows (bash):**
 ```bash
@@ -422,7 +421,7 @@ ai-harness --tool=pi --local --yes
 ```
 
 ```bash
-# Install ALL 7 tools locally
+# Install ALL 6 tools locally
 ai-harness --tool=all --local --yes
 ```
 > Creates `./.wo/agent/`, `./.pi/agent/`, `./.config/opencode/`, etc. in your project folder.
@@ -440,7 +439,7 @@ ai-harness --tool=all --local --yes
 ```
 
 ```powershell
-# Install ALL 7 tools locally
+# Install ALL 6 tools locally
 .\install.ps1 -Tool all -Local -Yes
 ```
 
@@ -948,7 +947,7 @@ Opens at **http://localhost:6969**
 | Subagents | **6** |
 | Active developers | **4** (craig, tomas, andre, zerwiz) |
 | Active tickets | **29+** (WOMONO, WOW, OPT namespaces) |
-| Harness version | **1.7.16** |
+| Harness version | **1.7.17** |
 | Files in harness | **1,226** |
 | Files in docs | **173** |
 | Files in thoughts | **115** |
@@ -972,7 +971,7 @@ WayOfMono is built on an **Interface-Agnostic Philosophy** — core logic and to
 
 ```
 packages/@aiengineeringharness/     → ~1,100 files
-├── manifest.json                   # Source of truth (v1.7.16)
+├── manifest.json                   # Source of truth (v1.7.17)
 ├── install.ts                      # Deno CLI installer
 ├── setup.sh                        # GNU Stow installer
 ├── scripts/                        # 14 pipeline scripts
@@ -1281,7 +1280,7 @@ ai-harness --tool=wocode
 ```
 
 ```bash
-# ALL 7 tools at once
+# ALL 6 tools at once
 ai-harness --tool=all --yes
 ```
 
@@ -1812,7 +1811,7 @@ All 29 packages published under `@wayofmono` scope at [npmjs.com/settings/wayofm
 
 | Package | Description | When to Use | npm |
 |---------|-------------|-------------|-----|
-| **@wayofmono/wo-ai** | Multi-Provider LLM API (OpenAI, Anthropic, Gemini, Ollama) | Need unified interface for multiple LLM providers | `npm install @wayofmono/wo-ai` |
+| **@wayofmono/wo-ai** | Multi-Provider LLM API (OpenAI, Anthropic, Gemini, Ollama, llama.cpp, LM Studio) | Need unified interface for multiple LLM providers | `npm install @wayofmono/wo-ai` |
 | **@wayofmono/wo-tui** | High-Performance Terminal UI Library (React Ink based) | Building terminal apps with React-like components | `npm install @wayofmono/wo-tui` |
 | **@wayofmono/wo-agent-core** | Central Agent Runtime & Extension API | Building custom agents, need core runtime | `npm install @wayofmono/wo-agent-core` |
 | **@wayofmono/wo-agent** | General-Purpose Agent SDK & CLI (**wouser**) | Building AI features in your app, chatbots | `npm install @wayofmono/wo-agent` |
