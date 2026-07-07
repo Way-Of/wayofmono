@@ -443,3 +443,18 @@ components:
     files:
     - src: pi/agent/skills/standup/SKILL.md
       dest: skills/standup/SKILL.md
+  skill/commit:
+    description: commit skill
+    files:
+    - src: pi/agent/skills/commit/SKILL.md
+      dest: skills/commit/SKILL.md
+  skill/fixes-bump:
+    description: fixes-bump skill
+    files:
+    - src: pi/agent/skills/fixes-bump/SKILL.md
+      dest: skills/fixes-bump/SKILL.md
+  skill/fixes-create:
+    description: fixes-create skill
+    files:
+    - src: pi/agent/skills/fixes-create/SKILL.md
+      dest: skills/fixes-create/SKILL.md
