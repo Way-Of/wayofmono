@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.7.17] - 2026-07-07
+
+### Harness (AI Engineering Harness v1.7.17) — Ticket Lifecycle, Knowledge Overhaul, AGENTS.md
+
+- **Ticket lifecycle system (WOMONO-162)**: Complete overhaul of ticket management across all tools:
+  - Archive system: done/, deprecated/, legacy/ directories — never delete tickets
+  - Completion flow: CHANGELOG prompt, knowledge capture, personal folder cleanup, TODO.md regeneration
+  - Personal ticket routing: assigned tickets auto-copied to developer folders
+  - Domain-based routing: 10 domains (frontend, backend, devops, etc.) with team mapping
+  - Deprecated status: superseded tickets marked deprecated, never deleted
+  - 10 audit rules for archival, personal routing, and legacy cleanup
+
+- **Knowledge base overhaul (WOMONO-163)**: Expanded from 9 to 20+ topics, added search filters (tag, confidence, source, ticket), Anchor MCP dual-write integration, entry quality validation, ticket-workflow search-before-store
+
+- **AGENTS.md overhaul (WOMONO-164)**: 12-section template with documentation links, enforcement ticket semantics, domain routing tables, critical files, production-ready mandate, cross-project references. Project-relevant skill filtering (no more 100+ skill dumps)
+
+- **Tickets closed**: WOMONO-162, WOMONO-163, WOMONO-164.
+
 ## [1.7.16] - 2026-07-07
 
 ### Harness (AI Engineering Harness v1.7.16) — Manifest Consistency Fix
