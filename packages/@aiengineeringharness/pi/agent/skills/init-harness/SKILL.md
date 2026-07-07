@@ -1,8 +1,3 @@
----
-name: init-harness
-description: Initialize the AI Engineering Harness in a repository by running the tool's project memory init, then cloning the shared f-rr-d thoughts repo and setting up the standard directory structure. The f-rr-d repo is append-only — never delete, rename, or move anything inside thoughts/.
-allowed-tools: read, write, bash
----
 # Initialize Harness
 
 Initialize the AI Engineering Harness in this repository.
@@ -98,6 +93,8 @@ If not, run the tool's `/init` command. If this tool has no `/init`, create the 
 
 After the project memory file is created (or if it already exists), append a reference section listing all skills, commands, and agents installed by the AI Engineering Harness.
 
+**Skills Catalog Reference:** The complete skills catalog is maintained at `thoughts/wayofmono/docs/AI-Engineering-Harness-Skills-Catalog.md` (v1.7.16). It documents all 49 skills, 12 agents per tool, 5 commands/prompts per tool, and tool-specific extensions. Reference this catalog when listing available capabilities.
+
 Determine the tool's config directory installed by the harness (e.g., `~/.config/opencode/`, `~/.claude/`, `~/.config/opencode/`, `~/.pi/agent/`, `~/.wocode/`, `~/.antigravity/`, `~/.codex/`). Then discover skills, commands, and agents:
 
 ```bash
@@ -115,6 +112,8 @@ Append the following section to the project memory file:
 
 ```markdown
 ## Available Skills & Commands
+
+> **Full catalog:** See `thoughts/wayofmono/docs/AI-Engineering-Harness-Skills-Catalog.md` for detailed descriptions of all 49 skills, 12 agents, and 5 commands/prompts.
 
 ### Skills (auto-triggered by the AI Engineering Harness)
 <list each skill name from the discovery above, one per line>
