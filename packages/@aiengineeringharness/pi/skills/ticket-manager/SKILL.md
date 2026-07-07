@@ -1,7 +1,7 @@
 ---
 name: ticket-manager
 description: "Manage tickets across all namespaces (WOMONO, WOW, OPT) with proper naming, numbering, and storage. Enforces production-ready standard: no mock data, enterprise grade."
-allowed-tools: read grep glob bash write edit
+allowed-tools: read, grep, glob, bash, write, edit
 ---
 
 # Ticket Manager skill
@@ -31,8 +31,8 @@ You are the Ticket Manager for the AI Engineering Harness. Your job is to manage
 
 ```
 Backlog → Planned → Ready → In Progress → Submitted for Review → In Review → Approved → Done
-                                           ↘ Changes Requested → In Progress
-                                           ↘ Reject → Blocked
+                                            ↘ Changes Requested → In Progress
+                                            ↘ Reject → Blocked
 ```
 
 | Status | Color | Description |
@@ -47,6 +47,7 @@ Backlog → Planned → Ready → In Progress → Submitted for Review → In Re
 | **Done** | Green | Completed and merged |
 | **Blocked** | Red | Blocked by dependency/issue |
 | **Changes Requested** | Orange | Review requested changes, back to work |
+| **Deprecated** | Gray | Superseded or abandoned — never deleted |
 
 ## Ticket Naming Convention
 
@@ -72,7 +73,10 @@ Take the highest number, increment by 1. If no tickets exist, start at `001`.
 
 ### Storage Location
 
-- Shared tickets: `thoughts/<project-slug>/shared/tickets/<FILE>.md`
+- Active tickets: `thoughts/<project-slug>/shared/tickets/<FILE>.md`
+- Done tickets: `thoughts/<project-slug>/shared/tickets/done/<FILE>.md`
+- Deprecated tickets: `thoughts/<project-slug>/shared/tickets/deprecated/<FILE>.md`
+- Legacy tickets: `thoughts/<project-slug>/shared/tickets/legacy/<FILE>.md`
 - Personal tickets: `thoughts/<project-slug>/<dev>/tickets/<DEV>-<XXX>-<description>.md`
 
 ### Frontmatter
@@ -82,7 +86,8 @@ Take the highest number, increment by 1. If no tickets exist, start at `001`.
 title: "[<PREFIX>-<NNN>] <Descriptive Title>"
 type: "Feature" | "Bug" | "TechDebt" | "Epic" | "Improvement"
 priority: "Critical" | "High" | "Medium" | "Low"
-status: "Backlog" | "Planned" | "Ready" | "In Progress" | "Submitted for Review" | "In Review" | "Approved" | "Done" | "Blocked" | "Changes Requested"
+status: "Backlog" | "Planned" | "Ready" | "In Progress" | "Submitted for Review" | "In Review" | "Approved" | "Done" | "Blocked" | "Changes Requested" | "Deprecated"
+domain: "frontend" | "backend" | "devops" | "infra" | "ai-tools" | "docs" | "security" | "testing" | "architecture" | "cross-cutting"
 assignee: ""
 reporter: "@username"
 project: "WOMONO" | "WOW" | "OPT"
@@ -92,12 +97,199 @@ parent_ticket: ""
 shared_tickets: "[]"
 pr_url: ""
 github_issue: ""
+created: ""
+updated: ""
+deprecated: false
+deprecated_reason: ""
+deprecated_date: ""
+replaced_by: ""
 ---
 ```
 
 ### Template
 
-Use `thoughts/shared/tickets/ticket-template.md`.
+Use `thoughts/shared/templates/ticket-template.md`.
+
+## Domain-Based Routing
+
+Every ticket has a `domain` field that maps to the code area it affects.
+
+### Domain Definitions
+
+| Domain | Code Area | Examples |
+|--------|-----------|----------|
+| `frontend` | React/UI, CSS, layouts, routing | WoW UI, OptiCat dashboards, CTO Dashboard |
+| `backend` | APIs, database, server logic, auth | WoW backend, Ash resources, Phoenix controllers |
+| `devops` | CI/CD, deployment, containers, DNS | Podman configs, GitHub Actions, Netlify |
+| `infra` | Infrastructure as code, clusters | K8s manifests, Terraform, server provisioning |
+| `ai-tools` | Skills, agents, harness, MCP | AI Engineering Harness, skill packages |
+| `docs` | Documentation, guides, READMEs | f-rr-d docs, tool docs, investor docs |
+| `security` | Auth, access control, secrets | WOW access control, API security |
+| `testing` | Tests, CI checks, validation | Unit tests, integration tests, audit scripts |
+| `architecture` | System design, ADRs | Tech stack choices, module boundaries |
+| `cross-cutting` | Spans multiple domains | Version management, monorepo tooling |
+
+### Domain-to-Team Mapping
+
+| Domain | Primary | Secondary |
+|--------|---------|-----------|
+| frontend | @zerwiz | @michael |
+| backend | @craig | @zerwiz |
+| devops | @craig | — |
+| infra | @craig | — |
+| ai-tools | @zerwiz | — |
+| docs | @zerwiz | @michael |
+| security | @craig | @zerwiz |
+| testing | @zerwiz | @craig |
+| architecture | @craig | @zerwiz |
+| cross-cutting | @zerwiz | @craig |
+
+**OptiCat note**: @andre and @tomas handle OptiCat-specific work only.
+
+### Domain Suggestion
+
+When creating a ticket, analyze the title and description for domain keywords:
+- "React", "component", "CSS", "UI" → frontend
+- "API", "route", "database", "auth" → backend
+- "CI", "deploy", "Docker", "container" → devops
+- "Terraform", "cluster", "K8s" → infra
+- "skill", "agent", "harness", "MCP" → ai-tools
+- "docs", "README", "guide" → docs
+- "security", "access", "secret" → security
+- "test", "spec", "validation" → testing
+- "architecture", "design", "tech stack" → architecture
+- "monorevo", "version", "cross-project" → cross-cutting
+
+## Archive System (NEVER DELETE)
+
+Tickets are NEVER deleted. Use three archive tiers:
+
+| Tier | Directory | When | Status |
+|------|-----------|------|--------|
+| **Active** | `shared/tickets/` | Default | Any non-terminal status |
+| **Done** | `shared/tickets/done/` | Auto-moved on completion | Done |
+| **Deprecated** | `shared/tickets/deprecated/` | Superseded or abandoned | Deprecated |
+| **Legacy** | `shared/tickets/legacy/` | Old-format tickets from cleanup | Any (historical) |
+
+### Deprecation Flow
+
+When a ticket should no longer be worked on:
+
+```
+1. Update frontmatter:
+   status: "Deprecated"
+   deprecated: true
+   deprecated_reason: "Replaced by <TICKET_ID>" | "No longer needed"
+   deprecated_date: "YYYY-MM-DD"
+   replaced_by: "<TICKET_ID>"  # optional
+
+2. Move ticket: git mv shared/tickets/<file> shared/tickets/deprecated/<file>
+
+3. Update TODO.md (ticket no longer appears in active/backlog)
+```
+
+**NEVER delete a ticket.** If user asks to delete, move to deprecated/ instead.
+
+## Completion Flow
+
+When a ticket is marked "Done" (via `/complete`, `cto_review_action approve`, or direct `update_ticket`):
+
+```
+Step 1: Validate ticket is in a completable status
+        → Must be "Approved" or "In Progress" (if self-approving)
+
+Step 2: Set frontmatter fields
+        → status: "Done"
+        → completed: "YYYY-MM-DD"
+        → updated: "YYYY-MM-DD"
+
+Step 3: Knowledge capture check
+        → Ask: "Did you discover any non-obvious solutions, workarounds, or gotchas?"
+        → If yes: Store in knowledge base via knowledge skill
+        → Store in BOTH file system (thoughts/global/knowledge/) AND Anchor MCP
+
+Step 4: CHANGELOG entry prompt
+        → Ask: "Add changelog entry for <TICKET_ID>?"
+        → If yes: Append to CHANGELOG.md under [Unreleased]
+        → Format: - **<TICKET_ID>**: <title> (#<number>)
+        → Category mapping: Feature/Improvement → Added, Bug → Fixed, TechDebt → Changed
+
+Step 5: Move ticket to done/
+        → git mv shared/tickets/<file> shared/tickets/done/<file>
+        → Log the move in Work Log section before moving
+
+Step 6: Remove from personal folder
+        → If ticket exists in developer's personal folder, remove it
+
+Step 7: Update TODO.md
+        → Regenerate thoughts/<project>/TODO.md from current ticket state
+```
+
+## Personal Ticket Routing
+
+When a ticket has an `assignee`, copy it to the developer's personal folder.
+
+### Routing Rules
+
+| Trigger | Action |
+|---------|--------|
+| Ticket created with `assignee: "@zerwiz"` | Copy to `thoughts/<project>/zerwiz/` |
+| Assignee changed | Remove from old folder, copy to new |
+| Ticket completed | Remove from personal folder |
+| Ticket reopened | Re-copy to personal folder |
+| No assignee | Stay in shared/tickets/ only |
+
+### Personal Folder Rules
+
+1. **Copies, not moves** — shared/tickets/ is source of truth
+2. **Cleanup on complete** — remove from personal folder when done
+3. **NOT for dumping** — only assigned tickets appear here
+
+## TODO.md Management
+
+Each project has ONE canonical `TODO.md` at `thoughts/<project>/TODO.md`.
+
+### Regeneration
+
+Regenerate TODO.md whenever:
+- A ticket status changes
+- A new ticket is created
+- Agent starts a work session
+
+### TODO.md Format
+
+```markdown
+---
+project: <PROJECT-SLUG>
+namespace: <PREFIX>
+last_synced: "YYYY-MM-DD HH:MM"
+---
+
+# TODO: <Project Name>
+
+## Summary
+- **Active**: <N>
+- **Awaiting review**: <N>
+- **Blocked**: <N>
+- **Done (this sprint)**: <N>
+
+## Enforcement Tickets (HIGHEST PRIORITY)
+| Ticket | Status | Description |
+|--------|--------|-------------|
+
+## Active Tickets by Domain
+### Frontend
+| Ticket | Status | Assignee | Priority |
+|--------|--------|----------|----------|
+
+## Recently Completed (last 7 days)
+| Ticket | Completed | Assignee |
+|--------|-----------|----------|
+
+## Backlog (top 20 by priority)
+| Ticket | Priority | Type | Created |
+|--------|----------|------|---------|
+```
 
 ## Audit Utility
 
@@ -107,7 +299,22 @@ A ticket audit script is bundled at `assets/audit-tickets.js`. Run it to validat
 deno run -A assets/audit-tickets.js
 ```
 
-This checks every ticket file for required frontmatter fields, correct formatting, and file naming. Use it before submitting tickets for review or after batch operations.
+### Audit Rules (Agent-Driven)
+
+The agent performs audits by reading tickets and checking rules:
+
+| Rule | Level | Check |
+|------|-------|-------|
+| `done-in-root` | WARNING | Done ticket in shared/tickets/ root → should be in done/ |
+| `active-in-done` | ERROR | Active ticket in done/ → should be in shared/tickets/ |
+| `done-missing-completed` | ERROR | Done ticket missing `completed` field |
+| `deprecated-missing-reason` | ERROR | Deprecated ticket missing `deprecated_reason` |
+| `assigned-missing-from-personal` | WARNING | Assigned ticket not in personal folder |
+| `orphan-in-personal` | ERROR | File in personal folder with no matching shared ticket |
+| `missing-frontmatter` | WARNING | Missing required fields (type, priority, status, project, namespace, created, domain) |
+| `wrong-naming-convention` | WARNING | Name doesn't match `<PREFIX>-<NNN>-<UPPERCASE-DASHED-DESC>.md` |
+| `cross-project-ticket` | ERROR | Ticket prefix doesn't match project folder |
+| `domain-missing` | WARNING | Ticket missing `domain` field |
 
 ## Production-Ready Standard
 
@@ -128,8 +335,8 @@ If a ticket's AC don't cover these, add them.
 Start working on a ticket. Updates status to "In Progress", creates a work session context.
 
 ### `/complete <ticket-id>`
-Mark a ticket as done. If review is required (CTO/Lead), moves to "Submitted for Review" instead.
-Checks off linked TODO checkboxes in `thoughts/<project-slug>/shared/tickets/TODO.md`.
+Mark a ticket as done. Executes the full completion flow:
+1. Validate status → set Done → knowledge capture → CHANGELOG prompt → move to done/ → remove from personal → regenerate TODO.md
 
 ### `/sync team`
 Show team dashboard: all tickets grouped by owner, status, blockers, dependencies.
@@ -139,9 +346,10 @@ Sync all available skills to all configured frontends.
 
 ### `/ticket create`
 Interactive ticket creation wizard. Prompts for:
-- Title, type, priority, namespace
+- Title, type, priority, namespace, **domain**
 - Assignee, project, category
 - Context, requirements, technical notes, success criteria
+- Auto-suggests domain and assignee based on content analysis
 
 ## Available Tools
 
@@ -153,6 +361,7 @@ Parameters:
 - `assignee` (optional): Filter by assignee
 - `project` (optional): Filter by project
 - `category` (optional): Filter by category
+- `domain` (optional): Filter by domain
 - `role` (optional): Filter by required role
 
 ### `get_ticket`
@@ -166,6 +375,7 @@ Parameters:
 - `ticket_id` (required): The ticket ID
 - `status` (optional): New status
 - `assignee` (optional): New assignee
+- `domain` (optional): New domain
 - `blockers` (optional): Array of blocking ticket IDs
 - `unblocks` (optional): Array of unblocked ticket IDs
 - `pr_url` (optional): Link to GitHub PR
@@ -184,7 +394,6 @@ Parameters:
 - `pr_url` (optional): GitHub PR URL
 
 ### `cto_review_action`
-_review_action
 CTO reviews submitted work.
 Parameters:
 - `ticket_id` (required): The ticket ID
@@ -207,20 +416,6 @@ The dashboard store has `updateTicketReview` action that handles this flow.
 
 ### `sync_personal_todos`
 Regenerate personal TODO.md for all developers from shared ticket assignments.
-
-## Ticket Storage (per project, from harness.json project_slug)
-
-Tickets are stored as markdown files in:
-- `thoughts/<project-slug>/shared/tickets/<category>/<ID>-<description>.md` (shared tickets)
-- `thoughts/<project-slug>/<dev>/tickets/<DEV>-<XXX>-<description>.md` (personal tickets)
-
-Each ticket follows the template in `thoughts/shared/tickets/ticket-template.md` (cross-project template at f-rr-d root).
-
-## Hierarchical Linking
-
-- Personal tickets reference parent shared ticket via `parent_ticket` frontmatter
-- Shared tickets reference personal sub-tasks via `sub_tasks` array
-- Personal TODO.md auto-generates from assigned shared tickets
 
 ## Notification Integration
 

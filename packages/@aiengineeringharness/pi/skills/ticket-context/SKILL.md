@@ -17,43 +17,43 @@ This skill ensures all work is linked to an approved ticket from the correct nam
 | WOW-XXX | WayOfWork | `thoughts/wow/shared/tickets/` |
 | OPT-XXX | Opticat | `thoughts/opticat/shared/tickets/` |
 
+## Ticket Resolution
+
+When looking up a ticket, search in this order:
+
+1. `thoughts/<project>/shared/tickets/<PREFIX>-<NNN>-*.md` (active)
+2. `thoughts/<project>/shared/tickets/done/<PREFIX>-<NNN>-*.md` (completed)
+3. `thoughts/<project>/shared/tickets/deprecated/<PREFIX>-<NNN>-*.md` (deprecated)
+4. `thoughts/<project>/<developer>/<PREFIX>-<NNN>-*.md` (personal copy)
+
+If found in `done/` or `deprecated/`, inform the user:
+- "This ticket is completed/deprecated. Do you want to reopen it?"
+- If yes: Move back to shared/tickets/ root, set status to "In Progress"
+
+## Domain Awareness
+
+Every ticket has a `domain` field. When loading ticket context:
+- Display the domain and primary team member for that domain
+- If work crosses domains, note the cross-domain impact
+- Suggest consulting the domain primary if the work is outside the agent's expertise
+
 ## Workflow
 
 1. **Activation**: Activate when starting any new task, feature, or bug fix.
-2. **Ticket ID Prompt**: Ask the user for the ticket ID in `<PREFIX>-<NNN>` format (e.g., `WOMONO-051`, `WOW-001`, `OPT-003`).
-3. **Load Context**: read the ticket from `thoughts/<project>/shared/tickets/<PREFIX>-<NNN>-*.md`.
-4. **Production-Ready Standard**: Every ticket's acceptance criteria must include no mock data in application code, proper error handling, observability, security, edge case coverage, and tests for failure modes. If missing, flag it.
-5. **Compliance Reminder**: All work must align with the ticket's AC and WoM best practices. If any AC would be violated, stop and clarify.
-
-## Usage
-
-*   When beginning a new task, activate this skill.
-*   Provide a ticket ID like `WOMONO-051`, `WOW-001`, or `OPT-003`.
-*   The skill loads the full ticket context from `thoughts/<project>/shared/tickets/`.
+2. **Ticket ID Prompt**: Ask for ticket ID in `<PREFIX>-<NNN>` format.
+3. **Load Context**: Read ticket from resolved location.
+4. **Production-Ready Standard**: AC must include no mock data, error handling, observability, security, edge cases, tests. Flag if missing.
+5. **Compliance Reminder**: All work must align with ticket AC and WoM best practices.
 
 ## Rules
 
-*   All code changes, feature implementations, and bug fixes **must** be associated with an existing ticket.
-*   Tickets are stored at `thoughts/<project-slug>/shared/tickets/<PREFIX>-<NNN>-<DESCRIPTION>.md`.
-*   New tickets follow the naming convention and template in `thoughts/shared/tickets/ticket-template.md`.
-*   The `ticket_manager` skill has full lifecycle management. This skill ensures adherence to the process.
-
-## Audit Utility
-
-A ticket audit script is bundled at `assets/audit-tickets.js`. Run it to validate ticket frontmatter compliance before associating work with a ticket:
-
-```bash
-deno run -A assets/audit-tickets.js
-```
+- All code changes **must** be associated with an existing ticket.
+- Tickets follow naming convention in `thoughts/shared/templates/ticket-template.md`.
+- Never work on a deprecated ticket without user confirmation.
+- The `ticket_manager` skill handles full lifecycle. This skill ensures process adherence.
 
 ## CTO Dashboard UI Integration
 
-The CTO Dashboard provides interactive ticket status management:
-
-- **Status Dropdown**: Both ticket list and detail views have a `Select` dropdown for status
-- **Available Statuses**: Backlog, In Progress, In Review, Done, Blocked
-- **Visual Indicators**: Color-coded badges matching status (gray/blue/yellow/green/red)
-- **Real-time Updates**: Status changes update immediately in UI and sync to f-rr-d repository
-
-When working on a ticket, the current status from the UI/dashboard is the source of truth. Agents can also update status using `update_ticket` tool with `status` parameter.
-
+- **Status Dropdown**: Both list and detail views have status Select
+- **Available Statuses**: Backlog, In Progress, In Review, Done, Blocked, Deprecated
+- **Source of Truth**: UI status is authoritative; agents sync to it

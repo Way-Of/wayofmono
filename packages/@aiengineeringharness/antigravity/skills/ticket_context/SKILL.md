@@ -21,7 +21,7 @@ This skill ensures all work is linked to an approved ticket from the correct nam
 
 1. **Activation**: Activate when starting any new task, feature, or bug fix.
 2. **Ticket ID Prompt**: Ask the user for the ticket ID in `<PREFIX>-<NNN>` format (e.g., `WOMONO-051`, `WOW-001`, `OPT-003`).
-3. **Load Context**: read the ticket from `thoughts/<project>/shared/tickets/<PREFIX>-<NNN>-*.md`.
+3. **Load Context**: Read the ticket from `thoughts/<project>/shared/tickets/<PREFIX>-<NNN>-*.md`.
 4. **Production-Ready Standard**: Every ticket's acceptance criteria must include no mock data in application code, proper error handling, observability, security, edge case coverage, and tests for failure modes. If missing, flag it.
 5. **Compliance Reminder**: All work must align with the ticket's AC and WoM best practices. If any AC would be violated, stop and clarify.
 

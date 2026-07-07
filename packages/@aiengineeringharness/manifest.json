@@ -3,7 +3,7 @@
   "tools": {
     "antigravity": {
       "name": "antigravity",
-      "version": "1.7.17",
+      "version": "1.0.0",
       "target": "~/.antigravity",
       "components": {
         "settings": {
@@ -771,7 +771,7 @@
     },
     "claude": {
       "name": "claude",
-      "version": "1.7.17",
+      "version": "1.0.0",
       "target": "~/.claude",
       "components": {
         "settings": {
@@ -1451,7 +1451,7 @@
     },
     "codex": {
       "name": "codex",
-      "version": "1.7.17",
+      "version": "1.0.0",
       "target": "~/.codex",
       "components": {
         "settings": {
@@ -2114,7 +2114,7 @@
     },
     "opencode": {
       "name": "opencode",
-      "version": "1.7.17",
+      "version": "1.0.0",
       "target": "~/.config/opencode",
       "components": {
         "settings": {
@@ -2785,7 +2785,7 @@
     },
     "pi": {
       "name": "pi",
-      "version": "1.7.17",
+      "version": "1.0.0",
       "target": "~/.pi/agent",
       "components": {
         "agents": {
@@ -3696,7 +3696,7 @@
     },
     "wocode": {
       "name": "wocode",
-      "version": "1.7.17",
+      "version": "1.0.0",
       "target": "~/.wocode/agent",
       "components": {
         "settings": {
