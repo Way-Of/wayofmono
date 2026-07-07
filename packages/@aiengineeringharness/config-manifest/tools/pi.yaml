@@ -3,7 +3,7 @@ version: 1.0.0
 target: ~/.pi/agent
 components:
   agents:
-    description: Specialized subagents for Pi
+    description: Specialized subagents for pi
     files:
     - src: pi/agent/agents/codebase-analyzer.md
       dest: agents/codebase-analyzer.md
@@ -17,6 +17,8 @@ components:
       dest: agents/thoughts-locator.md
     - src: pi/agent/agents/web-search-researcher.md
       dest: agents/web-search-researcher.md
+    - src: pi/agent/agents/README.md
+      dest: agents/README.md
     - src: pi/agent/agents/planner.md
       dest: agents/planner.md
     - src: pi/agent/agents/reviewer.md
@@ -25,8 +27,8 @@ components:
       dest: agents/scout.md
     - src: pi/agent/agents/coder.md
       dest: agents/coder.md
-    - src: pi/agent/agents/README.md
-      dest: agents/README.md
+    - src: pi/agent/agents/netlify-agent.md
+      dest: agents/netlify-agent.md
   extension/open-editor:
     description: Open files from cwd in $VISUAL/$EDITOR via /edit or ctrl+e
     files:
@@ -100,11 +102,6 @@ components:
     files:
     - src: pi/agent/prompts/debug.md
       dest: prompts/debug.md
-  prompt/debug-k8s:
-    description: Kubernetes cluster debugging prompt
-    files:
-    - src: pi/agent/prompts/debug-k8s.md
-      dest: prompts/debug-k8s.md
   prompt/implement-plan:
     description: Execute an approved plan prompt
     files:
@@ -115,11 +112,6 @@ components:
     files:
     - src: pi/agent/prompts/init-harness.md
       dest: prompts/init-harness.md
-  prompt/otel-instrument:
-    description: OpenTelemetry instrumentation orchestrator prompt
-    files:
-    - src: pi/agent/prompts/otel-instrument.md
-      dest: prompts/otel-instrument.md
   prompt/research-codebase:
     description: Comprehensive codebase research prompt
     files:
@@ -130,33 +122,6 @@ components:
     files:
     - src: pi/agent/prompts/validate-plan.md
       dest: prompts/validate-plan.md
-  prompt/validate-telemetry:
-    description: Validate local telemetry against a narrative spec prompt
-    files:
-    - src: pi/agent/prompts/validate-telemetry.md
-      dest: prompts/validate-telemetry.md
-  skill/observability-driven-development:
-    description: "Observability Driven Development (ODD) \u2014 design the trace before\
-      \ the feature; local OTel feedback loop"
-    files:
-    - src: pi/agent/skills/observability-driven-development/SKILL.md
-      dest: skills/observability-driven-development/SKILL.md
-    - src: pi/agent/skills/observability-driven-development/narrative.md
-      dest: skills/observability-driven-development/narrative.md
-    - src: pi/agent/skills/observability-driven-development/loop.md
-      dest: skills/observability-driven-development/loop.md
-    - src: pi/agent/skills/observability-driven-development/local-setup.md
-      dest: skills/observability-driven-development/local-setup.md
-  prompt/worktree:
-    description: Git worktree manager prompt
-    files:
-    - src: pi/agent/prompts/worktree.md
-      dest: prompts/worktree.md
-  skill/experimental-pr-workflow:
-    description: Experimental PR workflow skill
-    files:
-    - src: pi/agent/skills/experimental-pr-workflow/SKILL.md
-      dest: skills/experimental-pr-workflow/SKILL.md
   skill/git-commit-helper:
     description: Auto-triggered git commit helper skill
     files:
@@ -167,41 +132,11 @@ components:
     files:
     - src: pi/agent/skills/init-harness/SKILL.md
       dest: skills/init-harness/SKILL.md
-  skill/otel-collector:
-    description: OpenTelemetry Collector configuration skill
-    files:
-    - src: pi/agent/skills/otel-collector/SKILL.md
-      dest: skills/otel-collector/SKILL.md
-  skill/otel-instrument:
-    description: OpenTelemetry instrumentation orchestrator skill
-    files:
-    - src: pi/agent/skills/otel-instrument/SKILL.md
-      dest: skills/otel-instrument/SKILL.md
-  skill/otel-instrumentation:
-    description: OpenTelemetry SDK instrumentation skill
-    files:
-    - src: pi/agent/skills/otel-instrumentation/SKILL.md
-      dest: skills/otel-instrumentation/SKILL.md
-  skill/otel-ottl:
-    description: OpenTelemetry OTTL expressions skill
-    files:
-    - src: pi/agent/skills/otel-ottl/SKILL.md
-      dest: skills/otel-ottl/SKILL.md
-  skill/otel-semantic-conventions:
-    description: OpenTelemetry semantic conventions skill
-    files:
-    - src: pi/agent/skills/otel-semantic-conventions/SKILL.md
-      dest: skills/otel-semantic-conventions/SKILL.md
   skill/pr-description-generator:
     description: Automated PR description generator skill
     files:
     - src: pi/agent/skills/pr-description-generator/SKILL.md
       dest: skills/pr-description-generator/SKILL.md
-  skill/interview:
-    description: Stress-test plans via relentless user interview skill
-    files:
-    - src: pi/agent/skills/interview/SKILL.md
-      dest: skills/interview/SKILL.md
   skill/tdd:
     description: Test-driven development with red-green-refactor loop skill
     files:
@@ -239,29 +174,13 @@ components:
     files:
     - src: pi/agent/skills/ticket-manager/SKILL.md
       dest: skills/ticket-manager/SKILL.md
-
     - src: pi/agent/skills/ticket-manager/assets/audit-tickets.js
       dest: skills/ticket-manager/assets/audit-tickets.js
-  skill/team-setup:
-    description: Team Setup - initialize and manage team configuration
-    files:
-    - src: pi/agent/skills/team-setup/SKILL.md
-      dest: skills/team-setup/SKILL.md
   skill/auto-ticket-creator:
     description: Auto-Ticket Creator - monitor and auto-create tickets from changes
     files:
     - src: pi/agent/skills/auto-ticket-creator/SKILL.md
       dest: skills/auto-ticket-creator/SKILL.md
-  skill/docs-sync-updater:
-    description: Docs Sync Updater - fetch latest docs and auto-update skill configs
-    files:
-    - src: pi/agent/skills/docs-sync-updater/SKILL.md
-      dest: skills/docs-sync-updater/SKILL.md
-  skill/cto-dashboard:
-    description: CTO Dashboard - ticket overview, developer progress, review queue
-    files:
-    - src: pi/agent/skills/cto-dashboard/SKILL.md
-      dest: skills/cto-dashboard/SKILL.md
   skill/backlog-groomer:
     description: Backlog Groomer skill
     files:
@@ -272,16 +191,6 @@ components:
     files:
     - src: pi/agent/skills/create-plan/SKILL.md
       dest: skills/create-plan/SKILL.md
-  skill/debug:
-    description: Debug skill
-    files:
-    - src: pi/agent/skills/debug/SKILL.md
-      dest: skills/debug/SKILL.md
-  skill/debug-k8s:
-    description: Debug K8S skill
-    files:
-    - src: pi/agent/skills/debug-k8s/SKILL.md
-      dest: skills/debug-k8s/SKILL.md
   skill/document-generation:
     description: Document Generation skill
     files:
@@ -297,34 +206,11 @@ components:
     files:
     - src: pi/agent/skills/implement-plan/SKILL.md
       dest: skills/implement-plan/SKILL.md
-  skill/opticat-backend-integrator:
-    description: Opticat Backend Integrator skill
-    files:
-    - src: pi/agent/skills/opticat-backend-integrator/SKILL.md
-      dest: skills/opticat-backend-integrator/SKILL.md
-  skill/opticat-simulator:
-    description: Opticat Simulator skill
-    files:
-    - src: pi/agent/skills/opticat-simulator/SKILL.md
-      dest: skills/opticat-simulator/SKILL.md
-  skill/opticat-ui-builder:
-    description: Opticat Ui Builder skill
-    files:
-    - src: pi/agent/skills/opticat-ui-builder/SKILL.md
-      dest: skills/opticat-ui-builder/SKILL.md
   skill/research-codebase:
     description: Research Codebase skill
     files:
     - src: pi/agent/skills/research-codebase/SKILL.md
       dest: skills/research-codebase/SKILL.md
-  skill/ticket-context:
-    description: Ticket Context skill
-    files:
-    - src: pi/agent/skills/ticket-context/SKILL.md
-      dest: skills/ticket-context/SKILL.md
-
-    - src: pi/agent/skills/ticket-context/assets/audit-tickets.js
-      dest: skills/ticket-context/assets/audit-tickets.js
   skill/usage-rules:
     description: Usage Rules skill
     files:
@@ -335,83 +221,14 @@ components:
     files:
     - src: pi/agent/skills/validate-plan/SKILL.md
       dest: skills/validate-plan/SKILL.md
-  skill/validate-telemetry:
-    description: Validate Telemetry skill
-    files:
-    - src: pi/agent/skills/validate-telemetry/SKILL.md
-      dest: skills/validate-telemetry/SKILL.md
-  skill/worktree:
-    description: Worktree skill
-    files:
-    - src: pi/agent/skills/worktree/SKILL.md
-      dest: skills/worktree/SKILL.md
-  skill/wow-access-control:
-    description: Wow Access Control skill
-    files:
-    - src: pi/agent/skills/wow-access-control/SKILL.md
-      dest: skills/wow-access-control/SKILL.md
-  skill/wow-agent-dev:
-    description: Wow Agent Dev skill
-    files:
-    - src: pi/agent/skills/wow-agent-dev/SKILL.md
-      dest: skills/wow-agent-dev/SKILL.md
-  skill/wow-backend-dev:
-    description: Wow Backend Dev skill
-    files:
-    - src: pi/agent/skills/wow-backend-dev/SKILL.md
-      dest: skills/wow-backend-dev/SKILL.md
-  skill/wow-communications:
-    description: Wow Communications skill
-    files:
-    - src: pi/agent/skills/wow-communications/SKILL.md
-      dest: skills/wow-communications/SKILL.md
-  skill/wow-core-architecture:
-    description: Wow Core Architecture skill
-    files:
-    - src: pi/agent/skills/wow-core-architecture/SKILL.md
-      dest: skills/wow-core-architecture/SKILL.md
-  skill/wow-frontend-dev:
-    description: Wow Frontend Dev skill
-    files:
-    - src: pi/agent/skills/wow-frontend-dev/SKILL.md
-      dest: skills/wow-frontend-dev/SKILL.md
-  skill/wow-human-in-the-loop:
-    description: Wow Human In The Loop skill
-    files:
-    - src: pi/agent/skills/wow-human-in-the-loop/SKILL.md
-      dest: skills/wow-human-in-the-loop/SKILL.md
-  skill/wow-skill-creator:
-    description: Wow Skill Creator skill
-    files:
-    - src: pi/agent/skills/wow-skill-creator/SKILL.md
-      dest: skills/wow-skill-creator/SKILL.md
-  skill/wow-ui-surfaces:
-    description: Wow Ui Surfaces skill
-    files:
-    - src: pi/agent/skills/wow-ui-surfaces/SKILL.md
-      dest: skills/wow-ui-surfaces/SKILL.md
-  skill/womono-practices-guide:
-    description: Wow Practices Guide
-    files:
-    - src: pi/agent/skills/womono-practices-guide/SKILL.md
-      dest: skills/womono-practices-guide/SKILL.md
-  skill/womono-practices-audit:
-    description: Wow Practices Audit
-    files:
-    - src: pi/agent/skills/womono-practices-audit/SKILL.md
-      dest: skills/womono-practices-audit/SKILL.md
-  skill/womono-practices-backlog:
-    description: Wow Practices Backlog
-    files:
-    - src: pi/agent/skills/womono-practices-backlog/SKILL.md
-      dest: skills/womono-practices-backlog/SKILL.md
   skill/build-tool:
     description: Universal component builder for all 7 AI coding tools
     files:
     - src: pi/agent/skills/build-tool/SKILL.md
       dest: skills/build-tool/SKILL.md
   skill/build-tool-skill:
-    description: "Unified skill builder, validator, adapter, and lifecycle manager for all 7 tools"
+    description: Unified skill builder, validator, adapter, and lifecycle manager
+      for all 7 tools
     files:
     - src: pi/agent/skills/build-tool-skill/SKILL.md
       dest: skills/build-tool-skill/SKILL.md
@@ -432,183 +249,45 @@ components:
     - src: pi/agent/skills/build-tool-skill/assets/adapter-generate.py
       dest: skills/build-tool-skill/assets/adapter-generate.py
   skill/build-tool-agent:
-    description: "Unified agent builder for all 7 tools \u2014 deployed to Pi"
+    description: Unified agent builder for all 7 tools — deployed to Pi
     files:
     - src: pi/agent/skills/build-tool-agent/SKILL.md
       dest: skills/build-tool-agent/SKILL.md
   skill/build-tool-extension:
-    description: "Unified extension/plugin builder for all 7 tools \u2014 deployed\
-      \ to Pi"
+    description: Unified extension/plugin builder for all 7 tools — deployed to Pi
     files:
     - src: pi/agent/skills/build-tool-extension/SKILL.md
       dest: skills/build-tool-extension/SKILL.md
   skill/build-tool-tui:
-    description: "Unified TUI component builder for all 7 tools \u2014 deployed to\
-      \ Pi"
+    description: Unified TUI component builder for all 7 tools — deployed to Pi
     files:
     - src: pi/agent/skills/build-tool-tui/SKILL.md
       dest: skills/build-tool-tui/SKILL.md
   skill/build-tool-cli:
-    description: "Unified CLI reference for all 7 tools \u2014 deployed to Pi"
+    description: Unified CLI reference for all 7 tools — deployed to Pi
     files:
     - src: pi/agent/skills/build-tool-cli/SKILL.md
       dest: skills/build-tool-cli/SKILL.md
   skill/build-tool-themes:
-    description: "Unified theme builder for all 7 tools \u2014 deployed to Pi"
+    description: Unified theme builder for all 7 tools — deployed to Pi
     files:
     - src: pi/agent/skills/build-tool-themes/SKILL.md
       dest: skills/build-tool-themes/SKILL.md
   skill/build-tool-prompts:
-    description: "Unified prompt template builder for all 7 tools \u2014 deployed\
-      \ to Pi"
+    description: Unified prompt template builder for all 7 tools — deployed to Pi
     files:
     - src: pi/agent/skills/build-tool-prompts/SKILL.md
       dest: skills/build-tool-prompts/SKILL.md
   skill/build-tool-keybindings:
-    description: "Unified keybinding reference for all 7 tools \u2014 deployed to\
-      \ Pi"
+    description: Unified keybinding reference for all 7 tools — deployed to Pi
     files:
     - src: pi/agent/skills/build-tool-keybindings/SKILL.md
       dest: skills/build-tool-keybindings/SKILL.md
   skill/build-tool-config:
-    description: "Unified configuration reference for all 7 tools \u2014 deployed\
-      \ to Pi"
+    description: Unified configuration reference for all 7 tools — deployed to Pi
     files:
     - src: pi/agent/skills/build-tool-config/SKILL.md
       dest: skills/build-tool-config/SKILL.md
-  skill/build-tool-orchestrate:
-    description: "Unified orchestration coordinator for all 7 tools \u2014 deployed\
-      \ to Pi"
-    files:
-    - src: pi/agent/skills/build-tool-orchestrate/SKILL.md
-      dest: skills/build-tool-orchestrate/SKILL.md
-  skill/investor-ready-doc-gen:
-    description: Generate investor-ready documentation for any project
-    files:
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/SKILL.md
-      dest: skills/investor-ready-doc-gen/SKILL.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/verticals/VERTICAL_TEMPLATE.yaml
-      dest: skills/investor-ready-doc-gen/assets/verticals/VERTICAL_TEMPLATE.yaml
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/verticals/hvac_optimization/market_reference.yaml
-      dest: skills/investor-ready-doc-gen/assets/verticals/hvac_optimization/market_reference.yaml
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml
-      dest: skills/investor-ready-doc-gen/assets/verticals/construction_software/market_reference.yaml
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/pdf/investor-theme.css
-      dest: skills/investor-ready-doc-gen/assets/pdf/investor-theme.css
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml
-      dest: skills/investor-ready-doc-gen/assets/schema/investor_config.schema.yaml
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/examples/wow_config.yaml
-      dest: skills/investor-ready-doc-gen/assets/examples/wow_config.yaml
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/examples/opticat_config.yaml
-      dest: skills/investor-ready-doc-gen/assets/examples/opticat_config.yaml
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/todo.md
-      dest: skills/investor-ready-doc-gen/assets/templates/todo.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/changelog.md
-      dest: skills/investor-ready-doc-gen/assets/templates/changelog.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/index.md
-      dest: skills/investor-ready-doc-gen/assets/templates/index.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/costs/cloud_costs.md
-      dest: skills/investor-ready-doc-gen/assets/templates/costs/cloud_costs.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/costs/hardware_costs.md
-      dest: skills/investor-ready-doc-gen/assets/templates/costs/hardware_costs.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/costs/setup_legal_costs.md
-      dest: skills/investor-ready-doc-gen/assets/templates/costs/setup_legal_costs.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/costs/detailed_breakdown.md
-      dest: skills/investor-ready-doc-gen/assets/templates/costs/detailed_breakdown.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/costs/cost_analysis.md
-      dest: skills/investor-ready-doc-gen/assets/templates/costs/cost_analysis.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/costs/team_tooling_costs.md
-      dest: skills/investor-ready-doc-gen/assets/templates/costs/team_tooling_costs.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/costs/alignment_summary.md
-      dest: skills/investor-ready-doc-gen/assets/templates/costs/alignment_summary.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/technical/demo_script.md
-      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_script.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/technical/product_functionality.md
-      dest: skills/investor-ready-doc-gen/assets/templates/technical/product_functionality.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/technical/demo_presentation_slides.md
-      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_presentation_slides.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/technical/technical_overview.md
-      dest: skills/investor-ready-doc-gen/assets/templates/technical/technical_overview.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/technical/demo_video_links.md
-      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_video_links.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/technical/demo_use_case_scenarios.md
-      dest: skills/investor-ready-doc-gen/assets/templates/technical/demo_use_case_scenarios.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/company/company_overview.md
-      dest: skills/investor-ready-doc-gen/assets/templates/company/company_overview.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/company/team_values.md
-      dest: skills/investor-ready-doc-gen/assets/templates/company/team_values.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/company/organizational_chart.md
-      dest: skills/investor-ready-doc-gen/assets/templates/company/organizational_chart.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/company/business_plan.md
-      dest: skills/investor-ready-doc-gen/assets/templates/company/business_plan.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/company/team_bios.md
-      dest: skills/investor-ready-doc-gen/assets/templates/company/team_bios.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/venture_studio/README.md
-      dest: skills/investor-ready-doc-gen/assets/templates/venture_studio/README.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/venture_studio/venture_studio_strategy.md
-      dest: skills/investor-ready-doc-gen/assets/templates/venture_studio/venture_studio_strategy.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/pitch_deck/send_ahead_deck.md
-      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/send_ahead_deck.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/pitch_deck/pitch_script.md
-      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/pitch_script.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/pitch_deck/supporting_slides.md
-      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/supporting_slides.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/pitch_deck/master_deck.md
-      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/master_deck.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/pitch_deck/one_pager.md
-      dest: skills/investor-ready-doc-gen/assets/templates/pitch_deck/one_pager.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/operations/kpi_dashboard.md
-      dest: skills/investor-ready-doc-gen/assets/templates/operations/kpi_dashboard.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/operations/client_overview.md
-      dest: skills/investor-ready-doc-gen/assets/templates/operations/client_overview.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/operations/venture_studio_strategy.md
-      dest: skills/investor-ready-doc-gen/assets/templates/operations/venture_studio_strategy.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/financial/master_financial_model.md
-      dest: skills/investor-ready-doc-gen/assets/templates/financial/master_financial_model.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/financial/README.md
-      dest: skills/investor-ready-doc-gen/assets/templates/financial/README.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/financial/seed_allocation_plan.md
-      dest: skills/investor-ready-doc-gen/assets/templates/financial/seed_allocation_plan.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/financial/cost_analysis.md
-      dest: skills/investor-ready-doc-gen/assets/templates/financial/cost_analysis.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/financial/revenue_model.md
-      dest: skills/investor-ready-doc-gen/assets/templates/financial/revenue_model.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/financial/historical_financials.md
-      dest: skills/investor-ready-doc-gen/assets/templates/financial/historical_financials.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/financial/cap_table.md
-      dest: skills/investor-ready-doc-gen/assets/templates/financial/cap_table.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/legal/intellectual_property.md
-      dest: skills/investor-ready-doc-gen/assets/templates/legal/intellectual_property.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/legal/shareholder_agreement.md
-      dest: skills/investor-ready-doc-gen/assets/templates/legal/shareholder_agreement.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/legal/vc_investor_contract.md
-      dest: skills/investor-ready-doc-gen/assets/templates/legal/vc_investor_contract.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/legal/advisor_board_contract.md
-      dest: skills/investor-ready-doc-gen/assets/templates/legal/advisor_board_contract.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/legal/angel_investor_contract.md
-      dest: skills/investor-ready-doc-gen/assets/templates/legal/angel_investor_contract.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/executive/executive_summary.md
-      dest: skills/investor-ready-doc-gen/assets/templates/executive/executive_summary.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/executive/white_paper.md
-      dest: skills/investor-ready-doc-gen/assets/templates/executive/white_paper.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/executive/investment_thesis.md
-      dest: skills/investor-ready-doc-gen/assets/templates/executive/investment_thesis.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/market/research_prompt.md
-      dest: skills/investor-ready-doc-gen/assets/templates/market/research_prompt.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/market/market_research.md
-      dest: skills/investor-ready-doc-gen/assets/templates/market/market_research.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/market/product_roadmap.md
-      dest: skills/investor-ready-doc-gen/assets/templates/market/product_roadmap.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/market/README.md
-      dest: skills/investor-ready-doc-gen/assets/templates/market/README.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/market/go_to_market_strategy.md
-      dest: skills/investor-ready-doc-gen/assets/templates/market/go_to_market_strategy.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/market/deep_research.md
-      dest: skills/investor-ready-doc-gen/assets/templates/market/deep_research.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/market/partnership_strategy.md
-      dest: skills/investor-ready-doc-gen/assets/templates/market/partnership_strategy.md
-    - src: pi/agent/extensions/skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
-      dest: skills/investor-ready-doc-gen/assets/templates/market/competitive_analysis.md
   skill/build-auto-ticket-creator:
     description: Monitor codebase, dependencies, and external sources to auto-create
       tickets for agent updates, skill updates, dep updates, security advisories
@@ -627,18 +306,12 @@ components:
     files:
     - src: pi/agent/skills/self-documentation/SKILL.md
       dest: skills/self-documentation/SKILL.md
-  skill/validate-manifest:
-    description: Validate skill manifest against production-ready standards and conventions
-    files:
-    - src: pi/agent/skills/validate-manifest/SKILL.md
-      dest: skills/validate-manifest/SKILL.md
   skill/ticket-executor:
     description: Execute approved plans in phases, validating telemetry and committing
       changes after each phase completes successfully
     files:
     - src: pi/agent/skills/ticket-executor/SKILL.md
       dest: skills/ticket-executor/SKILL.md
-
     - src: pi/agent/skills/ticket-executor/assets/audit-tickets.js
       dest: skills/ticket-executor/assets/audit-tickets.js
   skill/validate-podman:
@@ -646,38 +319,39 @@ components:
     files:
     - src: pi/agent/extensions/skills/validate-podman/SKILL.md
       dest: skills/validate-podman/SKILL.md
-  skill/womono-version-updater:
-    description: Bump WoM harness version across all files and tools
-    files:
-    - src: pi/agent/skills/womono-version-updater/SKILL.md
-      dest: skills/womono-version-updater/SKILL.md
   skill/github-branch:
-    description: Create and manage GitHub feature branches from tickets with proper naming and protection
+    description: Create and manage GitHub feature branches from tickets with proper
+      naming and protection
     files:
     - src: pi/agent/skills/github-branch/SKILL.md
       dest: skills/github-branch/SKILL.md
   skill/github-pr:
-    description: Create, manage, and review GitHub Pull Requests with ticket linking and template support
+    description: Create, manage, and review GitHub Pull Requests with ticket linking
+      and template support
     files:
     - src: pi/agent/skills/github-pr/SKILL.md
       dest: skills/github-pr/SKILL.md
   skill/github-review:
-    description: Review GitHub Pull Requests with structured feedback and CTO Dashboard integration
+    description: Review GitHub Pull Requests with structured feedback and CTO Dashboard
+      integration
     files:
     - src: pi/agent/skills/github-review/SKILL.md
       dest: skills/github-review/SKILL.md
   skill/github-sync:
-    description: Sync feature branches with base branch, resolve conflicts, manage branch lifecycle
+    description: Sync feature branches with base branch, resolve conflicts, manage
+      branch lifecycle
     files:
     - src: pi/agent/skills/github-sync/SKILL.md
       dest: skills/github-sync/SKILL.md
   skill/github-release:
-    description: Create GitHub releases with changelog generation, version tagging, and automated publishing
+    description: Create GitHub releases with changelog generation, version tagging,
+      and automated publishing
     files:
     - src: pi/agent/skills/github-release/SKILL.md
       dest: skills/github-release/SKILL.md
   skill/github-issue:
-    description: Create, manage, and link GitHub Issues with tickets, bi-directional sync
+    description: Create, manage, and link GitHub Issues with tickets, bi-directional
+      sync
     files:
     - src: pi/agent/skills/github-issue/SKILL.md
       dest: skills/github-issue/SKILL.md
@@ -696,95 +370,36 @@ components:
     - src: pi/agent/skills/postmortem-manager/assets/postmortem-template.md
       dest: skills/postmortem-manager/assets/postmortem-template.md
   skill/session-export:
-    description: Capture working session as structured session history with git metrics and context
+    description: Capture working session as structured session history with git metrics
+      and context
     files:
     - src: pi/agent/skills/session-export/SKILL.md
       dest: skills/session-export/SKILL.md
     - src: pi/agent/skills/session-export/assets/session-template.md
       dest: skills/session-export/assets/session-template.md
-
-
   prompt/fixes-create:
-    description: "Create fix note entry prompt"
+    description: Create fix note entry prompt
     files:
     - src: pi/agent/prompts/fixes-create.md
       dest: prompts/fixes-create.md
-
   prompt/fixes-bump:
-    description: "Bump version across project files prompt"
+    description: Bump version across project files prompt
     files:
     - src: pi/agent/prompts/fixes-bump.md
       dest: prompts/fixes-bump.md
-
-  prompt/fixes-validate:
-    description: "Validate version consistency prompt"
-    files:
-    - src: pi/agent/prompts/fixes-validate.md
-      dest: prompts/fixes-validate.md
-
-
-  prompt/work:
-    description: "Start working on a ticket, update status to In Progress"
-    files:
-    - src: pi/agent/prompts/work.md
-      dest: prompts/work.md
-
-  prompt/complete:
-    description: "Complete a ticket, submit for review"
-    files:
-    - src: pi/agent/prompts/complete.md
-      dest: prompts/complete.md
-
-  prompt/ticket-create:
-    description: "Interactive ticket creation wizard"
-    files:
-    - src: pi/agent/prompts/ticket-create.md
-      dest: prompts/ticket-create.md
-
-  prompt/submit-for-review:
-    description: "Submit ticket for CTO review"
-    files:
-    - src: pi/agent/prompts/submit-for-review.md
-      dest: prompts/submit-for-review.md
-
-  prompt/sync-team:
-    description: "Show team ticket dashboard"
-    files:
-    - src: pi/agent/prompts/sync-team.md
-      dest: prompts/sync-team.md
-
-  prompt/sync-skills:
-    description: "Sync all skills across all frontends"
-    files:
-    - src: pi/agent/prompts/sync-skills.md
-      dest: prompts/sync-skills.md
-
-  prompt/help:
-    description: "Unified help system for all commands and skills"
-    files:
-    - src: pi/agent/prompts/help.md
-      dest: prompts/help.md
-
-  prompt/experimental-pr-workflow:
-    description: "Formalize experimental work into tickets and PRs"
-    files:
-    - src: pi/agent/prompts/experimental-pr-workflow.md
-      dest: prompts/experimental-pr-workflow.md
-
   prompt/git-commit-helper:
-    description: "Create well-structured git commits"
+    description: Create well-structured git commits
     files:
     - src: pi/agent/prompts/git-commit-helper.md
       dest: prompts/git-commit-helper.md
-
   prompt/pr-description-generator:
-    description: "Generate comprehensive PR descriptions"
+    description: Generate comprehensive PR descriptions
     files:
     - src: pi/agent/prompts/pr-description-generator.md
       dest: prompts/pr-description-generator.md
-
   skill/fixes-manager:
-    description: "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT."
+    description: Cross-project fix/release notes and version manager. Creates, updates,
+      bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.
     files:
     - src: pi/agent/skills/fixes-manager/SKILL.md
       dest: skills/fixes-manager/SKILL.md

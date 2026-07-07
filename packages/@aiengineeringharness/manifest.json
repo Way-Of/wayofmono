@@ -20,7 +20,7 @@
           ]
         },
         "agents": {
-          "description": "Specialized subagents for Antigravity",
+          "description": "Specialized subagents for antigravity",
           "files": [
             {
               "src": "antigravity/agents/README.md",
@@ -206,15 +206,6 @@
             }
           ]
         },
-        "command/pr_description_generator": {
-          "description": "Pr Description Generator command",
-          "files": [
-            {
-              "src": "antigravity/commands/run-pr_description_generator.toml",
-              "dest": "commands/pr-description-generator.toml"
-            }
-          ]
-        },
         "command/research_codebase": {
           "description": "Research Codebase command",
           "files": [
@@ -242,15 +233,6 @@
             }
           ]
         },
-        "command/worktree": {
-          "description": "Worktree command",
-          "files": [
-            {
-              "src": "antigravity/commands/run-worktree.toml",
-              "dest": "commands/worktree.toml"
-            }
-          ]
-        },
         "skills": {
           "description": "Antigravity skills reference",
           "files": [
@@ -266,15 +248,6 @@
             {
               "src": "antigravity/skills/create_plan/SKILL.md",
               "dest": "skills/create-plan/SKILL.md"
-            }
-          ]
-        },
-        "skill/debug": {
-          "description": "Debug skill",
-          "files": [
-            {
-              "src": "antigravity/skills/debug/SKILL.md",
-              "dest": "skills/debug/SKILL.md"
             }
           ]
         },
@@ -315,15 +288,6 @@
             {
               "src": "antigravity/skills/init_harness/SKILL.md",
               "dest": "skills/init-harness/SKILL.md"
-            }
-          ]
-        },
-        "skill/interview": {
-          "description": "Interview skill",
-          "files": [
-            {
-              "src": "antigravity/skills/interview/SKILL.md",
-              "dest": "skills/interview/SKILL.md"
             }
           ]
         },
@@ -401,15 +365,6 @@
             }
           ]
         },
-        "skill/worktree": {
-          "description": "Worktree skill",
-          "files": [
-            {
-              "src": "antigravity/skills/worktree/SKILL.md",
-              "dest": "skills/worktree/SKILL.md"
-            }
-          ]
-        },
         "skill/write-a-prd": {
           "description": "Write A Prd skill",
           "files": [
@@ -437,24 +392,6 @@
             }
           ]
         },
-        "skill/cto-dashboard": {
-          "description": "Cto Dashboard skill",
-          "files": [
-            {
-              "src": "antigravity/skills/cto_dashboard/SKILL.md",
-              "dest": "skills/cto-dashboard/SKILL.md"
-            }
-          ]
-        },
-        "skill/docs-sync-updater": {
-          "description": "Docs Sync Updater skill",
-          "files": [
-            {
-              "src": "antigravity/skills/docs_sync_updater/SKILL.md",
-              "dest": "skills/docs-sync-updater/SKILL.md"
-            }
-          ]
-        },
         "skill/document-generation": {
           "description": "Document Generation skill",
           "files": [
@@ -473,28 +410,6 @@
             }
           ]
         },
-        "skill/team-setup": {
-          "description": "Team Setup skill",
-          "files": [
-            {
-              "src": "antigravity/skills/team_setup/SKILL.md",
-              "dest": "skills/team-setup/SKILL.md"
-            }
-          ]
-        },
-        "skill/ticket-context": {
-          "description": "Ticket Context skill",
-          "files": [
-            {
-              "src": "antigravity/skills/ticket_context/SKILL.md",
-              "dest": "skills/ticket-context/SKILL.md"
-            },
-            {
-              "src": "antigravity/skills/ticket_context/assets/audit-tickets.js",
-              "dest": "skills/ticket-context/assets/audit-tickets.js"
-            }
-          ]
-        },
         "skill/ticket-manager": {
           "description": "Ticket Manager skill",
           "files": [
@@ -505,15 +420,6 @@
             {
               "src": "antigravity/skills/ticket_manager/assets/audit-tickets.js",
               "dest": "skills/ticket-manager/assets/audit-tickets.js"
-            }
-          ]
-        },
-        "skill/validate-telemetry": {
-          "description": "Validate Telemetry skill",
-          "files": [
-            {
-              "src": "antigravity/skills/validate_telemetry/SKILL.md",
-              "dest": "skills/validate-telemetry/SKILL.md"
             }
           ]
         },
@@ -636,15 +542,6 @@
             {
               "src": "antigravity/skills/build_tool_config/SKILL.md",
               "dest": "skills/build-tool-config/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-tool-orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools — deployed to Antigravity",
-          "files": [
-            {
-              "src": "antigravity/skills/build_tool_orchestrate/SKILL.md",
-              "dest": "skills/build-tool-orchestrate/SKILL.md"
             }
           ]
         },
@@ -808,24 +705,6 @@
             }
           ]
         },
-        "command/work": {
-          "description": "Start working on a ticket, update status to In Progress",
-          "files": [
-            {
-              "src": "antigravity/commands/run-work.toml",
-              "dest": "commands/work.toml"
-            }
-          ]
-        },
-        "command/complete": {
-          "description": "Complete a ticket, submit for review",
-          "files": [
-            {
-              "src": "antigravity/commands/run-complete.toml",
-              "dest": "commands/complete.toml"
-            }
-          ]
-        },
         "command/ticket-create": {
           "description": "Interactive ticket creation wizard",
           "files": [
@@ -896,78 +775,6 @@
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
             }
           ]
-        },
-        "skill/knowledge": {
-          "description": "Store, fetch, search, and manage learned knowledge in a structured cross-project database",
-          "files": [
-            {
-              "src": "antigravity/skills/knowledge/SKILL.md",
-              "dest": "skills/knowledge/SKILL.md"
-            }
-          ]
-        },
-        "skill/commit": {
-          "description": "Create structured git commits. Delegates to the git-commit-helper skill.",
-          "files": [
-            {
-              "src": "antigravity/skills/commit/SKILL.md",
-              "dest": "skills/commit/SKILL.md"
-            }
-          ]
-        },
-        "skill/complete": {
-          "description": "Complete a ticket, submit for review. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "antigravity/skills/complete/SKILL.md",
-              "dest": "skills/complete/SKILL.md"
-            }
-          ]
-        },
-        "skill/fixes-bump": {
-          "description": "Bump the version across all project files. Delegates to the fixes-manager skill.",
-          "files": [
-            {
-              "src": "antigravity/skills/fixes-bump/SKILL.md",
-              "dest": "skills/fixes-bump/SKILL.md"
-            }
-          ]
-        },
-        "skill/fixes-create": {
-          "description": "Create a fix note entry. Delegates to the fixes-manager skill.",
-          "files": [
-            {
-              "src": "antigravity/skills/fixes-create/SKILL.md",
-              "dest": "skills/fixes-create/SKILL.md"
-            }
-          ]
-        },
-        "skill/help": {
-          "description": "Unified help system for all commands and skills. Delegates to the help-command skill.",
-          "files": [
-            {
-              "src": "antigravity/skills/help/SKILL.md",
-              "dest": "skills/help/SKILL.md"
-            }
-          ]
-        },
-        "skill/ticket-create": {
-          "description": "Interactive ticket creation wizard. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "antigravity/skills/ticket-create/SKILL.md",
-              "dest": "skills/ticket-create/SKILL.md"
-            }
-          ]
-        },
-        "skill/work": {
-          "description": "Start working on a ticket, update status to In Progress. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "antigravity/skills/work/SKILL.md",
-              "dest": "skills/work/SKILL.md"
-            }
-          ]
         }
       }
     },
@@ -986,11 +793,15 @@
           ]
         },
         "agents": {
-          "description": "Specialized subagents for Claude",
+          "description": "Specialized subagents for claude",
           "files": [
             {
               "src": "claude/agents/codebase_analyzer.md",
               "dest": "agents/codebase_analyzer.md"
+            },
+            {
+              "src": "claude/agents/codebase_investigator.md",
+              "dest": "agents/codebase_investigator.md"
             },
             {
               "src": "claude/agents/codebase_locator.md",
@@ -1031,10 +842,6 @@
             {
               "src": "claude/agents/netlify_troubleshooter.md",
               "dest": "agents/netlify_troubleshooter.md"
-            },
-            {
-              "src": "claude/agents/README.md",
-              "dest": "agents/README.md"
             }
           ]
         },
@@ -1056,15 +863,6 @@
             }
           ]
         },
-        "skill/debug": {
-          "description": "Debug skill",
-          "files": [
-            {
-              "src": "claude/skills/debug/SKILL.md",
-              "dest": "skills/debug/SKILL.md"
-            }
-          ]
-        },
         "skill/implement-plan": {
           "description": "Implement Plan skill",
           "files": [
@@ -1080,15 +878,6 @@
             {
               "src": "claude/skills/init_harness/SKILL.md",
               "dest": "skills/init-harness/SKILL.md"
-            }
-          ]
-        },
-        "skill/interview": {
-          "description": "Interview skill",
-          "files": [
-            {
-              "src": "claude/skills/interview/SKILL.md",
-              "dest": "skills/interview/SKILL.md"
             }
           ]
         },
@@ -1139,24 +928,6 @@
             }
           ]
         },
-        "skill/validate-telemetry": {
-          "description": "Validate Telemetry skill",
-          "files": [
-            {
-              "src": "claude/skills/validate_telemetry/SKILL.md",
-              "dest": "skills/validate-telemetry/SKILL.md"
-            }
-          ]
-        },
-        "skill/worktree": {
-          "description": "Worktree skill",
-          "files": [
-            {
-              "src": "claude/skills/worktree/SKILL.md",
-              "dest": "skills/worktree/SKILL.md"
-            }
-          ]
-        },
         "skill/auto-ticket-creator": {
           "description": "Auto Ticket Creator skill",
           "files": [
@@ -1172,24 +943,6 @@
             {
               "src": "claude/skills/backlog_groomer/SKILL.md",
               "dest": "skills/backlog-groomer/SKILL.md"
-            }
-          ]
-        },
-        "skill/cto-dashboard": {
-          "description": "Cto Dashboard skill",
-          "files": [
-            {
-              "src": "claude/skills/cto_dashboard/SKILL.md",
-              "dest": "skills/cto-dashboard/SKILL.md"
-            }
-          ]
-        },
-        "skill/docs-sync-updater": {
-          "description": "Docs Sync Updater skill",
-          "files": [
-            {
-              "src": "claude/skills/docs_sync_updater/SKILL.md",
-              "dest": "skills/docs-sync-updater/SKILL.md"
             }
           ]
         },
@@ -1244,28 +997,6 @@
             {
               "src": "claude/skills/prd_to_issues/SKILL.md",
               "dest": "skills/prd-to-issues/SKILL.md"
-            }
-          ]
-        },
-        "skill/team-setup": {
-          "description": "Team Setup skill",
-          "files": [
-            {
-              "src": "claude/skills/team_setup/SKILL.md",
-              "dest": "skills/team-setup/SKILL.md"
-            }
-          ]
-        },
-        "skill/ticket-context": {
-          "description": "Ticket Context skill",
-          "files": [
-            {
-              "src": "claude/skills/ticket_context/SKILL.md",
-              "dest": "skills/ticket-context/SKILL.md"
-            },
-            {
-              "src": "claude/skills/ticket_context/assets/audit-tickets.js",
-              "dest": "skills/ticket-context/assets/audit-tickets.js"
             }
           ]
         },
@@ -1422,15 +1153,6 @@
             }
           ]
         },
-        "skill/build-tool-orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools — deployed to Claude Code",
-          "files": [
-            {
-              "src": "claude/skills/build_tool_orchestrate/SKILL.md",
-              "dest": "skills/build-tool-orchestrate/SKILL.md"
-            }
-          ]
-        },
         "skill/build-auto-ticket-creator": {
           "description": "Monitor codebase, dependencies, and external sources to auto-create tickets for agent updates, skill updates, dep updates, security advisories",
           "files": [
@@ -1573,6 +1295,33 @@
             }
           ]
         },
+        "skill/fixes-create": {
+          "description": "Create fix note entry command",
+          "files": [
+            {
+              "src": "claude/skills/fixes_create/SKILL.md",
+              "dest": "skills/fixes-create/SKILL.md"
+            }
+          ]
+        },
+        "skill/fixes-bump": {
+          "description": "Bump version across project files command",
+          "files": [
+            {
+              "src": "claude/skills/fixes_bump/SKILL.md",
+              "dest": "skills/fixes-bump/SKILL.md"
+            }
+          ]
+        },
+        "skill/commit": {
+          "description": "Create structured git commits",
+          "files": [
+            {
+              "src": "claude/skills/commit/SKILL.md",
+              "dest": "skills/commit/SKILL.md"
+            }
+          ]
+        },
         "skill/fixes-manager": {
           "description": "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.",
           "files": [
@@ -1625,78 +1374,6 @@
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
             }
           ]
-        },
-        "skill/knowledge": {
-          "description": "Store, fetch, search, and manage learned knowledge in a structured cross-project database",
-          "files": [
-            {
-              "src": "claude/skills/knowledge/SKILL.md",
-              "dest": "skills/knowledge/SKILL.md"
-            }
-          ]
-        },
-        "skill/commit": {
-          "description": "Create structured git commits. Delegates to the git-commit-helper skill.",
-          "files": [
-            {
-              "src": "claude/skills/commit/SKILL.md",
-              "dest": "skills/commit/SKILL.md"
-            }
-          ]
-        },
-        "skill/complete": {
-          "description": "Complete a ticket, submit for review. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "claude/skills/complete/SKILL.md",
-              "dest": "skills/complete/SKILL.md"
-            }
-          ]
-        },
-        "skill/fixes-bump": {
-          "description": "Bump the version across all project files. Delegates to the fixes-manager skill.",
-          "files": [
-            {
-              "src": "claude/skills/fixes-bump/SKILL.md",
-              "dest": "skills/fixes-bump/SKILL.md"
-            }
-          ]
-        },
-        "skill/fixes-create": {
-          "description": "Create a fix note entry. Delegates to the fixes-manager skill.",
-          "files": [
-            {
-              "src": "claude/skills/fixes-create/SKILL.md",
-              "dest": "skills/fixes-create/SKILL.md"
-            }
-          ]
-        },
-        "skill/help": {
-          "description": "Unified help system for all commands and skills. Delegates to the help-command skill.",
-          "files": [
-            {
-              "src": "claude/skills/help/SKILL.md",
-              "dest": "skills/help/SKILL.md"
-            }
-          ]
-        },
-        "skill/ticket-create": {
-          "description": "Interactive ticket creation wizard. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "claude/skills/ticket-create/SKILL.md",
-              "dest": "skills/ticket-create/SKILL.md"
-            }
-          ]
-        },
-        "skill/work": {
-          "description": "Start working on a ticket, update status to In Progress. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "claude/skills/work/SKILL.md",
-              "dest": "skills/work/SKILL.md"
-            }
-          ]
         }
       }
     },
@@ -1715,7 +1392,7 @@
           ]
         },
         "agents": {
-          "description": "Specialized subagents for Codex",
+          "description": "Specialized subagents for codex",
           "files": [
             {
               "src": "codex/agents/codebase_analyzer.md",
@@ -1764,10 +1441,6 @@
             {
               "src": "codex/agents/netlify_troubleshooter.md",
               "dest": "agents/netlify_troubleshooter.md"
-            },
-            {
-              "src": "codex/agents/README.md",
-              "dest": "agents/README.md"
             }
           ]
         },
@@ -1795,33 +1468,6 @@
             {
               "src": "codex/skills/create_plan/SKILL.md",
               "dest": "skills/create-plan/SKILL.md"
-            }
-          ]
-        },
-        "skill/cto-dashboard": {
-          "description": "Cto Dashboard skill",
-          "files": [
-            {
-              "src": "codex/skills/cto_dashboard/SKILL.md",
-              "dest": "skills/cto-dashboard/SKILL.md"
-            }
-          ]
-        },
-        "skill/debug": {
-          "description": "Debug skill",
-          "files": [
-            {
-              "src": "codex/skills/debug/SKILL.md",
-              "dest": "skills/debug/SKILL.md"
-            }
-          ]
-        },
-        "skill/docs-sync-updater": {
-          "description": "Docs Sync Updater skill",
-          "files": [
-            {
-              "src": "codex/skills/docs_sync_updater/SKILL.md",
-              "dest": "skills/docs-sync-updater/SKILL.md"
             }
           ]
         },
@@ -1879,15 +1525,6 @@
             }
           ]
         },
-        "skill/interview": {
-          "description": "Interview skill",
-          "files": [
-            {
-              "src": "codex/skills/interview/SKILL.md",
-              "dest": "skills/interview/SKILL.md"
-            }
-          ]
-        },
         "skill/pr-description-generator": {
           "description": "Pr Description Generator skill",
           "files": [
@@ -1924,28 +1561,6 @@
             }
           ]
         },
-        "skill/team-setup": {
-          "description": "Team Setup skill",
-          "files": [
-            {
-              "src": "codex/skills/team_setup/SKILL.md",
-              "dest": "skills/team-setup/SKILL.md"
-            }
-          ]
-        },
-        "skill/ticket-context": {
-          "description": "Ticket Context skill",
-          "files": [
-            {
-              "src": "codex/skills/ticket_context/SKILL.md",
-              "dest": "skills/ticket-context/SKILL.md"
-            },
-            {
-              "src": "codex/skills/ticket_context/assets/audit-tickets.js",
-              "dest": "skills/ticket-context/assets/audit-tickets.js"
-            }
-          ]
-        },
         "skill/ticket-manager": {
           "description": "Ticket Manager skill",
           "files": [
@@ -1974,24 +1589,6 @@
             {
               "src": "codex/skills/validate_plan/SKILL.md",
               "dest": "skills/validate-plan/SKILL.md"
-            }
-          ]
-        },
-        "skill/validate-telemetry": {
-          "description": "Validate Telemetry skill",
-          "files": [
-            {
-              "src": "codex/skills/validate_telemetry/SKILL.md",
-              "dest": "skills/validate-telemetry/SKILL.md"
-            }
-          ]
-        },
-        "skill/worktree": {
-          "description": "Worktree skill",
-          "files": [
-            {
-              "src": "codex/skills/worktree/SKILL.md",
-              "dest": "skills/worktree/SKILL.md"
             }
           ]
         },
@@ -2123,15 +1720,6 @@
             {
               "src": "codex/skills/build_tool_config/SKILL.md",
               "dest": "skills/build-tool-config/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-tool-orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools — deployed to Codex",
-          "files": [
-            {
-              "src": "codex/skills/build_tool_orchestrate/SKILL.md",
-              "dest": "skills/build-tool-orchestrate/SKILL.md"
             }
           ]
         },
@@ -2277,6 +1865,45 @@
             }
           ]
         },
+        "skill/fixes-create": {
+          "description": "Create fix note entry skill",
+          "files": [
+            {
+              "src": "codex/skills/fixes_create/skill.yaml",
+              "dest": "skills/fixes-create/skill.yaml"
+            },
+            {
+              "src": "codex/skills/fixes_create/prompt.md",
+              "dest": "skills/fixes-create/prompt.md"
+            }
+          ]
+        },
+        "skill/fixes-bump": {
+          "description": "Bump version across project files skill",
+          "files": [
+            {
+              "src": "codex/skills/fixes_bump/skill.yaml",
+              "dest": "skills/fixes-bump/skill.yaml"
+            },
+            {
+              "src": "codex/skills/fixes_bump/prompt.md",
+              "dest": "skills/fixes-bump/prompt.md"
+            }
+          ]
+        },
+        "skill/commit": {
+          "description": "Create structured git commits",
+          "files": [
+            {
+              "src": "codex/skills/commit/skill.yaml",
+              "dest": "skills/commit/skill.yaml"
+            },
+            {
+              "src": "codex/skills/commit/prompt.md",
+              "dest": "skills/commit/prompt.md"
+            }
+          ]
+        },
         "skill/fixes-manager": {
           "description": "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.",
           "files": [
@@ -2329,78 +1956,6 @@
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
             }
           ]
-        },
-        "skill/knowledge": {
-          "description": "Store, fetch, search, and manage learned knowledge in a structured cross-project database",
-          "files": [
-            {
-              "src": "codex/skills/knowledge/SKILL.md",
-              "dest": "skills/knowledge/SKILL.md"
-            }
-          ]
-        },
-        "skill/commit": {
-          "description": "Create structured git commits. Delegates to the git-commit-helper skill.",
-          "files": [
-            {
-              "src": "codex/skills/commit/SKILL.md",
-              "dest": "skills/commit/SKILL.md"
-            }
-          ]
-        },
-        "skill/complete": {
-          "description": "Complete a ticket, submit for review. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "codex/skills/complete/SKILL.md",
-              "dest": "skills/complete/SKILL.md"
-            }
-          ]
-        },
-        "skill/fixes-bump": {
-          "description": "Bump the version across all project files. Delegates to the fixes-manager skill.",
-          "files": [
-            {
-              "src": "codex/skills/fixes-bump/SKILL.md",
-              "dest": "skills/fixes-bump/SKILL.md"
-            }
-          ]
-        },
-        "skill/fixes-create": {
-          "description": "Create a fix note entry. Delegates to the fixes-manager skill.",
-          "files": [
-            {
-              "src": "codex/skills/fixes-create/SKILL.md",
-              "dest": "skills/fixes-create/SKILL.md"
-            }
-          ]
-        },
-        "skill/help": {
-          "description": "Unified help system for all commands and skills. Delegates to the help-command skill.",
-          "files": [
-            {
-              "src": "codex/skills/help/SKILL.md",
-              "dest": "skills/help/SKILL.md"
-            }
-          ]
-        },
-        "skill/ticket-create": {
-          "description": "Interactive ticket creation wizard. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "codex/skills/ticket-create/SKILL.md",
-              "dest": "skills/ticket-create/SKILL.md"
-            }
-          ]
-        },
-        "skill/work": {
-          "description": "Start working on a ticket, update status to In Progress. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "codex/skills/work/SKILL.md",
-              "dest": "skills/work/SKILL.md"
-            }
-          ]
         }
       }
     },
@@ -2419,7 +1974,7 @@
           ]
         },
         "agents": {
-          "description": "Specialized subagents for OpenCode",
+          "description": "Specialized subagents for opencode",
           "files": [
             {
               "src": "opencode/agents/codebase_analyzer.md",
@@ -2552,24 +2107,6 @@
             }
           ]
         },
-        "command/worktree": {
-          "description": "Git worktree manager command",
-          "files": [
-            {
-              "src": "opencode/commands/worktree.md",
-              "dest": "commands/worktree.md"
-            }
-          ]
-        },
-        "skill/interview": {
-          "description": "Stress-test plans via relentless user interview skill",
-          "files": [
-            {
-              "src": "opencode/skills/interview/SKILL.md",
-              "dest": "skills/interview/SKILL.md"
-            }
-          ]
-        },
         "skill/tdd": {
           "description": "Test-driven development with red-green-refactor loop skill",
           "files": [
@@ -2623,33 +2160,6 @@
             {
               "src": "opencode/skills/create-plan/SKILL.md",
               "dest": "skills/create-plan/SKILL.md"
-            }
-          ]
-        },
-        "skill/cto-dashboard": {
-          "description": "Cto Dashboard skill",
-          "files": [
-            {
-              "src": "opencode/skills/cto-dashboard/SKILL.md",
-              "dest": "skills/cto-dashboard/SKILL.md"
-            }
-          ]
-        },
-        "skill/debug": {
-          "description": "Debug skill",
-          "files": [
-            {
-              "src": "opencode/skills/debug/SKILL.md",
-              "dest": "skills/debug/SKILL.md"
-            }
-          ]
-        },
-        "skill/docs-sync-updater": {
-          "description": "Docs Sync Updater skill",
-          "files": [
-            {
-              "src": "opencode/skills/docs-sync-updater/SKILL.md",
-              "dest": "skills/docs-sync-updater/SKILL.md"
             }
           ]
         },
@@ -2734,28 +2244,6 @@
             }
           ]
         },
-        "skill/team-setup": {
-          "description": "Team Setup skill",
-          "files": [
-            {
-              "src": "opencode/skills/team-setup/SKILL.md",
-              "dest": "skills/team-setup/SKILL.md"
-            }
-          ]
-        },
-        "skill/ticket-context": {
-          "description": "Ticket Context skill",
-          "files": [
-            {
-              "src": "opencode/skills/ticket-context/SKILL.md",
-              "dest": "skills/ticket-context/SKILL.md"
-            },
-            {
-              "src": "opencode/skills/ticket-context/assets/audit-tickets.js",
-              "dest": "skills/ticket-context/assets/audit-tickets.js"
-            }
-          ]
-        },
         "skill/ticket-manager": {
           "description": "Ticket Manager skill",
           "files": [
@@ -2784,24 +2272,6 @@
             {
               "src": "opencode/skills/validate-plan/SKILL.md",
               "dest": "skills/validate-plan/SKILL.md"
-            }
-          ]
-        },
-        "skill/validate-telemetry": {
-          "description": "Validate Telemetry skill",
-          "files": [
-            {
-              "src": "opencode/skills/validate-telemetry/SKILL.md",
-              "dest": "skills/validate-telemetry/SKILL.md"
-            }
-          ]
-        },
-        "skill/worktree": {
-          "description": "Worktree skill",
-          "files": [
-            {
-              "src": "opencode/skills/worktree/SKILL.md",
-              "dest": "skills/worktree/SKILL.md"
             }
           ]
         },
@@ -2933,15 +2403,6 @@
             {
               "src": "opencode/skills/build-tool-config/SKILL.md",
               "dest": "skills/build-tool-config/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-tool-orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools — deployed to OpenCode",
-          "files": [
-            {
-              "src": "opencode/skills/build-tool-orchestrate/SKILL.md",
-              "dest": "skills/build-tool-orchestrate/SKILL.md"
             }
           ]
         },
@@ -3096,24 +2557,6 @@
             }
           ]
         },
-        "command/work": {
-          "description": "Start working on a ticket, update status to In Progress",
-          "files": [
-            {
-              "src": "opencode/commands/work.md",
-              "dest": "commands/work.md"
-            }
-          ]
-        },
-        "command/complete": {
-          "description": "Complete a ticket, submit for review",
-          "files": [
-            {
-              "src": "opencode/commands/complete.md",
-              "dest": "commands/complete.md"
-            }
-          ]
-        },
         "command/ticket-create": {
           "description": "Interactive ticket creation wizard",
           "files": [
@@ -3138,15 +2581,6 @@
             {
               "src": "opencode/commands/git-commit-helper.md",
               "dest": "commands/git-commit-helper.md"
-            }
-          ]
-        },
-        "command/pr-description-generator": {
-          "description": "Generate comprehensive PR descriptions",
-          "files": [
-            {
-              "src": "opencode/commands/pr-description-generator.md",
-              "dest": "commands/pr-description-generator.md"
             }
           ]
         },
@@ -3202,78 +2636,6 @@
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
             }
           ]
-        },
-        "skill/knowledge": {
-          "description": "Store, fetch, search, and manage learned knowledge in a structured cross-project database",
-          "files": [
-            {
-              "src": "opencode/skills/knowledge/SKILL.md",
-              "dest": "skills/knowledge/SKILL.md"
-            }
-          ]
-        },
-        "skill/commit": {
-          "description": "Create structured git commits. Delegates to the git-commit-helper skill.",
-          "files": [
-            {
-              "src": "opencode/skills/commit/SKILL.md",
-              "dest": "skills/commit/SKILL.md"
-            }
-          ]
-        },
-        "skill/complete": {
-          "description": "Complete a ticket, submit for review. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "opencode/skills/complete/SKILL.md",
-              "dest": "skills/complete/SKILL.md"
-            }
-          ]
-        },
-        "skill/fixes-bump": {
-          "description": "Bump the version across all project files. Delegates to the fixes-manager skill.",
-          "files": [
-            {
-              "src": "opencode/skills/fixes-bump/SKILL.md",
-              "dest": "skills/fixes-bump/SKILL.md"
-            }
-          ]
-        },
-        "skill/fixes-create": {
-          "description": "Create a fix note entry. Delegates to the fixes-manager skill.",
-          "files": [
-            {
-              "src": "opencode/skills/fixes-create/SKILL.md",
-              "dest": "skills/fixes-create/SKILL.md"
-            }
-          ]
-        },
-        "skill/help": {
-          "description": "Unified help system for all commands and skills. Delegates to the help-command skill.",
-          "files": [
-            {
-              "src": "opencode/skills/help/SKILL.md",
-              "dest": "skills/help/SKILL.md"
-            }
-          ]
-        },
-        "skill/ticket-create": {
-          "description": "Interactive ticket creation wizard. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "opencode/skills/ticket-create/SKILL.md",
-              "dest": "skills/ticket-create/SKILL.md"
-            }
-          ]
-        },
-        "skill/work": {
-          "description": "Start working on a ticket, update status to In Progress. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "opencode/skills/work/SKILL.md",
-              "dest": "skills/work/SKILL.md"
-            }
-          ]
         }
       }
     },
@@ -3283,7 +2645,7 @@
       "target": "~/.pi/agent",
       "components": {
         "agents": {
-          "description": "Specialized subagents for Pi",
+          "description": "Specialized subagents for pi",
           "files": [
             {
               "src": "pi/agent/agents/codebase-analyzer.md",
@@ -3347,6 +2709,10 @@
         "extension/subagent": {
           "description": "Subagent tool for multi-agent workflows (single, parallel, chain)",
           "files": [
+            {
+              "src": "pi/agent/extensions/subagent/index.ts",
+              "dest": "extensions/subagent/index.ts"
+            },
             {
               "src": "pi/agent/extensions/subagent/agents.ts",
               "dest": "extensions/subagent/agents.ts"
@@ -3506,24 +2872,6 @@
             }
           ]
         },
-        "prompt/validate-telemetry": {
-          "description": "Validate local telemetry against a narrative spec prompt",
-          "files": [
-            {
-              "src": "pi/agent/prompts/validate-telemetry.md",
-              "dest": "prompts/validate-telemetry.md"
-            }
-          ]
-        },
-        "prompt/worktree": {
-          "description": "Git worktree manager prompt",
-          "files": [
-            {
-              "src": "pi/agent/prompts/worktree.md",
-              "dest": "prompts/worktree.md"
-            }
-          ]
-        },
         "skill/git-commit-helper": {
           "description": "Auto-triggered git commit helper skill",
           "files": [
@@ -3548,15 +2896,6 @@
             {
               "src": "pi/agent/skills/pr-description-generator/SKILL.md",
               "dest": "skills/pr-description-generator/SKILL.md"
-            }
-          ]
-        },
-        "skill/interview": {
-          "description": "Stress-test plans via relentless user interview skill",
-          "files": [
-            {
-              "src": "pi/agent/skills/interview/SKILL.md",
-              "dest": "skills/interview/SKILL.md"
             }
           ]
         },
@@ -3633,39 +2972,12 @@
             }
           ]
         },
-        "skill/team-setup": {
-          "description": "Team Setup - initialize and manage team configuration",
-          "files": [
-            {
-              "src": "pi/agent/skills/team-setup/SKILL.md",
-              "dest": "skills/team-setup/SKILL.md"
-            }
-          ]
-        },
         "skill/auto-ticket-creator": {
           "description": "Auto-Ticket Creator - monitor and auto-create tickets from changes",
           "files": [
             {
               "src": "pi/agent/skills/auto-ticket-creator/SKILL.md",
               "dest": "skills/auto-ticket-creator/SKILL.md"
-            }
-          ]
-        },
-        "skill/docs-sync-updater": {
-          "description": "Docs Sync Updater - fetch latest docs and auto-update skill configs",
-          "files": [
-            {
-              "src": "pi/agent/skills/docs-sync-updater/SKILL.md",
-              "dest": "skills/docs-sync-updater/SKILL.md"
-            }
-          ]
-        },
-        "skill/cto-dashboard": {
-          "description": "CTO Dashboard - ticket overview, developer progress, review queue",
-          "files": [
-            {
-              "src": "pi/agent/skills/cto-dashboard/SKILL.md",
-              "dest": "skills/cto-dashboard/SKILL.md"
             }
           ]
         },
@@ -3684,15 +2996,6 @@
             {
               "src": "pi/agent/skills/create-plan/SKILL.md",
               "dest": "skills/create-plan/SKILL.md"
-            }
-          ]
-        },
-        "skill/debug": {
-          "description": "Debug skill",
-          "files": [
-            {
-              "src": "pi/agent/skills/debug/SKILL.md",
-              "dest": "skills/debug/SKILL.md"
             }
           ]
         },
@@ -3732,19 +3035,6 @@
             }
           ]
         },
-        "skill/ticket-context": {
-          "description": "Ticket Context skill",
-          "files": [
-            {
-              "src": "pi/agent/skills/ticket-context/SKILL.md",
-              "dest": "skills/ticket-context/SKILL.md"
-            },
-            {
-              "src": "pi/agent/skills/ticket-context/assets/audit-tickets.js",
-              "dest": "skills/ticket-context/assets/audit-tickets.js"
-            }
-          ]
-        },
         "skill/usage-rules": {
           "description": "Usage Rules skill",
           "files": [
@@ -3760,24 +3050,6 @@
             {
               "src": "pi/agent/skills/validate-plan/SKILL.md",
               "dest": "skills/validate-plan/SKILL.md"
-            }
-          ]
-        },
-        "skill/validate-telemetry": {
-          "description": "Validate Telemetry skill",
-          "files": [
-            {
-              "src": "pi/agent/skills/validate-telemetry/SKILL.md",
-              "dest": "skills/validate-telemetry/SKILL.md"
-            }
-          ]
-        },
-        "skill/worktree": {
-          "description": "Worktree skill",
-          "files": [
-            {
-              "src": "pi/agent/skills/worktree/SKILL.md",
-              "dest": "skills/worktree/SKILL.md"
             }
           ]
         },
@@ -3900,15 +3172,6 @@
             {
               "src": "pi/agent/skills/build-tool-config/SKILL.md",
               "dest": "skills/build-tool-config/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-tool-orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools — deployed to Pi",
-          "files": [
-            {
-              "src": "pi/agent/skills/build-tool-orchestrate/SKILL.md",
-              "dest": "skills/build-tool-orchestrate/SKILL.md"
             }
           ]
         },
@@ -4072,42 +3335,6 @@
             }
           ]
         },
-        "prompt/work": {
-          "description": "Start working on a ticket, update status to In Progress",
-          "files": [
-            {
-              "src": "pi/agent/prompts/work.md",
-              "dest": "prompts/work.md"
-            }
-          ]
-        },
-        "prompt/complete": {
-          "description": "Complete a ticket, submit for review",
-          "files": [
-            {
-              "src": "pi/agent/prompts/complete.md",
-              "dest": "prompts/complete.md"
-            }
-          ]
-        },
-        "prompt/ticket-create": {
-          "description": "Interactive ticket creation wizard",
-          "files": [
-            {
-              "src": "pi/agent/prompts/ticket-create.md",
-              "dest": "prompts/ticket-create.md"
-            }
-          ]
-        },
-        "prompt/help": {
-          "description": "Unified help system for all commands and skills",
-          "files": [
-            {
-              "src": "pi/agent/prompts/help.md",
-              "dest": "prompts/help.md"
-            }
-          ]
-        },
         "prompt/git-commit-helper": {
           "description": "Create well-structured git commits",
           "files": [
@@ -4178,78 +3405,6 @@
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
             }
           ]
-        },
-        "skill/knowledge": {
-          "description": "Store, fetch, search, and manage learned knowledge in a structured cross-project database",
-          "files": [
-            {
-              "src": "pi/skills/knowledge/SKILL.md",
-              "dest": "skills/knowledge/SKILL.md"
-            }
-          ]
-        },
-        "skill/commit": {
-          "description": "Create structured git commits. Delegates to the git-commit-helper skill.",
-          "files": [
-            {
-              "src": "pi/agent/skills/commit/SKILL.md",
-              "dest": "skills/commit/SKILL.md"
-            }
-          ]
-        },
-        "skill/complete": {
-          "description": "Complete a ticket, submit for review. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "pi/agent/skills/complete/SKILL.md",
-              "dest": "skills/complete/SKILL.md"
-            }
-          ]
-        },
-        "skill/fixes-bump": {
-          "description": "Bump the version across all project files. Delegates to the fixes-manager skill.",
-          "files": [
-            {
-              "src": "pi/agent/skills/fixes-bump/SKILL.md",
-              "dest": "skills/fixes-bump/SKILL.md"
-            }
-          ]
-        },
-        "skill/fixes-create": {
-          "description": "Create a fix note entry. Delegates to the fixes-manager skill.",
-          "files": [
-            {
-              "src": "pi/agent/skills/fixes-create/SKILL.md",
-              "dest": "skills/fixes-create/SKILL.md"
-            }
-          ]
-        },
-        "skill/help": {
-          "description": "Unified help system for all commands and skills. Delegates to the help-command skill.",
-          "files": [
-            {
-              "src": "pi/agent/skills/help/SKILL.md",
-              "dest": "skills/help/SKILL.md"
-            }
-          ]
-        },
-        "skill/ticket-create": {
-          "description": "Interactive ticket creation wizard. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "pi/agent/skills/ticket-create/SKILL.md",
-              "dest": "skills/ticket-create/SKILL.md"
-            }
-          ]
-        },
-        "skill/work": {
-          "description": "Start working on a ticket, update status to In Progress. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "pi/agent/skills/work/SKILL.md",
-              "dest": "skills/work/SKILL.md"
-            }
-          ]
         }
       }
     },
@@ -4272,7 +3427,7 @@
           ]
         },
         "agents": {
-          "description": "Specialized subagents for Wo Coder",
+          "description": "Specialized subagents for wocode",
           "files": [
             {
               "src": "wocode/agent/agents/codebase-analyzer.md",
@@ -4319,8 +3474,8 @@
               "dest": "agents/netlify-agent.md"
             },
             {
-              "src": "wocode/agent/agents/README.md",
-              "dest": "agents/README.md"
+              "src": "wocode/agent/agents/codebase-investigator.md",
+              "dest": "agents/codebase-investigator.md"
             }
           ]
         },
@@ -4336,6 +3491,10 @@
         "extension/subagent": {
           "description": "Subagent tool for multi-agent workflows (single, parallel, chain)",
           "files": [
+            {
+              "src": "wocode/agent/extensions/subagent/index.ts",
+              "dest": "extensions/subagent/index.ts"
+            },
             {
               "src": "wocode/agent/extensions/subagent/agents.ts",
               "dest": "extensions/subagent/agents.ts"
@@ -4546,15 +3705,6 @@
             }
           ]
         },
-        "skill/interview": {
-          "description": "Stress-test plans via relentless user interview skill",
-          "files": [
-            {
-              "src": "wocode/agent/skills/interview/SKILL.md",
-              "dest": "skills/interview/SKILL.md"
-            }
-          ]
-        },
         "skill/tdd": {
           "description": "Test-driven development with red-green-refactor loop skill",
           "files": [
@@ -4608,33 +3758,6 @@
             {
               "src": "wocode/agent/skills/create-plan/SKILL.md",
               "dest": "skills/create-plan/SKILL.md"
-            }
-          ]
-        },
-        "skill/cto-dashboard": {
-          "description": "Cto Dashboard skill",
-          "files": [
-            {
-              "src": "wocode/agent/skills/cto-dashboard/SKILL.md",
-              "dest": "skills/cto-dashboard/SKILL.md"
-            }
-          ]
-        },
-        "skill/debug": {
-          "description": "Debug skill",
-          "files": [
-            {
-              "src": "wocode/agent/skills/debug/SKILL.md",
-              "dest": "skills/debug/SKILL.md"
-            }
-          ]
-        },
-        "skill/docs-sync-updater": {
-          "description": "Docs Sync Updater skill",
-          "files": [
-            {
-              "src": "wocode/agent/skills/docs-sync-updater/SKILL.md",
-              "dest": "skills/docs-sync-updater/SKILL.md"
             }
           ]
         },
@@ -4710,28 +3833,6 @@
             }
           ]
         },
-        "skill/team-setup": {
-          "description": "Team Setup skill",
-          "files": [
-            {
-              "src": "wocode/agent/skills/team-setup/SKILL.md",
-              "dest": "skills/team-setup/SKILL.md"
-            }
-          ]
-        },
-        "skill/ticket-context": {
-          "description": "Ticket Context skill",
-          "files": [
-            {
-              "src": "wocode/agent/skills/ticket-context/SKILL.md",
-              "dest": "skills/ticket-context/SKILL.md"
-            },
-            {
-              "src": "wocode/agent/skills/ticket-context/assets/audit-tickets.js",
-              "dest": "skills/ticket-context/assets/audit-tickets.js"
-            }
-          ]
-        },
         "skill/ticket-manager": {
           "description": "Ticket Manager skill",
           "files": [
@@ -4760,24 +3861,6 @@
             {
               "src": "wocode/agent/skills/validate-plan/SKILL.md",
               "dest": "skills/validate-plan/SKILL.md"
-            }
-          ]
-        },
-        "skill/validate-telemetry": {
-          "description": "Validate Telemetry skill",
-          "files": [
-            {
-              "src": "wocode/agent/skills/validate-telemetry/SKILL.md",
-              "dest": "skills/validate-telemetry/SKILL.md"
-            }
-          ]
-        },
-        "skill/worktree": {
-          "description": "Worktree skill",
-          "files": [
-            {
-              "src": "wocode/agent/skills/worktree/SKILL.md",
-              "dest": "skills/worktree/SKILL.md"
             }
           ]
         },
@@ -4909,15 +3992,6 @@
             {
               "src": "wocode/agent/skills/build-tool-config/SKILL.md",
               "dest": "skills/build-tool-config/SKILL.md"
-            }
-          ]
-        },
-        "skill/build-tool-orchestrate": {
-          "description": "Unified orchestration coordinator for all 7 tools — deployed to Wo Coder",
-          "files": [
-            {
-              "src": "wocode/agent/skills/build-tool-orchestrate/SKILL.md",
-              "dest": "skills/build-tool-orchestrate/SKILL.md"
             }
           ]
         },
@@ -5099,51 +4173,6 @@
             }
           ]
         },
-        "prompt/worktree": {
-          "description": "Manage git worktrees for parallel development",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/worktree.md",
-              "dest": "prompts/worktree.md"
-            }
-          ]
-        },
-        "prompt/work": {
-          "description": "Start working on a ticket, update status to In Progress",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/work.md",
-              "dest": "prompts/work.md"
-            }
-          ]
-        },
-        "prompt/complete": {
-          "description": "Complete a ticket, submit for review",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/complete.md",
-              "dest": "prompts/complete.md"
-            }
-          ]
-        },
-        "prompt/ticket-create": {
-          "description": "Interactive ticket creation wizard",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/ticket-create.md",
-              "dest": "prompts/ticket-create.md"
-            }
-          ]
-        },
-        "prompt/help": {
-          "description": "Unified help system for all commands and skills",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/help.md",
-              "dest": "prompts/help.md"
-            }
-          ]
-        },
         "prompt/git-commit-helper": {
           "description": "Create well-structured git commits",
           "files": [
@@ -5207,15 +4236,6 @@
             }
           ]
         },
-        "prompt/validate-telemetry": {
-          "description": "Validate Telemetry prompt",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/validate-telemetry.md",
-              "dest": "prompts/validate-telemetry.md"
-            }
-          ]
-        },
         "skill/fixes-manager": {
           "description": "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.",
           "files": [
@@ -5266,78 +4286,6 @@
             {
               "src": "wocode/agent/skills/fixes-manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
-            }
-          ]
-        },
-        "skill/knowledge": {
-          "description": "Store, fetch, search, and manage learned knowledge in a structured cross-project database",
-          "files": [
-            {
-              "src": "wocode/skills/knowledge/SKILL.md",
-              "dest": "skills/knowledge/SKILL.md"
-            }
-          ]
-        },
-        "skill/commit": {
-          "description": "Create structured git commits. Delegates to the git-commit-helper skill.",
-          "files": [
-            {
-              "src": "wocode/agent/skills/commit/SKILL.md",
-              "dest": "skills/commit/SKILL.md"
-            }
-          ]
-        },
-        "skill/complete": {
-          "description": "Complete a ticket, submit for review. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "wocode/agent/skills/complete/SKILL.md",
-              "dest": "skills/complete/SKILL.md"
-            }
-          ]
-        },
-        "skill/fixes-bump": {
-          "description": "Bump the version across all project files. Delegates to the fixes-manager skill.",
-          "files": [
-            {
-              "src": "wocode/agent/skills/fixes-bump/SKILL.md",
-              "dest": "skills/fixes-bump/SKILL.md"
-            }
-          ]
-        },
-        "skill/fixes-create": {
-          "description": "Create a fix note entry. Delegates to the fixes-manager skill.",
-          "files": [
-            {
-              "src": "wocode/agent/skills/fixes-create/SKILL.md",
-              "dest": "skills/fixes-create/SKILL.md"
-            }
-          ]
-        },
-        "skill/help": {
-          "description": "Unified help system for all commands and skills. Delegates to the help-command skill.",
-          "files": [
-            {
-              "src": "wocode/agent/skills/help/SKILL.md",
-              "dest": "skills/help/SKILL.md"
-            }
-          ]
-        },
-        "skill/ticket-create": {
-          "description": "Interactive ticket creation wizard. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "wocode/agent/skills/ticket-create/SKILL.md",
-              "dest": "skills/ticket-create/SKILL.md"
-            }
-          ]
-        },
-        "skill/work": {
-          "description": "Start working on a ticket, update status to In Progress. Delegates to the ticket-manager skill.",
-          "files": [
-            {
-              "src": "wocode/agent/skills/work/SKILL.md",
-              "dest": "skills/work/SKILL.md"
             }
           ]
         }
