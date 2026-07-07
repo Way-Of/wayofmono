@@ -670,7 +670,7 @@ async function removeStaleFiles(
   expectedPaths: Set<string>,
   opts: { dryRun: boolean; yes: boolean; toolName: string },
 ): Promise<void> {
-  const knownSubdirs = ["skills", "agents", "commands", "prompts", "extensions", "themes", "keybindings"];
+  const knownSubdirs = ["skills", "agents", "commands", "prompts", "extensions", "themes", "keybindings", "sidecars", "hooks", "plugins"];
 
   const installedFiles: string[] = [];
   for (const subdir of knownSubdirs) {
@@ -1402,7 +1402,7 @@ if (args.compliance) {
   const sd = scriptDir();
   const token = resolveToken();
   const manifest = await loadManifest(sd, token);
-  const knownSubdirs = ["skills", "agents", "commands", "prompts", "extensions", "themes", "keybindings"];
+  const knownSubdirs = ["skills", "agents", "commands", "prompts", "extensions", "themes", "keybindings", "sidecars", "hooks", "plugins"];
   let totalMissing = 0;
   let totalStale = 0;
   let totalDangling = 0;
@@ -1521,7 +1521,7 @@ if (args["prune"]) {
   const manifest = await loadManifest(sd, token);
   const homedir = Deno.env.get("HOME") ?? "";
 
-  const knownSubdirs = ["skills", "agents", "commands", "prompts", "extensions", "themes", "keybindings"];
+  const knownSubdirs = ["skills", "agents", "commands", "prompts", "extensions", "themes", "keybindings", "sidecars", "hooks", "plugins"];
 
   console.log(`\n  ${ob("⟡ PRUNE SKILLS")}  ${od("review non-manifest files across all tools")}\n`);
 
@@ -1961,7 +1961,7 @@ if (args.purge) {
   }
 
   // Summarize what will be purged
-  const knownSubdirs = ["skills", "agents", "commands", "prompts", "extensions", "themes", "keybindings"];
+  const knownSubdirs = ["skills", "agents", "commands", "prompts", "extensions", "themes", "keybindings", "sidecars", "hooks", "plugins"];
   const purgeSummary = toolsToPurge.map((t) => {
     const targetDir = expandHome(manifest.tools[t].target);
     return `  ${C.bold}${t}${C.reset}  ${od(targetDir)}`;

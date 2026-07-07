@@ -360,3 +360,78 @@ components:
     files:
     - src: claude/skills/standup/SKILL.md
       dest: skills/standup/SKILL.md
+  command/commit:
+    description: commit command
+    files:
+    - src: claude/commands/commit.md
+      dest: commands/commit.md
+  command/create-plan:
+    description: create-plan command
+    files:
+    - src: claude/commands/create-plan.md
+      dest: commands/create-plan.md
+  command/debug:
+    description: debug command
+    files:
+    - src: claude/commands/debug.md
+      dest: commands/debug.md
+  command/fixes-bump:
+    description: fixes-bump command
+    files:
+    - src: claude/commands/fixes-bump.md
+      dest: commands/fixes-bump.md
+  command/fixes-create:
+    description: fixes-create command
+    files:
+    - src: claude/commands/fixes-create.md
+      dest: commands/fixes-create.md
+  command/git-commit-helper:
+    description: git-commit-helper command
+    files:
+    - src: claude/commands/git-commit-helper.md
+      dest: commands/git-commit-helper.md
+  command/help:
+    description: help command
+    files:
+    - src: claude/commands/help.md
+      dest: commands/help.md
+  command/implement-plan:
+    description: implement-plan command
+    files:
+    - src: claude/commands/implement-plan.md
+      dest: commands/implement-plan.md
+  command/init-harness:
+    description: init-harness command
+    files:
+    - src: claude/commands/init-harness.md
+      dest: commands/init-harness.md
+  command/pr-description-generator:
+    description: pr-description-generator command
+    files:
+    - src: claude/commands/pr-description-generator.md
+      dest: commands/pr-description-generator.md
+  command/research-codebase:
+    description: research-codebase command
+    files:
+    - src: claude/commands/research-codebase.md
+      dest: commands/research-codebase.md
+  command/ticket-create:
+    description: ticket-create command
+    files:
+    - src: claude/commands/ticket-create.md
+      dest: commands/ticket-create.md
+  command/validate-plan:
+    description: validate-plan command
+    files:
+    - src: claude/commands/validate-plan.md
+      dest: commands/validate-plan.md
+  command/validate-telemetry:
+    description: validate-telemetry command
+    files:
+    - src: claude/commands/validate-telemetry.md
+      dest: commands/validate-telemetry.md
+  command/worktree:
+    description: worktree command
+    files:
+    - src: claude/commands/worktree.md
+      dest: commands/worktree.md
