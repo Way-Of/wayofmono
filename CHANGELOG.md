@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.16] - 2026-07-07
+
+### Harness (AI Engineering Harness v1.7.16) — Manifest Consistency Fix
+
+- **Manifest/Config-Manifest consistency fix (WOMONO-161)**: Restored all YAML files and manifest.json from original source. Removed specialized skills (otel, wow, opticat, investor, debug-k8s, etc.). All tools now have identical 49 skills, 12 agents, and 5 commands/prompts each. Purge command now deletes sidecars/hooks/plugins. Added web-access extension to pi. All source files verified present.
+
+- **Tickets closed**: WOMONO-161.
+
 ## [1.7.15] - 2026-07-07
 
 ### Harness (AI Engineering Harness v1.7.15) — Gemini CLI Removal + Delivery Packages
