@@ -1,6 +1,14 @@
 # Changelog
 
-## [1.7.18] - 2026-07-07
+## [1.7.19] - 2026-07-07
+
+### wo-agent v1.0.10 + wo-coding-agent v1.0.14 — Skill loading fix, provider consistency (WOMONO-166)
+
+- **Skill loading bug fixed**: `loadSkills()` now loads from default paths (.wo/skills/, ~/.wouser/agent/skills/) even without explicit skillPaths.
+- **Provider consistency**: Added llama and lmstudio to defaultModelPerProvider in both wo-agent and wo-coding-agent.
+- **Theme loading**: Built-in themes (wo-code.json, dark.json, light.json) are properly copied to dist during build.
+- **Published**: `@wayofmono/wo-agent@1.0.10`, `@wayofmono/wo-coding-agent@1.0.14` to npm.
+
 
 ### wo-ai v1.0.8 — Built-in llama.cpp & LM Studio Providers (Fixed)
 
