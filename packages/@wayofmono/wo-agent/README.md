@@ -1,101 +1,226 @@
 # @wayofmono/wo-agent
 
-The Agent SDK for building AI-powered applications, including the `wouser` CLI. Designed to be embedded as a standard dependency or used as a general-purpose agent.
+Agent SDK for building AI-powered applications. General-purpose user agent (`wouser`) with skill management, extensions, and LLM integration.
 
-## 🚀 Flawless Getting Started
+## Installation
 
 ```bash
+# As a project dependency
 pnpm add @wayofmono/wo-agent
-pnpm exec wouser --init
-./wouser
+
+# Or globally
+npm install -g @wayofmono/wo-agent
 ```
 
-## Features
-
-- **Agent SDK**: Create and manage AI agent sessions with ease.
-- **wouser CLI**: A user-facing CLI for interacting with agents.
-- **Extensible**: Easily add custom tools and extensions.
-- **Documentation Expert**: Use `/skill docs` to generate PDF, Word, and Markdown.
-- **Visual Synthesis**: Render Mermaid diagrams directly in your terminal.
-
-## 🦙 Prerequisites: Ollama
-
-`wouser` defaults to using **Ollama** for local-first AI. Ensure it is installed and running:
-1.  **Install:** `curl -fsSL https://ollama.com/install.sh | sh`
-2.  **Pull Model:** `ollama pull qwen3.5:9b`
-
-## 📂 Project Isolation (.wo/)
-
-The `--init` command sets up a project-local `.wo` directory. All session data, configuration (`models.json`), and skills stay inside your project. No global state pollution.
-
-## 🧠 Resource Management (Skills, Agents, Extensions)
-
-Skills, agents, and extensions are all loaded from npm packages as project dependencies. No file copying, no global state. Tracked in `.wo/manifest.json`.
-
-### Install a skill
+## Quick Start
 
 ```bash
-# First install the npm package
-npm install @wayofmono/skill-investor-ready-doc-gen
+# Initialize project
+npx wouser --init
 
-# Then register it with wouser
-wouser skill install npm:@wayofmono/skill-investor-ready-doc-gen
+# Start interactive session
+npx wouser
+
+# One-shot prompt
+echo "Analyze this data" | npx wouser --print
 ```
 
-Short form (auto-resolves under @wayofmono scope):
+## CLI Reference
+
+### Core Commands
+
 ```bash
+wouser                          # Start interactive TUI
+wouser --print                  # Non-interactive mode (print to stdout)
+wouser --init                   # Initialize .wo/ directory
+wouser --version                # Print version
+wouser --help                   # Show help
+```
+
+### Model Selection
+
+```bash
+wouser --model openai/gpt-4o           # Specific model
+wouser --model anthropic/claude-sonnet-4-20250514  # Specific model
+wouser --provider openai               # Filter by provider
+wouser --list-models                   # List all available models
+wouser --list-models "qwen"            # Search models
+```
+
+### Session Management
+
+```bash
+wouser --continue                      # Continue most recent session
+wouser --resume                        # Interactive session picker
+wouser --session <id>                  # Open specific session
+wouser --fork <id>                     # Fork a session
+wouser --no-session                    # Disable session persistence
+wouser --export <session>              # Export session to HTML
+```
+
+### Tool Control
+
+```bash
+wouser --no-tools                      # Disable all tools
+wouser --tools read,bash,edit          # Enable specific tools only
+```
+
+### Skill Management
+
+```bash
+# Install skills from npm packages
 wouser skill install investor-ready-doc-gen
-```
+wouser skill install npm:@wayofmono/skill-investor-ready-doc-gen
 
-### Agents and Extensions
-
-Same pattern for agents and extensions:
-
-```bash
-# Install an agent package
-npm install @wayofmono/agent-expert-coder
-wouser agent install npm:@wayofmono/agent-expert-coder
-
-# Install an extension package
-npm install @wayofmono/extension-web-search
-wouser extension install npm:@wayofmono/extension-web-search
-```
-
-### List registered resources
-
-```bash
+# List installed skills
 wouser skill list
-wouser agent list
-wouser extension list
+
+# Discover unregistered skills in node_modules
+wouser skill discover
+
+# Update skills after npm update
+wouser skill update
+wouser skill update investor-ready-doc-gen
+
+# Remove a skill
+wouser skill remove investor-ready-doc-gen
 ```
 
-### Discover unregistered resources in node_modules
+### Agent & Extension Management
 
 ```bash
-wouser skill discover
+# Install agents
+wouser agent install npm:@wayofmono/agent-expert-coder
+wouser agent list
 wouser agent discover
+
+# Install extensions
+wouser extension install npm:@wayofmono/extension-web-search
+wouser extension list
 wouser extension discover
 ```
 
-### Update (re-read after npm update)
+## Built-in Tools
 
-```bash
-# All registered resources of a type
-wouser skill update
-wouser agent update
-wouser extension update
+| Tool | Description |
+|------|-------------|
+| `read` | Read file contents with line ranges |
+| `bash` | Execute shell commands with timeout |
+| `edit` | Diff-based file editing (find/replace) |
+| `write` | Write/overwrite files |
+| `grep` | Search file contents with regex |
+| `find` | Find files by name/glob |
+| `ls` | List directory contents |
 
-# A specific resource
-wouser skill update investor-ready-doc-gen
+## Configuration
+
+### Project Config (`.wo/`)
+
+Created by `wouser --init`:
+
+```
+.wo/
+├── manifest.json        # Registered skills, agents, extensions
+├── models.json          # Model/provider settings
+├── skills/              # Installed skills
+├── extensions/          # Installed extensions
+└── themes/              # Custom themes
 ```
 
-### Remove a resource
+### Global Config (`~/.wouser/agent/`)
+
+```
+~/.wouser/agent/
+├── skills/              # Global skills
+├── agents/              # Agent definitions
+├── extensions/          # Extensions
+├── prompts/             # Prompt templates
+└── themes/              # Themes
+```
+
+## API Key Setup
 
 ```bash
-wouser skill remove investor-ready-doc-gen
-wouser agent remove expert-coder
-wouser extension remove web-search
+# OpenAI
+export OPENAI_API_KEY="sk-..."
+
+# Anthropic
+export ANTHROPIC_API_KEY="sk-ant-..."
+
+# Google Gemini
+export GEMINI_API_KEY="AIza..."
+
+# Ollama (local, no key needed)
+ollama pull qwen3.5:9b
+ollama serve
 ```
+
+## Programmatic Usage (SDK)
+
+```typescript
+import { createAgentSession, ModelRegistry, AuthStorage } from "@wayofmono/wo-agent";
+
+// Create session
+const session = await createAgentSession({
+  cwd: "/my/project",
+  model: someModel,
+  thinkingLevel: "medium",
+});
+
+// Send prompts
+await session.prompt("Analyze this data and generate a report");
+
+// Add custom tools
+await session.setTools([...existingTools, myCustomTool]);
+
+// Listen to events
+session.addEventListener((event) => {
+  switch (event.type) {
+    case "message_start": /* ... */ break;
+    case "message_end": /* ... */ break;
+    case "turn_end": /* ... */ break;
+  }
+});
+```
+
+## Skill Manifest System
+
+`wouser` manages skills, extensions, and agents via a manifest:
+
+```typescript
+import { readManifest, discoverNpmSkills } from "@wayofmono/wo-agent";
+
+// Read manifest
+const manifest = readManifest(agentDir);
+
+// Discover npm-installed skills
+const skills = discoverNpmSkills(agentDir);
+```
+
+## Differences from wo-coding-agent
+
+| Feature | wo-coding-agent (`wocode`) | wo-agent (`wouser`) |
+|---------|---------------------------|---------------------|
+| Binary | `wocode` | `wouser` |
+| Purpose | Coding agent CLI | General-purpose SDK |
+| Config dir | `~/.wocode/agent/` | `~/.wouser/agent/` |
+| Skill CLI | No | Yes (`wouser skill install`) |
+| Primary use | Terminal coding assistant | IDE/product integrations |
+
+## Package Dependencies
+
+- `@wayofmono/wo-agent-core` — Core agent runtime
+- `@wayofmono/wo-ai` — LLM provider abstraction
+- `@wayofmono/wo-tui` — Terminal UI components
+- `@wayofmono/wo-user-extra` — Additional extension skills
+
+## Related Packages
+
+- `@wayofmono/wo-coding-agent` — Coding agent CLI (wocode)
+- `@wayofmono/wo-agent-core` — Core runtime both are built on
+- `@wayofmono/wo-ai` — LLM providers used by this
+- `@wayofmono/wo-tui` — Terminal UI used by this
 
 ---
+
 *Part of the WayOfMono high-performance coding agent ecosystem.*

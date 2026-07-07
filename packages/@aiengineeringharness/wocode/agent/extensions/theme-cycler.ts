@@ -2,8 +2,8 @@
  * Theme Cycler — Simple theme switching
  *
  * Shortcuts:
- *   Ctrl+.   — Cycle theme forward
- *   Ctrl+,   — Cycle theme backward
+ *   Ctrl+G   — Cycle theme forward
+ *   Ctrl+O   — Cycle theme backward
  *
  * Commands:
  *   /theme          — Open select picker to choose a theme
@@ -84,13 +84,13 @@ export default function (api: any) {
   // --- Shortcuts ---
 
   if (typeof api.registerShortcut === 'function') {
-    api.registerShortcut("ctrl+.", {
+    api.registerShortcut("ctrl+g", {
       description: "Cycle theme forward",
       handler: async (ctx: any) => {
         cycleTheme(ctx, 1);
       },
     });
-    api.registerShortcut("ctrl+,", {
+    api.registerShortcut("ctrl+o", {
       description: "Cycle theme backward",
       handler: async (ctx: any) => {
         cycleTheme(ctx, -1);
