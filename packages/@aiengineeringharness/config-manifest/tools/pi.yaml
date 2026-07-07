@@ -428,3 +428,18 @@ components:
     files:
     - src: pi/agent/skills/debug/SKILL.md
       dest: skills/debug/SKILL.md
+  skill/agents-md-manager:
+    description: agents-md-manager skill
+    files:
+    - src: pi/agent/skills/agents-md-manager/SKILL.md
+      dest: skills/agents-md-manager/SKILL.md
+  skill/knowledge:
+    description: knowledge skill
+    files:
+    - src: pi/agent/skills/knowledge/SKILL.md
+      dest: skills/knowledge/SKILL.md
+  skill/standup:
+    description: standup skill
+    files:
+    - src: pi/agent/skills/standup/SKILL.md
+      dest: skills/standup/SKILL.md

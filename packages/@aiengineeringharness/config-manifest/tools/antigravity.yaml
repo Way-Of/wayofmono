@@ -436,3 +436,18 @@ components:
     files:
     - src: antigravity/skills/debug/SKILL.md
       dest: skills/debug/SKILL.md
+  skill/agents-md-manager:
+    description: agents-md-manager skill
+    files:
+    - src: antigravity/skills/agents_md_manager/SKILL.md
+      dest: skills/agents-md-manager/SKILL.md
+  skill/knowledge:
+    description: knowledge skill
+    files:
+    - src: antigravity/skills/knowledge/SKILL.md
+      dest: skills/knowledge/SKILL.md
+  skill/standup:
+    description: standup skill
+    files:
+    - src: antigravity/skills/standup/SKILL.md
+      dest: skills/standup/SKILL.md
