@@ -458,3 +458,72 @@ components:
     files:
     - src: pi/agent/skills/fixes-create/SKILL.md
       dest: skills/fixes-create/SKILL.md
+  extension/web-access:
+    description: Web search, URL fetching, GitHub cloning, PDF/YouTube extraction
+    files:
+    - src: pi/agent/extensions/web-access/CHANGELOG.md
+      dest: extensions/web-access/CHANGELOG.md
+    - src: pi/agent/extensions/web-access/LICENSE
+      dest: extensions/web-access/LICENSE
+    - src: pi/agent/extensions/web-access/README.md
+      dest: extensions/web-access/README.md
+    - src: pi/agent/extensions/web-access/activity.ts
+      dest: extensions/web-access/activity.ts
+    - src: pi/agent/extensions/web-access/banner.png
+      dest: extensions/web-access/banner.png
+    - src: pi/agent/extensions/web-access/chrome-cookies.ts
+      dest: extensions/web-access/chrome-cookies.ts
+    - src: pi/agent/extensions/web-access/code-search.ts
+      dest: extensions/web-access/code-search.ts
+    - src: pi/agent/extensions/web-access/curator-page.ts
+      dest: extensions/web-access/curator-page.ts
+    - src: pi/agent/extensions/web-access/curator-server.ts
+      dest: extensions/web-access/curator-server.ts
+    - src: pi/agent/extensions/web-access/exa.ts
+      dest: extensions/web-access/exa.ts
+    - src: pi/agent/extensions/web-access/extract.ts
+      dest: extensions/web-access/extract.ts
+    - src: pi/agent/extensions/web-access/gemini-api.ts
+      dest: extensions/web-access/gemini-api.ts
+    - src: pi/agent/extensions/web-access/gemini-search.ts
+      dest: extensions/web-access/gemini-search.ts
+    - src: pi/agent/extensions/web-access/gemini-url-context.ts
+      dest: extensions/web-access/gemini-url-context.ts
+    - src: pi/agent/extensions/web-access/gemini-web-config.ts
+      dest: extensions/web-access/gemini-web-config.ts
+    - src: pi/agent/extensions/web-access/gemini-web.ts
+      dest: extensions/web-access/gemini-web.ts
+    - src: pi/agent/extensions/web-access/github-api.ts
+      dest: extensions/web-access/github-api.ts
+    - src: pi/agent/extensions/web-access/github-extract.ts
+      dest: extensions/web-access/github-extract.ts
+    - src: pi/agent/extensions/web-access/index.ts
+      dest: extensions/web-access/index.ts
+    - src: pi/agent/extensions/web-access/package-lock.json
+      dest: extensions/web-access/package-lock.json
+    - src: pi/agent/extensions/web-access/package.json
+      dest: extensions/web-access/package.json
+    - src: pi/agent/extensions/web-access/pdf-extract.ts
+      dest: extensions/web-access/pdf-extract.ts
+    - src: pi/agent/extensions/web-access/perplexity.ts
+      dest: extensions/web-access/perplexity.ts
+    - src: pi/agent/extensions/web-access/pi-web-fetch-demo.mp4
+      dest: extensions/web-access/pi-web-fetch-demo.mp4
+    - src: pi/agent/extensions/web-access/rsc-extract.ts
+      dest: extensions/web-access/rsc-extract.ts
+    - src: pi/agent/extensions/web-access/skills/librarian/SKILL.md
+      dest: extensions/web-access/skills/librarian/SKILL.md
+    - src: pi/agent/extensions/web-access/storage.ts
+      dest: extensions/web-access/storage.ts
+    - src: pi/agent/extensions/web-access/summary-review.ts
+      dest: extensions/web-access/summary-review.ts
+    - src: pi/agent/extensions/web-access/test/gemini-web-cookie-opt-in.test.mjs
+      dest: extensions/web-access/test/gemini-web-cookie-opt-in.test.mjs
+    - src: pi/agent/extensions/web-access/test/pdf-extract.test.mjs
+      dest: extensions/web-access/test/pdf-extract.test.mjs
+    - src: pi/agent/extensions/web-access/utils.ts
+      dest: extensions/web-access/utils.ts
+    - src: pi/agent/extensions/web-access/video-extract.ts
+      dest: extensions/web-access/video-extract.ts
+    - src: pi/agent/extensions/web-access/youtube-extract.ts
+      dest: extensions/web-access/youtube-extract.ts
