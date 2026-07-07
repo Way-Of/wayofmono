@@ -691,7 +691,7 @@
           "description": "Create fix note entry command",
           "files": [
             {
-              "src": "antigravity/commands/run-fixes-create.toml",
+              "src": "antigravity/commands/run-fixes_create.toml",
               "dest": "commands/fixes-create.toml"
             }
           ]
@@ -700,7 +700,7 @@
           "description": "Bump version across project files command",
           "files": [
             {
-              "src": "antigravity/commands/run-fixes-bump.toml",
+              "src": "antigravity/commands/run-fixes_bump.toml",
               "dest": "commands/fixes-bump.toml"
             }
           ]
@@ -709,7 +709,7 @@
           "description": "Interactive ticket creation wizard",
           "files": [
             {
-              "src": "antigravity/commands/run-ticket-create.toml",
+              "src": "antigravity/commands/run-ticket_create.toml",
               "dest": "commands/ticket-create.toml"
             }
           ]
@@ -2039,7 +2039,7 @@
           "description": "Create implementation plans command",
           "files": [
             {
-              "src": "opencode/commands/create_plan.md",
+              "src": "opencode/commands/create-plan.md",
               "dest": "commands/create-plan.md"
             }
           ]
@@ -2057,7 +2057,7 @@
           "description": "Execute an approved plan command",
           "files": [
             {
-              "src": "opencode/commands/implement_plan.md",
+              "src": "opencode/commands/implement-plan.md",
               "dest": "commands/implement-plan.md"
             }
           ]
@@ -2066,7 +2066,7 @@
           "description": "Initialize harness in a new repository command",
           "files": [
             {
-              "src": "opencode/commands/init_harness.md",
+              "src": "opencode/commands/init-harness.md",
               "dest": "commands/init-harness.md"
             }
           ]
@@ -2075,7 +2075,7 @@
           "description": "Comprehensive codebase research command",
           "files": [
             {
-              "src": "opencode/commands/research_codebase.md",
+              "src": "opencode/commands/research-codebase.md",
               "dest": "commands/research-codebase.md"
             }
           ]
@@ -2084,7 +2084,7 @@
           "description": "Validate implementation against plan command",
           "files": [
             {
-              "src": "opencode/commands/validate_plan.md",
+              "src": "opencode/commands/validate-plan.md",
               "dest": "commands/validate-plan.md"
             }
           ]
@@ -2093,7 +2093,7 @@
           "description": "Validate local telemetry against a narrative spec command",
           "files": [
             {
-              "src": "opencode/commands/validate_telemetry.md",
+              "src": "opencode/commands/validate-telemetry.md",
               "dest": "commands/validate-telemetry.md"
             }
           ]
@@ -2709,10 +2709,6 @@
         "extension/subagent": {
           "description": "Subagent tool for multi-agent workflows (single, parallel, chain)",
           "files": [
-            {
-              "src": "pi/agent/extensions/subagent/index.ts",
-              "dest": "extensions/subagent/index.ts"
-            },
             {
               "src": "pi/agent/extensions/subagent/agents.ts",
               "dest": "extensions/subagent/agents.ts"
@@ -3491,10 +3487,6 @@
         "extension/subagent": {
           "description": "Subagent tool for multi-agent workflows (single, parallel, chain)",
           "files": [
-            {
-              "src": "wocode/agent/extensions/subagent/index.ts",
-              "dest": "extensions/subagent/index.ts"
-            },
             {
               "src": "wocode/agent/extensions/subagent/agents.ts",
               "dest": "extensions/subagent/agents.ts"

@@ -37,8 +37,6 @@ components:
   extension/subagent:
     description: Subagent tool for multi-agent workflows (single, parallel, chain)
     files:
-    - src: pi/agent/extensions/subagent/index.ts
-      dest: extensions/subagent/index.ts
     - src: pi/agent/extensions/subagent/agents.ts
       dest: extensions/subagent/agents.ts
     - src: pi/agent/extensions/subagent/agents/planner.md

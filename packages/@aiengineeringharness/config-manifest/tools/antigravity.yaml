@@ -386,17 +386,17 @@ components:
   command/fixes-create:
     description: Create fix note entry command
     files:
-    - src: antigravity/commands/run-fixes-create.toml
+    - src: antigravity/commands/run-fixes_create.toml
       dest: commands/fixes-create.toml
   command/fixes-bump:
     description: Bump version across project files command
     files:
-    - src: antigravity/commands/run-fixes-bump.toml
+    - src: antigravity/commands/run-fixes_bump.toml
       dest: commands/fixes-bump.toml
   command/ticket-create:
     description: Interactive ticket creation wizard
     files:
-    - src: antigravity/commands/run-ticket-create.toml
+    - src: antigravity/commands/run-ticket_create.toml
       dest: commands/ticket-create.toml
   command/help:
     description: Unified help system for all commands and skills

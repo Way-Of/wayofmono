@@ -42,7 +42,7 @@ components:
   command/create_plan:
     description: Create implementation plans command
     files:
-    - src: opencode/commands/create_plan.md
+    - src: opencode/commands/create-plan.md
       dest: commands/create-plan.md
   command/debug:
     description: Debugging investigation command
@@ -52,27 +52,27 @@ components:
   command/implement_plan:
     description: Execute an approved plan command
     files:
-    - src: opencode/commands/implement_plan.md
+    - src: opencode/commands/implement-plan.md
       dest: commands/implement-plan.md
   command/init_harness:
     description: Initialize harness in a new repository command
     files:
-    - src: opencode/commands/init_harness.md
+    - src: opencode/commands/init-harness.md
       dest: commands/init-harness.md
   command/research_codebase:
     description: Comprehensive codebase research command
     files:
-    - src: opencode/commands/research_codebase.md
+    - src: opencode/commands/research-codebase.md
       dest: commands/research-codebase.md
   command/validate_plan:
     description: Validate implementation against plan command
     files:
-    - src: opencode/commands/validate_plan.md
+    - src: opencode/commands/validate-plan.md
       dest: commands/validate-plan.md
   command/validate_telemetry:
     description: Validate local telemetry against a narrative spec command
     files:
-    - src: opencode/commands/validate_telemetry.md
+    - src: opencode/commands/validate-telemetry.md
       dest: commands/validate-telemetry.md
   skill/init-harness:
     description: Initialize harness skill
