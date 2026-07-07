@@ -25,14 +25,26 @@ ENTRY_FILENAME_RE = re.compile(r"^([a-z0-9]+(-[a-z0-9]+)*)-(\d{3})\.md$")
 
 SEED_TOPICS = [
     "ash",
+    "ash-framework",
     "docker",
     "postgres",
     "opentelemetry",
     "elixir",
+    "phoenix",
     "deno",
     "react",
+    "frontend",
+    "backend",
     "devops",
+    "security",
+    "testing",
+    "architecture",
     "ai-tools",
+    "mcp",
+    "anchor",
+    "womono",
+    "wow",
+    "opticat",
 ]
 
 
@@ -257,8 +269,8 @@ def cmd_list(args):
 
 
 def cmd_search(args):
-    """Full-text search across all knowledge entries."""
-    query = args.query.lower()
+    """Full-text search across all knowledge entries with optional filters."""
+    query = args.query.lower() if args.query else ""
     results = []
 
     for topic_dir in sorted(KNOWLEDGE_ROOT.iterdir()):
@@ -266,30 +278,65 @@ def cmd_search(args):
             continue
         for f in sorted(topic_dir.glob(f"{topic_dir.name}-*.md")):
             text = f.read_text().lower()
-            if query in text:
-                meta = parse_entry(f)
-                if meta:
-                    # Find matching lines for context
-                    lines = text.splitlines()
-                    matches = []
-                    for i, line in enumerate(lines, 1):
-                        if query in line:
-                            matches.append(f"  L{i}: {line.strip()}")
-                    results.append({
-                        "id": meta.get("id", ""),
-                        "title": meta.get("title", ""),
-                        "topic": meta.get("topic", ""),
-                        "file": str(f.relative_to(HARNESS_ROOT.parent)),
-                        "matches": matches[:3],  # limit context
-                    })
+
+            # Text match (if query provided)
+            text_match = not query or query in text
+
+            if not text_match:
+                continue
+
+            meta = parse_entry(f)
+            if not meta:
+                continue
+
+            # Apply filters
+            if args.tag:
+                tags = meta.get("tags", [])
+                if args.tag not in tags:
+                    continue
+
+            if args.confidence:
+                if meta.get("confidence") != args.confidence:
+                    continue
+
+            if args.source:
+                if meta.get("source") != args.source:
+                    continue
+
+            if args.ticket:
+                related = meta.get("related", [])
+                source_ticket = meta.get("source_ticket", "")
+                if args.ticket not in related and args.ticket != source_ticket:
+                    continue
+
+            # Find matching lines for context
+            lines = text.splitlines()
+            matches = []
+            for i, line in enumerate(lines, 1):
+                if query and query in line:
+                    matches.append(f"  L{i}: {line.strip()}")
+            if not matches and query:
+                continue
+
+            results.append({
+                "id": meta.get("id", ""),
+                "title": meta.get("title", ""),
+                "topic": meta.get("topic", ""),
+                "tags": ", ".join(meta.get("tags", [])) if meta.get("tags") else "",
+                "confidence": meta.get("confidence", ""),
+                "file": str(f.relative_to(HARNESS_ROOT.parent)),
+                "matches": matches[:3],
+            })
 
     if not results:
-        print(f"No results for '{args.query}'.")
+        print(f"No results for '{args.query}'." if args.query else "No results match filters.")
         return
 
     print(f"\n  Search: '{args.query}' — {len(results)} result(s)\n")
     for r in results:
-        print(f"  [{r['topic']}] {r['id']} — {r['title']}")
+        tags_str = f"  tags: {r['tags']}" if r['tags'] else ""
+        conf_str = f"  confidence: {r['confidence']}" if r['confidence'] else ""
+        print(f"  [{r['topic']}] {r['id']} — {r['title']}{tags_str}{conf_str}")
         print(f"           {r['file']}")
         for m in r["matches"]:
             print(f"           {m}")
@@ -415,7 +462,11 @@ def main():
 
     # search
     p_search = sub.add_parser("search", help="Full-text search")
-    p_search.add_argument("query", help="Search query")
+    p_search.add_argument("query", nargs="?", default="", help="Search query")
+    p_search.add_argument("--tag", help="Filter by tag")
+    p_search.add_argument("--confidence", choices=["high", "medium", "low"], help="Filter by confidence")
+    p_search.add_argument("--source", choices=["session", "research", "debugging", "docs", "manual"], help="Filter by source")
+    p_search.add_argument("--ticket", help="Filter by linked ticket ID")
 
     # fetch
     p_fetch = sub.add_parser("fetch", help="Fetch/read entries")

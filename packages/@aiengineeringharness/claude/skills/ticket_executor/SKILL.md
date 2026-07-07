@@ -8,15 +8,45 @@ allowed-tools: Read, Write, Grep, Glob, Web, Search
 
 Executes approved plans in phases, with validation and telemetry tracking after each phase.
 
+## Enforcement Ticket Priority
+
+**Enforcement tickets** override all other tickets. Before executing any plan, check for active enforcement tickets. If any exist with status != "Done", pause and resolve them first.
+
 ## Workflow
 
 ```
 Ticket → /create_plan → /implement_plan → /validate_plan → /validate_telemetry → /commit
 ```
 
+## Phase Execution
+
+For each phase:
+1. Read plan phase
+2. Execute phase work
+3. Knowledge capture — "Did this phase discover any non-obvious solutions?"
+4. Validate phase output
+5. Update ticket Work Log
+6. Commit phase changes
+
+## Completion Flow
+
+When the last phase completes:
+1. Run full validation
+2. Knowledge capture — final check for learnings
+3. CHANGELOG prompt — suggest entry
+4. Move ticket to done/
+5. Remove from personal folder
+6. Regenerate TODO.md
+
+## Archive Awareness
+
+- Active work in `shared/tickets/`
+- Reference `done/` for similar past work
+- Never modify files in done/, deprecated/, or legacy/
+
 ## Commands
 
-- `/implement_plan <ticket-id>` - Execute approved plan phase-by-phase
+- `/implement_plan <ticket-id>` - Execute plan phase-by-phase
 - `/execute_phase <ticket-id> <phase>` - Execute specific phase
 - `/skip_phase <ticket-id> <phase>` - Skip phase with reason
 
@@ -26,46 +56,17 @@ Ticket → /create_plan → /implement_plan → /validate_plan → /validate_tel
 - Track error rates
 - Compare against plan expectations
 
-## Audit Utility
-
-A ticket audit script is bundled at `assets/audit-tickets.js`. Run it after executing plan phases to verify ticket frontmatter integrity:
-
-```bash
-deno run -A assets/audit-tickets.js
-```
-
 ## CTO Dashboard UI Integration
 
-The CTO Dashboard status dropdown affects execution workflow:
-
-- **Status Sync**: When `/implement_plan` runs, it reads the current ticket status from the dashboard/UI
-- **Auto-transition**: Moving a ticket to "In Progress" in the UI signals the executor to begin work
-- **Review Flow**: "In Review" and "Approved" statuses map to the validation phases
-- **Completion**: Setting status to "Done" in UI marks ticket complete (or "Submitted for Review" if review required)
-
-Agents should respect the UI status as the current state. Use `update_ticket` tool to programmatically change status:
-- `update_ticket` with `status: "In Progress"` when starting work
-- `update_ticket` with `status: "In Review"` when submitting for review
-- `update_ticket` with `status: "Done"` when work is complete
+Agents should respect the UI status as the current state:
+- `update_ticket` with `status: "In Progress"` when starting
+- `update_ticket` with `status: "In Review"` when submitting
+- `update_ticket` with `status: "Done"` when complete
 
 ## Notification Integration
 
-When completing ticket phases or implementing plans, mark related CTO Dashboard notifications as Read via the notification API:
-
 ```bash
-# Mark review notification as read after phase completion
 curl -X POST http://localhost:6969/api/notifications \
   -H "Content-Type: application/json" \
   -d '{"action": "mark-read", "notificationId": "review-<TICKET_ID>"}'
-
-# Mark update notification as read after phase completion
-curl -X POST http://localhost:6969/api/notifications \
-  -H "Content-Type: application/json" \
-  -d '{"action": "mark-read", "notificationId": "update-<TICKET_ID>"}'
 ```
-
-The notification IDs follow the format:
-- `review-<TICKET_ID>` — for tickets in review queue
-- `update-<TICKET_ID>` — for ticket status updates
-
-This ensures the CTO Dashboard bell badge reflects only genuinely unread notifications.
