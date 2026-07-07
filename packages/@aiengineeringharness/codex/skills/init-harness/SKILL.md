@@ -1,3 +1,9 @@
+---
+name: init-harness
+description: "Initialize the AI Engineering Harness in a repository"
+allowed-tools: read, write, bash
+---
+
 # Initialize Harness
 
 Initialize the AI Engineering Harness in this repository.
