@@ -77,7 +77,7 @@ def next_entry_number(topic: str) -> int:
     for f in existing:
         m = ENTRY_FILENAME_RE.match(f.name)
         if m:
-            nums.append(int(m.group(4)))
+            nums.append(int(m.group(3)))
     return max(nums, default=0) + 1
 
 
