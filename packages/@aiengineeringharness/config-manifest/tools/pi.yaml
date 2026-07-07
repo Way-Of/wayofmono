@@ -85,36 +85,16 @@ components:
       dest: themes/tokyo-night.json
     - src: pi/agent/themes/wo-code.json
       dest: themes/wo-code.json
-  prompt/commit:
-    description: Git commit workflow prompt
-    files:
-    - src: pi/agent/prompts/commit.md
-      dest: prompts/commit.md
   prompt/create-plan:
     description: Create implementation plans prompt
     files:
     - src: pi/agent/prompts/create-plan.md
       dest: prompts/create-plan.md
-  prompt/debug:
-    description: Debugging investigation prompt
-    files:
-    - src: pi/agent/prompts/debug.md
-      dest: prompts/debug.md
   prompt/implement-plan:
     description: Execute an approved plan prompt
     files:
     - src: pi/agent/prompts/implement-plan.md
       dest: prompts/implement-plan.md
-  prompt/init-harness:
-    description: Initialize harness in a new repository prompt
-    files:
-    - src: pi/agent/prompts/init-harness.md
-      dest: prompts/init-harness.md
-  prompt/research-codebase:
-    description: Comprehensive codebase research prompt
-    files:
-    - src: pi/agent/prompts/research-codebase.md
-      dest: prompts/research-codebase.md
   prompt/validate-plan:
     description: Validate implementation against plan prompt
     files:
@@ -375,26 +355,6 @@ components:
       dest: skills/session-export/SKILL.md
     - src: pi/agent/skills/session-export/assets/session-template.md
       dest: skills/session-export/assets/session-template.md
-  prompt/fixes-create:
-    description: Create fix note entry prompt
-    files:
-    - src: pi/agent/prompts/fixes-create.md
-      dest: prompts/fixes-create.md
-  prompt/fixes-bump:
-    description: Bump version across project files prompt
-    files:
-    - src: pi/agent/prompts/fixes-bump.md
-      dest: prompts/fixes-bump.md
-  prompt/git-commit-helper:
-    description: Create well-structured git commits
-    files:
-    - src: pi/agent/prompts/git-commit-helper.md
-      dest: prompts/git-commit-helper.md
-  prompt/pr-description-generator:
-    description: Generate comprehensive PR descriptions
-    files:
-    - src: pi/agent/prompts/pr-description-generator.md
-      dest: prompts/pr-description-generator.md
   skill/fixes-manager:
     description: Cross-project fix/release notes and version manager. Creates, updates,
       bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.
@@ -527,3 +487,13 @@ components:
       dest: extensions/web-access/video-extract.ts
     - src: pi/agent/extensions/web-access/youtube-extract.ts
       dest: extensions/web-access/youtube-extract.ts
+  prompt/ticket-create:
+    description: ticket-create command
+    files:
+    - src: pi/agent/prompts/ticket-create.md
+      dest: prompts/ticket-create.md
+  prompt/standup:
+    description: Generate daily standup entries
+    files:
+    - src: pi/agent/prompts/standup.md
+      dest: prompts/standup.md

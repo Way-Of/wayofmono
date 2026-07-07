@@ -402,36 +402,6 @@ components:
       dest: skills/session-export/SKILL.md
     - src: wocode/agent/skills/session-export/assets/session-template.md
       dest: skills/session-export/assets/session-template.md
-  prompt/fixes-create:
-    description: Create fix note entry prompt
-    files:
-    - src: wocode/agent/prompts/fixes-create.md
-      dest: prompts/fixes-create.md
-  prompt/fixes-bump:
-    description: Bump version across project files prompt
-    files:
-    - src: wocode/agent/prompts/fixes-bump.md
-      dest: prompts/fixes-bump.md
-  prompt/commit:
-    description: Create structured git commits
-    files:
-    - src: wocode/agent/prompts/commit.md
-      dest: prompts/commit.md
-  prompt/debug:
-    description: Debug issues during testing
-    files:
-    - src: wocode/agent/prompts/debug.md
-      dest: prompts/debug.md
-  prompt/git-commit-helper:
-    description: Create well-structured git commits
-    files:
-    - src: wocode/agent/prompts/git-commit-helper.md
-      dest: prompts/git-commit-helper.md
-  prompt/pr-description-generator:
-    description: Generate comprehensive PR descriptions
-    files:
-    - src: wocode/agent/prompts/pr-description-generator.md
-      dest: prompts/pr-description-generator.md
   prompt/create-plan:
     description: Create Plan prompt
     files:
@@ -442,16 +412,6 @@ components:
     files:
     - src: wocode/agent/prompts/implement-plan.md
       dest: prompts/implement-plan.md
-  prompt/init-harness:
-    description: Initialize Harness prompt
-    files:
-    - src: wocode/agent/prompts/init-harness.md
-      dest: prompts/init-harness.md
-  prompt/research-codebase:
-    description: Research Codebase prompt
-    files:
-    - src: wocode/agent/prompts/research-codebase.md
-      dest: prompts/research-codebase.md
   prompt/validate-plan:
     description: Validate Plan prompt
     files:
@@ -520,3 +480,13 @@ components:
     files:
     - src: wocode/agent/skills/fixes-create/SKILL.md
       dest: skills/fixes-create/SKILL.md
+  prompt/ticket-create:
+    description: ticket-create command
+    files:
+    - src: wocode/agent/prompts/ticket-create.md
+      dest: prompts/ticket-create.md
+  prompt/standup:
+    description: Generate daily standup entries
+    files:
+    - src: wocode/agent/prompts/standup.md
+      dest: prompts/standup.md

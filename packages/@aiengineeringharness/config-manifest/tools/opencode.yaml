@@ -34,46 +34,21 @@ components:
       dest: agents/scout.md
     - src: opencode/agents/netlify_troubleshooter.md
       dest: agents/netlify_troubleshooter.md
-  command/commit:
-    description: Git commit workflow command
-    files:
-    - src: opencode/commands/commit.md
-      dest: commands/commit.md
   command/create_plan:
     description: Create implementation plans command
     files:
     - src: opencode/commands/create-plan.md
       dest: commands/create-plan.md
-  command/debug:
-    description: Debugging investigation command
-    files:
-    - src: opencode/commands/debug.md
-      dest: commands/debug.md
   command/implement_plan:
     description: Execute an approved plan command
     files:
     - src: opencode/commands/implement-plan.md
       dest: commands/implement-plan.md
-  command/init_harness:
-    description: Initialize harness in a new repository command
-    files:
-    - src: opencode/commands/init-harness.md
-      dest: commands/init-harness.md
-  command/research_codebase:
-    description: Comprehensive codebase research command
-    files:
-    - src: opencode/commands/research-codebase.md
-      dest: commands/research-codebase.md
   command/validate_plan:
     description: Validate implementation against plan command
     files:
     - src: opencode/commands/validate-plan.md
       dest: commands/validate-plan.md
-  command/validate_telemetry:
-    description: Validate local telemetry against a narrative spec command
-    files:
-    - src: opencode/commands/validate-telemetry.md
-      dest: commands/validate-telemetry.md
   skill/init-harness:
     description: Initialize harness skill
     files:
@@ -327,31 +302,11 @@ components:
       dest: skills/session-export/SKILL.md
     - src: opencode/skills/session-export/assets/session-template.md
       dest: skills/session-export/assets/session-template.md
-  command/fixes-create:
-    description: Create fix note entry
-    files:
-    - src: opencode/commands/fixes-create.md
-      dest: commands/fixes-create.md
-  command/fixes-bump:
-    description: Bump version across project files
-    files:
-    - src: opencode/commands/fixes-bump.md
-      dest: commands/fixes-bump.md
   command/ticket-create:
     description: Interactive ticket creation wizard
     files:
     - src: opencode/commands/ticket-create.md
       dest: commands/ticket-create.md
-  command/help:
-    description: Unified help system for all commands and skills
-    files:
-    - src: opencode/commands/help.md
-      dest: commands/help.md
-  command/git-commit-helper:
-    description: Create well-structured git commits
-    files:
-    - src: opencode/commands/git-commit-helper.md
-      dest: commands/git-commit-helper.md
   skill/fixes-manager:
     description: Cross-project fix/release notes and version manager. Creates, updates,
       bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.
@@ -415,3 +370,8 @@ components:
     files:
     - src: opencode/skills/fixes-create/SKILL.md
       dest: skills/fixes-create/SKILL.md
+  command/standup:
+    description: Generate daily standup entries
+    files:
+    - src: opencode/commands/standup.md
+      dest: commands/standup.md

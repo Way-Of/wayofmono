@@ -78,51 +78,21 @@ components:
       dest: commands/validate-telemetry.toml
     - src: antigravity/commands/run-worktree.toml
       dest: commands/worktree.toml
-  command/commit:
-    description: Commit command
-    files:
-    - src: antigravity/commands/run-commit.toml
-      dest: commands/commit.toml
   command/create_plan:
     description: Create Plan command
     files:
     - src: antigravity/commands/run-create_plan.toml
       dest: commands/create-plan.toml
-  command/debug:
-    description: Debug command
-    files:
-    - src: antigravity/commands/run-debug.toml
-      dest: commands/debug.toml
-  command/git_commit_helper:
-    description: Git Commit Helper command
-    files:
-    - src: antigravity/commands/run-git_commit_helper.toml
-      dest: commands/git-commit-helper.toml
   command/implement_plan:
     description: Implement Plan command
     files:
     - src: antigravity/commands/run-implement_plan.toml
       dest: commands/implement-plan.toml
-  command/init_harness:
-    description: Init Harness command
-    files:
-    - src: antigravity/commands/run-init_harness.toml
-      dest: commands/init-harness.toml
-  command/research_codebase:
-    description: Research Codebase command
-    files:
-    - src: antigravity/commands/run-research_codebase.toml
-      dest: commands/research-codebase.toml
   command/validate_plan:
     description: Validate Plan command
     files:
     - src: antigravity/commands/run-validate_plan.toml
       dest: commands/validate-plan.toml
-  command/validate_telemetry:
-    description: Validate Telemetry command
-    files:
-    - src: antigravity/commands/run-validate_telemetry.toml
-      dest: commands/validate-telemetry.toml
   skills:
     description: Antigravity skills reference
     files:
@@ -383,26 +353,11 @@ components:
       dest: skills/session-export/SKILL.md
     - src: antigravity/skills/session_export/assets/session-template.md
       dest: skills/session-export/assets/session-template.md
-  command/fixes-create:
-    description: Create fix note entry command
-    files:
-    - src: antigravity/commands/run-fixes_create.toml
-      dest: commands/fixes-create.toml
-  command/fixes-bump:
-    description: Bump version across project files command
-    files:
-    - src: antigravity/commands/run-fixes_bump.toml
-      dest: commands/fixes-bump.toml
   command/ticket-create:
     description: Interactive ticket creation wizard
     files:
     - src: antigravity/commands/run-ticket_create.toml
       dest: commands/ticket-create.toml
-  command/help:
-    description: Unified help system for all commands and skills
-    files:
-    - src: antigravity/commands/run-help.toml
-      dest: commands/help.toml
   skill/fixes-manager:
     description: Cross-project fix/release notes and version manager. Creates, updates,
       bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.
@@ -466,3 +421,8 @@ components:
     files:
     - src: antigravity/skills/fixes-create/SKILL.md
       dest: skills/fixes-create/SKILL.md
+  command/standup:
+    description: Generate daily standup entries
+    files:
+    - src: antigravity/commands/standup.toml
+      dest: commands/standup.toml

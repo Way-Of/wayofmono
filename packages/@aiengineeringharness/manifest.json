@@ -152,39 +152,12 @@
             }
           ]
         },
-        "command/commit": {
-          "description": "Commit command",
-          "files": [
-            {
-              "src": "antigravity/commands/run-commit.toml",
-              "dest": "commands/commit.toml"
-            }
-          ]
-        },
         "command/create_plan": {
           "description": "Create Plan command",
           "files": [
             {
               "src": "antigravity/commands/run-create_plan.toml",
               "dest": "commands/create-plan.toml"
-            }
-          ]
-        },
-        "command/debug": {
-          "description": "Debug command",
-          "files": [
-            {
-              "src": "antigravity/commands/run-debug.toml",
-              "dest": "commands/debug.toml"
-            }
-          ]
-        },
-        "command/git_commit_helper": {
-          "description": "Git Commit Helper command",
-          "files": [
-            {
-              "src": "antigravity/commands/run-git_commit_helper.toml",
-              "dest": "commands/git-commit-helper.toml"
             }
           ]
         },
@@ -197,39 +170,12 @@
             }
           ]
         },
-        "command/init_harness": {
-          "description": "Init Harness command",
-          "files": [
-            {
-              "src": "antigravity/commands/run-init_harness.toml",
-              "dest": "commands/init-harness.toml"
-            }
-          ]
-        },
-        "command/research_codebase": {
-          "description": "Research Codebase command",
-          "files": [
-            {
-              "src": "antigravity/commands/run-research_codebase.toml",
-              "dest": "commands/research-codebase.toml"
-            }
-          ]
-        },
         "command/validate_plan": {
           "description": "Validate Plan command",
           "files": [
             {
               "src": "antigravity/commands/run-validate_plan.toml",
               "dest": "commands/validate-plan.toml"
-            }
-          ]
-        },
-        "command/validate_telemetry": {
-          "description": "Validate Telemetry command",
-          "files": [
-            {
-              "src": "antigravity/commands/run-validate_telemetry.toml",
-              "dest": "commands/validate-telemetry.toml"
             }
           ]
         },
@@ -687,39 +633,12 @@
             }
           ]
         },
-        "command/fixes-create": {
-          "description": "Create fix note entry command",
-          "files": [
-            {
-              "src": "antigravity/commands/run-fixes_create.toml",
-              "dest": "commands/fixes-create.toml"
-            }
-          ]
-        },
-        "command/fixes-bump": {
-          "description": "Bump version across project files command",
-          "files": [
-            {
-              "src": "antigravity/commands/run-fixes_bump.toml",
-              "dest": "commands/fixes-bump.toml"
-            }
-          ]
-        },
         "command/ticket-create": {
           "description": "Interactive ticket creation wizard",
           "files": [
             {
               "src": "antigravity/commands/run-ticket_create.toml",
               "dest": "commands/ticket-create.toml"
-            }
-          ]
-        },
-        "command/help": {
-          "description": "Unified help system for all commands and skills",
-          "files": [
-            {
-              "src": "antigravity/commands/run-help.toml",
-              "dest": "commands/help.toml"
             }
           ]
         },
@@ -836,6 +755,15 @@
             {
               "src": "antigravity/skills/fixes-create/SKILL.md",
               "dest": "skills/fixes-create/SKILL.md"
+            }
+          ]
+        },
+        "command/standup": {
+          "description": "Generate daily standup entries",
+          "files": [
+            {
+              "src": "antigravity/commands/standup.toml",
+              "dest": "commands/standup.toml"
             }
           ]
         }
@@ -1474,15 +1402,6 @@
             }
           ]
         },
-        "command/commit": {
-          "description": "commit command",
-          "files": [
-            {
-              "src": "claude/commands/commit.md",
-              "dest": "commands/commit.md"
-            }
-          ]
-        },
         "command/create-plan": {
           "description": "create-plan command",
           "files": [
@@ -1492,84 +1411,12 @@
             }
           ]
         },
-        "command/debug": {
-          "description": "debug command",
-          "files": [
-            {
-              "src": "claude/commands/debug.md",
-              "dest": "commands/debug.md"
-            }
-          ]
-        },
-        "command/fixes-bump": {
-          "description": "fixes-bump command",
-          "files": [
-            {
-              "src": "claude/commands/fixes-bump.md",
-              "dest": "commands/fixes-bump.md"
-            }
-          ]
-        },
-        "command/fixes-create": {
-          "description": "fixes-create command",
-          "files": [
-            {
-              "src": "claude/commands/fixes-create.md",
-              "dest": "commands/fixes-create.md"
-            }
-          ]
-        },
-        "command/git-commit-helper": {
-          "description": "git-commit-helper command",
-          "files": [
-            {
-              "src": "claude/commands/git-commit-helper.md",
-              "dest": "commands/git-commit-helper.md"
-            }
-          ]
-        },
-        "command/help": {
-          "description": "help command",
-          "files": [
-            {
-              "src": "claude/commands/help.md",
-              "dest": "commands/help.md"
-            }
-          ]
-        },
         "command/implement-plan": {
           "description": "implement-plan command",
           "files": [
             {
               "src": "claude/commands/implement-plan.md",
               "dest": "commands/implement-plan.md"
-            }
-          ]
-        },
-        "command/init-harness": {
-          "description": "init-harness command",
-          "files": [
-            {
-              "src": "claude/commands/init-harness.md",
-              "dest": "commands/init-harness.md"
-            }
-          ]
-        },
-        "command/pr-description-generator": {
-          "description": "pr-description-generator command",
-          "files": [
-            {
-              "src": "claude/commands/pr-description-generator.md",
-              "dest": "commands/pr-description-generator.md"
-            }
-          ]
-        },
-        "command/research-codebase": {
-          "description": "research-codebase command",
-          "files": [
-            {
-              "src": "claude/commands/research-codebase.md",
-              "dest": "commands/research-codebase.md"
             }
           ]
         },
@@ -1591,21 +1438,12 @@
             }
           ]
         },
-        "command/validate-telemetry": {
-          "description": "validate-telemetry command",
+        "command/standup": {
+          "description": "Generate daily standup entries",
           "files": [
             {
-              "src": "claude/commands/validate-telemetry.md",
-              "dest": "commands/validate-telemetry.md"
-            }
-          ]
-        },
-        "command/worktree": {
-          "description": "worktree command",
-          "files": [
-            {
-              "src": "claude/commands/worktree.md",
-              "dest": "commands/worktree.md"
+              "src": "claude/commands/standup.md",
+              "dest": "commands/standup.md"
             }
           ]
         }
@@ -2227,15 +2065,6 @@
             }
           ]
         },
-        "command/commit": {
-          "description": "commit command",
-          "files": [
-            {
-              "src": "codex/commands/commit.md",
-              "dest": "commands/commit.md"
-            }
-          ]
-        },
         "command/create-plan": {
           "description": "create-plan command",
           "files": [
@@ -2245,84 +2074,12 @@
             }
           ]
         },
-        "command/debug": {
-          "description": "debug command",
-          "files": [
-            {
-              "src": "codex/commands/debug.md",
-              "dest": "commands/debug.md"
-            }
-          ]
-        },
-        "command/fixes-bump": {
-          "description": "fixes-bump command",
-          "files": [
-            {
-              "src": "codex/commands/fixes-bump.md",
-              "dest": "commands/fixes-bump.md"
-            }
-          ]
-        },
-        "command/fixes-create": {
-          "description": "fixes-create command",
-          "files": [
-            {
-              "src": "codex/commands/fixes-create.md",
-              "dest": "commands/fixes-create.md"
-            }
-          ]
-        },
-        "command/git-commit-helper": {
-          "description": "git-commit-helper command",
-          "files": [
-            {
-              "src": "codex/commands/git-commit-helper.md",
-              "dest": "commands/git-commit-helper.md"
-            }
-          ]
-        },
-        "command/help": {
-          "description": "help command",
-          "files": [
-            {
-              "src": "codex/commands/help.md",
-              "dest": "commands/help.md"
-            }
-          ]
-        },
         "command/implement-plan": {
           "description": "implement-plan command",
           "files": [
             {
               "src": "codex/commands/implement-plan.md",
               "dest": "commands/implement-plan.md"
-            }
-          ]
-        },
-        "command/init-harness": {
-          "description": "init-harness command",
-          "files": [
-            {
-              "src": "codex/commands/init-harness.md",
-              "dest": "commands/init-harness.md"
-            }
-          ]
-        },
-        "command/pr-description-generator": {
-          "description": "pr-description-generator command",
-          "files": [
-            {
-              "src": "codex/commands/pr-description-generator.md",
-              "dest": "commands/pr-description-generator.md"
-            }
-          ]
-        },
-        "command/research-codebase": {
-          "description": "research-codebase command",
-          "files": [
-            {
-              "src": "codex/commands/research-codebase.md",
-              "dest": "commands/research-codebase.md"
             }
           ]
         },
@@ -2344,21 +2101,12 @@
             }
           ]
         },
-        "command/validate-telemetry": {
-          "description": "validate-telemetry command",
+        "command/standup": {
+          "description": "Generate daily standup entries",
           "files": [
             {
-              "src": "codex/commands/validate-telemetry.md",
-              "dest": "commands/validate-telemetry.md"
-            }
-          ]
-        },
-        "command/worktree": {
-          "description": "worktree command",
-          "files": [
-            {
-              "src": "codex/commands/worktree.md",
-              "dest": "commands/worktree.md"
+              "src": "codex/commands/standup.md",
+              "dest": "commands/standup.md"
             }
           ]
         }
@@ -2431,30 +2179,12 @@
             }
           ]
         },
-        "command/commit": {
-          "description": "Git commit workflow command",
-          "files": [
-            {
-              "src": "opencode/commands/commit.md",
-              "dest": "commands/commit.md"
-            }
-          ]
-        },
         "command/create_plan": {
           "description": "Create implementation plans command",
           "files": [
             {
               "src": "opencode/commands/create-plan.md",
               "dest": "commands/create-plan.md"
-            }
-          ]
-        },
-        "command/debug": {
-          "description": "Debugging investigation command",
-          "files": [
-            {
-              "src": "opencode/commands/debug.md",
-              "dest": "commands/debug.md"
             }
           ]
         },
@@ -2467,39 +2197,12 @@
             }
           ]
         },
-        "command/init_harness": {
-          "description": "Initialize harness in a new repository command",
-          "files": [
-            {
-              "src": "opencode/commands/init-harness.md",
-              "dest": "commands/init-harness.md"
-            }
-          ]
-        },
-        "command/research_codebase": {
-          "description": "Comprehensive codebase research command",
-          "files": [
-            {
-              "src": "opencode/commands/research-codebase.md",
-              "dest": "commands/research-codebase.md"
-            }
-          ]
-        },
         "command/validate_plan": {
           "description": "Validate implementation against plan command",
           "files": [
             {
               "src": "opencode/commands/validate-plan.md",
               "dest": "commands/validate-plan.md"
-            }
-          ]
-        },
-        "command/validate_telemetry": {
-          "description": "Validate local telemetry against a narrative spec command",
-          "files": [
-            {
-              "src": "opencode/commands/validate-telemetry.md",
-              "dest": "commands/validate-telemetry.md"
             }
           ]
         },
@@ -2944,48 +2647,12 @@
             }
           ]
         },
-        "command/fixes-create": {
-          "description": "Create fix note entry",
-          "files": [
-            {
-              "src": "opencode/commands/fixes-create.md",
-              "dest": "commands/fixes-create.md"
-            }
-          ]
-        },
-        "command/fixes-bump": {
-          "description": "Bump version across project files",
-          "files": [
-            {
-              "src": "opencode/commands/fixes-bump.md",
-              "dest": "commands/fixes-bump.md"
-            }
-          ]
-        },
         "command/ticket-create": {
           "description": "Interactive ticket creation wizard",
           "files": [
             {
               "src": "opencode/commands/ticket-create.md",
               "dest": "commands/ticket-create.md"
-            }
-          ]
-        },
-        "command/help": {
-          "description": "Unified help system for all commands and skills",
-          "files": [
-            {
-              "src": "opencode/commands/help.md",
-              "dest": "commands/help.md"
-            }
-          ]
-        },
-        "command/git-commit-helper": {
-          "description": "Create well-structured git commits",
-          "files": [
-            {
-              "src": "opencode/commands/git-commit-helper.md",
-              "dest": "commands/git-commit-helper.md"
             }
           ]
         },
@@ -3102,6 +2769,15 @@
             {
               "src": "opencode/skills/fixes-create/SKILL.md",
               "dest": "skills/fixes-create/SKILL.md"
+            }
+          ]
+        },
+        "command/standup": {
+          "description": "Generate daily standup entries",
+          "files": [
+            {
+              "src": "opencode/commands/standup.md",
+              "dest": "commands/standup.md"
             }
           ]
         }
@@ -3273,15 +2949,6 @@
             }
           ]
         },
-        "prompt/commit": {
-          "description": "Git commit workflow prompt",
-          "files": [
-            {
-              "src": "pi/agent/prompts/commit.md",
-              "dest": "prompts/commit.md"
-            }
-          ]
-        },
         "prompt/create-plan": {
           "description": "Create implementation plans prompt",
           "files": [
@@ -3291,39 +2958,12 @@
             }
           ]
         },
-        "prompt/debug": {
-          "description": "Debugging investigation prompt",
-          "files": [
-            {
-              "src": "pi/agent/prompts/debug.md",
-              "dest": "prompts/debug.md"
-            }
-          ]
-        },
         "prompt/implement-plan": {
           "description": "Execute an approved plan prompt",
           "files": [
             {
               "src": "pi/agent/prompts/implement-plan.md",
               "dest": "prompts/implement-plan.md"
-            }
-          ]
-        },
-        "prompt/init-harness": {
-          "description": "Initialize harness in a new repository prompt",
-          "files": [
-            {
-              "src": "pi/agent/prompts/init-harness.md",
-              "dest": "prompts/init-harness.md"
-            }
-          ]
-        },
-        "prompt/research-codebase": {
-          "description": "Comprehensive codebase research prompt",
-          "files": [
-            {
-              "src": "pi/agent/prompts/research-codebase.md",
-              "dest": "prompts/research-codebase.md"
             }
           ]
         },
@@ -3781,42 +3421,6 @@
             }
           ]
         },
-        "prompt/fixes-create": {
-          "description": "Create fix note entry prompt",
-          "files": [
-            {
-              "src": "pi/agent/prompts/fixes-create.md",
-              "dest": "prompts/fixes-create.md"
-            }
-          ]
-        },
-        "prompt/fixes-bump": {
-          "description": "Bump version across project files prompt",
-          "files": [
-            {
-              "src": "pi/agent/prompts/fixes-bump.md",
-              "dest": "prompts/fixes-bump.md"
-            }
-          ]
-        },
-        "prompt/git-commit-helper": {
-          "description": "Create well-structured git commits",
-          "files": [
-            {
-              "src": "pi/agent/prompts/git-commit-helper.md",
-              "dest": "prompts/git-commit-helper.md"
-            }
-          ]
-        },
-        "prompt/pr-description-generator": {
-          "description": "Generate comprehensive PR descriptions",
-          "files": [
-            {
-              "src": "pi/agent/prompts/pr-description-generator.md",
-              "dest": "prompts/pr-description-generator.md"
-            }
-          ]
-        },
         "skill/fixes-manager": {
           "description": "Cross-project fix/release notes and version manager. Creates, updates, bumps, validates, and syncs fix notes for WOMONO, WOW, OPT.",
           "files": [
@@ -4067,6 +3671,24 @@
             {
               "src": "pi/agent/extensions/web-access/youtube-extract.ts",
               "dest": "extensions/web-access/youtube-extract.ts"
+            }
+          ]
+        },
+        "prompt/ticket-create": {
+          "description": "ticket-create command",
+          "files": [
+            {
+              "src": "pi/agent/prompts/ticket-create.md",
+              "dest": "prompts/ticket-create.md"
+            }
+          ]
+        },
+        "prompt/standup": {
+          "description": "Generate daily standup entries",
+          "files": [
+            {
+              "src": "pi/agent/prompts/standup.md",
+              "dest": "prompts/standup.md"
             }
           ]
         }
@@ -4797,60 +4419,6 @@
             }
           ]
         },
-        "prompt/fixes-create": {
-          "description": "Create fix note entry prompt",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/fixes-create.md",
-              "dest": "prompts/fixes-create.md"
-            }
-          ]
-        },
-        "prompt/fixes-bump": {
-          "description": "Bump version across project files prompt",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/fixes-bump.md",
-              "dest": "prompts/fixes-bump.md"
-            }
-          ]
-        },
-        "prompt/commit": {
-          "description": "Create structured git commits",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/commit.md",
-              "dest": "prompts/commit.md"
-            }
-          ]
-        },
-        "prompt/debug": {
-          "description": "Debug issues during testing",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/debug.md",
-              "dest": "prompts/debug.md"
-            }
-          ]
-        },
-        "prompt/git-commit-helper": {
-          "description": "Create well-structured git commits",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/git-commit-helper.md",
-              "dest": "prompts/git-commit-helper.md"
-            }
-          ]
-        },
-        "prompt/pr-description-generator": {
-          "description": "Generate comprehensive PR descriptions",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/pr-description-generator.md",
-              "dest": "prompts/pr-description-generator.md"
-            }
-          ]
-        },
         "prompt/create-plan": {
           "description": "Create Plan prompt",
           "files": [
@@ -4866,24 +4434,6 @@
             {
               "src": "wocode/agent/prompts/implement-plan.md",
               "dest": "prompts/implement-plan.md"
-            }
-          ]
-        },
-        "prompt/init-harness": {
-          "description": "Initialize Harness prompt",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/init-harness.md",
-              "dest": "prompts/init-harness.md"
-            }
-          ]
-        },
-        "prompt/research-codebase": {
-          "description": "Research Codebase prompt",
-          "files": [
-            {
-              "src": "wocode/agent/prompts/research-codebase.md",
-              "dest": "prompts/research-codebase.md"
             }
           ]
         },
@@ -5009,6 +4559,24 @@
             {
               "src": "wocode/agent/skills/fixes-create/SKILL.md",
               "dest": "skills/fixes-create/SKILL.md"
+            }
+          ]
+        },
+        "prompt/ticket-create": {
+          "description": "ticket-create command",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/ticket-create.md",
+              "dest": "prompts/ticket-create.md"
+            }
+          ]
+        },
+        "prompt/standup": {
+          "description": "Generate daily standup entries",
+          "files": [
+            {
+              "src": "wocode/agent/prompts/standup.md",
+              "dest": "prompts/standup.md"
             }
           ]
         }
