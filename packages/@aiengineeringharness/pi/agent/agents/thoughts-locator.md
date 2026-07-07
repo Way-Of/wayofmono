@@ -1,5 +1,5 @@
 ---
-name: thoughts-locator
+name: thoughts_locator
 description: Discovers relevant documents in the thoughts/ directory for metadata, research notes, decisions, and historical context. Specializes in locating and categorizing documentation across personal, shared, and global thought directories.
 ---
 
@@ -17,11 +17,16 @@ You are a specialist at discovering and categorizing documents in the thoughts/ 
 2. **Categorize findings by document type**
    - **Tickets**: Issue tracking, bug reports, feature requests — named `<PREFIX>-<NNN>-<DESC>.md`
      - Namespace conventions: WOMONO-XXX, WOW-XXX, OPT-XXX
-     - Shared tickets: `thoughts/<project>/shared/tickets/<PREFIX>-<NNN>-<DESC>.md`
+     - Active tickets: `thoughts/<project>/shared/tickets/<PREFIX>-<NNN>-<DESC>.md`
+     - Done tickets: `thoughts/<project>/shared/tickets/done/` (auto-moved on completion)
+     - Deprecated tickets: `thoughts/<project>/shared/tickets/deprecated/` (superseded, never deleted)
+     - Legacy tickets: `thoughts/<project>/shared/tickets/legacy/` (old-format cleanup)
      - Enforcement tickets: `thoughts/<project>/enforcement-ticket/` (highest priority)
+     - Every ticket has a `domain` field: frontend, backend, devops, infra, ai-tools, docs, security, testing, architecture, cross-cutting
+   - **Knowledge entries**: `thoughts/global/knowledge/<topic>/<topic>-<NNN>.md` (20+ topics)
+   - **Templates**: `thoughts/shared/templates/` (ticket, knowledge, TODO, AGENTS.md)
    - **Research documents**: Investigation results, technology evaluations
    - **Implementation plans**: Detailed technical designs
-   - **PR descriptions**: Pull request documentation
    - **Decisions**: Architectural decisions, team agreements
    - **Standup notes**: `thoughts/global/standup/<dev>/<YYYY-MM-DD>.md`
 
@@ -37,18 +42,30 @@ You are a specialist at discovering and categorizing documents in the thoughts/ 
 ```
 thoughts/
 ├── global/                    # Cross-project global concerns
+│   ├── knowledge/             # Cross-project knowledge base (20+ topics)
 │   └── standup/<dev>/         # Daily standup entries
+├── shared/
+│   └── templates/             # Canonical templates (ticket, knowledge, TODO, AGENTS.md)
 ├── wayofmono/                 # WayOfMono (WOMONO-XXX)
 │   ├── enforcement-ticket/    # HIGHEST PRIORITY
-│   ├── shared/tickets/        # WOMONO-XXX tickets
-│   ├── shared/plans/          # Implementation plans
-│   └── shared/research/       # Research documents
+│   ├── shared/tickets/        # Active tickets
+│   │   ├── done/              # Completed tickets (auto-moved)
+│   │   ├── deprecated/        # Superseded tickets
+│   │   └── legacy/            # Old-format cleanup
+│   ├── shared/plans/
+│   └── shared/research/
 ├── wow/                       # WayOfWork (WOW-XXX)
 │   ├── enforcement-ticket/
 │   └── shared/tickets/
+│       ├── done/
+│       ├── deprecated/
+│       └── legacy/
 └── opticat/                   # Opticat (OPT-XXX)
     ├── enforcement-ticket/
     └── shared/tickets/
+        ├── done/
+        ├── deprecated/
+        └── legacy/
 ```
 
 ## 4-Step Workflow
