@@ -284,7 +284,7 @@ When the dynamic orchestration layer is stripped away, an `AGENTS.md` shifts fro
 
 ## Project Overview
 
-**ALLWAYS USE CHANGELOG.md**
+**ALWAYS USE CHANGELOG.md**
 
 **WayOfMono (Wo)** — Ultimate monorepo consolidation for high-performance coding agents.
 - **AI Engineering Harness**: 81 battle-tested skills, 6 subagents, workflows across 7 tools
@@ -350,6 +350,7 @@ The ticket system uses the following statuses that must be reflected in the CTO 
 Backlog → Planned → Ready → In Progress → Submitted for Review → In Review → Approved → Done
                                            ↘ Changes Requested → In Progress
                                            ↘ Reject → Blocked
+                                           ↘ Deprecated (never delete)
 ```
 
 | Status | Color | Description |
@@ -364,6 +365,7 @@ Backlog → Planned → Ready → In Progress → Submitted for Review → In Re
 | **Done** | Green | Completed and merged |
 | **Blocked** | Red | Blocked by dependency/issue |
 | **Changes Requested** | Orange | Review requested changes, back to work |
+| **Deprecated** | Gray | Superseded or abandoned — never deleted |
 
 The CTO Dashboard provides interactive status dropdowns in both ticket list and detail views. The Review Queue view shows tickets with "Submitted for Review" and "In Review" statuses. CTOs can approve, request changes, or reject tickets from the review queue.
 
@@ -542,15 +544,21 @@ The `thoughts_locator` and `thoughts_analyzer` agents have been updated to know:
 ```
 thoughts/
 ├── global/                    # Cross-project global concerns
-├── shared/                    # Cross-project templates only
-│   ├── tickets/ticket-template.md
-│   ├── plans/
-│   └── research/
+│   └── knowledge/             # Cross-project knowledge base
+├── shared/                    # Cross-project templates
+│   └── templates/
+│       ├── ticket-template.md
+│       ├── knowledge-entry.md
+│       ├── todo-template.md
+│       └── AGENTS.md.template
 ├── wayofmono/                 # WayOfMono (WOMONO-XXX)
 │   ├── docs/                  # Architecture, decisions, guides, references
 │   ├── global/                # Project-level cross-cutting concerns
 │   ├── enforcement-ticket/    # HIGHEST PRIORITY — overrides all other tickets
-│   ├── shared/tickets/        # WOMONO tickets
+│   ├── shared/tickets/        # WOMONO tickets (active)
+│   │   ├── done/              # Completed tickets
+│   │   ├── deprecated/        # Superseded tickets
+│   │   └── legacy/            # Old-format tickets
 │   ├── shared/plans/
 │   ├── shared/research/
 │   ├── zerwiz/                # Developer workspace
@@ -562,6 +570,9 @@ thoughts/
 │   ├── global/
 │   ├── enforcement-ticket/
 │   ├── shared/tickets/
+│   │   ├── done/
+│   │   ├── deprecated/
+│   │   └── legacy/
 │   ├── shared/plans/
 │   └── shared/research/
 └── opticat/                   # Opticat (OPT-XXX)
@@ -569,6 +580,9 @@ thoughts/
     ├── global/
     ├── enforcement-ticket/
     ├── shared/tickets/
+    │   ├── done/
+    │   ├── deprecated/
+    │   └── legacy/
     ├── shared/plans/
     └── shared/research/
 ```
@@ -587,7 +601,7 @@ thoughts/
 | WOW | wow | wow |
 | OPT | opticat | opticat |
 
-Template: `thoughts/shared/tickets/ticket-template.md`
+Template: `thoughts/shared/templates/ticket-template.md`
 
 ## Agent Instructions
 
@@ -614,7 +628,34 @@ Any AI agent working with this repo:
 Backlog → Planned → Ready → In Progress → Submitted for Review → In Review → Approved → Done
                                            ↘ Changes Requested → In Progress
                                            ↘ Reject → Blocked
+                                           ↘ Deprecated (never delete)
 ```
+
+### Archive System (NEVER DELETE)
+
+Tickets are NEVER deleted. Use archive tiers:
+
+| Tier | Directory | When |
+|------|-----------|------|
+| Active | `shared/tickets/` | Default |
+| Done | `shared/tickets/done/` | Auto-moved on completion |
+| Deprecated | `shared/tickets/deprecated/` | Superseded or abandoned |
+| Legacy | `shared/tickets/legacy/` | Old-format cleanup |
+
+### Domain Routing
+
+| Domain | Primary | Secondary |
+|--------|---------|-----------|
+| frontend | @zerwiz | @michael |
+| backend | @craig | @zerwiz |
+| devops | @craig | — |
+| infra | @craig | — |
+| ai-tools | @zerwiz | — |
+| docs | @zerwiz | @michael |
+| security | @craig | @zerwiz |
+| testing | @zerwiz | @craig |
+| architecture | @craig | @zerwiz |
+| cross-cutting | @zerwiz | @craig |
 
 ### Ticket Namespaces
 | Prefix | Project | Namespace | Folder |
@@ -669,21 +710,16 @@ Notification IDs: `review-<TICKET_ID>` (review queue), `update-<TICKET_ID>` (sta
 
 - `packages/@aiengineeringharness/manifest.json` — Source of truth for skills
 - `packages/@aiengineeringharness/install.ts` — Installer logic
-- `thoughts/wayofmono/shared/tickets/ticket-template.md` — Canonical ticket template
+- `thoughts/shared/templates/ticket-template.md` — Canonical ticket template
+- `thoughts/shared/templates/AGENTS.md.template` — Canonical AGENTS.md template
+- `thoughts/shared/templates/knowledge-entry.md` — Knowledge entry template
 - `thoughts/wayofmono/docs/best-practices/` — Production-ready standards
-- `docs/ai-coding-tools/` — **Authoritative reference for all 7 AI coding tools** (install, config, extensions, MCP, subagents, commands, capabilities). Each tool has a dedicated `.md` file verified against official docs (June 2026).
-- `docs/guides/` — **Installation, commands, skills, troubleshooting, project structure** guides for the harness and tools (getting-started, installation, commands, skills, wocode, wouser, dashboard, project-structure, troubleshooting)
+- `thoughts/global/knowledge/` — Cross-project knowledge base (20+ topics)
+- `docs/ai-coding-tools/` — **Authoritative reference for all 7 AI coding tools**
+- `docs/guides/` — **Installation, commands, skills, troubleshooting, project structure** guides
 - `README.md` — Complete installation guide, CLI reference, package list, dashboard, CI/CD
 - `CHANGELOG.md` — Full version history
-- `docs/fixes/` — **Release notes and bug fixes for harness, wocode, wouser, CTO Dashboard** (`ai-engineering-harness-fixes.md`, `wocode-fixes.md`, `wouser-fixes.md`, `cto-dashboard-fixes.md`). Read the relevant fixes file before working on any component — it's the authoritative per-component changelog.
-- `docs/extensions.md` — Extension system documentation
-- `docs/packages.md` — NPM package details
-- `docs/themes.md` — Theme system
-- `docs/keybindings.md` — Keybinding reference
-- `docs/sdk.md` — SDK documentation
-- `docs/models.md` — Model configuration
-- `docs/tui.md` — TUI components
-- `docs/prompt-templates.md` — Prompt template reference
+- `docs/fixes/` — **Release notes and bug fixes** for harness, wocode, wouser, CTO Dashboard
 
 ## Production-Ready Mandate
 
@@ -701,7 +737,10 @@ All code must be:
 |----------|---------|
 | `README.md` | Complete installation guide, CLI reference, package list, dashboard, CI/CD |
 | `CHANGELOG.md` | Full version history |
-| `docs/fixes/` | Release notes and bug fixes for harness, wocode, wouser, CTO Dashboard (`ai-engineering-harness-fixes.md`, `wocode-fixes.md`, `wouser-fixes.md`, `cto-dashboard-fixes.md`). Read before working on any component. |
+| `docs/fixes/` | Release notes and bug fixes for harness, wocode, wouser, CTO Dashboard |
+| `docs/ai-coding-tools/` | Authoritative reference for all 7 AI coding tools (verified June 2026) |
+| `docs/guides/` | Installation, commands, skills, troubleshooting, project structure guides |
+| `docs/best-practices/` | Production-ready standards |
 | `docs/extensions.md` | Extension system documentation |
 | `docs/packages.md` | NPM package details |
 | `docs/themes.md` | Theme system |
@@ -709,10 +748,9 @@ All code must be:
 | `docs/sdk.md` | SDK documentation |
 | `docs/models.md` | Model configuration |
 | `docs/tui.md` | TUI components |
-| `docs/prompt-templates.md` — Prompt template reference |
-| `docs/ai-coding-tools/` | Authoritative reference for all 7 AI coding tools (verified June 2026) |
-| `docs/guides/` | Installation, commands, skills, troubleshooting, project structure guides |
-| `docs/best-practices/` | Production-ready standards |
+| `docs/prompt-templates.md` | Prompt template reference |
+| `thoughts/shared/templates/` | Canonical templates (ticket, knowledge, TODO, AGENTS.md) |
+| `thoughts/global/knowledge/` | Cross-project knowledge base (20+ topics) |
 
 ## NPM Packages (13 packages under @wayofmono scope)
 
