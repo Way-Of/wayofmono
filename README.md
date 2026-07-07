@@ -1105,7 +1105,12 @@ ollama pull codellama:13b
 
 # Best quality (needs 32GB+ RAM)
 ollama pull qwen3.5:32b
+ ```
 ```
+
+### llama.cpp Docker (GPU-Optimized Alternative)
+
+For GPU-accelerated local inference with Docker containers, see the [llama.cpp Setup Guide for wo-ai](thoughts/global/docs/guides/llama-setup-for-wo-ai.md). Supports Qwen3.5 9B, 35B-A3B, and custom GGUF models with full GPU offload.
 
 **Configure a different model:**
 Edit `~/.wocode/agent/settings.json` or `.wo/settings.json`:

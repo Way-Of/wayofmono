@@ -140,7 +140,9 @@ Then configure in `models.json`:
 
 ### llama.cpp Docker (Local)
 
-No API key needed. Run llama.cpp Docker containers:
+No API key needed. See the [llama.cpp Setup Guide](https://github.com/Way-Of/wayofmono/tree/main/thoughts/global/docs/guides/llama-setup-for-wo-ai.md) for full setup instructions.
+
+Run llama.cpp Docker containers:
 
 ```bash
 # Start the Docker containers
