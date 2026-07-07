@@ -766,6 +766,15 @@
               "dest": "commands/standup.toml"
             }
           ]
+        },
+        "skill/sales": {
+          "description": "Sales knowledge, playbooks, and competitive intelligence",
+          "files": [
+            {
+              "src": "antigravity/skills/sales/SKILL.md",
+              "dest": "skills/sales/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -1446,6 +1455,15 @@
               "dest": "commands/standup.md"
             }
           ]
+        },
+        "skill/sales": {
+          "description": "Sales knowledge, playbooks, and competitive intelligence",
+          "files": [
+            {
+              "src": "claude/skills/sales/SKILL.md",
+              "dest": "skills/sales/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -2107,6 +2125,15 @@
             {
               "src": "codex/commands/standup.md",
               "dest": "commands/standup.md"
+            }
+          ]
+        },
+        "skill/sales": {
+          "description": "Sales knowledge, playbooks, and competitive intelligence",
+          "files": [
+            {
+              "src": "codex/skills/sales/SKILL.md",
+              "dest": "skills/sales/SKILL.md"
             }
           ]
         }
@@ -2778,6 +2805,15 @@
             {
               "src": "opencode/commands/standup.md",
               "dest": "commands/standup.md"
+            }
+          ]
+        },
+        "skill/sales": {
+          "description": "Sales knowledge, playbooks, and competitive intelligence",
+          "files": [
+            {
+              "src": "opencode/skills/sales/SKILL.md",
+              "dest": "skills/sales/SKILL.md"
             }
           ]
         }
@@ -3691,6 +3727,15 @@
               "dest": "prompts/standup.md"
             }
           ]
+        },
+        "skill/sales": {
+          "description": "Sales knowledge, playbooks, and competitive intelligence",
+          "files": [
+            {
+              "src": "pi/agent/skills/sales/SKILL.md",
+              "dest": "skills/sales/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -4577,6 +4622,15 @@
             {
               "src": "wocode/agent/prompts/standup.md",
               "dest": "prompts/standup.md"
+            }
+          ]
+        },
+        "skill/sales": {
+          "description": "Sales knowledge, playbooks, and competitive intelligence",
+          "files": [
+            {
+              "src": "wocode/agent/skills/sales/SKILL.md",
+              "dest": "skills/sales/SKILL.md"
             }
           ]
         }

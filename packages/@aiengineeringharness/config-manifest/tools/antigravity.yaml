@@ -426,3 +426,8 @@ components:
     files:
     - src: antigravity/commands/standup.toml
       dest: commands/standup.toml
+  skill/sales:
+    description: Sales knowledge, playbooks, and competitive intelligence
+    files:
+    - src: antigravity/skills/sales/SKILL.md
+      dest: skills/sales/SKILL.md

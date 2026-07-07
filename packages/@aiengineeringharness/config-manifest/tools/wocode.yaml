@@ -490,3 +490,8 @@ components:
     files:
     - src: wocode/agent/prompts/standup.md
       dest: prompts/standup.md
+  skill/sales:
+    description: Sales knowledge, playbooks, and competitive intelligence
+    files:
+    - src: wocode/agent/skills/sales/SKILL.md
+      dest: skills/sales/SKILL.md

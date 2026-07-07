@@ -385,3 +385,8 @@ components:
     files:
     - src: claude/commands/standup.md
       dest: commands/standup.md
+  skill/sales:
+    description: Sales knowledge, playbooks, and competitive intelligence
+    files:
+    - src: claude/skills/sales/SKILL.md
+      dest: skills/sales/SKILL.md
