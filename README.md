@@ -135,12 +135,12 @@ ai-harness --tool=all --yes
 
 **What happens (takes 30-60 seconds):**
 Creates config folders in your home directory:
-- `~/.config/opencode/` — OpenCode config + 91 skills
-- `~/.claude/` — Claude Code config + 90 skills
-- `~/.pi/agent/` — Pi config + 85 skills
-- `~/.codex/` — Codex config + 90 skills
-- `~/.antigravity/` — Antigravity config + 89 skills
-- `~/.wocode/` — Wo Coder config + 85 skills
+- `~/.config/opencode/` — OpenCode config + 50 skills
+- `~/.claude/` — Claude Code config + 50 skills
+- `~/.pi/agent/` — Pi config + 50 skills
+- `~/.codex/` — Codex config + 50 skills
+- `~/.antigravity/` — Antigravity config + 50 skills
+- `~/.wocode/` — Wo Coder config + 50 skills
 
 Each folder contains: `skills/`, `agents/`, `prompts/`, `commands/`, `settings.json`
 
@@ -401,10 +401,10 @@ your-project/
 │   ├── settings.json      # wocode settings
 │   └── models.json        # LLM provider config
 ├── .claude/
-│   ├── skills/            # 90 skills for Claude Code
+│   ├── skills/            # 50 skills for Claude Code
 │   └── settings.json
 ├── .config/opencode/
-│   ├── skills/            # 91 skills for OpenCode
+│   ├── skills/            # 50 skills for OpenCode
 │   └── opencode.json
 └── ... (other tools)
 ```
@@ -948,7 +948,7 @@ Opens at **http://localhost:6969**
 | Subagents | **6** |
 | Active developers | **4** (craig, tomas, andre, zerwiz) |
 | Active tickets | **29+** (WOMONO, WOW, OPT namespaces) |
-| Harness version | **1.7.15** |
+| Harness version | **1.7.16** |
 | Files in harness | **1,226** |
 | Files in docs | **173** |
 | Files in thoughts | **115** |
@@ -972,7 +972,7 @@ WayOfMono is built on an **Interface-Agnostic Philosophy** — core logic and to
 
 ```
 packages/@aiengineeringharness/     → ~1,100 files
-├── manifest.json                   # Source of truth (v1.7.15)
+├── manifest.json                   # Source of truth (v1.7.16)
 ├── install.ts                      # Deno CLI installer
 ├── setup.sh                        # GNU Stow installer
 ├── scripts/                        # 14 pipeline scripts
