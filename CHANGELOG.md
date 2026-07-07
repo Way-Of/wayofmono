@@ -2,6 +2,11 @@
 
 ## [1.7.17] - 2026-07-07
 
+### wo-ai v1.0.7 — Added llama.cpp Docker & LM Studio Providers
+
+- **New providers (WOMONO-165)**: Added `llama` and `lmstudio` as first-class providers in `@wayofmono/wo-ai`. 4 built-in llama.cpp Docker models (9B-32K, 4B-65K, 35B-16K, 9B-196K) and LM Studio support. Full documentation updated in README and provider docs.
+- **Published**: `@wayofmono/wo-ai@1.0.7` to npm.
+
 ### Harness (AI Engineering Harness v1.7.17) — Ticket Lifecycle, Knowledge Overhaul, AGENTS.md
 
 - **Ticket lifecycle system (WOMONO-162)**: Complete overhaul of ticket management across all tools:
