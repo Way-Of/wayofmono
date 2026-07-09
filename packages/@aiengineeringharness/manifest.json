@@ -775,6 +775,15 @@
               "dest": "skills/sales/SKILL.md"
             }
           ]
+        },
+        "skill/alliner-compliance-check": {
+          "description": "alliner-compliance-check skill — deep compliance validation for existing f-rr-d projects",
+          "files": [
+            {
+              "src": "antigravity/skills/alliner_compliance_check/SKILL.md",
+              "dest": "skills/alliner-compliance-check/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -1464,6 +1473,15 @@
               "dest": "skills/sales/SKILL.md"
             }
           ]
+        },
+        "skill/alliner-compliance-check": {
+          "description": "alliner-compliance-check skill — deep compliance validation for existing f-rr-d projects",
+          "files": [
+            {
+              "src": "claude/skills/alliner_compliance_check/SKILL.md",
+              "dest": "skills/alliner-compliance-check/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -2134,6 +2152,15 @@
             {
               "src": "codex/skills/sales/SKILL.md",
               "dest": "skills/sales/SKILL.md"
+            }
+          ]
+        },
+        "skill/alliner-compliance-check": {
+          "description": "alliner-compliance-check skill — deep compliance validation for existing f-rr-d projects",
+          "files": [
+            {
+              "src": "codex/skills/alliner_compliance_check/SKILL.md",
+              "dest": "skills/alliner-compliance-check/SKILL.md"
             }
           ]
         }
@@ -2814,6 +2841,15 @@
             {
               "src": "opencode/skills/sales/SKILL.md",
               "dest": "skills/sales/SKILL.md"
+            }
+          ]
+        },
+        "skill/alliner-compliance-check": {
+          "description": "alliner-compliance-check skill — deep compliance validation for existing f-rr-d projects",
+          "files": [
+            {
+              "src": "opencode/skills/alliner-compliance-check/SKILL.md",
+              "dest": "skills/alliner-compliance-check/SKILL.md"
             }
           ]
         }
@@ -3736,6 +3772,15 @@
               "dest": "skills/sales/SKILL.md"
             }
           ]
+        },
+        "skill/alliner-compliance-check": {
+          "description": "alliner-compliance-check skill — deep compliance validation for existing f-rr-d projects",
+          "files": [
+            {
+              "src": "pi/agent/skills/alliner-compliance-check/SKILL.md",
+              "dest": "skills/alliner-compliance-check/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -4631,6 +4676,15 @@
             {
               "src": "wocode/agent/skills/sales/SKILL.md",
               "dest": "skills/sales/SKILL.md"
+            }
+          ]
+        },
+        "skill/alliner-compliance-check": {
+          "description": "alliner-compliance-check skill — deep compliance validation for existing f-rr-d projects",
+          "files": [
+            {
+              "src": "wocode/agent/skills/alliner-compliance-check/SKILL.md",
+              "dest": "skills/alliner-compliance-check/SKILL.md"
             }
           ]
         }
