@@ -1,9 +1,0 @@
-name: docs-sync-updater
-description: ""Fetch latest documentation from all agent frontend sources and auto-update skills/agent configs""
-version: 1.0.0
-tools:
-  - [read
-  - write
-  - grep
-  - web_search
-  - web_fetch]
