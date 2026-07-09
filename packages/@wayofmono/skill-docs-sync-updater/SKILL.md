@@ -36,7 +36,7 @@ For each tool reference doc:
 2. **Parse latest info** — extract: install commands, built-in tools list, config format, MCP support, subagent system, slash commands, unique capabilities
 3. **Compare** against the current `docs/tools/ai-coding-tools/<tool>.md`
 4. **Update** the reference doc if anything changed (new tools, renamed flags, deprecated features, new capabilities)
-5. **Propagate** — if tool APIs changed, flag which skills/agents in `packages/@aiengineeringharness/<tool>/skills/` need updating too
+5. **Propagate** — if tool APIs changed, flag which skills/agents in `aiharness/<tool>/skills/` need updating too
 
 ## Commands
 
@@ -57,7 +57,7 @@ If the canonical source at `docs/skills/docs-sync-updater/SKILL.md` is updated, 
 - **No changes needed** — do nothing (reference doc is current)
 - **Non-breaking changes** (new tools, new flags, new capabilities) — auto-update the `.md` file
 - **Breaking changes** (deprecated tools, removed flags, renamed binaries) — update reference doc AND create WOMONO tickets via Ticket Manager for affected skills/agents
-- **Config format changes** — update the reference doc examples AND regenerate relevant `packages/@aiengineeringharness/<tool>/` configs
+- **Config format changes** — update the reference doc examples AND regenerate relevant `aiharness/<tool>/` configs
 
 ## Example Session
 

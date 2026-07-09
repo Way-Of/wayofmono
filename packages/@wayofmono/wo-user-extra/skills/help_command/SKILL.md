@@ -68,11 +68,11 @@ Agents can invoke `/help` autonomously when:
 
 ```
 # From repo root (any tool):
-deno run -A packages/@aiengineeringharness/codex/skills/help_command/help.ts
-deno run -A packages/@aiengineeringharness/codex/skills/help_command/help.ts skills
-deno run -A packages/@aiengineeringharness/codex/skills/help_command/help.ts search ticket
-deno run -A packages/@aiengineeringharness/codex/skills/help_command/help.ts --markdown onboarding
-deno run -A packages/@aiengineeringharness/codex/skills/help_command/help.ts --json skills
+deno run -A aiharness/codex/skills/help_command/help.ts
+deno run -A aiharness/codex/skills/help_command/help.ts skills
+deno run -A aiharness/codex/skills/help_command/help.ts search ticket
+deno run -A aiharness/codex/skills/help_command/help.ts --markdown onboarding
+deno run -A aiharness/codex/skills/help_command/help.ts --json skills
 ```
 
 ## Edge Cases
