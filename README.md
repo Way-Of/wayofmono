@@ -66,17 +66,17 @@ The `ai-harness` command is your main interface for managing all tools and skill
 
 **macOS / Linux:**
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --install-cli
 ```
 
 **Windows (PowerShell):**
 ```powershell
-deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+deno run --reload -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --install-cli
 ```
 
 **Alternative (PowerShell wrapper — easier for Windows):**
 ```powershell
-iwr https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ps1 -useb -OutFile "$env:TEMP\ai-harness-install.ps1"; & "$env:TEMP\ai-harness-install.ps1" -InstallCli
+iwr https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ps1 -useb -OutFile "$env:TEMP\ai-harness-install.ps1"; & "$env:TEMP\ai-harness-install.ps1" -InstallCli
 ```
 > Downloads a wrapper script that provides a friendlier interface. `-useb` = UseBasicParsing.
 
@@ -86,12 +86,12 @@ Deno caches remote scripts after the first download. To force re-download of the
 
 **macOS / Linux / Windows (bash with Deno):**
 ```bash
-deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+deno run --reload -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --install-cli
 ```
 
 **Windows (PowerShell wrapper):**
 ```powershell
-iwr https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ps1 -useb -OutFile "$env:TEMP\ai-harness-install.ps1"; & "$env:TEMP\ai-harness-install.ps1" -InstallCli
+iwr https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ps1 -useb -OutFile "$env:TEMP\ai-harness-install.ps1"; & "$env:TEMP\ai-harness-install.ps1" -InstallCli
 ```
 
 - Always use `--reload` on Windows (required even on first install)
@@ -536,7 +536,7 @@ ai-harness --update --dry-run
 
 ```bash
 # Option 1: Full refresh from source
-deno run --reload -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --update
+deno run --reload -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --update
 ```
 
 ```bash
@@ -545,7 +545,7 @@ ai-harness --uninstall=all --yes
 ```
 
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --install-cli
 ```
 
 ```bash
@@ -630,7 +630,7 @@ ai-harness --purge=all --dry-run
 **Syncs canonical skills from the harness to all 6 tool directories.**
 
 **When to use:**
-- After editing skills in `packages/@aiengineeringharness/` (the source of truth)
+- After editing skills in `aiharness/` (the source of truth)
 - To verify all tools have the latest skill versions
 - Part of the `--update` process (runs automatically)
 
@@ -755,7 +755,7 @@ ai-harness --mode=repo --dest=~/.ai-engineering-harness
 **After getting instructions, run:**
 ```bash
 # Example: install all tools via stow
-./packages/@aiengineeringharness/setup.sh all
+./setup.sh all
 ```
 
 ### Quick Reference: All PowerShell Flags
@@ -846,7 +846,7 @@ brew install stow
 ```
 
 ```bash
-./packages/@aiengineeringharness/setup.sh all
+./setup.sh all
 ```
 
 ### Step 4: Install CTO Dashboard (Optional)
@@ -970,7 +970,7 @@ WayOfMono is built on an **Interface-Agnostic Philosophy** — core logic and to
 ### What's Inside
 
 ```
-packages/@aiengineeringharness/     → ~1,100 files
+aiharness/     → ~1,100 files
 ├── manifest.json                   # Source of truth (v1.7.17)
 ├── install.ts                      # Deno CLI installer
 ├── setup.sh                        # GNU Stow installer
@@ -1153,7 +1153,7 @@ The `--init` command creates a `.wo/` folder in your project:
 
 ```bash
 # Example for installing all tools:
-deno run -A --reload https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=all --yes
+deno run -A --reload https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --tool=all --yes
 ```
 
 ### One-Command Agent Install (CI/scripts/one-time)
@@ -1162,70 +1162,70 @@ Run any of these directly without installing the CLI first — pick one per need
 
 **Install all tools:**
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=all --yes
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --tool=all --yes
 ```
 
 **Install specific tool:**
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --tool=claude --yes
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --tool=claude --yes
 ```
 
 **Update harness:**
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --update
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --update
 ```
 
 **Sync documentation:**
 
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --sync-docs
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --sync-docs
 ```
 
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --sync-docs --check
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --sync-docs --check
 ```
 
 **Validate & maintenance:**
 
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --check
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --check
 ```
 
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --compliance
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --compliance
 ```
 
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --prune
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --prune
 ```
 
 **Report & import:**
 
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --report-skills
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --report-skills
 ```
 
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --import-ref
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --import-ref
 ```
 
 **Repo mode & uninstall:**
 
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --mode=repo
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --mode=repo
 ```
 
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --uninstall=claude
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --uninstall=claude
 ```
 
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --uninstall=all
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --uninstall=all
 ```
 
 **Help:**
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --help
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --help
 ```
 
 ### Global CLI Install (Recommended for repeated use)
@@ -1238,7 +1238,7 @@ deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@ai
 
 **Step 1: Install CLI** (run once)
 ```bash
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --install-cli
 ```
 > Creates `ai-harness` binary in `~/.deno/bin/`. Adds to PATH automatically.
 
@@ -1437,42 +1437,42 @@ ai-harness --tool=claude --local --yes
 Each command separate copy-paste:
 
 ```bash
-./packages/@aiengineeringharness/setup.sh all
+./setup.sh all
 ```
 
 ```bash
-./packages/@aiengineeringharness/setup.sh claude
+./setup.sh claude
 ```
 
 ```bash
-./packages/@aiengineeringharness/setup.sh opencode
+./setup.sh opencode
 ```
 
 ```bash
 ```
 
 ```bash
-./packages/@aiengineeringharness/setup.sh pi
+./setup.sh pi
 ```
 
 ```bash
-./packages/@aiengineeringharness/setup.sh wocode
+./setup.sh wocode
 ```
 
 ```bash
-./packages/@aiengineeringharness/setup.sh antigravity
+./setup.sh antigravity
 ```
 
 ```bash
-./packages/@aiengineeringharness/setup.sh --restow
+./setup.sh --restow
 ```
 
 ```bash
-./packages/@aiengineeringharness/setup.sh --delete
+./setup.sh --delete
 ```
 
 ```bash
-./packages/@aiengineeringharness/setup.sh --dry-run
+./setup.sh --dry-run
 ```
 
 ## 💻 Coding Assistant (wocode)
@@ -2105,19 +2105,19 @@ ai-harness --sync-docs --check
 
 ```bash
 # Validate all skill files for correct frontmatter, naming, format
-deno run -A packages/@aiengineeringharness/scripts/compliance-check.ts
+deno run -A scripts/compliance-check.ts
 ```
 > Runs in CI. Checks: frontmatter fields, snake_case naming, allowed-tools casing, file structure.
 
 ```bash
 # Migrate ticket namespaces (e.g., PROJ-XXX → WOMONO-XXX)
-deno run -A packages/@aiengineeringharness/scripts/migrate-tickets.ts
+deno run -A scripts/migrate-tickets.ts
 ```
 > One-time migration script. Updates ticket filenames and frontmatter.
 
 ```bash
 # Import reference skills from docs/ to all tool platforms
-deno run -A packages/@aiengineeringharness/scripts/import-ref-skills.ts
+deno run -A scripts/import-ref-skills.ts
 ```
 > Converts documented skills in `docs/skills/` to proper format for each tool.
 
@@ -2129,10 +2129,10 @@ npx tsx scripts/stats.ts
 
 | Tool | Location | Purpose |
 |------|----------|---------|
-| `docs-sync.ts` | `packages/@aiengineeringharness/scripts/` | Sync canonical skills → per-tool copies |
-| `compliance-check.ts` | `packages/@aiengineeringharness/scripts/` | Validate frontmatter & naming conventions |
-| `migrate-tickets.ts` | `packages/@aiengineeringharness/scripts/` | Migrate ticket namespaces (PROJ → WOMONO) |
-| `import-ref-skills.ts` | `packages/@aiengineeringharness/scripts/` | Import reference skills from docs/ |
+| `docs-sync.ts` | `scripts/` | Sync canonical skills → per-tool copies |
+| `compliance-check.ts` | `scripts/` | Validate frontmatter & naming conventions |
+| `migrate-tickets.ts` | `scripts/` | Migrate ticket namespaces (PROJ → WOMONO) |
+| `import-ref-skills.ts` | `scripts/` | Import reference skills from docs/ |
 | `stats.ts` | `scripts/stats.ts` | Count lines per package |
 
 ## 🧠 f-rr-d Context Engineering (förråd)
@@ -2341,7 +2341,7 @@ jobs:
         with:
           deno-version: v2.x
       - name: Check canonical skills are in sync
-        run: deno run -A packages/@aiengineeringharness/scripts/docs-sync.ts --check | grep -q "Would sync: 0" || (echo "Canonical skills out of sync. Run: deno run -A packages/@aiengineeringharness/scripts/docs-sync.ts" && exit 1)
+        run: deno run -A scripts/docs-sync.ts --check | grep -q "Would sync: 0" || (echo "Canonical skills out of sync. Run: deno run -A scripts/docs-sync.ts" && exit 1)
       - name: Build
         run: pnpm -r build
       - name: Typecheck
