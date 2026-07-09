@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-const manifestPath = '/home/zerwiz/wayofmono/packages/@aiengineeringharness/manifest.json';
+const manifestPath = '/home/zerwiz/CodeP/aiharness/manifest.json';
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
 
 // Fix pi skill paths: they should use pi/agent/extensions/skills/ not pi/skills/

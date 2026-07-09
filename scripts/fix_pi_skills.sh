@@ -5,7 +5,7 @@ set -e
 # Fixes Pi skill frontmatter formatting issues to match official Pi specification
 # allowed-tools should be space-delimited, NOT YAML array
 
-PI_SKILLS_DIR="/home/zerwiz/wayofmono/packages/@aiengineeringharness/pi/agent/skills"
+PI_SKILLS_DIR="/home/zerwiz/CodeP/aiharness/pi/agent/skills"
 
 echo "🔧 Pi Skill Frontmatter Fixer Script (Pi Official Spec)"
 echo "======================================================"

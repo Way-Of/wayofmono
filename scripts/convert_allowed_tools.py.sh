@@ -2,7 +2,7 @@
 set -e
 
 # Convert all Pi skill allowed-tools from YAML array to space-delimited format
-PI_SKILLS_DIR="/home/zerwiz/wayofmono/packages/@aiengineeringharness/pi/agent/skills"
+PI_SKILLS_DIR="/home/zerwiz/CodeP/aiharness/pi/agent/skills"
 
 echo "🔄 Converting allowed-tools to space-delimited format for all Pi skills..."
 
