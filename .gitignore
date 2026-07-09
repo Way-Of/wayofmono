@@ -69,3 +69,4 @@ models.json
 **/models.json
 deno.lock
 homepage/
+.devbox/
