@@ -663,7 +663,7 @@ export class DefaultResourceLoader implements ResourceLoader {
 
 		// Also check AI Engineering Harness directory (source location)
 		// This ensures resources from the harness source are loaded when running from the repo
-		// From dist/core, need to go up 5 levels: core -> dist -> wo-coding-agent -> @wayofmono -> packages -> repo root
+		// Harness extracted to github.com/Way-Of/aiharness — check user's config dir instead
 		const harnessDir = resolve(__dirname, "../../../../../packages/@aiengineeringharness/wocode");
 		if (existsSync(harnessDir)) {
 			const originalAgentRootsCount = agentRoots.length;
