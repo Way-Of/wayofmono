@@ -16,6 +16,11 @@ Initialize the AI Engineering Harness in this repository.
 5. Creates personal thoughts directories for developers
 6. Adds `thoughts/` to `.gitignore` to prevent accidental commits
 
+**For existing projects (re-run):**
+- Validates the project against current standards (folder structure, ticket templates, AGENTS.md)
+- Auto-fixes missing directories and templates
+- Reports compliance status and asks before making changes
+
 **Client vs Internal Projects:**
 - **Internal Way-Of projects** get full AGENTS.md with GitHub workflow, all agents, and internal references
 - **Client projects** (when `--frrd-remote` is provided) get a sanitized AGENTS.md — no internal Way-Of references, no GitHub Skills Agent Directory
@@ -89,12 +94,54 @@ Never force-push.
 
 ## Instructions
 
-### Step 1: Define the Project
+### Step 1: Pull/Clone f-rr-d First
 
-Ask the user:
-1. What is the project name? (e.g., "WayOfMono", "Opticat", "WayOfWork")
-2. What slug should be used? (e.g., "wayofmono", "opticat", "wow")
-3. Is this an **internal** Way-Of project or a **client** project?
+Before asking the user anything about the project, ensure f-rr-d is available and up-to-date. This lets you investigate existing projects.
+
+Set `F_RRD_URL`:
+- Use `--frrd-remote <url>` if provided (client project)
+- Otherwise use `https://github.com/Way-Of/f-rr-d.git` (default, internal project)
+
+**If `thoughts/` does not exist**, clone the f-rr-d repo:
+```bash
+git clone ${F_RRD_URL} thoughts/ || { rm -rf thoughts/; echo "ERROR: git clone failed — thoughts/ has been cleaned up."; exit 1; }
+```
+After cloning, fetch all branches and set up tracking:
+```bash
+git -C thoughts/ fetch --all
+git -C thoughts/ branch -a
+```
+
+**If `thoughts/` already exists**, check its remote origin:
+- If it points to the expected `F_RRD_URL`: pull the latest:
+  ```bash
+  git -C thoughts/ pull --ff-only
+  ```
+  If pull fails (diverged):
+  ```bash
+  git -C thoughts/ pull --rebase
+  ```
+- If it points to a different repo or is not a repo: ask the user whether to back up and clone, skip, or merge manually. If cloning, back up the existing directory first, then remove it and clone fresh.
+
+If the clone fails at any point, remove the partially-created `thoughts/` directory and exit with an error message.
+
+**Append-only reminder**: Once cloned, only create new files. Never delete, rename, move, or modify existing content inside `thoughts/`.
+
+### Step 2: Investigate Existing Projects & Define the Project
+
+After f-rr-d is up-to-date, list existing projects to see what's already there:
+
+```bash
+ls -d thoughts/*/ 2>/dev/null | xargs -n1 basename | sort
+```
+
+This shows all project slugs currently in f-rr-d (e.g., `wayofmono`, `wow`, `opticat`, `wayofteams`).
+
+**Ask the user:**
+1. Does the project already exist in f-rr-d? (show the list of existing slugs)
+   - If **yes**: ask which existing slug to use. Skip name/slug questions.
+   - If **no**: ask for new project name and slug.
+2. Is this an **internal** Way-Of project or a **client** project?
 
 Set `PROJECT_NAME` to the project name and `PROJECT_SLUG` to the slug. Set `IS_CLIENT` to `true` if a client project.
 
@@ -115,14 +162,74 @@ cat > .wo/settings.json <<EOF
 EOF
 ```
 
-Accept any value for project name and slug — multiple projects can have similar names. Do not validate uniqueness.
+If the project already exists in f-rr-d, skip creating the project subfolder (Step 4) — it's already there. Instead, run **Step 2b** to check compliance and update if needed.
 
-### Step 2: Generate Project Memory
+### Step 2b: Compliance Check for Existing Projects
+
+When the project already exists in f-rr-d, validate it against current standards and fix any gaps. This handles projects initialized with older harness versions.
+
+**Run these checks:**
+
+#### 1. Required Structure Check
+```bash
+for dir in shared/tickets shared/plans shared/research docs enforcement-ticket; do
+  [ -d "thoughts/${PROJECT_SLUG}/${dir}" ] || echo "MISSING: ${dir}/"
+done
+```
+If any required directories are missing, create them.
+
+#### 2. Ticket Template Check
+```bash
+ls thoughts/${PROJECT_SLUG}/shared/tickets/ticket-template.md 2>/dev/null || echo "MISSING: ticket-template.md"
+ls thoughts/shared/templates/ticket-template.md 2>/dev/null || echo "MISSING: shared/templates/ticket-template.md"
+```
+If the ticket template is missing or outdated, copy from the canonical location:
+```bash
+cp thoughts/shared/templates/ticket-template.md thoughts/${PROJECT_SLUG}/shared/tickets/
+```
+
+#### 3. AGENTS.md Check
+```bash
+ls thoughts/${PROJECT_SLUG}/AGENTS.md 2>/dev/null || echo "MISSING: AGENTS.md"
+```
+If missing, generate it (same logic as Step 3).
+
+#### 4. Developer Workspace Check (internal projects only)
+```bash
+for dev in zerwiz tomas craig andre; do
+  [ -d "thoughts/${PROJECT_SLUG}/${dev}" ] || echo "MISSING: ${dev}/ workspace"
+done
+```
+Create missing developer workspaces.
+
+#### 5. Enforcement Ticket Directory
+```bash
+ls thoughts/${PROJECT_SLUG}/enforcement-ticket/ 2>/dev/null || echo "MISSING: enforcement-ticket/"
+```
+Create if missing.
+
+#### 6. TODO.md Check
+```bash
+ls thoughts/${PROJECT_SLUG}/TODO.md 2>/dev/null || echo "MISSING: TODO.md"
+```
+Create a basic TODO.md if missing.
+
+**After checks complete:**
+- Report all findings to the user
+- Auto-fix what can be auto-fixed (missing dirs, missing templates)
+- Ask user before fixing anything that requires decisions (AGENTS.md content, developer names)
+- If the `alliner-compliance-check` skill is available, delegate to it for deeper validation
+
+**If no issues found**, report: "Project is compliant with current standards."
+
+Then proceed to Step 3 (Generate/Update Project Memory).
+
+### Step 3: Generate Project Memory
 
 Check if the project memory file already exists. If it does, keep it and skip this step.
 If not, run the tool's `/init` command. If this tool has no `/init`, create the project memory file manually with the standard format for this tool.
 
-#### Step 2a: Discover and Append AI Engineering Harness Skills, Commands & Agents Reference
+#### Step 3a: Discover and Append AI Engineering Harness Skills, Commands & Agents Reference
 
 After the project memory file is created (or if it already exists), append a reference section listing all skills, commands, and agents installed by the AI Engineering Harness.
 
@@ -234,30 +341,9 @@ All GitHub operations follow this sequence:
 
 This ensures agents always use the correct skill for each step and never resort to raw commands. **Skip this entire section for client projects.**
 
-### Step 3: Clone the f-rr-d Repo
-
-Set `F_RRD_URL` to the URL determined in Step 1 (from `--frrd-remote` or default `https://github.com/Way-Of/f-rr-d.git`).
-
-Run these checks in order:
-
-1. If `thoughts/` does not exist:
-   ```bash
-   git clone ${F_RRD_URL} thoughts/ || { rm -rf thoughts/; echo "ERROR: git clone failed — thoughts/ has been cleaned up."; exit 1; }
-   ```
-   After cloning, fetch all branches and set up tracking:
-   ```bash
-   git -C thoughts/ fetch --all
-   git -C thoughts/ branch -a
-   ```
-2. If `thoughts/` exists, check its remote origin:
-   - If it points to the expected `F_RRD_URL`: run `git -C thoughts/ pull --ff-only`
-   - If it points to a different repo or is not a repo: ask the user whether to back up and clone, skip, or merge manually, then execute their choice. If cloning, back up the existing directory first, then remove it and clone fresh.
-
-If the clone fails at any point, remove the partially-created `thoughts/` directory and exit with an error message.
-
-**Append-only reminder**: Once cloned, only create new files. Never delete, rename, move, or modify existing content inside `thoughts/`.
-
 ### Step 4: Create the Project Subfolder — Match Existing f-rr-d Structure
+
+**Skip this step if the project already exists in f-rr-d** — the folder structure is already in place. Only create if it's a new project.
 
 First, examine the existing f-rr-d structure to understand the pattern. Look at existing project folders in the cloned repo for reference. The canonical structure is:
 
