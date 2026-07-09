@@ -6,4 +6,4 @@ allowed-tools: read, write, bash, grep, glob
 
 # /fixes-bump — Bump the version across all project files
 
-Activates the [fixes-manager](skills/fixes-manager/SKILL.md) skill to perform this operation.
+Activates the [fixes-manager](skills/fixes_manager/SKILL.md) skill to perform this operation.
