@@ -45,16 +45,19 @@ Tip: You can also invoke this command with a ticket file directly: `/create_plan
 ### Step 1: Context Gathering & Initial Analysis
 
 1. **read all mentioned files immediately and FULLY**
-2. **Delegate to research agents** (e.g., `codebase_investigator`, `codebase_locator`, `codebase_pattern_finder`) to gather context.
-3. **read all files identified by research tasks**
-4. **Present informed understanding with focused questions**
+2. **Delegate to `scout`** for rapid initial codebase reconnaissance — faster than deep investigation when you need to orient yourself.
+3. **Delegate to research agents** (e.g., `codebase_investigator`, `codebase_locator`, `codebase_pattern_finder`) for deeper context gathering.
+4. **read all files identified by research tasks**
+5. **Present informed understanding with focused questions**
 
 ### Step 2: Research & Discovery
 
 1. **Verify any corrections from the user**
 2. **Create a research todo list** using TodoWrite
-3. **Spawn parallel sub-tasks** for comprehensive research
-4. **Present findings and design options**
+3. **Delegate to `thoughts_locator`** to discover existing tickets, plans, research, and docs in `thoughts/` relevant to the task.
+4. **Delegate to `thoughts_analyzer`** to extract high-value insights and decisions from the located documents.
+5. **Spawn parallel sub-tasks** for comprehensive research
+6. **Present findings and design options**
 
 ### Stress-testing the plan
 

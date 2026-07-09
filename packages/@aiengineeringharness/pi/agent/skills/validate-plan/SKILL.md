@@ -22,7 +22,9 @@ When invoked:
 
 1. **read the implementation plan** completely
 2. **Identify what should have changed**
-3. **Delegate to research agents** (e.g., `codebase_investigator`, `codebase_locator`) to verify implementation details and find modified files.
+3. **Delegate to `thoughts_locator`** to verify all referenced tickets, plans, and docs exist in `thoughts/`.
+4. **Delegate to `scout`** for rapid verification that expected file structure and dependencies match the plan.
+5. **Delegate to research agents** (e.g., `codebase_investigator`, `codebase_locator`) to verify implementation details and find modified files.
 
 ### Step 2: Systematic Validation
 
@@ -32,7 +34,16 @@ For each phase:
 3. **Assess manual criteria** - List what needs manual testing
 4. **Think about edge cases**
 
-### Step 3: Generate Validation Report
+### Step 3: Code Review via `reviewer`
+
+Delegate to the `reviewer` agent for an automated code audit:
+- Reviews implemented code against the plan's intent
+- Identifies deviations, quality issues, and potential regressions
+- Produces structured audit report
+
+Address any findings before proceeding.
+
+### Step 4: Generate Validation Report
 
 ```markdown
 ## Validation Report: [Plan Name]

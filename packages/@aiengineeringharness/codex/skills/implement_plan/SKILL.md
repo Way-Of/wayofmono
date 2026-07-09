@@ -57,7 +57,16 @@ Use technology-appropriate commands:
 **Rust**: `cargo test`, `cargo clippy`, `cargo build`
 **Make-based**: `make test`, `make lint`, `make build`
 
-### 2. Fix Issues and Update Progress
+### 2. Delegate Review to `reviewer`
+
+After success criteria pass, **delegate to `reviewer`** agent to perform a thorough code audit:
+- Reviews code against the plan's intent
+- Identifies deviations, potential issues, and quality gaps
+- Writes audit report for the phase
+
+Address any issues found by `reviewer` before moving to the next phase.
+
+### 3. Fix Issues and Update Progress
 
 - Address any failures before moving to the next phase
 - Update checkboxes in the plan file using the edit tool
@@ -66,8 +75,9 @@ Use technology-appropriate commands:
 ## If You Get Stuck
 
 1. **Investigate First** - read all relevant code completely
-2. **Delegate to research agents** (e.g., `codebase_investigator`, `codebase_locator`, `codebase_pattern_finder`) for targeted help
-3. **Present Issues Clearly** - Don't guess, ask for clarification
+2. **Delegate to `scout`** for rapid recon of the code area you're stuck on
+3. **Delegate to research agents** (e.g., `codebase_investigator`, `codebase_locator`, `codebase_pattern_finder`) for deeper targeted help
+4. **Present Issues Clearly** - Don't guess, ask for clarification
 
 ## Resuming Work
 
