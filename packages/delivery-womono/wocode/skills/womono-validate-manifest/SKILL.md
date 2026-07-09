@@ -15,10 +15,10 @@ Never use string replacement on `manifest.json`. For any JSON manipulation, writ
 
 ```python
 import json
-with open('packages/@aiengineeringharness/manifest.json') as f:
+with open('manifest.json') as f:
     data = json.load(f)
 # inspect or modify
-with open('packages/@aiengineeringharness/manifest.json', 'w') as f:
+with open('manifest.json', 'w') as f:
     json.dump(data, f, indent=2, ensure_ascii=False)
 ```
 

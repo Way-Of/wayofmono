@@ -14,17 +14,17 @@ Load this skill when beginning any new task, feature, or refactor. It references
 When working on WOMONO harness code, know these systems:
 
 ### Canonical Skill Architecture
-Skills should follow the config-manifest pattern: `skills/<name>/SKILL.md` (canonical body, no frontmatter) + `compile.py` + `tools/<tool>.yaml` → per-tool copies. Reference `packages/@aiengineeringharness/skills/init-harness/` and `skills/standup/`.
+Skills should follow the config-manifest pattern: `skills/<name>/SKILL.md` (canonical body, no frontmatter) + `compile.py` + `tools/<tool>.yaml` → per-tool copies. Reference `skills/init-harness/` and `skills/standup/`.
 
 ### Config-Manifest
-The `config-manifest/` system at `packages/@aiengineeringharness/config-manifest/` has:
+The `config-manifest/` system at `config-manifest/` has:
 - `compile.py` — YAML → manifest.json compiler
 - `validate.py` — per-tool format validation
 - `tools/*.yaml` — per-tool definitions
 - `scripts/` — per-tool skill update scripts
 
 ### Existing Scripts
-Scripts at `packages/@aiengineeringharness/scripts/`:
+Scripts at `scripts/`:
 - `compliance-check.ts` — validates skill naming, frontmatter, allowed-tools
 - `validate-manifest.ts` — validates all manifest src paths exist on disk
 - `config-manifest/scripts/opencode-skill-update.py` etc. — per-tool skill config updates
@@ -33,9 +33,9 @@ When automating tasks, create Python scripts (not Bash) for JSON manipulation �
 
 ### Version Sync (CRITICAL)
 Three files must always have the same version:
-- `packages/@aiengineeringharness/manifest.json` — `"version": "X.Y.Z"` (top-level)
-- `packages/@aiengineeringharness/install.ts` — `const VERSION = "X.Y.Z"` (~line 45)
-- `packages/@aiengineeringharness/install.ps1` — `$ScriptVersion = "X.Y.Z"` (~top of file)
+- `manifest.json` — `"version": "X.Y.Z"` (top-level)
+- `install.ts` — `const VERSION = "X.Y.Z"` (~line 45)
+- `install.ps1` — `$ScriptVersion = "X.Y.Z"` (~top of file)
 
 When bumping versions, update ALL three. Never let them drift apart. The `womono-version-updater` skill lists all three in its Files to Update table.
 

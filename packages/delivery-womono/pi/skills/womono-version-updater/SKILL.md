@@ -12,7 +12,7 @@ Bumps the AI Engineering Harness version consistently across all files and tools
 
 | File | What to Change |
 |------|---------------|
-| `packages/@aiengineeringharness/manifest.json` | `"version": "X.Y.Z"` (line 2) |
+| `manifest.json` | `"version": "X.Y.Z"` (line 2) |
 | `CHANGELOG.md` | Add `## [X.Y.Z] - YYYY-MM-DD` entry with changes |
 | `README.md` | `| Harness version | **X.Y.Z** |` in stats table |
 | `docs/fixes/README.md` | Add release notes for the new version |

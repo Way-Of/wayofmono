@@ -15,10 +15,10 @@ Never use string replacement (`edit` tool, `sed`, or regex) on `manifest.json`. 
 
 ```python
 import json
-with open('packages/@aiengineeringharness/manifest.json') as f:
+with open('manifest.json') as f:
     data = json.load(f)
 data['version'] = 'X.Y.Z'
-with open('packages/@aiengineeringharness/manifest.json', 'w') as f:
+with open('manifest.json', 'w') as f:
     json.dump(data, f, indent=2, ensure_ascii=False)
 ```
 
@@ -40,9 +40,9 @@ For complex release tasks (multi-file updates, validation), write a Python or De
 
 | File | What to Change |
 |------|---------------|
-| `packages/@aiengineeringharness/manifest.json` | `"version": "X.Y.Z"` (use Python json.dump) |
-| `packages/@aiengineeringharness/install.ts` | `const VERSION = "X.Y.Z"` (~line 45) — must match manifest.json |
-| `packages/@aiengineeringharness/install.ps1` | `$ScriptVersion = "X.Y.Z"` (~top of file) — must match install.ts |
+| `manifest.json` | `"version": "X.Y.Z"` (use Python json.dump) |
+| `install.ts` | `const VERSION = "X.Y.Z"` (~line 45) — must match manifest.json |
+| `install.ps1` | `$ScriptVersion = "X.Y.Z"` (~top of file) — must match install.ts |
 | `CHANGELOG.md` | Add `## [X.Y.Z] - YYYY-MM-DD` entry with changes |
 | `README.md` | `| Harness version | **X.Y.Z** |` in stats table |
 | `docs/fixes/ai-engineering-harness-fixes.md` | Add release notes for the new version |

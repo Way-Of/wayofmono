@@ -17,7 +17,7 @@ When creating tickets about WOMONO harness work, reference these systems:
 Skills use the config-manifest pattern: `skills/<name>/SKILL.md` + `compile.py` + `tools/<tool>.yaml`. Reference implementations at `skills/init-harness/` and `skills/standup/`. Per-tool copies live in each tool's skills directory.
 
 ### Config-Manifest
-Located at `packages/@aiengineeringharness/config-manifest/`. Has `compile.py` (YAML → manifest.json), `validate.py` (format validation), and `tools/*.yaml` (per-tool definitions). Per-tool update scripts in `config-manifest/scripts/`.
+Located at `config-manifest/`. Has `compile.py` (YAML → manifest.json), `validate.py` (format validation), and `tools/*.yaml` (per-tool definitions). Per-tool update scripts in `config-manifest/scripts/`.
 
 ### Fixes Docs
 Release notes go in `docs/fixes/`. The relevant file depends on the component:
