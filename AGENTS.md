@@ -245,34 +245,28 @@ When the dynamic orchestration layer is stripped away, an `AGENTS.md` shifts fro
 ### Component Directory (Code-Coupled)
 
 #### Component: Harness Installer CLI
-- **Code Reference:** `packages/@aiengineeringharness/install.ts:879`
+- **Code Reference:** `aiharness/install.ts:879` (in [github.com/Way-Of/aiharness](https://github.com/Way-Of/aiharness))
 - **Trigger Event:** Direct CLI execution (`deno run -A install.ts` or `ai-harness`)
 - **Runtime:** Deno (deterministic, no LLM)
 - **Purpose:** Install, update, sync, validate skills/agents/commands across 7 AI coding tool frontends
 
 #### Component: Skill Auto-Updater
-- **Code Reference:** `packages/@aiengineeringharness/opencode/skills/skill_auto_update/SKILL.md`
+- **Code Reference:** `aiharness/opencode/skills/skill_auto_update/SKILL.md` (in aiharness repo)
 - **Trigger Event:** Auto-triggered on skill registry changes, GitHub releases
 - **Runtime:** Platform-native (each tool's agent runtime)
 - **Purpose:** Auto-discover, sync, update skills across 7 frontends
 
 #### Component: Ticket Manager
-- **Code Reference:** `packages/@aiengineeringharness/opencode/skills/ticket_manager/SKILL.md`
+- **Code Reference:** `aiharness/opencode/skills/ticket_manager/SKILL.md` (in aiharness repo)
 - **Trigger Event:** User requests, auto-ticket-creator detections
 - **Runtime:** Platform-native
 - **Purpose:** Manage tickets across WOMONO/WOW/OPT namespaces with full lifecycle
 
 #### Component: Codebase Analyzer
-- **Code Reference:** `packages/@aiengineeringharness/opencode/agents/codebase_analyzer.md`
+- **Code Reference:** `aiharness/opencode/agents/codebase_analyzer.md` (in aiharness repo)
 - **Trigger Event:** User queries, other agents
 - **Runtime:** Platform-native
 - **Purpose:** Analyze implementation details, trace data flow, identify architectural patterns
-
-#### Component: CTO Dashboard
-- **Code Reference:** `ui/src/app/api/`
-- **Trigger Event:** HTTP requests, GitHub webhooks, scheduled jobs
-- **Runtime:** Next.js 16 (web server)
-- **Purpose:** Telemetry, standups, tickets, review queues, skills health visualization
 
 ### Non-Orchestrated Maintenance Protocol
 
@@ -287,20 +281,24 @@ When the dynamic orchestration layer is stripped away, an `AGENTS.md` shifts fro
 **ALWAYS USE CHANGELOG.md**
 
 **WayOfMono (Wo)** — Ultimate monorepo consolidation for high-performance coding agents.
-- **AI Engineering Harness**: 81 battle-tested skills, 6 subagents, workflows across 7 tools
-- **CTO Dashboard**: Telemetry, standups, tickets, review queues, skills health
+- **AI Engineering Harness**: 51 battle-tested skills, 12 agents, workflows across 7 tools (extracted to [github.com/Way-Of/aiharness](https://github.com/Way-Of/aiharness))
 - **f-rr-d (förråd)**: Centralized thoughts storage at `github.com/Way-Of/f-rr-d`
 
 ## This Monorepo Contains
 
 | Package | Purpose | Location |
 |---------|---------|----------|
-| **AI Engineering Harness** | Core installer, skills, agents, commands for 7 AI coding tools | `packages/@aiengineeringharness/` |
 | **wo-coding-agent (wocode)** | Native CLI coding agent for WayOfMono | `packages/wo-coding-agent/` |
 | **wo-agent (wouser)** | General-purpose user agent SDK + CLI | `packages/wo-agent/` |
-| **CTO Dashboard** | Next.js 16 dashboard for telemetry, tickets, reviews | `ui/` |
 | **Documentation** | Authoritative reference for all 7 AI coding tools | `docs/ai-coding-tools/` |
 | **Thoughts (f-rr-d)** | Tickets, plans, research, context engineering | `thoughts/` |
+
+## Extracted Repos
+
+| Repo | Purpose | Install |
+|------|---------|---------|
+| **AI Engineering Harness** | Skills, agents, commands for 7 AI coding tools | `github.com/Way-Of/aiharness` |
+| **CTO Dashboard** | Telemetry, standups, tickets, reviews | Separate deployment |
 
 ## Key Projects in This Org
 
@@ -314,19 +312,10 @@ When the dynamic orchestration layer is stripped away, an `AGENTS.md` shifts fro
 
 ```
 ./
-├── packages/@aiengineeringharness/   # AI Engineering Harness (core)
-│   ├── install.ts                    # CLI installer (deno)
-│   ├── setup.sh                      # GNU Stow installer
-│   ├── manifest.json                 # Skill/component manifest
-│   ├── opencode/        → ~/.config/opencode/
-│   ├── claude/          → ~/.claude/
-│   ├── gemini/          → ~/.gemini/
-│   ├── pi/              → ~/.pi/agent/
-│   ├── wocode/         → ~/.wocode/
-│   ├── antigravity/     → ~/.antigravity/
-│   ├── codex/           → ~/.codex/
-│   └── scripts/         # Pipeline tools (docs-sync, compliance, migrate)
-├── ui/                              # CTO Dashboard (Next.js 16)
+├── packages/                        # NPM packages (@wayofmono/*)
+│   ├── wo-coding-agent/             # Native CLI coding agent
+│   ├── wo-agent/                    # General-purpose user agent SDK
+│   └── delivery-womono/             # Project-specific skills
 ├── docs/                            # Documentation
 ├── thoughts/                        # Context engineering (f-rr-d)
 │   ├── global/                      # Cross-project
@@ -334,6 +323,10 @@ When the dynamic orchestration layer is stripped away, an `AGENTS.md` shifts fro
 │   ├── wow/                         # WOW-XXX tickets
 │   └── opticat/                     # OPT-XXX tickets
 └── .github/workflows/               # CI/CD
+
+# AI Engineering Harness (extracted)
+# Repo: github.com/Way-Of/aiharness
+# Install: deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts
 ```
 
 ## Key Workflow: f-rr-d Context Engineering
@@ -387,7 +380,7 @@ The CTO Dashboard provides interactive status dropdowns in both ticket list and 
 
 ```bash
 # Install CLI (one-liner — works on macOS, Linux, Windows)
-deno run -A https://raw.githubusercontent.com/Way-Of/wayofmono/main/packages/@aiengineeringharness/install.ts --install-cli
+deno run -A https://raw.githubusercontent.com/Way-Of/aiharness/main/install.ts --install-cli
 
 # Per tool
 ai-harness --tool=opencode
@@ -424,7 +417,7 @@ ai-harness --report-skills
 
 ## Canonical Skill Architecture (config-manifest pattern)
 
-Multi-tool skills follow a **canonical + compile** pattern (like `config-manifest/`). The canonical source lives at `packages/@aiengineeringharness/skills/<skill>/` and a `compile.py` generates per-tool copies adapted for each tool's frontmatter format.
+Multi-tool skills follow a **canonical + compile** pattern (like `config-manifest/`). The canonical source lives at `aiharness/skills/<skill>/` (in [github.com/Way-Of/aiharness](https://github.com/Way-Of/aiharness)) and a `compile.py` generates per-tool copies adapted for each tool's frontmatter format.
 
 ### Pattern
 
@@ -460,14 +453,15 @@ skills/<skill>/
 ### Usage
 
 ```bash
+# In aiharness repo (github.com/Way-Of/aiharness)
 # Compile all tools
-python3 packages/@aiengineeringharness/skills/<skill>/compile.py
+python3 skills/<skill>/compile.py
 
 # Compile single tool
-python3 packages/@aiengineeringharness/skills/<skill>/compile.py --tool=opencode
+python3 skills/<skill>/compile.py --tool=opencode
 
 # Validate existing files match expected output
-python3 packages/@aiengineeringharness/skills/<skill>/compile.py --validate
+python3 skills/<skill>/compile.py --validate
 ```
 
 ### install.ts & manifest.json data flow
@@ -496,7 +490,7 @@ skills/<skill>/SKILL.md  (canonical)
 
 ### Reference implementation
 
-`packages/@aiengineeringharness/skills/init-harness/` — the first skill converted to this pattern. All other `skills/*/` skills should follow the same architecture.
+`aiharness/skills/init-harness/ (in [github.com/Way-Of/aiharness](https://github.com/Way-Of/aiharness))` — the first skill converted to this pattern. All other `skills/*/` skills should follow the same architecture.
 
 ### Per-tool frontmatter rules (from config-manifest)
 
@@ -610,7 +604,7 @@ Any AI agent working with this repo:
 1. **Pull before read**: `git -C thoughts/ pull --ff-only`
 2. **Write to correct project folder**: `thoughts/<project>/shared/tickets/` for tickets
 3. **Commit + push after write**: Use semantic branch names
-4. **Never store skills/agents here** — wrong repo (they live in `packages/@aiengineeringharness/`)
+4. **Never store skills/agents here** — wrong repo (they live in `aiharness/ (in [github.com/Way-Of/aiharness](https://github.com/Way-Of/aiharness))`)
 
 ## Ticket Management Knowledge
 
@@ -697,7 +691,7 @@ curl -X POST http://localhost:6969/api/notifications \
 
 Notification IDs: `review-<TICKET_ID>` (review queue), `update-<TICKET_ID>` (status updates)
 
-### Ticket Skills (Canonical: `packages/@aiengineeringharness/pi/agent/skills/`)
+### Ticket Skills (Canonical: `aiharness/pi/agent/skills/ (in [github.com/Way-Of/aiharness](https://github.com/Way-Of/aiharness))`)
 - **`ticket-manager`** — Full lifecycle management (create, update, review, sync)
 - **`ticket-executor`** — Phase-by-phase implementation with validation
 - **`validate-plan`** — Verify implementation against plan
@@ -708,8 +702,8 @@ Notification IDs: `review-<TICKET_ID>` (review queue), `update-<TICKET_ID>` (sta
 
 ## Critical Files
 
-- `packages/@aiengineeringharness/manifest.json` — Source of truth for skills
-- `packages/@aiengineeringharness/install.ts` — Installer logic
+- `aiharness/manifest.json (in [github.com/Way-Of/aiharness](https://github.com/Way-Of/aiharness))` — Source of truth for skills
+- `aiharness/install.ts (in [github.com/Way-Of/aiharness](https://github.com/Way-Of/aiharness))` — Installer logic
 - `thoughts/shared/templates/ticket-template.md` — Canonical ticket template
 - `thoughts/shared/templates/AGENTS.md.template` — Canonical AGENTS.md template
 - `thoughts/shared/templates/knowledge-entry.md` — Knowledge entry template
