@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-const manifestPath = '/home/zerwiz/wayofmono/packages/@aiengineeringharness/manifest.json';
+const manifestPath = '/home/zerwiz/CodeP/aiharness/manifest.json';
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
 
 // Get the investor_ready_doc_gen skill from opencode (already has all assets)

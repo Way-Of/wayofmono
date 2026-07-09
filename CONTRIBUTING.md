@@ -254,8 +254,7 @@ Describe testing performed
 
 ```
 ./
-├── packages/@aiengineeringharness/   # AI Engineering Harness (core)
-├── ui/                              # CTO Dashboard (Next.js 16)
+├── packages/                        # NPM packages (@wayofmono/*)
 ├── docs/                            # Documentation
 ├── thoughts/                        # Context engineering (f-rr-d)
 │   ├── global/                      # Cross-project
@@ -263,12 +262,15 @@ Describe testing performed
 │   ├── wow/                         # WOW-XXX tickets
 │   └── opticat/                     # OPT-XXX tickets
 └── .github/workflows/               # CI/CD
+
+# AI Engineering Harness (extracted)
+# Repo: github.com/Way-Of/aiharness
 ```
 
 ### Key Files
 
-- `packages/@aiengineeringharness/manifest.json` — Source of truth for skills
-- `packages/@aiengineeringharness/install.ts` — Installer logic
+- `aiharness/manifest.json` — Source of truth for skills (in [github.com/Way-Of/aiharness](https://github.com/Way-Of/aiharness))
+- `aiharness/install.ts` — Installer logic (in [github.com/Way-Of/aiharness](https://github.com/Way-Of/aiharness))
 - `thoughts/wayofmono/shared/tickets/ticket-template.md` — Canonical ticket template
 - `thoughts/wayofmono/docs/best-practices/` — Production-ready standards
 
