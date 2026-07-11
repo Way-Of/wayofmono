@@ -135,8 +135,8 @@ function getAttributionHeaders(
 
 	if (model.provider === "openrouter" || model.baseUrl.includes("openrouter.ai")) {
 		return {
-			"HTTP-Referer": "https://pi.dev",
-			"X-OpenRouter-Title": "pi",
+			"HTTP-Referer": "https://wayofmono.com",
+			"X-OpenRouter-Title": "wocode",
 			"X-OpenRouter-Categories": "cli-agent",
 		};
 	}
@@ -148,7 +148,7 @@ function getAttributionHeaders(
 		model.baseUrl.includes("gateway.ai.cloudflare.com")
 	) {
 		return {
-			"User-Agent": "pi-coding-agent",
+			"User-Agent": "wo-coding-agent",
 		};
 	}
 
