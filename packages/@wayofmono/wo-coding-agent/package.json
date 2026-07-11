@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/wo-coding-agent",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Coding agent CLI with read, bash, edit, write tools and session management",
   "repository": {
     "type": "git",
@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@wayofmono/wo-agent-core": "^1.0.4",
-    "@wayofmono/wo-ai": "workspace:*",
+    "@wayofmono/wo-ai": "*",
     "@wayofmono/wo-tui": "^1.0.4",
     "chalk": "^5.5.0",
     "diff": "^8.0.2",

@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/wo-agent-core",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "General-purpose agent with transport abstraction, state management, and attachment support",
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@wayofmono/wo-ai": "workspace:*",
+    "@wayofmono/wo-ai": "*",
     "ignore": "^7.0.5",
     "typebox": "^1.1.24",
     "yaml": "^2.8.2"

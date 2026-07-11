@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/web-access",
-  "version": "0.10.10",
+  "version": "0.10.11",
   "description": "Web search, URL fetching, GitHub repo cloning, PDF extraction, YouTube video understanding, and local video analysis for Wo coding agents",
   "type": "module",
   "main": "dist/index.js",
@@ -52,9 +52,9 @@
     "unpdf": "^1.6.2"
   },
   "peerDependencies": {
-    "@wayofmono/wo-ai": "workspace:*",
-    "@wayofmono/wo-coding-agent": "workspace:*",
-    "@wayofmono/wo-tui": "workspace:*"
+    "@wayofmono/wo-ai": "*",
+    "@wayofmono/wo-coding-agent": "*",
+    "@wayofmono/wo-tui": "*"
   },
   "pi": {
     "extensions": [
