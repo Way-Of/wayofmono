@@ -435,8 +435,8 @@ export default function (pi: ExtensionAPI) {
 		description: [
 			"Delegate tasks to specialized subagents with isolated context.",
 			"Modes: single (agent + task), parallel (tasks array), chain (sequential with {previous} placeholder).",
-			'Default agent scope is "user" (from ~/.wocode/agent/agents).',
-			'To enable project-local agents in .wocode/agents, set agentScope: "both" (or "project").',
+			'Default agent scope is "user" (from ~/.wo/agent/agents).',
+			'To enable project-local agents in .wo/agents, set agentScope: "both" (or "project").',
 		].join(" "),
 		parameters: SubagentParams,
 

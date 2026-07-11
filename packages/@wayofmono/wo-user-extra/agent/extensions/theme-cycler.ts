@@ -12,6 +12,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import * as os from 'os';
 
 export default function (api: any) {
   function getThemeList(ctx: any) {
@@ -22,17 +23,22 @@ export default function (api: any) {
       themes = ctx.ui.getAllThemes();
     }
 
-    // 2. If no themes found, scan the local project directory
+    // 2. If no themes found, scan global and local directories
     if (themes.length === 0) {
-      const localThemesPath = path.join(process.cwd(), '.wocode', 'themes');
-      if (fs.existsSync(localThemesPath)) {
-        try {
-          const files = fs.readdirSync(localThemesPath);
-          themes = files
-            .filter(f => f.endsWith('.json'))
-            .map(f => ({ name: f.replace('.json', ''), path: path.join(localThemesPath, f) }));
-        } catch (e) {
-          // Ignore
+      const globalThemesPath = path.join(os.homedir(), '.wo', 'agent', 'themes');
+      const localThemesPath = path.join(process.cwd(), '.wo', 'themes');
+      
+      for (const dir of [globalThemesPath, localThemesPath]) {
+        if (fs.existsSync(dir)) {
+          try {
+            const files = fs.readdirSync(dir);
+            const dirThemes = files
+              .filter(f => f.endsWith('.json'))
+              .map(f => ({ name: f.replace('.json', ''), path: path.join(dir, f) }));
+            themes.push(...dirThemes);
+          } catch (e) {
+            // Ignore
+          }
         }
       }
     }
@@ -52,7 +58,7 @@ export default function (api: any) {
     const themes = getThemeList(ctx);
     if (themes.length === 0) {
       if (typeof ctx.ui.notify === 'function') {
-        ctx.ui.notify("No themes found. Ensure they are in ~/.wocode/themes", "warning");
+        ctx.ui.notify("No themes found. Ensure they are in ~/.wo/themes", "warning");
       }
       return;
     }
