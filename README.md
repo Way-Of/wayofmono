@@ -13,23 +13,14 @@ WayOfMono provides two powerful AI coding tools built on a shared intelligence b
 
 ### wocode (Wo Coder)
 
-```bash
-# Install globally
 npm install -g @wayofmono/wo-coding-agent
-
-# Or use directly
-npx @wayofmono/wo-coding-agent
-```
 
 ### wouser (Wo Agent)
 
-```bash
-# Install globally
 npm install -g @wayofmono/wo-agent
 
-# Or use directly
-npx @wayofmono/wo-agent
-```
+> If you get a permission error, use `sudo` or set a custom prefix:
+> `npm config set prefix ~/.npm-global`
 
 ---
 
@@ -39,33 +30,29 @@ Primary coding agent with read, bash, edit, write tools, session management, and
 
 ### Start
 
-```bash
-# Interactive TUI
 wocode
 
-# One-shot prompt
 echo "Fix the bug in auth.ts" | wocode --print
 
-# Initialize project
 wocode --init
-```
 
 ### Model Selection
 
-```bash
 wocode --model openai/gpt-4o
+
 wocode --model anthropic/claude-sonnet-4-20250514
+
 wocode --list-models
-```
 
 ### Sessions
 
-```bash
-wocode --continue              # Continue last session
-wocode --resume                # Pick a session
-wocode --session <id>          # Open specific session
-wocode --export <session>      # Export to HTML
-```
+wocode --continue
+
+wocode --resume
+
+wocode --session <id>
+
+wocode --export <session>
 
 ### Built-in Tools
 
@@ -132,35 +119,31 @@ General-purpose agent SDK for building AI-powered applications with skill manage
 
 ### Start
 
-```bash
-# Interactive TUI
 wouser
 
-# One-shot prompt
 echo "Analyze this data" | wouser --print
 
-# Initialize project
 wouser --init
-```
 
 ### Skill Management
 
-```bash
 wouser skill install investor-ready-doc-gen
+
 wouser skill list
+
 wouser skill discover
+
 wouser skill update
-```
 
 ### Agent & Extension Management
 
-```bash
 wouser agent install npm:@wayofmono/agent-expert-coder
+
 wouser agent list
 
 wouser extension install npm:@wayofmono/extension-web-search
+
 wouser extension list
-```
 
 ### SDK Usage
 
@@ -233,23 +216,17 @@ session.addEventListener((event) => {
 
 ## Development
 
-```bash
-# Clone
 git clone https://github.com/Way-Of/wayofmono.git
+
 cd wayofmono
 
-# Install dependencies
 pnpm install
 
-# Build
 pnpm -r build
 
-# Test
 pnpm -r test
 
-# Type check
 pnpm -r --parallel typecheck
-```
 
 ---
 
