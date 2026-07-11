@@ -12,7 +12,14 @@
 - **Backward compatibility preserved**: `@mariozechner/pi-*` virtual module aliases, `THEME_KEY_OLD` Symbol, `pi` manifest field, `.pi/agent` fallback path, `source === "pi"` alias in update command.
 - **README rewrite**: Main monorepo README now focuses on wocode and wouser packages only.
 
-- **Tickets**: WOMONO-172, WOMONO-173.
+### wo-user-extra — Replace .pi references in extensions (WOMONO-174)
+
+- **Theme cycler**: `.pi/themes` → `.wocode/themes` — themes now load in wocode
+- **Subagent**: `.pi/agents` → `.wocode/agents` — project-local agents now discovered
+- **Web-access packets**: `~/.pi/web-search.json` → `~/.wocode/web-search.json` — all 10 web-access files updated
+- **Documentation**: CHANGELOG.md and README.md updated
+
+- **Tickets**: WOMONO-172, WOMONO-173, WOMONO-174.
 
 ## [1.7.19] - 2026-07-07
 
