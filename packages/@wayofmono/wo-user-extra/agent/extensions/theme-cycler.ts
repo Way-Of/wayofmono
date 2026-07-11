@@ -24,7 +24,7 @@ export default function (api: any) {
 
     // 2. If no themes found, scan the local project directory
     if (themes.length === 0) {
-      const localThemesPath = path.join(process.cwd(), '.pi', 'themes');
+      const localThemesPath = path.join(process.cwd(), '.wocode', 'themes');
       if (fs.existsSync(localThemesPath)) {
         try {
           const files = fs.readdirSync(localThemesPath);
@@ -52,7 +52,7 @@ export default function (api: any) {
     const themes = getThemeList(ctx);
     if (themes.length === 0) {
       if (typeof ctx.ui.notify === 'function') {
-        ctx.ui.notify("No themes found in pi. Ensure they are in ~/.pi/themes", "warning");
+        ctx.ui.notify("No themes found. Ensure they are in ~/.wocode/themes", "warning");
       }
       return;
     }

@@ -28,7 +28,7 @@ https://github.com/user-attachments/assets/cac6a17a-1eeb-4dde-9818-cdf85d8ea98f
 pi install npm:pi-web-access
 ```
 
-Works immediately with no API keys — Exa MCP provides zero-config search. For more providers or direct API access, add keys to `~/.pi/web-search.json`:
+Works immediately with no API keys — Exa MCP provides zero-config search. For more providers or direct API access, add keys to `~/.wocode/web-search.json`:
 
 ```json
 {
@@ -229,7 +229,7 @@ Toggle or configure the curator workflow at runtime.
 /curator summary-review     # explicit workflow
 ```
 
-Persists to `~/.pi/web-search.json` and takes effect on the next `web_search` call. When disabled, `web_search` returns raw results without opening the curator window.
+Persists to `~/.wocode/web-search.json` and takes effect on the next `web_search` call. When disabled, `web_search` returns raw results without opening the curator window.
 
 ### /search
 
@@ -253,7 +253,7 @@ Toggle with **Ctrl+Shift+W** to see live request/response activity:
 
 ## Configuration
 
-All config lives in `~/.pi/web-search.json`. Every field is optional.
+All config lives in `~/.wocode/web-search.json`. Every field is optional.
 
 ```json
 {
@@ -293,7 +293,7 @@ All config lives in `~/.pi/web-search.json`. Every field is optional.
 
 ### Shortcuts
 
-Both shortcuts are configurable via `~/.pi/web-search.json`:
+Both shortcuts are configurable via `~/.wocode/web-search.json`:
 
 ```json
 {

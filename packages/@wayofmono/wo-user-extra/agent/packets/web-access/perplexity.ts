@@ -5,7 +5,7 @@ import { activityMonitor } from "./activity.js";
 import type { ExtractedContent } from "./extract.js";
 
 const PERPLEXITY_API_URL = "https://api.perplexity.ai/chat/completions";
-const CONFIG_PATH = join(homedir(), ".pi", "web-search.json");
+const CONFIG_PATH = join(homedir(), ".wocode", "web-search.json");
 
 const RATE_LIMIT = {
 	maxRequests: 10,

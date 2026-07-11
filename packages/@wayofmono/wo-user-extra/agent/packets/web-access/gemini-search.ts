@@ -14,7 +14,7 @@ export interface AttributedSearchResponse extends SearchResponse {
 	provider: ResolvedSearchProvider;
 }
 
-const CONFIG_PATH = join(homedir(), ".pi", "web-search.json");
+const CONFIG_PATH = join(homedir(), ".wocode", "web-search.json");
 
 let cachedSearchConfig: { searchProvider: SearchProvider; searchModel?: string } | null = null;
 
@@ -119,7 +119,7 @@ export async function search(query: string, options: FullSearchOptions = {}): Pr
 		if (result) return { ...result, provider: "gemini" };
 		throw new Error(
 			"Gemini search unavailable. Either:\n" +
-			"  1. Set GEMINI_API_KEY in ~/.pi/web-search.json\n" +
+			"  1. Set GEMINI_API_KEY in ~/.wocode/web-search.json\n" +
 			"  2. Sign into gemini.google.com in a supported Chromium-based browser"
 		);
 	}
@@ -182,9 +182,9 @@ export async function search(query: string, options: FullSearchOptions = {}): Pr
 
 	throw new Error(
 		"No search provider available. Either:\n" +
-		"  1. Set perplexityApiKey in ~/.pi/web-search.json\n" +
-		"  2. Set EXA_API_KEY (or exaApiKey) in ~/.pi/web-search.json\n" +
-		"  3. Set GEMINI_API_KEY in ~/.pi/web-search.json\n" +
+		"  1. Set perplexityApiKey in ~/.wocode/web-search.json\n" +
+		"  2. Set EXA_API_KEY (or exaApiKey) in ~/.wocode/web-search.json\n" +
+		"  3. Set GEMINI_API_KEY in ~/.wocode/web-search.json\n" +
 		"  4. Sign into gemini.google.com in a supported Chromium-based browser"
 	);
 }

@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 ## [0.10.7] - 2026-05-02
 
 ### Added
-- Added `summaryModel` config for choosing the default curator summary draft model from `~/.pi/web-search.json`.
+- Added `summaryModel` config for choosing the default curator summary draft model from `~/.wocode/web-search.json`.
 
 ### Fixed
 - Made Gemini Web browser-cookie access opt-in via `allowBrowserCookies` or `PI_ALLOW_BROWSER_COOKIES=1`, preventing surprise macOS Keychain prompts during provider checks.
@@ -30,7 +30,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - **Workflow-based curator hard cutover (`workflow`).** Replaced `curate` with `workflow: "none" | "summary-review"`, added summary-review approval flow with `POST /summarize`, made summary text the primary returned output while retaining raw curated evidence in `details`, and switched timeout handling to submit-first with deterministic summary fallback when no approved draft exists.
 - **Auto-open curator for all `web_search` runs (single + multi query).** Searches now open the curator window immediately and stream results live for review workflows; the old countdown/auto-condense fallback path was removed.
-- **Exa.ai search provider.** Neural/semantic search available alongside Perplexity and Gemini. 1,000 free requests/month. Set `EXA_API_KEY` env var or `exaApiKey` in `~/.pi/web-search.json`, or select explicitly with `provider: "exa"`. Includes built-in content extraction — when `includeContent` is true, full page text comes back with search results instead of requiring a separate background fetch. Monthly usage tracked in `~/.pi/exa-usage.json` with a warning at 80%.
+- **Exa.ai search provider.** Neural/semantic search available alongside Perplexity and Gemini. 1,000 free requests/month. Set `EXA_API_KEY` env var or `exaApiKey` in `~/.wocode/web-search.json`, or select explicitly with `provider: "exa"`. Includes built-in content extraction — when `includeContent` is true, full page text comes back with search results instead of requiring a separate background fetch. Monthly usage tracked in `~/.wocode/exa-usage.json` with a warning at 80%.
 - **Exa MCP fallback.** When no Exa API key is configured, search routes through `mcp.exa.ai` with zero setup. Supports basic search and `includeContent` but not domain/recency filtering (falls through to Gemini for those).
 - **`code_search` tool.** Code/documentation search via Exa MCP (`get_code_context_exa`). No API key required. Returns code examples, docs, and API references from GitHub, Stack Overflow, and official documentation.
 - **Glimpse native curator window.** On macOS with Glimpse installed, the search curator opens in a native WKWebView window instead of a browser tab. Faster launch, closer integration. Falls back to browser automatically when Glimpse is unavailable.
@@ -41,8 +41,8 @@ All notable changes to this project will be documented in this file.
 - **Active summary-generation loading state.** Summary review now shows a dedicated animated in-progress panel while `/summarize` is running (panel sweep, pulse + shimmer placeholders, staged copy updates, and active model label) instead of only a static disabled textarea.
 - **Model/provider guard retry for summary generation.** If a selected summary model fails with model/provider configuration errors, curator now retries once with Auto model selection before surfacing a terminal error.
 - **Feedback input for summary regeneration.** Optional text field in the summary review panel for providing instructions when regenerating a summary. Only the Regenerate button passes feedback to the prompt; auto-generation and the initial Generate button do not. Feedback is cleared on success and persisted on error for retry.
-- **`/curator` command.** Toggle or configure the curator workflow at runtime: `/curator on`, `/curator off`, `/curator summary-review`, or `/curator` to toggle. Persists to `~/.pi/web-search.json` and takes effect on the next `web_search` call.
-- **Config-based workflow default.** Added `workflow` field to `~/.pi/web-search.json` for persistent curator preference. Per-call `workflow` parameter on `web_search` takes priority, then config, then the built-in default (`summary-review` with UI, `none` without).
+- **`/curator` command.** Toggle or configure the curator workflow at runtime: `/curator on`, `/curator off`, `/curator summary-review`, or `/curator` to toggle. Persists to `~/.wocode/web-search.json` and takes effect on the next `web_search` call.
+- **Config-based workflow default.** Added `workflow` field to `~/.wocode/web-search.json` for persistent curator preference. Per-call `workflow` parameter on `web_search` takes priority, then config, then the built-in default (`summary-review` with UI, `none` without).
 - **"Send selected results without summary" button.** New secondary button in the curator that submits curated results directly without generating or approving a summary. Works from any stage when results are selected. Output uses the raw curated results format with per-query detail.
 - **Summary preview modal.** Preview button in the summary actions opens a full-page modal with the summary rendered as formatted markdown. Includes Approve and Regenerate actions with an inline model selector for switching models without leaving the preview.
 - **"Also try" provider chips on searching cards.** Provider re-search chips now appear on cards still in-flight, not just completed ones, so alternative-provider searches can be kicked off in parallel without waiting.
@@ -99,13 +99,13 @@ All notable changes to this project will be documented in this file.
 - Hardened inline script data serialization in curator page generation (`curator-page.ts`) by escaping Unicode line/paragraph separators (`U+2028`, `U+2029`) in `safeInlineJSON`, preventing malformed script blocks or injection edge cases from unescaped JSON payloads.
 - Fixed abort telemetry misclassification in media extractors (`youtube-extract.ts`, `video-extract.ts`): canceled extractions now log activity as aborted (`status: 0`) instead of incorrectly reporting `all ... paths failed` errors after abort races.
 - Fixed GitHub URL path decoding in clone/API extraction (`github-extract.ts`): percent-encoded path segments (for example `%20`) are now decoded before blob/tree resolution, so URLs that point to files/directories with encoded characters no longer fall through to incorrect "path not found" output.
-- Fixed error-signal downgrade in local-video API fallback (`video-extract.ts`): `tryVideoGeminiApi` now rethrows config parse failures (`Failed to parse ~/.pi/web-search.json`) instead of swallowing them as `null`, preserving actionable root-cause errors.
-- Fixed provider config type hardening in search routing (`index.ts`): `normalizeProviderInput` now guards non-string config values before trimming so malformed `provider` entries in `~/.pi/web-search.json` no longer crash runtime provider resolution with `value.trim is not a function`.
+- Fixed error-signal downgrade in local-video API fallback (`video-extract.ts`): `tryVideoGeminiApi` now rethrows config parse failures (`Failed to parse ~/.wocode/web-search.json`) instead of swallowing them as `null`, preserving actionable root-cause errors.
+- Fixed provider config type hardening in search routing (`index.ts`): `normalizeProviderInput` now guards non-string config values before trimming so malformed `provider` entries in `~/.wocode/web-search.json` no longer crash runtime provider resolution with `value.trim is not a function`.
 - Simplified provider typing flow in curator/search orchestration (`index.ts`): narrowed `resolveProvider` and `PendingCurate.defaultProvider` to resolved provider types, normalized incoming provider strings at callback boundaries, and removed redundant `as SearchProvider | undefined` casts while preserving search behavior.
 - Improved curator loading experience in `curator-page.ts`: added animated skeleton loading panel in the content area while searches are in-flight, upgraded searching card visuals with shimmer/active-state styling, and wired loading visibility to real search state transitions (including add-search, done, submit/cancel, and timeout paths).
-- Updated curator session timeout defaults in `index.ts`: curator now starts at 20 seconds by default (down from 60) and can be configured via `curatorTimeoutSeconds` in `~/.pi/web-search.json` (capped at 600 seconds).
-- Hardened `/websearch` startup error handling in `index.ts`: config/provider bootstrap now runs behind explicit error handling so malformed `~/.pi/web-search.json` no longer throws uncaught command errors before the existing server-start try/catch; users now receive a direct UI error with parse context.
-- Hardened extension bootstrap config handling in `index.ts`: shortcut initialization now uses guarded config loading, logging parse errors and falling back to default shortcuts instead of crashing extension registration on malformed `~/.pi/web-search.json`.
+- Updated curator session timeout defaults in `index.ts`: curator now starts at 20 seconds by default (down from 60) and can be configured via `curatorTimeoutSeconds` in `~/.wocode/web-search.json` (capped at 600 seconds).
+- Hardened `/websearch` startup error handling in `index.ts`: config/provider bootstrap now runs behind explicit error handling so malformed `~/.wocode/web-search.json` no longer throws uncaught command errors before the existing server-start try/catch; users now receive a direct UI error with parse context.
+- Hardened extension bootstrap config handling in `index.ts`: shortcut initialization now uses guarded config loading, logging parse errors and falling back to default shortcuts instead of crashing extension registration on malformed `~/.wocode/web-search.json`.
 - Simplified curator-timeout config plumbing in `index.ts` by removing an unused `getCuratorTimeoutSeconds(config)` parameter path and keeping a single config-read code path.
 - Simplified curator bootstrap wiring in `index.ts` by extracting shared provider/timeout setup (`ProviderAvailability`, `CuratorBootstrap`, `getProviderAvailability`, `loadCuratorBootstrap`) and removing duplicated availability assembly across `web_search` and `/websearch` flows.
 - Hardened SSE event parsing in curator client (`curator-page.ts`): malformed JSON payloads from SSE `data:` lines now surface as user-visible errors instead of crashing the page via uncaught `JSON.parse` exceptions.
@@ -131,11 +131,11 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - **Interactive search curation.** Press Ctrl+Shift+S during or after a multi-query search to open a browser-based review UI. Results stream in live via SSE. Pick which queries to keep, add new searches on the fly, switch providers — then submit to send only the curated results to the agent.
-- **Auto-condense pipeline.** When the countdown expires without manual curation, a single LLM call (Claude Haiku by default) condenses all search results into a deduplicated briefing organized by topic. Preprocessing enriches the prompt with URL overlap, answer similarity, and source quality analysis. Configure via `"autoFilter"` in `~/.pi/web-search.json`. Full uncondensed results stored and retrievable via `get_search_content`.
-- **Configurable keyboard shortcuts.** Both shortcuts (curate: Ctrl+Shift+S, activity monitor: Ctrl+Shift+W) can be remapped via `"shortcuts"` in `~/.pi/web-search.json`. Changes take effect on restart.
+- **Auto-condense pipeline.** When the countdown expires without manual curation, a single LLM call (Claude Haiku by default) condenses all search results into a deduplicated briefing organized by topic. Preprocessing enriches the prompt with URL overlap, answer similarity, and source quality analysis. Configure via `"autoFilter"` in `~/.wocode/web-search.json`. Full uncondensed results stored and retrievable via `get_search_content`.
+- **Configurable keyboard shortcuts.** Both shortcuts (curate: Ctrl+Shift+S, activity monitor: Ctrl+Shift+W) can be remapped via `"shortcuts"` in `~/.wocode/web-search.json`. Changes take effect on restart.
 - **`/websearch` command** — opens the curator directly from pi without an agent round-trip. Accepts optional comma-separated queries or opens empty.
 - **Task-aware condensation.** Optional `context` parameter on `web_search` — a brief description of the user's task. The condenser uses it to focus the briefing on what matters.
-- **Provider selection** — global dropdown in the curator UI to switch between Perplexity and Gemini. Persists to `~/.pi/web-search.json`.
+- **Provider selection** — global dropdown in the curator UI to switch between Perplexity and Gemini. Persists to `~/.wocode/web-search.json`.
 - **Live condense status in countdown.** Shows "condensing..." while the LLM is working, then "N searches condensed" once complete.
 - Markdown rendering in curator result cards via marked.js.
 - Query-level result cards with expandable answers and source lists. Check/uncheck to include or exclude.
@@ -204,7 +204,7 @@ All notable changes to this project will be documented in this file.
 - **Video thumbnails**: YouTube results include the video thumbnail (fetched from `img.youtube.com`). Local video results include a frame extracted via ffmpeg (at ~1 second). Returned as image content parts alongside text — the agent sees the thumbnail as vision context.
 - **Configurable frame extraction**: `frames` parameter (1-12) on `fetch_content` for pulling visual frames from YouTube or local video. Works in five modes: frames alone (sample across entire video), single timestamp (one frame), single+frames (N frames at 5s intervals), range (default 6 frames), range+frames (N frames across the range). Endpoint-inclusive distribution with 5-second minimum spacing.
 - **Video duration in responses**: Frame extraction results include the video duration for context.
-- `searchProvider` config option in `~/.pi/web-search.json` for global provider default
+- `searchProvider` config option in `~/.wocode/web-search.json` for global provider default
 - `video` config section: `enabled`, `preferredModel`, `maxSizeMB`
 
 ### Changed
@@ -239,10 +239,10 @@ All notable changes to this project will be documented in this file.
 ### Added
 - YouTube video understanding in `fetch_content` via three-tier fallback chain:
   - **Gemini Web** (primary): reads Chrome session cookies from macOS Keychain + SQLite, authenticates to gemini.google.com, sends YouTube URL via StreamGenerate endpoint. Full visual + audio understanding with timestamps. Zero config needed if signed into Google in Chrome.
-  - **Gemini API** (secondary): direct REST calls with `GEMINI_API_KEY`. YouTube URLs passed as `file_data.file_uri`. Configure via `GEMINI_API_KEY` env var or `geminiApiKey` in `~/.pi/web-search.json`.
+  - **Gemini API** (secondary): direct REST calls with `GEMINI_API_KEY`. YouTube URLs passed as `file_data.file_uri`. Configure via `GEMINI_API_KEY` env var or `geminiApiKey` in `~/.wocode/web-search.json`.
   - **Perplexity** (fallback): uses existing `searchWithPerplexity` for a topic summary when neither Gemini path is available. Output labeled as "Summary (via Perplexity)" so the agent knows it's not a full transcript.
 - YouTube URL detection for all common formats: `/watch?v=`, `youtu.be/`, `/shorts/`, `/live/`, `/embed/`, `/v/`, `m.youtube.com`
-- Configurable via `~/.pi/web-search.json` under `youtube` key (`enabled`, `preferredModel`)
+- Configurable via `~/.wocode/web-search.json` under `youtube` key (`enabled`, `preferredModel`)
 - Actionable error messages when extraction fails (directs user to sign into Chrome or set API key)
 - YouTube URLs no longer fall through to HTTP/Readability (which returns garbage); returns error instead
 
@@ -269,7 +269,7 @@ All notable changes to this project will be documented in this file.
 - Lightweight API fallback for oversized repos (>350MB) and commit SHA URLs via `gh api`
 - Clone cache with concurrent request deduplication (second request awaits first's clone)
 - `forceClone` parameter on `fetch_content` to override the size threshold
-- Configurable via `~/.pi/web-search.json` under `githubClone` key (enabled, maxRepoSizeMB, cloneTimeoutSeconds, clonePath)
+- Configurable via `~/.wocode/web-search.json` under `githubClone` key (enabled, maxRepoSizeMB, cloneTimeoutSeconds, clonePath)
 - Falls back to `git clone` when `gh` CLI is unavailable (public repos only)
 - README: GitHub clone documentation with config, flow diagram, and limitations
 
@@ -380,7 +380,7 @@ Initial release. Designed for pi v0.37.3.
 - TUI rendering with progress bars, URL lists, and expandable previews
 - Session-aware storage with 1-hour TTL
 - Rate limiting (10 req/min for Perplexity API)
-- Config file support (`~/.pi/web-search.json`)
+- Config file support (`~/.wocode/web-search.json`)
 - Content extraction via Readability + Turndown (max 10k chars)
 - Proper session isolation - pending fetches abort on session switch
 - URL validation before fetch attempts

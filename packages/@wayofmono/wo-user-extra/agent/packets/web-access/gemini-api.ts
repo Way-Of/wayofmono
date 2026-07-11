@@ -3,7 +3,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 
 export const API_BASE = "https://generativelanguage.googleapis.com/v1beta";
-const CONFIG_PATH = join(homedir(), ".pi", "web-search.json");
+const CONFIG_PATH = join(homedir(), ".wocode", "web-search.json");
 export const DEFAULT_MODEL = "gemini-3-flash-preview";
 
 interface GeminiApiConfig {
