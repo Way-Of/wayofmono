@@ -127,10 +127,10 @@ Created by `wouser --init`:
 └── themes/              # Custom themes
 ```
 
-### Global Config (`~/.wouser/agent/`)
+### Global Config (`~/.wo/agent/`)
 
 ```
-~/.wouser/agent/
+~/.wo/agent/
 ├── skills/              # Global skills
 ├── agents/              # Agent definitions
 ├── extensions/          # Extensions
@@ -203,7 +203,7 @@ const skills = discoverNpmSkills(agentDir);
 |---------|---------------------------|---------------------|
 | Binary | `wocode` | `wouser` |
 | Purpose | Coding agent CLI | General-purpose SDK |
-| Config dir | `~/.wocode/agent/` | `~/.wouser/agent/` |
+| Config dir | `~/.wocode/agent/` | `~/.wo/agent/` |
 | Skill CLI | No | Yes (`wouser skill install`) |
 | Primary use | Terminal coding assistant | IDE/product integrations |
 

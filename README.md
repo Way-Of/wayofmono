@@ -178,9 +178,9 @@ session.addEventListener((event) => {
 └── themes/              # Custom themes
 ```
 
-**Global config** (`~/.wouser/agent/`):
+**Global config** (`~/.wo/agent/`):
 ```
-~/.wouser/agent/
+~/.wo/agent/
 ├── skills/              # Global skills
 ├── agents/              # Agent definitions
 ├── extensions/          # Extensions
@@ -196,7 +196,7 @@ session.addEventListener((event) => {
 |---------|--------|--------|
 | Binary | `wocode` | `wouser` |
 | Purpose | Coding agent CLI | General-purpose SDK |
-| Config dir | `~/.wocode/agent/` | `~/.wouser/agent/` |
+| Config dir | `~/.wocode/agent/` | `~/.wo/agent/` |
 | Skill CLI | No | Yes (`wouser skill install`) |
 | Primary use | Terminal coding assistant | IDE/product integrations |
 
