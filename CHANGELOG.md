@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.7.20] - 2026-07-11
+
+### wo-coding-agent v1.0.14 + wo-agent v1.0.10 — Replace all pi/earendil-works references (WOMONO-172)
+
+- **Critical fix**: `wocode update` now correctly installs `@wayofmono/wo-coding-agent` instead of `@earendil-works/pi-coding-agent`. Version check API response no longer overrides local `PACKAGE_NAME`.
+- **URL updates**: All GitHub URLs changed from `earendil-works/pi-mono` to `Way-Of/wayofmono`. Version check endpoint changed to `api.wayofmono.com`. Theme schema URLs updated.
+- **Branding overhaul**: Renamed `pi-user-agent.ts` to `wo-user-agent.ts`, user agent string now `wocode/`. OpenRouter telemetry headers identify as `wocode` on `wayofmono.com`. All help text updated from "pi" to "wocode".
+- **Env vars**: Updated from `PI_*` to `WO_*` (old names kept as aliases). Share viewer URL changed to `wo.dev/session/`.
+- **Internal cleanup**: Temp file prefixes updated from `pi-` to `wo-`. Internal comments updated. System prompt (wo-agent) updated.
+- **Backward compatibility preserved**: `@mariozechner/pi-*` virtual module aliases, `THEME_KEY_OLD` Symbol, `pi` manifest field, `.pi/agent` fallback path, `source === "pi"` alias in update command.
+- **README rewrite**: Main monorepo README now focuses on wocode and wouser packages only.
+
+- **Tickets**: WOMONO-172, WOMONO-173.
+
 ## [1.7.19] - 2026-07-07
 
 ### wo-agent v1.0.10 + wo-coding-agent v1.0.14 — Skill loading fix, provider consistency (WOMONO-166)
