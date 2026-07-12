@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.7.21] - 2026-07-12
+
+### wo-coding-agent v1.0.23 — Theme loading fix + identity prompt (WOMONO-174, WOMONO-175)
+
+- **System prompt identity**: Added dedicated `# Identity` section at top of system prompt — model now responds as "Wo" instead of revealing underlying model name (Qwen, etc.)
+- **Theme loading fixed**: Resource loader now scans both `~/.wocode/agent/themes/` and `~/.wocode/themes/` explicitly, fixing missing themes when running from project directories where `getAgentDir()` resolves to a project-local `.wocode/`
+- **ESM `__dirname` crash fixed**: Added `fileURLToPath(import.meta.url)` polyfill in resource-loader.ts — was crashing with `ReferenceError: __dirname is not defined` in ESM mode
+- **Wayofmono theme collision excluded**: Project-local `.wocode/themes/` inside wayofmono monorepo is skipped during theme loading to avoid duplicate collision warnings
+- **3 built-in themes**: dark, light, wo-code ship with npm package. 12 custom themes (catppuccin-mocha, cyberpunk, dracula, etc.) distributed via harness only
+
+### wo-user-extra v1.0.3 — Config dir detection (WOMONO-174)
+
+- **New `config-dirs.ts` helper**: Detects `.wocode` vs `.wo` at runtime based on process argv and filesystem — no more hardcoded paths
+- **13 files updated**: theme-cycler.ts, subagent/agents.ts, subagent/index.ts, gemini-web-config.ts, exa.ts, gemini-search.ts, github-extract.ts, video-extract.ts, gemini-api.ts, youtube-extract.ts, perplexity.ts, index.ts, extract.ts
+- **Error messages dynamic**: All `~/.wo/web-search.json` references now use correct config dir per tool
+- **Both tools work**: Extensions now work in both wocode (`.wocode/`) and wouser (`.wo/`)
+
+### npm package validation
+
+- **WOMONO-176 resolved**: All 14 @wayofmono packages validated — no `workspace:*` in published package.json files, all install successfully from npm
+- **WOMONO-177 created**: Delivery packages (delivery-opticat, delivery-wow, delivery-womono) not yet published to npm
+
+- **Tickets**: WOMONO-174, WOMONO-175, WOMONO-176, WOMONO-177.
+
 ## [1.7.20] - 2026-07-11
 
 ### wo-coding-agent v1.0.14 + wo-agent v1.0.10 — Replace all pi/earendil-works references (WOMONO-172)

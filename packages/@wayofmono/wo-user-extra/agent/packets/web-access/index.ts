@@ -38,8 +38,9 @@ import { isExaAvailable } from "./exa.js";
 import { isGeminiApiAvailable } from "./gemini-api.js";
 import { getActiveGoogleEmail, isGeminiWebAvailable } from "./gemini-web.js";
 import { isBrowserCookieAccessAllowed } from "./gemini-web-config.ts";
+import { getConfigPath, getConfigRoot, getConfigDirName } from "../../config-dirs.js";
 
-const WEB_SEARCH_CONFIG_PATH = join(homedir(), ".wo", "web-search.json");
+const WEB_SEARCH_CONFIG_PATH = getConfigPath("web-search.json");
 
 interface WebSearchConfig {
 	provider?: string;
@@ -91,7 +92,7 @@ function saveConfig(updates: Partial<WebSearchConfig>): void {
 	}
 
 	Object.assign(config, updates);
-	const dir = join(homedir(), ".wo");
+	const dir = getConfigRoot();
 	if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 	writeFileSync(WEB_SEARCH_CONFIG_PATH, JSON.stringify(config, null, 2) + "\n");
 }
@@ -2246,7 +2247,7 @@ export default function (pi: ExtensionAPI) {
 			if (!isBrowserCookieAccessAllowed()) {
 				pi.sendMessage({
 					customType: "google-account",
-					content: [{ type: "text", text: "Gemini Web browser cookie access is disabled. Set allowBrowserCookies: true in ~/.wo/web-search.json to enable it." }],
+					content: [{ type: "text", text: `Gemini Web browser cookie access is disabled. Set allowBrowserCookies: true in ~/${getConfigDirName()}/web-search.json to enable it.` }],
 					display: "tool",
 					details: { available: false, cookieAccessAllowed: false },
 				}, { triggerTurn: true, deliverAs: "followUp" });

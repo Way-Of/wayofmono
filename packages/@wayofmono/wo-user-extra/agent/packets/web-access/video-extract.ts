@@ -8,8 +8,9 @@ import { isGeminiWebAvailable, queryWithCookies } from "./gemini-web.js";
 import { queryGeminiApiWithVideo, getApiKey, API_BASE } from "./gemini-api.js";
 import { extractHeadingTitle, type ExtractedContent, type ExtractOptions, type FrameResult } from "./extract.js";
 import { readExecError, trimErrorText, mapFfmpegError } from "./utils.js";
+import { getConfigPath } from "../../config-dirs.js";
 
-const CONFIG_PATH = join(homedir(), ".wo", "web-search.json");
+const CONFIG_PATH = getConfigPath("web-search.json");
 const UPLOAD_BASE = "https://generativelanguage.googleapis.com/upload/v1beta";
 
 const DEFAULT_VIDEO_PROMPT = `Extract the complete content of this video. Include:

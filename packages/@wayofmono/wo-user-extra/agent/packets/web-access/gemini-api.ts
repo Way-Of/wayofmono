@@ -1,9 +1,10 @@
 import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
+import { getConfigPath } from "../../config-dirs.js";
 
 export const API_BASE = "https://generativelanguage.googleapis.com/v1beta";
-const CONFIG_PATH = join(homedir(), ".wo", "web-search.json");
+const CONFIG_PATH = getConfigPath("web-search.json");
 export const DEFAULT_MODEL = "gemini-3-flash-preview";
 
 interface GeminiApiConfig {

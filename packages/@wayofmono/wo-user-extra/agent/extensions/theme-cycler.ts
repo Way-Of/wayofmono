@@ -13,6 +13,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
+import { getConfigDirName } from '../config-dirs.js';
 
 export default function (api: any) {
   function getThemeList(ctx: any) {
@@ -25,8 +26,9 @@ export default function (api: any) {
 
     // 2. If no themes found, scan global and local directories
     if (themes.length === 0) {
-      const globalThemesPath = path.join(os.homedir(), '.wo', 'agent', 'themes');
-      const localThemesPath = path.join(process.cwd(), '.wo', 'themes');
+      const configDir = getConfigDirName();
+      const globalThemesPath = path.join(os.homedir(), configDir, 'agent', 'themes');
+      const localThemesPath = path.join(process.cwd(), configDir, 'themes');
       
       for (const dir of [globalThemesPath, localThemesPath]) {
         if (fs.existsSync(dir)) {
@@ -58,7 +60,7 @@ export default function (api: any) {
     const themes = getThemeList(ctx);
     if (themes.length === 0) {
       if (typeof ctx.ui.notify === 'function') {
-        ctx.ui.notify("No themes found. Ensure they are in ~/.wo/themes", "warning");
+        ctx.ui.notify(`No themes found. Ensure they are in ~/${getConfigDirName()}/agent/themes`, "warning");
       }
       return;
     }

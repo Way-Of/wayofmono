@@ -23,6 +23,7 @@ import { type ExtensionAPI, getMarkdownTheme, withFileMutationQueue } from "@mar
 import { Container, Markdown, Spacer, Text } from "@mariozechner/pi-tui";
 import { Type } from "typebox";
 import { type AgentConfig, type AgentScope, discoverAgents } from "./agents.js";
+import { getConfigDirName } from "../../config-dirs.js";
 
 const MAX_PARALLEL_TASKS = 8;
 const MAX_CONCURRENCY = 4;
@@ -435,7 +436,7 @@ export default function (pi: ExtensionAPI) {
 		description: [
 			"Delegate tasks to specialized subagents with isolated context.",
 			"Modes: single (agent + task), parallel (tasks array), chain (sequential with {previous} placeholder).",
-			'Default agent scope is "user" (from ~/.wo/agent/agents).',
+			`Default agent scope is "user" (from ~/${getConfigDirName()}/agent/agents).`,
 			'To enable project-local agents in .wo/agents, set agentScope: "both" (or "project").',
 		].join(" "),
 		parameters: SubagentParams,

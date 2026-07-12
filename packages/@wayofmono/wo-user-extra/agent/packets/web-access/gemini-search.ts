@@ -6,6 +6,7 @@ import { getApiKey, API_BASE, DEFAULT_MODEL } from "./gemini-api.js";
 import { isGeminiWebAvailable, queryWithCookies } from "./gemini-web.js";
 import { isPerplexityAvailable, searchWithPerplexity, type SearchResult, type SearchResponse, type SearchOptions } from "./perplexity.js";
 import { hasExaApiKey, isExaAvailable, searchWithExa } from "./exa.js";
+import { getConfigPath } from "../../config-dirs.js";
 
 export type SearchProvider = "auto" | "perplexity" | "gemini" | "exa";
 export type ResolvedSearchProvider = Exclude<SearchProvider, "auto">;
@@ -14,7 +15,7 @@ export interface AttributedSearchResponse extends SearchResponse {
 	provider: ResolvedSearchProvider;
 }
 
-const CONFIG_PATH = join(homedir(), ".wo", "web-search.json");
+const CONFIG_PATH = getConfigPath("web-search.json");
 
 let cachedSearchConfig: { searchProvider: SearchProvider; searchModel?: string } | null = null;
 
@@ -119,7 +120,7 @@ export async function search(query: string, options: FullSearchOptions = {}): Pr
 		if (result) return { ...result, provider: "gemini" };
 		throw new Error(
 			"Gemini search unavailable. Either:\n" +
-			"  1. Set GEMINI_API_KEY in ~/.wo/web-search.json\n" +
+			`  1. Set GEMINI_API_KEY in ~/${getConfigDirName()}/web-search.json\n` +
 			"  2. Sign into gemini.google.com in a supported Chromium-based browser"
 		);
 	}
@@ -181,10 +182,10 @@ export async function search(query: string, options: FullSearchOptions = {}): Pr
 	}
 
 	throw new Error(
-		"No search provider available. Either:\n" +
-		"  1. Set perplexityApiKey in ~/.wo/web-search.json\n" +
-		"  2. Set EXA_API_KEY (or exaApiKey) in ~/.wo/web-search.json\n" +
-		"  3. Set GEMINI_API_KEY in ~/.wo/web-search.json\n" +
+		`No search provider available. Either:\n` +
+		`  1. Set perplexityApiKey in ~/${getConfigDirName()}/web-search.json\n` +
+		`  2. Set EXA_API_KEY (or exaApiKey) in ~/${getConfigDirName()}/web-search.json\n` +
+		`  3. Set GEMINI_API_KEY in ~/${getConfigDirName()}/web-search.json\n` +
 		"  4. Sign into gemini.google.com in a supported Chromium-based browser"
 	);
 }

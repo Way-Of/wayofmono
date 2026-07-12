@@ -3,9 +3,10 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import { activityMonitor } from "./activity.js";
 import type { ExtractedContent } from "./extract.js";
+import { getConfigPath } from "../../config-dirs.js";
 
 const PERPLEXITY_API_URL = "https://api.perplexity.ai/chat/completions";
-const CONFIG_PATH = join(homedir(), ".wo", "web-search.json");
+const CONFIG_PATH = getConfigPath("web-search.json");
 
 const RATE_LIMIT = {
 	maxRequests: 10,

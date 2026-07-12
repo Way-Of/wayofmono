@@ -1,8 +1,9 @@
 import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
+import { getConfigPath } from "../../config-dirs.js";
 
-const CONFIG_PATH = join(homedir(), ".wo", "web-search.json");
+const CONFIG_PATH = getConfigPath("web-search.json");
 
 interface GeminiWebConfig {
 	chromeProfile?: string;

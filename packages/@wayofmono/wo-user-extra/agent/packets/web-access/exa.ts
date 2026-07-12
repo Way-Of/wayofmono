@@ -4,12 +4,13 @@ import { join } from "node:path";
 import { activityMonitor } from "./activity.js";
 import type { ExtractedContent } from "./extract.js";
 import type { SearchOptions, SearchResponse } from "./perplexity.js";
+import { getConfigPath, getConfigRoot } from "../../config-dirs.js";
 
 const EXA_ANSWER_URL = "https://api.exa.ai/answer";
 const EXA_SEARCH_URL = "https://api.exa.ai/search";
 const EXA_MCP_URL = "https://mcp.exa.ai/mcp";
-const CONFIG_PATH = join(homedir(), ".wo", "web-search.json");
-const USAGE_PATH = join(homedir(), ".wo", "exa-usage.json");
+const CONFIG_PATH = getConfigPath("web-search.json");
+const USAGE_PATH = getConfigPath("exa-usage.json");
 
 const MONTHLY_LIMIT = 1000;
 const WARNING_THRESHOLD = 800;
@@ -115,7 +116,7 @@ function readUsage(): ExaUsage {
 }
 
 function writeUsage(usage: ExaUsage): void {
-	const dir = join(homedir(), ".wo");
+	const dir = getConfigRoot();
 	if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 	writeFileSync(USAGE_PATH, JSON.stringify(usage, null, 2) + "\n");
 }

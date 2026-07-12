@@ -1,10 +1,13 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { homedir } from "node:os";
-import { join, resolve, sep } from "node:path";
+import { dirname, join, resolve, sep } from "node:path";
+import { fileURLToPath } from "node:url";
 import chalk from "chalk";
 import { CONFIG_DIR_NAME } from "../config.js";
 import { loadThemeFromPath, type Theme } from "../modes/interactive/theme/theme.js";
 import type { ResourceDiagnostic } from "./diagnostics.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export type { ResourceCollision, ResourceDiagnostic } from "./diagnostics.js";
 
@@ -737,9 +740,22 @@ export class DefaultResourceLoader implements ResourceLoader {
 		const themes: Theme[] = [];
 		const diagnostics: ResourceDiagnostic[] = [];
 		if (includeDefaults) {
-			const defaultDirs = [join(this.agentDir, "themes"), join(this.cwd, CONFIG_DIR_NAME, "themes")];
+			const homeDir = homedir();
+			const defaultDirs = [
+				join(this.agentDir, "themes"),
+				join(homeDir, CONFIG_DIR_NAME, "themes"),
+				join(homeDir, CONFIG_DIR_NAME, "agent", "themes"),
+				join(this.cwd, CONFIG_DIR_NAME, "themes"),
+			];
 
+			const seen = new Set<string>();
 			for (const dir of defaultDirs) {
+				const resolved = resolve(dir);
+				if (seen.has(resolved)) continue;
+				seen.add(resolved);
+				// Skip project-local themes dir inside the wayofmono monorepo to avoid collisions
+				// with themes installed globally at ~/.wocode/agent/themes/
+				if (resolved.includes("wayofmono") && resolved.includes(CONFIG_DIR_NAME) && resolved.endsWith("themes")) continue;
 				this.loadThemesFromDir(dir, themes, diagnostics);
 			}
 		}

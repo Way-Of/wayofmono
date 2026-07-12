@@ -5,8 +5,9 @@ import { extname, join, resolve as resolvePath, sep as pathSep } from "node:path
 import { activityMonitor } from "./activity.js";
 import type { ExtractedContent } from "./extract.js";
 import { checkGhAvailable, checkRepoSize, fetchViaApi, showGhHint } from "./github-api.js";
+import { getConfigPath } from "../../config-dirs.js";
 
-const CONFIG_PATH = join(homedir(), ".wo", "web-search.json");
+const CONFIG_PATH = getConfigPath("web-search.json");
 
 const BINARY_EXTENSIONS = new Set([
 	".png", ".jpg", ".jpeg", ".gif", ".bmp", ".ico", ".webp", ".svg", ".tiff", ".tif",
