@@ -1,22 +1,12 @@
-import { createRequire } from "module";
-
 export type ClipboardModule = {
 	setText: (text: string) => Promise<void>;
 	hasImage: () => boolean;
 	getImageBinary: () => Promise<Array<number>>;
 };
 
-const require = createRequire(import.meta.url);
-let clipboard: ClipboardModule | null = null;
-
-const hasDisplay = process.platform !== "linux" || Boolean(process.env.DISPLAY || process.env.WAYLAND_DISPLAY);
-
-if (!process.env.TERMUX_VERSION && hasDisplay) {
-	try {
-		clipboard = require("@mariozechner/clipboard") as ClipboardModule;
-	} catch {
-		clipboard = null;
-	}
-}
+// No native clipboard addon is bundled. Platform tools (pbcopy, clip,
+// wl-copy, xclip, xsel) and OSC 52 cover every platform in clipboard.ts,
+// so the native module is always null here.
+const clipboard: ClipboardModule | null = null;
 
 export { clipboard };

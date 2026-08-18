@@ -21,7 +21,7 @@ import { oauthErrorHtml, oauthSuccessHtml } from "./oauth-page.js";
 import { generatePKCE } from "./pkce.js";
 import type { OAuthCredentials, OAuthLoginCallbacks, OAuthPrompt, OAuthProviderInterface } from "./types.js";
 
-const CALLBACK_HOST = process.env.PI_OAUTH_CALLBACK_HOST || "127.0.0.1";
+const CALLBACK_HOST = process.env.WO_OAUTH_CALLBACK_HOST || "127.0.0.1";
 const CLIENT_ID = "app_EMoamEEZ73f0CkXaXp7hrann";
 const AUTHORIZE_URL = "https://auth.openai.com/oauth/authorize";
 const TOKEN_URL = "https://auth.openai.com/oauth/token";
@@ -185,7 +185,7 @@ async function refreshAccessToken(refreshToken: string): Promise<TokenResult> {
 }
 
 async function createAuthorizationFlow(
-	originator: string = "pi",
+	originator: string = "wo",
 ): Promise<{ verifier: string; state: string; url: string }> {
 	const { verifier, challenge } = await generatePKCE();
 	const state = createState();
@@ -303,7 +303,7 @@ function getAccountId(accessToken: string): string | null {
  * @param options.onManualCodeInput - Optional promise that resolves with user-pasted code.
  *                                    Races with browser callback - whichever completes first wins.
  *                                    Useful for showing paste input immediately alongside browser flow.
- * @param options.originator - OAuth originator parameter (defaults to "pi")
+ * @param options.originator - OAuth originator parameter (defaults to "wo")
  */
 export async function loginOpenAICodex(options: {
 	onAuth: (info: { url: string; instructions?: string }) => void;

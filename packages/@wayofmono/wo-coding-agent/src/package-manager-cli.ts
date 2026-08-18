@@ -4,6 +4,7 @@ import { selectConfig } from "./cli/config-selector.js";
 import {
 	APP_NAME,
 	getAgentDir,
+	getSelfUninstallCommand,
 	getSelfUpdateCommand,
 	getSelfUpdateUnavailableInstruction,
 	PACKAGE_NAME,
@@ -15,7 +16,7 @@ import { SettingsManager } from "./core/settings-manager.js";
 import { shouldUseWindowsShell } from "./utils/child-process.js";
 import { getLatestRelease, isNewerPackageVersion } from "./utils/version-check.js";
 
-export type PackageCommand = "install" | "remove" | "update" | "list";
+export type PackageCommand = "install" | "remove" | "update" | "list" | "uninstall-self";
 
 type UpdateTarget = { type: "all" } | { type: "self" } | { type: "extensions"; source?: string };
 
@@ -48,6 +49,8 @@ function getPackageCommandUsage(command: PackageCommand): string {
 			return `${APP_NAME} install <source> [-l]`;
 		case "remove":
 			return `${APP_NAME} remove <source> [-l]`;
+		case "uninstall-self":
+			return `${APP_NAME} uninstall`;
 		case "update":
 			return `${APP_NAME} update [source|self|wocode] [--self] [--extensions] [--extension <source>] [--force]`;
 		case "list":
@@ -81,7 +84,6 @@ Examples:
   ${getPackageCommandUsage("remove")}
 
 Remove a package and its source from settings.
-Alias: ${APP_NAME} uninstall <source> [-l]
 
 Options:
   -l, --local    Remove from project settings (.wocode/settings.json)
@@ -89,6 +91,18 @@ Options:
 Examples:
   ${APP_NAME} remove npm:@foo/bar
   ${APP_NAME} uninstall npm:@foo/bar
+`);
+			return;
+
+		case "uninstall-self":
+			console.log(`${chalk.bold("Usage:")}
+  ${getPackageCommandUsage("uninstall-self")}
+
+Uninstall ${APP_NAME} (the ${APP_NAME} package itself) via the package manager
+that installed it (npm, pnpm, yarn, or bun).
+
+This removes the global ${APP_NAME} package but leaves your config in
+${chalk.cyan("~/.wocode/")} untouched.
 `);
 			return;
 
@@ -230,8 +244,7 @@ function parsePackageCommand(args: string[]): PackageCommandOptions | undefined 
 			}
 			updateTarget = { type: "extensions", source: extensionFlagSource };
 		} else if (source) {
-			// Backward-compat: "pi" is an alias for "self" (legacy from upstream Pi project)
-			const sourceIsSelf = source === "self" || source === "pi";
+			const sourceIsSelf = source === "self" || source === APP_NAME;
 			if (sourceIsSelf) {
 				updateTarget = extensionsFlag ? { type: "all" } : { type: "self" };
 			} else {
@@ -250,6 +263,12 @@ function parsePackageCommand(args: string[]): PackageCommandOptions | undefined 
 		} else {
 			updateTarget = { type: "all" };
 		}
+	}
+
+	// Bare "uninstall" (no source) uninstalls the wocode package itself.
+	// "uninstall <source>" remains an alias for "remove <source>".
+	if (command === "remove" && !source && !local) {
+		command = "uninstall-self";
 	}
 
 	return {
@@ -310,6 +329,31 @@ async function getSelfUpdatePlan(force: boolean): Promise<SelfUpdatePlan> {
 
 	console.log(chalk.green(`${APP_NAME} is already up to date (v${VERSION})`));
 	return { packageName: PACKAGE_NAME, shouldRun: false };
+}
+
+async function runPackageManagerCommand(command: SelfUpdateCommand): Promise<void> {
+	console.log(chalk.dim(`Running: ${command.display}`));
+	for (const step of command.steps ?? [command]) {
+		await new Promise<void>((resolve, reject) => {
+			// Windows package managers are commonly .cmd shims. Use the shell so Node can execute them.
+			const child = spawn(step.command, step.args, {
+				stdio: "inherit",
+				shell: shouldUseWindowsShell(step.command),
+			});
+			child.on("error", (error) => {
+				reject(error);
+			});
+			child.on("close", (code, signal) => {
+				if (code === 0) {
+					resolve();
+				} else if (signal) {
+					reject(new Error(`${step.display} terminated by signal ${signal}`));
+				} else {
+					reject(new Error(`${step.display} exited with code ${code ?? "unknown"}`));
+				}
+			});
+		});
+	}
 }
 
 async function runSelfUpdate(command: SelfUpdateCommand): Promise<void> {
@@ -435,6 +479,26 @@ export async function handlePackageCommand(args: string[]): Promise<boolean> {
 					return true;
 				}
 				console.log(chalk.green(`Removed ${source}`));
+				return true;
+			}
+
+			case "uninstall-self": {
+				const selfUninstallCommand = getSelfUninstallCommand(PACKAGE_NAME, selfUpdateNpmCommand);
+				if (!selfUninstallCommand) {
+					printSelfUpdateUnavailable(selfUpdateNpmCommand);
+					process.exitCode = 1;
+					return true;
+				}
+				try {
+					await runPackageManagerCommand(selfUninstallCommand);
+				} catch (error: unknown) {
+					const message = error instanceof Error ? error.message : "Unknown package command error";
+					console.error(chalk.red(`Error: ${message}`));
+					printSelfUpdateFallback(selfUninstallCommand);
+					process.exitCode = 1;
+					return true;
+				}
+				console.log(chalk.green(`Uninstalled ${APP_NAME} (v${VERSION}). Config in ~/.wocode/ was left untouched.`));
 				return true;
 			}
 

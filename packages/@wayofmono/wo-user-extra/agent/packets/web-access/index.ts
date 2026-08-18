@@ -1,7 +1,7 @@
-import type { ExtensionAPI, ExtensionContext } from "@mariozechner/pi-coding-agent";
-import { Box, Text, truncateToWidth } from "@mariozechner/pi-tui";
+import type { ExtensionAPI, ExtensionContext } from "@wayofmono/wo-agent";
+import { Box, Text, truncateToWidth } from "@wayofmono/wo-tui";
 import { Type } from "typebox";
-import { StringEnum, complete, getModel, type Model } from "@mariozechner/pi-ai";
+import { StringEnum, complete, getModel, type Model } from "@wayofmono/wo-ai";
 import { fetchAllContent, type ExtractedContent } from "./extract.js";
 import { clearCloneCache } from "./github-extract.js";
 import { search, type SearchProvider, type ResolvedSearchProvider } from "./gemini-search.js";
@@ -106,7 +106,7 @@ function loadConfigForExtensionInit(): WebSearchConfig {
 		return loadConfig();
 	} catch (err) {
 		const message = err instanceof Error ? err.message : String(err);
-		console.error(`[pi-web-access] ${message}`);
+		console.error(`[wo-web-access] ${message}`);
 		return {};
 	}
 }

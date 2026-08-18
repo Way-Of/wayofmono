@@ -230,8 +230,7 @@ function parsePackageCommand(args: string[]): PackageCommandOptions | undefined 
 			}
 			updateTarget = { type: "extensions", source: extensionFlagSource };
 		} else if (source) {
-			// Backward-compat: "pi" is an alias for "self" (legacy from upstream Pi project)
-			const sourceIsSelf = source === "self" || source === "pi";
+						const sourceIsSelf = source === "self" || source === APP_NAME;
 			if (sourceIsSelf) {
 				updateTarget = extensionsFlag ? { type: "all" } : { type: "self" };
 			} else {

@@ -52,7 +52,7 @@ export default function (api: any) {
     const themes = getThemeList(ctx);
     if (themes.length === 0) {
       if (typeof ctx.ui.notify === 'function') {
-        ctx.ui.notify("No themes found in pi. Ensure they are in ~/.pi/themes", "warning");
+        ctx.ui.notify("No themes found in wo. Ensure they are in ~/.wocode/themes", "warning");
       }
       return;
     }

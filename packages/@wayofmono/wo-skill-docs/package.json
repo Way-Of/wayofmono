@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/wo-skill-docs",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "WayOfMono Documentation Skill - makes any agent a great documentation expert.",
   "repository": {
     "type": "git",
@@ -25,11 +25,6 @@
     "*.ts",
     "SKILL.md"
   ],
-  "pi": {
-    "skills": [
-      "SKILL.md"
-    ]
-  },
   "scripts": {
     "build": "tsc",
     "test": "vitest run --passWithNoTests",
@@ -42,5 +37,15 @@
     "@types/node": "^24.3.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.1"
+  },
+  "wocode": {
+    "skills": [
+      "SKILL.md"
+    ]
+  },
+  "wouser": {
+    "skills": [
+      "SKILL.md"
+    ]
   }
 }

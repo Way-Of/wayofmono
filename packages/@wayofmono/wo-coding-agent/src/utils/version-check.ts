@@ -55,7 +55,7 @@ export async function getLatestRelease(
 	currentVersion: string,
 	options: { timeoutMs?: number } = {},
 ): Promise<LatestRelease | undefined> {
-	if (process.env.WO_SKIP_VERSION_CHECK || process.env.WO_OFFLINE || process.env.PI_SKIP_VERSION_CHECK || process.env.PI_OFFLINE)
+	if (process.env.WO_SKIP_VERSION_CHECK || process.env.WO_OFFLINE)
 		return undefined;
 
 	const response = await fetch(LATEST_VERSION_URL, {

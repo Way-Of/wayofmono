@@ -43,6 +43,21 @@ const PercentileCutoffsSchema = Type.Object({
 	p99: Type.Optional(Type.Number()),
 });
 
+function isLoopbackUrl(url: string): boolean {
+	try {
+		const hostname = new URL(url).hostname.toLowerCase();
+		return (
+			hostname === "localhost" ||
+			hostname === "127.0.0.1" ||
+			hostname === "::1" ||
+			hostname === "0.0.0.0" ||
+			hostname.endsWith(".localhost")
+		);
+	} catch {
+		return false;
+	}
+}
+
 const OpenRouterRoutingSchema = Type.Object({
 	allow_fallbacks: Type.Optional(Type.Boolean()),
 	require_parameters: Type.Optional(Type.Boolean()),
@@ -348,7 +363,7 @@ export class ModelRegistry {
 		if (modelsJsonPath) {
 			paths.push(modelsJsonPath);
 		} else {
-			// Check project-local .wo first, then global ~/.wo/agent
+			// Check project-local .wocode first, then global ~/.wocode/agent
 			const projectDir = join(getAgentDir(), "models.json");
 			const globalDir = join(homedir(), CONFIG_DIR_NAME, "agent", "models.json");
 			paths.push(projectDir, globalDir);
@@ -547,7 +562,8 @@ export class ModelRegistry {
 				if (!providerConfig.baseUrl) {
 					throw new Error(`Provider ${providerName}: "baseUrl" is required when defining custom models.`);
 				}
-				if (!providerConfig.apiKey) {
+				// Loopback endpoints (Ollama, LM Studio, vLLM, ...) are local and do not need an API key.
+				if (!providerConfig.apiKey && !isLoopbackUrl(providerConfig.baseUrl)) {
 					throw new Error(`Provider ${providerName}: "apiKey" is required when defining custom models.`);
 				}
 			}
@@ -859,7 +875,7 @@ export class ModelRegistry {
 		if (!config.baseUrl) {
 			throw new Error(`Provider ${providerName}: "baseUrl" is required when defining models.`);
 		}
-		if (!config.apiKey && !config.oauth) {
+		if (!config.apiKey && !config.oauth && !isLoopbackUrl(config.baseUrl)) {
 			throw new Error(`Provider ${providerName}: "apiKey" or "oauth" is required when defining models.`);
 		}
 
