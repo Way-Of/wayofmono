@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/wo-mermaid",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "🧜‍♀️ WayOfMono extension that renders Mermaid diagrams as ASCII in the TUI",
   "repository": {
     "type": "git",
@@ -40,7 +40,11 @@
     "@wayofmono/wo-coding-agent": "*",
     "@wayofmono/wo-tui": "*"
   },
-  "pi": {
+  "devDependencies": {
+    "@types/node": "^25.8.0",
+    "typescript": "^6.0.3"
+  },
+  "wocode": {
     "extensions": [
       "./dist/index.js"
     ],
@@ -48,8 +52,12 @@
       "SKILL.md"
     ]
   },
-  "devDependencies": {
-    "@types/node": "^25.8.0",
-    "typescript": "^6.0.3"
+  "wouser": {
+    "extensions": [
+      "./dist/index.js"
+    ],
+    "skills": [
+      "SKILL.md"
+    ]
   }
 }

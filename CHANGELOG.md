@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.7.22] - 2026-08-18
+
+### wo-coding-agent v1.0.24 — Remove ALL pi/mariozechner references, self-uninstall, init & models.json fixes (WOMONO-180)
+
+- **100% pi/mariozechner removal**: Deleted `@mariozechner/pi-*` virtual-module aliases and jiti aliases from the extension loader, `@mariozechner/clipboard` dependency, the `@mariozechner/pi-coding-agent:theme` global symbol, and the mariozechner.at announcement URL. No pi/mariozechner references remain in src/, package.json, README, or help text.
+- **Extension manifest renamed**: `pkg.pi` → `pkg.wocode` (`wocode.extensions`, `wocode.skills`, `wocode.prompts`, `wocode.themes`) in both the extension loader and package manager.
+- **No pi resource loading**: ResourceLoader no longer scans `~/.pi/agent`; the `[ResourceLoader] Added additional agent roots` log now prints at most once per startup instead of once per resource (was ~20+ duplicate lines).
+- **Simple self-uninstall**: `wocode uninstall` (no args) now uninstalls the wocode package itself via npm/pnpm/yarn/bun. `wocode uninstall <source>` still removes an extension. Config in `~/.wocode/` is left untouched.
+- **`wocode --init` fixed**: launcher now points at `$PWD/.wocode` (was `.wo`); for global installs no `./wocode` file is created that would shadow the binary, and the success message says `Run: wocode`.
+- **Ollama/loopback providers**: `models.json` validation no longer requires an `apiKey` for loopback endpoints (127.0.0.1, localhost, 0.0.0.0, ::1) — the default `wocode --init` Ollama config now loads without error.
+- **Env vars**: all `PI_*` → `WO_*` (`WO_OFFLINE`, `WO_TIMING`, `WO_TELEMETRY`, `WO_STARTUP_BENCHMARK`, `WO_CLEAR_ON_SHRINK`, `WO_HARDWARE_CURSOR`, `WO_CODING_AGENT`).
+- **Dependency audit**: removed the now-unused `@mariozechner/clipboard` optional dependency; clipboard falls back to platform tools (pbcopy, clip, wl-copy, xclip, xsel, OSC 52).
+
+- **Tickets**: WOMONO-180.
+
 ## [1.7.21] - 2026-07-12
 
 ### wo-coding-agent v1.0.23 — Theme loading fix + identity prompt (WOMONO-174, WOMONO-175)

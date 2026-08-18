@@ -4,7 +4,7 @@ import { getBundledInteractiveAssetPath } from "../../../config.js";
 import { theme } from "../theme/theme.js";
 import { DynamicBorder } from "./dynamic-border.js";
 
-const BLOG_URL = "https://mariozechner.at/posts/2026-04-08-ive-sold-out/";
+const BLOG_URL = "https://github.com/Way-Of/wayofmono";
 const IMAGE_FILENAME = "clankolas.png";
 
 let cachedImageBase64: string | undefined;

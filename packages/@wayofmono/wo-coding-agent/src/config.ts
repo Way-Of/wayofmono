@@ -290,6 +290,39 @@ export function getUpdateInstruction(packageName: string): string {
 	return getSelfUpdateUnavailableInstruction(packageName);
 }
 
+export function getSelfUninstallCommand(
+	packageName: string,
+	npmCommand?: string[],
+): SelfUpdateCommand | undefined {
+	const method = detectInstallMethod();
+	let step: SelfUpdateCommandStep | undefined;
+	switch (method) {
+		case "npm": {
+			const [command = "npm", ...npmArgs] = npmCommand ?? [];
+			const inferred = npmCommand?.length ? undefined : getInferredNpmInstall();
+			const prefixArgs = [...npmArgs, ...(inferred ? ["--prefix", inferred.prefix] : [])];
+			step = makeSelfUpdateCommandStep(command, [...prefixArgs, "uninstall", "-g", packageName]);
+			break;
+		}
+		case "pnpm":
+			step = makeSelfUpdateCommandStep("pnpm", ["uninstall", "-g", packageName]);
+			break;
+		case "yarn":
+			step = makeSelfUpdateCommandStep("yarn", ["global", "remove", packageName]);
+			break;
+		case "bun":
+			step = makeSelfUpdateCommandStep("bun", ["uninstall", "-g", packageName]);
+			break;
+		case "bun-binary":
+		case "unknown":
+			return undefined;
+	}
+	if (!step || !isManagedByGlobalPackageManager(method, packageName, npmCommand) || !isSelfUpdatePathWritable()) {
+		return undefined;
+	}
+	return step;
+}
+
 // =============================================================================
 // Package Asset Paths (shipped with executable)
 // =============================================================================
@@ -402,28 +435,22 @@ export function getBundledInteractiveAssetPath(name: string): string {
 }
 
 // =============================================================================
-// App Config (from package.json piConfig)
+// App Config
 // =============================================================================
 
 interface PackageJson {
 	name?: string;
 	version?: string;
-	piConfig?: {
-		name?: string;
-		configDir?: string;
-	};
 }
 
 const pkg = JSON.parse(readFileSync(getPackageJsonPath(), "utf-8")) as PackageJson;
 
-const piConfigName: string | undefined = "wocode";
 export const PACKAGE_NAME: string = pkg.name || "@wayofmono/wo-coding-agent";
 export const APP_NAME: string = "wocode";
 export const APP_TITLE: string = "WayOfMono Coding Agent";
 export const CONFIG_DIR_NAME: string = ".wocode";
 export const VERSION: string = pkg.version || "0.0.0";
 
-// e.g., PI_CODING_AGENT_DIR or TAU_CODING_AGENT_DIR
 export const ENV_AGENT_DIR = `WOCODE_CODING_AGENT_DIR`;
 export const ENV_SESSION_DIR = `WOCODE_CODING_AGENT_SESSION_DIR`;
 
@@ -452,12 +479,12 @@ export function getAgentDir(): string {
 		return expandTildePath(envDir);
 	}
 
-	// Project-local priority: look for .wo directory in CWD or ancestors
+	// Project-local priority: look for .wocode directory in CWD or ancestors
 	let curr = process.cwd();
 	while (true) {
 		const localDir = join(curr, CONFIG_DIR_NAME);
 		if (existsSync(localDir)) {
-			// Use .wo/agent if it exists, otherwise use .wo directly
+			// Use .wocode/agent if it exists, otherwise use .wocode directly
 			const agentSubDir = join(localDir, "agent");
 			return existsSync(agentSubDir) ? agentSubDir : localDir;
 		}

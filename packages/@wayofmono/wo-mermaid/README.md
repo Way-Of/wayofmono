@@ -1,36 +1,30 @@
-# 🧜‍♀️ pi-mermaid
+# 🧜‍♀️ wo-mermaid
 
-[![pi coding agent](https://img.shields.io/badge/pi-coding%20agent-6f6bff?logo=terminal&logoColor=white)](https://pi.dev/)
-[![npm version](https://img.shields.io/npm/v/pi-mermaid.svg)](https://www.npmjs.com/package/pi-mermaid)
-[![license](https://img.shields.io/npm/l/pi-mermaid.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/@wayofmono/wo-mermaid.svg)](https://www.npmjs.com/package/@wayofmono/wo-mermaid)
+[![license](https://img.shields.io/npm/l/@wayofmono/wo-mermaid.svg)](LICENSE)
 
-Pi extension that renders Mermaid diagrams as ASCII in the TUI. It uses [Mermaid's parser](https://github.com/mermaid-js/mermaid) for syntax validation and [beautiful-mermaid](https://github.com/lukilabs/beautiful-mermaid) to render the ASCII art.
-
-Pi → https://pi.dev/
+Wo extension that renders Mermaid diagrams as ASCII in the TUI. It uses [Mermaid's parser](https://github.com/mermaid-js/mermaid) for syntax validation and [beautiful-mermaid](https://github.com/lukilabs/beautiful-mermaid) to render the ASCII art.
 
 ## Features
-- Renders Mermaid blocks as ASCII diagrams inside Pi's TUI
+- Renders Mermaid blocks as ASCII diagrams inside wo's TUI
 - Width-aware rendering: auto-selects tighter padding presets and clips output for narrow terminals
 - Collapsible output with source shown only on expand (ctrl+o)
 - Token efficiently adds parser warnings/errors to LLM context
 - Handles large blocks with safety limits and caching
 
-## Demo
-<video controls src="https://raw.githubusercontent.com/Gurpartap/pi-mermaid/refs/heads/main/assets/pi-mermaid.mp4" title="pi-mermaid demo"></video>
-
 ## Install
 
 ```bash
-pi install npm:pi-mermaid
+wocode install npm:@wayofmono/wo-mermaid
 ```
 
-Or, clone into your Pi extensions directory and enable it:
+Or, clone into your wo extensions directory and enable it:
 
 ```bash
-git clone https://github.com/Gurpartap/pi-mermaid ~/.pi/agent/extensions/pi-mermaid
+git clone https://github.com/Way-Of/wayofmono ~/.wocode/extensions/wo-mermaid
 ```
 
-After installing, enter `/reload` or restart Pi.
+After installing, enter `/reload` or restart wo.
 
 ## Usage
 Use Mermaid fenced blocks in chat:
@@ -45,7 +39,7 @@ graph TD
 Or render the last assistant message:
 
 ```
-/pi-mermaid
+/wo-mermaid
 ```
 
 ## Examples
@@ -249,7 +243,6 @@ classDiagram
 This extension depends on and is made possible by these projects:
 - [beautiful-mermaid](https://github.com/lukilabs/beautiful-mermaid)
 - [Mermaid](https://github.com/mermaid-js/mermaid)
-- [Pi](https://pi.dev/)
 
 Thank you to the maintainers and contributors of these projects.
 

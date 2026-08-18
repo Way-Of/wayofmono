@@ -227,7 +227,7 @@ ${chalk.bold("Commands:")}
   --print, -p                    Non-interactive mode: process prompt and exit
   --continue, -c                 Continue previous session
   --resume, -r                   Select a session to resume
-  --init                         Initialize local .wo config and launcher script
+  --init                         Initialize local .wocode config and launcher script
   --session <path|id>            Use specific session file or partial UUID
   --fork <path|id>               Fork specific session file or partial UUID into a new session
   --session-dir <dir>            Directory for session storage and lookup

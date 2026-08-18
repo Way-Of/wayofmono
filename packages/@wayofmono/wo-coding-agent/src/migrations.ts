@@ -73,10 +73,10 @@ export function migrateAuthToAuthJson(): string[] {
 }
 
 /**
- * Migrate sessions from ~/.wo/agent/*.jsonl to proper session directories.
+ * Migrate sessions from ~/.wocode/agent/*.jsonl to proper session directories.
  *
- * Bug in v0.30.0: Sessions were saved to ~/.wo/agent/ instead of
- * ~/.wo/agent/sessions/<encoded-cwd>/. This migration moves them
+ * Bug in v0.30.0: Sessions were saved to ~/.wocode/agent/ instead of
+ * ~/.wocode/agent/sessions/<encoded-cwd>/. This migration moves them
  * to the correct location based on the cwd in their session header.
  *
  * See: https://github.com/Way-Of/wayofmono/issues/320

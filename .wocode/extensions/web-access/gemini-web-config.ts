@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
-const CONFIG_PATH = join(homedir(), ".pi", "web-search.json");
+const CONFIG_PATH = join(homedir(), ".wocode", "web-search.json");
 
 interface GeminiWebConfig {
 	chromeProfile?: string;
@@ -45,7 +45,7 @@ export function getChromeProfileFromConfig(): string | undefined {
 }
 
 export function isBrowserCookieAccessAllowed(): boolean {
-	if (process.env.PI_ALLOW_BROWSER_COOKIES === "1" || process.env.FEYNMAN_ALLOW_BROWSER_COOKIES === "1") {
+	if (process.env.WO_ALLOW_BROWSER_COOKIES === "1") {
 		return true;
 	}
 	return loadConfig().allowBrowserCookies === true;

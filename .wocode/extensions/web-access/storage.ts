@@ -1,4 +1,4 @@
-import type { ExtensionContext } from "@mariozechner/pi-coding-agent";
+import type { ExtensionContext } from "@wayofmono/wo-coding-agent";
 import type { ExtractedContent } from "./extract.js";
 import type { SearchResult } from "./perplexity.js";
 

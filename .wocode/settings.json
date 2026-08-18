@@ -1,3 +1,8 @@
 {
-  "lastChangelogVersion": "1.0.11"
+  "lastChangelogVersion": "1.0.11",
+  "defaultProvider": "ollama",
+  "defaultModel": "qwen3.5:4b",
+  "packages": [
+    "npm:@wayofmono/web-access"
+  ]
 }

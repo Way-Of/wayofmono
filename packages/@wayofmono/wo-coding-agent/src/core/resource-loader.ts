@@ -201,6 +201,8 @@ export class DefaultResourceLoader implements ResourceLoader {
 	private systemPrompt?: string;
 	private appendSystemPrompt: string[];
 	private lastSkillPaths: string[];
+	private additionalAgentRoots: string[];
+	private additionalRootsLogged: boolean;
 	private extensionSkillSourceInfos: Map<string, SourceInfo>;
 	private extensionPromptSourceInfos: Map<string, SourceInfo>;
 	private extensionThemeSourceInfos: Map<string, SourceInfo>;
@@ -247,6 +249,8 @@ export class DefaultResourceLoader implements ResourceLoader {
 		this.agentsFiles = [];
 		this.appendSystemPrompt = [];
 		this.lastSkillPaths = [];
+		this.additionalAgentRoots = [];
+		this.additionalRootsLogged = false;
 		this.extensionSkillSourceInfos = new Map();
 		this.extensionPromptSourceInfos = new Map();
 		this.extensionThemeSourceInfos = new Map();
@@ -641,11 +645,8 @@ export class DefaultResourceLoader implements ResourceLoader {
 		];
 
 		// Also check additional tool directories from the AI Engineering Harness manifest
-		// This ensures resources from wocode (~/.wocode/) and pi (~/.pi/agent/) are recognized
-		const additionalAgentDirs = [
-			join(homedir(), ".wocode"),
-			join(homedir(), ".pi/agent"),
-		];
+		// This ensures resources from the global wocode config (~/.wocode/) are recognized
+		const additionalAgentDirs = [join(homedir(), ".wocode")];
 
 		for (const agentDirPath of additionalAgentDirs) {
 			if (existsSync(agentDirPath)) {
@@ -656,7 +657,8 @@ export class DefaultResourceLoader implements ResourceLoader {
 					join(agentDirPath, "themes"),
 					join(agentDirPath, "extensions"),
 				);
-				if (agentRoots.length > originalAgentRootsCount) {
+				if (agentRoots.length > originalAgentRootsCount && !this.additionalRootsLogged) {
+					this.additionalRootsLogged = true;
 					console.log(chalk.green(`[ResourceLoader] Added additional agent roots from ${agentDirPath}: skills, prompts, themes, extensions`));
 				}
 			} else {

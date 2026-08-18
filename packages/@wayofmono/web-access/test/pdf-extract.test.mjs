@@ -42,7 +42,7 @@ function buildChildScript(moduleUrl) {
 
     const { extractPDFToMarkdown } = await import(${JSON.stringify(moduleUrl)});
 
-    const outputDir = await mkdtemp(join(tmpdir(), "pi-web-access-pdf-"));
+    const outputDir = await mkdtemp(join(tmpdir(), "wo-web-access-pdf-"));
     const result = await extractPDFToMarkdown(
       makePdf("Hello PDF"),
       "https://example.test/hello.pdf",
