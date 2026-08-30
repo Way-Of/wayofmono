@@ -1,0 +1,116 @@
+{
+  "$schema": "https://wayofmono.dev/schemas/team-config.json",
+  "version": "1.0.0",
+  "description": "Team configuration for WayOfMono AI Engineering Harness. Copy to team-config.json and customize.",
+  "developers": [
+    {
+      "id": "craig",
+      "name": "Craig",
+      "role": "cto",
+      "email": "craig@wayofmono.dev",
+      "github": "craig-wo",
+      "projects": ["WO", "OPT", "PROJ"],
+      "skills": ["architecture", "strategy", "review"],
+      "timezone": "UTC-5"
+    },
+    {
+      "id": "josef",
+      "name": "Josef",
+      "role": "senior",
+      "email": "josef@wayofmono.dev",
+      "github": "josef-wo",
+      "projects": ["WO", "PROJ"],
+      "skills": ["backend", "database", "api"],
+      "timezone": "UTC+1"
+    },
+    {
+      "id": "andre",
+      "name": "Andre",
+      "role": "junior",
+      "email": "andre@wayofmono.dev",
+      "github": "andre-wo",
+      "projects": ["WO"],
+      "skills": ["frontend", "react", "testing"],
+      "timezone": "UTC+2"
+    },
+    {
+      "id": "tomas",
+      "name": "Tomas",
+      "role": "junior",
+      "email": "tomas@wayofmono.dev",
+      "github": "tomas-wo",
+      "projects": ["WO"],
+      "skills": ["backend", "testing", "documentation"],
+      "timezone": "UTC+1"
+    },
+    {
+      "id": "zerwiz",
+      "name": "Zrewiz",
+      "role": "lead",
+      "email": "zerwiz@wayofmono.dev",
+      "github": "zerwiz",
+      "projects": ["WO", "OPT", "PROJ"],
+      "skills": ["architecture", "harness", "automation"],
+      "timezone": "UTC+2"
+    }
+  ],
+  "projects": [
+    {
+      "id": "WO",
+      "name": "WayOfWork Platform",
+      "prefix": "WOW",
+      "description": "Way of Work platform specifications (WOW-010 through WOW-016)",
+      "members": ["craig", "josef", "andre", "tomas", "zerwiz"],
+      "default_assignee": "zerwiz",
+      "repositories": ["wayofmono/wayofmono"]
+    },
+    {
+      "id": "OPT",
+      "name": "Opticat Platform",
+      "prefix": "OPT",
+      "description": "Opticat platform (simulator, backend-integrator, ui-builder)",
+      "members": ["craig", "zerwiz"],
+      "default_assignee": "zerwiz",
+      "repositories": ["wayofmono/opticat"]
+    },
+    {
+      "id": "PROJ",
+      "name": "WayOfMono Monorepo",
+      "prefix": "PROJ",
+      "description": "WayOfMono monorepo consolidation and tooling",
+      "members": ["craig", "josef", "andre", "tomas", "zerwiz"],
+      "default_assignee": "zerwiz",
+      "repositories": ["wayofmono/wayofmono"]
+    }
+  ],
+  "roles": {
+    "cto": {
+      "permissions": ["read-all", "write-all", "approve-reviews", "assign-any", "manage-team"],
+      "description": "Chief Technology Officer - full access across all projects"
+    },
+    "lead": {
+      "permissions": ["read-project", "write-project", "approve-reviews", "assign-project", "manage-skills"],
+      "description": "Technical Lead - full access within assigned projects"
+    },
+    "senior": {
+      "permissions": ["read-project", "write-assigned", "request-review", "create-tickets"],
+      "description": "Senior Developer - works on assigned tickets within projects"
+    },
+    "junior": {
+      "permissions": ["read-assigned", "write-assigned", "request-review", "create-personal-tickets"],
+      "description": "Junior Developer - works on assigned tickets with guidance"
+    }
+  },
+  "ticket_namespaces": {
+    "WOW": { "project": "WO", "description": "Way of Work platform tickets" },
+    "OPT": { "project": "OPT", "description": "Opticat platform tickets" },
+    "PROJ": { "project": "PROJ", "description": "WayOfMono project tickets" },
+    "TEAM": { "project": "TEAM", "description": "Team-specific tickets" }
+  },
+  "settings": {
+    "auto_sync_personal_todos": true,
+    "require_review_for": ["cto", "lead"],
+    "github_integration": true,
+    "notification_channels": ["github", "local"]
+  }
+}

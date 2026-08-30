@@ -1,0 +1,12 @@
+{
+  "name": "tdd",
+  "description": "Test-driven development with red-green-refactor loop. Use when user wants to build features or fix bugs using TDD, mentions \"red-green-refactor\", asks for test-first development, or wants integration-style tests that survive refactors.",
+  "version": "1.0.0",
+  "tools": [
+    "read_file",
+    "run_shell_command",
+    "glob",
+    "write_file",
+    "replace"
+  ]
+}

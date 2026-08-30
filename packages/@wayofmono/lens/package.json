@@ -1,0 +1,45 @@
+{
+	"name": "@wayofmono/lens",
+	"version": "1.0.3",
+	"type": "module",
+	"description": "WayOfMono high-fidelity codebase analysis and safety engine.",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Way-Of/wayofmono.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Way-Of/wayofmono/issues"
+	},
+	"homepage": "https://github.com/Way-Of/wayofmono#readme",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist",
+		"src",
+		"README.md"
+	],
+	"scripts": {
+		"build": "tsc",
+		"test": "vitest run --passWithNoTests",
+		"typecheck": "tsc --noEmit",
+		"lint": "eslint ."
+	},
+	"dependencies": {
+		"@ast-grep/napi": "^0.42.1",
+		"minimatch": "^10.2.5",
+		"typebox": "^1.0.0",
+		"typescript": "^6.0.3",
+		"vscode-jsonrpc": "^8.2.1",
+		"web-tree-sitter": "^0.25.10"
+	},
+	"devDependencies": {
+		"@types/node": "^25.6.0",
+		"vitest": "^4.1.1"
+	}
+}

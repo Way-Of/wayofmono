@@ -1,0 +1,8 @@
+name: otel_semantic_conventions
+description: ">"
+version: 1.0.0
+tools:
+  - read_file
+  - run_shell_command
+  - search_file_content
+  - glob

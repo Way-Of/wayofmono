@@ -1,0 +1,19 @@
+[Unit]
+Description=WayOfMono CTO Dashboard (podman-compose)
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=zerwiz
+Group=zerwiz
+WorkingDirectory=/home/zerwiz/wayofmono/ui
+ExecStart=/usr/bin/podman-compose up -d
+ExecStop=/usr/bin/podman-compose down
+ExecReload=/usr/bin/podman-compose up --build -d
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

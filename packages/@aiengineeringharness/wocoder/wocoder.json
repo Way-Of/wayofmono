@@ -1,0 +1,15 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "kubernetes": {
+      "type": "local",
+      "command": ["npx", "-y", "kubernetes-mcp-server@latest"],
+      "enabled": true
+    },
+    "aspire-dashboard": {
+        "type": "remote",
+        "url": "http://localhost:18891",
+        "enabled": false
+    }
+  }
+}
