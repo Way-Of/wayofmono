@@ -1,6 +1,10 @@
 MIT License
 
+<<<<<<< HEAD:$(pwd)/.pnpm-store/v10/files/25/043ba304020978e286319c74e8b57b2c0742d0104112d001be3b07590b54d081c050d535767c180f6c37e0737a2380cdaaa5ea3725b73c494cdfbc0691f436
+Copyright (c) 2018 RienNeVaPlus
+=======
 Copyright (c) 2025 Nico Bailon
+>>>>>>> origin/main:packages/@wayofmono/wo-user-extra/agent/packets/web-access/LICENSE
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

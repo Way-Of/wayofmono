@@ -1,6 +1,10 @@
 # WayOfMono (Wo)
 
+<<<<<<< HEAD
+The ultimate monorepo consolidation for high-performance coding agents. WayOfMono provides a shared **AI Engineering Harness** — 81 battle-tested skills, 6 subagents, and workflows spanning 7 AI coding tools — plus a **CTO Dashboard** with telemetry, standups, tickets, and review queues.
+=======
 > High-performance AI coding agents for the next generation of engineering.
+>>>>>>> origin/main
 
 WayOfMono provides two powerful AI coding tools built on a shared intelligence backend:
 
@@ -70,6 +74,30 @@ wocode --export <session>
 
 **Project config** (`.wocode/`):
 ```
+<<<<<<< HEAD
+./
+├── packages/
+│   ├── @aiengineeringharness/   # AI Engineering Harness
+│   │   ├── scripts/             # Pipeline tools (docs-sync, compliance, migrate)
+│   │   ├── opencode/            → ~/.config/opencode/
+│   │   ├── claude/              → ~/.claude/
+│   │   ├── gemini/              → ~/.gemini/
+│   │   ├── pi/                  → ~/.pi/agent/
+│   │   ├── wocoder/             → ~/.wocoder/
+│   │   ├── antigravity/         → ~/.antigravity/
+│   │   ├── codex/               → ~/.codex/
+│   │   ├── install.ts           # CLI installer
+│   │   └── setup.sh             # GNU Stow installer
+│   └── @wayofmono/*             # Wo npm packages
+├── ui/                   # CTO Dashboard (Next.js 16)
+│   ├── src/app/api/       # API routes (tickets, skills, standup, ideas)
+│   └── src/components/    # Dashboard views
+├── docs/
+│   ├── skills/            # 81 canonical SKILL.md files (source of truth)
+│   └── tools/             # Tool reference docs for compliance checking
+├── thoughts/              # Context engineering (f-rr-d)
+└── .github/workflows/     # CI/CD (incl. canonical sync check)
+=======
 .wocode/
 ├── config.json          # Tool configuration
 ├── models.json          # Model/provider settings
@@ -186,6 +214,7 @@ session.addEventListener((event) => {
 ├── extensions/          # Extensions
 ├── prompts/             # Prompt templates
 └── themes/              # Themes
+>>>>>>> origin/main
 ```
 
 ---
