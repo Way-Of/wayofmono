@@ -20,11 +20,12 @@ import {
 } from "@wayofmono/wo-ai";
 import { registerOAuthProvider, resetOAuthProviders } from "@wayofmono/wo-ai/oauth";
 import { existsSync, readFileSync } from "fs";
+import { homedir } from "os";
 import { join } from "path";
 import { type Static, Type } from "typebox";
 import { Compile } from "typebox/compile";
 import type { TLocalizedValidationError } from "typebox/error";
-import { getAgentDir } from "../config.js";
+import { CONFIG_DIR_NAME, getAgentDir } from "../config.js";
 import type { AuthStatus, AuthStorage } from "./auth-storage.js";
 import { BUILT_IN_PROVIDER_DISPLAY_NAMES } from "./provider-display-names.js";
 import {
@@ -41,6 +42,21 @@ const PercentileCutoffsSchema = Type.Object({
 	p90: Type.Optional(Type.Number()),
 	p99: Type.Optional(Type.Number()),
 });
+
+function isLoopbackUrl(url: string): boolean {
+	try {
+		const hostname = new URL(url).hostname.toLowerCase();
+		return (
+			hostname === "localhost" ||
+			hostname === "127.0.0.1" ||
+			hostname === "::1" ||
+			hostname === "0.0.0.0" ||
+			hostname.endsWith(".localhost")
+		);
+	} catch {
+		return false;
+	}
+}
 
 const OpenRouterRoutingSchema = Type.Object({
 	allow_fallbacks: Type.Optional(Type.Boolean()),
@@ -337,17 +353,26 @@ export class ModelRegistry {
 
 	private constructor(
 		readonly authStorage: AuthStorage,
-		private modelsJsonPath: string | undefined,
+		private modelsJsonPaths: string[],
 	) {
 		this.loadModels();
 	}
 
-	static create(authStorage: AuthStorage, modelsJsonPath: string = join(getAgentDir(), "models.json")): ModelRegistry {
-		return new ModelRegistry(authStorage, modelsJsonPath);
+	static create(authStorage: AuthStorage, modelsJsonPath?: string): ModelRegistry {
+		const paths: string[] = [];
+		if (modelsJsonPath) {
+			paths.push(modelsJsonPath);
+		} else {
+			// Check project-local .wocode first, then global ~/.wocode/agent
+			const projectDir = join(getAgentDir(), "models.json");
+			const globalDir = join(homedir(), CONFIG_DIR_NAME, "agent", "models.json");
+			paths.push(projectDir, globalDir);
+		}
+		return new ModelRegistry(authStorage, paths);
 	}
 
 	static inMemory(authStorage: AuthStorage): ModelRegistry {
-		return new ModelRegistry(authStorage, undefined);
+		return new ModelRegistry(authStorage, []);
 	}
 
 	/**
@@ -377,17 +402,26 @@ export class ModelRegistry {
 	}
 
 	private loadModels(): void {
-		// Load custom models and overrides from models.json
-		const {
-			models: customModels,
-			overrides,
-			modelOverrides,
-			error,
-		} = this.modelsJsonPath ? this.loadCustomModels(this.modelsJsonPath) : emptyCustomModelsResult();
+		// Load custom models and overrides from models.json (check multiple paths)
+		let customResult = emptyCustomModelsResult();
+		let foundPath = false;
+
+		for (const path of this.modelsJsonPaths) {
+			if (existsSync(path)) {
+				customResult = this.loadCustomModels(path);
+				foundPath = true;
+				break;
+			}
+		}
+
+		const { models: customModels, overrides, modelOverrides, error } = customResult;
 
 		if (error) {
 			this.loadError = error;
 			// Keep built-in models even if custom models failed to load
+		} else if (!foundPath) {
+			// No models.json found at any path - this is not an error, just use built-in models
+			this.loadError = undefined;
 		}
 
 		const builtInModels = this.loadBuiltInModels(overrides, modelOverrides);
@@ -528,7 +562,8 @@ export class ModelRegistry {
 				if (!providerConfig.baseUrl) {
 					throw new Error(`Provider ${providerName}: "baseUrl" is required when defining custom models.`);
 				}
-				if (!providerConfig.apiKey) {
+				// Loopback endpoints (Ollama, LM Studio, vLLM, ...) are local and do not need an API key.
+				if (!providerConfig.apiKey && !isLoopbackUrl(providerConfig.baseUrl)) {
 					throw new Error(`Provider ${providerName}: "apiKey" is required when defining custom models.`);
 				}
 			}
@@ -840,7 +875,7 @@ export class ModelRegistry {
 		if (!config.baseUrl) {
 			throw new Error(`Provider ${providerName}: "baseUrl" is required when defining models.`);
 		}
-		if (!config.apiKey && !config.oauth) {
+		if (!config.apiKey && !config.oauth && !isLoopbackUrl(config.baseUrl)) {
 			throw new Error(`Provider ${providerName}: "apiKey" or "oauth" is required when defining models.`);
 		}
 

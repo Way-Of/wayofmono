@@ -1,0 +1,53 @@
+{
+  "name": "wo-web-access",
+  "version": "0.10.7",
+  "description": "Web search, URL fetching, GitHub repo cloning, PDF extraction, YouTube video understanding, and local video analysis for Wo coding agents",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [
+    "wo-package",
+    "wo",
+    "wocode",
+    "wouser",
+    "extension",
+    "web-search",
+    "perplexity",
+    "fetch",
+    "scraping"
+  ],
+  "author": "WayOfMono",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Way-Of/wayofmono.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Way-Of/wayofmono/issues"
+  },
+  "homepage": "https://github.com/Way-Of/wayofmono#readme",
+  "dependencies": {
+    "@mozilla/readability": "^0.5.0",
+    "linkedom": "^0.16.0",
+    "p-limit": "^6.1.0",
+    "turndown": "^7.2.0",
+    "unpdf": "^1.6.2"
+  },
+  "wocode": {
+    "extensions": [
+      "./index.ts"
+    ],
+    "skills": [
+      "./skills"
+    ]
+  },
+  "wouser": {
+    "extensions": [
+      "./index.ts"
+    ],
+    "skills": [
+      "./skills"
+    ]
+  }
+}

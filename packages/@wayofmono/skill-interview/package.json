@@ -1,0 +1,21 @@
+{
+  "name": "@wayofmono/skill-interview",
+  "version": "0.1.0",
+  "description": "Interview skill — relentless requirements elicitation with script support",
+  "type": "module",
+  "files": [
+    "SKILL.md",
+    "interview.ts"
+  ],
+  "exports": {
+    "./skills/": "./SKILL.md",
+    "./interview.ts": "./interview.ts"
+  },
+  "scripts": {
+    "build": "echo 'No build needed'",
+    "test": "echo 'No tests yet'"
+  },
+  "keywords": ["wo-agent", "skill", "interview", "wayofmono"],
+  "license": "ISC",
+  "publishConfig": { "access": "public" }
+}

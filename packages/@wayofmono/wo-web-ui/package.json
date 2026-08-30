@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/wo-web-ui",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Web UI components for WayOfMono — chat interface, session management, and tool call visualization",
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
     }
   },
   "files": [
+    "!dist/**/*.map",
     "dist",
     "src",
     "README.md"

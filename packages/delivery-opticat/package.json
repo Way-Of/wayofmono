@@ -1,0 +1,21 @@
+{
+  "name": "@wayofmono/delivery-opticat",
+  "version": "1.0.0",
+  "description": "OptiCat-specific skills for HVAC simulation and backend integration — installs per-tool skill copies",
+  "main": "manifest.json",
+  "files": [
+    "manifest.json",
+    "skills/**",
+    "claude/**",
+    "antigravity/**",
+    "codex/**",
+    "pi/**",
+    "wocode/**"
+  ],
+  "wayofmono": {
+    "project": "opticat",
+    "project_slug": "opticat",
+    "description": "HVAC optimization platform skills"
+  },
+  "license": "MIT"
+}

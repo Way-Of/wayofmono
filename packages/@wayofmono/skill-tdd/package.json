@@ -1,0 +1,26 @@
+{
+  "name": "@wayofmono/skill-tdd",
+  "version": "0.1.0",
+  "description": "Test-Driven Development — red-green-refactor loop with integration-style tests",
+  "type": "module",
+  "files": [
+    "SKILL.md",
+    "tdd.ts",
+    "deep-modules.md",
+    "interface-design.md",
+    "mocking.md",
+    "refactoring.md",
+    "tests.md"
+  ],
+  "exports": {
+    "./skills/": "./SKILL.md",
+    "./tdd.ts": "./tdd.ts"
+  },
+  "scripts": {
+    "build": "echo 'No build needed'",
+    "test": "echo 'No tests yet'"
+  },
+  "keywords": ["wo-agent", "skill", "tdd", "test", "wayofmono"],
+  "license": "ISC",
+  "publishConfig": { "access": "public" }
+}

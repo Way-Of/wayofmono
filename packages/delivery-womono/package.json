@@ -1,0 +1,21 @@
+{
+  "name": "@wayofmono/delivery-womono",
+  "version": "1.0.0",
+  "description": "WayOfMono monorepo-specific skills — installs per-tool skill copies",
+  "main": "manifest.json",
+  "files": [
+    "manifest.json",
+    "skills/**",
+    "claude/**",
+    "antigravity/**",
+    "codex/**",
+    "pi/**",
+    "wocode/**"
+  ],
+  "wayofmono": {
+    "project": "womono",
+    "project_slug": "womono",
+    "description": "WayOfMono monorepo skills"
+  },
+  "license": "MIT"
+}

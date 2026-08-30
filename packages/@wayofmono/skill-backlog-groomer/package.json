@@ -1,0 +1,25 @@
+{
+  "name": "@wayofmono/skill-backlog-groomer",
+  "version": "0.1.0",
+  "description": "Backlog Groomer — SKILL.md for wo-agent runtime",
+  "type": "module",
+  "files": [
+    "SKILL.md"
+  ],
+  "exports": {
+    "./skills/": "./SKILL.md"
+  },
+  "scripts": {
+    "build": "echo 'No build needed'",
+    "test": "echo 'No tests yet'"
+  },
+  "keywords": [
+    "wo-agent",
+    "skill",
+    "wayofmono"
+  ],
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  }
+}

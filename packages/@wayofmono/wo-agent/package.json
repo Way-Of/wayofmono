@@ -1,6 +1,6 @@
 {
   "name": "@wayofmono/wo-agent",
-  "version": "1.0.4",
+  "version": "1.0.13",
   "description": "Agent SDK for building AI-powered applications",
   "repository": {
     "type": "git",
@@ -23,20 +23,22 @@
     }
   },
   "files": [
+    "!dist/**/*.map",
     "dist",
     "src",
     "README.md"
   ],
   "scripts": {
     "build": "tsc && npm run copy-assets",
-    "copy-assets": "shx mkdir -p dist/modes/interactive/theme && shx cp src/modes/interactive/theme/*.json dist/modes/interactive/theme/ && shx mkdir -p dist/modes/interactive/assets && shx cp src/modes/interactive/assets/*.png dist/modes/interactive/assets/ && shx mkdir -p dist/core/export-html/vendor && shx cp src/core/export-html/template.* dist/core/export-html/ && shx cp src/core/export-html/vendor/*.js dist/core/export-html/vendor/",
+    "copy-assets": "shx mkdir -p dist/modes/interactive/theme && shx cp src/modes/interactive/theme/*.json dist/modes/interactive/theme/ && shx mkdir -p dist/modes/interactive/assets && shx cp src/modes/interactive/assets/*.png dist/modes/interactive/assets/ && shx mkdir -p dist/core/export-html/vendor && shx cp assets/export-html/template.* dist/core/export-html/ && shx cp assets/export-html/vendor/*.js dist/core/export-html/vendor/",
     "test": "vitest --run --passWithNoTests",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@wayofmono/wo-agent-core": "workspace:*",
-    "@wayofmono/wo-ai": "workspace:*",
-    "@wayofmono/wo-tui": "workspace:*",
+    "@wayofmono/wo-agent-core": "*",
+    "@wayofmono/wo-ai": "*",
+    "@wayofmono/wo-tui": "*",
+    "@wayofmono/wo-user-extra": "*",
     "chalk": "^5.5.0",
     "diff": "^8.0.2",
     "glob": "^11.0.2",
@@ -51,7 +53,6 @@
     "yaml": "^2.8.2"
   },
   "optionalDependencies": {
-    "@mariozechner/clipboard": "^0.3.5",
     "@silvia-odwyer/photon-node": "^0.3.4"
   },
   "devDependencies": {

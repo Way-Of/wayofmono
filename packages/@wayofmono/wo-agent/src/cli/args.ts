@@ -214,7 +214,10 @@ ${chalk.bold("Commands:")}
   ${APP_NAME} update [source|self]      Update ${APP_NAME} and installed extensions
   ${APP_NAME} list                      List installed extensions from settings
   ${APP_NAME} config                    Open TUI to enable/disable package resources
-  ${APP_NAME} <command> --help          Show help for install/remove/uninstall/update/list
+  ${APP_NAME} skill <command>           Manage skills (install, remove, discover, list, update)
+  ${APP_NAME} agent <command>           Manage agents (install, remove, discover, list, update)
+  ${APP_NAME} extension <command>       Manage extensions (install, remove, discover, list, update)
+  ${APP_NAME} <command> --help          Show help for install/remove/uninstall/update/list/skill
 
   ${chalk.bold("Options:")}
   --provider <name>              Provider name (default: google)
@@ -340,10 +343,10 @@ ${chalk.bold("Environment Variables:")}
   AWS_REGION                       - AWS region for Amazon Bedrock (e.g., us-east-1)
   ${ENV_AGENT_DIR.padEnd(32)} - Config directory (default: ~/${CONFIG_DIR_NAME}/agent)
   ${ENV_SESSION_DIR.padEnd(32)} - Session storage directory (overridden by --session-dir)
-  PI_PACKAGE_DIR                   - Override package directory (for Nix/Guix store paths)
-  PI_OFFLINE                       - Disable startup network operations when set to 1/true/yes
-  PI_TELEMETRY                     - Override install telemetry when set to 1/true/yes or 0/false/no
-  PI_SHARE_VIEWER_URL              - Base URL for /share command (default: https://pi.dev/session/)
+  WO_PACKAGE_DIR                   - Override package directory (for Nix/Guix store paths)
+  WO_OFFLINE                       - Disable startup network operations when set to 1/true/yes
+  WO_TELEMETRY                     - Override install telemetry when set to 1/true/yes or 0/false/no
+  WO_SHARE_VIEWER_URL              - Base URL for /share command (default: https://wo.dev/session/)
 
 ${chalk.bold("Built-in Tool Names:")}
   read   - Read file contents

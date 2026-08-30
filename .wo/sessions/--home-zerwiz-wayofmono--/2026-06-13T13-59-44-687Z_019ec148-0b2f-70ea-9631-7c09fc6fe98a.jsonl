@@ -1,0 +1,5 @@
+{"type":"session","version":3,"id":"019ec148-0b2f-70ea-9631-7c09fc6fe98a","timestamp":"2026-06-13T13:59:44.687Z","cwd":"/home/zerwiz/wayofmono"}
+{"type":"model_change","id":"c178b771","parentId":null,"timestamp":"2026-06-13T13:59:44.699Z","provider":"openai","modelId":"gpt-5.4"}
+{"type":"thinking_level_change","id":"293d2aa4","parentId":"c178b771","timestamp":"2026-06-13T13:59:44.700Z","thinkingLevel":"medium"}
+{"type":"message","id":"f3acc6cc","parentId":"293d2aa4","timestamp":"2026-06-13T13:59:44.711Z","message":{"role":"user","content":[{"type":"text","text":"exit"}],"timestamp":1781359184708}}
+{"type":"message","id":"7b22bac7","parentId":"f3acc6cc","timestamp":"2026-06-13T13:59:45.274Z","message":{"role":"assistant","content":[],"api":"openai-responses","provider":"openai","model":"gpt-5.4","usage":{"input":0,"output":0,"cacheRead":0,"cacheWrite":0,"totalTokens":0,"cost":{"input":0,"output":0,"cacheRead":0,"cacheWrite":0,"total":0}},"stopReason":"error","timestamp":1781359184754,"errorMessage":"401 Incorrect API key provided: ollama. You can find your API key at https://platform.openai.com/account/api-keys."}}

@@ -1,0 +1,18 @@
+[Unit]
+Description=WayOfMono Caddy Reverse Proxy
+After=wayofmono-nextjs.service
+
+[Container]
+Image=caddy:2-alpine
+ContainerName=wayofmono-caddy
+PublishPort=81:81
+Volume=<REPO_PATH>/infra/podman/Caddyfile:/etc/caddy/Caddyfile:ro
+Volume=wayofmono-caddy-data.volume:/data
+Volume=wayofmono-caddy-config.volume:/config
+Network=wayofmono.network
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target

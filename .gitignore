@@ -67,3 +67,6 @@ temp/
 # API Keys and credentials
 models.json
 **/models.json
+deno.lock
+homepage/
+.devbox/

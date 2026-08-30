@@ -1,0 +1,34 @@
+[Unit]
+Description=WayOfMono Next.js Dashboard
+After=wayofmono-ollama.service
+
+[Container]
+Image=wayofmono-nextjs
+ContainerName=wayofmono-nextjs
+# Default to internal SQLite, but can be overridden for Postgres/PGVector
+# Environment=DATABASE_URL=postgresql://user:password@host:5432/dbname
+Environment=DATABASE_URL=file:/app/db/custom.db
+
+# LLM Configuration - Point to your existing llama.cpp or Ollama containers
+# For llama.cpp, you might set this to http://llama-cpp-server:8080/v1
+Environment=OLLAMA_HOST=http://wayofmono-ollama:11434
+Environment=LLM_MODEL=qwen3.5:9b
+
+# WayOfMono Metadata
+Environment=THOUGHTS_ROOT=/thoughts
+
+# Mount the thoughts directory from the host. 
+Volume=<REPO_PATH>/thoughts:/thoughts:rw
+Volume=wayofmono-db.volume:/app/db
+Network=wayofmono.network
+HealthCmd=node -e "require('http').get('http://localhost:3000/api/health', r => { process.exit(r.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"
+HealthInterval=30s
+HealthTimeout=5s
+HealthRetries=3
+HealthStartPeriod=15s
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target

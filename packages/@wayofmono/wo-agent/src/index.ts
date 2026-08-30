@@ -228,6 +228,22 @@ export {
 	type Skill,
 	type SkillFrontmatter,
 } from "./core/skills.js";
+// Resource manifest (skills, agents, extensions as npm deps)
+export {
+	addEntryToManifest,
+	discoverNpmAgents,
+	discoverNpmExtensions,
+	discoverNpmSkills,
+	findEntryInManifest,
+	getEntriesOfType,
+	readManifest,
+	removeEntryFromManifest,
+	resolveNpmPackagePath,
+	type ManifestEntry,
+	type ManifestEntryType,
+	type WoManifest,
+	writeManifest,
+} from "./core/skill-manifest.js";
 export { createSyntheticSourceInfo } from "./core/source-info.js";
 // Tools
 export {

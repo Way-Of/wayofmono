@@ -55,6 +55,7 @@ import {
 	getAuthPath,
 	getDebugLogPath,
 	getDocsPath,
+	getModelsPath,
 	getShareViewerUrl,
 	VERSION,
 } from "../../config.js";
@@ -88,10 +89,10 @@ import { copyToClipboard } from "../../utils/clipboard.js";
 import { extensionForImageMimeType, readClipboardImage } from "../../utils/clipboard-image.js";
 import { parseGitUrl } from "../../utils/git.js";
 import { getCwdRelativePath } from "../../utils/paths.js";
-import { getPiUserAgent } from "../../utils/pi-user-agent.js";
+import { getWoUserAgent } from "../../utils/wo-user-agent.js";
 import { killTrackedDetachedChildren } from "../../utils/shell.js";
 import { ensureTool } from "../../utils/tools-manager.js";
-import { checkForNewPiVersion } from "../../utils/version-check.js";
+import { checkForNewVersion } from "../../utils/version-check.js";
 import { ArminComponent } from "./components/armin.js";
 import { AssistantMessageComponent } from "./components/assistant-message.js";
 import { BashExecutionComponent } from "./components/bash-execution.js";
@@ -577,7 +578,18 @@ export class InteractiveMode {
 
 		// Add header with keybindings from config (unless silenced)
 		if (this.options.verbose || !this.settingsManager.getQuietStartup()) {
-			const logo = theme.bold(theme.fg("accent", APP_NAME)) + theme.fg("dim", ` v${this.version}`);
+			// Big "WO CODE" banner in block letters (orange / accent)
+			const woCodeBanner = [
+				"██╗    ██╗   ██████╗      ██████╗    ██████╗   ██████╗    ███████╗",
+				"██║    ██║  ██╔═══██╗    ██╔════╝   ██╔═══██╗  ██╔══██╗   ██╔════╝",
+				"██║ █╗ ██║  ██║   ██║    ██║        ██║   ██║  ██║  ██║   █████╗  ",
+				"██║███╗██║  ██║   ██║    ██║        ██║   ██║  ██║  ██║   ██╔══╝  ",
+				"╚███╔███╔╝  ╚██████╔╝    ╚██████╗   ╚██████╔╝  ██████╔╝   ███████╗",
+				" ╚══╝╚══╝    ╚═════╝      ╚═════╝    ╚═════╝   ╚═════╝    ╚══════╝",
+			];
+			
+			const bannerLines = woCodeBanner.map((line) => theme.fg("accent", `  ${line}`)).join("\n");
+			const logo = bannerLines + "\n" + theme.fg("dim", `  v${this.version}`);
 
 			// Build startup instructions using keybinding hint helpers
 			const hint = (keybinding: AppKeybinding, description: string) => keyHint(keybinding, description);
@@ -616,7 +628,7 @@ export class InteractiveMode {
 			);
 			const onboarding = theme.fg(
 				"dim",
-				`Wo can explain its own features and look up its docs. Ask it how to use or extend Wo.`,
+				`🤖 Yo! I'm Wo — your coding co-pilot. I know all my tricks, shortcuts, and docs. Just ask: 'How do I...?' or 'What's the command for...?' and I'll show you the way. No manual reading required. 🚀`,
 			);
 			this.builtInHeader = new ExpandableText(
 				() => `${logo}\n${compactInstructions}\n${compactOnboarding}\n\n${onboarding}`,
@@ -696,7 +708,7 @@ export class InteractiveMode {
 		await this.init();
 
 		// Start version check asynchronously
-		checkForNewPiVersion(this.version).then((newVersion) => {
+		checkForNewVersion(this.version).then((newVersion) => {
 			if (newVersion) {
 				this.showNewVersionNotification(newVersion);
 			}
@@ -768,7 +780,7 @@ export class InteractiveMode {
 	}
 
 	private async checkForPackageUpdates(): Promise<string[]> {
-		if (process.env.PI_OFFLINE) {
+		if (process.env.WO_OFFLINE) {
 			return [];
 		}
 
@@ -864,7 +876,7 @@ export class InteractiveMode {
 	}
 
 	private reportInstallTelemetry(version: string): void {
-		if (process.env.PI_OFFLINE) {
+		if (process.env.WO_OFFLINE) {
 			return;
 		}
 
@@ -872,9 +884,9 @@ export class InteractiveMode {
 			return;
 		}
 
-		void fetch(`https://pi.dev/api/report-install?version=${encodeURIComponent(version)}`, {
+		void fetch(`https://api.wayofmono.com/api/report-install?version=${encodeURIComponent(version)}`, {
 			headers: {
-				"User-Agent": getPiUserAgent(version),
+				"User-Agent": getWoUserAgent(version),
 			},
 			signal: AbortSignal.timeout(5000),
 		})
@@ -2422,7 +2434,7 @@ export class InteractiveMode {
 			// Write to temp file
 			const tmpDir = os.tmpdir();
 			const ext = extensionForImageMimeType(image.mimeType) ?? "png";
-			const fileName = `pi-clipboard-${crypto.randomUUID()}.${ext}`;
+			const fileName = `wo-clipboard-${crypto.randomUUID()}.${ext}`;
 			const filePath = path.join(tmpDir, fileName);
 			fs.writeFileSync(filePath, Buffer.from(image.bytes));
 
@@ -2560,6 +2572,11 @@ export class InteractiveMode {
 			if (text === "/quit") {
 				this.editor.setText("");
 				await this.shutdown();
+				return;
+			}
+			if (text === "/modelollama") {
+				this.editor.setText("");
+				await this.handleModelOllamaCommand();
 				return;
 			}
 
@@ -3554,7 +3571,7 @@ export class InteractiveMode {
 	showNewVersionNotification(newVersion: string): void {
 		const action = theme.fg("accent", `${APP_NAME} update`);
 		const updateInstruction = theme.fg("muted", `New version ${newVersion} is available. Run `) + action;
-		const changelogUrl = "https://github.com/earendil-works/pi-mono/blob/main/packages/coding-agent/CHANGELOG.md";
+		const changelogUrl = "https://github.com/Way-Of/wayofmono/blob/main/CHANGELOG.md";
 		const changelogLink = getCapabilities().hyperlinks
 			? hyperlink(theme.fg("accent", "open changelog"), changelogUrl)
 			: theme.fg("accent", changelogUrl);
@@ -4890,6 +4907,102 @@ export class InteractiveMode {
 			dismissReloadBox(previousEditor as Component);
 			this.showError(`Reload failed: ${error instanceof Error ? error.message : String(error)}`);
 		}
+	}
+
+	private async handleModelOllamaCommand(): Promise<void> {
+		const { execSync } = await import("child_process");
+		const { readFileSync, writeFileSync, existsSync } = await import("fs");
+
+		// Check if Ollama is installed
+		let ollamaInstalled = false;
+		try {
+			execSync("ollama --version", { stdio: "ignore" });
+			ollamaInstalled = true;
+		} catch {
+			ollamaInstalled = false;
+		}
+
+		if (!ollamaInstalled) {
+			this.showStatus(
+				"Ollama is not installed. Please install it first:\n" +
+				"  Linux/macOS: curl -fsSL https://ollama.com/install.sh | sh\n" +
+				"  Windows: Download from https://ollama.com/download\n\n" +
+				"After installation, run /modelollama again."
+			);
+			return;
+		}
+
+		// Check if Ollama service is running
+		let ollamaRunning = false;
+		try {
+			execSync("curl -s http://localhost:11434/api/version", { stdio: "ignore" });
+			ollamaRunning = true;
+		} catch {
+			ollamaRunning = false;
+		}
+
+		if (!ollamaRunning) {
+			this.showStatus(
+				"Ollama is installed but not running. Start it with:\n" +
+				"  ollama serve\n\n" +
+				"Then run /modelollama again."
+			);
+			return;
+		}
+
+		// Pull recommended models
+		const models = ["qwen2.5-coder:7b", "qwen3:8b", "codellama:7b"];
+		this.showStatus("Pulling recommended models for coding...\n");
+
+		for (const model of models) {
+			this.showStatus(`Pulling ${model}...`);
+			try {
+				execSync(`ollama pull ${model}`, { stdio: "inherit" });
+				this.showStatus(`✓ ${model} pulled successfully`);
+			} catch (error) {
+				this.showWarning(`Failed to pull ${model}: ${error instanceof Error ? error.message : String(error)}`);
+			}
+		}
+
+		// Update models.json to use Ollama
+		const modelsPath = getModelsPath();
+
+		let modelsJson: any = { customModels: [] };
+		if (existsSync(modelsPath)) {
+			try {
+				modelsJson = JSON.parse(readFileSync(modelsPath, "utf-8"));
+			} catch {
+				modelsJson = { customModels: [] };
+			}
+		}
+
+		// Add Ollama as a provider if not present
+		if (!modelsJson.customModels) modelsJson.customModels = [];
+
+		// Add qwen2.5-coder:7b as default coding model
+		const qwenModel = {
+			name: "qwen2.5-coder:7b",
+			displayName: "Qwen 2.5 Coder 7B (Ollama)",
+			provider: "ollama",
+			model: "qwen2.5-coder:7b",
+			apiBase: "http://localhost:11434/v1",
+			contextWindow: 32768,
+			maxOutputTokens: 8192,
+		};
+
+		// Remove existing qwen2.5-coder if present
+		modelsJson.customModels = modelsJson.customModels.filter((m: any) => m.model !== "qwen2.5-coder:7b");
+		modelsJson.customModels.unshift(qwenModel);
+
+		writeFileSync(modelsPath, JSON.stringify(modelsJson, null, 2));
+		this.showStatus(`Updated ${modelsPath} with Ollama models`);
+
+		// Show how to use
+		this.showStatus(
+			"Done! You can now use:\n" +
+			"  wocode --provider ollama --model qwen2.5-coder:7b\n" +
+			"  Or select 'Ollama' provider in /model selector"
+		);
 	}
 
 	private async handleExportCommand(text: string): Promise<void> {

@@ -1,9 +1,0 @@
-node_modules
-.next
-bun.lock
-package-lock.json
-dev.log
-server.log
-db
-.env.local
-*.md

@@ -1,0 +1,22 @@
+{
+  "name": "@wayofmono/skill-runbook-manager",
+  "version": "0.1.0",
+  "description": "Runbook Manager — generate, update, and maintain production runbooks",
+  "type": "module",
+  "files": [
+    "SKILL.md",
+    "assets/",
+    "platform/"
+  ],
+  "exports": {
+    "./skills/": "./SKILL.md",
+    "./assets/": "./assets/"
+  },
+  "scripts": {
+    "build": "echo 'No build needed'",
+    "test": "echo 'No tests yet'"
+  },
+  "keywords": ["wo-agent", "skill", "runbook", "wayofmono"],
+  "license": "ISC",
+  "publishConfig": { "access": "public" }
+}

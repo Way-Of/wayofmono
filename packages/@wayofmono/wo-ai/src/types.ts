@@ -51,6 +51,8 @@ export type KnownProvider =
 	| "cloudflare-ai-gateway"
 	| "xiaomi"
 	| "xiaomi-token-plan-cn"
+	| "llama"
+	| "lmstudio"
 	| "xiaomi-token-plan-ams"
 	| "xiaomi-token-plan-sgp";
 export type Provider = KnownProvider | string;

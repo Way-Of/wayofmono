@@ -1,5 +1,419 @@
 # Changelog
 
+## [1.7.22] - 2026-08-18
+
+### wo-coding-agent v1.0.24 — Remove ALL pi/mariozechner references, self-uninstall, init & models.json fixes (WOMONO-180)
+
+- **100% pi/mariozechner removal**: Deleted `@mariozechner/pi-*` virtual-module aliases and jiti aliases from the extension loader, `@mariozechner/clipboard` dependency, the `@mariozechner/pi-coding-agent:theme` global symbol, and the mariozechner.at announcement URL. No pi/mariozechner references remain in src/, package.json, README, or help text.
+- **Extension manifest renamed**: `pkg.pi` → `pkg.wocode` (`wocode.extensions`, `wocode.skills`, `wocode.prompts`, `wocode.themes`) in both the extension loader and package manager.
+- **No pi resource loading**: ResourceLoader no longer scans `~/.pi/agent`; the `[ResourceLoader] Added additional agent roots` log now prints at most once per startup instead of once per resource (was ~20+ duplicate lines).
+- **Simple self-uninstall**: `wocode uninstall` (no args) now uninstalls the wocode package itself via npm/pnpm/yarn/bun. `wocode uninstall <source>` still removes an extension. Config in `~/.wocode/` is left untouched.
+- **`wocode --init` fixed**: launcher now points at `$PWD/.wocode` (was `.wo`); for global installs no `./wocode` file is created that would shadow the binary, and the success message says `Run: wocode`.
+- **Ollama/loopback providers**: `models.json` validation no longer requires an `apiKey` for loopback endpoints (127.0.0.1, localhost, 0.0.0.0, ::1) — the default `wocode --init` Ollama config now loads without error.
+- **Env vars**: all `PI_*` → `WO_*` (`WO_OFFLINE`, `WO_TIMING`, `WO_TELEMETRY`, `WO_STARTUP_BENCHMARK`, `WO_CLEAR_ON_SHRINK`, `WO_HARDWARE_CURSOR`, `WO_CODING_AGENT`).
+- **Dependency audit**: removed the now-unused `@mariozechner/clipboard` optional dependency; clipboard falls back to platform tools (pbcopy, clip, wl-copy, xclip, xsel, OSC 52).
+
+- **Tickets**: WOMONO-180.
+
+## [1.7.21] - 2026-07-12
+
+### wo-coding-agent v1.0.23 — Theme loading fix + identity prompt (WOMONO-174, WOMONO-175)
+
+- **System prompt identity**: Added dedicated `# Identity` section at top of system prompt — model now responds as "Wo" instead of revealing underlying model name (Qwen, etc.)
+- **Theme loading fixed**: Resource loader now scans both `~/.wocode/agent/themes/` and `~/.wocode/themes/` explicitly, fixing missing themes when running from project directories where `getAgentDir()` resolves to a project-local `.wocode/`
+- **ESM `__dirname` crash fixed**: Added `fileURLToPath(import.meta.url)` polyfill in resource-loader.ts — was crashing with `ReferenceError: __dirname is not defined` in ESM mode
+- **Wayofmono theme collision excluded**: Project-local `.wocode/themes/` inside wayofmono monorepo is skipped during theme loading to avoid duplicate collision warnings
+- **3 built-in themes**: dark, light, wo-code ship with npm package. 12 custom themes (catppuccin-mocha, cyberpunk, dracula, etc.) distributed via harness only
+
+### wo-user-extra v1.0.3 — Config dir detection (WOMONO-174)
+
+- **New `config-dirs.ts` helper**: Detects `.wocode` vs `.wo` at runtime based on process argv and filesystem — no more hardcoded paths
+- **13 files updated**: theme-cycler.ts, subagent/agents.ts, subagent/index.ts, gemini-web-config.ts, exa.ts, gemini-search.ts, github-extract.ts, video-extract.ts, gemini-api.ts, youtube-extract.ts, perplexity.ts, index.ts, extract.ts
+- **Error messages dynamic**: All `~/.wo/web-search.json` references now use correct config dir per tool
+- **Both tools work**: Extensions now work in both wocode (`.wocode/`) and wouser (`.wo/`)
+
+### npm package validation
+
+- **WOMONO-176 resolved**: All 14 @wayofmono packages validated — no `workspace:*` in published package.json files, all install successfully from npm
+- **WOMONO-177 created**: Delivery packages (delivery-opticat, delivery-wow, delivery-womono) not yet published to npm
+
+- **Tickets**: WOMONO-174, WOMONO-175, WOMONO-176, WOMONO-177.
+
+## [1.7.20] - 2026-07-11
+
+### wo-coding-agent v1.0.14 + wo-agent v1.0.10 — Replace all pi/earendil-works references (WOMONO-172)
+
+- **Critical fix**: `wocode update` now correctly installs `@wayofmono/wo-coding-agent` instead of `@earendil-works/pi-coding-agent`. Version check API response no longer overrides local `PACKAGE_NAME`.
+- **URL updates**: All GitHub URLs changed from `earendil-works/pi-mono` to `Way-Of/wayofmono`. Version check endpoint changed to `api.wayofmono.com`. Theme schema URLs updated.
+- **Branding overhaul**: Renamed `pi-user-agent.ts` to `wo-user-agent.ts`, user agent string now `wocode/`. OpenRouter telemetry headers identify as `wocode` on `wayofmono.com`. All help text updated from "pi" to "wocode".
+- **Env vars**: Updated from `PI_*` to `WO_*` (old names kept as aliases). Share viewer URL changed to `wo.dev/session/`.
+- **Internal cleanup**: Temp file prefixes updated from `pi-` to `wo-`. Internal comments updated. System prompt (wo-agent) updated.
+- **Backward compatibility preserved**: `@mariozechner/pi-*` virtual module aliases, `THEME_KEY_OLD` Symbol, `pi` manifest field, `.pi/agent` fallback path, `source === "pi"` alias in update command.
+- **README rewrite**: Main monorepo README now focuses on wocode and wouser packages only.
+
+### wo-user-extra — Replace .pi references in extensions (WOMONO-174)
+
+- **Theme cycler**: `.pi/themes` → `.wocode/themes` — themes now load in wocode
+- **Subagent**: `.pi/agents` → `.wocode/agents` — project-local agents now discovered
+- **Web-access packets**: `~/.pi/web-search.json` → `~/.wocode/web-search.json` — all 10 web-access files updated
+- **Documentation**: CHANGELOG.md and README.md updated
+
+- **Tickets**: WOMONO-172, WOMONO-173, WOMONO-174.
+
+## [1.7.19] - 2026-07-07
+
+### wo-agent v1.0.10 + wo-coding-agent v1.0.14 — Skill loading fix, provider consistency (WOMONO-166)
+
+- **Skill loading bug fixed**: `loadSkills()` now loads from default paths (.wo/skills/, ~/.wouser/agent/skills/) even without explicit skillPaths.
+- **Provider consistency**: Added llama and lmstudio to defaultModelPerProvider in both wo-agent and wo-coding-agent.
+- **Theme loading**: Built-in themes (wo-code.json, dark.json, light.json) are properly copied to dist during build.
+- **Published**: `@wayofmono/wo-agent@1.0.10`, `@wayofmono/wo-coding-agent@1.0.14` to npm.
+
+
+### wo-ai v1.0.8 — Built-in llama.cpp & LM Studio Providers (Fixed)
+
+- **Bug fix**: Previous 1.0.7 publish was missing compiled output. Rebuilt and republished as 1.0.8 with llama/lmstudio providers properly compiled into dist/.
+- **Published**: `@wayofmono/wo-ai@1.0.8` to npm.
+
+## [1.7.17] - 2026-07-07
+
+### wo-ai v1.0.7 — Added llama.cpp Docker & LM Studio Providers
+
+- **New providers (WOMONO-165)**: Added `llama` and `lmstudio` as first-class providers in `@wayofmono/wo-ai`. 4 built-in llama.cpp Docker models (9B-32K, 4B-65K, 35B-16K, 9B-196K) and LM Studio support. Full documentation updated in README and provider docs.
+- **Published**: `@wayofmono/wo-ai@1.0.7` to npm.
+
+### Harness (AI Engineering Harness v1.7.17) — Ticket Lifecycle, Knowledge Overhaul, AGENTS.md
+
+- **Ticket lifecycle system (WOMONO-162)**: Complete overhaul of ticket management across all tools:
+  - Archive system: done/, deprecated/, legacy/ directories — never delete tickets
+  - Completion flow: CHANGELOG prompt, knowledge capture, personal folder cleanup, TODO.md regeneration
+  - Personal ticket routing: assigned tickets auto-copied to developer folders
+  - Domain-based routing: 10 domains (frontend, backend, devops, etc.) with team mapping
+  - Deprecated status: superseded tickets marked deprecated, never deleted
+  - 10 audit rules for archival, personal routing, and legacy cleanup
+
+- **Knowledge base overhaul (WOMONO-163)**: Expanded from 9 to 20+ topics, added search filters (tag, confidence, source, ticket), Anchor MCP dual-write integration, entry quality validation, ticket-workflow search-before-store
+
+- **AGENTS.md overhaul (WOMONO-164)**: 12-section template with documentation links, enforcement ticket semantics, domain routing tables, critical files, production-ready mandate, cross-project references. Project-relevant skill filtering (no more 100+ skill dumps)
+
+- **Tickets closed**: WOMONO-162, WOMONO-163, WOMONO-164.
+
+## [1.7.16] - 2026-07-07
+
+### Harness (AI Engineering Harness v1.7.16) — Manifest Consistency Fix
+
+- **Manifest/Config-Manifest consistency fix (WOMONO-161)**: Restored all YAML files and manifest.json from original source. Removed specialized skills (otel, wow, opticat, investor, debug-k8s, etc.). All tools now have identical 49 skills, 12 agents, and 5 commands/prompts each. Purge command now deletes sidecars/hooks/plugins. Added web-access extension to pi. All source files verified present.
+
+- **Tickets closed**: WOMONO-161.
+
+## [1.7.15] - 2026-07-07
+
+### Harness (AI Engineering Harness v1.7.15) — Gemini CLI Removal + Delivery Packages
+
+- **Gemini CLI removed from harness (WOMONO-157)**: Deleted entire `gemini/` directory (217 files: 81 skills, 13 agents, 24 commands). Removed ~1,481-line gemini section from `manifest.json`. Cleaned config-manifest, installer scripts, validation scripts, detect/adapt modules, and all 30+ docs files. Preserved wocode Gemini API integration files (gemini-api.ts, gemini-search.ts, etc.) — these are LLM provider integration, not Gemini CLI.
+
+- **Per-project skill delivery packages (WOMONO-160)**: Created 3 npm packages under `@wayofmono/delivery-*` scope for distributing project-specific skills:
+  - `@wayofmono/delivery-opticat` — 3 OptiCat skills (18 per-tool SKILL.md files across 6 tools)
+  - `@wayofmono/delivery-wow` — 9 WoW skills (54 per-tool SKILL.md files across 6 tools)
+  - `@wayofmono/delivery-womono` — 6 WOMONO skills (36 per-tool SKILL.md files across 6 tools)
+  - Each package has `package.json`, `manifest.json` with per-tool kebab-case/snake_case mapping
+  - `install.ts` updated with `discoverDeliveryPackages()` and `installDeliveryPackage()` — auto-discovers `node_modules/@wayofmono/delivery-*/` on install
+  - 101 project-specific skill entries removed from main harness `manifest.json`
+  - Cross-cutting skills (otel, debug, observability-driven-development) preserved in main harness
+
+- **Tickets closed**: WOMONO-157, WOMONO-160.
+
+## [1.7.14] - 2026-07-07
+
+### Harness (AI Engineering Harness v1.7.14) — Knowledge Database + wo-* Patch Releases
+
+- **Knowledge Database command (WOMONO-158)**: New `/knowledge` skill with Python CLI (`knowledge.py`) for storing, fetching, searching, and managing learned knowledge. Cross-project database at `thoughts/global/knowledge/` with topic-based subdirectories, JSON indexes, and auto-incrementing entry IDs. Supports 9 seed topics (ash, docker, postgres, opentelemetry, elixir, deno, react, devops, ai-tools) with auto-created topics. Deployed to all 7 tools with manifest entries.
+
+- **wo-* package patch releases (WOMONO-148–156)**: Published TypeScript cleanup fixes to npm. Versions bumped: wo-agent 1.0.8→1.0.9, wo-coding-agent 1.0.12→1.0.13, wo-agent-core 1.0.5→1.0.6, wo-ai 1.0.5→1.0.6, wo-tui 1.0.5→1.0.6, wo-web-ui 1.0.4→1.0.5, wo-skill-docs 1.0.4→1.0.5, wo-mermaid 1.0.4→1.0.5, wo-user-extra 1.0.0→1.0.1.
+
+- **Tickets closed**: WOMONO-148, WOMONO-149, WOMONO-150, WOMONO-151, WOMONO-152, WOMONO-153, WOMONO-154, WOMONO-155, WOMONO-156.
+
+- **New tickets created**: WOMONO-159 (Archive Specialized Skills), WOMONO-160 (Per-Project Skill Delivery Mechanism).
+
+## [1.7.13] - 2026-07-05
+
+### TypeScript Cleanup Across All wo-* Packages
+
+- **Removed source maps from dist/** (all 8 wo-* packages): Disabled `sourceMap` and `declarationMap` in tsconfig.base.json; added `!dist/**/*.map` to package.json `files` arrays. Eliminates ~580+ .map files from npm publishes (wo-agent: 286→0, wo-coding-agent: 280→0, wo-agent-core: 50→0, wo-tui: 50→0, wo-ai: 100→0, wo-web-ui: 16→0, wo-skill-docs: 6→0, wo-mermaid: 2→0).
+
+- **Moved vendor runtime assets out of src/** (wo-agent, wo-coding-agent): Relocated `marked.min.js`, `highlight.min.js`, `template.js` from `src/core/export-html/` to `assets/export-html/`. Updated `copy-assets` build scripts. Source directories now contain only TypeScript (.ts) files.
+
+- **Version bumps**: wo-agent 1.0.8, wo-coding-agent 1.0.12, wo-agent-core 1.0.5, wo-tui 1.0.5, wo-web-ui 1.0.4, wo-skill-docs 1.0.4, wo-ai 1.0.5, wo-mermaid 1.0.4.
+
+- **Resolves**: WOMONO-147, WOMONO-148, WOMONO-149, WOMONO-150, WOMONO-151, WOMONO-152, WOMONO-153, WOMONO-154, WOMONO-155, WOMONO-156
+
+## [1.7.12] - 2026-07-04
+
+### Harness (AI Engineering Harness v1.7.12) — WOMONO skills update + standup skill
+
+- **Standup skill for all 7 tools (WOMONO-135)**: Created canonical standup skill at `skills/standup/` with SKILL.md, compile.py, and 7 per-tool YAML configs. Creates daily standup files at `thoughts/global/standup/<dev>/<YYYY-MM-DD>.md`. Compiled and deployed with manifest entries across all tools.
+- **WOMONO skills updated with ecosystem knowledge (WOMONO-136)**: All 6 WOMONO-specific skills (`womono-practices-guide`, `womono-practices-audit`, `womono-practices-backlog`, `womonodeploy`, `womono-version-updater`, `womono-validate-manifest`) now know about canonical skill architecture, config-manifest system, fixes docs, existing scripts, and manifest.json safety (Python json.dump, never string replacement).
+- **validate-manifest renamed to womono-validate-manifest (WOMONO-136)**: Renamed skill directory, name frontmatter, and manifest.json entries across all 7 tools. Updated src paths.
+- **Naming inconsistencies fixed (WOMONO-136)**: `wow_practices_guide` → `womono_practices_guide`, `wow_practices_audit` → `womono_practices_audit` in body headings.
+- **thoughts_locator & thoughts_analyzer updated (WOMONO-137)**: Both agents updated across all 7 tools with knowledge of namespace-based tickets, enforcement tickets, per-project f-rr-d structure, ticket frontmatter/status flow, and GitHub Skills Agent Directory.
+- **AGENTS.md updated**: Added WOMONO-Specific Skills section documenting all 6 skills, their knowledge scope, and the updated agent definitions.
+
+## [1.7.11] - 2026-07-04
+
+### Harness (AI Engineering Harness v1.7.11) — init-harness canonical skill
+- **Init-harness skill converted to config-manifest pattern (WOMONO-131)**: Refactored from 9 standalone per-tool copies to canonical + compile architecture at `packages/@aiengineeringharness/skills/init-harness/` with per-tool YAML configs and compile.py.
+- **Frontmatter compliance fixes**: Pi `name: init_harness` → `init-harness` (kebab-case), removed `disable-model-invocation` for Pi, Codex, Gemini (unsupported on those tools).
+- **AGENTS.md updated**: Added Canonical Skill Architecture section documenting the pattern, install.ts data flow, and how to create new skills.
+
+## [1.7.10] - 2026-06-29
+
+### Harness (AI Engineering Harness v1.7.10) — pi + wocode agents only
+- **Subagent extension import path fixed (WOMONO-115)**: Fixed `agent/extensions/subagents-index.ts` import from `./agents.js` to `./subagent/agents.ts` — resolves "Cannot find module './agents.js'" error on pi startup.
+- **Subagent index.ts renamed and moved (WOMONO-115)**: `extensions/subagent/index.ts` renamed to `extensions/subagents-index.ts` — moved up one level so the `subagent/` directory contains only `agents.ts`, `agents/`, and `prompts/`. Applied to both pi and wocode.
+- **Worker agent renamed to coder (WOMONO-115, WOMONO-116)**: Renamed `worker.md` → `coder.md` in both pi and wocode, in both `packages/@aiengineeringharness/{pi,wocode}/agent/agents/` and `packages/@aiengineeringharness/{pi,wocode}/agent/extensions/subagent/agents/`.
+- **Operational protocol agents added (WOMONO-116)**: Added `planner`, `reviewer`, `scout`, `coder` to both pi (kebab-case) and wocode (snake_case) main agent directories with mandatory workflows, file generation requirements, directory integrity rules, completion signals (`[PLAN_COMPLETE]`, `[REVIEW_COMPLETE]`, `[RECON_COMPLETE]`, `[CODE_COMPLETE]`), and safety protocols (bash limits, read-only enforcement).
+- **Manifest.json fixed**: Added missing operational protocol agents, renamed `worker.md` → `coder.md`, renamed `subagent/index.ts` → `subagents-index.ts` for both pi and wocode. Pushed to GitHub main (commit 550420b5).
+
+## [1.7.9] - 2026-06-26
+
+### Harness (AI Engineering Harness v1.7.9)
+- **`--uninstall` recursive fix**: Changed `Deno.remove(dir)` to `Deno.remove(dir, { recursive: true })` so subdirectories (skills/, agents/, etc.) are fully deleted even when non-empty.
+- **Multi-tool command alignment (WOMONO-085)**: Created 168 command files across all 7 tools for 24 slash commands (ticket workflow, sync, fixes, etc.). All commands registered in config-manifest YAMLs and compiled into manifest.json.
+
+## [1.7.8] - 2026-06-26
+
+### Harness (AI Engineering Harness v1.7.8)
+- **`--purge` flag added**: Nuclear cleanup — wipes all harness config dirs regardless of manifest. Supports `--dry-run`, `--yes`, single-tool or `all`. Added to install.ts and install.ps1.
+- **Skill consolidation (WOMONO-083)**: Deleted 5 skills (`skill-compliance-checker`, `skill-adapter`, `skill-auto-update`, `build-skill-adapter`, `build-skill-auto-update`) from all 7 tools. All functionality absorbed into `build-tool-skill` with expanded SKILL.md (validation, adaptation, lifecycle, config-manifest), 8 new assets, and updated YAML entries.
+- **Wo Coder naming changed to kebab-case**: All 72 skill directories in `wocode/agent/skills/` renamed from snake_case to kebab-case (matching Pi convention). Updated AGENTS.md, build-tool-skill SKILL.md, and wocode.yaml.
+
+## [1.7.7] - 2026-06-23
+
+### Harness (AI Engineering Harness v1.7.7)
+- **Per-tool naming compliance (WOMONO-076)**: Researched online docs for ALL 7 tools — OpenCode/Pi use kebab-case (hyphens), Claude/Codex/Antigravity/Wocode use snake_case. Fixed opencode-skill-update.py (snake→kebab), corrected AGENTS.md table. Deleted 72 kebab dirs from 5 tools, copied 2 kebab-only dirs to snake with corrected name. Converted 841 manifest src paths kebab→snake.
+- **investor-ready-doc-gen enhanced (WOMONO-077)**: Added brand color detection, Marp CLI platform-install guide, Mermaid charts, anti-overflow QA checklist. Synced to all 7 tools.
+
+## [1.7.6] - 2026-06-23
+
+### Harness (AI Engineering Harness v1.7.6)
+- **Full skill compliance: 981→0 errors (WOMONO-076)**: Fixed 650 TOOLS_CASE, 282 NAME_CONVENTION, 40 NO_FRONTMATTER, 2 MISSING_DMI, 7 alignment errors across all 845 skills / 7 tools
+- **Pi frontmatter fixed**: 72 Pi skill files had `name` in snake_case but Pi requires kebab-case — caused real Pi startup errors. Bulk-fixed to match directory names.
+- **Claude tools casing**: 105 Claude skills changed `allowed-tools` from lowercase to PascalCase. Also fixed 50 other tool files for tool name casing consistency.
+- **Broken YAML frontmatter fixed**: 50 files had invalid YAML in `allowed-tools:` (list format `- read` on same line as key). Rewrote to comma-separated string format.
+- **Wocode spec corrected**: Changed from kebab→snake to match actual directory naming.
+- **Manifest recompiled**: Removed stale `womono-deploy` entry from pi.yaml, fixed `init_harness` path in wocode.yaml, bumped to v1.7.6.
+- **Cross-tool alignment**: Added missing `init_harness` to wocode. All 7 tools now have identical skill sets (79 normalized skills each).
+
+## [1.7.4] - 2026-06-22
+
+### Harness (AI Engineering Harness v1.7.4)
+- **OpenCode skills renamed to kebab-case (WOMONO-073)**: Fixed 74 SKILL.md `name:` fields and directory names from snake_case to kebab-case per official OpenCode naming regex
+- **Duplicate directories removed**: 74 snake_case directories deleted from `opencode/skills/`
+- **`wow-tickets` fully deprecated**: Removed all stale entries from `manifest.json` (7 tools × 1 entry each) and all 6 `config-manifest/tools/*.yaml` files
+- **`init_harness` duplicates cleaned (WOMONO-074)**: Removed duplicate directories from antigravity, claude, codex, gemini, wocode (opencode + pi already had kebab-case `init-harness/`)
+- **`docs/ai-coding-tools/opencode.md` fixed**: Incorrect "Skill naming: snake_case" changed to "kebab-case"
+- **Version bumped to 1.7.4**: manifest.json, CHANGELOG.md, README.md, docs/fixes/
+
+## [1.8.3] - 2026-06-19
+
+### Dashboard (wo-cto-dashboard v0.6.3)
+- **Wire notification read-state tracking (WOMONO-095)**: Badge now shows unread count only (filtered by `readNotificationIds`). Opening bell or clicking a notification marks it read. Visual indicators (blue ring) for unread items. "All caught up" when nothing to see. Sidebar review badge also respects read state. `mark-all-read` API handler fixed to persist all IDs.
+
+## [1.8.2] - 2026-06-19
+
+### Dashboard (wo-cto-dashboard v0.6.2)
+- **Rename Local→DB in ticket source UI**: Updated all UI references from "Local" to "DB" to reflect SQLite read-cache architecture.
+
+## [1.8.1] - 2026-06-19
+
+### Dashboard (wo-cto-dashboard v0.6.1)
+- **Fix missing DATABASE_URL in Electron mode**: `runElectron()` env block was missing `DATABASE_URL` — caused `PrismaClientInitializationError: Environment variable not found`. Now correctly sets `DATABASE_URL` from same logic as `runNext()`.
+
+## [1.8.0] - 2026-06-19
+
+### Dashboard (wo-cto-dashboard v0.6.0) — Markdown-First Ticket Storage with SQLite Read-Cache (WOMONO-098)
+
+#### Architecture
+- **Markdown-first + SQLite read-cache**: Tickets are now persisted. `.md` files remain the source of truth; SQLite via Prisma is a fast read-cache.
+  - `gray-matter` replaces fragile `parseFrontmatter()` — handles colons, quotes, arrays, proper YAML
+  - `chokidar` file watcher detects AI tool edits and upserts to DB automatically
+  - API fast-tracks DB writes after file writes — no stale-read latency
+  - DB is passive projection — file timestamp always wins (no sync loops)
+
+#### New Files
+- `ui/prisma/schema.prisma` — `Ticket` model with 18 fields + filePath for fast writes
+- `ui/src/lib/prisma.ts` — Prisma client singleton
+- `ui/src/lib/tickets-db.ts` — DB CRUD operations (getAll, upsert, delete, bootstrap)
+- `ui/src/lib/tickets-fs.ts` — Filesystem .md read/write with gray-matter + path index
+- `ui/src/app/api/tickets/route.ts` — RESTful GET (paginated/filtered), PATCH (status/review → .md + DB), POST (create)
+- `ui/scripts/sync.ts` — chokidar file watcher with debounce + hash guard
+- `ui/scripts/bootstrap-db.ts` — One-time migration script (walks all .md files → SQLite)
+
+#### Changed Files
+- `ui/src/app/api/route.ts` — `GET /api?type=tickets` reads from Prisma (auto-bootstraps if empty)
+- `ui/src/store/dashboard-store.ts` — `updateTicketStatus` + `updateTicketReview` call `PATCH /api/tickets`
+- `ui/bin/wodev.js` — Dev mode spawns sync watcher alongside Next.js server
+- `ui/package.json` — Added `gray-matter` + `chokidar` deps, bumped to v0.6.0
+
+#### Migration
+```bash
+cd ui
+npm install                    # gets gray-matter + chokidar
+npx tsx scripts/bootstrap-db.ts  # imports existing tickets into SQLite
+wodev --dev                    # starts Next.js + file watcher
+```
+
+## [1.7.3] - 2026-06-18
+
+### Dashboard (wo-cto-dashboard v0.5.3)
+- **Update f-rr-d button**: New button in header pulls latest main from the thoughts (f-rr-d) git repo
+  - `POST /api/update-forrad` endpoint with `/api/update-forrad` route
+  - Auto-detects thoughts repo via config system (supports `THOUGHTS_ROOT` env, `~/.config/wodev/config.json`, auto-detect)
+  - Spinner state during sync, success/error message, auto-refresh after update
+  - Switches to `main` branch if on another branch, then `git pull --ff-only origin main`
+- **Thoughts root auto-detection**: `env.ts` now detects thoughts repo location across multiple standard paths
+  - Checks: CWD-relative, `~/wayofmono/thoughts`, `~/.config/wodev/thoughts`, `~/src/wayofmono/thoughts`
+  - Falls back gracefully with helpful error message
+  - Ensures local ticket source works from installed npm package
+
+## [1.7.2] - 2026-06-17
+
+### Dashboard (wo-cto-dashboard v0.5.2)
+- **Notification read state tracking (WOMONO-095)**: Per-notification read/unread tracking with persistent storage
+  - Unread badge count in bell (not total)
+  - Visual indicators: blue ring on unread reviews, blue dot on unread updates
+  - Section "X new" badges, "All caught up" state
+  - Click to mark read, persistent storage to `~/.config/wodev/notifications/read.json`
+  - API: `GET/POST /api/notifications`
+  - Files: `useNotificationStore`, `/api/notifications`, updated bell dropdown UI
+
+---
+
+## [1.7.2] - 2026-06-17
+
+### Added
+- **Platform-aware harness installer (WOMONO-094)**: Complete detection + adaptation layer for OS, arch, tools, runtime, desktop, hardware, terminal, network, security, permissions
+- **11 detection modules**: `os`, `arch`, `tools`, `runtime`, `desktop`, `hardware`, `terminal`, `network`, `security`, `permissions`, `locale` (cached, with confidence levels)
+- **4 adaptation modules**: `paths` (XDG), `formats` (snake_case/kebab-case), `deps` (apt/dnf/brew/winget), `desktop` (.desktop files, clipboard, xdg-open)
+- **Supporting modules**: `logger.ts` (persistent log with secret redaction), `transaction.ts` (atomic installs, rollback, file locking), `report.ts` (JSON report, PII sanitization, dashboard push)
+- **CLI flags**: `--detect` (system report), `--tool=auto` (install only detected tools), `--no-report`/`WOMONO_DO_NOT_TRACK` (telemetry opt-out), `--debug` (verbose logging)
+- **Dotfile hygiene**: `# BEGIN/END WOMONO HARNESS` comment blocks for idempotent shell config injection
+- **Supply-chain security**: Optional `sha256` field in manifest.json FileEntry; installer verifies checksums on remote downloads
+
+### Fixed
+- Installer now adapts to platform: skips `.desktop` on WSL/headless, uses correct clipboard tool (wl-copy vs xclip), respects locale for UTF-8/ASCII output
+- Root/Admin warning when running without `--force`
+- macOS Gatekeeper quarantine removal on downloaded binaries
+- Windows PowerShell ExecutionPolicy detection
+
+---
+
+## [1.7.1] - 2026-06-16
+
+### Fixed
+- **Installer status reporting**: Per-file `NEW`/`UPDATED`/`UNCHANGED`/`SKIPPED` labels; summary shows `X NEW, Y UPDATED, Z UNCHANGED, W SKIPPED` (was "changed"/"ok")
+- **Stale file removal**: Renamed 12 `wocoder-skill-update.py` → `wocode-skill-update.py` across opencode, gemini, pi, wocode, config-manifest; clean reinstall finds all scripts
+- **Skill parity**: All 7 tools now have identical 73 skills (opencode, claude, gemini, pi, wocode, codex, antigravity). Added missing `self-documentation` and `validate-manifest` to 6 non-wocode YAMLs; created codex SKILL.md files.
+- **Remote install directory entries**: Fixed 404 errors when manifest contains directory entries (e.g., `antigravity/skills/skill-adapter/assets`) during remote install from raw.githubusercontent.com. Installer now catches 404 and skips gracefully.
+- **Skill assets/scripts installation**: Removed 42 redundant directory entries (`/assets`, `/scripts`) from all 7 tool YAML configs in `config-manifest/tools/`. These caused "skipped - likely a directory" messages and prevented `skill-adapter`, `skill-auto-update`, `skill-compliance-checker` from getting their assets/scripts directories. Recompiled manifest.json. All 7 tools now have complete directory structures with 10 Python scripts + assets per skill.
+- **Ticket status selection & CTO review**: Extended TicketStatus type to 10 statuses, added interactive status dropdowns in CTO Dashboard (list and detail views), updated ticket-manager/ticket-context/ticket-executor skills for all 7 tools with CTO review flow (Review Queue, approve/request-changes/reject), updated ticket template with all statuses.
+- **6 New GitHub Skills**: Added `github-branch`, `github-pr`, `github-review`, `github-sync`, `github-release`, `github-issue` across all 7 tools with bi-directional ticket sync, CTO review queue, branch protection, conventional commits, automated changelog, and release publishing.
+
+### Changed
+- Version bumped to 1.7.1 across manifest.json, CHANGELOG.md, README.md, install.ts, setup.sh, install.ps1
+
+---
+
+## [1.7.0] - 2026-06-15
+
+### Added
+- **Config-Manifest modularization**: Broke monolithic `manifest.json` into per-tool YAML files at `config-manifest/tools/{tool}.yaml`
+- **Compilation pipeline**: `config-manifest/compile.py` merges YAMLs → backward-compatible `manifest.json`
+- **Validation pipeline**: `config-manifest/validate.py` checks per-tool formatting against tool specs
+- **7 per-tool skill update scripts**: `{tool}-skill-update.py` with `--validate`, `--fix`, `--add`, `--sync-yaml`, `--all`
+- **Test suite (4 scripts)**: `test-yamls.py`, `test-manifest.py`, `test-skills.py`, `run-all-tests.py` — all with `--tool=<name>` support
+- **Sidecar support doc**: `docs/guides/sidecars.md` — per-tool background process analysis
+- **New skills deployed to all 7 tools**: `self-documentation`, `validate-manifest`
+- **Config-manifest knowledge in 3 skills**: `skill-compliance-checker`, `skill-adapter`, `skill-auto-update`
+
+### Fixed
+- `test-manifest.py` `--tool` filtering (was exit-code-only, now filters per-tool validation)
+- Cross-tool path contamination in manifests detected via new validation
+
+## [1.6.1] - 2026-06-14
+
+### Fixed
+- Command/skill naming conflicts: renamed gemini/antigravity command files with `run-` prefix to avoid clashing with skill directories
+- WoCoder cleanup: removed duplicate `agent/commands/` dir (kept `agent/prompts/`)
+- OpenCode: no changes needed (handles commands/skills separately)
+
+### Added
+- `womono_version_updater` skill — knows how to bump manifest version, update CHANGELOG, sync README version refs, and deploy to all 7 tools
+- Release notes in `docs/fixes/README.md` for user-facing changes
+
+## [1.6.0] - 2026-06-14
+
+### Fixed
+- Fixed JSON parse error in manifest.json (malformed self_documentation entry with wrong indentation and stray bracket)
+- `ai-harness --update` now works without SyntaxError
+
+## [Unreleased] - 2026-06-12
+
+### Deno Wrapper --reload Patching + Bootstrap Fix
+- `patchDenoWrapperReload()` — post-install step edits the deno wrapper to embed `--reload`, so every `ai-harness --update` fetches fresh from the URL, bypassing Deno 2's integrity cache
+- Called on `--update` (Phase 1) and regular `--tool=all` install
+- README documents one-time bootstrap: `deno run --reload -A <url> --update` for users with a stale cached binary
+- Changelog: add unreleased section for wrapper patch
+
+### Orange Matrix UI + `--prune` Interactive Skill Manager
+- **Matrix-style orange UI**: WO MONO ASCII logo, box-drawn step layout, colored `✧`/`·` symbols on all install output
+- **`--prune` interactive skill pruning**: scans all 7 tools, shows extra (non-manifest) files grouped by tool, interactive checkbox picker (pre-checked = safe to remove), user can un-check skills from other sources they want to keep
+- **Two-stage interactive flow**: first pick tools to prune, then pick files within each tool
+- **All output orange-colored**: `check()`/`cross()`/`warn()` ANSI helpers, install loop, stale cleanup, version checks
+
+### WOMONO-063 — Phase 2 Complete: Skill Cleanup + Zero Hard Errors
+- **Phase 2: Moved all misplaced skills to `ref/`** — 164 skills moved to `ref/<tool>/` across all 7 harness dirs
+- **Created `scripts/fix-skills.ts`** — auto-fix script handles `allowed-tools` casing, frontmatter cleanup, `name` field fixes
+- **Created `scripts/fix-errors.ts`** — targeted fix script for PARSE_ERROR, MISSING_SKILL, WRONG_NAMING_CONVENTION errors
+- **Zero hard errors achieved** — from 267 errors down to 0 across 433 skills, 7 tools
+- **Fixed at source**: broken YAML in `document_generation`, diff-corrupted `wow_tickets` (`+` prefix + missing `---`), empty dirs (`ticket_executor`, `build_auto_ticket_creator`), renamed `skill-creator` → `skill_creator`/`skill-creator` per tool convention
+
+### WOMONO-063 — Phase 3 Complete: Consolidated build_tool Skill
+- **Created `scripts/deploy-build-tool.ts`** — generates per-tool SKILL.md from canonical template with correct naming, casing, and frontmatter
+- **Deployed `build_tool` to all 7 harness dirs** — opencode, claude, gemini, pi (build-tool), antigravity, codex, wocode
+- **Comprehensive skill content**: covers all 8 component types (skills, agents, commands, extensions, configs, keybindings, themes, TUI) across all 7 tools with per-tool format tables
+- **Zero compliance errors** on deployment — caught and fixed wocode casing mismatch during deploy
+
+### WOMONO-063 — Phase 4 Complete: `--update` Comprehensive Sync
+- **Rewrote `--update` flow**: CLI + docs + tool install + stale cleanup + auto-validate in one command
+- **Added changelog awareness**: Reads CHANGELOG.md, shows version diff on bump
+- **Added `--dry-run` support for `--update`**: previews all 4 steps before executing
+- **Added confirmation prompt**: asks before proceeding (skipped with `--yes`)
+- **Added `--no-validate` flag**: skips compliance check step
+- **Added auto-compliance**: runs `compliance-check.ts` after update, reports error count
+- **Added `build_tool` to manifest.json** for all 7 tools
+- **WOMONO-063 Resolved** — All 4 phases complete
+
+### Manifest Cleanup — Removed 192 Stale Entries
+- **Created `scripts/cleanup-manifest.ts`** — removes manifest entries where source files no longer exist
+- **Cleaned 192 stale entries** from `manifest.json` across all 7 tools (skills moved to `ref/` during Phase 2)
+- **Bumped manifest to v1.4.0** — `ai-harness --update` now works without 404 errors
+- **Zero compliance errors** maintained after cleanup
+
+### README Rewrite & Architecture Docs
+- **README.md** fully rewritten with real repository data (51,033 files, 906 SKILL.md, 13 packages, 4 developers, 29+ tickets, per-tool skill counts)
+- Added slogan blockquote to header and footer
+- Added **Quick Install** section (3-step flow: Deno → harness CLI → all tools)
+- Added `🦙 Prerequisites: Ollama` top-level section
+- Added `📦 Wo Packages` table with `Package | Description | npm` columns and install commands
+- Added **f-rr-d How it works** bullet points (clone on init, project-scoped, multi-project, pull/push, branch naming) + Config note
+- Added **AI Engineering Harness** summary with tutorial link
+- Expanded Dev-Dependencies section with full "Hammer vs. The House" analogy
+- Added `ai-harness --check`, `--interactive`, `--dry-run`, `--skill=` commands to Usage
+- Created architecture docs: `docs/cto-dashboard-architecture.md`, `docs/deployment-architecture.md`, `docs/thoughts-architecture.md`, `docs/data-storage-architecture.md`
+- Created `docs/archetecture/INDEX.md` architecture index
+- Fixed duplicate section headers and deduplicated CHANGELOG
+
 ## [Unreleased] - 2026-06-11
 
 ### WOMONO-001 — Electron UI + Cross-Platform Starters + Förråd Sync — **In Progress**
@@ -147,7 +561,7 @@
 - **Tested**: All commands working, personal ticket ZERWIZ-001 created for WOMONO-021
 
 ### Codex Platform — First-Class Support Complete
-- **Skill sync across 7 platforms** (claude, opencode, gemini, pi, wocoder, antigravity, codex):
+- **Skill sync across 7 platforms** (claude, opencode, gemini, pi, wocode, antigravity, codex):
   - Removed 82 duplicate skills with incorrect naming conventions
   - Fixed naming: pi uses kebab-case, other 6 platforms use snake_case
   - Core skills (auto-ticket-creator, cto-dashboard, docs-sync-updater, help-command, skill-adapter, skill-auto-update, ticket-manager) use hyphens on ALL platforms
@@ -175,8 +589,6 @@
 - Added codex to manifest.json, install.ts, setup.sh
 - Updated AGENTS.md with Codex column in commands/agents tables
 - Codex skill format: skill.yaml + prompt.md per skill
-
-## Status
 
 ## Status
 
@@ -221,8 +633,8 @@
 - `pi-themes` — Pi themes: JSON format, 51 color tokens, vars system, hex/256-color values
 - `pi-tui` — Pi TUI: built-in components, custom components, keyboard input, widgets, overlays
 
-All 10 skills deployed across all 5 frontends (opencode, claude, gemini, pi, wocoder) with correct naming:
-- opencode/claude/wocoder: kebab-case directory names
+All 10 skills deployed across all 5 frontends (opencode, claude, gemini, pi, wocode) with correct naming:
+- opencode/claude/wocode: kebab-case directory names
 - gemini: snake_case directory names
 - pi: kebab-case (native format)
 

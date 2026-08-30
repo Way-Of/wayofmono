@@ -1,0 +1,88 @@
+{
+  "project": "opticat",
+  "project_slug": "opticat",
+  "description": "OptiCat-specific skills for HVAC simulation and backend integration",
+  "version": "1.0.0",
+  "tools": {
+    "opencode": {
+      "skills": [
+        {
+          "src": "skills/opticat-backend-integrator/SKILL.md",
+          "dest": "skills/opticat-backend-integrator/SKILL.md"
+        },
+        {
+          "src": "skills/opticat-simulator/SKILL.md",
+          "dest": "skills/opticat-simulator/SKILL.md"
+        },
+        {
+          "src": "skills/opticat-ui-builder/SKILL.md",
+          "dest": "skills/opticat-ui-builder/SKILL.md"
+        }
+      ]
+    },
+    "claude": {
+      "skills": [
+        {
+          "src": "claude/skills/opticat_backend_integrator/SKILL.md",
+          "dest": "skills/opticat_backend_integrator/SKILL.md"
+        },
+        {
+          "src": "claude/skills/opticat_simulator/SKILL.md",
+          "dest": "skills/opticat_simulator/SKILL.md"
+        },
+        {
+          "src": "claude/skills/opticat_ui_builder/SKILL.md",
+          "dest": "skills/opticat_ui_builder/SKILL.md"
+        }
+      ]
+    },
+    "antigravity": {
+      "skills": [
+        {
+          "src": "antigravity/skills/opticat_backend_integrator/SKILL.md",
+          "dest": "skills/opticat_backend_integrator/SKILL.md"
+        },
+        {
+          "src": "antigravity/skills/opticat_simulator/SKILL.md",
+          "dest": "skills/opticat_simulator/SKILL.md"
+        },
+        {
+          "src": "antigravity/skills/opticat_ui_builder/SKILL.md",
+          "dest": "skills/opticat_ui_builder/SKILL.md"
+        }
+      ]
+    },
+    "codex": {
+      "skills": [
+        {
+          "src": "codex/skills/opticat_backend_integrator/SKILL.md",
+          "dest": "skills/opticat_backend_integrator/SKILL.md"
+        },
+        {
+          "src": "codex/skills/opticat_simulator/SKILL.md",
+          "dest": "skills/opticat_simulator/SKILL.md"
+        },
+        {
+          "src": "codex/skills/opticat_ui_builder/SKILL.md",
+          "dest": "skills/opticat_ui_builder/SKILL.md"
+        }
+      ]
+    },
+    "wocode": {
+      "skills": [
+        {
+          "src": "wocode/skills/opticat-backend-integrator/SKILL.md",
+          "dest": "skills/opticat-backend-integrator/SKILL.md"
+        },
+        {
+          "src": "wocode/skills/opticat-simulator/SKILL.md",
+          "dest": "skills/opticat-simulator/SKILL.md"
+        },
+        {
+          "src": "wocode/skills/opticat-ui-builder/SKILL.md",
+          "dest": "skills/opticat-ui-builder/SKILL.md"
+        }
+      ]
+    }
+  }
+}

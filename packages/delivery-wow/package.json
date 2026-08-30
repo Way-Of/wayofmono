@@ -1,0 +1,21 @@
+{
+  "name": "@wayofmono/delivery-wow",
+  "version": "1.0.0",
+  "description": "Way of Work (WoW) platform-specific skills — installs per-tool skill copies",
+  "main": "manifest.json",
+  "files": [
+    "manifest.json",
+    "skills/**",
+    "claude/**",
+    "antigravity/**",
+    "codex/**",
+    "pi/**",
+    "wocode/**"
+  ],
+  "wayofmono": {
+    "project": "wow",
+    "project_slug": "wow",
+    "description": "Way of Work platform skills"
+  },
+  "license": "MIT"
+}

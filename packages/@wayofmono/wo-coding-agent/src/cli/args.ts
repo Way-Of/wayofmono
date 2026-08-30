@@ -215,6 +215,7 @@ ${chalk.bold("Commands:")}
   ${APP_NAME} list                      List installed extensions from settings
   ${APP_NAME} config                    Open TUI to enable/disable package resources
   ${APP_NAME} <command> --help          Show help for install/remove/uninstall/update/list
+  ${APP_NAME} modelollama               Set up local Ollama with recommended models
 
   ${chalk.bold("Options:")}
   --provider <name>              Provider name (default: google)
@@ -226,7 +227,7 @@ ${chalk.bold("Commands:")}
   --print, -p                    Non-interactive mode: process prompt and exit
   --continue, -c                 Continue previous session
   --resume, -r                   Select a session to resume
-  --init                         Initialize local .wo config and launcher script
+  --init                         Initialize local .wocode config and launcher script
   --session <path|id>            Use specific session file or partial UUID
   --fork <path|id>               Fork specific session file or partial UUID into a new session
   --session-dir <dir>            Directory for session storage and lookup
@@ -255,7 +256,17 @@ ${chalk.bold("Commands:")}
   --version, -v                  Show version number
 Extensions can register additional flags (e.g., --plan from plan-mode extension).${extensionFlagsText}
 
-${chalk.bold("Examples:")}
+  ${chalk.bold("Model Configuration:")}
+  Custom models and provider settings are stored in \`models.json\`:
+    ${chalk.dim("~/.wocode/agent/models.json")}        (global default)
+    ${chalk.dim(".wocode/agent/models.json")}         (project-local, if .wocode/ exists)
+    \${WOCODE_CODING_AGENT_DIR}/models.json      (custom via env var)
+
+  Edit this file to add custom models, override provider settings, or configure
+  API keys. See ${chalk.underline("https://github.com/Way-Of/wayofmono/blob/main/docs/models-json.md")}
+  for the schema and examples.
+
+  ${chalk.bold("Examples:")}
   # Interactive mode
   ${APP_NAME}
 
@@ -340,10 +351,10 @@ ${chalk.bold("Environment Variables:")}
   AWS_REGION                       - AWS region for Amazon Bedrock (e.g., us-east-1)
   ${ENV_AGENT_DIR.padEnd(32)} - Config directory (default: ~/${CONFIG_DIR_NAME}/agent)
   ${ENV_SESSION_DIR.padEnd(32)} - Session storage directory (overridden by --session-dir)
-  PI_PACKAGE_DIR                   - Override package directory (for Nix/Guix store paths)
-  PI_OFFLINE                       - Disable startup network operations when set to 1/true/yes
-  PI_TELEMETRY                     - Override install telemetry when set to 1/true/yes or 0/false/no
-  PI_SHARE_VIEWER_URL              - Base URL for /share command (default: https://pi.dev/session/)
+  WO_PACKAGE_DIR                   - Override package directory (for Nix/Guix store paths)
+  WO_OFFLINE                       - Disable startup network operations when set to 1/true/yes
+  WO_TELEMETRY                     - Override install telemetry when set to 1/true/yes or 0/false/no
+  WO_SHARE_VIEWER_URL              - Base URL for /share command (default: https://wo.dev/session/)
 
 ${chalk.bold("Built-in Tool Names:")}
   read   - Read file contents

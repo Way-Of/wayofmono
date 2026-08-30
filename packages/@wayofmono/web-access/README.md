@@ -1,6 +1,3 @@
-<p>
-  <img src="banner.png" alt="Wo Web Access" width="1100">
-</p>
 
 # Wo Web Access
 

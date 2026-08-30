@@ -1,0 +1,148 @@
+{
+  "project": "womono",
+  "project_slug": "womono",
+  "description": "WayOfMono monorepo-specific skills",
+  "version": "1.0.0",
+  "tools": {
+    "opencode": {
+      "skills": [
+        {
+          "src": "skills/womono-practices-audit/SKILL.md",
+          "dest": "skills/womono-practices-audit/SKILL.md"
+        },
+        {
+          "src": "skills/womono-practices-backlog/SKILL.md",
+          "dest": "skills/womono-practices-backlog/SKILL.md"
+        },
+        {
+          "src": "skills/womono-practices-guide/SKILL.md",
+          "dest": "skills/womono-practices-guide/SKILL.md"
+        },
+        {
+          "src": "skills/womono-validate-manifest/SKILL.md",
+          "dest": "skills/womono-validate-manifest/SKILL.md"
+        },
+        {
+          "src": "skills/womono-version-updater/SKILL.md",
+          "dest": "skills/womono-version-updater/SKILL.md"
+        },
+        {
+          "src": "skills/womonodeploy/SKILL.md",
+          "dest": "skills/womonodeploy/SKILL.md"
+        }
+      ]
+    },
+    "claude": {
+      "skills": [
+        {
+          "src": "claude/skills/womono_practices_audit/SKILL.md",
+          "dest": "skills/womono_practices_audit/SKILL.md"
+        },
+        {
+          "src": "claude/skills/womono_practices_backlog/SKILL.md",
+          "dest": "skills/womono_practices_backlog/SKILL.md"
+        },
+        {
+          "src": "claude/skills/womono_practices_guide/SKILL.md",
+          "dest": "skills/womono_practices_guide/SKILL.md"
+        },
+        {
+          "src": "claude/skills/womono_validate_manifest/SKILL.md",
+          "dest": "skills/womono_validate_manifest/SKILL.md"
+        },
+        {
+          "src": "claude/skills/womono_version_updater/SKILL.md",
+          "dest": "skills/womono_version_updater/SKILL.md"
+        },
+        {
+          "src": "claude/skills/womonodeploy/SKILL.md",
+          "dest": "skills/womonodeploy/SKILL.md"
+        }
+      ]
+    },
+    "antigravity": {
+      "skills": [
+        {
+          "src": "antigravity/skills/womono_practices_audit/SKILL.md",
+          "dest": "skills/womono_practices_audit/SKILL.md"
+        },
+        {
+          "src": "antigravity/skills/womono_practices_backlog/SKILL.md",
+          "dest": "skills/womono_practices_backlog/SKILL.md"
+        },
+        {
+          "src": "antigravity/skills/womono_practices_guide/SKILL.md",
+          "dest": "skills/womono_practices_guide/SKILL.md"
+        },
+        {
+          "src": "antigravity/skills/womono_validate_manifest/SKILL.md",
+          "dest": "skills/womono_validate_manifest/SKILL.md"
+        },
+        {
+          "src": "antigravity/skills/womono_version_updater/SKILL.md",
+          "dest": "skills/womono_version_updater/SKILL.md"
+        },
+        {
+          "src": "antigravity/skills/womonodeploy/SKILL.md",
+          "dest": "skills/womonodeploy/SKILL.md"
+        }
+      ]
+    },
+    "codex": {
+      "skills": [
+        {
+          "src": "codex/skills/womono_practices_audit/SKILL.md",
+          "dest": "skills/womono_practices_audit/SKILL.md"
+        },
+        {
+          "src": "codex/skills/womono_practices_backlog/SKILL.md",
+          "dest": "skills/womono_practices_backlog/SKILL.md"
+        },
+        {
+          "src": "codex/skills/womono_practices_guide/SKILL.md",
+          "dest": "skills/womono_practices_guide/SKILL.md"
+        },
+        {
+          "src": "codex/skills/womono_validate_manifest/SKILL.md",
+          "dest": "skills/womono_validate_manifest/SKILL.md"
+        },
+        {
+          "src": "codex/skills/womono_version_updater/SKILL.md",
+          "dest": "skills/womono_version_updater/SKILL.md"
+        },
+        {
+          "src": "codex/skills/womonodeploy/SKILL.md",
+          "dest": "skills/womonodeploy/SKILL.md"
+        }
+      ]
+    },
+    "wocode": {
+      "skills": [
+        {
+          "src": "wocode/skills/womono-practices-audit/SKILL.md",
+          "dest": "skills/womono-practices-audit/SKILL.md"
+        },
+        {
+          "src": "wocode/skills/womono-practices-backlog/SKILL.md",
+          "dest": "skills/womono-practices-backlog/SKILL.md"
+        },
+        {
+          "src": "wocode/skills/womono-practices-guide/SKILL.md",
+          "dest": "skills/womono-practices-guide/SKILL.md"
+        },
+        {
+          "src": "wocode/skills/womono-validate-manifest/SKILL.md",
+          "dest": "skills/womono-validate-manifest/SKILL.md"
+        },
+        {
+          "src": "wocode/skills/womono-version-updater/SKILL.md",
+          "dest": "skills/womono-version-updater/SKILL.md"
+        },
+        {
+          "src": "wocode/skills/womonodeploy/SKILL.md",
+          "dest": "skills/womonodeploy/SKILL.md"
+        }
+      ]
+    }
+  }
+}

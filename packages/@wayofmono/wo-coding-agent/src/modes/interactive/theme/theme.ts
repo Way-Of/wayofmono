@@ -450,12 +450,14 @@ let BUILTIN_THEMES: Record<string, ThemeJson> | undefined;
 function getBuiltinThemes(): Record<string, ThemeJson> {
 	if (!BUILTIN_THEMES) {
 		const themesDir = getThemesDir();
-		const darkPath = path.join(themesDir, "dark.json");
-		const lightPath = path.join(themesDir, "light.json");
-		BUILTIN_THEMES = {
-			dark: JSON.parse(fs.readFileSync(darkPath, "utf-8")) as ThemeJson,
-			light: JSON.parse(fs.readFileSync(lightPath, "utf-8")) as ThemeJson,
-		};
+		BUILTIN_THEMES = {};
+		const builtinNames = ["dark", "light", "wo-code"];
+		for (const name of builtinNames) {
+			const filePath = path.join(themesDir, `${name}.json`);
+			if (fs.existsSync(filePath)) {
+				BUILTIN_THEMES[name] = JSON.parse(fs.readFileSync(filePath, "utf-8")) as ThemeJson;
+			}
+		}
 	}
 	return BUILTIN_THEMES;
 }
@@ -658,7 +660,6 @@ function getDefaultTheme(): string {
 
 // Use globalThis to share theme across module loaders (tsx + jiti in dev mode)
 const THEME_KEY = Symbol.for("@wayofmono/wo-coding-agent:theme");
-const THEME_KEY_OLD = Symbol.for("@mariozechner/pi-coding-agent:theme");
 
 // Export theme as a getter that reads from globalThis
 // This ensures all module instances (tsx, jiti) see the same theme
@@ -672,7 +673,6 @@ export const theme: Theme = new Proxy({} as Theme, {
 
 function setGlobalTheme(t: Theme): void {
 	(globalThis as Record<symbol, Theme>)[THEME_KEY] = t;
-	(globalThis as Record<symbol, Theme>)[THEME_KEY_OLD] = t;
 }
 
 let currentThemeName: string | undefined;

@@ -4,7 +4,7 @@ import { Box, Spacer, Text, type Component, truncateToWidth, visibleWidth } from
 import { createHash } from "node:crypto";
 import { renderMermaidAscii } from "beautiful-mermaid";
 
-const MESSAGE_TYPE = "pi-mermaid";
+const MESSAGE_TYPE = "wo-mermaid";
 const MERMAID_BLOCK_RE = /```mermaid\s*([\s\S]*?)```/gi;
 const ISSUE_LINE_RE = /^\[mermaid:(warning|error)\](?:\[hash:[^\]]+\])?\s*(.*)$/;
 const COLLAPSED_LINES = 10;
@@ -471,7 +471,7 @@ export default function (pi: ExtensionAPI) {
 		return box;
 	};
 
-	pi.registerMessageRenderer(MESSAGE_TYPE, renderMermaidMessage);
+	wo.registerMessageRenderer(MESSAGE_TYPE, renderMermaidMessage);
 
 	const renderBlocks = async (
 		blocks: string[],
@@ -516,7 +516,7 @@ export default function (pi: ExtensionAPI) {
 			if (!normalized) {
 				const typeLabel = token ?? "unknown";
 				notify(
-					`pi-mermaid can't render type "${typeLabel}"${blockLabel}. Supported: ${SUPPORTED_TYPE_LABEL}.`,
+					`wo-mermaid can't render type "${typeLabel}"${blockLabel}. Supported: ${SUPPORTED_TYPE_LABEL}.`,
 					"info",
 				);
 				continue;
@@ -532,7 +532,7 @@ export default function (pi: ExtensionAPI) {
 
 			const includeSource = options.includeSourceInContext ?? true;
 			const contextContent = buildContextContent(block, diagramHash, issues, includeSource);
-			pi.sendMessage({
+			wo.sendMessage({
 				customType: MESSAGE_TYPE,
 				content: contextContent,
 				display: true,
@@ -545,7 +545,7 @@ export default function (pi: ExtensionAPI) {
 		}
 	};
 
-	pi.on("input", async (event, ctx) => {
+	wo.on("input", async (event, ctx) => {
 		if (event.source === "extension") return { action: "continue" };
 
 		const text = typeof event.text === "string" ? event.text : "";
@@ -558,7 +558,7 @@ export default function (pi: ExtensionAPI) {
 		return { action: "continue" };
 	});
 
-	pi.on("agent_end", async (event, ctx) => {
+	wo.on("agent_end", async (event, ctx) => {
 		let assistantText = "";
 		for (let i = event.messages.length - 1; i >= 0; i--) {
 			const msg = event.messages[i];
@@ -575,7 +575,7 @@ export default function (pi: ExtensionAPI) {
 		await renderBlocks(blocks, ctx, { includeSourceInContext: blocks.length > 1 });
 	});
 
-	pi.registerCommand("pi-mermaid", {
+	wo.registerCommand("wo-mermaid", {
 		description: "Render mermaid in last assistant message as ASCII",
 		handler: async (_args, ctx) => {
 			const lastAssistant = getLastAssistantText(ctx.sessionManager.getBranch());

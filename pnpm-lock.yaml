@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      wo-coding-agent:
-        specifier: link:../../packages/@wayofmono/wo-coding-agent
-        version: link:../../packages/@wayofmono/wo-coding-agent
+      '@wayofmono/wo-agent':
+        specifier: ^1.0.4
+        version: 1.0.4(ws@8.20.1)(zod@4.4.3)
     devDependencies:
       '@changesets/changelog-github':
         specifier: ^0.5.2
@@ -21,6 +21,9 @@ importers:
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.4.1(jiti@2.7.0))
+      '@wayofmono/wo-coding-agent':
+        specifier: workspace:*
+        version: link:packages/@wayofmono/wo-coding-agent
       eslint:
         specifier: ^10.4.1
         version: 10.4.1(jiti@2.7.0)
@@ -58,6 +61,34 @@ importers:
       vitest:
         specifier: ^4.1.1
         version: 4.1.6(@opentelemetry/api@1.9.1)(@types/node@25.7.0)(vite@8.0.12(@types/node@25.7.0)(jiti@2.7.0)(yaml@2.9.0))
+
+  packages/@wayofmono/skill-auto-ticket-creator: {}
+
+  packages/@wayofmono/skill-backlog-groomer: {}
+
+  packages/@wayofmono/skill-docs-sync-updater: {}
+
+  packages/@wayofmono/skill-document-generation: {}
+
+  packages/@wayofmono/skill-experimental-pr-workflow: {}
+
+  packages/@wayofmono/skill-interview: {}
+
+  packages/@wayofmono/skill-investor-ready-doc-gen: {}
+
+  packages/@wayofmono/skill-prd-to-issues: {}
+
+  packages/@wayofmono/skill-research-codebase: {}
+
+  packages/@wayofmono/skill-runbook-manager: {}
+
+  packages/@wayofmono/skill-self-documentation: {}
+
+  packages/@wayofmono/skill-session-export: {}
+
+  packages/@wayofmono/skill-tdd: {}
+
+  packages/@wayofmono/skill-write-a-prd: {}
 
   packages/@wayofmono/telegram:
     dependencies:
@@ -164,6 +195,9 @@ importers:
       '@wayofmono/wo-tui':
         specifier: workspace:*
         version: link:../wo-tui
+      '@wayofmono/wo-user-extra':
+        specifier: workspace:*
+        version: link:../wo-user-extra
       chalk:
         specifier: ^5.5.0
         version: 5.6.2
@@ -307,14 +341,14 @@ importers:
   packages/@wayofmono/wo-coding-agent:
     dependencies:
       '@wayofmono/wo-agent-core':
-        specifier: workspace:*
-        version: link:../wo-agent-core
+        specifier: ^1.0.4
+        version: 1.0.4(ws@8.20.1)(zod@4.4.3)
       '@wayofmono/wo-ai':
         specifier: workspace:*
         version: link:../wo-ai
       '@wayofmono/wo-tui':
-        specifier: workspace:*
-        version: link:../wo-tui
+        specifier: ^1.0.4
+        version: 1.0.4
       chalk:
         specifier: ^5.5.0
         version: 5.6.2
@@ -453,6 +487,8 @@ importers:
       koffi:
         specifier: ^2.9.0
         version: 2.16.2
+
+  packages/@wayofmono/wo-user-extra: {}
 
   packages/@wayofmono/wo-web-ui:
     dependencies:
@@ -1111,8 +1147,8 @@ packages:
     resolution: {integrity: sha512-Z+CZ3QaosfFaTqvhQsIktyGrjFjSC0Fa4EMph4mqKnWhmyoGICsV/8QK+8HpXut6zV7zwfWwqDmEjtk1Qf6EgQ==}
     engines: {node: '>=14.0.0'}
 
-  '@napi-rs/wasm-runtime@1.1.4':
-    resolution: {integrity: sha512-3NQNNgA1YSlJb/kMH1ildASP9HW7/7kYnRI2szWJaofaS1hWmbGI4H+d3+22aGzXXN9IJ+n+GiFVcGipJP18ow==}
+  '@napi-rs/wasm-runtime@1.1.6':
+    resolution: {integrity: sha512-ZLv/JdUfkvOy9eCnnBaGfiO+XimbjebAeO+MRQqD/B+FR1tnRN0tpKSJHRbE8sFfS6aqsXZ67TQjfwfsxULVbg==}
     peerDependencies:
       '@emnapi/core': ^1.7.1
       '@emnapi/runtime': ^1.7.1
@@ -1490,6 +1526,7 @@ packages:
   '@smithy/core@3.24.1':
     resolution: {integrity: sha512-3mT7o4qQyUWttYnVK3A0Z/u3Xha3E81tXn32Tz6vjZiUXhBrkEivpw1hBYfh84iFF9CSzkBU9Y1DJ3Q6RQ231g==}
     engines: {node: '>=18.0.0'}
+    deprecated: Deprecated due to bug in browser bundling instructions https://github.com/smithy-lang/smithy-typescript/issues/2025
 
   '@smithy/credential-provider-imds@4.3.1':
     resolution: {integrity: sha512-0S/acwHnqX4WrjXzhdiDRxsG2s9SC0cpPIK9nZ1R6UOHd+j7uL28+4bHu22urbLk2TVw3fkp6na/+fkUt/pLNQ==}
@@ -1649,8 +1686,8 @@ packages:
   '@tootallnate/quickjs-emscripten@0.23.0':
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}
 
-  '@tybys/wasm-util@0.10.2':
-    resolution: {integrity: sha512-RoBvJ2X0wuKlWFIjrwffGw1IqZHKQqzIchKaadZZfnNpsAYp2mM0h36JtPCjNDAHGgYez/15uMBpfGwchhiMgg==}
+  '@tybys/wasm-util@0.10.3':
+    resolution: {integrity: sha512-F3fo1MYrRJYL3zER0OUOmkutjr1Vp23m7OsSgp7nq4SP6OqX6C/56XFIPAl5bt3zaBRjmW7SGz3u/6LwFpYcOg==}
 
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
@@ -1918,6 +1955,19 @@ packages:
 
   '@vitest/utils@4.1.6':
     resolution: {integrity: sha512-FxIY+U81R3LGKCxaHHFRQ5+g6/iRgGLmeHWdp2Amj4ljQRrEIWHmZyDfDYBRZlpyqA7qKxtS9DD1dhk8RnRIVQ==}
+
+  '@wayofmono/wo-agent-core@1.0.4':
+    resolution: {integrity: sha512-RjFdpljQ0/TZzOMSEQcCVrQX4dCwekcKTx4c8C1QxIf+1Q1naPUuNNvK+XRjFKKw3db0ytbDhL9snbuQxJsCNA==}
+
+  '@wayofmono/wo-agent@1.0.4':
+    resolution: {integrity: sha512-EwY7nP0JKh/aajFO92+9o0X4BVYIKQWZh91Cp0kFdqlTUrEVijmXYfTUlJzaXXjaSgrslh0LUTwDM2m4CQcoug==}
+    hasBin: true
+
+  '@wayofmono/wo-ai@1.0.4':
+    resolution: {integrity: sha512-xEPFfGg4dGcj17X5gLtQTWkg0tnsUgQ7XU9drSQ5YaIL7mVAVLe71W7PrgUUG48Tt7dg7CgWj5bD7eM+AP5qbw==}
+
+  '@wayofmono/wo-tui@1.0.4':
+    resolution: {integrity: sha512-v2ArzQ+luYRiHoSlxB6/E2Xs3aD2fLxljj4GkZs7pK1R0kwU0k/CgMTsIo5N/t9LmJDKXoBrjwqHNvqbj8wGZg==}
 
   '@xterm/headless@5.5.0':
     resolution: {integrity: sha512-5xXB7kdQlFBP82ViMJTwwEc3gKCLGKR/eoxQm4zge7GPBl86tCdI0IdPJjoKd8mUSFXz5V7i/25sfsEkP4j46g==}
@@ -2949,6 +2999,11 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  nanoid@3.3.15:
+    resolution: {integrity: sha512-y7Wygv/7mEOvxTuEQDB8StXdMRBWf1kR/tlhAzBRUFkB2jfcLOAxO/SHmOO2zgz1pVgK29/kyupn059/bCHdjA==}
+    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
+    hasBin: true
+
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
@@ -3135,6 +3190,10 @@ packages:
     resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
     engines: {node: '>=12'}
 
+  picomatch@4.0.5:
+    resolution: {integrity: sha512-RvwwcruNjI1ncT5xRakeyS9Lf8lcItv34KD+aif+VH9kduAyfYBipGh12274xtenIPZ119/R9BdTBa8gAwSh0A==}
+    engines: {node: '>=12'}
+
   pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
@@ -3150,6 +3209,10 @@ packages:
 
   postcss@8.5.14:
     resolution: {integrity: sha512-SoSL4+OSEtR99LHFZQiJLkT59C5B1amGO1NzTwj7TT1qCUgUO6hxOvzkOYxD+vMrXBM3XJIKzokoERdqQq/Zmg==}
+    engines: {node: ^10 || ^12 || >=14}
+
+  postcss@8.5.16:
+    resolution: {integrity: sha512-vuwillviilfKZsg0VGj5R/YwwcHx4SLsIOI/7K6mQkWx+l5cUHTjj5g0AasTBcyXsbfTgrwsUNmVUb5xVwyPwg==}
     engines: {node: ^10 || ^12 || >=14}
 
   prelude-ls@1.2.1:
@@ -3399,6 +3462,10 @@ packages:
 
   tinyglobby@0.2.16:
     resolution: {integrity: sha512-pn99VhoACYR8nFHhxqix+uvsbXineAasWm5ojXoN8xEwK5Kd3/TrhNn1wByuD52UxWRLy8pu+kRMniEi6Eq9Zg==}
+    engines: {node: '>=12.0.0'}
+
+  tinyglobby@0.2.17:
+    resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
 
   tinypool@0.8.4:
@@ -4663,11 +4730,11 @@ snapshots:
 
   '@mozilla/readability@0.5.0': {}
 
-  '@napi-rs/wasm-runtime@1.1.4(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)':
+  '@napi-rs/wasm-runtime@1.1.6(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)':
     dependencies:
       '@emnapi/core': 1.10.0
       '@emnapi/runtime': 1.10.0
-      '@tybys/wasm-util': 0.10.2
+      '@tybys/wasm-util': 0.10.3
     optional: true
 
   '@nodable/entities@2.1.0': {}
@@ -4825,7 +4892,7 @@ snapshots:
     dependencies:
       '@emnapi/core': 1.10.0
       '@emnapi/runtime': 1.10.0
-      '@napi-rs/wasm-runtime': 1.1.4(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
+      '@napi-rs/wasm-runtime': 1.1.6(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
     optional: true
 
   '@rolldown/binding-win32-arm64-msvc@1.0.0':
@@ -5124,7 +5191,7 @@ snapshots:
 
   '@tootallnate/quickjs-emscripten@0.23.0': {}
 
-  '@tybys/wasm-util@0.10.2':
+  '@tybys/wasm-util@0.10.3':
     dependencies:
       tslib: 2.8.1
     optional: true
@@ -5481,6 +5548,79 @@ snapshots:
       '@vitest/pretty-format': 4.1.6
       convert-source-map: 2.0.0
       tinyrainbow: 3.1.0
+
+  '@wayofmono/wo-agent-core@1.0.4(ws@8.20.1)(zod@4.4.3)':
+    dependencies:
+      '@wayofmono/wo-ai': 1.0.4(ws@8.20.1)(zod@4.4.3)
+      ignore: 7.0.5
+      typebox: 1.1.38
+      yaml: 2.9.0
+    transitivePeerDependencies:
+      - '@modelcontextprotocol/sdk'
+      - aws-crt
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+      - ws
+      - zod
+
+  '@wayofmono/wo-agent@1.0.4(ws@8.20.1)(zod@4.4.3)':
+    dependencies:
+      '@wayofmono/wo-agent-core': 1.0.4(ws@8.20.1)(zod@4.4.3)
+      '@wayofmono/wo-ai': 1.0.4(ws@8.20.1)(zod@4.4.3)
+      '@wayofmono/wo-tui': 1.0.4
+      chalk: 5.6.2
+      diff: 8.0.4
+      glob: 11.1.0
+      highlight.js: 10.7.3
+      hosted-git-info: 9.0.3
+      ignore: 7.0.5
+      jiti: 2.7.0
+      minimatch: 10.2.5
+      proper-lockfile: 4.1.2
+      typebox: 1.1.38
+      undici: 7.25.0
+      yaml: 2.9.0
+    optionalDependencies:
+      '@mariozechner/clipboard': 0.3.5
+      '@silvia-odwyer/photon-node': 0.3.4
+    transitivePeerDependencies:
+      - '@modelcontextprotocol/sdk'
+      - aws-crt
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+      - ws
+      - zod
+
+  '@wayofmono/wo-ai@1.0.4(ws@8.20.1)(zod@4.4.3)':
+    dependencies:
+      '@anthropic-ai/sdk': 0.91.1(zod@4.4.3)
+      '@aws-sdk/client-bedrock-runtime': 3.1045.0
+      '@google/genai': 1.52.0
+      '@mistralai/mistralai': 2.2.1
+      '@smithy/node-http-handler': 4.7.1
+      '@smithy/types': 4.14.1
+      openai: 6.26.0(ws@8.20.1)(zod@4.4.3)
+      partial-json: 0.1.7
+      proxy-agent: 6.5.0
+      proxy-from-env: 1.1.0
+      typebox: 1.1.38
+    transitivePeerDependencies:
+      - '@modelcontextprotocol/sdk'
+      - aws-crt
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+      - ws
+      - zod
+
+  '@wayofmono/wo-tui@1.0.4':
+    dependencies:
+      get-east-asian-width: 1.6.0
+      marked: 15.0.12
+    optionalDependencies:
+      koffi: 2.16.2
 
   '@xterm/headless@5.5.0': {}
 
@@ -6093,6 +6233,10 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.4
 
+  fdir@6.5.0(picomatch@4.0.5):
+    optionalDependencies:
+      picomatch: 4.0.5
+
   fetch-blob@3.2.0:
     dependencies:
       node-domexception: 1.0.0
@@ -6538,6 +6682,8 @@ snapshots:
 
   nanoid@3.3.12: {}
 
+  nanoid@3.3.15: {}
+
   natural-compare@1.4.0: {}
 
   netmask@2.1.1: {}
@@ -6694,6 +6840,8 @@ snapshots:
 
   picomatch@4.0.4: {}
 
+  picomatch@4.0.5: {}
+
   pify@4.0.1: {}
 
   pkg-types@1.3.1:
@@ -6712,6 +6860,12 @@ snapshots:
   postcss@8.5.14:
     dependencies:
       nanoid: 3.3.12
+      picocolors: 1.1.1
+      source-map-js: 1.2.1
+
+  postcss@8.5.16:
+    dependencies:
+      nanoid: 3.3.15
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
@@ -6999,6 +7153,11 @@ snapshots:
       fdir: 6.5.0(picomatch@4.0.4)
       picomatch: 4.0.4
 
+  tinyglobby@0.2.17:
+    dependencies:
+      fdir: 6.5.0(picomatch@4.0.5)
+      picomatch: 4.0.5
+
   tinypool@0.8.4: {}
 
   tinyrainbow@3.1.0: {}
@@ -7103,10 +7262,10 @@ snapshots:
   vite@8.0.12(@types/node@24.12.4)(jiti@2.7.0)(yaml@2.9.0):
     dependencies:
       lightningcss: 1.32.0
-      picomatch: 4.0.4
-      postcss: 8.5.14
+      picomatch: 4.0.5
+      postcss: 8.5.16
       rolldown: 1.0.0
-      tinyglobby: 0.2.16
+      tinyglobby: 0.2.17
     optionalDependencies:
       '@types/node': 24.12.4
       fsevents: 2.3.3
@@ -7116,10 +7275,10 @@ snapshots:
   vite@8.0.12(@types/node@25.7.0)(jiti@2.7.0)(yaml@2.9.0):
     dependencies:
       lightningcss: 1.32.0
-      picomatch: 4.0.4
-      postcss: 8.5.14
+      picomatch: 4.0.5
+      postcss: 8.5.16
       rolldown: 1.0.0
-      tinyglobby: 0.2.16
+      tinyglobby: 0.2.17
     optionalDependencies:
       '@types/node': 25.7.0
       fsevents: 2.3.3

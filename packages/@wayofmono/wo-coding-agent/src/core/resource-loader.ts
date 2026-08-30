@@ -1,10 +1,13 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { homedir } from "node:os";
-import { join, resolve, sep } from "node:path";
+import { dirname, join, resolve, sep } from "node:path";
+import { fileURLToPath } from "node:url";
 import chalk from "chalk";
 import { CONFIG_DIR_NAME } from "../config.js";
 import { loadThemeFromPath, type Theme } from "../modes/interactive/theme/theme.js";
 import type { ResourceDiagnostic } from "./diagnostics.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export type { ResourceCollision, ResourceDiagnostic } from "./diagnostics.js";
 
@@ -198,6 +201,8 @@ export class DefaultResourceLoader implements ResourceLoader {
 	private systemPrompt?: string;
 	private appendSystemPrompt: string[];
 	private lastSkillPaths: string[];
+	private additionalAgentRoots: string[];
+	private additionalRootsLogged: boolean;
 	private extensionSkillSourceInfos: Map<string, SourceInfo>;
 	private extensionPromptSourceInfos: Map<string, SourceInfo>;
 	private extensionThemeSourceInfos: Map<string, SourceInfo>;
@@ -244,6 +249,8 @@ export class DefaultResourceLoader implements ResourceLoader {
 		this.agentsFiles = [];
 		this.appendSystemPrompt = [];
 		this.lastSkillPaths = [];
+		this.additionalAgentRoots = [];
+		this.additionalRootsLogged = false;
 		this.extensionSkillSourceInfos = new Map();
 		this.extensionPromptSourceInfos = new Map();
 		this.extensionThemeSourceInfos = new Map();
@@ -536,7 +543,7 @@ export class DefaultResourceLoader implements ResourceLoader {
 		if (this.noThemes && themePaths.length === 0) {
 			themesResult = { themes: [], diagnostics: [] };
 		} else {
-			const loaded = this.loadThemes(themePaths, false);
+			const loaded = this.loadThemes(themePaths, true);
 			const deduped = this.dedupeThemes(loaded.themes);
 			themesResult = { themes: deduped.themes, diagnostics: [...loaded.diagnostics, ...deduped.diagnostics] };
 		}
@@ -637,6 +644,45 @@ export class DefaultResourceLoader implements ResourceLoader {
 			join(this.cwd, CONFIG_DIR_NAME, "extensions"),
 		];
 
+		// Also check additional tool directories from the AI Engineering Harness manifest
+		// This ensures resources from the global wocode config (~/.wocode/) are recognized
+		const additionalAgentDirs = [join(homedir(), ".wocode")];
+
+		for (const agentDirPath of additionalAgentDirs) {
+			if (existsSync(agentDirPath)) {
+				const originalAgentRootsCount = agentRoots.length;
+				agentRoots.push(
+					join(agentDirPath, "skills"),
+					join(agentDirPath, "prompts"),
+					join(agentDirPath, "themes"),
+					join(agentDirPath, "extensions"),
+				);
+				if (agentRoots.length > originalAgentRootsCount && !this.additionalRootsLogged) {
+					this.additionalRootsLogged = true;
+					console.log(chalk.green(`[ResourceLoader] Added additional agent roots from ${agentDirPath}: skills, prompts, themes, extensions`));
+				}
+			} else {
+				console.log(chalk.yellow(`[ResourceLoader] Additional agent directory does not exist: ${agentDirPath}`));
+			}
+		}
+
+		// Also check AI Engineering Harness directory (source location)
+		// This ensures resources from the harness source are loaded when running from the repo
+		// Harness extracted to github.com/Way-Of/aiharness — check user's config dir instead
+		const harnessDir = resolve(__dirname, "../../../../../packages/@aiengineeringharness/wocode");
+		if (existsSync(harnessDir)) {
+			const originalAgentRootsCount = agentRoots.length;
+			agentRoots.push(
+				join(harnessDir, "skills"),
+				join(harnessDir, "prompts"),
+				join(harnessDir, "themes"),
+				join(harnessDir, "extensions"),
+			);
+			if (agentRoots.length > originalAgentRootsCount) {
+				console.log(chalk.green(`[ResourceLoader] Added AI Engineering Harness roots from ${harnessDir}: skills, prompts, themes, extensions`));
+			}
+		}
+
 		for (const root of agentRoots) {
 			if (this.isUnderPath(normalizedPath, root)) {
 				return { path: filePath, source: "local", scope: "user", origin: "top-level", baseDir: root };
@@ -696,9 +742,22 @@ export class DefaultResourceLoader implements ResourceLoader {
 		const themes: Theme[] = [];
 		const diagnostics: ResourceDiagnostic[] = [];
 		if (includeDefaults) {
-			const defaultDirs = [join(this.agentDir, "themes"), join(this.cwd, CONFIG_DIR_NAME, "themes")];
+			const homeDir = homedir();
+			const defaultDirs = [
+				join(this.agentDir, "themes"),
+				join(homeDir, CONFIG_DIR_NAME, "themes"),
+				join(homeDir, CONFIG_DIR_NAME, "agent", "themes"),
+				join(this.cwd, CONFIG_DIR_NAME, "themes"),
+			];
 
+			const seen = new Set<string>();
 			for (const dir of defaultDirs) {
+				const resolved = resolve(dir);
+				if (seen.has(resolved)) continue;
+				seen.add(resolved);
+				// Skip project-local themes dir inside the wayofmono monorepo to avoid collisions
+				// with themes installed globally at ~/.wocode/agent/themes/
+				if (resolved.includes("wayofmono") && resolved.includes(CONFIG_DIR_NAME) && resolved.endsWith("themes")) continue;
 				this.loadThemesFromDir(dir, themes, diagnostics);
 			}
 		}

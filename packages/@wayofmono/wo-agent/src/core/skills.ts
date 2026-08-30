@@ -6,6 +6,7 @@ import { CONFIG_DIR_NAME, getAgentDir } from "../config.js";
 import { parseFrontmatter } from "../utils/frontmatter.js";
 import { canonicalizePath } from "../utils/paths.js";
 import type { ResourceDiagnostic } from "./diagnostics.js";
+import { readManifest } from "./skill-manifest.js";
 import { createSyntheticSourceInfo, type SourceInfo } from "./source-info.js";
 
 /** Max name length per spec */
@@ -75,6 +76,7 @@ export interface SkillFrontmatter {
 export interface Skill {
 	name: string;
 	description: string;
+	body?: string;
 	filePath: string;
 	baseDir: string;
 	sourceInfo: SourceInfo;
@@ -287,7 +289,7 @@ function loadSkillFromFile(
 
 	try {
 		const rawContent = readFileSync(filePath, "utf-8");
-		const { frontmatter } = parseFrontmatter<SkillFrontmatter>(rawContent);
+		const { frontmatter, body } = parseFrontmatter<SkillFrontmatter>(rawContent);
 		const skillDir = dirname(filePath);
 		const parentDirName = basename(skillDir);
 
@@ -315,6 +317,7 @@ function loadSkillFromFile(
 			skill: {
 				name,
 				description: frontmatter.description,
+				body: body?.trim() || undefined,
 				filePath,
 				baseDir: skillDir,
 				sourceInfo: createSkillSourceInfo(filePath, skillDir, source),
@@ -336,27 +339,52 @@ function loadSkillFromFile(
  *
  * Skills with disableModelInvocation=true are excluded from the prompt
  * (they can only be invoked explicitly via /skill:name commands).
+ * When includeBody=true, each skill includes its full content in a <content> tag.
  */
-export function formatSkillsForPrompt(skills: Skill[]): string {
+export function formatSkillsForPrompt(skills: Skill[], options?: {
+	preamble?: string;
+	includeBody?: boolean;
+	doNotInclude?: "read-tool-preamble";
+}): string {
+	const { preamble, includeBody = false, doNotInclude } = options ?? {};
 	const visibleSkills = skills.filter((s) => !s.disableModelInvocation);
 
 	if (visibleSkills.length === 0) {
 		return "";
 	}
 
-	const lines = [
+	const lines = [];
+
+	if (doNotInclude === "read-tool-preamble") {
+		// Skip all preamble - user explicitly wants no preamble
+	} else if (preamble !== undefined) {
+		// Custom preamble explicitly provided
+		if (preamble === "") {
+			// Empty string preamble - user wants to remove preamble entirely
+		} else {
+			lines.push(preamble);
+		}
+	} else {
+		// Default preamble (no options)
+		const defaultPreamble = [
 		"\n\nThe following skills provide specialized instructions for specific tasks.",
 		"Use the read tool to load a skill's file when the task matches its description.",
 		"When a skill file references a relative path, resolve it against the skill directory (parent of SKILL.md / dirname of the path) and use that absolute path in tool commands.",
 		"",
-		"<available_skills>",
-	];
+		];
+		lines.push(...defaultPreamble);
+	}
+
+	lines.push("<available_skills>");
 
 	for (const skill of visibleSkills) {
 		lines.push("  <skill>");
 		lines.push(`    <name>${escapeXml(skill.name)}</name>`);
 		lines.push(`    <description>${escapeXml(skill.description)}</description>`);
 		lines.push(`    <location>${escapeXml(skill.filePath)}</location>`);
+		if (includeBody && skill.body) {
+			lines.push(`    <content>${escapeXml(skill.body)}</content>`);
+		}
 		lines.push("  </skill>");
 	}
 
@@ -376,13 +404,13 @@ function escapeXml(str: string): string {
 
 export interface LoadSkillsOptions {
 	/** Working directory for project-local skills. */
-	cwd: string;
+	cwd?: string;
 	/** Agent config directory for global skills. */
-	agentDir: string;
+	agentDir?: string;
 	/** Explicit skill paths (files or directories) */
-	skillPaths: string[];
+	skillPaths?: string[];
 	/** Include default skills directories. */
-	includeDefaults: boolean;
+	includeDefaults?: boolean;
 }
 
 function normalizePath(input: string): string {
@@ -402,8 +430,9 @@ function resolveSkillPath(p: string, cwd: string): string {
  * Load skills from all configured locations.
  * Returns skills and any validation diagnostics.
  */
-export function loadSkills(options: LoadSkillsOptions): LoadSkillsResult {
-	const { cwd, agentDir, skillPaths, includeDefaults } = options;
+export function loadSkills(options?: LoadSkillsOptions): LoadSkillsResult {
+	if (!options?.skillPaths?.length && !options?.includeDefaults) return { skills: [], diagnostics: [] };
+	const { cwd = process.cwd(), agentDir, skillPaths = [], includeDefaults = true } = options;
 
 	// Resolve agentDir - if not provided, use default from config
 	const resolvedAgentDir = agentDir ?? getAgentDir();
@@ -447,6 +476,15 @@ export function loadSkills(options: LoadSkillsOptions): LoadSkillsResult {
 	if (includeDefaults) {
 		addSkills(loadSkillsFromDirInternal(join(resolvedAgentDir, "skills"), "user", true));
 		addSkills(loadSkillsFromDirInternal(resolve(cwd, CONFIG_DIR_NAME, "skills"), "project", true));
+
+		const manifest = readManifest(cwd);
+		for (const entry of manifest.entries.filter((e) => e.type === "skill")) {
+			if (existsSync(entry.path)) {
+				addSkills(loadSkillsFromDirInternal(entry.path, "project", true));
+			} else {
+				allDiagnostics.push({ type: "warning", message: `skill path from manifest does not exist`, path: entry.path });
+			}
+		}
 	}
 
 	const userSkillsDir = join(resolvedAgentDir, "skills");
