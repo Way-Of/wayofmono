@@ -202,6 +202,45 @@ session.addEventListener((event) => {
 
 ---
 
+## pi Extensions
+
+Beyond our wocode/wouser agents, WayOfMono ships first-class **pi** extensions — aftermarket
+TypeScript modules pi auto-discovers and loads at startup (via `~/.pi/agent/extensions/` or
+npm packages with a `pi.extensions` manifest). Extended pi loads them with jiti (no build
+step) and registers their tools via `pi.registerTool()`.
+
+### Install a pi extension
+
+```bash
+pi install npm:@wayofmono/wayofteams-tools   # from npm
+pi install ./packages/@wayofmono/wayofteams-tools   # from this monorepo (no copy)
+```
+
+### Our pi extensions
+
+| Package | Description |
+|---------|-------------|
+| `@wayofmono/wayofteams-tools` | Full WayOfTeams MCP integration + REST dual path |
+
+#### @wayofmono/wayofteams-tools
+
+Gives pi the complete WayOfTeams tool surface so the agent can drive tickets, plans, docs,
+standups, kanban, knowledge, memory and more — over the internet, for any client tenant.
+
+- **Dual client**: an MCP client (legacy `/mcp` + v2 domain-split `/mcp/v2/*`) AND a direct
+  REST adapter (`POST /api/v1/tools`) — MCP first, REST fallback when MCP is down.
+- **Client-first auth**: token resolved from env → pi settings.json `wayofteams.token` →
+  dashboard token file. Per-user JWT only, never hardcoded.
+- **Commands**: `/wayofteams status`, `/wayofteams endpoint`, `/wayofteams-login <token>`.
+- **Dynamic tool loading**: discovery tools start active; matching tools activate on demand.
+
+```bash
+pi install npm:@wayofmono/wayofteams-tools
+/wayofteams-login <your-token>
+```
+
+---
+
 ## Packages
 
 | Package | Description |
@@ -211,6 +250,7 @@ session.addEventListener((event) => {
 | `@wayofmono/wo-agent-core` | Core agent runtime |
 | `@wayofmono/wo-ai` | LLM provider abstraction |
 | `@wayofmono/wo-tui` | Terminal UI components |
+| `@wayofmono/wayofteams-tools` | pi extension: full WayOfTeams MCP integration + REST dual path |
 
 ---
 
