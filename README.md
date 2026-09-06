@@ -2,10 +2,11 @@
 
 > High-performance AI coding agents for the next generation of engineering.
 
-WayOfMono provides two powerful AI coding tools built on a shared intelligence backend:
+WayOfMono provides powerful AI coding tools built on a shared intelligence backend:
 
 - **[wocode](#wocode)** — Primary coding agent CLI with terminal UI
 - **[wouser](#wouser)** — General-purpose agent SDK for building AI applications
+- **[pi extensions](#pi-extensions)** — Native pi coding agent extensions
 
 ---
 
@@ -202,6 +203,26 @@ session.addEventListener((event) => {
 
 ---
 
+## Pi Extensions
+
+Native extensions for [Pi Coding Agent](https://pi.dev) — install with `pi install npm:<package>`
+
+| Package | Version | Description | Install |
+|---------|---------|-------------|---------|
+| `@wayofmono/wayofteams-tools` | 0.1.7 | WayOfTeams MCP integration — tickets, kanban, standups, knowledge, memory, agents, Google Workspace. Interactive group manager (`Ctrl+Shift+W`), 13 granular groups, 11 presets. | `pi install npm:@wayofmono/wayofteams-tools` |
+| `@wayofmono/pi-todo` | 0.1.1 | Session-scoped todo list with 4 statuses, 3 priorities. Survives `/reload` and compaction. `/todos` interactive panel. | `pi install npm:@wayofmono/pi-todo` |
+| `@wayofmono/pi-open-editor` | 0.1.0 | Open files in `$VISUAL`/`$EDITOR` with tab-completion (`/edit`) and file picker (`Ctrl+Shift+E`). Smart GUI/terminal editor detection. | `pi install npm:@wayofmono/pi-open-editor` |
+
+### WayOfTeams Tools Highlights
+
+- **13 tool groups** — tickets, kanban, team, agents, knowledge, memory, admin, 5× Google, obsidian
+- **Interactive overlay** — `Ctrl+Shift+W` toggles panel above editor
+- **11 presets** — minimal, standard, full, team-only, knowledge-only, google-*
+- **MCP + REST dual path** — auto-probes v2 gateway → legacy → REST
+- **Multi-agent ready** — registers agent identity, exposes coordinator tools
+
+---
+
 ## Packages
 
 | Package | Description |
@@ -211,6 +232,9 @@ session.addEventListener((event) => {
 | `@wayofmono/wo-agent-core` | Core agent runtime |
 | `@wayofmono/wo-ai` | LLM provider abstraction |
 | `@wayofmono/wo-tui` | Terminal UI components |
+| `@wayofmono/wayofteams-tools` | WayOfTeams MCP integration for pi |
+| `@wayofmono/pi-todo` | Session-scoped todo list for pi |
+| `@wayofmono/pi-open-editor` | File editor opener for pi |
 
 ---
 

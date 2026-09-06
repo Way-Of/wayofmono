@@ -39,6 +39,9 @@ yarn-error.log*
 # Package manager logs
 *.tgz
 
+# pnpm store
+.pnpm-store/
+
 # Local config
 .config/
 .local/
