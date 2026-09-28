@@ -1,0 +1,10 @@
+name: port_to_elixir
+description: Port an existing system (especially TypeScript/Node) to the Way-Of stack, Elixir, Phoenix, LiveView, Ash, Jido, Oban, Rustler. Use when migrating an app off TS/Node/Next/Express/Prisma, planning a port, building the port inventory or parity matrix, or executing phased cutover and decommission. Includes the TS-to-Elixir mapping table.
+version: 1.0.0
+tools:
+- read
+- write
+- edit
+- bash
+- grep
+- glob

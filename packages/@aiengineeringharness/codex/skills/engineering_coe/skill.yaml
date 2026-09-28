@@ -1,0 +1,10 @@
+name: engineering_coe
+description: The Way-Of Engineering Center of Excellence, the company method for architecting original systems and porting to our stack (Elixir, Phoenix, LiveView, Ash, Jido, Oban, Rust). Use when starting a new build, planning or executing a port (especially from TypeScript/Node), weighing an architecture decision, or deciding which CoE skill applies.
+version: 1.0.0
+tools:
+- read
+- write
+- edit
+- bash
+- grep
+- glob

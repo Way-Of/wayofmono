@@ -1,0 +1,10 @@
+name: architect_new_system
+description: Design a NEW Way-Of system on the Elixir/Phoenix/LiveView/Ash/Jido stack. Use when planning original development, defining contexts and domains, modeling Ash resources, choosing boundaries and deployment shape, slicing the build, or writing the architecture blueprint and ADRs. Not for porting an existing system (use port-to-elixir).
+version: 1.0.0
+tools:
+- read
+- write
+- edit
+- bash
+- grep
+- glob

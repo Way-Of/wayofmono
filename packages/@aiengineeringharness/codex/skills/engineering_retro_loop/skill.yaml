@@ -1,0 +1,10 @@
+name: engineering_retro_loop
+description: Close a Way-Of engagement (new build or port) by recording outcomes and improving the method. Use at the end of a port or build, when a lesson should become a rule, when the playbook should be pruned, or when feeding lessons back into the CoE skills. Records scored notes to Anchor and retires rules that cannot move the outcome.
+version: 1.0.0
+tools:
+- read
+- write
+- edit
+- bash
+- grep
+- glob

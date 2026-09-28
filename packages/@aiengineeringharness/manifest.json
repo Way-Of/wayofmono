@@ -1459,6 +1459,60 @@
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
             }
           ]
+        },
+        "skill/architect-new-system": {
+          "description": "architect-new-system skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "antigravity/skills/architect-new-system/SKILL.md",
+              "dest": "skills/architect-new-system/SKILL.md"
+            }
+          ]
+        },
+        "skill/elixir-ash-liveview-jido-cookbook": {
+          "description": "elixir-ash-liveview-jido-cookbook skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "antigravity/skills/elixir-ash-liveview-jido-cookbook/SKILL.md",
+              "dest": "skills/elixir-ash-liveview-jido-cookbook/SKILL.md"
+            }
+          ]
+        },
+        "skill/engineering-coe": {
+          "description": "engineering-coe skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "antigravity/skills/engineering-coe/SKILL.md",
+              "dest": "skills/engineering-coe/SKILL.md"
+            }
+          ]
+        },
+        "skill/engineering-retro-loop": {
+          "description": "engineering-retro-loop skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "antigravity/skills/engineering-retro-loop/SKILL.md",
+              "dest": "skills/engineering-retro-loop/SKILL.md"
+            }
+          ]
+        },
+        "skill/port-parity-verification": {
+          "description": "port-parity-verification skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "antigravity/skills/port-parity-verification/SKILL.md",
+              "dest": "skills/port-parity-verification/SKILL.md"
+            }
+          ]
+        },
+        "skill/port-to-elixir": {
+          "description": "port-to-elixir skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "antigravity/skills/port-to-elixir/SKILL.md",
+              "dest": "skills/port-to-elixir/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -2676,6 +2730,60 @@
             {
               "src": "claude/skills/fixes_manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/architect-new-system": {
+          "description": "architect-new-system skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "claude/skills/architect_new_system/SKILL.md",
+              "dest": "skills/architect_new_system/SKILL.md"
+            }
+          ]
+        },
+        "skill/elixir-ash-liveview-jido-cookbook": {
+          "description": "elixir-ash-liveview-jido-cookbook skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "claude/skills/elixir_ash_liveview_jido_cookbook/SKILL.md",
+              "dest": "skills/elixir_ash_liveview_jido_cookbook/SKILL.md"
+            }
+          ]
+        },
+        "skill/engineering-coe": {
+          "description": "engineering-coe skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "claude/skills/engineering_coe/SKILL.md",
+              "dest": "skills/engineering_coe/SKILL.md"
+            }
+          ]
+        },
+        "skill/engineering-retro-loop": {
+          "description": "engineering-retro-loop skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "claude/skills/engineering_retro_loop/SKILL.md",
+              "dest": "skills/engineering_retro_loop/SKILL.md"
+            }
+          ]
+        },
+        "skill/port-parity-verification": {
+          "description": "port-parity-verification skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "claude/skills/port_parity_verification/SKILL.md",
+              "dest": "skills/port_parity_verification/SKILL.md"
+            }
+          ]
+        },
+        "skill/port-to-elixir": {
+          "description": "port-to-elixir skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "claude/skills/port_to_elixir/SKILL.md",
+              "dest": "skills/port_to_elixir/SKILL.md"
             }
           ]
         }
@@ -3914,6 +4022,84 @@
             {
               "src": "codex/skills/fixes_manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/architect-new-system": {
+          "description": "architect-new-system skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "codex/skills/architect_new_system/skill.yaml",
+              "dest": "skills/architect_new_system/skill.yaml"
+            },
+            {
+              "src": "codex/skills/architect_new_system/prompt.md",
+              "dest": "skills/architect_new_system/prompt.md"
+            }
+          ]
+        },
+        "skill/elixir-ash-liveview-jido-cookbook": {
+          "description": "elixir-ash-liveview-jido-cookbook skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "codex/skills/elixir_ash_liveview_jido_cookbook/skill.yaml",
+              "dest": "skills/elixir_ash_liveview_jido_cookbook/skill.yaml"
+            },
+            {
+              "src": "codex/skills/elixir_ash_liveview_jido_cookbook/prompt.md",
+              "dest": "skills/elixir_ash_liveview_jido_cookbook/prompt.md"
+            }
+          ]
+        },
+        "skill/engineering-coe": {
+          "description": "engineering-coe skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "codex/skills/engineering_coe/skill.yaml",
+              "dest": "skills/engineering_coe/skill.yaml"
+            },
+            {
+              "src": "codex/skills/engineering_coe/prompt.md",
+              "dest": "skills/engineering_coe/prompt.md"
+            }
+          ]
+        },
+        "skill/engineering-retro-loop": {
+          "description": "engineering-retro-loop skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "codex/skills/engineering_retro_loop/skill.yaml",
+              "dest": "skills/engineering_retro_loop/skill.yaml"
+            },
+            {
+              "src": "codex/skills/engineering_retro_loop/prompt.md",
+              "dest": "skills/engineering_retro_loop/prompt.md"
+            }
+          ]
+        },
+        "skill/port-parity-verification": {
+          "description": "port-parity-verification skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "codex/skills/port_parity_verification/skill.yaml",
+              "dest": "skills/port_parity_verification/skill.yaml"
+            },
+            {
+              "src": "codex/skills/port_parity_verification/prompt.md",
+              "dest": "skills/port_parity_verification/prompt.md"
+            }
+          ]
+        },
+        "skill/port-to-elixir": {
+          "description": "port-to-elixir skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "codex/skills/port_to_elixir/skill.yaml",
+              "dest": "skills/port_to_elixir/skill.yaml"
+            },
+            {
+              "src": "codex/skills/port_to_elixir/prompt.md",
+              "dest": "skills/port_to_elixir/prompt.md"
             }
           ]
         }
@@ -5360,6 +5546,60 @@
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
             }
           ]
+        },
+        "skill/architect-new-system": {
+          "description": "architect-new-system skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "gemini/skills/architect-new-system/SKILL.md",
+              "dest": "skills/architect-new-system/SKILL.md"
+            }
+          ]
+        },
+        "skill/elixir-ash-liveview-jido-cookbook": {
+          "description": "elixir-ash-liveview-jido-cookbook skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "gemini/skills/elixir-ash-liveview-jido-cookbook/SKILL.md",
+              "dest": "skills/elixir-ash-liveview-jido-cookbook/SKILL.md"
+            }
+          ]
+        },
+        "skill/engineering-coe": {
+          "description": "engineering-coe skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "gemini/skills/engineering-coe/SKILL.md",
+              "dest": "skills/engineering-coe/SKILL.md"
+            }
+          ]
+        },
+        "skill/engineering-retro-loop": {
+          "description": "engineering-retro-loop skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "gemini/skills/engineering-retro-loop/SKILL.md",
+              "dest": "skills/engineering-retro-loop/SKILL.md"
+            }
+          ]
+        },
+        "skill/port-parity-verification": {
+          "description": "port-parity-verification skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "gemini/skills/port-parity-verification/SKILL.md",
+              "dest": "skills/port-parity-verification/SKILL.md"
+            }
+          ]
+        },
+        "skill/port-to-elixir": {
+          "description": "port-to-elixir skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "gemini/skills/port-to-elixir/SKILL.md",
+              "dest": "skills/port-to-elixir/SKILL.md"
+            }
+          ]
         }
       }
     },
@@ -6698,6 +6938,60 @@
             {
               "src": "opencode/skills/fixes-manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/architect-new-system": {
+          "description": "architect-new-system skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "opencode/skills/architect-new-system/SKILL.md",
+              "dest": "skills/architect-new-system/SKILL.md"
+            }
+          ]
+        },
+        "skill/elixir-ash-liveview-jido-cookbook": {
+          "description": "elixir-ash-liveview-jido-cookbook skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "opencode/skills/elixir-ash-liveview-jido-cookbook/SKILL.md",
+              "dest": "skills/elixir-ash-liveview-jido-cookbook/SKILL.md"
+            }
+          ]
+        },
+        "skill/engineering-coe": {
+          "description": "engineering-coe skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "opencode/skills/engineering-coe/SKILL.md",
+              "dest": "skills/engineering-coe/SKILL.md"
+            }
+          ]
+        },
+        "skill/engineering-retro-loop": {
+          "description": "engineering-retro-loop skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "opencode/skills/engineering-retro-loop/SKILL.md",
+              "dest": "skills/engineering-retro-loop/SKILL.md"
+            }
+          ]
+        },
+        "skill/port-parity-verification": {
+          "description": "port-parity-verification skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "opencode/skills/port-parity-verification/SKILL.md",
+              "dest": "skills/port-parity-verification/SKILL.md"
+            }
+          ]
+        },
+        "skill/port-to-elixir": {
+          "description": "port-to-elixir skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "opencode/skills/port-to-elixir/SKILL.md",
+              "dest": "skills/port-to-elixir/SKILL.md"
             }
           ]
         }
@@ -8139,6 +8433,60 @@
             {
               "src": "pi/agent/skills/fixes-manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/architect-new-system": {
+          "description": "architect-new-system skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "pi/agent/skills/architect-new-system/SKILL.md",
+              "dest": "skills/architect-new-system/SKILL.md"
+            }
+          ]
+        },
+        "skill/elixir-ash-liveview-jido-cookbook": {
+          "description": "elixir-ash-liveview-jido-cookbook skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "pi/agent/skills/elixir-ash-liveview-jido-cookbook/SKILL.md",
+              "dest": "skills/elixir-ash-liveview-jido-cookbook/SKILL.md"
+            }
+          ]
+        },
+        "skill/engineering-coe": {
+          "description": "engineering-coe skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "pi/agent/skills/engineering-coe/SKILL.md",
+              "dest": "skills/engineering-coe/SKILL.md"
+            }
+          ]
+        },
+        "skill/engineering-retro-loop": {
+          "description": "engineering-retro-loop skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "pi/agent/skills/engineering-retro-loop/SKILL.md",
+              "dest": "skills/engineering-retro-loop/SKILL.md"
+            }
+          ]
+        },
+        "skill/port-parity-verification": {
+          "description": "port-parity-verification skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "pi/agent/skills/port-parity-verification/SKILL.md",
+              "dest": "skills/port-parity-verification/SKILL.md"
+            }
+          ]
+        },
+        "skill/port-to-elixir": {
+          "description": "port-to-elixir skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "pi/agent/skills/port-to-elixir/SKILL.md",
+              "dest": "skills/port-to-elixir/SKILL.md"
             }
           ]
         }
@@ -9687,6 +10035,60 @@
             {
               "src": "wocode/agent/skills/fixes-manager/assets/opticat/fix-note-template.md",
               "dest": "skills/fixes-manager/assets/opticat/fix-note-template.md"
+            }
+          ]
+        },
+        "skill/architect-new-system": {
+          "description": "architect-new-system skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "wocode/agent/skills/architect-new-system/SKILL.md",
+              "dest": "skills/architect-new-system/SKILL.md"
+            }
+          ]
+        },
+        "skill/elixir-ash-liveview-jido-cookbook": {
+          "description": "elixir-ash-liveview-jido-cookbook skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "wocode/agent/skills/elixir-ash-liveview-jido-cookbook/SKILL.md",
+              "dest": "skills/elixir-ash-liveview-jido-cookbook/SKILL.md"
+            }
+          ]
+        },
+        "skill/engineering-coe": {
+          "description": "engineering-coe skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "wocode/agent/skills/engineering-coe/SKILL.md",
+              "dest": "skills/engineering-coe/SKILL.md"
+            }
+          ]
+        },
+        "skill/engineering-retro-loop": {
+          "description": "engineering-retro-loop skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "wocode/agent/skills/engineering-retro-loop/SKILL.md",
+              "dest": "skills/engineering-retro-loop/SKILL.md"
+            }
+          ]
+        },
+        "skill/port-parity-verification": {
+          "description": "port-parity-verification skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "wocode/agent/skills/port-parity-verification/SKILL.md",
+              "dest": "skills/port-parity-verification/SKILL.md"
+            }
+          ]
+        },
+        "skill/port-to-elixir": {
+          "description": "port-to-elixir skill (Way-Of Engineering CoE)",
+          "files": [
+            {
+              "src": "wocode/agent/skills/port-to-elixir/SKILL.md",
+              "dest": "skills/port-to-elixir/SKILL.md"
             }
           ]
         }

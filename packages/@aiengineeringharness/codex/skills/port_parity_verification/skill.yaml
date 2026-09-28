@@ -1,0 +1,10 @@
+name: port_parity_verification
+description: Prove a port is equivalent, not merely present. Use when building the parity matrix, writing differential or golden tests, asserting API response shapes, verifying tenant isolation, or setting coverage and telemetry gates for a migration.
+version: 1.0.0
+tools:
+- read
+- write
+- edit
+- bash
+- grep
+- glob

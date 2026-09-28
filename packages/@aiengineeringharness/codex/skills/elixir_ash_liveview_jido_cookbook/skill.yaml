@@ -1,0 +1,9 @@
+name: elixir_ash_liveview_jido_cookbook
+description: Code shapes for the Way-Of stack, Ash 3 resources, actions, policies and multitenancy; Phoenix LiveView pages, forms and PubSub; Jido 2 agents and actions; Oban workers; Rustler NIF boundaries. Use when writing or reviewing Ash, LiveView, Jido, or Oban code, or when a port needs the idiomatic shape.
+version: 1.0.0
+tools:
+- read
+- write
+- edit
+- grep
+- glob

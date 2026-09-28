@@ -684,3 +684,33 @@ components:
       dest: skills/fixes-manager/assets/opticat/components.json
     - src: claude/skills/fixes_manager/assets/opticat/fix-note-template.md
       dest: skills/fixes-manager/assets/opticat/fix-note-template.md
+  skill/architect-new-system:
+    description: "architect-new-system skill (Way-Of Engineering CoE)"
+    files:
+    - src: claude/skills/architect_new_system/SKILL.md
+      dest: skills/architect_new_system/SKILL.md
+  skill/elixir-ash-liveview-jido-cookbook:
+    description: "elixir-ash-liveview-jido-cookbook skill (Way-Of Engineering CoE)"
+    files:
+    - src: claude/skills/elixir_ash_liveview_jido_cookbook/SKILL.md
+      dest: skills/elixir_ash_liveview_jido_cookbook/SKILL.md
+  skill/engineering-coe:
+    description: "engineering-coe skill (Way-Of Engineering CoE)"
+    files:
+    - src: claude/skills/engineering_coe/SKILL.md
+      dest: skills/engineering_coe/SKILL.md
+  skill/engineering-retro-loop:
+    description: "engineering-retro-loop skill (Way-Of Engineering CoE)"
+    files:
+    - src: claude/skills/engineering_retro_loop/SKILL.md
+      dest: skills/engineering_retro_loop/SKILL.md
+  skill/port-parity-verification:
+    description: "port-parity-verification skill (Way-Of Engineering CoE)"
+    files:
+    - src: claude/skills/port_parity_verification/SKILL.md
+      dest: skills/port_parity_verification/SKILL.md
+  skill/port-to-elixir:
+    description: "port-to-elixir skill (Way-Of Engineering CoE)"
+    files:
+    - src: claude/skills/port_to_elixir/SKILL.md
+      dest: skills/port_to_elixir/SKILL.md
