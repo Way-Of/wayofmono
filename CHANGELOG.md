@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.8.0] - 2026-08-29
+
+### wayofteams-tools v0.1.0 — New pi extension: full WayOfTeams MCP integration (WOTEAMS-547)
+
+- **Client-first pi extension** for the WayOfTeams MCP: full tool surface (legacy `/mcp` 269
+tools + v2 domain-split `/mcp/v2/{core,collab,agents,knowledge,memory,admin,google-*}`)
+with a **REST dual path** (`POST /api/v1/tools` + direct tickets/standups/notifications
+fallbacks). Works over the internet for any tenant — no WayOf-internal deps.
+- **Token resolution (never hardcoded)**: env `WAYOFTEAMS_MCP_TOKEN` → pi settings.json
+`wayofteams.token` → dashboard token file `~/.config/opencode/.wayofteams-mcp-token`;
+`/wayofteams login <token>` verifies live and persists. Per-user JWT only (auth-flow
+dual-tenant `user_id`/`company_id` support).
+- **Multi-endpoint auto-probe**: v2 gateway → legacy `/mcp` → REST adapter; switchable via
+`/wayofteams endpoint`. Works for individual users (`company_id = nil`) and company members.
+- **Dynamic tool loading**: control plane + 3 discovery tools start active; matching real
+tools activate additively via `pi.setActiveTools` (pi.dev dynamic-loading pattern).
+- **Multi-agent identity**: registers `update_my_work` on startup (WOTEAMS-322); control
+plane `agent_register/list/claim_files/check_conflicts/send_message/coordinator_status`.
+- **Entitlement-aware errors**: 401 / access denials surfaced as recoverable
+("access expired", "tier missing") with a `/wayofteams-login` refresh path.
+- **Package structure**: `packages/@wayofmono/wayofteams-tools/` (12 src + 4 test files),
+vitest (28 tests), tsc typecheck, pi manifest `pi.extensions: ["./src/index.ts"]`, loads
+via jiti. 28/28 tests passing, typecheck clean, jiti load verified.
+
+- **Tickets**: WOTEAMS-547. Plan: `docs/mcp/PI-WAYOFTEAMS-EXTENSION-PLAN.md` (wayofteams repo).
+
 ## [1.7.22] - 2026-08-18
 
 ### wo-coding-agent v1.0.24 — Remove ALL pi/mariozechner references, self-uninstall, init & models.json fixes (WOMONO-180)

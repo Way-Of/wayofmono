@@ -1,10 +1,10 @@
 # WayOfMono (Wo)
 
-<<<<<<< HEAD
+
 The ultimate monorepo consolidation for high-performance coding agents. WayOfMono provides a shared **AI Engineering Harness** — 81 battle-tested skills, 6 subagents, and workflows spanning 7 AI coding tools — plus a **CTO Dashboard** with telemetry, standups, tickets, and review queues.
-=======
+
 > High-performance AI coding agents for the next generation of engineering.
->>>>>>> origin/main
+
 
 WayOfMono provides powerful AI coding tools built on a shared intelligence backend:
 
@@ -75,7 +75,7 @@ wocode --export <session>
 
 **Project config** (`.wocode/`):
 ```
-<<<<<<< HEAD
+
 ./
 ├── packages/
 │   ├── @aiengineeringharness/   # AI Engineering Harness
@@ -215,7 +215,7 @@ session.addEventListener((event) => {
 ├── extensions/          # Extensions
 ├── prompts/             # Prompt templates
 └── themes/              # Themes
->>>>>>> origin/main
+
 ```
 
 ---
@@ -232,6 +232,45 @@ session.addEventListener((event) => {
 
 ---
 
+ols-pi
+## pi Extensions
+
+Beyond our wocode/wouser agents, WayOfMono ships first-class **pi** extensions — aftermarket
+TypeScript modules pi auto-discovers and loads at startup (via `~/.pi/agent/extensions/` or
+npm packages with a `pi.extensions` manifest). Extended pi loads them with jiti (no build
+step) and registers their tools via `pi.registerTool()`.
+
+### Install a pi extension
+
+```bash
+pi install npm:@wayofmono/wayofteams-tools   # from npm
+pi install ./packages/@wayofmono/wayofteams-tools   # from this monorepo (no copy)
+```
+
+### Our pi extensions
+
+| Package | Description |
+|---------|-------------|
+| `@wayofmono/wayofteams-tools` | Full WayOfTeams MCP integration + REST dual path |
+
+#### @wayofmono/wayofteams-tools
+
+Gives pi the complete WayOfTeams tool surface so the agent can drive tickets, plans, docs,
+standups, kanban, knowledge, memory and more — over the internet, for any client tenant.
+
+- **Dual client**: an MCP client (legacy `/mcp` + v2 domain-split `/mcp/v2/*`) AND a direct
+  REST adapter (`POST /api/v1/tools`) — MCP first, REST fallback when MCP is down.
+- **Client-first auth**: token resolved from env → pi settings.json `wayofteams.token` →
+  dashboard token file. Per-user JWT only, never hardcoded.
+- **Commands**: `/wayofteams status`, `/wayofteams endpoint`, `/wayofteams-login <token>`.
+- **Dynamic tool loading**: discovery tools start active; matching tools activate on demand.
+
+```bash
+pi install npm:@wayofmono/wayofteams-tools
+/wayofteams-login <your-token>
+```
+=======
+  
 ## Pi Extensions
 
 Native extensions for [Pi Coding Agent](https://pi.dev) — install with `pi install npm:<package>`
@@ -250,6 +289,7 @@ Native extensions for [Pi Coding Agent](https://pi.dev) — install with `pi ins
 - **MCP + REST dual path** — auto-probes v2 gateway → legacy → REST
 - **Multi-agent ready** — registers agent identity, exposes coordinator tools
 
+
 ---
 
 ## Packages
@@ -261,9 +301,13 @@ Native extensions for [Pi Coding Agent](https://pi.dev) — install with `pi ins
 | `@wayofmono/wo-agent-core` | Core agent runtime |
 | `@wayofmono/wo-ai` | LLM provider abstraction |
 | `@wayofmono/wo-tui` | Terminal UI components |
+
+| `@wayofmono/wayofteams-tools` | pi extension: full WayOfTeams MCP integration + REST dual path |
+=======
 | `@wayofmono/wayofteams-tools` | WayOfTeams MCP integration for pi |
 | `@wayofmono/pi-todo` | Session-scoped todo list for pi |
 | `@wayofmono/pi-open-editor` | File editor opener for pi |
+
 
 ---
 

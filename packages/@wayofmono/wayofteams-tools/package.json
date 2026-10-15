@@ -1,0 +1,43 @@
+{
+  "name": "@wayofmono/wayofteams-tools",
+  "version": "0.1.3",
+  "type": "module",
+  "description": "pi extension: full WayOfTeams MCP integration (legacy + v2 domain-split) with REST dual path — client-first, per-user JWT",
+  "keywords": ["pi-package", "wayofteams", "mcp", "pi"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Way-Of/wayofmono.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Way-Of/wayofmono/issues"
+  },
+  "homepage": "https://github.com/Way-Of/wayofmono#readme",
+  "pi": {
+    "extensions": ["./src/index.ts"]
+  },
+  "files": ["dist", "src", "README.md"],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*",
+    "@earendil-works/pi-ai": "*",
+    "typebox": "*"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-ai": "*",
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*",
+    "@types/node": "^24.3.0",
+    "typescript": "^6.0.3",
+    "typebox": "^1.1.24",
+    "vitest": "^4.1.1"
+  }
+}
