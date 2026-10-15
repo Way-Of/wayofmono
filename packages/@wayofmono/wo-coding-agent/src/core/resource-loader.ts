@@ -877,7 +877,21 @@ export class DefaultResourceLoader implements ResourceLoader {
 		const seen = new Map<string, Theme>();
 		const diagnostics: ResourceDiagnostic[] = [];
 
+		const byPath = new Map<string, Theme>();
 		for (const t of themes) {
+			if (t.sourcePath) {
+				const resolved = resolve(t.sourcePath);
+				const pathExisting = byPath.get(resolved);
+				if (pathExisting) {
+					continue;
+				}
+				byPath.set(resolved, t);
+			}
+		}
+
+		const pathDeduped = themes.filter((t) => !t.sourcePath || byPath.get(resolve(t.sourcePath)) === t);
+
+		for (const t of pathDeduped) {
 			const name = t.name ?? "unnamed";
 			const existing = seen.get(name);
 			if (existing) {
